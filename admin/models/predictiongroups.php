@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.modellist' );
-
-
-
 /**
  * sportsmanagementModelpredictiongroups
  * 
@@ -53,7 +49,7 @@ jimport( 'joomla.application.component.modellist' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelpredictiongroups extends JModelList
+class sportsmanagementModelpredictiongroups extends JSMModelList
 {
 	var $_identifier = "predictiongroups";
 	
@@ -73,8 +69,7 @@ class sportsmanagementModelpredictiongroups extends JModelList
                         's.modified_by'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -86,35 +81,32 @@ class sportsmanagementModelpredictiongroups extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
         $this->setState('filter.prediction_id', $temp_user_request);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        // List state information.
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);       
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 's.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 
 
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('s.name', 'asc');
 	}
     
 	/**
@@ -124,40 +116,29 @@ class sportsmanagementModelpredictiongroups extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-        
-        $query->select(array('s.*', 'u.name AS editor','u1.username'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups AS s')
+	   // Create a new query object.		
+		$this->jsmquery->clear();
+        $this->jsmquery->select(array('s.*', 'u.name AS editor','u1.username'))
+        ->from('#__sportsmanagement_prediction_groups AS s')
         ->join('LEFT', '#__users AS u ON u.id = s.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by');
         
         if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(s.name) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) );
+        $this->jsmquery->where('(LOWER(s.name) LIKE ' . $this->jsmdb->Quote( '%' . $this->getState('filter.search') . '%' ) );
         }
         
-         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 's.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         } 
-
-
 		
-		return $query;
+		return $this->jsmquery;
 	}
-
-
-
-
 	
 }
 ?>

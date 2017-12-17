@@ -55,6 +55,12 @@ class sportsmanagementModelPositions extends JSMModelList
 {
 	var $_identifier = "positions";
 	
+	/**
+	 * sportsmanagementModelPositions::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -97,10 +103,8 @@ class sportsmanagementModelPositions extends JSMModelList
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		//parent::populateState('po.name', 'asc');
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
-		
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields))

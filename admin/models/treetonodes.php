@@ -38,8 +38,6 @@
 */
 defined('_JEXEC') or die;
 
-
-
 /**
  * sportsmanagementModelTreetonodes
  * 

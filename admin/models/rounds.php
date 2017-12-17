@@ -62,8 +62,6 @@ class sportsmanagementModelRounds extends JSMModelList
      */
     public function __construct($config = array())
         {
-            //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
 	    $config['filter_fields'] = array(
                         'r.name',
                         'r.alias',
@@ -74,8 +72,7 @@ class sportsmanagementModelRounds extends JSMModelList
                         'r.ordering'
                         );
 	    parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
                 self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 
                 if ( !self::$_project_id )
@@ -95,7 +92,7 @@ class sportsmanagementModelRounds extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'r.roundcode', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -110,9 +107,21 @@ class sportsmanagementModelRounds extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'r.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
     
 	/**
@@ -175,12 +184,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         return $this->jsmquery;
 	}
 	
-  
-  
-
-
-
-	
 	/**
 	 * return count of  project rounds
 	 *
@@ -189,18 +192,23 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getRoundsCount($project_id)
 	{
-	   //$option = JFactory::getApplication()->input->getCmd('option');
-		//$app = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $this->jsmapp->getUserState( "$this->jsmoption.cfg_which_database", FALSE ) );
-        $query = $db->getQuery(true);
-	  // Select some fields
-        $query->select('count(*) AS count');
+	  // Create a new query object.		
+		$this->jsmquery->clear();
+      // Select some fields
+        $this->jsmquery->select('count(*) AS count');
         // From the table
-		$query->from('#__sportsmanagement_round');
-        $query->where('project_id = '.$project_id);  
+		$this->jsmquery->from('#__sportsmanagement_round');
+        $this->jsmquery->where('project_id = '.$project_id);  
 
-		$db->setQuery($query);
-		return $db->loadResult();
+		try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadResult();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
     
     /**

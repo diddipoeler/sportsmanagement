@@ -133,11 +133,10 @@ class sportsmanagementModelSeasons extends JSMModelList
 		$this->setState('list.limit', $value);
         
         // List state information.
-		//parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 		
-	// Filter.order
+    	// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
@@ -275,9 +274,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		    $this->jsmquery->from('#__sportsmanagement_team as t');
         $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
         $this->jsmquery->where('st.season_id = '.$season_id);
+        try{
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
-        return $result;    
+        return $result;   
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        } 
     }
         
 	/**
@@ -287,7 +293,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
      * @return	array seasons
      * @since	1.5.0a
      */
-    //public static function getSeasons()
     function getSeasons()
     {
         $this->jsmquery->clear();
@@ -295,17 +300,21 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         ->from('#__sportsmanagement_season')
         ->order('name DESC');
 
+        try{
         $this->jsmdb->setQuery($this->jsmquery);
-        if (!$result = $this->jsmdb->loadObjectList())
-        {
-            //$this->setError($this->jsmdb->getErrorMsg());
-            return array();
-        }
+        $result = $this->jsmdb->loadObjectList();
+
         foreach ($result as $season)
         {
             $season->name = JText::_($season->name);
         }
         return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
     }
 	
 	

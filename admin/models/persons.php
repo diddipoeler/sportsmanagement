@@ -81,8 +81,7 @@ class sportsmanagementModelPersons extends JSMModelList
                         );
                    
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -113,10 +112,8 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->setState('list.limit', $value);	
 
 		// List state information.
-		//parent::populateState($ordering, $direction);
- $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);       
-		
 		// Filter.order
 		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields))
@@ -192,7 +189,7 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->jsmquery->where('pl.published = '.$this->getState('filter.state'));	
 		}
         
-        if ( JFactory::getApplication()->input->getVar('layout') == 'assignplayers')
+        if ( $this->jsmapp->input->getVar('layout') == 'assignplayers')
         {
             switch ($this->_type)
             {
@@ -267,26 +264,27 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	function getPersonsToAssign()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        
-		$cid = JFactory::getApplication()->input->getVar( 'cid' );
+		$cid = $this->jsmapp->input->getVar( 'cid' );
 
 		if ( !count( $cid ) )
 		{
 			return array();
 		}
-        
-        $query->select('pl.id,pl.firstname, pl.nickname,pl.lastname');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
-        $query->where('pl.id IN (' . implode( ', ', $cid ) . ')');
-        $query->where('pl.published = 1');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('pl.id,pl.firstname, pl.nickname,pl.lastname');
+        $this->jsmquery->from('#__sportsmanagement_person AS pl');
+        $this->jsmquery->where('pl.id IN (' . implode( ', ', $cid ) . ')');
+        $this->jsmquery->where('pl.published = 1');
 		
-        $db->setQuery( $query );
-		return $db->loadObjectList();
+        try{
+        $this->jsmdb->setQuery( $this->jsmquery );
+		return $this->jsmdb->loadObjectList();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 
 
@@ -299,21 +297,23 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	function getProjectTeamList()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        
-        $query->select('t.id AS value,t.name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
-        $query->where('tt.project_id = ' . $this->_project_id);
-        $query->order('text ASC');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('t.id AS value,t.name AS text');
+        $this->jsmquery->from('#__sportsmanagement_team AS t');
+        $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+        $this->jsmquery->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
+        $this->jsmquery->where('tt.project_id = ' . $this->_project_id);
+        $this->jsmquery->order('text ASC');
 
-		$db->setQuery( $query );
-		return $db->loadObjectList();
+		try{
+        $this->jsmdb->setQuery( $this->jsmquery );
+		return $this->jsmdb->loadObjectList();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 
 	
@@ -327,23 +327,24 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	function getTeamName( $team_id )
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        
 		if ( !$team_id )
 		{
 			return '';
 		}
-        
-        $query->select('name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
-        $query->where('id = '. $team_id);
+        $this->jsmquery->clear();
+        $this->jsmquery->select('name');
+        $this->jsmquery->from('#__sportsmanagement_team');
+        $this->jsmquery->where('id = '. $team_id);
 		
-        $db->setQuery( $query );
-		return $db->loadResult();
+        try{
+        $this->jsmdb->setQuery( $this->jsmquery );
+		return $this->jsmdb->loadResult();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 
 	
@@ -355,26 +356,27 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	function getProjectTeamName( $project_team_id )
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        
 		if ( !$project_team_id )
 		{
 			return '';
 		}
-        
-        $query->select('t.name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
-        
-        $query->where('pt.id = '. $db->Quote($project_team_id));
+        $this->jsmquery->clear();
+        $this->jsmquery->select('t.name');
+        $this->jsmquery->from('#__sportsmanagement_team AS t');
+        $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+        $this->jsmquery->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
+        $this->jsmquery->where('pt.id = '. $this->jsmdb->Quote($project_team_id));
 
-		$db->setQuery( $query );
-		return $db->loadResult();
+		try{
+        $this->jsmdb->setQuery( $this->jsmquery );
+		return $this->jsmdb->loadResult();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
+        
 	}
     
     
@@ -388,24 +390,22 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	function getPersons()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        
-        $query->select('id AS value,lastname,firstname,info,weight,height,picture,birthday,notes,nickname,knvbnr,country,phone,mobile,email');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('published = 1');
-        $query->order('lastname ASC');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id AS value,lastname,firstname,info,weight,height,picture,birthday,notes,nickname,knvbnr,country,phone,mobile,email');
+        $this->jsmquery->from('#__sportsmanagement_person');
+        $this->jsmquery->where('published = 1');
+        $this->jsmquery->order('lastname ASC');
 		
-        $db->setQuery($query);
-		if (!$result = $db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		return $result;
+        try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadObjectList();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
+        
 	}
     
     /**
@@ -417,22 +417,19 @@ class sportsmanagementModelPersons extends JSMModelList
      */
     public function getPersonListSelect()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       $results = array();
-       // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        $query->select('id,id AS value,firstname,lastname,nickname,birthday,info');
-        $query->select('LOWER(lastname) AS low_lastname');
-        $query->select('LOWER(firstname) AS low_firstname');
-        $query->select('LOWER(nickname) AS low_nickname');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where("firstname<>'!Unknown' AND lastname<>'!Player' AND nickname<>'!Ghost'");
-        $query->order('lastname,firstname');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id,id AS value,firstname,lastname,nickname,birthday,info');
+        $this->jsmquery->select('LOWER(lastname) AS low_lastname');
+        $this->jsmquery->select('LOWER(firstname) AS low_firstname');
+        $this->jsmquery->select('LOWER(nickname) AS low_nickname');
+        $this->jsmquery->from('#__sportsmanagement_person');
+        $this->jsmquery->where("firstname <> '!Unknown' AND lastname <> '!Player' AND nickname <> '!Ghost'");
+        $this->jsmquery->order('lastname,firstname');
 		
-        $db->setQuery($query);
-		if ($results = $db->loadObjectList())
+        try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		$results = $this->jsmdb->loadObjectList();
+        if ( $results )
 		{
 			foreach ($results AS $person)
 			{
@@ -449,8 +446,13 @@ class sportsmanagementModelPersons extends JSMModelList
 			}
 			return $results;
 		}
-		//return false;
         return $results;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
     
 

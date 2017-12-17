@@ -77,6 +77,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
                         'objassoc.picture'
                         );
                 parent::__construct($config);
+                parent::setDbo($this->jsmdb);
 
         }
         
@@ -87,7 +88,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'objassoc.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -107,9 +108,22 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		$this->setState('list.limit', $value);	
 
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'objassoc.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
     
   /**
@@ -193,18 +207,22 @@ class sportsmanagementModeljlextassociations extends JSMModelList
         
         $this->jsmquery->order('name ASC');
 
+        try{
         $this->jsmdb->setQuery($this->jsmquery);
-        if (!$result = $this->jsmdb->loadObjectList())
-        {
-            //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-            return array();
-        }
+        $result = $this->jsmdb->loadObjectList();
+
         foreach ($result as $association)
         {
             $association->name = '( '.$association->country.' ) '.   JText::_($association->name);
             $association->text = $association->name;
         }
         return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
     }
 
 

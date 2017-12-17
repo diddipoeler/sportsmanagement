@@ -39,10 +39,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModelperson
@@ -67,14 +63,8 @@ class sportsmanagementModelperson extends JSMModelAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}	
-
-	
-  
   
   /**
    * sportsmanagementModelperson::getAgeGroupID()
@@ -84,35 +74,29 @@ class sportsmanagementModelperson extends JSMModelAdmin
    */
   public function getAgeGroupID($age) 
 	{
-  // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-  
+    
   if ( is_numeric($age) )
   {
-//        // Create a new query object.
-//		$db		= $this->getDbo();
-		$query	= JFactory::getDbo()->getQuery(true);
-        $query->select('id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup ');
-        $query->where($age." >= age_from and ".$age." <= age_to");
-  
-//		$query = "SELECT id
-//    FROM #__sportsmanagement_agegroup 
-//    WHERE ".$age." >= age_from and ".$age." <= age_to";
-		
-    //$app->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
-		
-		JFactory::getDbo()->setQuery($query);
-			$person_range = JFactory::getDbo()->loadResult();
+$this->jsmquery->clear();
+        $this->jsmquery->select('id');
+        $this->jsmquery->from('#__sportsmanagement_agegroup ');
+        $this->jsmquery->where($age." >= age_from and ".$age." <= age_to");
+		try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		$person_range = $this->jsmdb->loadResult();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }    
             }
             else
             {
             $person_range = 0;    
             }
             return $person_range;
+            
 	}
     
   
@@ -128,33 +112,30 @@ class sportsmanagementModelperson extends JSMModelAdmin
 	 */
 	function getPerson($person_id=0,$season_person_id=0,$inserthits=0)
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        //// Create a new query object.
-//		$db		= $this->getDbo();
-		$query	= JFactory::getDbo()->getQuery(true);
-        $query->select('p.*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p');
+	   $this->jsmquery->clear();
+        $this->jsmquery->select('p.*');
+        $this->jsmquery->from('#__sportsmanagement_person as p');
         if ( $person_id )
         {
-        $query->where('p.id = '.$person_id);
+        $this->jsmquery->where('p.id = '.$person_id);
         }
         if ( $season_person_id )
         {
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp on tp.person_id = p.id');
-        $query->where('tp.id = '.$season_person_id);
+        $this->jsmquery->join('INNER','#__sportsmanagement_season_person_id AS tp on tp.person_id = p.id');
+        $this->jsmquery->where('tp.id = '.$season_person_id);
+        }
+
+		try{
+        $this->jsmdb->setQuery($query);
+		return $this->jsmdb->loadObject();
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
         }
         
         
-//		$query='SELECT *
-//				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person
-//				  WHERE id='.$person_id;
-		
-        JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObject();
 	}
     
     
@@ -167,26 +148,10 @@ class sportsmanagementModelperson extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db = JFactory::getDbo();
-        // Get the input
-        $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'pks<pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'post<pre>'.print_r($post, true).'</pre><br>','Notice');
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        $result=true;
+        $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+        $post = $this->jsmjinput->post->getArray(array());
+                        
+        $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
 			$tblPerson = & $this->getTable();
@@ -195,15 +160,18 @@ class sportsmanagementModelperson extends JSMModelAdmin
 			$tblPerson->lastname	= $post['lastname'.$pks[$x]];
 			$tblPerson->nickname	= $post['nickname'.$pks[$x]];
 			$tblPerson->birthday	= sportsmanagementHelper::convertDate($post['birthday'.$pks[$x]],0);
-			//$tblPerson->deathday	= $post['deathday'.$pks[$x]];
             $tblPerson->deathday	= sportsmanagementHelper::convertDate($post['deathday'.$pks[$x]],0);
+            
+            $tblPerson->birthday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->birthday);
+            $tblPerson->deathday_timestamp = sportsmanagementHelper::getTimestamp($tblPerson->deathday);
+            
 			$tblPerson->country		= $post['country'.$pks[$x]];
 			$tblPerson->position_id	= $post['position'.$pks[$x]];
             $tblPerson->agegroup_id	= $post['agegroup'.$pks[$x]];
 			if(!$tblPerson->store()) 
             {
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result=false;
+				$result = false;
 			}
 		}
 		return $result;
@@ -480,173 +448,5 @@ catch (Exception $e){
     
     return true;    
     }
-    
-   
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function savenichtmehr($data)
-	{
-	   // Reference global application object
- //       $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-      // $date = JFactory::getDate();
-	 //  $user = JFactory::getUser();
-       $post = $this->jsmjinput->post->getArray();
-       // Set the values
-	   $data['modified'] = $this->jsmdate->toSql();
-	   $data['modified_by'] = $this->jsmuser->get('id');
-       
-       $address_parts = array();
-       $person_double = array();
-       // Create a new query object.
-       // $query = JFactory::getDBO()->getQuery(true);
-        
-       
-       $data['person_art'] = $data['request']['person_art'];
-       $data['person_id1'] = $data['request']['person_id1'];
-       $data['person_id2'] = $data['request']['person_id2'];
-       
-       $data['sports_type_id'] = $data['request']['sports_type_id'];
-       $data['position_id'] = $data['request']['position_id'];
-       $data['agegroup_id'] = $data['request']['agegroup_id'];
-
-       
-       switch($data['person_art'])
-        {
-            case 1:
-            break;
-            case 2:
-            if ( $data['person_id1'] && $data['person_id2'] )
-            {
-            $person_1 = $data['person_id1'];
-            $person_2 = $data['person_id2'];
-            $table = 'person';
-            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
-            $row->load((int) $person_1);
-            $person_double[] = $row->firstname.' '.$row->lastname;
-            $row->load((int) $person_2);
-            $person_double[] = $row->firstname.' '.$row->lastname;
-            $data['lastname'] = implode(" - ",$person_double);
-            $data['firstname'] = '';
-            }
-            break;
-            
-        }
-        
-       // hat der user die bildfelder geleert, werden die standards gesichert.
-       if ( empty($data['picture']) )
-       {
-       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
-       }
-
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extendeduser']);
-			$data['extendeduser'] = (string)$parameter;
-		}
-        
-        $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
-        $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
-        $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
-        $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
-        $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);
-        $data['susp_date_end'] = sportsmanagementHelper::convertDate($data['susp_date_end'],0);
-        $data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'],0);
-        $data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'],0);
-       
-       
-       // Alter the title for Save as Copy
-		if ($this->jsmjinput->get('task') == 'save2copy')
-		{
-			$orig_table = $this->getTable();
-			$orig_table->load((int) $this->jsmjinput->getInt('id'));
-            $data['id'] = 0;
-
-			if ($data['lastname'] == $orig_table->lastname)
-			{
-				$data['lastname'] .= ' ' . JText::_('JGLOBAL_COPY');
-			}
-		}
-         
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
-
-        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
-		{
-		  foreach( $data['season_ids'] as $key => $value )
-          {
-          
-        $this->jsmquery->clear();  
-        $this->jsmquery->select('id');
-        $this->jsmquery->from('#__sportsmanagement_season_person_id');
-        $this->jsmquery->where('person_id ='. $data['id'] );
-        $this->jsmquery->where('season_id ='. $value );
-        $this->jsmdb->setQuery($this->jsmquery);
-		$res = $this->jsmdb->loadResult();
-        
-        if ( !$res )
-        {
-        $this->jsmquery->clear();
-        // Insert columns.
-        $columns = array('person_id','season_id');
-        // Insert values.
-        $values = array($data['id'],$value);
-        // Prepare the insert query.
-        $this->jsmquery
-            ->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
-            ->columns($this->jsmdb->quoteName($columns))
-            ->values(implode(',', $values));
-        // Set the query using our newly populated query object and execute it.
-        $this->jsmdb->setQuery($this->jsmquery);
-
-		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
-		}  
-        
-        }
-          
-          }
-
-		}
-        
-        //-------extra fields-----------//
-        sportsmanagementHelper::saveExtraFields($post,$data['id']);
-
-        return true;
-           
-    }
-    
-    
-    
-    
 	
 }

@@ -77,8 +77,7 @@ class sportsmanagementModelProjects extends JSMModelList
                         'ag.name'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -88,7 +87,7 @@ class sportsmanagementModelProjects extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'p.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -121,14 +120,23 @@ class sportsmanagementModelProjects extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
         
-        $value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
-		$this->setState('list.ordering', $value);
-		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
-		$this->setState('list.direction', $value);
-		// List state information.
-		parent::populateState($ordering, $direction);
+        // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'p.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
         
 	}
     

@@ -79,8 +79,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
                         'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -90,7 +89,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'objcountry.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -112,9 +111,23 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
 		$this->setState('list.direction', $value);
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'objcountry.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
 	}
     
 	/**
@@ -165,11 +178,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
         }
         
 		return $this->jsmquery;
-        
-        
-        
-        
-        
+
 	}
       
     
@@ -181,32 +190,31 @@ class sportsmanagementModeljlextcountries extends JSMModelList
      */
     function getFederation()
     {
-        //$app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
-//        // Create a new query object.		
-//		$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
 		// Select some fields
         $this->jsmquery->clear();
 		$this->jsmquery->select('id as value,name as text');
 		// From the table
 		$this->jsmquery->from('#__sportsmanagement_federations as objassoc');
+        
+        try{
         $this->jsmdb->setQuery($this->jsmquery);
 		$results = $this->jsmdb->loadObjectList();
         
         if (!$results)
 		{
-//		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
-          $this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
+          //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
+          $this->jsmmessage .= '<br>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL');
 		}  
         
 		return $results;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
+
     }
-
-
-
-
 	
 }
 ?>

@@ -99,7 +99,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
 		$this->setState('list.limit', $value);	
 
 		// List state information.
-		//parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 		// Filter.order
@@ -215,11 +214,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	*/
 	function getEventsPosition($id=0)
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-		//$app = JFactory::getApplication();
-        //$db		= $this->getDbo();
-        //$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
         // Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('p.id AS value,p.name as posname,st.name AS stname,concat(p.name, \' (\' , st.name, \')\') AS text');
@@ -236,18 +230,20 @@ class sportsmanagementModelEventtypes extends JSMModelList
         
         $this->jsmquery->order('pe.ordering ASC');
 
-		$this->jsmdb->setQuery($this->jsmquery);
-		if ( !$result = $this->jsmdb->loadObjectList())
-		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			return false;
-		}
+		try{
+        $this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadObjectList();
 		foreach ($result as $event)
         {
-            //$event->text = JText::_($event->text);
             $event->text = JText::_($event->posname).' ('.JText::_($event->stname).')';
         }
 		return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
     
     /**

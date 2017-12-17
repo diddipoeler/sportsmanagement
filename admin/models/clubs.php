@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// import the Joomla modellist library
-//jimport('joomla.application.component.modellist');
-
-
 /**
  * sportsmanagementModelClubs
  * 
@@ -87,18 +83,7 @@ class sportsmanagementModelClubs extends JSMModelList
                         'a.checked_out_time'
                         );
                 parent::__construct($config);
-                //$getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($this->jsmdb);
-                
-//        // Reference global application object
-//        $this->app = JFactory::getApplication();
-//        $this->user	= JFactory::getUser();     
-//        // JInput object
-//        $this->jinput = $this->app->input;
-//        $this->option = $this->jinput->getCmd('option');
-//        $this->jsmdb = $this->getDbo();
-//        $this->query = $this->jsmdb->getQuery(true);
-        
         
         }
         
@@ -109,7 +94,7 @@ class sportsmanagementModelClubs extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'a.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		
         
@@ -134,9 +119,21 @@ class sportsmanagementModelClubs extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'a.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
     
     /**
@@ -224,13 +221,16 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->jsmquery->from('#__sportsmanagement_club');
         $this->jsmquery->order('name');
 
-		$this->jsmdb->setQuery($this->jsmquery);
-		if ( $results = $this->jsmdb->loadObjectList() )
-		{
-			return $results;
-		}
-		//return false;
+		try{
+        $this->jsmdb->setQuery($this->jsmquery);
+        $results = $this->jsmdb->loadObjectList();
         return $results;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 
 	

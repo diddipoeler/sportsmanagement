@@ -78,8 +78,7 @@ class sportsmanagementModelextrafields extends JSMModelList
                         
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -89,7 +88,7 @@ class sportsmanagementModelextrafields extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'objcountry.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -109,9 +108,23 @@ class sportsmanagementModelextrafields extends JSMModelList
 		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
 		$this->setState('list.direction', $value);
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'pl.lastname';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
 	}
     
 	/**
@@ -164,13 +177,9 @@ class sportsmanagementModelextrafields extends JSMModelList
  */
 function getExtraFieldsProject($project_id=0)
 {
-//$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
         $result = '';
 
         // Create a new query object.		
-		//$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
         $this->jsmquery->clear();
         $this->jsmquery->select('ef.name');
         $this->jsmquery->from('#__sportsmanagement_user_extra_fields_values as ev ');
@@ -180,23 +189,18 @@ function getExtraFieldsProject($project_id=0)
         $this->jsmquery->where('ev.fieldvalue != '.$this->jsmdb->Quote(''.'')); 
         try {
         $this->jsmdb->setQuery($this->jsmquery);
-        //$result = $this->jsmdb->loadObjectList();
         $column = $this->jsmdb->loadColumn(0);
-}
-catch (Exception $e) {
-    // catch any database errors.
-    //$this->jsmdb->transactionRollback();
-    JErrorPage::render($e);
-}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($column,true).'</pre>'),'Notice');
-        
         if ( $column )
         {
             $result = implode('<br>', $column);
         }
-        return $result;   
+        return $result; 
+}
+catch (Exception $e) {
+    $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+    return false;
+}
+
 }
 
 /**
@@ -208,12 +212,6 @@ catch (Exception $e) {
  */
 function getExtraFields($template_backend = '', $template_frontend = '')
     {
-        //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
-		//$db = sportsmanagementHelper::getDBConnection();
-//		$query = $db->getQuery(true);
-        
         // Select some fields
         $this->jsmquery->clear();
 		$this->jsmquery->select('id,name');
@@ -229,9 +227,16 @@ function getExtraFields($template_backend = '', $template_frontend = '')
         }
         $this->jsmquery->order('name ASC');
 
+        try{
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
         return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 }        
 
 

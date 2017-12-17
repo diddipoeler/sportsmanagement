@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.modellist' );
-
-
-
 /**
  * sportsmanagementModelPredictionMembers
  * 
@@ -53,7 +49,7 @@ jimport( 'joomla.application.component.modellist' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionMembers extends JModelList
+class sportsmanagementModelPredictionMembers extends JSMModelList
 {
 	var $_identifier = "predmembers";
 	
@@ -79,8 +75,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
                         'tmb.modified_by'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
     
     /**
@@ -92,15 +87,6 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Initialise variables.
-        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -110,19 +96,25 @@ class sportsmanagementModelPredictionMembers extends JModelList
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
         $this->setState('filter.prediction_id', $temp_user_request);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        // List state information.
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);       
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'u.username';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 
 
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('u.username', 'asc');
 	}
         
 	/**
@@ -132,19 +124,9 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getListQuery()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-        
-        // Create a new query object.
-        $query = $this->_db->getQuery(true);
-        $query->select(array('tmb.*','u.name AS realname', 'u.username AS username', 'p.name AS predictionname','u1.username as modusername' ))
+		$this->jsmquery->clear();
+        $this->jsmquery->select(array('tmb.*','u.name AS realname', 'u.username AS username', 'p.name AS predictionname','u1.username as modusername' ))
         ->from('#__sportsmanagement_prediction_member AS tmb')
         ->join('LEFT', '#__sportsmanagement_prediction_game AS p ON p.id = tmb.prediction_id')
         ->join('LEFT', '#__users AS u ON u.id = tmb.user_id')
@@ -152,37 +134,29 @@ class sportsmanagementModelPredictionMembers extends JModelList
 
         if (is_numeric($this->getState('filter.prediction_id')))
         {
-            $query->where('tmb.prediction_id = ' . $this->getState('filter.prediction_id'));
+            $this->jsmquery->where('tmb.prediction_id = ' . $this->getState('filter.prediction_id'));
         }
         if (is_numeric($this->getState('filter.state')))
         {
-            $query->where('tmb.approved = ' . $this->getState('filter.state'));
+            $this->jsmquery->where('tmb.approved = ' . $this->getState('filter.state'));
         }
         
         if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(u.username) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) );
+        $this->jsmquery->where('(LOWER(u.username) LIKE ' . $this->jsmdb->Quote( '%' . $this->getState('filter.search') . '%' ) );
         }
 
-
-
-		 $query->order($db->escape($this->getState('list.ordering', 'u.username')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+		 $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'u.username')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
-		return $query;
+		return $this->jsmquery;
 	}
-
-
-
-
-	
 	
 	/**
 	 * sportsmanagementModelPredictionMembers::getPredictionProjectName()
@@ -192,28 +166,24 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionProjectName($predictionID)
 	{
-	// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$this->jsmquery->clear();
 	
     // Select some fields
-        $query->select('ppj.name AS pjName');
-        $query->from('#__sportsmanagement_prediction_game AS ppj ');
-        $query->where('ppj.id = ' . $predictionID);
+        $this->jsmquery->select('ppj.name AS pjName');
+        $this->jsmquery->from('#__sportsmanagement_prediction_game AS ppj ');
+        $this->jsmquery->where('ppj.id = ' . $predictionID);
         
-
-		$db->setQuery($query);
-		$result = $db->loadResult();
-	  
-    //$app->enqueueMessage(JText::_('<br />predictionID<pre>~' . print_r($predictionID,true) . '~</pre><br />'),'Notice');
-    //$app->enqueueMessage(JText::_('<br />result<pre>~' . print_r($result,true) . '~</pre><br />'),'Notice');
-    
+try{
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadResult();
 		return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 	
 	/**
@@ -224,25 +194,25 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionMembers($prediction_id)
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$this->jsmquery->clear();
         
         // Select some fields
-        $query->select('pm.user_id AS value, u.name AS text');
-        $query->from('#__sportsmanagement_prediction_member AS pm ');
-        $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-        $query->where('prediction_id = ' . (int) $prediction_id);
+        $this->jsmquery->select('pm.user_id AS value, u.name AS text');
+        $this->jsmquery->from('#__sportsmanagement_prediction_member AS pm ');
+        $this->jsmquery->join('LEFT', '#__users AS u ON u.id = pm.user_id');
+        $this->jsmquery->where('prediction_id = ' . (int) $prediction_id);
        
-
-    $db->setQuery($query);
-	$results = $db->loadObjectList();
-    return $results;				
+try{
+    $this->jsmdb->setQuery($this->jsmquery);
+	$results = $this->jsmdb->loadObjectList();
+    return $results;
+    			}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }	
 	}
 	
 	/**
@@ -253,68 +223,59 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getJLUsers($prediction_id)
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$this->jsmquery->clear();
         
-	//$not_in = array();
      // Select some fields
-        $query->select('pm.user_id AS value');
-        $query->from('#__sportsmanagement_prediction_member AS pm ');
-        $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-        $query->where('prediction_id = ' . (int) $prediction_id);
+        $this->jsmquery->select('pm.user_id AS value');
+        $this->jsmquery->from('#__sportsmanagement_prediction_member AS pm ');
+        $this->jsmquery->join('LEFT', '#__users AS u ON u.id = pm.user_id');
+        $this->jsmquery->where('prediction_id = ' . (int) $prediction_id);
         
-	$db->setQuery($query);
+	$this->jsmdb->setQuery($this->jsmquery);
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-		$records = $db->loadColumn();
+		$records = $this->jsmdb->loadColumn();
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-		$records = $db->loadResultArray();
+		$records = $this->jsmdb->loadResultArray();
 }
 
     if ( $predresult = $records )
     {
         // Select some fields
-        $query->clear();
-        $query->select('id AS value, name AS text');
-        $query->from('#__users ');
-        $query->where('id not in (' . implode(",", $records ) .')');
-        $query->order('name');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id AS value, name AS text');
+        $this->jsmquery->from('#__users ');
+        $this->jsmquery->where('id not in (' . implode(",", $records ) .')');
+        $this->jsmquery->order('name');
         
 
     }
     else
     {
         // Select some fields
-        $query->clear();
-        $query->select('id AS value, name AS text');
-        $query->from('#__users ');
-        $query->order('name');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id AS value, name AS text');
+        $this->jsmquery->from('#__users ');
+        $this->jsmquery->order('name');
 
     }   
 		
-
-		$db->setQuery( $query );
-
-		if ( !$result = $db->loadObjectList() )
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
+try{
+		$this->jsmdb->setQuery( $this->jsmquery );
+		$result = $this->jsmdb->loadObjectList();
+		return $result;
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
 	
 	

@@ -649,21 +649,33 @@ catch (Exception $e) {
  * position 
  */        
         case 'position':
+        /**
+         * ereignisse der positionen speichern
+         */
 		if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
 		{
 		if ( $data['id'] )
 		{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {  
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+        }
 		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
 
-		if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
+		/**
+		 * statistiken der positionen speichern
+		 */
+        if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
 		{
 		if ( $data['id'] )
 		{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {  
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+        }
 		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}

@@ -72,9 +72,6 @@ class sportsmanagementModelDivisions extends JSMModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-                //$app = JFactory::getApplication();
-                //$this->jinput = $app->input;
-                //$option = JFactory::getApplication()->input->getCmd('option');
                 self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 if ( !self::$_project_id )
                 {
@@ -91,7 +88,7 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'dv.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -105,10 +102,24 @@ class sportsmanagementModelDivisions extends JSMModelList
 		$this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-		// List state information.
-		parent::populateState($ordering, $direction);
+		
+        // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'dv.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
 	}
     
 	/**
