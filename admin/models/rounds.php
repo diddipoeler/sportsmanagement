@@ -365,27 +365,24 @@ $option = $app->input->getCmd('option');
 	 */
 	function getNextRoundByToday($projectid)
 	{
-		$app = JFactory::getApplication();
-		$option = $app->input->getCmd('option');
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
-        $query = $db->getQuery(true);
-        
 	  // Select some fields
-        $query->select('id, roundcode, round_date_first , round_date_last');
+      $this->jsmquery->clear();
+        $this->jsmquery->select('id, roundcode, round_date_first , round_date_last');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$projectid);  
-        $query->where('DATEDIFF(CURDATE(), DATE(round_date_first)) < 0');
-        $query->order('round_date_first ASC'); 
-        
-	
-		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
-		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		return $result;		
+		$this->jsmquery->from('#__sportsmanagement_round');
+        $this->jsmquery->where('project_id = '.$projectid);  
+        $this->jsmquery->where('DATEDIFF(CURDATE(), DATE(round_date_first)) < 0');
+        $this->jsmquery->order('round_date_first ASC'); 
+	try{
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadAssocList();
+		return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }		
 	}
     
     /**
