@@ -77,26 +77,8 @@ window.addEvent('domready',function(){
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
 if (!$this->massadd)
-		{
-if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->matchday )
-{
-echo $this->loadTemplate('data');
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+echo $this->loadTemplate('joomla_version');
 }
 ?>
 <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
@@ -108,8 +90,8 @@ echo '</div>';
 <?php echo JHtml::_('form.token')."\n"; ?>
 <?php echo $this->table_data_div; ?>
 </form>
-<?PHP
-echo "<div>";
+<div>
+<?php
 echo $this->loadTemplate('footer');
-echo "</div>";
-?>   
+?>
+</div>
