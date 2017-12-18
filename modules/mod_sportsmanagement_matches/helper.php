@@ -652,7 +652,9 @@ class modMatchesSportsmanagementHelper {
 	 * @param mixed $cnt
 	 * @return
 	 */
-	public function createAjaxMenu(& $row, $cnt) {
+	public function createAjaxMenu(& $row, $cnt) 
+    {
+        $app = JFactory::getApplication();  
 		if ($this->params->get('next_last', 0) == 0) {
 			$row->ajax = false;
 			return false;
