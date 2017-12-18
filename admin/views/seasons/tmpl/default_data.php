@@ -135,40 +135,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							$inputappend='';
 							?>
 							<td class="center" nowrap="nowrap">
-								
-                                
-                                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $assignteams; ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'); ?>">
-									 <?php
-									 
-								 	$image = 'teams.png';
-								 	$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
-								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'),
-													 'title= "' .$title. '"');
-													 
-										
-									 									 ?>
-								</a>
-                                
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $assignpersons; ?>"
-									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'); ?>">
-									<?php
-									 
-								 	$image = 'players.png';
-								 	$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'),
-													 'title= "' .$title. '"');
-													 
-										
-									?>
-								</a>
-                                
+<?php
+$image = 'teams.png';							
+$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
+echo sportsmanagementHelper::getBootstrapModalImage('assignteams'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,$title,'20',JURI::root().$assignteams,$modalwidth,$modalheight);							
+$image = 'players.png';
+$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');							
+echo sportsmanagementHelper::getBootstrapModalImage('assignperson'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,$title,'20',JURI::root().$assignpersons,$modalwidth,$modalheight);							
+?>							
 							</td>
 							<?php
 						}
