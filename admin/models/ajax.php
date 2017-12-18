@@ -1100,7 +1100,7 @@ $option = $app->input->getCmd('option');
         {
             $query->where('pt.project_id = 0' );
         }
-        $query->group('t.id');
+        $query->group('t.id,t.alias,t.name');
         // order
         $query->order('t.name');
                        
