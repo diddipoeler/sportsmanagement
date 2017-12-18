@@ -82,7 +82,7 @@ abstract class sportsmanagementHelper
     static $_success_text = array();
     
 
-public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='')
+public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='',$width='100',$height='200')
     {
     $app = JFactory::getApplication();
     // JInput object
@@ -96,7 +96,9 @@ $modaltext .= JHtml::_('bootstrap.renderModal',
 	$target,
 	array(
 	'title' => $text,
-	'url' => $url
+	'url' => $url,
+	'height' => $width,
+	'width' => $height
 	)
 	);	
 		
