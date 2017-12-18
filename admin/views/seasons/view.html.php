@@ -97,12 +97,12 @@ $starttime = microtime();
 		$this->lists = $lists;
         $this->season_id = $season_id;
         
-        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
+        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' || $this->getLayout() == 'assignteams_4')
 		{
 		$this->setLayout('assignteams');  
         }  
         
-        if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
+        if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' || $this->getLayout() == 'assignpersons_4')
 		{
 		$season_teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
         $res = $this->model->getSeasonTeams($season_id); 
