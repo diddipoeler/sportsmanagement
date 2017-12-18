@@ -542,7 +542,8 @@ class modMatchesSportsmanagementHelper {
 		$teams = $this->getTeamsFromMatches($matches);
 		$rows = array ();
 		$useicons = $this->iconpath;
-		$cnt = JRequest :: getVar('nr', 0, 'default', 'POST');
+        $cnt = $app->input->post->get('nr', 0);
+//		$cnt = JRequest :: getVar('nr', 0, 'default', 'POST');
 		$hteam = false;
 		$ateam = false;
 		foreach ((array) $matches AS $key => $match) {
@@ -662,7 +663,8 @@ class modMatchesSportsmanagementHelper {
 		else {
 		$this->next_last($row);
 		}
-		$origin = JRequest :: getVar('origin', $row->match_id, 'default', 'POST');
+        $origin = $app->input->post->get('origin', $row->match_id);
+		//$origin = JRequest :: getVar('origin', $row->match_id, 'default', 'POST');
 		$jsfunc = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
 		$options = array (
 			'height' => '16',
