@@ -137,7 +137,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
-		return v;
+		return $this->jsmquery;
 	}
 
 	
