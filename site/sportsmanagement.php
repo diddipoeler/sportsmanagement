@@ -138,21 +138,8 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'clubnames.php');
  * sprachdatei aus dem backend laden
  */
 $langtag = JFactory::getLanguage();
-//echo 'Current language is: ' . $langtag->getTag();
 
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-
-// update plugins
-// Check if plugin has been enabled
-//$plugin_enabled = JPluginHelper::isEnabled('system', 'jsm_kickerde');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin isEnabled jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
-
-//$plugin_enabled = JPluginHelper::importPlugin('system', 'jsm_kickerde');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin importPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
-
-//$plugin_enabled = JPluginHelper::getPlugin('system', 'jsm_kickerde');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin getPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
-
     
 if (! defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS'))
 {
@@ -206,41 +193,13 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
-
-//$document = JFactory::getDocument();
-//$app = JFactory::getApplication();
-//$config = JFactory::getConfig();
-
 $lang = JFactory::getLanguage();
-
-
-
-//$document->setMetaData( 'viewport', "width=device-width, initial-scale=1.0" );
-
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = $langtag->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
     
-// welche tabelle soll genutzt werden
-//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
-//$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
-
-
-
-
-
-//JFactory::$database = sportsmanagementHelper::getDBConnection();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
-
 $document->addScript(JURI::root(true).'/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 //$document->addScriptDeclaration('jQuery.noConflict();');
