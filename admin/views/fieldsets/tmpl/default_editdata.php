@@ -385,11 +385,22 @@ else
 <div class="clr"></div>
 <div>
 <input type="hidden" name="task" value="<?php echo $view; ?>.edit" />
-<?php echo JHtml::_('form.token'); ?>
+<?php 
+if ( $view == 'treetonode' )
+{
+?>    
+<input type="hidden" name="project_id" value="<?php echo $this->projectws->id; ?>" />
+<input type="hidden" name="pid" value="<?php echo $this->projectws->id; ?>" />
+<input type="hidden" name="tid" value="<?php echo $this->item->treeto_id; ?>" />
+<?php    
+}
+
+echo JHtml::_('form.token'); 
+?>
 </div>
 </form>
+<div>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
 ?>   
+</div>
