@@ -73,10 +73,10 @@ class sportsmanagementModelTreetonodes extends JSMModelList
      */
     protected function populateState($ordering = null,$direction = null)
 	{
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 
 		// Adjust the context to support modal layouts.
-		if($layout = $app->input->get('layout'))
+		if($layout = $this->jsmjinput->get('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
@@ -102,9 +102,9 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 	{
 
 		// Create a new query object.
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
+//		$db = $this->getDbo();
+//		$query = $db->getQuery(true);
+//		$user = JFactory::getUser();
 		//$app = JFactory::getApplication();
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
@@ -114,30 +114,30 @@ class sportsmanagementModelTreetonodes extends JSMModelList
         $treeto_id = $this->jsmjinput->get('tid');
 
 		// Select the required fields from the table.
-		$query->select($this->getState('list.select','a.*'));
-		$query->from('#__sportsmanagement_treeto_node AS a');
+		$this->jsmquery->select($this->getState('list.select','a.*'));
+		$this->jsmquery->from('#__sportsmanagement_treeto_node AS a');
 
 		// join Project-team table
-		$query->join('LEFT','#__sportsmanagement_project_team AS pt ON pt.id = a.team_id');
-        $query->join('LEFT','#__sportsmanagement_season_team_id AS st on pt.team_id = st.id');  
+		$this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pt ON pt.id = a.team_id');
+        $this->jsmquery->join('LEFT','#__sportsmanagement_season_team_id AS st on pt.team_id = st.id');  
 		// join Team table
-		$query->select('t.name AS team_name');
-		$query->join('LEFT','#__sportsmanagement_team AS t ON t.id = st.team_id');
+		$this->jsmquery->select('t.name AS team_name');
+		$this->jsmquery->join('LEFT','#__sportsmanagement_team AS t ON t.id = st.team_id');
 		// join treeto table
-		$query->select('tt.tree_i AS tree_i');
-		$query->join('LEFT','#__sportsmanagement_treeto AS tt ON tt.id = a.treeto_id');
+		$this->jsmquery->select('tt.tree_i AS tree_i');
+		$this->jsmquery->join('LEFT','#__sportsmanagement_treeto AS tt ON tt.id = a.treeto_id');
 		// join treeto match table
-		$query->select('COUNT(ttm.id) AS countmatch');
-		$query->join('LEFT','#__sportsmanagement_treeto_match AS ttm ON ttm.node_id = a.id');
+		$this->jsmquery->select('COUNT(ttm.id) AS countmatch');
+		$this->jsmquery->join('LEFT','#__sportsmanagement_treeto_match AS ttm ON ttm.node_id = a.id');
 
-		$query->where('a.treeto_id = ' . $treeto_id);
+		$this->jsmquery->where('a.treeto_id = ' . $treeto_id);
 
-		$query->order('a.row');
-		$query->group('a.id');
+		$this->jsmquery->order('a.row');
+		$this->jsmquery->group('a.id');
 
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
-		return $query;
+		return v;
 	}
 
 	
