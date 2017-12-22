@@ -2284,7 +2284,35 @@ catch (Exception $e) {
 		{
 			if ( $team->logo_small != '' )
 			{
-				echo JHtml::image($team->logo_small, '');
+				echo JHtml::image($team->logo_small, '',array(' title' => '',' width' => 20));
+				if ($with_space == 1){
+					echo ' style="padding:1px;"';
+				}
+			}
+			else
+			{
+				echo '&nbsp;';
+			}
+		}
+        elseif (($type == 3) && (isset($team->country)))
+		{
+			if ( $team->logo_middle != '' )
+			{
+				echo JHtml::image($team->logo_middle, '',array(' title' => '',' width' => 20));
+				if ($with_space == 1){
+					echo ' style="padding:1px;"';
+				}
+			}
+			else
+			{
+				echo '&nbsp;';
+			}
+		}
+        elseif (($type == 4) && (isset($team->country)))
+		{
+			if ( $team->logo_big != '' )
+			{
+				echo JHtml::image($team->logo_big, '',array(' title' => '',' width' => 20));
 				if ($with_space == 1){
 					echo ' style="padding:1px;"';
 				}
