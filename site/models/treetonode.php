@@ -64,9 +64,6 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	{
 		parent::__construct( );
 		
-		//$app = JFactory::getApplication();
-//		$input = $app->input;
-		
 		$this->projectid = $this->jsmjinput->getInt('p',0);
 		$this->treetoid = $this->jsmjinput->getInt('tnid',0);
                 
@@ -81,7 +78,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	{
 		if (!$this->projectid) 
         {
-			$this->setError(JText::_('Missing project id'));
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1'));
 			return false;
 		}
         if ( !$this->treetoid )
@@ -94,6 +91,8 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 		$this->jsmquery->select('ttn.id AS ttnid');
 		$this->jsmquery->select('c.country AS country');
 		$this->jsmquery->select('c.logo_small AS logo_small');
+        $this->jsmquery->select('c.logo_middle AS logo_middle');
+        $this->jsmquery->select('c.logo_big AS logo_big');
 		$this->jsmquery->select('t.name AS team_name ');
 		$this->jsmquery->select('t.middle_name AS middle_name ');
 		$this->jsmquery->select('t.short_name AS short_name ');
@@ -111,7 +110,6 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 		$this->jsmquery->join('LEFT','#__sportsmanagement_treeto AS tt ON tt.id = ttn.treeto_id ');
         $this->jsmquery->where('ttn.treeto_id = ' .  (int) $this->treetoid );
         $this->jsmquery->order('ttn.row');
-       
         
 		$this->jsmdb->setQuery( $this->jsmquery );
 		$result = $this->jsmdb->loadObjectList();
