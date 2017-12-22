@@ -196,7 +196,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
         $this->jsmquery->select('*');
         $this->jsmquery->from('#__sportsmanagement_round AS r');   
         $this->jsmquery->where('r.project_id = ' . (int) $this->projectid );
-        $this->jsmquery->order('r.round_date_first, r.ordering');
+        $this->jsmquery->order('r.roundcode');
 		$this->jsmdb->setQuery( $this->jsmquery );
 		$result = $this->jsmdb->loadObjectList();
 
