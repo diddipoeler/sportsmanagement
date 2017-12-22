@@ -86,7 +86,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 		}
         if ( !$this->treetoid )
         {
-        $this->treetoid = $this->model->getTreeNodeID($this->projectid);    
+        $this->treetoid = $this->getTreeNodeID($this->projectid);    
         }
         $this->jsmquery->clear();
         
