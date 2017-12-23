@@ -40,7 +40,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
 * welche joomla version ?
 */
@@ -91,9 +90,10 @@ public static function jsm_birthday_sort ($array, $sort)
 	 *
 	 * @since   11.1
 	 */
-     	/**
-* welche joomla version ?
-*/
+     
+/**
+ * welche joomla version ?
+ */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
 	$res = ArrayHelper::sortObjects($array,'age',$sort);
@@ -118,7 +118,9 @@ public static function getClubs($limit,$season_ids)
 	   $app = JFactory::getApplication();
 $birthdaytext = '';
 $database = sportsmanagementHelper::getDBConnection();
-// get club info, we have to make a function for this
+/**
+ * get club info, we have to make a function for this
+ */
 $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
 if ( $season_ids )
@@ -145,15 +147,24 @@ $seasons = implode(",",$season_ids);
     {
     $query->where('st.season_id IN ('.$seasons.')');    
     }		
-    //$query->group('c.id');
+    
+    $query->group('c.id');
 
     $query->order('days_to_birthday ASC');
 
+try{
     $database->setQuery($query,0,$limit);
-
     $result = $database->loadObjectList();
 	$database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;
+    }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
+    
 }
 
 }
