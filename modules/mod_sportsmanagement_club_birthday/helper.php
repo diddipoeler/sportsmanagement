@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-	
+require_once(JPATH_ADMINISTRATOR.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php');		
 }
 else
 {
