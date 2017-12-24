@@ -96,6 +96,5 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
         }
 		$this->document->setTitle($this->pagetitle);
 		
-		//parent::display($tpl);
 	}
 }
