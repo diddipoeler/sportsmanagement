@@ -45,7 +45,12 @@ defined('_JEXEC') or die('Restricted access');
 */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-require_once(JPATH_ADMINISTRATOR.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php');		
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.arrayhelper', JPATH_SITE);
+////require_once(JPATH_BASE.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php');	
+////add the classes for handling
+//$classpath = JPATH_BASE.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php';
+//JLoader::register('ArrayHelper', $classpath);
+//JModelLegacy::getInstance("ArrayHelper");	
 }
 else
 {
@@ -96,7 +101,8 @@ public static function jsm_birthday_sort ($array, $sort)
  */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-	$res = ArrayHelper::sortObjects($array,'age',$sort);
+	//$res = ArrayHelper::sortObjects($array,'age',$sort);
+    $res = JArrayHelper::sortObjects($array,'age',$sort);
 }
 else
 {	
@@ -132,7 +138,7 @@ $season_ids[$key] = (int)$val;
 $seasons = implode(",",$season_ids); 
 }
 	$query = $database->getQuery(true);
-    $query->select('c.id, c.country,c.founded, c.name, c.alias, c.founded_year,c.logo_big AS picture, c.country,DATE_FORMAT(c.founded, \'%m-%d\')AS daymonth,YEAR( CURRENT_DATE( ) ) as year');
+    $query->select('c.id,c.country,c.founded,c.name,c.alias,c.founded_year,c.logo_big AS picture, DATE_FORMAT(c.founded, \'%m-%d\')AS daymonth,YEAR( CURRENT_DATE( ) ) as year');
     $query->select('(YEAR( CURRENT_DATE( ) ) - YEAR( c.founded ) + IF(DATE_FORMAT(CURDATE(), \'%m.%d\') > DATE_FORMAT(c.founded, \'%m.%d\'), 1, 0)) AS age, YEAR( CURRENT_DATE( ) ) - c.founded_year as age_year');
     $query->select($dateformat);
     $query->select('(TO_DAYS(DATE_ADD(c.founded, INTERVAL(YEAR(CURDATE()) - YEAR(c.founded) + IF(DATE_FORMAT(CURDATE(), \'%m.%d\') > DATE_FORMAT(c.founded, \'%m.%d\'), 1, 0))YEAR)) - TO_DAYS( CURDATE())+0) AS days_to_birthday');
@@ -148,7 +154,7 @@ $seasons = implode(",",$season_ids);
     $query->where('st.season_id IN ('.$seasons.')');    
     }		
     
-    $query->group('c.id');
+    $query->group('c.id,c.country,c.founded,c.name,c.alias,c.founded_year,c.logo_big,pt.project_id');
 
     $query->order('days_to_birthday ASC');
 
