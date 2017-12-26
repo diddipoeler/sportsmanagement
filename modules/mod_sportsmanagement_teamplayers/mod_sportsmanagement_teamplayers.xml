@@ -54,7 +54,6 @@ description="Debug Modus">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
-
 	  
 				<field name="cfg_which_database" 
     type="radio" 

@@ -90,6 +90,18 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('c
 
 require_once (dirname(__FILE__).DS.'helper.php');
 
+/**
+ * soll die externe datenbank genutzt werden ?
+ */
+if ( JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+}
+else
+{
+$module->picture_server = JURI::root();    
+}
+
 $data = new modJSMClubiconsHelper ($params,$module);
 
 $cnt = count($data->teams);

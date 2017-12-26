@@ -33,6 +33,7 @@
 	</languages>
 
 	<config>
+	
 		<fields name="params"
     addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 

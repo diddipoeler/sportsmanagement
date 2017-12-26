@@ -62,20 +62,32 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+//if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+//{
+//$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+//}
+//else
+//{
+//if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+//{
+//$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+//}
+//else
+//{
+//$module->picture_server = JURI::root() ;
+//}
+//}
+
+/**
+ * soll die externe datenbank genutzt werden ?
+ */
+if ( JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
 {
 $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
-}
-else
-{
-$module->picture_server = JURI::root() ;
-}
+$module->picture_server = JURI::root();    
 }
 
 $playgrounds = modJSMPlaygroundTicker::getData($params);
