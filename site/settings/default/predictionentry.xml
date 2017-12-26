@@ -2,7 +2,7 @@
 <form>
 
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
-	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			addpath="/administrator/components/com_sportsmanagement/elements"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">

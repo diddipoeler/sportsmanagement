@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS"
+	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS"
-		group="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS" description="COM_SPORTSMANAGEMENT_FES_FIELDS_DESCR_PAGE_ELEMENTS">
+		group="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS" 
+		description="COM_SPORTSMANAGEMENT_FES_FIELDS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_sectionheader" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_FIELD_LABEL_SHOW_SECTIONHEADER"

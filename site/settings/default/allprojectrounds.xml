@@ -3,7 +3,7 @@
   
 
 	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
-	name= "COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_NAME"
+	name= "details"
 			description="COM_SPORTSMANAGEMENT_FES_ALL_PROJECT_ROUNDS_DESCR">
 
 		<field	name="show_sectionheader" type="extensionradiobutton" default="1" 

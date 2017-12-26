@@ -219,8 +219,9 @@ if ( !empty($latitude) )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
-$row->team_name = $row->team_name.' '."<img src='".JURI::root().$row->logo_big."' width='50'>";
-$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."']";
+//$row->team_name = $row->team_name.' '."<img src='".JURI::root().$row->logo_big."' width='50'>";
+//$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."']";
+$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."','".JURI::root().$row->logo_big."']";
 $zaehler++;
 }
 

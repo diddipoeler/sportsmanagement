@@ -4,7 +4,7 @@
 	<description><![CDATA[COM_SPORTSMANAGEMENT_FES_PLAYER_DESCR]]></description>
 
   <!-- reiter 1 -->
-	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	<fieldset name= "details"
   label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
       addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
