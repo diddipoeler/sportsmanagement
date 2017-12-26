@@ -104,13 +104,18 @@ $modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
 
+if ( !$url )
+{
+	$url = $picture;
+}
+
 $modaltext .= JHtml::_('bootstrap.renderModal',
 	$target,
 	array(
 	'title' => $text,
 	'url' => $url,
-	'height' => $width,
-	'width' => $height
+	'height' => $height,
+	'width' => $width
 	)
 	);	
 		
