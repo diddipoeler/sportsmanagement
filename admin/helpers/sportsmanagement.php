@@ -82,6 +82,18 @@ abstract class sportsmanagementHelper
     static $_success_text = array();
     
 
+/**
+ * sportsmanagementHelper::getBootstrapModalImage()
+ * 
+ * @param string $target
+ * @param string $picture
+ * @param string $text
+ * @param string $picturewidth
+ * @param string $url
+ * @param string $width
+ * @param string $height
+ * @return
+ */
 public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='',$width='100',$height='200')
     {
     $app = JFactory::getApplication();
