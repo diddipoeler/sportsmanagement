@@ -57,72 +57,76 @@ class sportsmanagementHelperHtml
     static $teams = array(); 
 
 
-	/**
-	 * sportsmanagementHelperHtml::getBootstrapModalImage()
-	 * 
-	 * @param string $target
-	 * @param string $picture
-	 * @param string $text
-	 * @param string $picturewidth
-	 * @param string $url
-	 * @return
-	 */
-	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='150',$url='')
+	
+	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='',$width='100',$height='200')
     {
     $app = JFactory::getApplication();
     // JInput object
     $jinput = $app->input;    
-    
+
+$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext .= '</a>';
+
+$modaltext .= JHtml::_('bootstrap.renderModal',
+	$target,
+	array(
+	'title' => $text,
+	'url' => $url,
+	'height' => $width,
+	'width' => $height
+	)
+	);	
+        
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' target'.'<pre>'.print_r($target,true).'</pre>' ),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture'.'<pre>'.print_r($picture,true).'</pre>' ),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' text'.'<pre>'.print_r($text,true).'</pre>' ),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturewidth'.'<pre>'.print_r($picturewidth,true).'</pre>' ),'');
 
-if ( $url )
-{    
-$modaltext = '<a href="'.$url.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-$modaltext .= '</a>';
-$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
-$modaltext .= '<div class="modal-dialog modal-sm">';
-$modaltext .= '<div class="modal-content">';
-$modaltext .= '<div class="modal-header">';
-$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
-$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
-$modaltext .= '</div>';
-$modaltext .= '<div class="modal-body">';
-$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
-$modaltext .= '</div>';
-$modaltext .= '<div class="modal-footer">';
-$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';   
-}
-else
-{
-$modaltext = '<a href="#'.$target.'" title="'.JText::_($text).'" data-toggle="modal" data-target=".'.$target.'">';
-$modaltext .= '<img src="'.$picture.'" alt="'.JText::_($text).'" width="'.$picturewidth.'" />';
-$modaltext .= '</a>';
-$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
-$modaltext .= '<div class="modal-dialog modal-sm">';
-$modaltext .= '<div class="modal-content">';
-$modaltext .= '<div class="modal-header">';
-$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
-$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
-$modaltext .= '</div>';
-$modaltext .= '<div class="modal-body">';
-$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
-$modaltext .= '</div>';
-$modaltext .= '<div class="modal-footer">';
-$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';
-$modaltext .= '</div>';
-    
-}
+//if ( $url )
+//{    
+//$modaltext = '<a href="'.$url.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
+//$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+//$modaltext .= '</a>';
+//$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
+//$modaltext .= '<div class="modal-dialog modal-sm">';
+//$modaltext .= '<div class="modal-content">';
+//$modaltext .= '<div class="modal-header">';
+//$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
+//$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
+//$modaltext .= '</div>';
+//$modaltext .= '<div class="modal-body">';
+//$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
+//$modaltext .= '</div>';
+//$modaltext .= '<div class="modal-footer">';
+//$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';   
+//}
+//else
+//{
+//$modaltext = '<a href="#'.$target.'" title="'.JText::_($text).'" data-toggle="modal" data-target=".'.$target.'">';
+//$modaltext .= '<img src="'.$picture.'" alt="'.JText::_($text).'" width="'.$picturewidth.'" />';
+//$modaltext .= '</a>';
+//$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
+//$modaltext .= '<div class="modal-dialog modal-sm">';
+//$modaltext .= '<div class="modal-content">';
+//$modaltext .= '<div class="modal-header">';
+//$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
+//$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
+//$modaltext .= '</div>';
+//$modaltext .= '<div class="modal-body">';
+//$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
+//$modaltext .= '</div>';
+//$modaltext .= '<div class="modal-footer">';
+//$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';
+//$modaltext .= '</div>';
+//}
 
 /*
 $modaltext = '<!-- Button to trigger modal -->';
