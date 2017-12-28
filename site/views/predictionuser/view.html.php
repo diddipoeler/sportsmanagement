@@ -135,6 +135,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			unset($res);
 			unset($predictionMembers);
 
+			// Prepare FAV Team ---------------------------------------------------
 			if (empty($this->predictionMember->fav_team))
 			{
 				$this->predictionMember->fav_team = '0,0';
@@ -152,6 +153,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 				$favTeamsList[$value[0]] = $value[1];
 			}
 
+			// Prepare Champ Team ---------------------------------------------------
 			if (empty($this->predictionMember->champ_tipp))
 			{
 				$this->predictionMember->champ_tipp = '0,0';
@@ -167,6 +169,24 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			foreach ($dChampTeamsList AS $key => $value)
 			{
 				$champTeamsList[$value[0]] = $value[1];
+			}
+
+			// Prepare Final4 Team ---------------------------------------------------
+			if (empty($this->predictionMember->final4_tipp))
+			{
+				$this->predictionMember->final4_tipp = '0,0';
+			}
+
+			$sFinal4TeamsList = explode(';', $this->predictionMember->final4_tipp);
+
+			foreach ($sFinal4TeamsList AS $key => $value)
+			{
+				$dFinal4TeamsList[] = explode(',', $value);
+			}
+
+			foreach ($dFinal4TeamsList AS $key => $value)
+			{
+				$final4TeamsList[$value[0]][] = $value[1];
 			}
 
 			if ($this->getLayout() == 'edit')
@@ -251,9 +271,30 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 					{
 						$champTeamsList[$predictionProject->project_id] = 0;
 					}
+					if (!isset($final4TeamsList[$predictionProject->project_id][0]))
+					{
+						$final4TeamsList[$predictionProject->project_id][0] = 0;
+					}
+					if (!isset($final4TeamsList[$predictionProject->project_id][1]))
+					{
+						$final4TeamsList[$predictionProject->project_id][1] = 0;
+					}
+					if (!isset($final4TeamsList[$predictionProject->project_id][2]))
+					{
+						$final4TeamsList[$predictionProject->project_id][2] = 0;
+					}
+					if (!isset($final4TeamsList[$predictionProject->project_id][3]))
+					{
+						$final4TeamsList[$predictionProject->project_id][3] = 0;
+					}
 
-					$lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'champ_tipp[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $champTeamsList[$predictionProject->project_id]);
+					// NOT USED?? $lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList', $projectteams, 'champ_tipp[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $champTeamsList[$predictionProject->project_id]);
 					$lists['champ_tipp_enabled'][$predictionProject->project_id]  = HTMLHelper::_('select.genericList', $projectteams, 'champ_tipp[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $champTeamsList[$predictionProject->project_id]);
+
+					$lists['final4_tipp_1'][$predictionProject->project_id]  = HTMLHelper::_('select.genericList', $projectteams, 'final4_tipp1[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $final4TeamsList[$predictionProject->project_id][0]);
+					$lists['final4_tipp_2'][$predictionProject->project_id]  = HTMLHelper::_('select.genericList', $projectteams, 'final4_tipp2[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $final4TeamsList[$predictionProject->project_id][1]);
+					$lists['final4_tipp_3'][$predictionProject->project_id]  = HTMLHelper::_('select.genericList', $projectteams, 'final4_tipp3[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $final4TeamsList[$predictionProject->project_id][2]);
+					$lists['final4_tipp_4'][$predictionProject->project_id]  = HTMLHelper::_('select.genericList', $projectteams, 'final4_tipp4[' . $predictionProject->project_id . ']', 'class="inputbox"' . $disabled . '', 'value', 'text', $final4TeamsList[$predictionProject->project_id][3]);
 
 					unset($projectteams);
 				}
@@ -265,6 +306,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			{
 				$this->favTeams   = $favTeamsList;
 				$this->champTeams = $champTeamsList;
+				$this->final4Teams = $final4TeamsList;
 			}
 
 			$this->lists       = $lists;
@@ -325,7 +367,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	{
 		$this->userranking                                 = array();
 		sportsmanagementModelPrediction::$predictionGameID = $this->jinput->getint("prediction_id", 0);
-		$memberlist                                        = sportsmanagementModelPrediction::getPredictionMemberList();
+		$memberlist                                        = sportsmanagementModelPrediction::getPredictionMemberList($this->config);
 		$this->RankingCountMax                             = sizeof($memberlist);
 
 		foreach ($this->rounds as $r)

@@ -321,7 +321,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		if (count($resultfinal4TeamsList) != 4)
 		{
-			// final 4 not evaluted yet
+			// final 4 not evaluated yet
 			return false;
 		}
 		// User hat auch final4 tipps abgegeben

@@ -29,8 +29,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 {
-	static $config = null;
-
 	/**
 	 * sportsmanagementModelPredictionUsers::__construct()
 	 *
@@ -77,16 +75,15 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	static function showMemberPicture($outputUserName, $user_id = 0)
+	static function showMemberPicture($outputUserName, $show_photo, $show_image_from, $user_id = 0)
 	{
-
 		$app        = Factory::getApplication();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query      = $db->getQuery(true);
 		$playerName = $outputUserName;
 		$picture    = '';
 
-		if (self::$config['show_photo'])
+		if ($show_photo)
 		{
 			/**
 			 * von welcher komponente soll das bild kommen
@@ -95,20 +92,20 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 
 			$query->select('element');
 			$query->from('#__extensions');
-			$query->where("element LIKE '" . self::$config['show_image_from'] . "' ");
+			$query->where("element LIKE '" . $show_image_from . "' ");
 
 			$db->setQuery($query);
 			$results = $db->loadResult();
 
 			if (!$results)
 			{
-				$app->enqueueMessage(Text::_('Die Komponente ' . self::$config['show_image_from'] . ' ist f&uuml;r das Profilbild nicht installiert'), 'Error');
+				$app->enqueueMessage(Text::_('Die Komponente ' . $show_image_from . ' ist f&uuml;r das Profilbild nicht installiert'), 'Error');
 			}
 
 			$query->select('avatar');
 			$query->where('userid = ' . (int) $user_id);
 
-			switch (self::$config['show_image_from'])
+			switch ($show_image_from)
 			{
 				case 'com_sportsmanagement':
 				case 'prediction':
@@ -136,7 +133,7 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 					break;
 			}
 
-			switch (self::$config['show_image_from'])
+			switch ($show_image_from)
 			{
 				case 'com_community':
 				case 'com_cbe':
@@ -347,6 +344,37 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 			$champ_teams = $post['champ_tipp'];
 		}
 
+		$dFinal4Teams = "";
+		if (isset($post['final4_tipp1']))
+		{
+			foreach ($post['final4_tipp1'] AS $key => $value)
+			{
+				$dFinal4Teams .= $key . ',' . $value . ';';
+			}
+		}		
+		if (isset($post['final4_tipp2']))
+		{
+			foreach ($post['final4_tipp2'] AS $key => $value)
+			{
+				$dFinal4Teams .= $key . ',' . $value . ';';
+			}
+		}		
+		if (isset($post['final4_tipp3']))
+		{
+			foreach ($post['final4_tipp3'] AS $key => $value)
+			{
+				$dFinal4Teams .= $key . ',' . $value . ';';
+			}
+		}		
+		if (isset($post['final4_tipp4']))
+		{
+			foreach ($post['final4_tipp4'] AS $key => $value)
+			{
+				$dFinal4Teams .= $key . ',' . $value . ';';
+			}
+		}		
+		$dFinal4Teams = trim($dFinal4Teams, ';');
+
 		$slogan        = $post['slogan'];
 		$reminder      = $post['reminder'];
 		$receipt       = $post['receipt'];
@@ -387,6 +415,10 @@ class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 		if ($dChampTeams)
 		{
 			$object->champ_tipp = $dChampTeams;
+		}
+		if ($dFinal4Teams)
+		{
+			$object->final4_tipp = $dFinal4Teams;
 		}
 
 		$object->slogan    = $slogan;
