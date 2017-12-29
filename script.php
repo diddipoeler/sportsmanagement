@@ -460,7 +460,7 @@ foreach($form->getFieldset() as $field)
     echo JHtml::_('bootstrap.'.$this->endPanel); 
     
     echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
-    self::installModules($adapter);
+    self::installPlugins($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
 
     echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
@@ -476,7 +476,7 @@ foreach($form->getFieldset() as $field)
     echo JHtml::_('bootstrap.'.$this->endPanel); 
     
     echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
-    self::installModules($adapter);
+    self::installPlugins($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
 
     echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
