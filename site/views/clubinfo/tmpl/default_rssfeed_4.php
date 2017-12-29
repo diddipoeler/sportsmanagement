@@ -24,7 +24,7 @@ foreach ($this->rssfeeditems as $feed)
 		<div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?> !important"  class="feed">
 		<?php
 		// Feed description
-		if ($feed->title !== null && $params->get('rsstitle', 1))
+		if ( $feed->title !== null )
 		{
 			?>
 					<h2 class="<?php echo $direction; ?>">
@@ -34,14 +34,14 @@ foreach ($this->rssfeeditems as $feed)
 			<?php
 		}
 		// Feed description
-		if ($params->get('rssdesc', 1))
-		{
+		//if ($params->get('rssdesc', 1))
+//		{
 		?>
 			<?php echo $feed->description; ?>
 			<?php
-		}
+		//}
 		// Feed image
-		if ($iUrl && $params->get('rssimage', 1)) :
+		if ( $iUrl ) :
 		?>
 			<img src="<?php echo $iUrl; ?>" alt="<?php echo @$iTitle; ?>">
 		<?php endif; ?>
@@ -51,10 +51,10 @@ foreach ($this->rssfeeditems as $feed)
 	<?php if (!empty($feed))
 	{ ?>
 		<ul class="newsfeed">
-		<?php for ($i = 0, $max = min(count($feed), $params->get('rssitems', 5)); $i < $max; $i++) { ?>
+		<?php for ($i = 0, $max = count($feed); $i < $max; $i++) { ?>
 			<?php
 				$uri   = (!empty($feed[$i]->uri) || $feed[$i]->uri !== null) ? trim($feed[$i]->uri) : trim($feed[$i]->guid);
-				$uri   = strpos($uri, 'http') !== 0 ? $params->get('rsslink') : $uri;
+				$uri   = strpos($uri, 'http') !== 0 ? $uri : $uri;
 				$text  = !empty($feed[$i]->content) || $feed[$i]->content !== null ? trim($feed[$i]->content) : trim($feed[$i]->description);
 				$title = trim($feed[$i]->title);
 			?>
@@ -67,13 +67,13 @@ foreach ($this->rssfeeditems as $feed)
 						<span class="feed-link"><?php echo $title; ?></span>
 					<?php endif; ?>
 
-					<?php if (!empty($text) && $params->get('rssitemdesc')) : ?>
+					<?php if ( !empty($text) ) : ?>
 						<div class="feed-item-description">
 						<?php
 							// Strip the images.
 							$text = JFilterOutput::stripImages($text);
 
-							$text = JHtml::_('string.truncate', $text, $params->get('word_count'));
+							//$text = JHtml::_('string.truncate', $text, $params->get('word_count'));
 							echo str_replace('&apos;', "'", $text);
 						?>
 						</div>
