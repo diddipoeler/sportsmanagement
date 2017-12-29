@@ -1,41 +1,12 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      clubinfo.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ */
+ 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
@@ -90,6 +61,7 @@ static $historyhtmltree = '';
         
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         
         parent::__construct( );
 	}
@@ -222,14 +194,18 @@ $app = JFactory::getApplication();
         $lists = array();
 		foreach ($rssIds as $rssId)
 		{
-		$options['rssUrl'] 		= $rssId; 
-        
-        if(version_compare(JVERSION,'3.0.0','ge')) 
+		$options['rssUrl'] = $rssId; 
+
+if(version_compare(JSM_JVERSION,'4','eq')) 
+{
+    
+}        
+elseif(version_compare(JSM_JVERSION,'3','eq')) 
 {
 // Joomla! 3.0 code here
 $rssDoc = JFactory::getFeedParser($options);
 }
-elseif(version_compare(JVERSION,'2.5.0','ge')) 
+elseif(version_compare(JSM_JVERSION,'2','eq')) 
 {
 // Joomla! 2.5 code here
 $rssDoc = JFactory::getXMLparser('RSS', $options);
@@ -247,6 +223,44 @@ else
 // Joomla! 1.5 code here
 }      
 
+//$app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrPCat<br><pre>'.print_r(self::$arrPCat,true).'</pre>'),'Notice');
+
+if(version_compare(JSM_JVERSION,'4','eq')) 
+{
+try
+		{
+			$feed = new \JFeedFactory;
+            $feeds = new stdclass();
+			$rssDoc = $feed->getFeed($rssId);
+            // channel header and link
+			$feeds->title = $rssDoc->title;
+			$feeds->description = $rssDoc->description;
+            $feeds->items = array_slice($rssDoc, 0, $rssitems);
+            
+//for ($i = 0, $max = count($rssDoc); $i < $max; $i++) 
+//{            
+//$feed4 = new stdclass();
+//$feed4->title = $rssDoc[$i]->title;
+//$feed4->content = $rssDoc[$i]->content;
+//$feeds->items[] = $feed4;
+//}            
+            $lists[] = $feeds;
+            JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' feed<br><pre>'.print_r($rssDoc,true).'</pre>'),'Notice');
+		}
+		catch (\InvalidArgumentException $e)
+		{
+			JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),'Notice');
+            //$msg = \JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
+		}
+		catch (\RuntimeException $e)
+		{
+		  JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'),'Notice');
+			//$msg = \JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
+		}    
+} 
+else
+{
 		$feed = new stdclass();
         if ($rssDoc != false)
 			{
@@ -265,7 +279,7 @@ else
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[] = $feed;
 			}
-        
+        }
          
         }  
     //var_dump($lists);
@@ -384,27 +398,39 @@ $result = $db->execute();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
-        $subquery1 = $db->getQuery(true);
-        $subquery2 = $db->getQuery(true);
+//        $subquery1 = $db->getQuery(true);
+//        $subquery2 = $db->getQuery(true);
         
         $teams = array( 0 );
 		if ( self::$clubid > 0 )
 		{
-		  // Select some fields
-          $query->select('t.id,prot.trikot_home,prot.trikot_away,prot.picture as project_team_picture');
-          $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-          $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
-          $query->from('#__sportsmanagement_team as t ');
-          $query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
-          $query->join('LEFT','#__sportsmanagement_project_team as prot ON prot.team_id = st.id ');
-          
+
+$query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
+$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
+
+$query->select('COALESCE((SELECT MAX(pt.project_id)
+				FROM #__sportsmanagement_project_team as pt
+				RIGHT JOIN #__sportsmanagement_project as p on pt.project_id = p.id
+                RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
+				WHERE st.team_id = t.id and p.published = 1), 0) as pid');
+                            		  
           // Select some fields
-          $subquery1->select('CONCAT_WS( \':\', MAX(pt.project_id) , p.alias )');
+//          $query->select('t.id,prot.trikot_home,prot.trikot_away,prot.picture as project_team_picture');
+//          $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
+//          $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
+          $query->from('#__sportsmanagement_team as t ');
+//          $query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+//          $query->join('LEFT','#__sportsmanagement_project_team as prot ON prot.team_id = st.id ');
+          /*
+          // Select some fields
+          //$subquery1->select('CONCAT_WS( \':\', MAX(pt.project_id) , p.alias )');
+          $subquery1->select('MAX(pt.project_id)');
           // From 
           $subquery1->from('#__sportsmanagement_project_team AS pt');
           $subquery1->join('RIGHT','#__sportsmanagement_project p ON pt.project_id = p.id ');
           $subquery1->where('pt.team_id = st.id');
           $subquery1->where('p.published = 1');
+          //$subquery1->group('p.alias');
           
           // Select some fields
           $subquery2->select('pt.id');
@@ -414,27 +440,28 @@ $result = $db->execute();
           $subquery2->where('pt.team_id = st.id');
           $subquery2->where('p.published = 1');
           $subquery2->where('pt.project_id = pid');
+          //$subquery2->group('pt.id');
           
           $query->select('('.$subquery1.' ) as pid');
           $query->select('('.$subquery2.' ) as ptid');
-          
+          */
           $query->where('t.club_id = '.(int) self::$clubid);
           
-          $query->group('t.id');
-
+           //$query->group('t.id,t.alias,t.name,prot.trikot_home,prot.trikot_away,prot.picture,t.short_name,t.info,st.id');
+try{
 			$db->setQuery( $query );
 			$teams = $db->loadObjectList();
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
             
-            if ( !$teams )
-            {
-            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-            }
+            //if ( !$teams )
+//            {
+//            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+//        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+//        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
+////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+//            }
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
@@ -442,7 +469,14 @@ $result = $db->execute();
         $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
 	    }
-            
+        
+        }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}    
 
 		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -573,10 +607,19 @@ $result = $db->execute();
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         $query->from('#__sportsmanagement_club AS c ');
         $query->where('c.new_club_id = '. $clubid );
-                            
+            try{                
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}    
+            
 	foreach ( $result as $row )
 	{
   $temp = new stdClass();
@@ -633,10 +676,19 @@ $result = $db->execute();
         $query->from('#__sportsmanagement_club AS c');
         
         $query->where('c.new_club_id = '. $clubid );
-			            
+try{			            
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
 			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}    
+
 	foreach ( $result as $row )
 	{
 		
@@ -751,13 +803,23 @@ self::$arrPCat[$pt][] = Array ('id' => $row->id,
         
         $query->select('('.$subquery.') as pid ');
         $query->from('#__sportsmanagement_club AS c');
-  			            
+try{  			            
 				$db->setQuery($query);
                 
 //                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
 				$result = $db->loadObjectList();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}            
+        
+        
    foreach ( $result as $row )
 	 {
    $row->link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug );
