@@ -183,7 +183,7 @@ $app = JFactory::getApplication();
      * @param mixed $rssitems
      * @return
      */
-    function getRssFeeds($rssfeedlink,$rssitems)
+    public static function getRssFeeds($rssfeedlink,$rssitems)
     {
     $rssIds	= array();    
     $rssIds = explode(',',$rssfeedlink);    
@@ -231,12 +231,12 @@ if(version_compare(JSM_JVERSION,'4','eq'))
 try
 		{
 			$feed = new \JFeedFactory;
-            $feeds = new stdclass();
+            //$feeds = new stdclass();
 			$rssDoc = $feed->getFeed($rssId);
             // channel header and link
-			$feeds->title = $rssDoc->title;
-			$feeds->description = $rssDoc->description;
-            $feeds->items = array_slice($rssDoc, 0, $rssitems);
+			//$feeds->title = $rssDoc->title;
+//			$feeds->description = $rssDoc->description;
+//            $feeds->items = array_slice($rssDoc, 0, $rssitems);
             
 //for ($i = 0, $max = count($rssDoc); $i < $max; $i++) 
 //{            
@@ -245,8 +245,8 @@ try
 //$feed4->content = $rssDoc[$i]->content;
 //$feeds->items[] = $feed4;
 //}            
-            $lists[] = $feeds;
-            JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' feed<br><pre>'.print_r($rssDoc,true).'</pre>'),'Notice');
+            return $rssDoc;
+            //JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' feed<br><pre>'.print_r($rssDoc,true).'</pre>'),'Notice');
 		}
 		catch (\InvalidArgumentException $e)
 		{
@@ -279,12 +279,13 @@ else
 				$feed->items = array_slice($items, 0, $rssitems);
 				$lists[] = $feed;
 			}
+            return $lists;  
         }
          
         }  
     //var_dump($lists);
     //echo 'getRssFeeds lists<pre>',print_r($lists,true),'</pre><br>';
-    return $lists;         
+    //return $lists;         
     }
     
     /**
