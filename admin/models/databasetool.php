@@ -839,7 +839,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
 			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             
             //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
-            
+            if ( $xml )
+            {
             foreach( $xml->children() as $quote ) 
             {
             $author = '';
@@ -899,7 +900,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
             }
             
             }
-            
+            }
             }
             else
             {
