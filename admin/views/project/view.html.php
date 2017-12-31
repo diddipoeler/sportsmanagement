@@ -115,18 +115,13 @@ class sportsmanagementViewProject extends sportsmanagementView
 	 */
 	function _displayPanel($tpl)
 	{
-	$app = JFactory::getApplication();
-	$jinput = $app->input;
-	$option = $jinput->getCmd('option');
-	$uri = JFactory::getURI();
-	$user = JFactory::getUser();
     $starttime = microtime();
            
 	$this->item = $this->get('Item');
     
 	if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
     
 	$iProjectDivisionsCount = 0;
@@ -174,33 +169,11 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $app->setUserState( "$option.pid", $this->item->id);
-    $app->setUserState( "$option.season_id", $this->item->season_id);
-    $app->setUserState( "$option.project_art_id", $this->item->project_art_id);
-    $app->setUserState( "$option.sports_type_id", $this->item->sports_type_id);
-    
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
-    
-    //$bar = JToolBar::getInstance('toolbar');
-//    
-//    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
-//    {
-//        case 'com_content':
-//        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
-//        break;
-//        case 'com_k2':
-//        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
-//        break;
-//    }
-    
-    //parent::addToolbar();    
-    
-//    JToolbarHelper::divider();
-//	sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//	JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
-//           
-//    parent::display($tpl);   
+    $this->app->setUserState( "$this->option.pid", $this->item->id);
+    $this->app->setUserState( "$this->option.season_id", $this->item->season_id);
+    $this->app->setUserState( "$this->option.project_art_id", $this->item->project_art_id);
+    $this->app->setUserState( "$this->option.sports_type_id", $this->item->sports_type_id);
+
     }
        
     /**
@@ -210,21 +183,14 @@ class sportsmanagementViewProject extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
     
     $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
-    
-    //JFactory::getApplication()->input->setVar('hidemainmenu', true);
-    
+   
         $bar = JToolBar::getInstance('toolbar');
-        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+        switch ( JComponentHelper::getParams($this->option)->get('which_article_component') )
     {
         case 'com_content':
-        //$bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
         $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');
         break;
         case 'com_k2':
