@@ -101,7 +101,7 @@ $s = $params->get('s');
         sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
-        $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+        $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
         //$slidermatches[] = $matches;
         $slidermatches = array_merge($matches);
     }
@@ -113,7 +113,7 @@ sportsmanagementModelProject::$projectid = $projectid;
 sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
 sportsmanagementModelResults::$projectid = $projectid;
 sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
-$matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
+$matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
 $slidermatches = array_merge($matches);
 }
 
