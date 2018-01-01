@@ -19,10 +19,10 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
-}
+//if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+//{
+//DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+//}
 
 /**
  * soll die externe datenbank genutzt werden ?
@@ -84,7 +84,7 @@ JHTML::_('behavior.tooltip');
 
 $config = array();
 $slidermatches = array();
-$projectid = JRequest::getInt('p',0);
+$projectid = $jinput->getInt('p',0);
 if ( !$projectid )
 {
     foreach( $params->get('project') as $key => $value )
