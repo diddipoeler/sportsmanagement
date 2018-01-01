@@ -84,13 +84,23 @@ JHTML::_('behavior.tooltip');
 
 $config = array();
 $slidermatches = array();
+
+$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+$s = $jinput->getInt('s',0);
 $projectid = $jinput->getInt('p',0);
+
 if ( !$projectid )
 {
+$cfg_which_database = $params->get('cfg_which_database');
+$s = $params->get('s');
+    
     foreach( $params->get('project') as $key => $value )
     {
-        $projectid = $value;
-        sportsmanagementModelProject::$projectid = $projectid;
+        //$projectid = $value;
+        sportsmanagementModelProject::$projectid = (int)$value;
+        sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+        sportsmanagementModelResults::$projectid = $projectid;
+        sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
         //$slidermatches[] = $matches;
         $slidermatches = array_merge($matches);
@@ -100,6 +110,9 @@ if ( !$projectid )
 else
 {
 sportsmanagementModelProject::$projectid = $projectid;
+sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+sportsmanagementModelResults::$projectid = $projectid;
+sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
 $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params);
 $slidermatches = array_merge($matches);
 }
@@ -107,24 +120,24 @@ $slidermatches = array_merge($matches);
 foreach( $slidermatches as $match )
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
-$routeparameter['s'] = $params->get('s');
+$routeparameter['cfg_which_database'] = $cfg_which_database;
+$routeparameter['s'] = $s;
 $routeparameter['p'] = $match->project_slug;
 
 switch ( $params->get('p_link_func') )
 {
-    case 'results':
-    $routeparameter['r'] = $match->round_slug;
+case 'results':
+$routeparameter['r'] = $match->round_slug;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
-    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
-    break;
-    case 'ranking':
-    $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+break;
+case 'ranking':
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $cfg_which_database;
+$routeparameter['s'] = $s;
 $routeparameter['p'] = $match->project_slug;
 $routeparameter['type'] = 0;
 $routeparameter['r'] = $match->round_slug;
@@ -132,12 +145,11 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
-    //$link = sportsmanagementHelperRoute::getRankingRoute( $match->project_slug, $match->round_slug,null,null,0,0 );
-    break;
-    case 'resultsrank':
-    $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+break;
+case 'resultsrank':
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $cfg_which_database;
+$routeparameter['s'] = $s;
 $routeparameter['p'] = $match->project_slug;
 $routeparameter['r'] = $match->round_slug;
 $routeparameter['division'] = 0;
@@ -145,8 +157,7 @@ $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
-    //$link = sportsmanagementHelperRoute::getResultsRankingRoute( $match->project_slug, $match->round_slug, 0  );
-    break;
+break;
 }
 
 }
