@@ -54,7 +54,7 @@
     <field name="spacer0" type="spacer" class="text" label=""/>       
 
     <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -98,7 +98,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
 -->
-				<field 	name="project_season" type="radio" default="1"
+				<field 	name="project_season" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
@@ -140,7 +140,7 @@
             -->
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
-				<field 	name="show_picture" type="radio" default="1"
+				<field 	name="show_picture" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
@@ -211,7 +211,7 @@
             
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
             
-            <field 	name="use_fav" type="radio" default="0" 
+            <field 	name="use_fav" type="extensionradiobutton" default="0" 
             class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
