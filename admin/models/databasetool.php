@@ -90,7 +90,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	public function getForm($data = array(), $loadData = true) 
 	{
         $cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
-        //$this->app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.databasetool', 'databasetool', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -162,10 +162,10 @@ return $mtime;
      */
     function getSportsManagementTables()
     {
-        $prefix = $this->app->getCfg('dbprefix');
+        $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
         
         foreach ( $result as $key => $value )
         {
@@ -175,7 +175,7 @@ return $mtime;
         }   
         }
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
 
 		return self::$jsmtables;
     }
@@ -187,10 +187,10 @@ return $mtime;
      */
     function getJoomleagueTablesTruncate()
     {
-        $prefix = $this->app->getCfg('dbprefix');
+        $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
         
         foreach ( $result as $key => $value )
         {
@@ -211,7 +211,7 @@ return $mtime;
      */
     function checkImportTablesJlJsm($tables)
     {
-        $prefix = $this->app->getCfg('dbprefix');  
+        $prefix = $this->jsmapp->getCfg('dbprefix');  
         $storeFailedColor = 'red';
 	    $storeSuccessColor = 'green';
 	    $existingInDbColor = 'orange';
@@ -223,9 +223,9 @@ return $mtime;
 $prefix.'joomleague_' => ''
   );
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
         
         $count = 1;
         foreach ( $tables as $key => $value )
@@ -258,7 +258,7 @@ $result = $this->jsmdb->loadResultArray();
             
             $check_table = str_replace(array_keys($convert2), array_values($convert2), $value->name  );
             
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
             
             switch ($check_table)
             {
@@ -321,7 +321,7 @@ $result = $this->jsmdb->loadResultArray();
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
         return $result;
     }
@@ -407,10 +407,10 @@ $this->jsmquery->where('import_id != 0');
 $this->jsmquery->group('template');
 $this->jsmdb->setQuery( $this->jsmquery );
 $record_jl = $this->jsmdb->loadObjectList();
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
 
 $defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
     
 foreach ( $record_jl as $row )
 {
@@ -427,7 +427,7 @@ else
 $ini = $parameter->loadINI($defaultvalues[0]);
 }    
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ini <br><pre>'.print_r($ini,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ini <br><pre>'.print_r($ini,true).'</pre>'),'');
 
 /**
  * beim import kann es vorkommen, das wir in der neuen komponente
@@ -466,13 +466,13 @@ $t_params = json_encode( $newparams );
 }
 else
 {
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'Error');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'Error');    
 $ini = $parameter->toArray($ini);
 $t_params = json_encode( $ini ); 
 }
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
     // Fields to update.
@@ -485,7 +485,7 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);
     
     
@@ -513,9 +513,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (template_config).'),'Notice');    
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (template_config).'),'Notice');    
 
 
     $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -529,9 +529,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');        
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');        
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -544,9 +544,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');
 
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -560,9 +560,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (eventtype).'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (eventtype).'),'Notice');
 
         
     }
@@ -585,9 +585,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -600,9 +600,9 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -615,10 +615,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -632,10 +632,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -648,10 +648,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -664,10 +664,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -681,10 +681,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -697,10 +697,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -713,10 +713,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -729,10 +729,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -745,10 +745,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -761,10 +761,10 @@ $conditions = array(
 );        
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');    
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');    
     }
     
     /**
@@ -781,7 +781,7 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
             $this->jsmdb->setQuery($this->jsmquery);
             if (!self::runJoomlaQuery(__CLASS__,$this->jsmdb))
 		{
-			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+			$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
         
@@ -838,7 +838,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
 		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
 			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
             if ( $xml )
             {
             foreach( $xml->children() as $quote ) 
@@ -868,11 +868,11 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
             $zitat = (string)$quote->quote;
             }
             
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
             
             if ( $zitat )
             {
@@ -940,8 +940,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     {
     $app = JFactory::getApplication();
         
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
     
     $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
     $p_sportstype = $mdl->getTable();
@@ -949,18 +949,18 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     $temp = explode("_",$p_sportstype->name);
     $sport_type_name = strtolower(array_pop($temp));
     
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
     $filename = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
     
     if (!JFile::exists($filename)) 
     {
-        //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
         $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$this->my_text .= JText::_('Fehlende Altersgruppen').'</strong></span><br />';
 					$this->my_text .= JText::sprintf('Die Datei %1$s ist nicht vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;
     }  
     else
@@ -985,7 +985,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
        if ( $xml )
        {
        
-       //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
+       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
         
        // schleife altersgruppen anfang
        foreach( $xml->agegroups as $agegroups ) 
@@ -994,7 +994,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
 //   $name = $agegroup->getElementByPath('agegroup');
 //   $attributes = $name->attributes();
    
-   //$this->app->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
    $agegroup = (string)$agegroups->agegroup;
    $info = (string)$agegroups->agegroup->attributes()->info;
@@ -1047,12 +1047,12 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
         if (!self::runJoomlaQuery())
 		{
 			
-            //$this->app->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+            //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         else
         {
-        //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 	$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
 	$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
@@ -1113,8 +1113,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     $country_assoc_del = "'".implode("','",$country_assoc)."'";    
     }
     
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
     
    
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -1126,7 +1126,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     $result = self::runJoomlaQuery();
     }
     
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'');
      
     $image_path = 'images/'.$this->jsmoption.'/database/associations/';
     
@@ -1138,8 +1138,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
    //$country = $attributes['country'];
    $country = (string)$association->assocname->attributes()->country;
    
-   //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
-   //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
    if ( $country_assoc )
    {
@@ -1171,7 +1171,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     $this->jsmdb->setQuery( $this->jsmquery );
 	$result = $this->jsmdb->loadResult();
    
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'Notice');
    
    $export = array();
    if ( !$result )
@@ -1194,7 +1194,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
                 
 	            if (!self::runJoomlaQuery())
 			    {
-			    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
 			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
                 }
 			    else
@@ -1208,7 +1208,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
    else
    {
    $parent_id = $this->_assoclist[$country][$parentmain];
-   //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
+   //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
     // Create a new query object.
                 $insertquery = $this->jsmdb->getQuery(true);
                 // Insert columns.
@@ -1225,7 +1225,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
                 
 	            if (!self::runJoomlaQuery())
 			    {
-			    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+			    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
                 self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -1268,7 +1268,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
    }
    }
    
-    //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
+    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
     }
     
     
@@ -1284,7 +1284,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     //$this->option = JFactory::getApplication()->input->getCmd('option');    
     //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
     //$fileContent = JFile::read($db_table);    
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
     
 //    $xml = JFactory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
@@ -1305,7 +1305,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
         return false;
     }    
     //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
     
     // We can now step through each element of the file
@@ -1319,8 +1319,8 @@ foreach( $xml->events as $event )
    //$main = (string)$association->assocname->attributes()->main;
    
    //$icon = $event->getElementByPath('icon');
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    $temp = new stdClass();
    $temp->name = strtoupper($this->jsmoption).'_'.strtoupper($type).'_E_'.strtoupper((string)$event->name);
@@ -1329,8 +1329,8 @@ foreach( $xml->events as $event )
     $this->_sport_types_events[$type] = array_merge($export);
    }
     }    
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
    
    unset ($export); 
    
@@ -1342,13 +1342,13 @@ foreach( $xml->events as $event )
    //$name = $position->getElementByPath('mainname');
 //   $attributes = $name->attributes();
    
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
    
 //   $switch = $position->getElementByPath('mainswitch');
 //   $parent = $position->getElementByPath('mainparent');
 //   $content = $position->getElementByPath('maincontent');
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    
         $temp = new stdClass();
@@ -1360,10 +1360,10 @@ foreach( $xml->events as $event )
         $this->_sport_types_position[$type] = array_merge($export);
    }
     }  
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
     
     
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
     
     unset ($export); 
     if ( isset($xml->parentpositions) )
@@ -1374,25 +1374,25 @@ foreach( $xml->events as $event )
 //   $attributes = $name->attributes();
    
    
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-   //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
    
 //   $switch = $parent->getElementByPath('parentswitch');
 //   $parent = $parent->getElementByPath('parentparent');
 //   $content = $parent->getElementByPath('parentcontent');
 //   $mainparentposition = $parent->getElementByPath('mainparentposition');
    
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
    
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
-//   $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
    
   
         $temp = new stdClass();
@@ -1413,7 +1413,7 @@ foreach( $xml->events as $event )
     
     
     
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
     
     return true;
     }
@@ -1441,24 +1441,24 @@ foreach( $xml->events as $event )
     $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
     if ( $result )
     {
-    //$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
+    //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
     $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
 					
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;    
     }   
     else
     {
-    //$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
+    //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
     $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS').'</strong></span><br />';
 					
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;         
     }
     
@@ -1469,7 +1469,7 @@ foreach( $xml->events as $event )
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_JOOMLEAGUE_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
         return $this->my_text;     
     } 
-    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+    //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
     
     }
     
@@ -1485,7 +1485,7 @@ foreach( $xml->events as $event )
         //$this->option = JFactory::getApplication()->input->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         $sports_type_id = 0;
-        //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
@@ -1494,7 +1494,7 @@ foreach( $xml->events as $event )
         
         if ( !$available )
         {
-            //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
             $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
             $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)).'</strong></span><br />';
             return false;
@@ -1506,8 +1506,8 @@ foreach( $xml->events as $event )
       $sports_type_id = $result;
        if ( $result )
        {
-       //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
-     // $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+       //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
+     // $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
 /**
  * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
  */ 
@@ -1539,12 +1539,12 @@ foreach( $xml->events as $event )
         if (!$this->jsmdb->execute())
 		{
 			
-            $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+            $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         else
         {
-        //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)).'</strong></span><br />';
         
@@ -1581,9 +1581,9 @@ foreach( $xml->events as $event )
         // Get a db connection.
         //$db = JFactory::getDbo();
         
-        //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-        //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
-        //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
         
 	$events_player		= array();
 	$events_staff		= array();
@@ -1627,7 +1627,7 @@ foreach( $xml->events as $event )
         
         if ( !$update )
         {
-        //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name).'</strong></span><br />';
         }
@@ -1659,7 +1659,7 @@ foreach( $xml->events as $event )
     
    if ( !$update )
         {
-    //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
     $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name).'</strong></span><br />';
     }
@@ -1702,13 +1702,13 @@ foreach( $xml->events as $event )
 //                {
 //                if ( $result )
 //                {
-//                    //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+//                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
 //                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 //		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
 //                }   
 //                else
 //                {
-//                    //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
+//                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
 //                }
 //                }
 //                }
@@ -1720,7 +1720,7 @@ foreach( $xml->events as $event )
         
         if ( !$update )
         {    
-        //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name).'</strong></span><br />';
          }
@@ -1914,12 +1914,12 @@ $insertquery = $this->jsmdb->getQuery(true);
                 // Set the query using our newly populated query object and execute it.
                 $this->jsmdb->setQuery($insertquery);
                 
-                //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
-                //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
                 
 	            if (!$this->jsmdb->execute())
 			    {
-			    $this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
+			    $this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {
