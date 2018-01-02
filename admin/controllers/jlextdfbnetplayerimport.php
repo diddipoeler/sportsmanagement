@@ -69,7 +69,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		$app = JFactory::getApplication ();
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
-		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg = '';
 		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $app = JFactory::getApplication();
