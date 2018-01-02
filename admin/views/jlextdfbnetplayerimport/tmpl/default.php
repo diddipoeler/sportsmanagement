@@ -85,7 +85,7 @@ echo '</pre>';
 ?>
 
 <div id="editcell">
-	<form enctype='multipart/form-data' method='post' name="adminForm" id="adminForm">
+	<form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' name="adminForm" id="adminForm">
 		<table class='table'>
 			<thead>
 			  <tr>
@@ -203,7 +203,6 @@ echo '</pre>';
 		</table>
 		<input type="hidden" name='sent' value='1' />
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
-		<input type="hidden" name="option" value="com_sportsmanagement" /> 
 		<input type="hidden" name='task' value='jlextdfbnetplayerimport.save' />
 		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
