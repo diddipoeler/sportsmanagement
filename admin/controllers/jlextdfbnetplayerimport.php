@@ -105,8 +105,8 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		
 		// first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
-			
+			//$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
+			$upload = $app->input->files->get('import_package');
 			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
