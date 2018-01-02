@@ -89,23 +89,23 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		{
 			case 'edit':
 				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->setVar('layout','form');
-				JFactory::getApplication()->input->setVar('view','jlxmlimports');
-				JFactory::getApplication()->input->setVar('edit',true);
+				JFactory::getApplication()->input->set('layout','form');
+				JFactory::getApplication()->input->set('view','jlxmlimports');
+				JFactory::getApplication()->input->set('edit',true);
 				break;
 
 			case 'insert':
 				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->setVar('layout','info');
-				JFactory::getApplication()->input->setVar('view','jlxmlimports');
-				JFactory::getApplication()->input->setVar('edit',true);
+				JFactory::getApplication()->input->set('layout','info');
+				JFactory::getApplication()->input->set('view','jlxmlimports');
+				JFactory::getApplication()->input->set('edit',true);
 				break;
                 
            case 'update':
 				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->setVar('layout','update');
-				JFactory::getApplication()->input->setVar('view','jlxmlimports');
-				JFactory::getApplication()->input->setVar('edit',true);
+				JFactory::getApplication()->input->set('layout','update');
+				JFactory::getApplication()->input->set('view','jlxmlimports');
+				JFactory::getApplication()->input->set('edit',true);
 				break;     
 		}
 
@@ -126,9 +126,9 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		$app->setUserState($option.'selectType',$selectType);
 		$app->setUserState($option.'recordID',$recordID);
 
-		JFactory::getApplication()->input->setVar('hidemainmenu',1);
-		JFactory::getApplication()->input->setVar('layout','selectpage');
-		JFactory::getApplication()->input->setVar('view','jlxmlimports');
+		JFactory::getApplication()->input->set('hidemainmenu',1);
+		JFactory::getApplication()->input->set('layout','selectpage');
+		JFactory::getApplication()->input->set('view','jlxmlimports');
 
 		parent::display();
 	}
