@@ -74,7 +74,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
-		$post = JFactory::getApplication()->input->get ( 'post' );
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		
 		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
 		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
