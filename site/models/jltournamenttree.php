@@ -487,6 +487,12 @@ $option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 
+/**
+ * erst einmal nicht ausgeprägt
+ * zu lange laufzeit
+ */
+return false;
+	
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
 
