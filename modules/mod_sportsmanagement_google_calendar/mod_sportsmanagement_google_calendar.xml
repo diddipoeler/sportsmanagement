@@ -13,12 +13,20 @@
 	<description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_DESCRIPTION</description>
 	<files>
 		<filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>
-		<folder>language</folder>
 		<folder>media</folder>
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>
 	</files>
 	
+	
+	<languages folder="language">
+		
+		<language tag="de-DE">de-DE/de-DE.mod_sportsmanagement_google_calendar.ini</language>
+		<language tag="de-DE">de-DE/de-DE.mod_sportsmanagement_google_calendar.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_sportsmanagement_google_calendar.ini</language>
+		<language tag="en-GB">en-GB/en-GB.mod_sportsmanagement_google_calendar.sys.ini</language>
+				
+	</languages>
 	<config>
 		<fields name="params"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
