@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -298,16 +298,17 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      <?php endif; ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME');?></td>
-      <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_home_win): ?>
-	        	<?php 
-                $routeparameter['p'] = $this->away_highest_home_win->project_slug;
-                $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
+       <td class="valueright">
+	    	<?php if ($stat = $this->away_highest_away_win): ?>
+	        	<?php  
+                $routeparameter['p'] = $this->away_highest_away_win->project_slug;
+                $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
       </td>
+
     </tr>
 	<?php endif; ?>
 
@@ -325,15 +326,16 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_home_def): ?>
+	    	<?php if ($stat = $this->away_highest_away_def): ?>
 	        	<?php 
-                $routeparameter['p'] = $this->away_highest_home_def->project_slug;
-                $routeparameter['mid'] = $this->away_highest_home_def->match_slug;
+                $routeparameter['p'] = $this->away_highest_away_def->project_slug;
+                $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
       </td>
+ 
     </tr>
 	<?php endif; ?>
 
@@ -351,10 +353,10 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_away_win): ?>
-	        	<?php  
-                $routeparameter['p'] = $this->away_highest_away_win->project_slug;
-                $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
+	    	<?php if ($stat = $this->away_highest_home_win): ?>
+	        	<?php 
+                $routeparameter['p'] = $this->away_highest_home_win->project_slug;
+                $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -377,15 +379,15 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_away_def): ?>
+	    	<?php if ($stat = $this->away_highest_home_def): ?>
 	        	<?php 
-                $routeparameter['p'] = $this->away_highest_away_def->project_slug;
-                $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
+                $routeparameter['p'] = $this->away_highest_home_def->project_slug;
+                $routeparameter['mid'] = $this->away_highest_home_def->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
-      </td>
+      </td>            
     </tr>
 	<?php endif; ?>
 <?php endif; ?>
