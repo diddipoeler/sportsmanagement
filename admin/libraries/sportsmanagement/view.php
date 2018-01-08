@@ -162,6 +162,12 @@ $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
         || $this->layout == 'edit_3' 
         || $this->layout == 'edit_4')
         {
+
+switch ( $this->view )
+            {
+            case 'match';
+            break;
+            default:
 $this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
 		// get the Data
 		$this->form = $this->get('Form');
@@ -178,6 +184,9 @@ $this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . 
 	};
 
 ");
+
+break;
+}
         }
 /**
  * in der listansicht
