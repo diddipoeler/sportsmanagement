@@ -44,7 +44,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
       
       <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -95,7 +95,7 @@ depends="p"
 					description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL_DESC" />
 
 <field name="show_training_modul_header" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SHOW_MODUL_HEADER_LABEL" 
@@ -105,7 +105,7 @@ depends="p"
 		</field>
     
 <field name="show_training_note" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SHOW_NOTE_LABEL" 

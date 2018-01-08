@@ -49,7 +49,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 						
        <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -100,14 +100,14 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_VISIBLE_TEAM_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_VISIBLE_TEAM_DESCR" />
 
-				<field 	name="show_project_name" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+				<field 	name="show_project_name" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_PROJECT_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_PROJECT_NAME_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="show_ranking_link" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field 	name="show_ranking_link" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKING_LINK_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKING_LINK_DESCR">
 					<option value="0">JNO</option>
@@ -119,7 +119,7 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER1"
 						description="" />
 
-				<field 	name="showRankColumn" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+				<field 	name="showRankColumn" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANKCOLUMN_DESCR">
 					<option value="0">JNO</option>
@@ -168,14 +168,14 @@
 					<option value="2">MOD_SPORTSMANAGEMENT_RANKING_COUNTRY_FLAG</option>
 				</field>
 
-				<field 	name="show_rank_colors" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+				<field 	name="show_rank_colors" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANK_COLOR_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_RANK_COLOR_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="fav_team_highlight_type" type="radio" default="1"
+				<field 	name="fav_team_highlight_type" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_DESCR">
@@ -183,7 +183,7 @@
 					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_OPTION0</option>
 				</field>
 
-				<field 	name="fav_team_bold" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+				<field 	name="fav_team_bold" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_BOLD_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_BOLD_DESCR">
 					<option value="0">JNO</option>
@@ -196,7 +196,7 @@
      <field 	name="spacer4" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER3"
 						description="" />
-     <field 	name="ishd_update" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+     <field 	name="ishd_update" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_DESCR">
 					<option value="0">JNO</option>

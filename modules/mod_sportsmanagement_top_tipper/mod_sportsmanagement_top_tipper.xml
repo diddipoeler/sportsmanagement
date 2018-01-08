@@ -45,7 +45,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
 					  
                 <field name="cfg_which_database"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="0"
                        class="radio btn-group btn-group-yesno"
                        label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
@@ -63,7 +63,7 @@
 
                 <field name="show_project_name"
                        class="radio btn-group btn-group-yesno"
-                       type="radio" 
+                       type="extensionradiobutton" 
 					   default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_DESC">
@@ -73,7 +73,7 @@
 
                 <field name="show_project_name_selector"
                        class="radio btn-group btn-group-yesno"
-                       type="radio" 
+                       type="extensionradiobutton" 
 					   default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR_DESC">
@@ -88,7 +88,7 @@
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_DESC"/>
 
                 <field name="show_rankingnav" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_RANKING_NAV_LABEL"
@@ -98,7 +98,7 @@
                 </field>
 
                 <field name="show_all_user" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER_LABEL"
@@ -108,7 +108,7 @@
                 </field>
 
                 <field name="show_user_icon" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON_LABEL"
@@ -118,7 +118,7 @@
                 </field>
 
                 <field name="show_user_link" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK_LABEL"
@@ -128,7 +128,7 @@
                 </field>
 
                 <field name="show_tip_details" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS_LABEL"
@@ -138,7 +138,7 @@
                 </field>
 <!-- tipp tabelle anzeigen -->
                 <field name="show_tip_ranking" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_LABEL"
@@ -148,7 +148,7 @@
                 </field>
 <!-- tipp tabelle-text anzeigen -->
 <field name="show_tip_ranking_text" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT_LABEL"
@@ -159,7 +159,7 @@
 
 
                 <field name="show_tip_ranking_round" 
-				type="radio"
+				type="extensionradiobutton"
                        default="0"
 					   class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID_LABEL"
@@ -171,7 +171,7 @@
                 </field>
 
                 <field name="show_tip_link_ranking_round"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_LABEL"
                        class="radio btn-group btn-group-yesno"
@@ -181,7 +181,7 @@
                 </field>
 
                 <field name="show_average_points" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_DESC">
@@ -189,7 +189,7 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="show_count_tips" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_DESC">
@@ -197,7 +197,7 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="show_count_joker" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_DESC">
@@ -205,7 +205,7 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="show_count_topptips" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_DESC">
@@ -213,7 +213,7 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="show_count_difftips" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS_LABEL"
@@ -222,7 +222,7 @@
                     <option value="1">JYES</option>
                 </field>
                 <field name="show_count_tendtipps" 
-				type="radio"
+				type="extensionradiobutton"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
 					   label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS_LABEL"
@@ -233,7 +233,7 @@
 
 
                 <field name="show_debug_modus" 
-				type="radio" 
+				type="extensionradiobutton" 
 				default="0" 
 				class="radio btn-group btn-group-yesno"
                        label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"

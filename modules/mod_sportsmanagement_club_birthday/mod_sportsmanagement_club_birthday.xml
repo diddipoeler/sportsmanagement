@@ -50,7 +50,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	  
 	  
      <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -99,7 +99,7 @@
 						description="" />
 -->
 
-				<field 	name="show_club_flag" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field 	name="show_club_flag" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_DESCR">
 					<option value="0">JNO</option>
@@ -110,7 +110,7 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_HEADING_STYLE_DESCR" />
 
-				<field 	name="show_picture" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field 	name="show_picture" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_PICTURE_DESCR">
 					<option value="0">JNO</option>
@@ -201,7 +201,7 @@
 -->					
 					
 				   <!--
-        	<field name="refresh" type="radio" default="0" 
+        	<field name="refresh" type="extensionradiobutton" default="0" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_REFRESH"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_REFRESH">
 					<option value="0">JNO</option>
@@ -219,7 +219,7 @@
 				<field name="scrollspeed" type="text" default="2"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLSPEED" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLSPEED" />
-				<field name="scrollpause" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field name="scrollpause" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_SCROLLPAUSE" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_SCROLLPAUSE">
 					<option value="0">JNO</option>
@@ -239,7 +239,7 @@
 			
 			<fieldset name="advanced_front" label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_LABEL" description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_DESC">
 			
-      <field name="jssor_transition_use" type="radio" default="1" class="radio btn-group btn-group-yesno"
+      <field name="jssor_transition_use" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR">
 					<option value="0">JNO</option>
@@ -255,7 +255,7 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_DESCR" />
 			
-			<field name="jssor_playorientation" type="radio" default="1" 
+			<field name="jssor_playorientation" type="extensionradiobutton" default="1" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
 					<option value="1">MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL</option>
@@ -264,7 +264,7 @@
 					<option value="6">MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL_REVERSE</option>
 				</field>
 				
-			<field name="jssor_captiontransitions" type="radio" default="L-R" 
+			<field name="jssor_captiontransitions" type="extensionradiobutton" default="L-R" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
 					<option value="L-R">MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_L_R</option>

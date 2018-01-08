@@ -49,7 +49,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 				
      <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -91,28 +91,28 @@
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL_DESC" />
 					
-				<field name="show_project_name" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+				<field name="show_project_name" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
 				
-				<field name="show_league_name" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+				<field name="show_league_name" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
 				
-				<field name="show_playground_name" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field name="show_playground_name" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
 				
-				<field name="show_playground_link" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+				<field name="show_playground_link" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK_DESC">
 					<option value="0">JNo</option>
@@ -128,7 +128,7 @@
 				</field>
 				
 				<field name="show_club_logo" 
-        type="radio" 
+        type="extensionradiobutton" 
         default="1" 
         class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO" 
@@ -155,7 +155,7 @@
 		</field>
 		
     	<field name="show_playground_picture" 
-        type="radio" 
+        type="extensionradiobutton" 
         default="1" 
         class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE" 

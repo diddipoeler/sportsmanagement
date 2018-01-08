@@ -87,7 +87,7 @@
 
 				<field name="show_project_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -104,7 +104,7 @@
 				<field type="spacer" hr="true" />
 				<field name="show_season_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -121,7 +121,7 @@
 
 				<field name="show_league_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -138,7 +138,7 @@
 
 				<field name="show_division_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
@@ -155,7 +155,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="show_teams_dropdown" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_TEAM_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_TEAM_DROPDOWN_LABEL_DESC">
@@ -207,7 +207,7 @@
 
 				<field name="show_only_subdivisions"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0"
+					type="extensionradiobutton" default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
 					<option value="0">JNO</option>
@@ -218,7 +218,7 @@
 
 				<field name="show_favteams_nav_links"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
@@ -232,7 +232,7 @@
 					text="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_LINKS" />
 				
 				<field name="show_tournament_nav_links" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
@@ -256,7 +256,7 @@
 
 				<field name="show_alltimetable_nav_links"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0"
+					type="extensionradiobutton" default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
@@ -293,7 +293,7 @@
 					text="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
 
 				<field name="show_nav_links" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">

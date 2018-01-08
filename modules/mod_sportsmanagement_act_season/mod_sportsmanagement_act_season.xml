@@ -62,7 +62,7 @@
        
         <!--
      <field name="new_project_article" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE" 
