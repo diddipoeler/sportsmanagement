@@ -125,61 +125,115 @@ $this->request_url	= $uri->toString();
         $this->match	= $match;
 		$this->cfg_which_media_tool	= JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         
-        // layout pressebericht
-        if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
-		{
-		$this->setLayout('pressebericht');
-        }  
-        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
-		{
-		$this->initPressebericht();  
-        } 
-        
-        // layout editreferees
-        if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
-		{
-		  $this->setLayout('editreferees');
+        switch ( $this->getLayout() )
+        {
+        case 'pressebericht';
+        case 'pressebericht_3';
+        case 'pressebericht_4';
+        $this->setLayout('pressebericht');
+        break;
+        case 'readpressebericht';
+        case 'readpressebericht_3';
+        case 'readpressebericht_4';
+        $this->initPressebericht(); 
+        break;
+        case 'editreferees';
+        case 'editreferees_3';
+        case 'editreferees_4';
+        $this->setLayout('editreferees');
         $this->initEditReferees();
-        }
-        
-        // layout editevents
-        if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
-		{
-		$this->setLayout('editevents');
+        break;
+        case 'editevents';
+        case 'editevents_3';
+        case 'editevents_4';
+        $this->setLayout('editevents');
         $this->initEditEevents();
-        }
-        
-        // layout editeventsbb
-        if ( $this->getLayout() == 'editeventsbb' || $this->getLayout() == 'editeventsbb_3')
-		{
+        break;
+        case 'editeventsbb';
+        case 'editeventsbb_3';
+        case 'editeventsbb_4';
         $this->initEditEeventsBB();
-        }
-        
-        // layout editstats
-        if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
-		{
-		$this->setLayout('editstats');  
+        break;
+        case 'editstats';
+        case 'editstats_3';
+        case 'editstats_4';
+        $this->setLayout('editstats');  
 		$this->initEditStats();
+        break;
+        case 'editlineup';
+        case 'editlineup_3';
+        case 'editlineup_4';
+        $this->setLayout('editlineup');
+		$this->initEditLineup(); 
+        break;
+        case 'edit';
+        case 'edit_3';
+        case 'edit_4';
+        $this->initEdit(); 
+        break;
+        case 'picture';
+        case 'picture_3';
+        case 'picture_4';
+        $this->initPicture();   
+        break;
         }
         
-        // layout editlineup
-        if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
-		{
-		  $this->setLayout('editlineup');
-		$this->initEditLineup();  
-        }
         
-        // layout edit
-        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
-		{
-		$this->initEdit();  
-        }
+//        // layout pressebericht
+//        if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
+//		{
+//		$this->setLayout('pressebericht');
+//        }  
+//        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
+//		{
+//		$this->initPressebericht();  
+//        } 
         
-        // layout picture
-        if ( $this->getLayout() == 'picture' || $this->getLayout() == 'picture_3' )
-		{
-		$this->initPicture();  
-        }
+//        // layout editreferees
+//        if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
+//		{
+//		  $this->setLayout('editreferees');
+//        $this->initEditReferees();
+//        }
+        
+//        // layout editevents
+//        if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
+//		{
+//		$this->setLayout('editevents');
+//        $this->initEditEevents();
+//        }
+        
+//        // layout editeventsbb
+//        if ( $this->getLayout() == 'editeventsbb' || $this->getLayout() == 'editeventsbb_3')
+//		{
+//        $this->initEditEeventsBB();
+//        }
+        
+//        // layout editstats
+//        if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
+//		{
+//		$this->setLayout('editstats');  
+//		$this->initEditStats();
+//        }
+        
+//        // layout editlineup
+//        if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
+//		{
+//		  $this->setLayout('editlineup');
+//		$this->initEditLineup();  
+//        }
+        
+//        // layout edit
+//        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
+//		{
+//		$this->initEdit();  
+//        }
+        
+//        // layout picture
+//        if ( $this->getLayout() == 'picture' || $this->getLayout() == 'picture_3' )
+//		{
+//		$this->initPicture();  
+//        }
 
 	}
     
