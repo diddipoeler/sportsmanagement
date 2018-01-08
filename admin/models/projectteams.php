@@ -1,41 +1,11 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      projectteams.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -110,9 +80,12 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-
         
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -319,13 +292,13 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 }
 	
     }
-    
-    /**
-	 * Method to update project teams list
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
+        
+	/**
+     * Method to update project teams list
+	 * sportsmanagementModelProjectteams::store()
+	 * 
+	 * @param mixed $data
+	 * @return
 	 */
 	function store( $data )
 	{
@@ -341,67 +314,89 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 		if ( $peid == null )
 		{
 			$query = "	DELETE
-						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
+						FROM #__sportsmanagement_project_team
 						WHERE project_id = '" . $data['id'] . "'";
-			$db->setQuery( $query );
-			if ( !$db->execute() )
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
+			
+     try{
+        $db->setQuery( $query );
+        $db->execute();
+             }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}    
+
 		}
 		else
 		{
 			JArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
 			$query = "	DELETE
-						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
+						FROM #__sportsmanagement_project_team
 						WHERE project_id = '" . $data['id'] . "' AND team_id NOT IN  (" . $peids . ")";
-			$db->setQuery( $query );
-			if ( !$db->execute() )
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
+			try{
+        $db->setQuery( $query );
+        $db->execute();
+             }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}   
 
-			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
+			$query = "	UPDATE  #__sportsmanagement_match
 						SET projectteam1_id = NULL 
-						WHERE projectteam1_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
+						WHERE projectteam1_id in (select id from #__sportsmanagement_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
-			$db->setQuery( $query );
-			if ( !$db->execute() )
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
-			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
+			try{
+        $db->setQuery( $query );
+        $db->execute();
+             }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}   
+			$query = "	UPDATE  #__sportsmanagement_match
 						SET projectteam2_id = NULL 
-						WHERE projectteam2_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
+						WHERE projectteam2_id in (select id from #__sportsmanagement_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
-			$db->setQuery( $query );
-			if ( !$db->execute() )
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
+			try{
+        $db->setQuery( $query );
+        $db->execute();
+             }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}   
 				
 		}
 
 		for ( $x = 0; $x < count( $data['project_teamslist'] ); $x++ )
 		{
 			$query = "	INSERT IGNORE
-						INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
+						INTO #__sportsmanagement_project_team
 						(project_id, team_id)
 						VALUES ( '" . $data['id'] . "', '".$data['project_teamslist'][$x] . "')";
 
-			$db->setQuery( $query );
-			if ( !$db->execute() )
-			{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				$result = false;
-			}
+			try{
+        $db->setQuery( $query );
+        $db->execute();
+             }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}   
 		}
 		return $result;
 	}
