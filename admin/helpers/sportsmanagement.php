@@ -2813,15 +2813,14 @@ if ( $project_id )
     $bar = JToolBar::getInstance('toolbar');
     
     if ( $layout )
-    {
-    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
-         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'-'.$layout   .'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';    
-    }
+    {  
+    $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\''.$cfg_help_server.'SM-Backend:'.$view.'-'.$layout.'\', \'Help\', '.$modal_popup_width.', '.$modal_popup_height.', 1)"><i class="icon-question-sign"></i>'.JText::_('Onlinehilfe').'</button>';    
+    }    
     else
     {
-    $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.$modal_popup_width.', y: '.$modal_popup_height.'}}" '.
-         ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';
-	}
+    $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\''.$cfg_help_server.'SM-Backend:'.$view.'\', \'Help\', '.$modal_popup_width.', '.$modal_popup_height.', 1)"><i class="icon-question-sign"></i>'.JText::_('Onlinehilfe').'</button>'; 
+    }
+	    
     /*
     $send = '<a class="modal" rel="{handler: \'iframe\', size: {x: '.'<script>width; </script>'.', y: '.$modal_popup_height.'}}" '.
          ' href="'.$cfg_help_server.'SM-Backend:'.$view.'"><span title="send" class="icon-32-help"></span>'.JText::_('Onlinehilfe').'</a>';	
