@@ -62,7 +62,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 	 */
 	function __construct(&$db) 
 	{
-		parent::__construct('#__sportsmanagement', 'id', $db);
+		parent::__construct('#__session', 'session_id', $db);
 	}
 	/**
 	 * Overloaded bind function
