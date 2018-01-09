@@ -183,7 +183,8 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
         // first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			//$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			$upload = $app->input->files->get('import_package');
 			$tempFilePath=$upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename='';
