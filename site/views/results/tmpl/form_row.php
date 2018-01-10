@@ -39,7 +39,12 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
-
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+$modalheight = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
 //JHTML::_('behavior.modal', 'a.user-modal');
 
 ?>
