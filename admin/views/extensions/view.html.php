@@ -88,8 +88,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
 		if ($canDo->get('core.admin')) 
 		{
-			JToolbarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+			JToolbarHelper::divider();           
 			//JToolbarHelper::preferences($option);
 		}
         parent::addToolbar();
