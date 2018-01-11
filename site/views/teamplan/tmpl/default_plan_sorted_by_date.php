@@ -280,7 +280,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
 		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
 
-		$teamA .= '<td class="'.$class1.'">'.$home.'</td>';
+		$teamA .= '<td width="30%" class="'.$class1.'">'.$home.'</td>';
 
 		// Check if the user wants to show the club logo or country flag
 		switch ($this->config['show_logo_small'])
@@ -334,7 +334,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
 		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
 		
-		$teamB .= '<td class="'.$class2.'">'.$away.'</td>';
+		$teamB .= '<td width="30%" class="'.$class2.'">'.$away.'</td>';
 		
 		if (!$match->cancel)
 		{
