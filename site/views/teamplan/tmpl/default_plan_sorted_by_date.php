@@ -62,7 +62,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		
 	if ( $this->config['show_plan_layout'] == 'plan_sorted_by_date' )
 	{
-		
+	sort($gamesByDate);	
 	}
 		foreach ( $gamesByDate as $date => $games )
 		{
