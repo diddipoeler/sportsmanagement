@@ -231,7 +231,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"><?php echo JoomleagueHelperHtml::showMatchTime(	$match,
+		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime(	$match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>
@@ -263,14 +263,30 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 			$class2	= 'left';
 		}
 		if ($this->config['show_teamplan_link']) {
-			$homelink=JoomleagueHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug);
-			$awaylink=JoomleagueHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug);
+			
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $hometeam->team_slug;
+$routeparameter['division'] = $match->division_slug;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$homelink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+$routeparameter['tid'] = $guestteam->team_slug;
+$routeparameter['division'] = $match->division_slug;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+			
+			
+
 		} else {
 			$homelink = null;
 			$awaylink = null;
 		}
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
-		$home = JoomleagueHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
+		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
 
 		$teamA .= '<td class="'.$class1.'">'.$home.'</td>';
 
@@ -324,7 +340,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
-		$away = JoomleagueHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
+		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
 		
 		$teamB .= '<td class="'.$class2.'">'.$away.'</td>';
 		
@@ -418,11 +434,16 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
             }
             
             //Link
+            $routeparameter = array();                    
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->match_slug; 
             if (isset($match->team1_result))
                 {
-                    $link=JoomleagueHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
             } else {
-                    $link=JoomleagueHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
                 }
             
             $ResultsTooltipTitle = $result;
@@ -567,7 +588,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
 						{
-							$link=JoomleagueHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
+							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
 							$ref=JHtml::link($link,$ref);
 						}
 						$output .= $ref;
@@ -608,7 +629,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		?>
 
 		<?php if (($this->config['show_thumbs_picture']) & ($teamid>0)): ?>
-		<td><?php echo JoomleagueHelperHtml::getThumbUpDownImg($match, $this->ptid); ?></td>
+		<td><?php echo sportsmanagementHelperHtml::getThumbUpDownImg($match, $this->ptid); ?></td>
 		<?php endif; ?>
 		
 		<?php
@@ -617,6 +638,11 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 			?>
 		<td><?php
 		if (!$match->cancel) {
+$routeparameter = array();                    
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->match_slug;   			
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
@@ -625,7 +651,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
-				$link=JoomleagueHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 				$viewReport=JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
@@ -636,7 +662,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
-				$link=JoomleagueHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				$viewPreview=JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
