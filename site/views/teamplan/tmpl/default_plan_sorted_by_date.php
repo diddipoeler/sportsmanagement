@@ -60,6 +60,10 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 			$gamesByDate[substr( $match->match_date, 0, 10 )][] = $match;
 		}
 		
+	if ( $this->config['show_plan_layout'] == 'plan_sorted_by_date' )
+	{
+		
+	}
 		foreach ( $gamesByDate as $date => $games )
 		{
 			foreach ( $games as $match )
