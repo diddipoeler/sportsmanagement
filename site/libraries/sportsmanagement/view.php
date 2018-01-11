@@ -69,6 +69,10 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
+		
+	$this->modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+	$this->modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+		
         if( version_compare(JSM_JVERSION,'4','eq') ) 
     {
     $this->uri = JUri::getInstance();
