@@ -205,7 +205,7 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		{
 		?>
 		    <td>
-			<?php echo JoomleagueHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config); ?>
+			<?php echo sportsmanagementHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config); ?>
 		    </td>
 		<?php
 		}
@@ -213,18 +213,10 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		{
 		?>
 		    <td>
-			<?php JoomleagueHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
 		    </td>
 		<?php
 		}
-		/*
-		 echo JoomleagueModelTeamPlan::showPlayground(	$hometeam,
-		 $guestteam,
-		 $match,
-		 $this->config['show_playground_alert'],
-		 $this->config['show_playground'],
-		 $match->project_id);
-		 */
 		?>
 
 		<?php
@@ -320,7 +312,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			case 3:
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= JoomleagueHelper::getPictureThumb($hometeam->picture, 
+					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture, 
 										$hometeam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
@@ -328,7 +320,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= JoomleagueHelper::getPictureThumb($guestteam->picture, 
+					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture, 
 										$guestteam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
