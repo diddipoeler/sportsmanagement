@@ -1,41 +1,11 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      roster.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -85,16 +55,14 @@ class sportsmanagementModelRoster extends JModelLegacy
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        
+       
 		parent::__construct();
 
-		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
-		self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
-		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
+		self::$projectid = $app->input->get('p', 0, 'INT');
+		self::$teamid = $app->input->get('tid', 0, 'INT');
+		self::$projectteamid = $app->input->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        self::$cfg_which_database = $app->input->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::setProjectID(self::$projectid,self::$cfg_which_database);
 		self::getProjectTeam();
 	}
@@ -108,9 +76,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getProjectTeam()
 	{
 	   $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -186,7 +152,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeam()
 	{
 	   $app = JFactory::getApplication();
-        $option = $this->jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -235,7 +201,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeamPlayers($persontype = 1)
 	{
 	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -338,7 +304,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getPositionEventTypes($positionId=0)
 	{
 		$app = JFactory::getApplication();
-        $option = $this->jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -437,7 +403,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeamEventStat($eventtype_id)
 	{
 		$app = JFactory::getApplication();
-    $option = $this->jinput->getCmd('option');
+    $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -487,7 +453,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	function getTeamPlayer($round_id,$player_id)
 	{
 	   $app = JFactory::getApplication();
-    $option = $this->jinput->getCmd('option');
+    $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -558,7 +524,7 @@ class sportsmanagementModelRoster extends JModelLegacy
     public static function getLastSeasonDate()
     {
         $app = JFactory::getApplication();
-    $option = $this->jinput->getCmd('option');
+    $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -583,12 +549,6 @@ class sportsmanagementModelRoster extends JModelLegacy
 catch (Exception $e){
     echo $e->getMessage();
 }
-
-//        if (!$result = $db->loadResult())
-//		{
-//			$this->setError($db->getErrorMsg());
-//			return false;
-//		}
 		return $result;
         
     }
