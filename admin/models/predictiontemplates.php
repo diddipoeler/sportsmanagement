@@ -111,8 +111,8 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
             $this->jsmquery->where('tmpl.prediction_id = ' . $this->getState('filter.prediction_id'));
         }
         
-        $this->jsmquery->order($db->escape($this->getState('list.ordering', 'tmpl.title')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'tmpl.title')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
