@@ -91,6 +91,16 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
  
 		// Set the document
 		$this->setDocument();
+        
+        switch ( $this->getLayout() )
+        {
+        case 'edit';
+        case 'edit_3';
+        case 'edit_4';
+        $this->setLayout('edit_3'); 
+        break;
+        }
+        
     
 	}
     
