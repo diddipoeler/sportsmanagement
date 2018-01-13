@@ -32,45 +32,12 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		// Reference global application object
-//		$app = JFactory::getApplication();
-//        // JInput object
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri 	= JFactory::getURI();
-//		$user 	= JFactory::getUser();
-//		$model	= $this->getModel();
         
-//        $project_id = JFactory::getApplication()->input->getVar('project_id');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        
-//        $id = JFactory::getApplication()->input->getVar('id');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' id<br><pre>'.print_r($id,true).'</pre>'),'');
+        // get the Data
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');
 
-        
- /*       
-        if ($this->getLayout()=='form')
-		{
-			$this->_displayForm($tpl);
-			return;
-		}
-		elseif ($this->getLayout()=='predsettings')
-		{
-			$this->_displayPredSettings($tpl);
-			return;
-		}
-*/
-		
-        
-        
-//        // get the Data
-//		$form = $this->get('Form');
-//		$item = $this->get('Item');
-//		$script = $this->get('Script');
-        
-        //$pred_admins = $model->getAdmins($item->id);
-		//$pred_projects = $model->getPredictionProjectIDs($item->id);
- 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
@@ -78,17 +45,12 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 			return false;
 		}
 
-//		// Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
 		$this->item->name = '';
-		//$this->script = $script;
 		
-		$app->setUserState( "$option.pid", $this->item->project_id );
+		$this->app->setUserState( "$this->option.pid", $this->item->project_id );
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-		
- 
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
+		 
 		// Set the document
 		$this->setDocument();
         
