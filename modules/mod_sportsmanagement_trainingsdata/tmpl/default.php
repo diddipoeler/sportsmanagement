@@ -116,9 +116,8 @@ echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING');
 	else
 	{
 	?>
-	
     
-    <div class="alert alert-error">
+<div class="alert alert-error">
 <h4>
 <?php
 echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
@@ -128,11 +127,11 @@ echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
 echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
 ?>
 </div>
-    
-	<?php
-	}
+  
+<?php
+}
 	
-	?>
+?>
 </table>
 <br/>
 <?php

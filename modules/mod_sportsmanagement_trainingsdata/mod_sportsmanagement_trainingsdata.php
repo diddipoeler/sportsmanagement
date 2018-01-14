@@ -75,7 +75,7 @@ $document = JFactory::getDocument();
 $document->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 ?>
-<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 ?>
