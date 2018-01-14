@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>    
-<div class="container">
+<div class="">
 <legend>
 <strong>
 <?php 
