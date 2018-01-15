@@ -30,14 +30,15 @@ $teamid=JFactory::getApplication()->input->getInt('tid');
 		$counter	= 1;
 		$round_date	= '';		
 		$k=0;
+
+usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
+//echo 'gamesByDate nachher <pre>'.print_r($this->matches,true).'</pre><br>';		
+
 		foreach ( $this->matches as $match )
 		{
 			$gamesByDate[substr( $match->match_date, 0, 10 )][] = $match;
 		}
 		
-usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
-//echo 'gamesByDate nachher <pre>'.print_r($this->matches,true).'</pre><br>';		
-
 		foreach ( $gamesByDate as $date => $games )
 		{
 			foreach ( $games as $match )
