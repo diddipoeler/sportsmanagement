@@ -40,6 +40,8 @@
 defined('_JEXEC') or die();
 
 // welche joomla version ?
+
+// welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 JHtml::_('jquery.framework');
@@ -595,7 +597,12 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         //JToolbarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
         $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-        if(version_compare(JVERSION,'3.0.0','ge')) 
+        if(version_compare(JVERSION,'4.0.0-dev','ge')) 
+        {
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        }
+        elseif (version_compare(JVERSION,'3.0.0','ge')) 
         {
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
         $document->addCustomTag($stylelink);
