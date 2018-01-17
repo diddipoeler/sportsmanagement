@@ -215,7 +215,7 @@ foreach ( $this->allteams as $row )
 $latitude = $row->latitude;
 $longitude = $row->longitude;
 	
-if ( !empty($latitude) )
+if ( !empty($latitude) && $latitude != '0.00000000' )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
