@@ -386,6 +386,13 @@ else
 <div>
 <input type="hidden" name="task" value="<?php echo $view; ?>.edit" />
 <?php 
+if ( $view == 'teamperson' )
+{
+?>    
+<input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>" />
+<?php    
+}
+	
 if ( $view == 'treetonode' )
 {
 ?>    
@@ -395,6 +402,7 @@ if ( $view == 'treetonode' )
 <?php    
 }
 
+	
 echo JHtml::_('form.token'); 
 ?>
 </div>
