@@ -166,6 +166,7 @@ $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
 switch ( $this->view )
             {
             case 'match';
+            case 'predictionproject';
             break;
             default:
 $this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        

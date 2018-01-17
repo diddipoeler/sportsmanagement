@@ -94,7 +94,17 @@ $modaltext .= JHtml::_('bootstrap.renderModal',
 	'width' => $width
 	)
 	);	
-    
+
+if ( $url )
+{
+$modaltext = '<a title="'.$text.'" class="modal" href="'.$url.'">';
+}
+else
+{
+$modaltext = '<a title="'.$text.'" class="modal" href="'.$picture.'">';
+}
+$modaltext .= '<img width="'.$picturewidth.'" alt="'.$text.'" src="'.$picture.'"></a>';   
+		
 return $modaltext;    
     
     }

@@ -1,41 +1,11 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -66,8 +36,6 @@ JHtml::_( 'behavior.mootools' );
 class sportsmanagementViewMatch extends sportsmanagementView
 {
 
-
-	
 	/**
 	 * sportsmanagementViewMatch::init()
 	 * 
@@ -177,63 +145,6 @@ $this->request_url	= $uri->toString();
         $this->initPicture();   
         break;
         }
-        
-        
-//        // layout pressebericht
-//        if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
-//		{
-//		$this->setLayout('pressebericht');
-//        }  
-//        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
-//		{
-//		$this->initPressebericht();  
-//        } 
-        
-//        // layout editreferees
-//        if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
-//		{
-//		  $this->setLayout('editreferees');
-//        $this->initEditReferees();
-//        }
-        
-//        // layout editevents
-//        if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
-//		{
-//		$this->setLayout('editevents');
-//        $this->initEditEevents();
-//        }
-        
-//        // layout editeventsbb
-//        if ( $this->getLayout() == 'editeventsbb' || $this->getLayout() == 'editeventsbb_3')
-//		{
-//        $this->initEditEeventsBB();
-//        }
-        
-//        // layout editstats
-//        if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
-//		{
-//		$this->setLayout('editstats');  
-//		$this->initEditStats();
-//        }
-        
-//        // layout editlineup
-//        if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
-//		{
-//		  $this->setLayout('editlineup');
-//		$this->initEditLineup();  
-//        }
-        
-//        // layout edit
-//        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
-//		{
-//		$this->initEdit();  
-//        }
-        
-//        // layout picture
-//        if ( $this->getLayout() == 'picture' || $this->getLayout() == 'picture_3' )
-//		{
-//		$this->initPicture();  
-//        }
 
 	}
     
