@@ -390,6 +390,8 @@ if ( $view == 'teamperson' )
 {
 ?>    
 <input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>" />
+<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
+<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />	
 <?php    
 }
 	
