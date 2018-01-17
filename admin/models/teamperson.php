@@ -483,9 +483,14 @@ $profile->person_id = $data['person_id'];
 $profile->project_id = $post['pid'];
 $profile->project_position_id = $data['project_position_id'];
 $profile->persontype = $post['persontype'];
+try{		
 // Insert the object into table.
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
- 
+}
+	catch (Exception $e)
+{
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}  
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
