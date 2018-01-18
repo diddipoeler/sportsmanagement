@@ -38,7 +38,6 @@
  */
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.html.html.bootstrap');
 ?> 
 <div class="row" >
     <div id="j-sidebar-container" class="col-md-2">
@@ -252,64 +251,45 @@ jimport('joomla.html.html.bootstrap');
         </div> 
         <hr>  
         <div class="">
-                <div class="center">
-                    <?PHP
-                    $start = 1;
+            <div class="center">
+                <?PHP
+                $start = 1;
 // Define slides options
-                    $slidesOptions = array(
-                        "active" => "slide1_id" // It is the ID of the active tab.
-                    );
+                $slidesOptions = array(
+                    "active" => "slide1_id" // It is the ID of the active tab.
+                );
 // Define tabs options for version of Joomla! 3.0
-                    $tabsOptions = array(
-                        "active" => "tab1_id" // It is the ID of the active tab.
-                    );
+                $tabsOptions = array(
+                    "active" => "tab1_id" // It is the ID of the active tab.
+                );
 
-                    echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+                echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
 
 
-                    if (is_array($this->importData)) {
-                        foreach ($this->importData as $key => $value) {
-                            echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide' . $start . '_id');
-                            echo $value;
-                            echo JHtml::_('bootstrap.endSlide');
-                            $start++;
-                        }
+                if (is_array($this->importData)) {
+                    foreach ($this->importData as $key => $value) {
+                        echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide' . $start . '_id');
+                        echo $value;
+                        echo JHtml::_('bootstrap.endSlide');
+                        $start++;
                     }
-                    if (is_array($this->importData2)) {
-                        foreach ($this->importData2 as $key => $value) {
-                            echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide' . $start . '_id');
-                            echo $value;
-                            echo JHtml::_('bootstrap.endSlide');
-                            $start++;
-                        }
+                }
+                if (is_array($this->importData2)) {
+                    foreach ($this->importData2 as $key => $value) {
+                        echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide' . $start . '_id');
+                        echo $value;
+                        echo JHtml::_('bootstrap.endSlide');
+                        $start++;
                     }
-                    echo JHtml::_('bootstrap.endAccordion');
-                    ?>
-                </div>                                     
+                }
+                echo JHtml::_('bootstrap.endAccordion');
+                ?>
+            </div>                                     
         </div>
     </div>
     <div class="col-md-2">
-        <div class="center">
-            <img src="components/com_sportsmanagement/assets/icons/boxklein.png" width="200"/>
-        </div>
-        <hr>
-        <dl class="dl-horizontal">
-            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
-            <dd><?php echo JText::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?></dd>
-
-            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
-            <dd><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
-
-
-            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
-            <dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
-
-            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
-            <dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
-
-            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
-            <dd>GNU General Public License</dd>
-        </dl>
+        <?php sportsmanagementHelper::jsminfo(); ?>
+        
     </div>
 </div>
 </div>
