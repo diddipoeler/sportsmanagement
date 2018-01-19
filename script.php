@@ -410,6 +410,15 @@ $files = array(
             '/administrator/components/com_sportsmanagement/views/treeto/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/treeto/tmpl/edit_3.php',
             
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_description.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3_description.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3_extended.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_extended.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_picture.php',
+            '/administrator/components/com_sportsmanagement/views/teamperson/tmpl/edit_3_picture.php',
+            
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/edit.php',
             '/administrator/components/com_sportsmanagement/views/treetonode/tmpl/edit_3.php',
             
