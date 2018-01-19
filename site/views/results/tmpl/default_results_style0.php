@@ -308,9 +308,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 		<td width="" class="">
         <?PHP
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,$imgsummary,$imgTitle,'20');        
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgsummary,$imgTitle,'20');
-        
+//echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,$imgsummary,$imgTitle,'20');        
+//echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgsummary,$imgTitle,'20');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgcontent,$imgTitle,'20',JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id);                
         ?>
 
             </td>
