@@ -94,7 +94,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
 $this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
-$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id);
+$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id,$this->config['show_bootstrap_tree']);
 $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
        
 /**
