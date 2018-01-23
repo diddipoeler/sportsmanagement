@@ -107,8 +107,14 @@ $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
         $this->clubhistorysorttree = '';    
         }
 
+	if ( $this->config['show_bootstrap_tree'] )
+	{	
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
-        
+	}
+	else
+	{
+	$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+	}
         $this->document->setTitle( $pageTitle );
         
 /**
