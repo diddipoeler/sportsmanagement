@@ -250,7 +250,16 @@
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_saalekreis.gif" flag="" website="" shortname="Saalekreis" main="232" parentmain="26">Kreis Saalekreis</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_salzlandkreis.gif" flag="" website="" shortname="Salzland" main="233" parentmain="26">Kreis Salzlandkreis</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_wittenberg.gif" flag="" website="" shortname="Wittenberg" main="234" parentmain="26">Kreis Wittenberg</assocname></associations>
-
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Bernburg" main="3000" parentmain="26">Kreis Bernburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Köthen" main="3001" parentmain="26">Kreis Köthen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Quedlinburg" main="3002" parentmain="26">Kreis Quedlinburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Saale-Unstrut" main="3003" parentmain="26">Kreis Saale-Unstrut</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Sangerhausen" main="3004" parentmain="26">Kreis Sangerhausen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Schönebeck" main="3005" parentmain="26">Kreis Schönebeck</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Weißenfels" main="3006" parentmain="26">Kreis Weißenfels</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Wernigerode" main="3007" parentmain="26">Kreis Wernigerode</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Zeitz" main="3008" parentmain="26">Kreis Zeitz</assocname></associations>
+  
 <associations><assocname country="DEU" icon="fk_sachsen_chemnitz.gif" flag="" website="" shortname="Chemnitz" main="235" parentmain="26">Kreis Chemnitz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_dresden.gif" flag="" website="" shortname="Dresden" main="236" parentmain="26">Kreis Dresden</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_erzgebirge.gif" flag="" website="" shortname="Erzgebirge" main="237" parentmain="26">Kreis Erzgebirge</assocname></associations>
