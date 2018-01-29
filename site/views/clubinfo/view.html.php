@@ -5,6 +5,9 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ *
+ * boostrap tree
+ * http://jsfiddle.net/jhfrench/GpdgF/
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -91,7 +94,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
 $this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
-$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id);
+$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id,$this->config['show_bootstrap_tree']);
 $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
        
 /**
@@ -107,8 +110,35 @@ $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
         $this->clubhistorysorttree = '';    
         }
 
+	if ( $this->config['show_bootstrap_tree'] )
+	{	
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
-        
+	}
+	else
+	{
+$javascript = "\n";	
+$javascript .= "
+jQuery(function ($) {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(\":visible\")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+
+
+";	
+	
+$this->document->addScriptDeclaration( $javascript );
+		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+	}
         $this->document->setTitle( $pageTitle );
         
 /**
