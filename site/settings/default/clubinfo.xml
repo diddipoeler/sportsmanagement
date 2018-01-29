@@ -185,6 +185,14 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		<field name="show_bootstrap_tree" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_TREE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_TREE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_CLUBINFO_TREE</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_CLUBINFO_FAMILY</option>
+		</field>
+		
 		<field name="club_logo_width" type="text" default="150"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_PICTURE_WIDTH"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_PICTURE_WIDTH">
