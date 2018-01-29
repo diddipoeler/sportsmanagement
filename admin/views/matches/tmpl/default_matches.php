@@ -601,16 +601,9 @@ fieldset button {
 									 ?>
 								</a>
                                 
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=<?php echo $row->id; ?>"
-									 class="modal open-editevents"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'); ?>">
-									 <?php
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/events.png',
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS').'"');
-									 ?>
-								</a>
+								
 								<?php
+echo sportsmanagementHelper::getBootstrapModalImage('editevents'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id='.$row->id,$modalwidth,$modalheight);																				
 								//end statistics
 								//start add several events in one operation:
 								?>
@@ -624,6 +617,7 @@ fieldset button {
 								?>
 								</a>
 								<?php
+
 								//end several events
 								?>
 							</td>
