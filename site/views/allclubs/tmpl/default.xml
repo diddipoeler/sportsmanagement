@@ -45,6 +45,12 @@
 
 		</fieldset>
 	</fields>
-    
+
+<fields name="params">
+		<fieldset name="basic"
+		          label="COM_SPORTSMANAGEMENT_ATTRIBS_MAIN_SETTINGS_LABEL">
+
+    </fieldset>
+	</fields>	
     
 </metadata>
