@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //echo __FILE__.' '.__LINE__.' matchplayerpositions<pre>',print_r($this->matchplayerpositions,true),'</pre>';
 //echo __FILE__.' '.__LINE__.' matchplayers<pre>',print_r($this->matchplayers,true),'</pre>';
 
@@ -127,7 +127,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 												
                         if ( $this->config['show_player_profile_link_alignment'] == 0 )
 												{
-                        echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.png?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+                        echo JHtml::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
                         }
 													//echo JHtml::link($player_link,$match_player);
                           //echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
@@ -187,7 +187,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
                         if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												{
 												echo '<br>';
-                        echo JHtml::link($player_link,$match_player.JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.png?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+                        echo JHtml::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
                         }
                                                     
                                                     echo '&nbsp;';
@@ -260,7 +260,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 												                            if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {
                                                     echo '<br>';
-                                                    echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.png?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                                                    echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                                                     }
                                                 }
                                                 else 
@@ -281,7 +281,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
                                                     if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {
                                                     echo '<br>';
-                                                    echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.png?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                                                    echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                                                     }
                                                     echo '&nbsp;';
                                                 }
