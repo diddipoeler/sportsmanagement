@@ -295,7 +295,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
 													//echo JHtml::link($player_link,$match_player);
 												if ( $this->config['show_player_profile_link_alignment'] == 0 )
 												{
-                          echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.png?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+                          echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
                         }
                           
 												}
