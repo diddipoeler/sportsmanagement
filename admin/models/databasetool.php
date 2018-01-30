@@ -764,7 +764,41 @@ $this->jsmdb->setQuery($this->jsmquery);
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 //$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
-$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');    
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');   
+	    
+$this->jsmquery = $this->jsmdb->getQuery(true);
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');  	    
+	    
+$this->jsmquery = $this->jsmdb->getQuery(true);
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
+$this->jsmapp->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');	    
+	    
+	    
     }
     
     /**
