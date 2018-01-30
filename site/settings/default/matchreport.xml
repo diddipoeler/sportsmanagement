@@ -326,7 +326,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_PLAYGROUND_PLAYER_PICTURE_WIDTH">
 		</field>
 
-    <field 	name="roster_playground_player_jquery_fade" type="list" default="0"   class="radio btn-group btn-group-yesno"
+    <field 	name="roster_playground_player_jquery_fade" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_PLAYGROUND_PLAYER_JQUERY_FADE"
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_PLAYGROUND_PLAYER_JQUERY_FADE">
 			  <option value="0">JNO</option>
