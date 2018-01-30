@@ -1,3 +1,4 @@
+<?php
 //defined( '_JEXEC' ) or die( 'Restricted access' );
 //$text = JRequest::getInt('text');
 $text = intval( $_GET[ 'text' ] );
