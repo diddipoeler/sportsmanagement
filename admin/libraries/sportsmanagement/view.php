@@ -601,6 +601,8 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         {
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
         }
         elseif (version_compare(JVERSION,'3.0.0','ge')) 
         {
