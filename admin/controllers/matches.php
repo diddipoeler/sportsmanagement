@@ -213,7 +213,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		$data['projectteam_id']	= JFactory::getApplication()->input->getInt('projectteam_id');
 		$data['event_type_id']	= JFactory::getApplication()->input->getInt('event_type_id');
 		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
-		$data['match_id']		= JFactory::getApplication()->input->getInt('matchid');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('match_id');
 		$data['event_sum']		= JFactory::getApplication()->input->getVar('event_sum', '');
 		$data['notice']			= JFactory::getApplication()->input->getVar('notice', '');
 		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
