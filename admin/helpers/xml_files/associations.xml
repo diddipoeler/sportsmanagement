@@ -236,21 +236,30 @@
 <associations><assocname country="DEU" icon="fk_saarland_suedsaar.gif" flag="" website="" shortname="Südsaar" main="219" parentmain="15">Kreis Südsaar</assocname></associations>
 <associations><assocname country="DEU" icon="fk_saarland_westsaar.gif" flag="" website="" shortname="Westsaar" main="220" parentmain="15">Kreis Westsaar</assocname></associations>
 
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_ost.gif" flag="" website="" shortname="Altmark Ost" main="221" parentmain="26">Kreis Altmark Ost</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_west.gif" flag="" website="" shortname="Altmark West" main="222" parentmain="26">Kreis Altmark West</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt.gif" flag="" website="" shortname="Anhalt" main="223" parentmain="26">Kreis Anhalt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt_bitterfeld.gif" flag="" website="" shortname="Anhalt-Bitterfeld" main="224" parentmain="26">Kreis Anhalt Bitterfeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_boerde.gif" flag="" website="" shortname="Börde" main="225" parentmain="26">Kreis Börde</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_burgenland.gif" flag="" website="" shortname="Burgenland" main="226" parentmain="26">Kreis Burgenland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_halle.gif" flag="" website="" shortname="Halle" main="227" parentmain="26">Kreis Halle</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_harz.gif" flag="" website="" shortname="Harz" main="228" parentmain="26">Kreis Harz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_jerichower_land.gif" flag="" website="" shortname="Jerichower Land" main="229" parentmain="26">Kreis Jerichower Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_magdeburg.gif" flag="" website="" shortname="Magdeburg" main="230" parentmain="26">Kreis Magdeburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_mansfeld_suedharz.gif" flag="" website="" shortname="Mansfeld-Südharz" main="231" parentmain="26">Kreis Mansfeld Südharz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_saalekreis.gif" flag="" website="" shortname="Saalekreis" main="232" parentmain="26">Kreis Saalekreis</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_salzlandkreis.gif" flag="" website="" shortname="Salzland" main="233" parentmain="26">Kreis Salzlandkreis</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_wittenberg.gif" flag="" website="" shortname="Wittenberg" main="234" parentmain="26">Kreis Wittenberg</assocname></associations>
-
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_ost.gif" flag="" website="" shortname="Altmark Ost" main="221" parentmain="22">Kreis Altmark Ost</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_west.gif" flag="" website="" shortname="Altmark West" main="222" parentmain="22">Kreis Altmark West</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt.gif" flag="" website="" shortname="Anhalt" main="223" parentmain="22">Kreis Anhalt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt_bitterfeld.gif" flag="" website="" shortname="Anhalt-Bitterfeld" main="224" parentmain="22">Kreis Anhalt Bitterfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_boerde.gif" flag="" website="" shortname="Börde" main="225" parentmain="22">Kreis Börde</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_burgenland.gif" flag="" website="" shortname="Burgenland" main="226" parentmain="22">Kreis Burgenland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_halle.gif" flag="" website="" shortname="Halle" main="227" parentmain="22">Kreis Halle</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_harz.gif" flag="" website="" shortname="Harz" main="228" parentmain="22">Kreis Harz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_jerichower_land.gif" flag="" website="" shortname="Jerichower Land" main="229" parentmain="22">Kreis Jerichower Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_magdeburg.gif" flag="" website="" shortname="Magdeburg" main="230" parentmain="22">Kreis Magdeburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_mansfeld_suedharz.gif" flag="" website="" shortname="Mansfeld-Südharz" main="231" parentmain="22">Kreis Mansfeld Südharz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_saalekreis.gif" flag="" website="" shortname="Saalekreis" main="232" parentmain="22">Kreis Saalekreis</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_salzlandkreis.gif" flag="" website="" shortname="Salzland" main="233" parentmain="22">Kreis Salzlandkreis</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_wittenberg.gif" flag="" website="" shortname="Wittenberg" main="234" parentmain="22">Kreis Wittenberg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Bernburg" main="3000" parentmain="22">Kreis Bernburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Köthen" main="3001" parentmain="22">Kreis Köthen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Quedlinburg" main="3002" parentmain="22">Kreis Quedlinburg</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Saale-Unstrut" main="3003" parentmain="22">Kreis Saale-Unstrut</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Sangerhausen" main="3004" parentmain="22">Kreis Sangerhausen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Schönebeck" main="3005" parentmain="22">Kreis Schönebeck</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Weißenfels" main="3006" parentmain="22">Kreis Weißenfels</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Wernigerode" main="3007" parentmain="22">Kreis Wernigerode</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Zeitz" main="3008" parentmain="22">Kreis Zeitz</assocname></associations>
+  
 <associations><assocname country="DEU" icon="fk_sachsen_chemnitz.gif" flag="" website="" shortname="Chemnitz" main="235" parentmain="26">Kreis Chemnitz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_dresden.gif" flag="" website="" shortname="Dresden" main="236" parentmain="26">Kreis Dresden</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_erzgebirge.gif" flag="" website="" shortname="Erzgebirge" main="237" parentmain="26">Kreis Erzgebirge</assocname></associations>

@@ -75,24 +75,29 @@ static $historyhtmltree = '';
  * @param mixed $parent
  * @return void
  */
-static function generateTree ($parent) 
+static function generateTree ($parent, $tree = 0) 
 {
 $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrPCat<br><pre>'.print_r(self::$arrPCat,true).'</pre>'),'Notice');
 
     if (array_key_exists($parent, self::$arrPCat)) 
     {
-        //echo '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
+
         self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
         foreach (self::$arrPCat[$parent] as $arrC) 
         {
-        //echo '<li>' . $arrC['name'] ;
-        //JHtml::link( $link, $item->name )
-        // 
-        //self::$historyhtmltree .= '<li><a href="#">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
-        self::$historyhtmltree .= '<li><a href="'.$arrC['clublink'].'">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
-        self::generateTree($arrC['id']);
-        //echo '</li>';
+
+if ( !$tree )
+{
+$treespan = '<span><i class="icon-minus-sign"></i> Child</span>';	
+}
+else
+{
+$treespan = '';		
+}
+        self::$historyhtmltree .= '<li>'.$treespan.'<a href="'.$arrC['clublink'].'">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
+        self::generateTree($arrC['id'],$tree);
+
         self::$historyhtmltree .= '</li>';
     }
 

@@ -422,10 +422,13 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
      $db->setQuery($query);   
  
   
- if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
+ try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);  
+}
+	catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
         
 // update personendaten pro saison
        // Fields to update.
@@ -445,10 +448,13 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
      $query->update($db->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
      $db->setQuery($query);   
  
- if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
+ try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);  
+}
+	catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
         
         // alten eintrag löschen
         // Create a new query object.
@@ -463,7 +469,13 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 $query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
 $query->where($conditions);
 $db->setQuery($query); 
-sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);        
+try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);  
+}
+	catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}     
 // Create and populate an object.
 $profile = new stdClass();
 //$profile->person_id = $post['person_id'.$pks[$x]];
@@ -471,9 +483,14 @@ $profile->person_id = $data['person_id'];
 $profile->project_id = $post['pid'];
 $profile->project_position_id = $data['project_position_id'];
 $profile->persontype = $post['persontype'];
+try{		
 // Insert the object into table.
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
- 
+}
+	catch (Exception $e)
+{
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}  
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
