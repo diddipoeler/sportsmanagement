@@ -1349,14 +1349,20 @@ $db->setQuery($query);
         $query->join('INNER',' #__sportsmanagement_match as m ON m.id = me.match_id');
         $query->join('INNER',' #__sportsmanagement_round as r ON m.round_id = r.id ');
         // Where
-        $query->where('r.project_id = ' . $project_id );
+        $query->where('r.project_id = ' . (int) $project_id );
         // group
         $query->group('et.id');
         // order
         $query->order('et.ordering');
-
+try{
                 $db->setQuery( $query );
                 return self::addGlobalSelectElement($db->loadObjectList(), $required);
+		 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
         }
 
 
