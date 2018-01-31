@@ -359,7 +359,7 @@ if ( empty($result) )
         {
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result <br><pre>'.print_r($result ,true).'</pre>'),'Error');
-        return -1;
+        return 0;
         } 
 		
                 if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
