@@ -120,7 +120,6 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td colspan="13"><?php echo $this->pagination->getListFooter(); ?>
                 <td colspan="4"><?php echo $this->pagination->getResultsCounter(); ?>
-
                 </td>
             </tr>
         </tfoot>
@@ -147,7 +146,6 @@ defined('_JEXEC') or die('Restricted access');
                         ?>
                     </td>
                     <td class="center">
-
                         <?php if ($row->checked_out) : ?>
                             <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextcountries.', $canCheckin); ?>
                         <?php endif; ?>
@@ -157,45 +155,20 @@ defined('_JEXEC') or die('Restricted access');
                         <?php else : ?>
                             <?php echo $this->escape($row->name); ?>
                         <?php endif; ?>
-
-
-
                         <?php //echo $checked;  ?>
-
                     </td>
-                    <?php
-                    $inputappend = '';
-                    ?>
-
-                    <?php
-                    ?>
-
-                    <td>
-                        <?php
-                        if (file_exists(JURI::root() . $row->icon)) {
-                        echo JHtml::_('image', $row->picture, JText::_($row->name), 'title= "' . JText::_($row->name) . '"');
-                        //echo JSMCountries::getCountryFlag($row->alpha3);
-                        }
-                        else {
-                            echo '<span class="flag-icon flag-icon-'.strtolower ($row->alpha2).'"></span>';
-                        }
-                        ?>
-                    </td>
-
+                    <?php $inputappend = ''; ?>
+                    <td><?php echo JSMCountries::getCountryFlag($row->alpha3); ?></td>
                     <td><?php echo JText::_($row->name); ?></td>
                     <td><?php echo $row->federation_name; ?></td>
-
                     <td><?php echo $row->alpha2; ?></td>
                     <td><?php echo $row->alpha3; ?></td>
-
                     <td><?php echo $row->itu; ?></td>
                     <td><?php echo $row->fips; ?></td>
                     <td><?php echo $row->ioc; ?></td>
                     <td><?php echo $row->fifa; ?></td>
                     <td><?php echo $row->ds; ?></td>
                     <td><?php echo $row->wmo; ?></td>
-
-
                     <td class="center">
                         <div class="btn-group">
                             <?php echo JHtml::_('jgrid.published', $row->published, $i, 'jlextcountries.', $canChange, 'cb'); ?>
