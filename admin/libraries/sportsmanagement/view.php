@@ -610,6 +610,8 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         $document->addCustomTag($stylelink);
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
         }
         else
         {    
