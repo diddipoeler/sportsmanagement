@@ -566,7 +566,7 @@ fieldset button {
 								<?php
 echo sportsmanagementHelper::getBootstrapModalImage('pressebericht'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id='.$row->id,$modalwidth,$modalheight);
 echo sportsmanagementHelper::getBootstrapModalImage('editevents'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id='.$row->id,$modalwidth,$modalheight);																				
-echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id='.$row->id,$modalwidth,$modalheight);								
+echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/teams.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id='.$row->id,$modalwidth,$modalheight);								
 
 								?>
 
