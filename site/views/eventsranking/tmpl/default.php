@@ -16,8 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<!-- <div class="joomleague"> -->
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container-fluid">
 	<?php
 	if ($this->config['show_sectionheader']==1)
 	{
@@ -30,10 +29,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('eventsrank');
 	}
+?>
+<div>
+<?php
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+?>
+</div>
 </div>

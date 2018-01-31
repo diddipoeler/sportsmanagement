@@ -17,7 +17,6 @@ if ($this->config['show_nation'] == 1) $colspan++;
 if ($this->config['show_icons'] == 1) $show_icons = 1;
 ?>
 
-<div class="container-fluid">
 <div class="row-fluid">
 
 
@@ -199,5 +198,4 @@ echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 <?php endif;?>
 
 <?php endforeach; ?>
-</div>
 </div>
