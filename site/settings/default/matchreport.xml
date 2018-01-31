@@ -300,12 +300,7 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ROSTER_PLAYGROUND"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ROSTER_PLAYGROUND">
   
-  <field 	name="show_roster_playground" type="list" default="1"  class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_ROSTER_PLAYGROUND"
-				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_ROSTER_PLAYGROUND">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+ 
     
 <!--    
   <field 	name="roster_playground_calculation" type="list" default="0" 
@@ -315,7 +310,7 @@
 			<option value="1">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_CALCULATION_AUTO</option>
 		</field>
 -->  
-<field 	name="roster_playground_use_fav_teams" type="list" default="0" class="radio btn-group btn-group-yesno"
+<field 	name="roster_playground_use_fav_teams" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_USE_FAV_TEAMS"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_USE_FAV_TEAMS">
 			  <option value="0">JNO</option>
@@ -331,7 +326,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_PLAYGROUND_PLAYER_PICTURE_WIDTH">
 		</field>
 
-    <field 	name="roster_playground_player_jquery_fade" type="list" default="0"   class="radio btn-group btn-group-yesno"
+    <field 	name="roster_playground_player_jquery_fade" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_PLAYGROUND_PLAYER_JQUERY_FADE"
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_PLAYGROUND_PLAYER_JQUERY_FADE">
 			  <option value="0">JNO</option>
