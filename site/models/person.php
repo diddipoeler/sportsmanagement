@@ -336,25 +336,32 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
        $query->select('SUM(me.event_sum) as total');
        $query->from('#__sportsmanagement_match_event AS me'); 
        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-       $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
-       $query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
+       //$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+       //$query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
 
         $query->where('me.event_type_id = ' . (int) $eventid);
         $query->where('tp1.person_id = ' . (int) self::$personid);
                         
 				if ($projectteamid)
 				{
-                    $query->where('pt.id = '.(int) $projectteamid);
+                    $query->where('me.projectteam_id = '.(int) $projectteamid);
 				}
-				if ($projectid)
-				{
-                    $query->where('pt.project_id =' . (int) $projectid);
-				}
+//				if ($projectid)
+//				{
+//                    $query->where('pt.project_id =' . (int) $projectid);
+//				}
                 $query->group('tp1.person_id');
 
 				$db->setQuery($query);
 				$result = $db->loadResult();
-                
+             
+if ( empty($result) )
+        {
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result <br><pre>'.print_r($result ,true).'</pre>'),'Error');
+        return 0;
+        } 
+		
                 if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
