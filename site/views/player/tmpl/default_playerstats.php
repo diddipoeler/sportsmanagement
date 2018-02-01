@@ -356,7 +356,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
 							$stat = $player->getPlayerEvents($eventtype->id, $player_hist->project_id, $player_hist->ptid);
 							?>
 				
-				<td class="td_c"><?php echo ($stat > 0) ? $stat : $this->overallconfig['zero_events_value']; ?></td>
+				<td ptid="<?php echo $player_hist->ptid; ?>"  id="<?php echo $eventtype->id; ?>" title="<?php echo $player_hist->project_id; ?>" class="td_c"><?php echo ($stat > 0) ? $stat : $this->overallconfig['zero_events_value']; ?></td>
                 <?php
 						}
 					}

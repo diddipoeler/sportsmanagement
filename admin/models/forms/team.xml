@@ -191,7 +191,7 @@
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_DESCRIPTION_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="JComponentHelper::filterText"/>			
 	</fieldset>		
 	
 	<fieldset name="picture"
