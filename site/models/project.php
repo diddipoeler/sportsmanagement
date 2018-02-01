@@ -1690,10 +1690,10 @@ catch (Exception $e)
 		$stats = array();
 		
         // init
-//		foreach ($positions as $pos)
-//		{
-//			$stats[$pos->id] = array();
-//		}
+		foreach ($positions as $pos)
+		{
+			$stats[$pos->id] = array();
+		}
         
 		if (count(self::$_stats) > 0)
 		{
@@ -1701,11 +1701,12 @@ catch (Exception $e)
 			{
 				if (!$statid || $statid == $row->id || (is_array($statid) && in_array($row->id, $statid)))
 				{
-					if ( !isset($stats[$row->position_id]) )
-                    {
-                    $stats[$row->position_id] = array();    
-                    }
-                    
+		/*
+		if ( !isset($stats[$row->position_id]) )
+                {
+                $stats[$row->position_id] = array();    
+                }
+                */    
                     $stat = SMStatistic::getInstance($row->class);
 					$stat->bind($row);
 					$stat->set('position_id',$row->position_id);
