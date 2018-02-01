@@ -295,7 +295,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			}
             
 		$query->group('me.teamplayer_id');
-        $query->order('me.match_id,p '.$order);
+        $query->order('p '.$order);
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
 		
