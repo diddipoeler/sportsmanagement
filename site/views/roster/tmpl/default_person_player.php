@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';    

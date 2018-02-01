@@ -1207,7 +1207,7 @@ $s = $configcolors;
 	 * @param integer $evid
 	 * @return
 	 */
-	public static function getEventTypes($evid=0,$cfg_which_database = 0)
+	public static function getEventTypes($evid='',$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -1221,10 +1221,10 @@ $s = $configcolors;
         $query->from('#__sportsmanagement_eventtype AS et');
         $query->join('LEFT','#__sportsmanagement_match_event AS me ON et.id = me.event_type_id');
 
-		if ($evid != 0)
+		if ( $evid )
 		{
+$query->where("me.event_type_id IN (".$evid.")");
 
-            $query->where('me.event_type_id = '.(int)$evid);
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -1690,10 +1690,10 @@ catch (Exception $e)
 		$stats = array();
 		
         // init
-//		foreach ($positions as $pos)
-//		{
-//			$stats[$pos->id] = array();
-//		}
+		foreach ($positions as $pos)
+		{
+			$stats[$pos->id] = array();
+		}
         
 		if (count(self::$_stats) > 0)
 		{
@@ -1701,11 +1701,12 @@ catch (Exception $e)
 			{
 				if (!$statid || $statid == $row->id || (is_array($statid) && in_array($row->id, $statid)))
 				{
-					if ( !isset($stats[$row->position_id]) )
-                    {
-                    $stats[$row->position_id] = array();    
-                    }
-                    
+		/*
+		if ( !isset($stats[$row->position_id]) )
+                {
+                $stats[$row->position_id] = array();    
+                }
+                */    
                     $stat = SMStatistic::getInstance($row->class);
 					$stat->bind($row);
 					$stat->set('position_id',$row->position_id);
