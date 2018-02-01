@@ -61,7 +61,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
 		self::$limit = $jinput->getInt('limit',$defaultLimit);
-		self::$limitstart = $jinput->getInt('limitstart',0);
+		self::$limitstart = $jinput->getInt('start',0);
 		self::setOrder($jinput->getVar('order','desc'));
         
         self::$cfg_which_database = $jinput->getInt( 'cfg_which_database', 0 );
