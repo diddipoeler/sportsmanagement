@@ -46,7 +46,7 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		$this->limit = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
-		$this->eventranking = $this->model->getEventRankings($this->limit);
+		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart);
 		$this->multiple_events = count($this->eventtypes) > 1 ;
         
         $prefix = JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
