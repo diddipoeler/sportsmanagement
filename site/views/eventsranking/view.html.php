@@ -42,7 +42,7 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		$this->teamid = $this->model->getTeamId();
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$this->jinput->getInt('cfg_which_database',0));
 		$this->favteams = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database',0));
-		$this->eventtypes = sportsmanagementModelProject::getEventTypes(0,$this->jinput->getInt('cfg_which_database',0));
+		$this->eventtypes = sportsmanagementModelProject::getEventTypes(sportsmanagementModelEventsRanking::$eventid,$this->jinput->getInt('cfg_which_database',0));
 		$this->limit = $this->model->getLimit();
 		$this->limitstart = $this->model->getLimitStart();
 		$this->pagination = $this->get('Pagination');
