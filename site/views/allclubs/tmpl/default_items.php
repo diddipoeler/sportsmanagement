@@ -60,24 +60,43 @@ if ( $this->user->id )
 <?PHP	
 }	
 ?>	
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.logo_big', $this->sortDirection, $this->sortColumn); ?>
-</th>
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'v.address', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'v.zipcode', $this->sortDirection, $this->sortColumn); ?>
-</th> 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'v.location', $this->sortDirection, $this->sortColumn); ?>
-</th>                 
-<th class="" id="">
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
-</th>                                 
+                <?php
+                if ($this->params->get('picture')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+
+                if ($this->params->get('website')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+
+                if ($this->params->get('address')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'c.address', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+
+                if ($this->params->get('zip_code')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'c.zipcode', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+
+                if ($this->params->get('city')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'c.location', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+
+                if ($this->params->get('country')) {
+                    echo '<th class="" id="">';
+                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
+                    echo '</th>';
+                }
+                ?>                                
                 
 	</tr>
 		</thead>
@@ -118,27 +137,43 @@ echo $item->unique_id;
 <?PHP	
 }	
 ?>
-	
-<td>
-<?PHP 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub'.$item->id,$item->logo_big,$item->name,'20')
-?> 
-</td>
-<td>
-<?php echo JHtml::link( $item->website, $item->website, array( 'target' => '_blank' ) ); ?>
-</td>
-<td>
-<?php echo $item->address; ?>
-</td>
-<td>
-<?php echo $item->zipcode; ?>
-</td>
-<td>
-<?php echo $item->location; ?>
-</td>
-<td>
-<?php echo JSMCountries::getCountryFlag($item->country); ?>
-</td>
+<?PHP
+                if ($this->params->get('picture')) {
+                    echo '<td>';
+                    echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub'.$item->id,$item->logo_big,$item->name,'20');
+                    echo '</td>';
+                }
+
+                if ($this->params->get('website')) {
+                    echo '<td>';
+                    echo JHtml::link($item->website, $item->website, array('target' => '_blank'));
+                    echo '</td>';
+                }
+
+                if ($this->params->get('address')) {
+                    echo '<td>';
+                    echo $item->address;
+                    echo '</td>';
+                }
+
+                if ($this->params->get('zip_code')) {
+                    echo '<td>';
+                    echo $item->zipcode;
+                    echo '</td>';
+                }
+
+                if ($this->params->get('city')) {
+                    echo '<td>';
+                    echo $item->location;
+                    echo '</td>';
+                }
+
+                if ($this->params->get('country')) {
+                    echo '<td>';
+                    echo JSMCountries::getCountryFlag($item->country);
+                    echo '</td>';
+                }
+                ?>
 </tr>
 <?php endforeach; ?>
 </table>
