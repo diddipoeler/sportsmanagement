@@ -37,9 +37,27 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+?>
 <!-- START of match timeline -->
+<style type="text/css">
+#timeline-top {
+    background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
+    background-repeat: no-repeat;
+    background-size: 100% 46px;
+    height: 30px;
+	
+}
 
+#timeline-bottom {
+    background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
+    background-repeat: no-repeat;
+    background-size: 100% 46px;
+    height: 30px; 
+	vertical-align: baseline;
+
+}
+</style>
 <script type="text/javascript">
 //	window.addEvent('domready', function(){
 //		var Tips1 = new Tips($$('.imgzev'));
