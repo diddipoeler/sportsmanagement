@@ -7,7 +7,8 @@ Die neue Sports-Management Komponente für Joomla 2.5 / 3 ![Joomla 2.5](https://
 
 Das Team
 ================
-* Entwickler: diddipoeler, appukonrad
+* Entwickler: diddipoeler
+* Entwicklungsunterstützung: appukonrad
 * Language manager & Wiki: stony
 * Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie
