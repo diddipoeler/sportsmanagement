@@ -47,12 +47,6 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
         $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'project<pre>'.print_r($project,true).'</pre>'; 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
-        }
-
 		$this->match = $match;
         
         $this->matchsingle = $matchsingle;
@@ -66,9 +60,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->oldmatchtext = $ret->text;
         }
         
-        $this->match_article = $this->model->getMatchArticle($this->match->content_id);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
+        $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid);
 
 		$this->round = $this->model->getRound();
 		$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);

@@ -458,13 +458,15 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	}
 
     
+    
     /**
      * sportsmanagementModelMatchReport::getMatchArticle()
      * 
-     * @param mixed $article_id
+     * @param integer $article_id
+     * @param integer $match_id
      * @return
      */
-    function getMatchArticle($article_id)
+    function getMatchArticle($article_id = 0,$match_id = 0)
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
@@ -475,17 +477,29 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->select('c.id,c.title');
        $query->select('c.introtext');
        
-        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
     {
         case 'com_content':
-        
         $query->from('#__content as c');
+        if ( $article_id )
+        {
+        $query->where('id = '. $article_id );
+        }
+        if ( $article_id )
+        {
+        $query->where('xreference = '. $match_id );
+        }
         break;
         case 'com_k2':
         $query->from('#__k2_items as c');
+        if ( $article_id )
+        {
+        $query->where('id = '. $article_id );
+        }
         break;
     }
-    $query->where('id ='. $article_id );
+    
+    
        $db->setQuery($query); 
         $result = $db->loadObject();
         return $result;
