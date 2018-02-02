@@ -485,7 +485,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         {
         $query->where('id = '. $article_id );
         }
-        if ( $article_id )
+        if ( $match_id )
         {
         $query->where('xreference = '. $match_id );
         }
