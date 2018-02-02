@@ -459,14 +459,16 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 
     
     
+    
     /**
      * sportsmanagementModelMatchReport::getMatchArticle()
      * 
      * @param integer $article_id
      * @param integer $match_id
+     * @param integer $cat_id
      * @return
      */
-    function getMatchArticle($article_id = 0,$match_id = 0)
+    function getMatchArticle($article_id = 0,$match_id = 0,$cat_id = 0)
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
@@ -488,6 +490,10 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         if ( $match_id )
         {
         $query->where('xreference = '. $match_id );
+        }
+        if ( $cat_id )
+        {
+        $query->where('catid = '. $cat_id );
         }
         break;
         case 'com_k2':

@@ -44,6 +44,8 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
         $this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
+        $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
         $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
@@ -60,7 +62,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->oldmatchtext = $ret->text;
         }
         
-        $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid);
+        $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid,$project->category_id);
 
 		$this->round = $this->model->getRound();
 		$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);
@@ -83,15 +85,6 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->playerstats = $this->model->getMatchStats();
 		$this->staffstats = $this->model->getMatchStaffStats();
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text .= 'matchplayerpositions<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-            $my_text .= 'matchplayers<pre>'.print_r($this->matchplayers,true).'</pre>';
-            $my_text .= 'matchstaffpositions<pre>'.print_r($this->matchstaffpositions,true).'</pre>';
-            $my_text .= 'matchstaffs<pre>'.print_r($this->matchstaffs,true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-
 $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
 		$jRegistry = new JRegistry;
 		$jRegistry->loadString($match->extended, 'ini');

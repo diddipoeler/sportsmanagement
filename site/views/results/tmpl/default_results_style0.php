@@ -72,8 +72,8 @@ else
     }
 }
 ?>
-<div class="table-responsive">   
-<table class="<?PHP echo $this->config['table_class']; ?>">
+<div class="row-fluid">   
+<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
 	<?php
 	foreach( $dates as $date => $games )
 	{
