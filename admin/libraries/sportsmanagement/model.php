@@ -139,6 +139,32 @@ if( $this->jsmapp->isSite() )
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
+$input_options = JFilterInput::getInstance(
+        array(
+            'img','p','a','u','i','b','strong','span','div','ul','li','ol','h1','h2','h3','h4','h5',
+            'table','tr','td','th','tbody','theader','tfooter','br'
+        ),
+        array(
+            'src','width','height','alt','style','href','rel','target','align','valign','border','cellpading',
+            'cellspacing','title','id','class'
+        )
+    );
+
+    $postData = new JInput($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
+		
+if (array_key_exists('notes', $data)) 
+{    
+$html = $postData->get('notes','','raw');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+$data['notes'] = $html;
+//$html = $postData->get('notes','','raw');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+}
+		
+		
+		
+		
 if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
 {
 $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
