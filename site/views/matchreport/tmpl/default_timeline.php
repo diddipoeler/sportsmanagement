@@ -24,16 +24,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     }
 </script>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
-<table id="timeline">
+<table id="timeline" class="table table-responsive" >
 	<tr>
   <?php
 		if ($this->team1->logo_small == '')
 		{
-			echo '<td width="140">';
+			?>
+            <td width="140">
+            <?php
 		}
 		else
 		{
-			echo '<td width="40">';
+			?>
+            <td width="40">
+            <?php
 		}
 		?>
 		</td>
@@ -55,12 +59,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php
 		if ($this->team1->logo_small == '')
 		{
-			echo '<td width="140">';
+			?>
+            <td width="140">
+            <?php
 			echo $this->team1->name;
 		}
 		else
 		{
-			echo '<td width="40">';
+			?>
+            <td width="40">
+            <?php
 			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1);
 		}
 		?>
@@ -78,12 +86,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<?php
 		if ($this->team2->logo_small == '')
 		{
-			echo '<td width="140">';
+			?>
+            <td width="140">
+            <?php
 			echo $this->team2->name;
 		}
 		else
 		{
-			echo '<td width="40">';
+			?>
+            <td width="40">
+            <?php
 			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1);
 		}
 		?>

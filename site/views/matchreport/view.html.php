@@ -186,14 +186,7 @@ if ( $this->config['show_pictures'] )
 					$string = $legresult[0].")";
 				}
                 }
-                /*
-                foreach ($legresult as $temp)
-                {
-                    $string .= $temp.' : ';
-                }
-				$string = substr_replace($string,'',-2);
-				$string .= ') ';
-                */
+
 				return $string;
 			}
 			else
@@ -586,11 +579,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			{
 				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
 				{
-					
-                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tppicture1'.'<pre>'.print_r($me,true).'</pre>' ),'');
                     
                     $placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
-					// set teamplayer picture
+/**
+ * set teamplayer picture
+ */
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
@@ -600,7 +593,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
                         
 					}
-					// when teamplayer picture is empty or a placeholder icon look for the general player picture
+/**
+ * when teamplayer picture is empty or a placeholder icon look for the general player picture
+ */
 					elseif
 					(	( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) &&
 						( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
@@ -613,7 +608,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
 					}
 					else {
-						//$picture = '';
                         $picture = $placeholder;
 					}
 
@@ -649,7 +643,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam2_id )
 				{
 					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
-					// set teamplayer picture
+/**
+ * set teamplayer picture
+ */
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
@@ -659,7 +655,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
                         
 					}
-					// when teamplayer picture is empty or a placeholder icon look for the general player picture
+/**
+ * when teamplayer picture is empty or a placeholder icon look for the general player picture
+ */
 					elseif
 					(	( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) &&
 						( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
@@ -672,7 +670,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
 					}
 					else {
-						//$picture = '';
                         $picture = $placeholder;
 					}
 
@@ -748,8 +745,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	 */
 	function getHtmlImageForTips($picture,$width=0,$height=0)
 	{
-		// diddipoeler
-    //$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
 		$picture = JURI::root().$picture;
 		if($width > 0 && $height==0) {
 			return '&lt;img src=&quot;'.$picture.'&quot; width=&quot;'.$width.'&quot; /&gt;';
