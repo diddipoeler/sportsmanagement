@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>    
 <div class="">
-<legend>
+<legend class="scheduler-border">
 <strong>
 <?php 
 if ( $params->get('show_training_modul_header') )

@@ -87,3 +87,8 @@ div.modjlglogo .projectname {
 	padding: 4px 8px 8px;
 	background: url(bubble.png) bottom right;
 }
+
+legend.scheduler-border {
+   width: auto;
+   border-bottom: none;
+}
