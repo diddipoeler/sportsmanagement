@@ -51,7 +51,7 @@ else
 {
 
 ?>
-<div class="row">
+<div class="row-fluid">
 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <?PHP
 
