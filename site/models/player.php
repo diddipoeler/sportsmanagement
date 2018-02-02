@@ -857,6 +857,7 @@ catch (Exception $e) {
 	 */
 	function getPlayerStatsByGame()
 	{
+		$app = JFactory::getApplication();
 		$teamplayers = self::getTeamPlayers();
 		$displaystats=array();
 		if (count($teamplayers))
@@ -893,11 +894,18 @@ catch (Exception $e) {
 			{
 				if(!empty($stat))
 				{
-					if ($stat->showInSingleMatchReports())
-					{
-						$stat->set('gamesstats',$stat->getPlayerStatsByGame($teamplayer_ids, $project_id));
-						$displaystats[]=$stat;
-					}
+foreach ($stat as $id => $value)
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
+if ( $value->_showinsinglematchreports )
+{
+$value->set('gamesstats',$value->getPlayerStatsByGame($teamplayer_ids, $project_id));
+$displaystats[]=$stat;
+}
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
+}			
+					
+					
 				}
 			}
 		}
