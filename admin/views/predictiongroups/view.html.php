@@ -80,7 +80,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
         
         if ( !$this->items )
         {
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
+        $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
         }
 
 		//$this->user	= JFactory::getUser();
