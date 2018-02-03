@@ -21,12 +21,25 @@ $idxTab = 1;
 $view = JFactory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ) 
 {
+
+switch ($view)
+{
+case 'player':
+$template = $templ['template'];
+$text = $templ['text'];   
+break;
+default:
+$template = $templ;
+$text = $key;
+break;
+} 
+    
 if ( $idxTab == 1 )
 {
 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
 }
-echo JHtml::_('bootstrap.addSlide', $view, JText::_($key), 'slide'.$idxTab++);
-echo $this->loadTemplate($templ);
+echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab++);
+echo $this->loadTemplate($template);
 echo JHtml::_('bootstrap.endSlide');
 $idxTab++;
 }
@@ -41,12 +54,25 @@ $idxTab = 1;
 $view = JFactory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ) 
 {
+    
+switch ($view)
+{
+case 'player':
+$template = $templ['template'];
+$text = $templ['text'];   
+break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}    
+    
 if ( $idxTab == 1 )
 {
 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
 }
-echo JHtml::_('bootstrap.addSlide', $view, JText::_($key), 'slide'.$idxTab++);
-echo $this->loadTemplate($templ);
+echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab++);
+echo $this->loadTemplate($template);
 echo JHtml::_('bootstrap.endSlide');
 $idxTab++;
 }
