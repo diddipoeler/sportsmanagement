@@ -268,23 +268,18 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
     // diddipoeler    
     if ($this->config['show_match_summary'])
 		{
-		//$imgTitle = sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,0,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0) );  
         $imgTitle = $team1->name;
         $imgTitle .= ' - '.$team2->name;
         $imgsummary = 'media/com_sportsmanagement/jl_images/discuss.gif';
         $imgcontent = 'media/com_sportsmanagement/jl_images/information.png';
-        
-        //echo 'content '.$game->content_id;
-        
 		  ?>
 		<td width="" class="">
         <?PHP
-
-//echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,$imgsummary,$imgTitle,'20');        
-//echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgsummary,$imgTitle,'20');
+if ( $game->content_id )
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgcontent,$imgTitle,'20',JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,$this->modalwidth,$this->modalheight);                
+}
         ?>
-
             </td>
 		<?php 	  
 		}  
