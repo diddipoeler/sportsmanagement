@@ -5,12 +5,14 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage globalviews
  */ 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
-<div class="container" id="show_slider">
+<div class="container-fluid" id="show_slider">
 <?php
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
@@ -19,19 +21,30 @@ $idxTab = 1;
 $view = JFactory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ) 
 {
+
+switch ($view)
+{
+case 'player':
+$template = $templ['template'];
+$text = $templ['text'];   
+break;
+default:
+$template = $templ;
+$text = $key;
+break;
+} 
+    
 if ( $idxTab == 1 )
 {
 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
 }
-echo JHtml::_('bootstrap.addSlide', $view, JText::_($key), 'slide'.$idxTab++);
-echo $this->loadTemplate($templ);
+echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab);
+echo $this->loadTemplate($template);
 echo JHtml::_('bootstrap.endSlide');
 $idxTab++;
 }
 
 echo JHtml::_('bootstrap.endAccordion');
-
-    
     
 }
 elseif(version_compare(JSM_JVERSION,'3','eq')) 
@@ -41,12 +54,25 @@ $idxTab = 1;
 $view = JFactory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ) 
 {
+    
+switch ($view)
+{
+case 'player':
+$template = $templ['template'];
+$text = $templ['text'];   
+break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}    
+    
 if ( $idxTab == 1 )
 {
 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
 }
-echo JHtml::_('bootstrap.addSlide', $view, JText::_($key), 'slide'.$idxTab++);
-echo $this->loadTemplate($templ);
+echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab);
+echo $this->loadTemplate($template);
 echo JHtml::_('bootstrap.endSlide');
 $idxTab++;
 }

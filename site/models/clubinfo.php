@@ -404,8 +404,8 @@ $result = $db->execute();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
-//        $subquery1 = $db->getQuery(true);
-//        $subquery2 = $db->getQuery(true);
+        $subquery1 = $db->getQuery(true);
+        $subquery2 = $db->getQuery(true);
         
         $teams = array( 0 );
 		if ( self::$clubid > 0 )
@@ -457,7 +457,32 @@ $query->select('COALESCE((SELECT MAX(pt.project_id)
 try{
 			$db->setQuery( $query );
 			$teams = $db->loadObjectList();
-            
+
+foreach ($teams AS $team )
+			{
+			 $subquery1->clear();
+			 $subquery1->select('pt.id as ptid,pt.picture as project_team_picture,pt.trikot_home,pt.trikot_away');
+			 $subquery1->from('#__sportsmanagement_project_team AS pt');
+			 $subquery1->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+			 $subquery1->where('pt.project_id = '.$team->pid);
+			 $subquery1->where('st.team_id = '.$team->id);
+			 $db->setQuery( $subquery1 );
+			 $result = $db->loadObject();
+			 $team->ptid = $result->ptid;
+			 $team->project_team_picture = $result->project_team_picture;
+			 $team->trikot_home = $result->trikot_home;
+			 $team->trikot_away = $result->trikot_away;
+			 $subquery1->clear();
+			 $subquery1->select('CONCAT_WS( \':\', p.id , p.alias )');
+			 $subquery1->from('#__sportsmanagement_project AS p');
+			 $subquery1->where('p.id = '.$team->pid);
+			 $db->setQuery( $subquery1 );
+			 $team->pid = $db->loadResult();
+			 
+			 }	
+	
+	
+	
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
             
             //if ( !$teams )

@@ -1,47 +1,17 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default_roster.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matchreport
+ */
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
 use Joomla\CMS\HTML\HTMLHelper;
-//echo __FILE__.' '.__LINE__.' matchplayerpositions<pre>',print_r($this->matchplayerpositions,true),'</pre>';
-//echo __FILE__.' '.__LINE__.' matchplayers<pre>',print_r($this->matchplayers,true),'</pre>';
 
 ?>
 <!-- START: game roster -->
@@ -52,7 +22,7 @@ if (!empty($this->matchplayerpositions))
 ?>
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>		
-	<table class="table">
+	<table class="table table-responsive">
 		<?php
 		foreach ($this->matchplayerpositions as $pos)
 		{
@@ -65,8 +35,6 @@ if (!empty($this->matchplayerpositions))
 					$personCount++;
 				}
 			}
-
-//echo __FILE__.' '.__LINE__.' personCount<pre>',print_r($personCount,true),'</pre>';
 
 			if ($personCount > 0)
 			{
@@ -84,15 +52,6 @@ if (!empty($this->matchplayerpositions))
 								  {
                   $player->jerseynumber = $player->trikot_number;
                   }
-
-
-//echo __FILE__.' '.__LINE__.' player->position_id -> '.$player->position_id.'<br>';
-//echo __FILE__.' '.__LINE__.' pos->position_id -> '.$pos->position_id.'<br>';
-//echo __FILE__.' '.__LINE__.' player->ptid -> '.$player->ptid.'<br>';
-//echo __FILE__.' '.__LINE__.' this->match->projectteam1_id -> '.$this->match->projectteam1_id.'<br>';
-                                    
-                                    
-                                    //if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam1_id )
                                     if ( $player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam1_id )
 									{
 										?>
@@ -154,20 +113,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                                                 }
                                                 if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
                                                 {
-
-
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);
-                                                ?>
-                                                
-
-
-
-
-
-    
-                                                
-                                                <?PHP
-                                                //echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
                                                 ?>
                                                 
                                                 <?PHP
@@ -214,14 +160,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
 								  {
                   $player->jerseynumber = $player->trikot_number;
                   }
-                  
-									
-                                    //echo 'player->position_id -> '.$player->position_id.'<br>';
-                                    //echo 'pos->position_id -> '.$pos->position_id.'<br>';
-                                    //echo 'player->ptid -> '.$player->ptid.'<br>';
-                                    //echo 'this->match->projectteam2_id -> '.$this->match->projectteam2_id.'<br>';
-                                    
-                                    //if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectteam2_id )
+
                                     if ( $player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam2_id )
 									{
 										?>
@@ -235,8 +174,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $player->team_slug;
 $routeparameter['pid'] = $player->person_slug;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-                                            
-											//$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
+
 											$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
 											$match_player=sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 											$isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));

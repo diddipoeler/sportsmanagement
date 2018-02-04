@@ -1,54 +1,18 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage results
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
-
-//// welche joomla version ?
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//jimport('joomla.html.html.bootstrap');
-//}
-
-//JHTML::_('behavior.modal');
 
 /**
  * sportsmanagementViewResults
@@ -59,17 +23,14 @@ jimport( 'joomla.filesystem.file' );
  * @version 2014
  * @access public
  */
-//class sportsmanagementViewResults extends JViewLegacy
 class sportsmanagementViewResults extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewResults::display()
+	 * sportsmanagementViewResults::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	//public function display($tpl = null)
 	function init()
 	{
 		// Get a refrence of the page instance in joomla
@@ -82,41 +43,25 @@ class sportsmanagementViewResults extends sportsmanagementView
         $this->layout = $jinput->getCmd('layout');
         $roundcode = 0;
         $default_name_format = '';
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($layout,true).'</pre>' ),'');
-        
-//		$version = urlencode(sportsmanagementHelper::getVersion());
-//		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-//		$document->addStyleSheet($css);
 
-//		$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
-        
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-        
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
 
 		$model	= $this->getModel();
-				
 		
 		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
-        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup);
+        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
         
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
-        
-		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
         $roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid,$model::$cfg_which_database);
 		
-        //$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
         
 		$this->roundsoption = $rounds;

@@ -5,6 +5,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @subpackage results
  */
 
 defined('_JEXEC') or die(JText('Restricted access'));
@@ -218,18 +219,22 @@ else
 
 	
 
+	
 	/**
 	 * sportsmanagementModelResults::getMatches()
 	 * 
 	 * @param integer $cfg_which_database
 	 * @param integer $editorgroup
+	 * @param integer $cat_id
 	 * @return
 	 */
-	function getMatches($cfg_which_database = 0,$editorgroup=0)
+	function getMatches($cfg_which_database = 0,$editorgroup=0,$cat_id = 0)
 	{
-	  
 	$app = JFactory::getApplication();
-     $option = $app->input->getCmd('option');
+    // Get a db connection.
+    $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+    $query = $db->getQuery(true);
+    $option = $app->input->getCmd('option');
 		if (is_null($this->matches))
 		{
 			$this->matches = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database);
@@ -249,6 +254,14 @@ else
 						$this->matches[$k]->allowed = true;
 					}
 				}
+                $query->clear();
+                $query->select('c.id');
+                $query->from('#__content as c');
+                $query->where('xreference = '. $match->id );
+                $query->where('catid = '. $cat_id );
+                $db->setQuery($query); 
+                $this->matches[$k]->content_id = $db->loadResult();
+                
 			}
 		}
 		return $this->matches;
@@ -271,19 +284,12 @@ else
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-        
         $project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
 
 		if ( !$round ) 
         {
-			//$round = sportsmanagementModelProject::getCurrentRound();
             $round = $project->current_round;
 		}
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
 
 		$result = array();
         // select some fields
@@ -293,7 +299,6 @@ else
         $query->select('d1.name as divhome');
         $query->select('d2.name as divaway');
         $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
-        
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');
@@ -304,14 +309,10 @@ else
             $query->select('c2.'.$params->get('picture_type').' as logoaway');
             $query->select('t1.'.$params->get('team_names').' as teamhome');
             $query->select('t2.'.$params->get('team_names').' as teamaway');
-//            $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
-//            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-//            $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');
-            
+           
             // favorisierte teams nutzen
             if ( $params->get('use_fav') )
             {
-                //$favteams = explode(",",$project->fav_team);
                 $query->where('(t1.id IN ('.$project->fav_team.') OR t2.id IN ('.$project->fav_team.'))');
             }
             // ganze saison ?
@@ -333,26 +334,18 @@ else
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
         $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
-        
         $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
         $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        
         $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
         $query->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
-        
         $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
-        
-        //$query->join('LEFT','#__sportsmanagement_division AS d1 ON pt1.division_id = d1.id');
-        //$query->join('LEFT','#__sportsmanagement_division AS d2 ON pt2.division_id = d2.id');
         $query->join('LEFT','#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
         $query->join('LEFT','#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
-        
         $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 		
         // where
         $query->where('m.published = 1');
-//        $query->where('r.id = '.$round);
         $query->where('r.project_id = '.(int)$project->id);
         if(version_compare(JSM_JVERSION,'3','eq')) 
         {
