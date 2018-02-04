@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      matchreport.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matchreport
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -486,13 +458,17 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	}
 
     
+    
+    
     /**
      * sportsmanagementModelMatchReport::getMatchArticle()
      * 
-     * @param mixed $article_id
+     * @param integer $article_id
+     * @param integer $match_id
+     * @param integer $cat_id
      * @return
      */
-    function getMatchArticle($article_id)
+    function getMatchArticle($article_id = 0,$match_id = 0,$cat_id = 0)
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
@@ -503,17 +479,33 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->select('c.id,c.title');
        $query->select('c.introtext');
        
-        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
     {
         case 'com_content':
-        
         $query->from('#__content as c');
+        if ( $article_id )
+        {
+        $query->where('id = '. $article_id );
+        }
+        if ( $match_id )
+        {
+        $query->where('xreference = '. $match_id );
+        }
+        if ( $cat_id )
+        {
+        $query->where('catid = '. $cat_id );
+        }
         break;
         case 'com_k2':
         $query->from('#__k2_items as c');
+        if ( $article_id )
+        {
+        $query->where('id = '. $article_id );
+        }
         break;
     }
-    $query->where('id ='. $article_id );
+    
+    
        $db->setQuery($query); 
         $result = $db->loadObject();
         return $result;

@@ -5,11 +5,11 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage globalviews
  */ 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//echo 'output <pre>'.print_r($this->output,true).'</pre>';
 
 ?>
 <div class="row-fluid" id="show_tabs">
