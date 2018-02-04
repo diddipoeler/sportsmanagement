@@ -138,7 +138,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				</tr>
 			</thead>
 			<!-- Start of the matches for the selected round -->
-			<tbody>
+		<!--	<tbody> -->
 			<?php
 				$k = 0;
 				$i = 0;
@@ -149,7 +149,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					{
 						$this->game = $match;
 						$this->i = $i;
-
 /**
  * eingabe laden
  */                        
@@ -159,10 +158,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					$i++;
 				}
 			}
-            
-// view=results&cfg_which_database=0&s=0&p=1:1-bundesliga-2015-16&r=14:14-spieltag&division=0&mode=0&order=&layout=form            
 			?>
-			</tbody>
+		<!--	</tbody> -->
 		</table>
 		<br/>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
