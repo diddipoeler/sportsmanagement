@@ -154,9 +154,6 @@ function fillContainer(site)
 	<td valign="">
 		<?php
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'edit',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');				
-//		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND');
-//		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'width' => 20,'title' => $imgTitle));
-
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
@@ -171,7 +168,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
     <td style="text-align:center; " >
     <?PHP
     echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
-    //echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_slug);
     ?>
     </td>
 		<?php 
@@ -194,14 +190,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 ?> 
-<!--   
-<div class="well form-inline">
-			  <div class="input-append date" id="<?php echo 'match_date'.$thismatch->id;?>" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-				<input class="span2" size="16" type="text" value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" readonly >
-				<span class="add-on"><i class="icon-th"></i></span>
-			  </div>
-          </div>
--->
 <div class="well">
 <input type="text" class="span2" name='match_date<?php echo $thismatch->id; ?>' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" data-date-format="dd-mm-yyyy" id="<?php echo 'match_date'.$thismatch->id;?>" >
 </div>
@@ -235,15 +223,7 @@ else
 	<td align="center" nowrap="nowrap" valign="top">
 		<!-- Edit home line-up -->
 		<?php
-        
-        // über das backend/administrator bearbeiten
-//$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');        
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
-		//$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
-		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-		//$desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,$desc,$imgTitle,'20',$url);
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
@@ -275,13 +255,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 		?>
 		<!-- Edit away line-up -->
 		<?php
-
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
-		//$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
-		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-        //$desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        
-//        echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,$desc,$imgTitle,'20',$url);
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
@@ -393,54 +367,27 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->pr
 	<!-- Edit match events -->
 	<td valign="top">
 		<?php
-        
-//        // über das backend/administrator bearbeiten
-//		$url = sportsmanagementHelperRoute::getEditEventsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,null,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
-//		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND');
-//		//$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-//        $desc = JURI::root().'media/com_sportsmanagement/jl_images/events.png';
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editevents',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,$desc,$imgTitle,'20',$url);
-        
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),'20',$url);        
 ?>
-      
-
 	</td>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
-        
-//        // über das backend/administrator bearbeiten
-//		$url = sportsmanagementHelperRoute::getEditStatisticsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
-//		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND');
-//		//$desc = JHtml::image(JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-//        $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png';
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editstats',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,$desc,$imgTitle,'20',$url);
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
 ?>        
-
 	</td>
 	<!-- Edit referee -->
 	<td valign="top">
 		<?php
-        
-        // über das backend/administrator bearbeiten
-		//$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
-		//$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
-		//$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-        //$desc = JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        //echo $url; 
-         
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editreferees',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');		
-        
         ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
