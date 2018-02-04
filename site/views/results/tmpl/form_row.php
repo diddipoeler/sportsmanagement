@@ -5,6 +5,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @subpackage results
  */
 
 // No direct access to this file
@@ -25,19 +26,19 @@ defined('_JEXEC') or die('Restricted access');
     height: 60%;
   }  
   */
+
+/*  
 .modal-dialog {
     width: 80%;
   }  
 .modal-dialog,
 .modal-content {
-    /* 95% of window height */
     height: 95%;
 }  
 .modal-body {
-    /* 90% of window height */
     height: 90%;
 }  
-
+*/
 </style>
 
 

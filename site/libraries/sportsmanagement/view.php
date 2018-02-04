@@ -9,10 +9,14 @@
 
 defined('_JEXEC') or die();
 
+$document = JFactory::getDocument();
+
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-//JHtml::_('jquery.framework');
+//JHtml::_('jquery.framework');	
+ $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+ $document->addCustomTag($stylelink);
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {

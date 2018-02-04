@@ -11,7 +11,13 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
+<style>
+#sbox-window {
+background-color: transparent;
 
+}
+
+</style>
 <script>
 function example_alertBox( boxText )
 {		
