@@ -121,7 +121,9 @@ defined('_JEXEC') or die('Restricted access');
 
                 if ($this->params->get('website')) {
                     echo '<td>';
+                    if($item->website){
                     echo JHtml::link($item->website, $item->website, array('target' => '_blank'));
+                    }
                     echo '</td>';
                 }
 
