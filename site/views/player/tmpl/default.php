@@ -19,7 +19,7 @@ if (isset($this->person))
 {
 	?>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container-fluid">
 	<?php
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -100,11 +100,7 @@ echo $this->loadTemplate('footer');
 </div>
 <?PHP 
 
-	//fixxme: had a domready Calendar.setup error on my local site
-	echo "<script>";
-	echo "Calendar={};";
-	echo "</script>";
-	?>
+?>
 </div>
 <!-- player -->
 </div>

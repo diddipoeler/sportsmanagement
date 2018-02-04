@@ -361,13 +361,6 @@
       <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
-
-<!--	
-		<field 	name="picture_height" type="text" default="150"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
-		</field>
--->
 		
 		<field 	name="show_nationality" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_NATIONALITY" 
