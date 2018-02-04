@@ -49,7 +49,6 @@ $jinput = $app->input;
         sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
-
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database,1);
 		$nickname = isset($person->nickname) ? $person->nickname : "";
 		if(!empty($nickname)){$nickname="'".$nickname."'";}

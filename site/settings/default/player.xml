@@ -255,14 +255,6 @@
 			<option value="1">JYES</option>
 		</field>
 				
-<!--
-		<field	name="show_rfhistory" type="extensionradiobutton" default="1" 
-				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_REF_HISTORY"
-				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_REF_HISTORY">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
--->
 	</fieldset>
 	
   <!-- reiter 2 -->
@@ -348,6 +340,14 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field name="show_player_logo_copyright" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_CLUB_LOGO_COPYRIGHT"
+			description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_CLUB_LOGO_COPYRIGHT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field 	name="picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">

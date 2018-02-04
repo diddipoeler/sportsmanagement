@@ -36,7 +36,7 @@ break;
     
 if ( $idxTab == 1 )
 {
-echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
+echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab) );
 }
 echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab);
 echo $this->loadTemplate($template);
@@ -69,7 +69,7 @@ break;
     
 if ( $idxTab == 1 )
 {
-echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab));
+echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide'.$idxTab) );
 }
 echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide'.$idxTab);
 echo $this->loadTemplate($template);
