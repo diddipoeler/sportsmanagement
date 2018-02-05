@@ -4,6 +4,13 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		
+		<field name="use_table_or_bootstrap" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_TABLE_OR_BOOTSTRAP"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_TABLE_OR_BOOTSTRAP">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_BOOTSTRAP</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_TABLE</option>
+		</field>
+		
 <field name="show_uefa_heading" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_UEFA_HEADER"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_UEFA_HEADER">
