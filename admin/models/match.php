@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      match.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -968,18 +940,18 @@ $tournement_round = $this->jsmdb->loadResult();
 			$cids = implode(',',$pks);
             // wir löschen mit join
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
+            FROM #__sportsmanagement_match as m    
+            LEFT JOIN #__sportsmanagement_match_statistic as ms
             ON ms.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
+            LEFT JOIN #__sportsmanagement_match_staff_statistic as mss
             ON mss.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
+            LEFT JOIN #__sportsmanagement_match_staff as mst
             ON mst.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev
+            LEFT JOIN #__sportsmanagement_match_event as mev
             ON mev.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
+            LEFT JOIN #__sportsmanagement_match_referee as mre
             ON mre.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
+            LEFT JOIN #__sportsmanagement_match_player as mpl
             ON mpl.match_id = m.id
             WHERE m.id IN ('.$cids.')';
             JFactory::getDbo()->setQuery($query);
@@ -1234,15 +1206,15 @@ $tournement_round = $this->jsmdb->loadResult();
         $query->select('pos.name AS positionname');
 
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id and st.season_id = sp.season_id ');
+		$query->from('#__sportsmanagement_person AS pl');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.person_id = pl.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id AS st ON st.team_id = sp.team_id and st.season_id = sp.season_id ');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = sp.person_id');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = sp.person_id');
+        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id');
+        $query->join('LEFT',' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
         $query->where('sp.persontype = '.$persontype);
@@ -2217,10 +2189,10 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 
         $query->clear();
         $query->select('mp.id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->from('#__sportsmanagement_match_player AS mp');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
         $query->where('mp.match_id = '.$mid);
         $query->where('pt.id = '.$team);
@@ -2233,7 +2205,7 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
         if ( $result )
         {
         $query->clear();
-        $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'));
+        $query->delete(JFactory::getDBO()->quoteName('#__sportsmanagement_match_player'));
         $query->where('id IN ('.implode(",",$result).')');
         JFactory::getDBO()->setQuery($query);
         
