@@ -67,9 +67,9 @@ $routeparameter['s'] = $post['s'];
 $routeparameter['p'] = $post['p'];
 $routeparameter['r'] = $post['r'];
 $routeparameter['division'] = $post['division'];
-$routeparameter['mode'] = $post['mode'];
-$routeparameter['order'] = $post['order'];
-$routeparameter['layout'] = $post['oldlayout'];
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = 0;
+$routeparameter['layout'] = 'form';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
