@@ -60,6 +60,8 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 $app = JFactory::getApplication();
 $post = $app->input->post->getArray(array());		
 		
+$model = $this->getModel('editmatch');
+$return = $model->save($post); 
 		
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
