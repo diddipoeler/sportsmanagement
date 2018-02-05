@@ -25,17 +25,13 @@ $params = $this->form->getFieldsets('params');
 <script type="text/javascript">
 var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
 <?PHP
-        if(version_compare(JVERSION,'3.0.0','ge')) 
+        if( version_compare(JVERSION,'3.0.0','ge') ) 
         {
-            
         echo JSession::getFormToken()."=1";
-            
         }
         else
         {    
-            
         echo JUtility::getToken()."=1";
-         
         }
 ?>';
 var matchid = <?PHP echo $this->match->id ?>;
@@ -51,11 +47,11 @@ var str_delete = '<?PHP echo JText::_('JACTION_DELETE') ?>';
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='editlineup' method='post' style='display:inline' name='editlineup' >
 	<fieldset>
 		<div class="fltrt">
-<!--
+
 					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
 						<?php echo JText::_('JSAVE');?></button>
-                        -->
-<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
+
+
 				</div>
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
