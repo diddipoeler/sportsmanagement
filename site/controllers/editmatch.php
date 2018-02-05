@@ -61,7 +61,7 @@ $app = JFactory::getApplication();
 $post = $app->input->post->getArray(array());		
 		
 $model = $this->getModel('editmatch');
-$return = $model->save($post); 
+$return = $model->updateRoster($post); 
 		
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
