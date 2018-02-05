@@ -60,7 +60,7 @@ class sportsmanagementModelEditMatch extends JModelAdmin
     }    
     
 	
-function save($data)
+function updateRoster($data)
     {
         $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
