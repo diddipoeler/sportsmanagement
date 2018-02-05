@@ -137,6 +137,13 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="view" value="" />
         <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
+	<input type="hidden" name="p" value="<?php echo $this->project_id; ?>" />
+	
+	<input type="hidden" name="r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>" />
+	<input type="hidden" name="s" value="<?php echo sportsmanagementModelEditMatch::$seasonid; ?>" />
+	<input type="hidden" name="division" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>" />
+	<input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>" />
+	
 		<input type="hidden" name="close" id="close" value="0" />
 		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
