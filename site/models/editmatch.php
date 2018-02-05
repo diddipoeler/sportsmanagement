@@ -58,7 +58,15 @@ class sportsmanagementModelEditMatch extends JModelAdmin
         self::$seasonid = $jinput->getVar('s','0');
         
     }    
-        
+    
+	
+function save($data)
+    {
+        $app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+	
+}
+	
     function updItem($data)
     {
         $app = JFactory::getApplication();
