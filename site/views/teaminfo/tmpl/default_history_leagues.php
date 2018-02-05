@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 
 </h4>
 <?php
-if ( $this->config['use_table_or_bootstrap'] )
+if ( $this->overallconfig['use_table_or_bootstrap'] )
 {
 ?>
 <table class="<?PHP echo $this->config['table_class']; ?>">
