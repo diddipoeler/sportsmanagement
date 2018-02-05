@@ -17,8 +17,58 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
 
 </h4>
+<?php
+if ( $this->config['use_table_or_bootstrap'] )
+{
+?>
+<table class="<?PHP echo $this->config['table_class']; ?>">
 
+<thead>
+<tr class="sectiontableheader">
+<th class="" nowrap="" style="background:#BDBDBD;">
+<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?>
+</th>
+<th class="" nowrap="" style="background:#BDBDBD;">
+<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?>
+</th>
+<th class="" nowrap="" style="background:#BDBDBD;">
+<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?>
+</th>
 
+<th class="" nowrap="" style="background:#BDBDBD;">
+<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?>
+</th>
+
+</tr>
+</thead>
+
+<?php
+	foreach ($this->leaguerankoverviewdetail as $league => $summary)
+	{
+	?>
+	<tr
+  class="<?php echo ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2'; ?>">
+	<td><?php echo $league; ?></td>
+	<td><?php echo $summary->match; ?></td>
+	
+	<td><?php echo $summary->won; echo ' / '; ?>
+	<?php echo $summary->draw; echo ' / '; ?>
+	<?php echo $summary->loss; ?></td>
+	
+	<td><?php echo $summary->goalsfor; echo ' : '; ?>
+	<?php echo $summary->goalsagain; ?></td>
+	
+	</tr>
+	<?php
+	}
+	?>
+
+</table>
+<?php
+}
+else
+{	
+?>
 <div class="container-fluid">
 <div class="row-fluid">
 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?></div>    
@@ -50,3 +100,6 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 
 </div>
+<?php
+} 
+?> 
