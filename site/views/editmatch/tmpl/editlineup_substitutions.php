@@ -7,8 +7,8 @@ defined('_JEXEC') or die('Restricted access');
 
 <!-- SUBSTITUTIONS START -->
 <div id="io">
-	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
-	<div id="ajaxresponse" >ajax</div>
+	<!-- nicht löschen -->
+	<div id="ajaxresponse" ></div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">

@@ -49,7 +49,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
-		$uri = JFactory::getURI();
+		//$uri = JFactory::getURI(); deprecated 13.3 (Platform) & 4.0 (CMS) - Use JUri directly.
+		$uri = JUri::getInstance();
 		$config = JComponentHelper::getParams('com_media');
         $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
 		$post = $jinput->post->getArray(array());
