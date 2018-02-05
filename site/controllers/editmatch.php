@@ -55,6 +55,30 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
         }
         
   
+	function save()
+	{
+$app = JFactory::getApplication();
+$post = $app->input->post->getArray(array());		
+		
+		
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $post['cfg_which_database'];
+$routeparameter['s'] = $post['s'];
+$routeparameter['p'] = $post['p'];
+$routeparameter['r'] = $post['r'];
+$routeparameter['division'] = $post['division'];
+$routeparameter['mode'] = $post['mode'];
+$routeparameter['order'] = $post['order'];
+$routeparameter['layout'] = $post['oldlayout'];
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+
+       $this->setRedirect($link,$msg);
+	
+	
+	
+	}
+	
 	
 	/**
 	 * sportsmanagementControllerEditMatch::saveshort()
