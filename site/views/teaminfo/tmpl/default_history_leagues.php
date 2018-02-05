@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      deafult_history_leagues.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teaminfo
@@ -19,48 +19,34 @@ defined('_JEXEC') or die('Restricted access');
 </h4>
 
 
-<table class="<?PHP echo $this->config['table_class']; ?>">
-
-<thead>
-<tr class="sectiontableheader">
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?>
-</th>
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?>
-</th>
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?>
-</th>
-
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?>
-</th>
-
-</tr>
-</thead>
-
+<div class="container-fluid">
+<div class="row-fluid">
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?></div>    
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?></div>    
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?></div>    
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?></div>
+</div>
 <?php
-	$k=0;
+
 	foreach ($this->leaguerankoverviewdetail as $league => $summary)
 	{
 	?>
-	<tr
-  class="<?php echo ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2'; ?>">
-	<td><?php echo $league; ?></td>
-	<td><?php echo $summary->match; ?></td>
+<div class="row-fluid">
+  
+	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $league; ?></div>
+	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->match; ?></div>
 	
-	<td><?php echo $summary->won; echo ' / '; ?>
+	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->won; echo ' / '; ?>
 	<?php echo $summary->draw; echo ' / '; ?>
-	<?php echo $summary->loss; ?></td>
+	<?php echo $summary->loss; ?></div>
 	
-	<td><?php echo $summary->goalsfor; echo ' : '; ?>
-	<?php echo $summary->goalsagain; ?></td>
-	
-	</tr>
+	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->goalsfor; echo ' : '; ?>
+	<?php echo $summary->goalsagain; ?></div>
+</div>	
+
 	<?php
-	$k = 1 - $k;
+
 	}
 	?>
 
-</table>
+</div>
