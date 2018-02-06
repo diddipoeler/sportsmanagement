@@ -45,14 +45,12 @@ var str_delete = '<?PHP echo JText::_('JACTION_DELETE') ?>';
 
 ?>
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='editlineup' method='post' style='display:inline' name='editlineup' >
-	<fieldset>
-		<div class="fltrt">
+<fieldset>
+<div class="fltrt">
+<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('editmatch.save', this.form);">
+<?php echo JText::_('JSAVE');?></button>
 
-					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
-
-
-				</div>
+		</div>
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
 		</div>
