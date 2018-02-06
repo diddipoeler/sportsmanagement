@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
@@ -31,7 +31,7 @@ if (!empty($this->matchstaffpositions))
 							<?php
 							foreach ($this->matchstaffs as $player)
 							{
-								if ($player->pposid==$pos->pposid && $player->ptid==$this->match->projectteam1_id)
+								if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam1_id)
 								{
 									?>
 									<li class="list">
@@ -68,7 +68,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 							<?php
 							foreach ($this->matchstaffs as $player)
 							{
-								if ($player->pposid==$pos->pposid && $player->ptid==$this->match->projectteam2_id)
+								if ($player->position_id == $pos->position_id && $player->ptid == $this->match->projectteam2_id)
 								{
 									?>
 									<li class="list">
