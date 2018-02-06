@@ -12,16 +12,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//jimport('joomla.application.component.model');
-//jimport('joomla.application.component.modelitem');
-//jimport('joomla.application.component.modelform');
-
 jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 
-
-
+/**
+ * sportsmanagementModelEditMatch
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEditMatch extends JModelAdmin
 {
 
@@ -43,6 +46,11 @@ const MATCH_ROSTER_RESERVE		= 3;
     static $oldlayout = '';
 	
 	
+    /**
+     * sportsmanagementModelEditMatch::__construct()
+     * 
+     * @return void
+     */
     function __construct()
 	{
 		 // Reference global application object
@@ -63,7 +71,66 @@ const MATCH_ROSTER_RESERVE		= 3;
         
     }    
     
+
+
+/**
+ * sportsmanagementModelEditMatch::updateReferees()
+ * 
+ * @param mixed $data
+ * @return void
+ */
+function updateReferees($data)
+	{
+		$app = JFactory::getApplication();
+        $config = JFactory::getConfig();
+        $option = JFactory::getApplication()->input->getCmd('option');
+        // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        
+        $sender = array( 
+    $config->get( 'mailfrom' ),
+    $config->get( 'fromname' ) 
+);
+
+        
+        
+        
+        }
+        
+	/**
+	 * sportsmanagementModelEditMatch::updateStaff()
+	 * 
+	 * @param mixed $data
+	 * @return void
+	 */
+	function updateStaff($data)
+	{
+$app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+// Create a new query object.		
+$db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);
 	
+$mid = $data['id'];
+$team = $data['team'];
+$positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
+
+
+
+}
+
+
+
+
+
+	
+/**
+ * sportsmanagementModelEditMatch::updateRoster()
+ * 
+ * @param mixed $data
+ * @return void
+ */
 function updateRoster($data)
     {
 $app = JFactory::getApplication();
@@ -143,6 +210,12 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	
 }
 	
+    /**
+     * sportsmanagementModelEditMatch::updItem()
+     * 
+     * @param mixed $data
+     * @return void
+     */
     function updItem($data)
     {
         $app = JFactory::getApplication();

@@ -55,6 +55,11 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
         }
         
   
+	/**
+	 * sportsmanagementControllerEditMatch::save()
+	 * 
+	 * @return void
+	 */
 	function save()
 	{
 $app = JFactory::getApplication();
@@ -62,6 +67,7 @@ $post = $app->input->post->getArray(array());
 		
 $model = $this->getModel('editmatch');
 $return = $model->updateRoster($post); 
+$return = $model->updateStaff($post); 
 		
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
