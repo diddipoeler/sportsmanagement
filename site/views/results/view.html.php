@@ -167,7 +167,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
         $this->positions = $projectpositions;   
-if ( $this->overallconfig[use_table_or_bootstrap] )
+if ( $this->overallconfig['use_table_or_bootstrap'] )
 {
 $this->setLayout('form');
 }
