@@ -194,7 +194,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         {
         $model->_success_text['Altersgruppen:'] = '';
         }  
-        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;
+        //$model->_success_text['Altersgruppen:'] .= $insert_agegroup;
+	$model->_success_text['Altersgruppen:'] = $model->_success_text['Altersgruppen:'].$insert_agegroup;
         }
         }
         
