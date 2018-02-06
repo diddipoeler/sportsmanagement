@@ -134,6 +134,8 @@ $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['p
 function updateRoster($data)
     {
 $app = JFactory::getApplication();
+$date = JFactory::getDate();
+$user = JFactory::getUser();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 // Create a new query object.		
 $db = sportsmanagementHelper::getDBConnection();
@@ -191,6 +193,8 @@ $temp->came_in = self::MATCH_ROSTER_STARTER;
 $temp->trikot_number = $trikotnumbers[$player_id];
 $temp->captain = $captain[$player_id];					
 $temp->ordering = $ordering;
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');
 try{					
 // Insert the object
 $resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);    
