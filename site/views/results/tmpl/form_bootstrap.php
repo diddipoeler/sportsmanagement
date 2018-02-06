@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $this->divclass = '';
+$this->divclassrest = '';
 $this->columns = 12;
 
 ?>
@@ -84,25 +85,39 @@ if ( $this->overallconfig['use_bootstrap_version'] )
 $this->divclass = "col-xs-".round((12 / $this->columns));	
 $this->divclass .= " col-sm-".round((12 / $this->columns));	
 $this->divclass .= " col-md-".round((12 / $this->columns));	
-$this->divclass .= " col-lg-".round((12 / $this->columns));	
+$this->divclass .= " col-lg-".round((12 / $this->columns));
+$this->divclassrest = "col-xs-3";	
+$this->divclassrest .= " col-sm-3";	
+$this->divclassrest .= " col-md-3";	
+$this->divclassrest .= " col-lg-3";	
 }
 else
 {
 $this->divclass = "span".round((12 / $this->columns));	
+$this->divclassrest = "span3";	
 }	
 ?>
 <div class="<?php echo $this->divclass; ?>" style="">
 <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 </div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></div>
-
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></div>
 <div class="<?php echo $this->divclass; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></div>
-
+<div class="<?php echo $this->divclass; ?>" style="">
+<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?>
+<br/>	
+<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?>
+<br/>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?>
+<br/>	
+</div>
+	
+<div class="<?php echo $this->divclassrest; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>	
+	
 <!-- Start of the matches for the selected round -->
 			<?php
 				$i = 0;
