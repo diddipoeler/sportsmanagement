@@ -24,7 +24,11 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' 
 
 class sportsmanagementModelEditMatch extends JModelAdmin
 {
-  
+
+const MATCH_ROSTER_STARTER		= 0;
+const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
+const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
+const MATCH_ROSTER_RESERVE		= 3;	
   /* interfaces */
 	var $latitude	= null;
 	var $longitude	= null;
