@@ -44,7 +44,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
         $this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
         $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
         $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
