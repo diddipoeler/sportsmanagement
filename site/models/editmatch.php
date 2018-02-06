@@ -68,14 +68,17 @@ function updateRoster($data)
     {
 $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-
+// Create a new query object.		
+$db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);
+	
 $mid = $data['id'];
 $team = $data['team'];
 $trikotnumbers = $data['trikot_number']; 
 $captain = $data['captain'];	
 $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
-$query = JFactory::getDBO()->getQuery(true);
+
 $query->clear();
 $query->select('mp.id');
 $query->from('#__sportsmanagement_match_player AS mp');
@@ -85,10 +88,26 @@ $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1
 $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
 $query->where('mp.match_id = '.$mid);
 $query->where('pt.id = '.$team);
-JFactory::getDBO()->setQuery($query);
-$result = JFactory::getDbo()->loadColumn();
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
+$db->setQuery($query);
+$result = $db->loadColumn();
+
+if ( $result )
+{
+$query->clear();
+$query->delete($db->quoteName('#__sportsmanagement_match_player'));
+$query->where('id IN ('.implode(",",$result).')');
+$db->setQuery($query);
+try{
+$result = $db->execute();	
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+	
+}	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
 	
 foreach ($positions AS $project_position_id => $pos)
 		{
@@ -107,7 +126,7 @@ $temp->captain = $captain[$player_id];
 $temp->ordering = $ordering;
 try{					
 // Insert the object
-$resultquery = JFactory::getDBO()->insertObject('#__sportsmanagement_match_player', $temp);    
+$resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);    
 }
 catch (Exception $e){
 $msg = $e->getMessage(); // Returns "Normally you would have other code...
