@@ -117,7 +117,7 @@ $this->divclassrest = "span3";
 </div>
 	
 <div class="<?php echo $this->divclassrest; ?>" style=""><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></div>	
-	
+</div>	
 <!-- Start of the matches for the selected round -->
 			<?php
 				$i = 0;
@@ -137,7 +137,7 @@ $this->divclassrest = "span3";
 				}
 			?>
 
-</div>
+
 <br/>
 <input type='hidden' name='option' value='com_sportsmanagement' />
 <input type='hidden' name='view' value='results' />
