@@ -66,56 +66,36 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         //$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
-        // layout editreferees
-        if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
-		{
-		$this->initEditReferees();  
-        }
-          
-        // layout edit
-        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
-		{
-		$this->initEditMatch(); 
-        }
-        
-        // layout editstats
-        if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
-		{
-		$this->initEditStats();
-        }
-        
-                // layout editevents
-        if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
-		{
-        $this->initEditEevents();
-        }
-        
-        // layout editlineup
-        if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
-		{
-//		        $javascript = "\n";
-//        $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsmanagement&";
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        $javascript .= JSession::getFormToken();    
-//        }
-//        else
-//        {    
-//        $javascript .= JUtility::getToken(); 
-//        }
-//        
-//        $javascript .= "=1';" . "\n";
-//        $javascript .= "var matchid = ".$this->match->id.";" . "\n";
-//        $javascript .= "var teamid = ".$this->tid.";" . "\n";
-//        $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
-//        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
-//        $document->addScriptDeclaration( $javascript );
-          
-		$this->initEditLineup();  
-        }
+	switch ( $this->getLayout() )
+        {
+        case 'editreferees';
+        case 'editreferees_3';
+	case 'editreferees_4';
+        $this->initEditReferees(); 
+	break;
+	case 'edit';
+        case 'edit_3';
+	case 'edit_4';
+        $this->initEditMatch(); 
+	break;
+	case 'editstats';
+        case 'editstats_3';
+	case 'editstats_4';
+        $this->initEditStats(); 
+	break;
+	case 'editevents';
+        case 'editevents_3';
+	case 'editevents_4';
+        $this->initEditEevents(); 
+	break;		
+	case 'editlineup';
+        case 'editlineup_3';
+	case 'editlineup_4';
+        $this->initEditLineup(); 
+	break;		
+	}
 
-
-		parent::display($tpl);
+	parent::display($tpl);
 	}
 
 
