@@ -1843,19 +1843,11 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 
 		if ($id > 0)
 		{
-			//$query .= ' AND ppos.position_id='.$id;
             $query->where('ppos.position_id = '.$id);
 		}
-		//$query .= ' ORDER BY pos.ordering';
         $query->order('pos.ordering');
         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
         try{
 		$db->setQuery($query);
@@ -1867,12 +1859,6 @@ catch (Exception $e){
 
 return $result;
 
-//		if (!$result = JFactory::getDbo()->loadObjectList('value'))
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog( __METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		return $result;
 	}
     
     /**
@@ -1894,19 +1880,19 @@ return $result;
         
         if ( $match_id )
         {
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.project_id = '.$project_id);    
+        $query->from('#__sportsmanagemen_match AS m ');
+        $query->join('INNER','#__sportsmanagemen_project_position AS ppos ON ppos.project_id = '.$project_id);    
         $query->where('m.id = '.$match_id);
         }
         else
         {
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ');
+        $query->from('#__sportsmanagemen_project_position AS ppos ');
         $query->where('ppos.project_id = '.$project_id);    
         }
         
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.position_id = ppos.position_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = pet.eventtype_id ');
+        $query->join('INNER','#__sportsmanagemen_position_eventtype AS pet ON pet.position_id = ppos.position_id ');
+        $query->join('INNER','#__sportsmanagemen_eventtype AS et ON et.id = pet.eventtype_id ');
         
         
         $query->where('et.published = 1');
@@ -1915,14 +1901,6 @@ return $result;
         $query->group('et.id');
                     
 		JFactory::getDbo()->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 		$result = JFactory::getDbo()->loadObjectList();
         if ( !$result )
