@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage results
@@ -158,9 +158,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         switch ($this->layout)
         {
             case 'form':
-            //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
-            
-        
         // projekt positionen                                                    
   		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 		if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$this->project->id))
@@ -169,7 +166,16 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
-        $this->positions = $projectpositions;            
+        $this->positions = $projectpositions;   
+if ( $this->overallconfig[use_table_or_bootstrap] )
+{
+$this->setLayout('form');
+}
+else
+{
+$this->setLayout('form_bootstrap');
+}
+			
             break;
         }
         
