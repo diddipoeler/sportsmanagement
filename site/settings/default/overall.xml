@@ -11,6 +11,13 @@
 			<option value="1">COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_TABLE</option>
 		</field>
 		
+		<field name="use_bootstrap_version" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_BOOTSTRAP_VERSION"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_BOOTSTRAP_VERSION">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_BOOTSTRAP_2</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_BOOTSTRAP_3</option>
+		</field>
+		
 <field name="show_uefa_heading" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_UEFA_HEADER"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_UEFA_HEADER">
