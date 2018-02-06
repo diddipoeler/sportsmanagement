@@ -71,7 +71,7 @@ function updateRoster($data)
 
 $mid = $data['id'];
 $team = $data['team'];
-
+//$positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 $query = JFactory::getDBO()->getQuery(true);
 $query->clear();
 $query->select('mp.id');
