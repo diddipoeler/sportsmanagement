@@ -71,6 +71,8 @@ $app = JFactory::getApplication();
 
 $mid = $data['id'];
 $team = $data['team'];
+$trikotnumbers = $data['trikot_number']; 
+$captain = $data['captain'];	
 $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
 $query = JFactory::getDBO()->getQuery(true);
@@ -100,6 +102,8 @@ $temp->match_id = $mid;
 $temp->teamplayer_id = $player_id;
 $temp->project_position_id= $pos->pposid;
 $temp->came_in = self::MATCH_ROSTER_STARTER;
+$temp->trikot_number = $trikotnumbers[$player_id];
+$temp->captain = $captain[$player_id];					
 $temp->ordering = $ordering;
 try{					
 // Insert the object
