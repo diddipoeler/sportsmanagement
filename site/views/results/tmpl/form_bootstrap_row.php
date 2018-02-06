@@ -49,7 +49,7 @@ $teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'val
 
 
 ?>
-<div class="container-fluid" style="">
+
 <div class="row-fluid" style="">
 <div class="<?php echo $this->divclass; ?>" style="">
 <input type='checkbox' id='cb<?php echo $i; ?>' name='cid[]' value='<?php echo $thismatch->id; ?>' />
@@ -188,7 +188,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatc
 
 
 </div>
-</div>
+
 <?php
 
 
