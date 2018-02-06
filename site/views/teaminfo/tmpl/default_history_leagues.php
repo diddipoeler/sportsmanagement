@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
+$this->columns = 4;
+$this->divclass = '';
 ?>
 
 <h4>
@@ -18,6 +20,9 @@ defined('_JEXEC') or die('Restricted access');
 
 </h4>
 <?php
+/** 
+ * tabelle oder bootstrap ansicht
+ */
 if ( $this->overallconfig['use_table_or_bootstrap'] )
 {
 ?>
@@ -68,13 +73,28 @@ if ( $this->overallconfig['use_table_or_bootstrap'] )
 }
 else
 {	
+/** 
+ * welche bootstrap version
+ */
+if ( $this->overallconfig['use_bootstrap_version'] )
+{
+$this->divclass = "col-xs-".round((12 / $this->columns));	
+$this->divclass .= " col-sm-".round((12 / $this->columns));	
+$this->divclass .= " col-md-".round((12 / $this->columns));	
+$this->divclass .= " col-lg-".round((12 / $this->columns));	
+}
+else
+{
+$this->divclass = "span".round((12 / $this->columns));	
+}		
+	
 ?>
 <div class="container-fluid">
 <div class="row-fluid">
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?></div>    
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?></div>    
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?></div>    
-<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?></div>
+<div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?></div>    
+<div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?></div>    
+<div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?></div>    
+<div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?></div>
 </div>
 <?php
 
@@ -82,20 +102,15 @@ else
 	{
 	?>
 <div class="row-fluid">
-  
-	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $league; ?></div>
-	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->match; ?></div>
-	
-	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->won; echo ' / '; ?>
+	<div class="<?php echo $this->divclass; ?>"><?php echo $league; ?></div>
+	<div class="<?php echo $this->divclass; ?>"><?php echo $summary->match; ?></div>
+	<div class="<?php echo $this->divclass; ?>"><?php echo $summary->won; echo ' / '; ?>
 	<?php echo $summary->draw; echo ' / '; ?>
 	<?php echo $summary->loss; ?></div>
-	
-	<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><?php echo $summary->goalsfor; echo ' : '; ?>
+	<div class="<?php echo $this->divclass; ?>"><?php echo $summary->goalsfor; echo ' : '; ?>
 	<?php echo $summary->goalsagain; ?></div>
 </div>	
-
 	<?php
-
 	}
 	?>
 
