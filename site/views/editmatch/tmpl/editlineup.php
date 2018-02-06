@@ -147,7 +147,7 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="close" id="close" value="0" />
 		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
-		
+		<input type="hidden" name="positions" value="<?php echo $this->positions; ?>" />
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
         
