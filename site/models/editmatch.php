@@ -68,6 +68,28 @@ function updateRoster($data)
     {
         $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+
+$mid = $data['id'];
+$team = $data['team'];
+
+$query = JFactory::getDBO()->getQuery(true);
+$query->clear();
+$query->select('mp.id');
+$query->from('#__sportsmanagement_match_player AS mp');
+$query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+$query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
+$query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
+$query->where('mp.match_id = '.$mid);
+$query->where('pt.id = '.$team);
+JFactory::getDBO()->setQuery($query);
+$result = JFactory::getDbo()->loadColumn();
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
+	
+	
+	
+	
 	
 }
 	
