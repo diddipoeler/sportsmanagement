@@ -120,12 +120,7 @@ $this->divclass = "span".round((12 / $this->columns));
 
 					$i++;
 				}
-			}
 			?>
-
-
-
-
 
 </div>
 <br/>
