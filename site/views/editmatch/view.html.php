@@ -296,28 +296,6 @@ $default_name_format = '';
 		$this->substitutions = $substitutions[$tid];
         $this->starters = $starters;
         $this->lists = $lists;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this teamname'.'<pre>'.print_r($this->teamname,true).'</pre>' ),'');
-        
-//        $javascript = "\n";
-//        $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsmanagement&";
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//        $javascript .= JSession::getFormToken();    
-//        }
-//        else
-//        {    
-//        $javascript .= JUtility::getToken(); 
-//        }
-//        
-//        $javascript .= "=1';" . "\n";
-//        $javascript .= "var matchid = ".$this->match->id.";" . "\n";
-//        $javascript .= "var teamid = ".$this->tid.";" . "\n";
-//        $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
-//        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
-//        $document->addScriptDeclaration( $javascript );    
-    
-    //return;
 }
     
 function initEditEevents()
