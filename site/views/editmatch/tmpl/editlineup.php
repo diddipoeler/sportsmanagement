@@ -63,8 +63,8 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?>    
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
+<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
+<li><a data-toggle="tab" href="#menu1"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
 <li><a data-toggle="tab" href="#menu2"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
 <li><a data-toggle="tab" href="#menu3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
 </ul>    
@@ -72,12 +72,12 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 <div class="tab-content">
 <div id="home" class="tab-pane fade in active"> 
 <?PHP
-echo $this->loadTemplate('substitutions');
+echo $this->loadTemplate('players');
 ?>
 </div>
 <div id="menu1" class="tab-pane fade">
 <?PHP
-echo $this->loadTemplate('players');
+echo $this->loadTemplate('substitutions');
 ?>
 </div>
 <div id="menu2" class="tab-pane fade">
