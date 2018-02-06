@@ -115,7 +115,7 @@ $this->divclass = "span".round((12 / $this->columns));
 /**
  * eingabe laden
  */                        
-					echo $this->loadTemplate('row_bootstrap');
+					echo $this->loadTemplate('row');
 					}
 
 					$i++;
