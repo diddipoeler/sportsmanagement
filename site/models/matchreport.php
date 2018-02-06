@@ -267,13 +267,13 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         switch($which)
         {
             case 'player':
-            $query->join('INNER','#__sportsmanagement_match_player AS mp ON ppos.id = mp.project_position_id');
+            $query->join('INNER','#__sportsmanagement_match_player AS mp ON ppos.position_id = mp.project_position_id');
             break;
             case 'staff':
-            $query->join('INNER','#__sportsmanagement_match_staff AS mp ON ppos.id = mp.project_position_id');
+            $query->join('INNER','#__sportsmanagement_match_staff AS mp ON ppos.position_id = mp.project_position_id');
             break;
             case 'referee':
-            $query->join('INNER','#__sportsmanagement_match_referee AS mp ON ppos.id = mp.project_position_id');
+            $query->join('INNER','#__sportsmanagement_match_referee AS mp ON ppos.position_id = mp.project_position_id');
             break;
         }
         
