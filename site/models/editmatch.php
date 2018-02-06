@@ -66,12 +66,13 @@ const MATCH_ROSTER_RESERVE		= 3;
 	
 function updateRoster($data)
     {
-        $app = JFactory::getApplication();
+$app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 
 $mid = $data['id'];
 $team = $data['team'];
-//$positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
+$positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
 $query = JFactory::getDBO()->getQuery(true);
 $query->clear();
 $query->select('mp.id');
@@ -87,7 +88,33 @@ $result = JFactory::getDbo()->loadColumn();
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
 	
-	
+foreach ($positions AS $project_position_id => $pos)
+		{
+			if (isset($data['position'.$project_position_id]))
+			{
+				foreach ($data['position'.$project_position_id] AS $ordering => $player_id)
+				{
+// Create and populate an object.
+$temp = new stdClass();
+$temp->match_id = $mid;
+$temp->teamplayer_id = $player_id;
+$temp->project_position_id= $pos->pposid;
+$temp->came_in = self::MATCH_ROSTER_STARTER;
+$temp->ordering = $ordering;
+try{					
+// Insert the object
+$resultquery = JFactory::getDBO()->insertObject('#__sportsmanagement_match_player', $temp);    
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+
+
+				}
+			}
+		}	
 	
 	
 	
