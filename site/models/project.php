@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      project.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage project
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -1877,6 +1849,67 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
+	// Select some fields
+        $query->clear();
+        $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');
+        $query->from('#__sportsmanagement_match_player AS mp');
+        
+        $query->where('mp.match_id = '.(int)$match_id);
+        $query->where('mp.came_in > 0');
+        $db->setQuery($query);
+	$result = $db->loadObjectList();
+	
+	foreach ($result AS $inout)
+	{
+        $query->clear();
+        $query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
+	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+        $query->from('#__sportsmanagement_person AS p');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
+        $query->where('tp1.id = '.$inout->teamplayer_id );
+        $db->setQuery($query);
+	$result1 = $db->loadObject();
+	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result1 ,true).'</pre>'),'Notice');
+	$inout->firstname = $result1->firstname;
+	$inout->nickname = $result1->nickname;
+	$inout->lastname = $result1->lastname;
+	$inout->playerid = $result1->playerid;
+	$inout->person_id = $result1->person_slug;
+	$query->clear();
+        $query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
+	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
+        $query->from('#__sportsmanagement_person AS p');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
+        $query->where('tp1.id = '.$inout->in_for );
+        $db->setQuery($query);
+	$result1 = $db->loadObject();
+	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result1 ,true).'</pre>'),'Notice');
+	$inout->out_firstname = $result1->out_firstname;
+	$inout->out_nickname = $result1->out_nickname;
+	$inout->out_lastname = $result1->out_lastname;
+	$inout->out_ptid = $result1->out_ptid;	
+	$inout->out_person_id = $result1->person_slug;
+	$query->clear();
+	$query->select('pt.team_id,pt.id AS ptid');
+	$query->from('#__sportsmanagement_project_team AS pt');
+	$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id ');
+	$query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st1.team_id');
+	$query->where('pt.project_id = '.(int)self::$projectid);
+	$query->where('tp1.id = '.$inout->teamplayer_id );
+	$db->setQuery($query);
+	$result1 = $db->loadObject();
+	$inout->ptid = $result1->ptid;	
+	$inout->team_id = $result1->team_id;
+	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+	
+	
+	
+        }	
+		
+		
+		
+		
+	/*
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_id'.'<pre>'.print_r($match_id,true).'</pre>' ),'');  
         
         // Select some fields
@@ -1931,7 +1964,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 		$db->setQuery($query);
 		//echo($this->_db->getQuery());
 		$result = $db->loadObjectList();
-        
+        */
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
  
         if ( !$result )
