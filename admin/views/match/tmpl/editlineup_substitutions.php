@@ -1,26 +1,19 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editlineup_substitutions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
-// &tmpl=component&view=match&layout=editlineup
-/*
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
-*/
-
 ?>
 <script type="text/javascript">
-<!--
-// url for ajax
-//var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
-//var teamid=<?php echo $this->tid; ?>;
-//var matchid=<?php echo $this->item->id; ?>;
 
-//var projecttime=<?php echo $this->eventsprojecttime; ?>;
-// We need to setup some text variables for translation
-//var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
-//-->
 </script>
 <!-- SUBSTITUTIONS START -->
 <div id="io">
