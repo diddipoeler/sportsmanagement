@@ -108,16 +108,9 @@ function updateReferees($data)
 	{
 $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-// Create a new query object.		
-$db = sportsmanagementHelper::getDBConnection();
-$query = $db->getQuery(true);
-	
-$mid = $data['id'];
-$team = $data['team'];
-$positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
-
-
-
+$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
+$result = sportsmanagementModelMatch::updateStaff($data);
+return $result;
 }
 
 
@@ -134,21 +127,11 @@ $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['p
 function updateRoster($data)
     {
 $app = JFactory::getApplication();
-$date = JFactory::getDate();
-$user = JFactory::getUser();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-// Create a new query object.		
-$db = sportsmanagementHelper::getDBConnection();
-$query = $db->getQuery(true);
-	
-$mid = $data['id'];
-$team = $data['team'];
-$trikotnumbers = $data['trikot_number']; 
-$captain = $data['captain'];	
 $data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 $result = sportsmanagementModelMatch::updateRoster($data);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
-	
+return $result;	
 }
 	
     /**
