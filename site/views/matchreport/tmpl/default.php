@@ -115,10 +115,7 @@ echo $this->loadTemplate('debug');
 	}
     if ( !empty( $this->matchevents ) )
 	{
-		if ( $this->config['show_timeline'] && $this->config['show_timeline_under_results']==0 )
-		{
-            $output['COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'] = 'timeline';
-		}
+		
         if ( $this->config['show_events'] )
 		{
 			switch ($this->config['use_tabs_events'])
