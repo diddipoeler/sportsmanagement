@@ -2236,43 +2236,43 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	 */
 	function updateStaff($post)
 	{
-		$app = JFactory::getApplication();
+	$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
-        $result = true;
-		$positions = $post['staffpositions'];
-		$mid = $post['id'];
-		$team = $post['team'];
-        
-        //$app->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        $query = JFactory::getDBO()->getQuery(true);
+	$date = JFactory::getDate();
+$user = JFactory::getUser();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($post,true).'</pre>'),'Notice');	
+// Create a new query object.		
+$db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);
 
         $query->clear();
         $query->select('mp.id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.team_staff_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->from('#__sportsmanagement_match_staff AS mp');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.team_staff_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         $query->where('mp.match_id = '.$mid);
         $query->where('pt.id = '.$team);
-        
-        JFactory::getDBO()->setQuery($query);
-        $result = JFactory::getDbo()->loadColumn();
+        $db->setQuery($query);
+$result = $db->loadColumn();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
         
         if ( $result )
         {
         $query->clear();
-        $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'));
+        $query->delete(JFactory::getDBO()->quoteName('#__sportsmanagement_match_staff'));
         $query->where('id IN ('.implode(",",$result).')');
-        JFactory::getDBO()->setQuery($query);
+        try{
+$result = $db->execute();	
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
         
-		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-			$this->setError(JFactory::getDbo()->getErrorMsg());
-			$result = false;
-		}
+		
         }
         
 		foreach ($positions AS $project_position_id => $pos)
@@ -2281,33 +2281,27 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 			{
 				foreach ($post['staffposition'.$project_position_id] AS $ordering => $player_id)
 				{
-					$record = JTable::getInstance('Matchstaff','sportsmanagementTable');
-					$record->match_id = $mid;
-					$record->team_staff_id = $player_id;
-					$record->project_position_id = $pos->pposid;
-					$record->ordering = $ordering;
-                    
-                    //$app->enqueueMessage('sportsmanagementModelMatch updateStaff match_id<br><pre>'.print_r($mid, true).'</pre><br>','');
-                    //$app->enqueueMessage('sportsmanagementModelMatch updateStaff team_staff_id<br><pre>'.print_r($player_id, true).'</pre><br>','');
-                    //$app->enqueueMessage('sportsmanagementModelMatch updateStaff project_position_id<br><pre>'.print_r($pos->pposid, true).'</pre><br>','');
-                    //$app->enqueueMessage('sportsmanagementModelMatch updateStaff ordering<br><pre>'.print_r($ordering, true).'</pre><br>','');
-                    
-					/*
-                    if (!$record->check())
-					{
-						$this->setError($record->getError());
-						$result = false;
-					}
-                    */
-					if (!$record->store())
-					{
-						$this->setError($record->getError());
-						$result = false;
-					}
+				// Create and populate an object.
+$temp = new stdClass();
+$temp->match_id = $mid;
+$temp->teamplayer_id = $player_id;
+$temp->project_position_id= $pos->pposid;
+$temp->ordering = $ordering;
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');
+try{					
+// Insert the object
+$resultquery = $db->insertObject('#__sportsmanagement_match_staff', $temp);    
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 				}
 			}
 		}
-		//die();
+
 		return true;
 	}
     
