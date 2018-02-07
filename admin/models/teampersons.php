@@ -42,7 +42,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                 $config['filter_fields'] = array(
                         'ppl.lastname',
                         'tp.person_id',
-                        'ppl.project_position_id',
+                        'ppl.position_id',
                         'ppl.published',
                         'ppl.ordering',
                         'ppl.picture',
