@@ -2246,7 +2246,7 @@ $user = JFactory::getUser();
 $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
 $result = true;
-	$positions = $post['staffposition'];
+	$positions = $post['staffpositions'];
 	$mid = $post['id'];
 	$team = $post['team'];
 		
