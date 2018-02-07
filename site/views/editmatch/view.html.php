@@ -63,7 +63,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($this->match,true).'</pre>'),'');
         
         //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
+        $document->addScript(JURI::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');
         //$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
 	switch ( $this->getLayout() )
