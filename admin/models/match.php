@@ -2295,7 +2295,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 				// Create and populate an object.
 $temp = new stdClass();
 $temp->match_id = $mid;
-$temp->teamplayer_id = $player_id;
+$temp->team_staff_id = $player_id;
 $temp->project_position_id= $pos->pposid;
 $temp->ordering = $ordering;
 $temp->modified = $date->toSql();
