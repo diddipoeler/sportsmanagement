@@ -2071,13 +2071,15 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 		}
         // Select some fields
         $query->select('me.event_type_id,me.id as event_id,me.event_time,me.notice,me.projectteam_id AS ptid,me.event_sum');
-        $query->select('pt.team_id AS team_id');
+        //$query->select('pt.team_id AS team_id');
+	$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_id');
         $query->select('et.name AS eventtype_name');
         $query->select('t.name AS team_name');
         $query->select('tp.picture AS tppicture1');
-        $query->select('p.id AS playerid,p.firstname AS firstname1,p.nickname AS nickname1,p.lastname AS lastname1,p.picture AS picture1');
-        // From 
-		$query->from('#__sportsmanagement_match_event AS me');
+        $query->select('p.firstname AS firstname1,p.nickname AS nickname1,p.lastname AS lastname1,p.picture AS picture1');
+        $query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS playerid');
+	// From 
+	$query->from('#__sportsmanagement_match_event AS me');
         $query->join($join,'#__sportsmanagement_eventtype AS et ON me.event_type_id = et.id');
         $query->join($join,'#__sportsmanagement_project_team AS pt ON me.projectteam_id = pt.id');
         $query->join($join,'#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
