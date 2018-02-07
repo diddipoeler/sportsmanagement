@@ -146,7 +146,7 @@ $team = $data['team'];
 $trikotnumbers = $data['trikot_number']; 
 $captain = $data['captain'];	
 $data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
-$resutl = sportsmanagementModelMatch->updateRoster($data);
+$result = sportsmanagementModelMatch::updateRoster($data);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
 	
 }
