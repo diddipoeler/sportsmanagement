@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
@@ -113,8 +113,8 @@ echo $this->loadTemplate('debug');
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_PLAYGROUND'] = 'rosterplayground';
 	}
-    if ( !empty( $this->matchevents ) )
-	{
+//    if ( !empty( $this->matchevents ) )
+//	{
 		if ( $this->config['show_timeline'] && $this->config['show_timeline_under_results']==0 )
 		{
             $output['COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'] = 'timeline';
@@ -150,7 +150,7 @@ echo $this->loadTemplate('debug');
                     
         }
         
-    }    
+//    }    
     if ( $this->config['show_stats'] && ( $hasMatchPlayerStats || $hasMatchStaffStats ) )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'] = 'stats';
