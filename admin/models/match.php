@@ -2288,9 +2288,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         
 		foreach ($positions AS $project_position_id => $pos)
 		{
-			if (isset($post['staffpositions'.$project_position_id]))
+			if (isset($post['staffposition'.$project_position_id]))
 			{
-				foreach ($post['staffpositions'.$project_position_id] AS $ordering => $player_id)
+				foreach ($post['staffposition'.$project_position_id] AS $ordering => $player_id)
 				{
 				// Create and populate an object.
 $temp = new stdClass();
