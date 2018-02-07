@@ -80,7 +80,7 @@ JHtml::_('behavior.modal');
                         ?>
 						<th width="">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->sortDirection, $this->sortColumn );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.position_id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
