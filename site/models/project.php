@@ -1863,6 +1863,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	{
         $query->clear();
         $query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
+	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
         $query->from('#__sportsmanagement_person AS p');
         $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
         $query->where('tp1.id = '.$inout->teamplayer_id );
@@ -1873,9 +1874,10 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$inout->nickname = $result1->nickname;
 	$inout->lastname = $result1->lastname;
 	$inout->playerid = $result1->playerid;
-	
+	$inout->person_id = $result1->person_slug;
 	$query->clear();
         $query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
+	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
         $query->from('#__sportsmanagement_person AS p');
         $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
         $query->where('tp1.id = '.$inout->in_for );
@@ -1886,7 +1888,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$inout->out_nickname = $result1->out_nickname;
 	$inout->out_lastname = $result1->out_lastname;
 	$inout->out_ptid = $result1->out_ptid;	
-	
+	$inout->out_person_id = $result1->person_slug;
 	$query->clear();
 	$query->select('pt.team_id,pt.id AS ptid');
 	$query->from('#__sportsmanagement_project_team AS pt');
@@ -1897,6 +1899,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$db->setQuery($query);
 	$result1 = $db->loadObject();
 	$inout->ptid = $result1->ptid;	
+	$inout->team_id = $result1->team_id;
 	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 	
 	
