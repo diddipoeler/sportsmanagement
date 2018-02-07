@@ -16,7 +16,7 @@ $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
-var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
+var baseajaxurl = '<?PHP echo JUri::root()."administrator/index.php?option=com_sportsmanagement&"; ?>
 <?PHP
 //        if( version_compare(JVERSION,'3.0.0','ge') ) 
 //        {
