@@ -25,7 +25,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 <!-- SUBSTITUTIONS START -->
 <div id="io">
 	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
-	<div id="ajaxresponse" >ajax</div>
+	<div id="ajaxresponse" >&nbsp;</div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">
@@ -50,10 +50,10 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 				</thead>
 				<tbody>
 					<?php
-					$k=0;
-					for ($i=0; $i < count($this->substitutions); $i++)
+					$k = 0;
+					for ($i = 0; $i < count($this->substitutions); $i++)
 					{
-						$substitution=$this->substitutions[$i];
+						$substitution = $this->substitutions[$i];
 						?>
 						<tr id="sub-<?php echo $substitution->id; ?>" class="<?php echo "row$k"; ?>">
 							<td>
@@ -67,7 +67,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 							</td>
 							<td>
 								<?php 
-								if($substitution->came_in==1) {
+								if($substitution->came_in == 1) {
 									echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
 								} 
 								?>
@@ -77,7 +77,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 							</td>
 							<td>
 								<?php
-								$time=(!is_null($substitution->in_out_time) && $substitution->in_out_time > 0) ? $substitution->in_out_time : '--';
+								$time = (!is_null($substitution->in_out_time) && $substitution->in_out_time > 0) ? $substitution->in_out_time : '--';
 								echo $time;
 								?>
 							</td>
