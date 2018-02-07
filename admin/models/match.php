@@ -2151,78 +2151,79 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 	 */
 	function updateRoster($post)
 	{
-		$app = JFactory::getApplication();
+	$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
+	$date = JFactory::getDate();
+$user = JFactory::getUser();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($post,true).'</pre>'),'Notice');	
+// Create a new query object.		
+$db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);	
         $result = true;
-		$positions = $post['positions'];
-		$mid = $post['id'];
-		$team = $post['team'];
+	$positions = $post['positions'];
+	$mid = $post['id'];
+	$team = $post['team'];
         $trikotnumbers = $post['trikot_number']; 
         $captain = $post['captain'];
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data'.'<pre>'.print_r($post,true).'</pre>' ),'');
-        
-		// we first remove the records of starter for this team and this game then add them again from updated data.
-        $query = JFactory::getDBO()->getQuery(true);
 
-        $query->clear();
-        $query->select('mp.id');
-        $query->from('#__sportsmanagement_match_player AS mp');
-        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
-        $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
-        $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
-        $query->where('mp.match_id = '.$mid);
-        $query->where('pt.id = '.$team);
-        
-        JFactory::getDBO()->setQuery($query);
-        $result = JFactory::getDbo()->loadColumn();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
-        
-        if ( $result )
-        {
-        $query->clear();
-        $query->delete(JFactory::getDBO()->quoteName('#__sportsmanagement_match_player'));
-        $query->where('id IN ('.implode(",",$result).')');
-        JFactory::getDBO()->setQuery($query);
-        
-		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg'.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'');
-		sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-		$result = false;
-		}
-        }
-		foreach ($positions AS $project_position_id => $pos)
+$query->clear();
+$query->select('mp.id');
+$query->from('#__sportsmanagement_match_player AS mp');
+$query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+$query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
+$query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
+$query->where('mp.match_id = '.$mid);
+$query->where('pt.id = '.$team);
+$db->setQuery($query);
+$result = $db->loadColumn();
+if ( $result )
+{
+$query->clear();
+$query->delete($db->quoteName('#__sportsmanagement_match_player'));
+$query->where('id IN ('.implode(",",$result).')');
+$db->setQuery($query);
+try{
+$result = $db->execute();	
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+	
+}	
+		
+foreach ($positions AS $project_position_id => $pos)
 		{
 			if (isset($post['position'.$project_position_id]))
 			{
 				foreach ($post['position'.$project_position_id] AS $ordering => $player_id)
 				{
-					$record = JTable::getInstance('Matchplayer','sportsmanagementTable');
-					$record->match_id			= $mid;
-					$record->teamplayer_id		= $player_id;
-					$record->project_position_id= $pos->pposid;
-                    $record->trikot_number = $trikotnumbers[$player_id];
-                    $record->captain = $captain[$player_id];
-					$record->came_in			= self::MATCH_ROSTER_STARTER;
-					$record->ordering			= $ordering;
-					/*
-                    if (!$record->check())
-					{
-						$this->setError($record->getError());
-						$result=false;
-					}
-                    */
-					if (!$record->store())
-					{
-						$this->setError($record->getError());
-						$result=false;
-					}
+// Create and populate an object.
+$temp = new stdClass();
+$temp->match_id = $mid;
+$temp->teamplayer_id = $player_id;
+$temp->project_position_id= $pos->pposid;
+$temp->came_in = self::MATCH_ROSTER_STARTER;
+$temp->trikot_number = $trikotnumbers[$player_id];
+$temp->captain = $captain[$player_id];					
+$temp->ordering = $ordering;
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');
+try{					
+// Insert the object
+$resultquery = $db->insertObject('#__sportsmanagement_match_player', $temp);    
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 				}
 			}
-		}
+		}	
+		
 		return $result;
 	}
     
