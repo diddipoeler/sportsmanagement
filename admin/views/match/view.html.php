@@ -603,7 +603,7 @@ $javascript .= "}". "\n";
 		// build position select
 		$selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
 		$selectpositions = array_merge($selectpositions,$model->getProjectPositionsOptions(0, 1, $this->project_id));
-		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text', NULL, false, true);
+		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', NULL, false, true);
 		
         // build player select
 		//$allplayers = $model->getTeamPlayers($tid);
