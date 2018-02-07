@@ -113,8 +113,8 @@ echo $this->loadTemplate('debug');
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_PLAYGROUND'] = 'rosterplayground';
 	}
-//    if ( !empty( $this->matchevents ) )
-//	{
+    if ( !empty( $this->matchevents ) )
+	{
 		if ( $this->config['show_timeline'] && $this->config['show_timeline_under_results']==0 )
 		{
             $output['COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'] = 'timeline';
@@ -150,7 +150,7 @@ echo $this->loadTemplate('debug');
                     
         }
         
-//    }    
+    }    
     if ( $this->config['show_stats'] && ( $hasMatchPlayerStats || $hasMatchStaffStats ) )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'] = 'stats';

@@ -1874,19 +1874,19 @@ return $result;
         
         if ( $match_id )
         {
-        $query->from('#__sportsmanagemen_match AS m ');
-        $query->join('INNER','#__sportsmanagemen_project_position AS ppos ON ppos.project_id = '.$project_id);    
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.project_id = '.$project_id);    
         $query->where('m.id = '.$match_id);
         }
         else
         {
-        $query->from('#__sportsmanagemen_project_position AS ppos ');
+        $query->from('#__sportsmanagement_project_position AS ppos ');
         $query->where('ppos.project_id = '.$project_id);    
         }
         
         
-        $query->join('INNER','#__sportsmanagemen_position_eventtype AS pet ON pet.position_id = ppos.position_id ');
-        $query->join('INNER','#__sportsmanagemen_eventtype AS et ON et.id = pet.eventtype_id ');
+        $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.position_id = ppos.position_id ');
+        $query->join('INNER','#__sportsmanagement_eventtype AS et ON et.id = pet.eventtype_id ');
         
         
         $query->where('et.published = 1');
