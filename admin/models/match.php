@@ -1240,11 +1240,11 @@ $tournement_round = $this->jsmdb->loadResult();
             {
                 case 1:
                 $position_value = 'COM_SPORTSMANAGEMENT_SOCCER_F_PLAYERS';
-                $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',JText::_($position_value) ),'Error');
+                //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',JText::_($position_value) ),'Error');
                 break;
                 case 2:
                 $position_value = 'COM_SPORTSMANAGEMENT_SOCCER_F_COACH';
-                $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',JText::_($position_value)),'Error');
+                //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',JText::_($position_value)),'Error');
                 break;
             }  
 //		    $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NOPLAYER_IN_POSITION',$position_value),'Error');  
