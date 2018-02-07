@@ -11,28 +11,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//// welche joomla version ?
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('jquery.framework');
-//}
-//
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
-
+$document = JFactory::getDocument();
+$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
 var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
 <?PHP
-        if( version_compare(JVERSION,'3.0.0','ge') ) 
-        {
+//        if( version_compare(JVERSION,'3.0.0','ge') ) 
+//        {
         echo JSession::getFormToken()."=1";
-        }
-        else
-        {    
-        echo JUtility::getToken()."=1";
-        }
+//        }
+//        else
+//        {    
+//        echo JUtility::getToken()."=1";
+//        }
 ?>';
 var matchid = <?PHP echo $this->match->id ?>;
 var teamid = <?PHP echo $this->tid ?>;
@@ -92,25 +85,7 @@ echo $this->loadTemplate('players_trikot_numbers');
 </div>
     
 <?PHP    
-//// Define tabs options for version of Joomla! 3.1
-//$tabsOptionsJ31 = array(
-//            "active" => "panel1" // It is the ID of the active tab.
-//        );
-//
-//echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
-//echo $this->loadTemplate('substitutions');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
-//echo $this->loadTemplate('players');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
-//echo $this->loadTemplate('staff');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
-//echo $this->loadTemplate('players_trikot_numbers');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.endTabSet');    
+
     }
         else
     {
@@ -153,14 +128,14 @@ echo $this->loadTemplate('players_trikot_numbers');
         
 <input type="hidden" id="token" name="token" value="
 <?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
 echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
+//}
+//else
+//{    
+//echo JUtility::getToken(); 
+//}
 
 
 ?>" />	
