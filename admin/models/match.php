@@ -2170,7 +2170,14 @@ $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
 $query->where('mp.match_id = '.$mid);
 $query->where('pt.id = '.$team);
 $db->setQuery($query);
+try{		
 $result = $db->loadColumn();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}	
 if ( $result )
 {
 $query->clear();
@@ -2238,7 +2245,11 @@ $user = JFactory::getUser();
 // Create a new query object.		
 $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
-
+$result = true;
+	$positions = $post['positions'];
+	$mid = $post['id'];
+	$team = $post['team'];
+		
         $query->clear();
         $query->select('mp.id');
         $query->from('#__sportsmanagement_match_staff AS mp');
@@ -2248,8 +2259,14 @@ $query = $db->getQuery(true);
         $query->where('mp.match_id = '.$mid);
         $query->where('pt.id = '.$team);
         $db->setQuery($query);
-$result = $db->loadColumn();
-        
+try{
+		$result = $db->loadColumn();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result'.'<pre>'.print_r($result,true).'</pre>' ),'');
         
         if ( $result )
