@@ -194,11 +194,6 @@ else
 	<?php
 }
 
-if ( $this->config['show_timeline'] && $this->config['show_timeline_under_results'] )
-{
-echo $this->loadTemplate('timeline');
-}
-
 ?>
 
 <!-- START of decision info -->
