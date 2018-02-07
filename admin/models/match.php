@@ -1828,7 +1828,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
        $result = '';
         $query = $db->getQuery(true);
         
-        $query->select('ppos.position_id AS value,pos.name AS text,pos.id AS posid,pos.id AS pposid');
+        $query->select('ppos.id AS value,pos.name AS text,pos.id AS posid,pos.id AS pposid');
         $query->from('#__sportsmanagement_position AS pos ');
         $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id ');
         
