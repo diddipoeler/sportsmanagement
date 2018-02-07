@@ -11,9 +11,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-//echo '<pre>',print_r($this->team1,true),'</pre><br>';
-//echo '<pre>',print_r($this->team2,true),'</pre><br>';
-
 ?>
 
 <!-- START: game result -->
@@ -195,11 +192,6 @@ else
 		?>
 	</table>
 	<?php
-}
-
-if ( $this->config['show_timeline_under_results'] )
-{
-echo $this->loadTemplate('timeline');
 }
 
 ?>
