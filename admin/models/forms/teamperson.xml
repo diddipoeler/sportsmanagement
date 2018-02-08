@@ -12,13 +12,23 @@
 		/>
 		  <field
 			name="projectteam_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECTTEAM_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PROJECTTEAM_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		<field
 			name="person_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PERSON_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PERSON_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		
 		<field
