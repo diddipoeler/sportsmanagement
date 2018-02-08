@@ -314,7 +314,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
        // Select some fields
 	   $query->select('pt.id,pt.id as ptid');
        $query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
-       //$query->select('ppos.position_id,ppos.id AS pposid');
+       $query->select('ppos.id AS pposid');
        $query->select('st.team_id,st.id as stid');
        
        $query->select('tp.person_id,tp.picture');
@@ -342,7 +342,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	   $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 	   $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id ');
 	   $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id = p.id ');
-//	   $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id ');
+	   $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
 //	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
        
 //       $query->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
@@ -350,7 +350,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 //	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
        
        $query->where('pt.project_id = '.$this->projectid);
-       
+       $query->where('ppos.project_id = '.$this->projectid);
        $query->where('mp.match_id = '.(int)$this->matchid);
        $query->where('p.published = 1');
 
