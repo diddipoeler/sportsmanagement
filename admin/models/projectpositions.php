@@ -145,9 +145,49 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
     
     
    
-   function updateprojectpositions($items=NULL)
+   function updateprojectpositions($items=NULL,$project_id=0)
    {
-	   
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');	   	   
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'');	   
+
+
+$this->jsmquery->clear();
+$this->jsmquery->select('mp.match_id');
+$this->jsmquery->from('#__sportsmanagement_match_player as mp');
+$this->jsmquery->join('INNER','#__sportsmanagement_match as m ON m.id = mp.match_id');
+$this->jsmquery->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
+$this->jsmquery->where('r.project_id = '.$project_id);
+$this->jsmquery->where('mp.project_position_id != 0');
+$this->jsmdb->setQuery($this->jsmquery);
+$position = $this->jsmdb->loadColumn();
+
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position <br><pre>'.print_r($position ,true).'</pre>'),'');	   
+$result = array_unique($position );
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result ,true).'</pre>'),'');	   
+
+$match_ids = implode(",",$result);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');	   
+
+
+
+foreach( $items as $item )
+{
+$this->jsmquery->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = ' . $item->position_id
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = '. $item->positiontoolid, 
+    $this->jsmdb->quoteName('match_id') . ' IN (' . $match_ids . ')'
+);
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
+
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();	   
 	   
    }
 	
