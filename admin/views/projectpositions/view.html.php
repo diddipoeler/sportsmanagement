@@ -69,6 +69,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $this->project_id = $this->jinput->get('pid');
         $this->jinput->set('pid', $this->project_id);
 
+        $this->model->updateprojectpositions($items,$this->project_id);
+        
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
