@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_rosterplayground.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
@@ -11,6 +11,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $startfade = $this->config['roster_playground_player_fade'];
+
+//echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
+//echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
 
 if ( $this->config['roster_playground_player_jquery_fade'] )
 {
