@@ -314,7 +314,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
        // Select some fields
 	   $query->select('pt.id,pt.id as ptid');
        $query->select('p.firstname,p.nickname,p.lastname,p.picture AS ppic');
-       $query->select('ppos.position_id,ppos.id AS pposid');
+       //$query->select('ppos.position_id,ppos.id AS pposid');
        $query->select('st.team_id,st.id as stid');
        
        $query->select('tp.person_id,tp.picture');
@@ -324,7 +324,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
        switch($which)
         {
             case 'player':
-            $query->select('mp.trikot_number,mp.teamplayer_id,mp.captain');
+            $query->select('mp.trikot_number,mp.teamplayer_id,mp.captain,mp.project_position_id as position_id');
             $query->select('tp.jerseynumber');
             $query->from('#__sportsmanagement_match_player AS mp');
             $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = mp.teamplayer_id ');
@@ -332,7 +332,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
             $query->order('mp.ordering, tp.jerseynumber, p.lastname');
             break;
             case 'staff':
-            $query->select('mp.team_staff_id');
+            $query->select('mp.team_staff_id,mp.project_position_id as position_id');
             $query->from('#__sportsmanagement_match_staff AS mp');
             $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = mp.team_staff_id ');
             break;
@@ -345,9 +345,9 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 //	   $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id ');
 //	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
        
-       $query->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
-       $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
-	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
+//       $query->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
+//       $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+//	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
        
        $query->where('pt.project_id = '.$this->projectid);
        
