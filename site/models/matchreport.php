@@ -278,6 +278,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         }
         
         $query->where('mp.match_id = '.(int)$this->matchid);
+	$query->where('ppos.project_id = '.(int)$this->projectid);    
         $query->group('pos.id');
         $query->order('pos.ordering ASC');
         
