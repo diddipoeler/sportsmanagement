@@ -108,46 +108,39 @@ JHtml::_('behavior.modal');
                     $inputappend = '';
                     ?>
                     <td >
-                    <?php if ($row->checked_out) : ?>
+                        <?php if ($row->checked_out) : ?>
                             <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'rosterpositions.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . (int) $row->id); ?>">
-                            <?php echo $this->escape($row->name); ?></a>
-                            <?php else : ?>
-                                <?php echo $this->escape($row->name); ?>
+                                <?php echo $this->escape($row->name); ?></a>
+                        <?php else : ?>
+                            <?php echo $this->escape($row->name); ?>
                         <?php endif; ?>
-
-
-
-    <?php //echo $checked;  ?>
-
+                        <?php //echo $checked;  ?>
                         <?php //echo $row->name; ?>
                         <div class="small">
-                        <?php //echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
+                            <?php //echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
                     </td>
-                            <?php
-                            ?>
-
                     <td><?php echo $row->short_name; ?></td>
                     <td class="center hidden-phone"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                     <td class="order center hidden-phone">
                         <span>
-    <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'rosterpositions.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?>
+                            <?php echo $this->pagination->orderUpIcon($i, $i > 0, 'rosterpositions.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?>
                         </span>
                         <span>
                             <?php echo $this->pagination->orderDownIcon($i, $n, $i < $n, 'rosterpositions.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?>
-    <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
+                            <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
                         <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
                                class="form-control form-control-inline" style="text-align: center" />
                     </td>
                     <td class="center hidden-phone"><?php echo $row->id; ?></td>
                 </tr>
-    <?php
-    $k = 1 - $k;
-}
-?>
+                <?php
+                $k = 1 - $k;
+            }
+            ?>
         </tbody>
     </table>
 </div>
