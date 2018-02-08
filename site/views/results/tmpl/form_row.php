@@ -11,80 +11,25 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
 
-//JHTML::_('behavior.modal', 'a.user-modal');
-
+if ( $this->overallconfig['use_jquery_modal'] )
+{
 ?>
 <style>
-/*  #myModal1 .modal-dialog {
-    width: 80%;
-  }
-*/  
 
-/*
 .modaljsm {
     width: 80%;
     height: 60%;
   }  
-  */
 
-/*  
-.modal-dialog {
-    width: 80%;
-  }  
-.modal-dialog,
-.modal-content {
-    height: 95%;
-}  
-.modal-body {
-    height: 90%;
-}  
-*/
 </style>
 
 
 <script type="text/javascript" language="javascript" >
-
-
-
-      
-function fillContainer(site)
-      { 
-        var string = "echo $this->loadTemplate('edit');";
-        // Speichert den Inhalt des Attributes in der Variablen site.
-        //var site = $(this).data('site'); 
-        alert(site);
-        document.getElementById('bigcontent').innerHTML = string;
-        // Seite laden und in .content einsetzen.
-        //jQuery("#bigcontent").load('edit');
-        //jQuery('#bigcontent').load("http://www.google.de");
-        jQuery('#content').load(site); 
-      }      
-      
-      function fillContainer2()
-      { var string = '<div class="container"><div class="header"><img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" /></div><div class="content"><h1>Titel</h1><div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.</div></div><div class="footer">&copy; Copyright 2001</div></div>';
-        document.getElementById('bigcontent').innerHTML = string;
-      }
- 
-      function fillContainer3()
-      { var string = '<div class="container">'+
-                     '  <div class="header">'+
-                     '    <img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" />'+
-                     '  </div>'+
-                     '  <div class="content">'+
-                     '    <h1>Titel</h1>'+
-                     '    <div class="text">'+
-                     '      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.'+
-                     '    </div>'+
-                     '  </div>'+
-                     '  <div class="footer">'+
-                     '    &copy; Copyright 2001'+
-                     '  </div>'+
-                     '</div>';
-        document.getElementById('bigcontent').innerHTML = string;
-      }
-    </script>
+    
+</script>
 
 <?php 
+}	
 		$match = $this->game;
 		$i = $this->i;
 		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
@@ -227,7 +172,16 @@ else
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
+if ( $this->overallconfig['use_jquery_modal'] )
+{
+?>	
+<a href="<?php echo $url;?>" rel="modaljsm:open">Login</a>
+<?php		
+}
+else
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);        
+}
 ?>			
 
 		<!-- Edit home team -->
