@@ -188,7 +188,7 @@ $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_playe
 
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();	   
-	   
+}	   
    }
 	
    /**
