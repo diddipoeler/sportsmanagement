@@ -6,19 +6,34 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true"
 		/>
 		  <field
 			name="projectteam_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECTTEAM_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PROJECTTEAM_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		<field
 			name="person_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PERSON_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PERSON_ID" 
+			class="readonly" 
+			size="11" 
 			default="0"
+			readonly="true" 
 		/>
 		
 		<field

@@ -108,7 +108,7 @@ function updateReferees($data)
 	{
 $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
-$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
+$data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
 $result = sportsmanagementModelMatch::updateStaff($data);
 return $result;
 }
