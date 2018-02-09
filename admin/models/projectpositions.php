@@ -158,8 +158,16 @@ $this->jsmquery->join('INNER','#__sportsmanagement_match as m ON m.id = mp.match
 $this->jsmquery->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
 $this->jsmquery->where('r.project_id = '.$project_id);
 $this->jsmquery->where('mp.project_position_id != 0');
+try{
 $this->jsmdb->setQuery($this->jsmquery);
 $position = $this->jsmdb->loadColumn();
+ }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+
 
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position <br><pre>'.print_r($position ,true).'</pre>'),'');	   
 $result = array_unique($position );
@@ -183,11 +191,19 @@ $conditions = array(
     $this->jsmdb->quoteName('project_position_id') . ' = '. $item->positiontoolid, 
     $this->jsmdb->quoteName('match_id') . ' IN (' . $match_ids . ')'
 );
+try{
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
 
 $this->jsmdb->setQuery($this->jsmquery);
-$resultupdate = $this->jsmdb->execute();	   
+$resultupdate = $this->jsmdb->execute();
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+	
 }	   
    }
 	
