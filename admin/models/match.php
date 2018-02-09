@@ -2325,7 +2325,12 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	 */
 	function savesubstitution($data)
 	{
-		
+		$app = JFactory::getApplication();
+        $option = JFactory::getApplication()->input->getCmd('option');
+	    $date = JFactory::getDate();
+        $user = JFactory::getUser();
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
         if ( empty($data['project_position_id'])  )
 		{
 		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'));
@@ -2375,12 +2380,12 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 /**
  * retrieve normal position of player getting in
  */
-			$this->jsmquery->clear();
-            $this->jsmquery->select('project_position_id');
-            $this->jsmquery->from('#__sportsmanagement_team_player AS pt');
-            $this->jsmquery->where('pt.player_id = '.$player_in);
-			$this->jsmdb->setQuery( $this->jsmquery );
-			$project_position_id = $this->jsmdb->loadResult();
+			$query->clear();
+            $query->select('project_position_id');
+            $query->from('#__sportsmanagement_team_player AS pt');
+            $query->where('pt.player_id = '.$player_in);
+			$db->setQuery( $query );
+			$project_position_id = $db->loadResult();
 		}
 		if( $player_in > 0 ) {
 			$in_player_record = new stdClass();
@@ -2390,15 +2395,17 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 			$in_player_record->in_for				= ($player_out>0) ? $player_out : 0;
 			$in_player_record->in_out_time			= $in_out_time;
 			$in_player_record->project_position_id	= $project_position_id;
+            $in_player_record->modified = $date->toSql();
+            $in_player_record->modified_by = $user->get('id');
 /**
  * Insert the object into the table.
  */
             try{
-            $resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_match_player', $in_player_record);
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_player', $in_player_record);
             }
             catch (Exception $e)
             {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
             return false;
             }
 		}
@@ -2410,15 +2417,17 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 			$out_player_record->in_out_time			= $in_out_time;
 			$out_player_record->project_position_id	= $project_position_id;
 			$out_player_record->out					= 1;
+            $out_player_record->modified = $date->toSql();
+            $out_player_record->modified_by = $user->get('id');
 /**
  * Insert the object into the table.
  */
             try{
-            $resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_match_player', $out_player_record);
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_player', $out_player_record);
             }
             catch (Exception $e)
             {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
             return false;
             }			
 		}
