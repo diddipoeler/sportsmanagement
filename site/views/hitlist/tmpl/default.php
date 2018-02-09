@@ -1,9 +1,9 @@
 <?php 
-/** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
+/** Joomla Sports Management ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version 1.0.26
 * @file components/sportsmanagement/views/allteams/tmpl/default.php
 * @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
 * Joomla Sports Management is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von Joomla Sports Management.
 *
-* Joomla Sports Management ist Freie Software: Sie können es unter den Bedingungen
+* Joomla Sports Management ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* Joomla Sports Management wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* Joomla Sports Management wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -51,6 +51,11 @@ JHtml::_('behavior.modal');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
 ?>
 <script language="javascript" type="text/javascript">
 function tableOrdering( order, dir, task )
@@ -69,7 +74,7 @@ function searchPerson(val)
 	}
 </script>
 <div class="">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
 
 
 	<?php echo $this->loadTemplate('items'); 

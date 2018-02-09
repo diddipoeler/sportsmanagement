@@ -12,6 +12,11 @@
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
 
 if ( $this->overallconfig['use_jquery_modal'] )
 {
@@ -26,7 +31,7 @@ if ( $this->overallconfig['use_jquery_modal'] )
 
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
+	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
 
 // load javascripts
@@ -85,7 +90,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
             </td>
 		</tr>
 	</table>
-	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
+	<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
 		<table class="<?php echo $this->config['table_class']; ?>  table-responsive" >
 			<!-- Main START -->
 			<?php
