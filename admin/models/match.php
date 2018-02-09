@@ -2450,7 +2450,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
          */        
         $query->clear(); 
         $query->delete('#__sportsmanagement_match_player');
-        $query->where("id = ".JFactory::getDbo()->Quote($substitution_id). " OR id = ".JFactory::getDbo()->Quote($substitution_id + 1));
+        $query->where("id = ".$db->Quote($substitution_id). " OR id = ".$db->Quote($substitution_id + 1));
         $db->setQuery($query);
         try{
             $db->execute();

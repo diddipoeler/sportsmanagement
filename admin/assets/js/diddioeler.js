@@ -239,9 +239,9 @@ function substsaved(response)
                		
     jQuery("#table-substitutions").last().append('<tr id="sub-' 
     + resp[0] + '"><td>'
-    + jQuery("#out").val() + '</td><td>'  
-    + jQuery("#in").val() + '</td><td>' 
-    + jQuery("#project_position_id").val() + '</td><td>' 
+    + jQuery("#out option:selected").text() + '</td><td>'  
+    + jQuery("#in option:selected").text() + '</td><td>' 
+    + jQuery("#project_position_id option:selected").text() + '</td><td>' 
     + jQuery("#in_out_time").val() + '</td><td><input	id="deletesubst-' + resp[0] 
     + '" type="button" class="inputbox button-delete-subst" value="' 
     + str_delete + '"</td></tr>');
