@@ -93,6 +93,60 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
 //        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result = true;
+		
+* ###############################
+// update der positionen bei den spielen, wenn keine vorhanden sind
+//build the html options for position
+$position_ids = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
+if ($project_ref_positions) {
+            $position_ids = array_merge($position_ids, $project_ref_positions);
+        }
+//$app->enqueueMessage(' position_ids<br><pre>'.print_r($position_ids, true).'</pre><br>','Notice');
+for ($x=0; $x < count($pks); $x++)
+{
+
+
+$team_player_id = $post['tpid'][$pks[$x]];
+//$app->enqueueMessage('player id<br><pre>'.print_r($team_player_id, true).'</pre><br>','Notice');
+$project_position_id = $post['project_position_id'.$pks[$x]];
+//$app->enqueueMessage(' project_position_id<br><pre>'.print_r($project_position_id, true).'</pre><br>','Notice');
+foreach($position_ids as $items => $item) {
+    if($item->value == $project_position_id) {
+       $results = $item->position_id;
+    }
+} 	
+
+//$app->enqueueMessage(' results <br><pre>'.print_r($results , true).'</pre><br>','Notice');
+
+
+$this->jsmquery->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = ' . $results
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = 0', 
+    $this->jsmdb->quoteName('teamplayer_id') . ' = ' . $team_player_id 
+);
+
+try{
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+}
+* ###############################
+	
 		for ($x=0; $x < count($pks); $x++)
 		{
 		  
