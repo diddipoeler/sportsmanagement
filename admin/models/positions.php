@@ -1,41 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      positions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage positions
+ */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -231,22 +204,15 @@ class sportsmanagementModelPositions extends JSMModelList
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
-		//$project_id=$app->getUserState($option.'project');
-        
         // Select some fields
-        $query->select('ppos.id AS value, pos.name AS text');
+        $query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id');
+	$query->from('#__sportsmanagement_position AS pos');
+        $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id');
         $query->where('ppos.project_id = '.(int)$project_id);  
         $query->where('pos.persontype = '.(int)$persontype);  
         $query->order('pos.ordering');  
-        
-		//$query="	SELECT ppos.id AS value, pos.name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
-//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
-//					WHERE ppos.project_id=$project_id AND pos.persontype=2
-//					ORDER BY ordering ";
+        		
 		JFactory::getDbo()->setQuery($query);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -263,62 +229,8 @@ class sportsmanagementModelPositions extends JSMModelList
 		return $result;
 	}
     
-//    /**
-//	 * Method to return a positions array (id,position)
-//		*
-//		* @access  public
-//		* @return  array
-//		* @since 0.1
-//		*/
-//	function getStaffPositions($project_id)
-//	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//		$query="	SELECT ppos.id AS value, pos.name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
-//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
-//					WHERE ppos.project_id=$project_id AND pos.persontype=2
-//					ORDER BY ordering ";
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		foreach ($result as $position){
-//			$position->text=JText::_($position->text);
-//		}
-//		return $result;
-//	}
-    
-//    /**
-//	 * Method to return a positions array (id,position)
-//		*
-//		* @access  public
-//		* @return  array
-//		* @since 0.1
-//		*/
-//	function getPlayerPositions($project_id)
-//	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//
-//		$query="	SELECT pp.id AS value,name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
-//					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS pp ON pp.position_id=p.id
-//					WHERE pp.project_id=$project_id AND p.persontype=1
-//					ORDER BY ordering ";
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		foreach ($result as $position){$position->text=JText::_($position->text);}
-//		return $result;
-//	}
+
+
 
 
     /**
