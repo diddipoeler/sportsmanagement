@@ -55,6 +55,31 @@ class sportsmanagementControllermatches extends JControllerLegacy
 	}
     
     /**
+     * sportsmanagementControllermatches::savesubst()
+     * 
+     * @return void
+     */
+    function savesubst()
+	{
+		$data = array();
+		$data['in'] 					= JFactory::getApplication()->input->getInt('in');
+		$data['out'] 					= JFactory::getApplication()->input->getInt('out');
+		$data['matchid'] 				= JFactory::getApplication()->input->getInt('matchid');
+		$data['in_out_time'] 			= JFactory::getApplication()->input->getVar('in_out_time','');
+		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
+        // diddipoeler
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
+        $model = $this->getModel();
+		if (!$result = $model->savesubstitution($data)){
+			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
+		} else {
+            $result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+	}
+    
+    /**
      * sportsmanagementControllermatches::savecomment()
      * 
      * @return void
