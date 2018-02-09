@@ -116,7 +116,7 @@ foreach($position_id as $items => $item) {
     }
 } 	
 $this->form->setValue('project_position_id', null, $results);
-$this->app->enqueueMessage(JText::_('vorschlag gesetzt'),'');	
+$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
 		
 		
