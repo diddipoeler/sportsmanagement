@@ -62,6 +62,19 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
+	 //build the html options for position
+        $position_id = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
+if ($project_ref_positions) {
+            $position_id = array_merge($position_id, $project_ref_positions);
+        }
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 2);
+if ($project_ref_positions) {
+            $position_id = array_merge($position_id, $project_ref_positions);
+        }
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_id<br><pre>'.print_r($position_id,true).'</pre>'),'');
+
         //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
         //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_person<br><pre>'.print_r($project_person,true).'</pre>'),'');
         
