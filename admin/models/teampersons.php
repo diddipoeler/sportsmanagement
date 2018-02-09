@@ -153,13 +153,13 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
 		$this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
-        $this->jsmquery->select('ppos.id as project_position_id');
+        //$this->jsmquery->select('ppos.id as project_position_id');
 
         $this->jsmquery->from('#__sportsmanagement_person AS ppl');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+        //$this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
+        //$this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         $this->jsmquery->join('LEFT','#__users AS u ON u.id = tp.checked_out');
 
         $this->jsmquery->where('ppl.published = 1');
@@ -167,9 +167,20 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.persontype = '.$this->getState('filter.persontype') );
-        $this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
-        $this->jsmquery->where('ppp.project_id = '.$this->_project_id );
+        //$this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
+        //$this->jsmquery->where('ppp.project_id = '.$this->_project_id );
         
+	$this->jsmsubquery1->clear();
+        $this->jsmsubquery1->select('ppos.id');
+        $this->jsmsubquery1->from('#__sportsmanagement_project_position AS ppos');
+        $this->jsmsubquery1->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.project_position_id = ppos.id');
+        $this->jsmsubquery1->where('ppp.person_id = ppl.id');
+        $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id );
+        $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype') );
+	$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+
+		
+		
         if (is_numeric($this->getState('filter.state')) )
 		{
 		$this->jsmquery->where('tp.published = '.$this->getState('filter.state') );
