@@ -2370,41 +2370,57 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 		$in_out_time			= $data['in_out_time'];
 		$project_position_id 	= $data['project_position_id'];
 
-		if ($project_position_id == 0 && $player_in>0)
+		if ( $project_position_id == 0 && $player_in > 0 )
 		{
-			// retrieve normal position of player getting in
-			$query='	SELECT project_position_id '
-			.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS pt '
-			.' WHERE pt.player_id='.JFactory::getDbo()->Quote($player_in)
-			;
-			JFactory::getDbo()->setQuery($query);
-			$project_position_id = JFactory::getDbo()->loadResult();
+/**
+ * retrieve normal position of player getting in
+ */
+			$this->jsmquery->clear();
+            $this->jsmquery->select('project_position_id');
+            $this->jsmquery->from('#__sportsmanagement_team_player AS pt');
+            $this->jsmquery->where('pt.player_id = '.$player_in);
+			$this->jsmdb->setQuery( $this->jsmquery );
+			$project_position_id = $this->jsmdb->loadResult();
 		}
-		if($player_in>0) {
-			$in_player_record = JTable::getInstance('Matchplayer','sportsmanagementTable');
+		if( $player_in > 0 ) {
+			$in_player_record = new stdClass();
 			$in_player_record->match_id				= $match_id;
 			$in_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_IN; //1 //1=came in, 2=went out
 			$in_player_record->teamplayer_id		= $player_in;
 			$in_player_record->in_for				= ($player_out>0) ? $player_out : 0;
 			$in_player_record->in_out_time			= $in_out_time;
 			$in_player_record->project_position_id	= $project_position_id;
-			if (!$in_player_record->store()) {
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-				return false;
-			}
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_match_player', $in_player_record);
+            }
+            catch (Exception $e)
+            {
+            $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+            return false;
+            }
 		}
-		if($player_out>0 && $player_in==0) {
-			$out_player_record = JTable::getInstance('Matchplayer','sportsmanagementTable');
+		if( $player_out > 0 && $player_in == 0 ) {
+			$out_player_record = new stdClass();
 			$out_player_record->match_id			= $match_id;
 			$out_player_record->came_in				= self::MATCH_ROSTER_SUBSTITUTE_OUT; //2; //0=starting lineup
 			$out_player_record->teamplayer_id		= $player_out;
 			$out_player_record->in_out_time			= $in_out_time;
 			$out_player_record->project_position_id	= $project_position_id;
 			$out_player_record->out					= 1;
-			if (!$out_player_record->store()) {
-				$this->setError(JFactory::getDbo()->getErrorMsg());
-				return false;
-			}
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $this->jsmdb->insertObject('#__sportsmanagement_match_player', $out_player_record);
+            }
+            catch (Exception $e)
+            {
+            $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+            return false;
+            }			
 		}
 		return true;
 	}
