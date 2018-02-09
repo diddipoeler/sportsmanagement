@@ -264,6 +264,32 @@ JHtml::_('behavior.modal');
 								if ( $row->project_position_id == 0 )
 								{
 									$append=' style="background-color:#FFCCCC"';
+								
+// einen vorschlag generieren
+$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+$project_person = $mdlPerson->getPerson($row->person_id);
+$position_id = $project_person->position_id;
+//echo '<pre>'.print_r($position_id,true).'</pre>';
+
+//build the html options for position
+$position_ids = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
+if ($project_ref_positions) {
+            $position_ids = array_merge($position_ids, $project_ref_positions);
+        }
+foreach($position_ids as $items => $item) {
+    if($item->position_id == $position_id) {
+       $results = $item->value;
+    }
+}
+//echo '<pre>'.print_r($results,true).'</pre>';
+$selectedvalue = $results;
+								
+								
+								
+								
+								
 								}
 								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 								
