@@ -106,7 +106,22 @@ if ($project_ref_positions) {
 		$this->form->setValue('away_detail', null, $project_person->away_detail);
 		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
-        
+
+$project_position_id = $this->form->getValue('project_position_id');		
+if ( !$project_position_id )		
+{
+foreach($position_id as $items => $item) {
+    if($item->position_id == $project_person->position_id) {
+       $results = $item->value;
+    }
+} 	
+$this->form->setValue('project_position_id', null, $results);
+$this->app->enqueueMessage(JText::_('vorschlag gesetzt'),'');	
+}
+		
+		
+		
+		
         
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->extended = $extended;
