@@ -2442,17 +2442,24 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	 */
 	function removeSubstitution($substitution_id)
 	{
-		// the subsitute isn't getting in so we delete the substitution
-		$query="	DELETE
-					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_player
-					WHERE id=".JFactory::getDbo()->Quote($substitution_id). "
-					 OR id=".JFactory::getDbo()->Quote($substitution_id + 1);
-		JFactory::getDbo()->setQuery($query);
-		if (!JFactory::getDbo()->execute())
-		{
-			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETING_SUBST'));
-			return false;
-		}
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        /**
+         * the subsitute isn't getting in so we delete the substitution
+         */        
+        $query->clear(); 
+        $query->delete('#__sportsmanagement_match_player');
+        $query->where("id = ".JFactory::getDbo()->Quote($substitution_id). " OR id = ".JFactory::getDbo()->Quote($substitution_id + 1));
+        $db->setQuery($query);
+        try{
+            $db->execute();
+            }
+            catch (Exception $e)
+            {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETING_SUBST').' '.$e->getMessage()), 'error');
+            return false;
+            }
 		return true;
 	}
     
