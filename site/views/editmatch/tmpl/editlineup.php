@@ -122,8 +122,7 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
-        
-        
+                
 		<?php //echo JHtml::_('form.token')."\n"; ?>
         
 <input type="hidden" id="token" name="token" value="
