@@ -94,7 +94,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
         
         $result = true;
 		
-* ###############################
+// ###############################
 // update der positionen bei den spielen, wenn keine vorhanden sind
 //build the html options for position
 $position_ids = array();        
@@ -145,7 +145,7 @@ $resultupdate = $this->jsmdb->execute();
         return false;
         }
 }
-* ###############################
+// ###############################
 	
 		for ($x=0; $x < count($pks); $x++)
 		{
