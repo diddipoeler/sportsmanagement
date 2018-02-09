@@ -248,6 +248,7 @@ function substsaved(response)
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
+$$(".button-delete-subst").addEvent('click', button_delete_subst);				
 	}
    else 
    {
