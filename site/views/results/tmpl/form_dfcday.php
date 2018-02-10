@@ -11,20 +11,22 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
+
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',J$uri->toString()), JText::_('ALERTNOTAUTH') );
+	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
 $document = JFactory::getDocument();
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
-} else {
-    $uri = JFactory::getURI();
-}
+
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
