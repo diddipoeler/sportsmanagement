@@ -105,10 +105,10 @@ defined('_JEXEC') or die('Restricted access');
   bottom: 30px; /* 40 cos(45) = 28 with an additional 2px margin*/
   left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
   display: inline-block;
-  // width: 100%;
+  /* width: 100%;
   width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
   text-align: left;
-  // white-space: nowrap; /*whether to display in one line or not*/
+  /* white-space: nowrap; /*whether to display in one line or not*/
 }
  
 .rotate_text
@@ -139,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
          white-space:nowrap; 
          vertical-align:bottom;
          position: relative;
-         //position: absolute; 
+         /*position: absolute; */
       }
    </style>
 <!--<![endif]--> 
@@ -258,7 +258,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routepar
 			// find the corresponding game
 			$Allresults = '';
 			foreach ($this->results as $result) {
-				if($team_row->division_id != $division_id) continue;
+                                if($team_row->division_id != $division_id) {continue;}
 				if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
                 {
 					$ResultType = '';
@@ -310,8 +310,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routepar
 					if ($result->show_report == 1 || $this->config['force_link_report'] == 1) {
 						$showMatchReportLink = true;
 					}
-					if ($result->show_report == 0 && $e1 == "" && $e2 == "")
+					if ($result->show_report == 0 && $e1 == "" && $e2 == ""){
 						$showMatchReportLink = true;
+                                        }
 					if ($showMatchReportLink) {
 						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
 						// result with matchreport

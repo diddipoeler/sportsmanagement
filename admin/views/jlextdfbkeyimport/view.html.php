@@ -185,7 +185,8 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
         $option = $jinput->getCmd('option');
 
         $db = sportsmanagementHelper::getDBConnection();
-        $if (version_compare(JSM_JVERSION, '4', 'eq')) {
+
+        if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
             $uri = JFactory::getURI();
