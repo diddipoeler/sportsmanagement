@@ -2,8 +2,13 @@
 <form addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details">
 		<field name="id" 
-		type="hidden" 
-		default="0"
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field name="name" 
     type="text" 
