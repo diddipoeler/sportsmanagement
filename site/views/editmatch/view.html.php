@@ -18,8 +18,24 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.html.bootstrap');
 }
 
-class sportsmanagementViewEditMatch extends JViewLegacy {
+/**
+ * sportsmanagementViewEditMatch
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewEditMatch extends JViewLegacy 
+{
 
+    /**
+     * sportsmanagementViewEditMatch::display()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function display($tpl = null) {
 
         $option = JFactory::getApplication()->input->getCmd('option');
@@ -62,7 +78,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($this->match,true).'</pre>'),'');
         //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        $document->addScript(JURI::base() . 'administrator/components/' . $option . '/assets/js/diddioeler.js');
+        //$document->addScript(JURI::base() . 'administrator/components/' . $option . '/assets/js/diddioeler.js');
         //$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
 
         switch ($this->getLayout()) {
@@ -96,6 +112,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         parent::display($tpl);
     }
 
+    /**
+     * sportsmanagementViewEditMatch::initEditLineup()
+     * 
+     * @return
+     */
     function initEditLineup() {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
@@ -155,7 +176,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         // build position select
         $selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
         $selectpositions = array_merge($selectpositions, sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $this->project_id));
-        $lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text', NULL, false, true);
+        $lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', NULL, false, true);
 
         // build player select
         //$allplayers = $model->getTeamPlayers($tid);
@@ -260,6 +281,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         $this->lists = $lists;
     }
 
+    /**
+     * sportsmanagementViewEditMatch::initEditEevents()
+     * 
+     * @return
+     */
     function initEditEevents() {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
@@ -371,6 +397,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         $this->default_name_dropdown_list_order = $default_name_dropdown_list_order;
     }
 
+    /**
+     * sportsmanagementViewEditMatch::initEditStats()
+     * 
+     * @return void
+     */
     function initEditStats() {
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
 
@@ -423,6 +454,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         $this->teams = $teams;
     }
 
+    /**
+     * sportsmanagementViewEditMatch::initEditMatch()
+     * 
+     * @return void
+     */
     function initEditMatch() {
         $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');  
@@ -467,6 +503,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy {
         $this->lists = $lists;
     }
 
+    /**
+     * sportsmanagementViewEditMatch::initEditReferees()
+     * 
+     * @return
+     */
     function initEditReferees() {
 // projekt schiedsrichter
         $allreferees = array();

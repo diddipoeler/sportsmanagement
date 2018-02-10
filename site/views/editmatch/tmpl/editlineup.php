@@ -16,7 +16,7 @@ $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
-var baseajaxurl = '<?PHP echo JUri::root()."administrator/index.php?option=com_sportsmanagement&"; ?>
+var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
 <?PHP
 //        if( version_compare(JVERSION,'3.0.0','ge') ) 
 //        {
@@ -122,8 +122,7 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
-        
-        
+                
 		<?php //echo JHtml::_('form.token')."\n"; ?>
         
 <input type="hidden" id="token" name="token" value="
