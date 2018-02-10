@@ -381,7 +381,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <?php echo $this->pane->endPanel(); echo $this->pane->startPanel( JText::_('COM_SPORTSMANAGEMENT_GITHUB_REQUESTS') , 'GITHUBREQUESTS' );?>        
         <table class="adminlist">          
           <tr>            <td>              
-              <ul class="GH-commit&lt;?php echo $moduleclass_sfx;?&gt;">                
+              <ul class="GH-commit <?php echo $moduleclass_sfx;?>">                
                 <?php foreach ($this->githubrequest as $o) { ?>                
                 <li>                  
                 <?php echo $o->commit->message.$o->commit->author; if (isset($o->commit->committer)) {echo $o->commit->committer;}echo $o->commit->time; ?>                
