@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $params = $this->form->getFieldsets('params');
-$document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
+//$document = JFactory::getDocument();
+//$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
 var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
