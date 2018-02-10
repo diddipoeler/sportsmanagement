@@ -29,8 +29,8 @@ defined('_JEXEC') or die('Restricted access');
         }
 
         if ($this->config['show_player_logo_copyright']) {
-            if ($this->person->cr_picture){
-            echo JText::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->person->cr_picture . '</i>');
+            if ($this->person->cr_picture) {
+                echo JText::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->person->cr_picture . '</i>');
             }
         }
         ?>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access');
             }
             if ($this->person->birthday != "0000-00-00") {
                 echo '<address>';
-                echo '<strong>' . JText::_($outputStr) . '</strong>';
+                echo '<strong>' . JText::_($outputStr) . '</strong> ';
                 echo $birthdateStr;
                 echo '</address>';
             }
