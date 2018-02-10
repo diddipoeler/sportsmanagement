@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $params = $this->form->getFieldsets('params');
-$document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
+//$document = JFactory::getDocument();
+//$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
 var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
@@ -56,29 +56,29 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?>    
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
-<li><a data-toggle="tab" href="#menu2"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
-<li><a data-toggle="tab" href="#menu3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
+<li class="active"><a data-toggle="tab" href="#player"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
+<li><a data-toggle="tab" href="#subst"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
+<li><a data-toggle="tab" href="#staff"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
+<li><a data-toggle="tab" href="#trikotnumber"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
 </ul>    
 
 <div class="tab-content">
-<div id="home" class="tab-pane fade in active"> 
+<div id="player" class="tab-pane fade in active"> 
 <?PHP
 echo $this->loadTemplate('players');
 ?>
 </div>
-<div id="menu1" class="tab-pane fade">
+<div id="subst" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('substitutions');
 ?>
 </div>
-<div id="menu2" class="tab-pane fade">
+<div id="staff" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('staff');
 ?>
 </div>
-<div id="menu3" class="tab-pane fade">
+<div id="trikotnumber" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('players_trikot_numbers');
 ?>
