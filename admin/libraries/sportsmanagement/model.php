@@ -556,11 +556,12 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */         
        if ( parent::save($data) )
        {
-			$id =  (int) $this->getState($this->getName().'.id');
+	$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
             $this->jsmjinput->set('insert_id', $id);
+	    $this->jsmjinput->set('person_id', $id);   
             if ( $isNew )
             {
 /**
