@@ -76,7 +76,5 @@ echo $this->loadTemplate('joomla_version');
 <?php echo $this->table_data_div; ?>
 </form>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
 ?>   

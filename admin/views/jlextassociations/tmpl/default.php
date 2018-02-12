@@ -69,7 +69,5 @@ echo $this->loadTemplate('joomla_version');
 <?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP
-echo "<div>";
 echo $this->loadTemplate('footer');
-echo "</div>";
 ?>   
