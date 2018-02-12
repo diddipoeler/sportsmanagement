@@ -51,7 +51,7 @@ else
   
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->
