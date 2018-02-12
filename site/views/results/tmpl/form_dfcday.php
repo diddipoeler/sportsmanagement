@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  * @version   1.0.05
  * @file      form_dfcday.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage results
@@ -11,15 +11,23 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
+
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
+	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
 $document = JFactory::getDocument();
+
+
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -67,7 +75,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,sportsmanagementModelProject::$cfg_which_database); ?></td>
 		</tr>
 	</table>
-	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
+	<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
 		<table class="<?php echo $this->config['table_class']; ?> table-responsive" >
 			<!-- Main START -->
 			<?php

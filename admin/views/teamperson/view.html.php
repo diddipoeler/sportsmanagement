@@ -1,41 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teamperson
+ */
+
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -51,7 +24,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class sportsmanagementViewTeamPerson extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewTeamPerson::init()
@@ -60,37 +32,18 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri		= JFactory::getURI();
-//		$user		= JFactory::getUser();
-//		$model		= $this->getModel();
-//		$lists		= array();
-//		$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
-//        
-//        // get the Data
-//		$form = $this->get('Form');
-//		$item = $this->get('Item');
-//		$script = $this->get('Script');
- 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-        
-//        // Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
-//		$this->script = $script;
 
         $this->team_id = $this->app->getUserState( "$this->option.team_id", '0' );
         $this->_persontype = $this->app->getUserState( "$this->option.persontype", '0' );
         $this->project_team_id = $this->app->getUserState( "$this->option.project_team_id", '0' );
         
-        //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
+
 		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 		$this->season_id = $this->app->getUserState( "$this->option.season_id", '0' );
                
@@ -102,20 +55,37 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		if ( isset($this->item->projectteam_id) )
 		{
 		$project_team = $mdlProject->getProjectTeam($this->item->projectteam_id);
-		$this->assignRef('project_team',$project_team);
+		$this->project_team = $project_team;
 		}
         
-		$person_id = $this->item->person_id;
+		//$person_id = $this->item->person_id;
 		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
-		$project_person = $mdlPerson->getPerson($person_id);
+		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
-        // name für den titel setzen
+	 //build the html options for position
+        $position_id = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
+if ($project_ref_positions) {
+            $position_id = array_merge($position_id, $project_ref_positions);
+        }
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 2);
+if ($project_ref_positions) {
+            $position_id = array_merge($position_id, $project_ref_positions);
+        }
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_id<br><pre>'.print_r($position_id,true).'</pre>'),'');
+
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_person<br><pre>'.print_r($project_person,true).'</pre>'),'');
+        
+        // name fÃ¼r titel setzen
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
         
         $this->project_person = $project_person;
         
         // personendaten setzen
         $this->form->setValue('position_id', null, $project_person->position_id);
+        $this->form->setValue('projectteam_id', null, $this->project_team_id);
 		$this->form->setValue('injury', null, $project_person->injury);
 		$this->form->setValue('injury_date', null, $project_person->injury_date);
 		$this->form->setValue('injury_end', null, $project_person->injury_end);
@@ -136,31 +106,23 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->form->setValue('away_detail', null, $project_person->away_detail);
 		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
 		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
-        
-        //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
-        
-        /*
-		$projectpositions = array();
-		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 
-		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,	$this->_persontype);
+$project_position_id = $this->form->getValue('project_position_id');		
+if ( !$project_position_id )		
+{
+foreach($position_id as $items => $item) {
+    if($item->position_id == $project_person->position_id) {
+       $results = $item->value;
+    }
+} 	
+$this->form->setValue('project_position_id', null, $results);
+$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
+}
 		
-		if ( $project_ref_positions )
-		{
-		$projectpositions = array_merge( $projectpositions, $project_ref_positions );
-		}
-		$lists['projectpositions'] = JHtml::_(	'select.genericlist', 
-												$projectpositions, 
-												'project_position_id', 
-												'class="inputbox" size="1"', 
-												'value', 
-												'text', $this->item->project_position_id );
-		unset($projectpositions);
-        */
-
-
-
+		
+		
+		
+        
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->extended = $extended;
 		$this->lists = $lists;

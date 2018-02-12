@@ -15,6 +15,11 @@ $this->divclass = '';
 $this->divclassrest = '';
 $this->columns = 12;
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
 ?>
 <div class="container-fluid">
 <div class="row-fluid" style="">
@@ -74,7 +79,7 @@ echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,sportsmanagementM
 </div>
 
 
-<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
+<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
 <div class="row-fluid" style="">
 <?php
 /** 

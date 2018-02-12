@@ -1,41 +1,13 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      teamperson.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teamperson
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -121,6 +93,60 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
 //        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result = true;
+		
+// ###############################
+// update der positionen bei den spielen, wenn keine vorhanden sind
+//build the html options for position
+$position_ids = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
+if ($project_ref_positions) {
+            $position_ids = array_merge($position_ids, $project_ref_positions);
+        }
+//$app->enqueueMessage(' position_ids<br><pre>'.print_r($position_ids, true).'</pre><br>','Notice');
+for ($x=0; $x < count($pks); $x++)
+{
+
+
+$team_player_id = $post['tpid'][$pks[$x]];
+//$app->enqueueMessage('player id<br><pre>'.print_r($team_player_id, true).'</pre><br>','Notice');
+$project_position_id = $post['project_position_id'.$pks[$x]];
+//$app->enqueueMessage(' project_position_id<br><pre>'.print_r($project_position_id, true).'</pre><br>','Notice');
+foreach($position_ids as $items => $item) {
+    if($item->value == $project_position_id) {
+       $results = $item->position_id;
+    }
+} 	
+
+//$app->enqueueMessage(' results <br><pre>'.print_r($results , true).'</pre><br>','Notice');
+
+
+$this->jsmquery->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = ' . $results
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = 0', 
+    $this->jsmdb->quoteName('teamplayer_id') . ' = ' . $team_player_id 
+);
+
+try{
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+}
+// ###############################
+	
 		for ($x=0; $x < count($pks); $x++)
 		{
 		  
@@ -132,22 +158,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
           {
             $post['market_value'.$pks[$x]] = 0;
           }
-          
-//			$tblPerson = $this->getTable();
-//			//$tblPerson->id = $post['person_id'.$pks[$x]];
-//            $tblPerson->id = $post['person_id'.$pks[$x]];
-//            $tblPerson->person_id = $pks[$x];
-//			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
-//			$tblPerson->jerseynumber = $post['jerseynumber'.$pks[$x]];
-//			$tblPerson->market_value = $post['market_value'.$pks[$x]];
-//            $tblPerson->modified = $date->toSql();
-//            $tblPerson->modified_by = $user->get('id');
-            
-//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' season_team_person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>','Error');
-//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>','Error');
-//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>','Error');
-//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>','Error');
-            
+         
             
             // Fields to update.
 $fields = array(
@@ -228,11 +239,7 @@ $db->setQuery($query);
                 $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
                 } 
 
-                //if (!$db->query())
-//		          {
-//			            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		          }
-                  
+                                  
                 // Create and populate an object.
                 $profile = new stdClass();
                 //$profile->person_id = $post['person_id'.$pks[$x]];

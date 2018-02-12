@@ -12,28 +12,26 @@
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-?>
-<script>
-function openLink(url)
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
+
+if ( $this->overallconfig['use_jquery_modal'] )
 {
-var width = get_windowPopUpWidth();
-var heigth = get_windowPopUpHeight(); 
-
-SqueezeBox.open(url, {
-       handler: 'iframe', 
-       size: { x: width, y: heigth }
-   });
-       
-} 
-
-</script>		
+?>
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 <?PHP
+}
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
+	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
 
 // load javascripts
@@ -92,7 +90,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
             </td>
 		</tr>
 	</table>
-	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
+	<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
 		<table class="<?php echo $this->config['table_class']; ?>  table-responsive" >
 			<!-- Main START -->
 			<?php

@@ -11,28 +11,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//// welche joomla version ?
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('jquery.framework');
-//}
-//
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
-
+//$document = JFactory::getDocument();
+//$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
 var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
 <?PHP
-        if( version_compare(JVERSION,'3.0.0','ge') ) 
-        {
+//        if( version_compare(JVERSION,'3.0.0','ge') ) 
+//        {
         echo JSession::getFormToken()."=1";
-        }
-        else
-        {    
-        echo JUtility::getToken()."=1";
-        }
+//        }
+//        else
+//        {    
+//        echo JUtility::getToken()."=1";
+//        }
 ?>';
 var matchid = <?PHP echo $this->match->id ?>;
 var teamid = <?PHP echo $this->tid ?>;
@@ -63,54 +56,36 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?>    
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
-<li><a data-toggle="tab" href="#menu2"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
-<li><a data-toggle="tab" href="#menu3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
+<li class="active"><a data-toggle="tab" href="#player"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
+<li><a data-toggle="tab" href="#subst"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
+<li><a data-toggle="tab" href="#staff"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
+<li><a data-toggle="tab" href="#trikotnumber"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
 </ul>    
 
 <div class="tab-content">
-<div id="home" class="tab-pane fade in active"> 
+<div id="player" class="tab-pane fade in active"> 
 <?PHP
 echo $this->loadTemplate('players');
 ?>
 </div>
-<div id="menu1" class="tab-pane fade">
+<div id="subst" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('substitutions');
 ?>
 </div>
-<div id="menu2" class="tab-pane fade">
+<div id="staff" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('staff');
 ?>
 </div>
-<div id="menu3" class="tab-pane fade">
+<div id="trikotnumber" class="tab-pane fade">
 <?PHP
 echo $this->loadTemplate('players_trikot_numbers');
 ?>
 </div>
     
 <?PHP    
-//// Define tabs options for version of Joomla! 3.1
-//$tabsOptionsJ31 = array(
-//            "active" => "panel1" // It is the ID of the active tab.
-//        );
-//
-//echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
-//echo $this->loadTemplate('substitutions');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
-//echo $this->loadTemplate('players');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
-//echo $this->loadTemplate('staff');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
-//echo $this->loadTemplate('players_trikot_numbers');
-//echo JHtml::_('bootstrap.endTab');
-//echo JHtml::_('bootstrap.endTabSet');    
+
     }
         else
     {
@@ -147,20 +122,19 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
-        
-        
+                
 		<?php //echo JHtml::_('form.token')."\n"; ?>
         
 <input type="hidden" id="token" name="token" value="
 <?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
 echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
+//}
+//else
+//{    
+//echo JUtility::getToken(); 
+//}
 
 
 ?>" />	
