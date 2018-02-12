@@ -53,6 +53,9 @@ else
 //$version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
+<script>
+var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
+</script>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->
 	<table class="table table-responsive">
