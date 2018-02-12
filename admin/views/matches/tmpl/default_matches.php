@@ -348,7 +348,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam1_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
@@ -360,7 +360,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam2_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
