@@ -89,12 +89,12 @@ function substsaved(response)
     + jQuery("#in option:selected").text() + '</td><td>' 
     + jQuery("#project_position_id option:selected").text() + '</td><td>' 
     + jQuery("#in_out_time").val() + '</td><td><input	id="deletesubst-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-subst" value="' 
+    + '" type="button" onclick="delete_subst(' + resp[0] + ',baseajaxurl)" class="inputbox button-delete-subst" value="' 
     + str_delete + '"</td></tr>');
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
-$$(".button-delete-subst").addEvent('click', button_delete_subst);				
+//$$(".button-delete-subst").addEvent('click', button_delete_subst);				
 	}
    else 
    {
