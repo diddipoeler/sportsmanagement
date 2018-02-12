@@ -15,6 +15,8 @@ $savenewsubst[] = $this->match->id;
 $savenewsubst[] = $this->tid;
 $savenewsubst[] = $this->eventsprojecttime;
 $savenewsubst[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+
+$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 ?>
 
 <!-- SUBSTITUTIONS START -->
@@ -79,7 +81,7 @@ $savenewsubst[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagem
 								?>
 							</td>
 							<td>
-								<input	id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
+		<input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)" id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
 										value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 							</td>
 						</tr>
