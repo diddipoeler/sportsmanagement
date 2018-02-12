@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage editmatch
@@ -18,7 +18,7 @@ jimport('joomla.application.component.controller');
  * sportsmanagementControllermatches
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2018
  * @version $Id$
  * @access public
@@ -69,11 +69,11 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
-        $model = $this->getModel();
-		if (!$result = $model->savesubstitution($data)){
-			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
+        //$model = $this->getModel();
+		if (!$result = sportsmanagementModelMatch::savesubstitution($data)){
+			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.sportsmanagementModelMatch::getError();
 		} else {
-            $result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+            $result = JFactory::getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();

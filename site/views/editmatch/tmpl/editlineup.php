@@ -16,21 +16,6 @@ $params = $this->form->getFieldsets('params');
 //$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
-var baseajaxurl = '<?PHP echo JUri::root()."index.php?option=com_sportsmanagement&"; ?>
-<?PHP
-//        if( version_compare(JVERSION,'3.0.0','ge') ) 
-//        {
-        echo JSession::getFormToken()."=1";
-//        }
-//        else
-//        {    
-//        echo JUtility::getToken()."=1";
-//        }
-?>';
-var matchid = <?PHP echo $this->match->id ?>;
-var teamid = <?PHP echo $this->tid ?>;
-var projecttime = <?PHP echo $this->eventsprojecttime ?>;
-var str_delete = '<?PHP echo JText::_('JACTION_DELETE') ?>';
 
 </script>
 
