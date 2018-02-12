@@ -37,6 +37,21 @@ jQuery.ajax({
 
 }
 
+function delete_subst(substid,baseajaxurl)
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
+var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
+var querystring = '&substid=' + substid;
+
+jQuery("#ajaxresponse").html(url + querystring);
+
+
+
+}
+
+
+
 function reqsent() 
 {
 	jQuery("#ajaxresponse").addClass('ajax-loading');
@@ -82,5 +97,30 @@ $$(".button-delete-subst").addEvent('click', button_delete_subst);
 	}
 }
 
+function substdeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var substid = resp[2]; 
+  
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert('substdeleted -> ' + substid);
 
+	if (resp[0] != '0') 
+  {
+//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
+//		currentrow.dispose();
+jQuery("#sub-" + substid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
+
+	
+}
 
