@@ -53,6 +53,10 @@ else
 //$version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
+<script>
+var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
+var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
+</script>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->
 	<table class="table table-responsive">

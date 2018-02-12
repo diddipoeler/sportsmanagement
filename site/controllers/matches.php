@@ -79,6 +79,29 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		JFactory::getApplication()->close();
 	}
     
+	
+/**
+     * sportsmanagementControllermatches::removeSubst()
+     * 
+     * @return void
+     */
+    function removeSubst()
+	{
+		$substid = JFactory::getApplication()->input->getInt('substid',0);
+		//$model = $this->getModel();
+		if (!$result = sportsmanagementModelMatch::removeSubstitution($substid))
+		{
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.sportsmanagementModelMatch::getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+	}	
+	
+	
     /**
      * sportsmanagementControllermatches::savecomment()
      * 

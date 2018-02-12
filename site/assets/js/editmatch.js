@@ -37,6 +37,27 @@ jQuery.ajax({
 
 }
 
+function delete_subst(substid,baseajaxurl)
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
+var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
+var querystring = '&substid=' + substid;
+
+jQuery("#ajaxresponse").html(url + querystring);
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+ dataType:"json",
+ success: substdeleted   //function to be called on successful reply from server
+
+}); 
+
+}
+
+
+
 function reqsent() 
 {
 	jQuery("#ajaxresponse").addClass('ajax-loading');
@@ -68,12 +89,12 @@ function substsaved(response)
     + jQuery("#in option:selected").text() + '</td><td>' 
     + jQuery("#project_position_id option:selected").text() + '</td><td>' 
     + jQuery("#in_out_time").val() + '</td><td><input	id="deletesubst-' + resp[0] 
-    + '" type="button" class="inputbox button-delete-subst" value="' 
+    + '" type="button" onclick="delete_subst(' + resp[0] + ',baseajaxurl)" class="inputbox button-delete-subst" value="' 
     + str_delete + '"</td></tr>');
 		
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
-$$(".button-delete-subst").addEvent('click', button_delete_subst);				
+//$$(".button-delete-subst").addEvent('click', button_delete_subst);				
 	}
    else 
    {
@@ -82,5 +103,30 @@ $$(".button-delete-subst").addEvent('click', button_delete_subst);
 	}
 }
 
+function substdeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var substid = resp[2]; 
+  
+//    alert(resp[0]);
+//    alert(resp[1]);
+//    alert('substdeleted -> ' + substid);
 
+	if (resp[0] != '0') 
+  {
+//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
+//		currentrow.dispose();
+jQuery("#sub-" + substid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
+
+	
+}
 
