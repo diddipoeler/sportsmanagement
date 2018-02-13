@@ -166,7 +166,7 @@ $this->jsmquery->clear();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        //$date = JFactory::getDate();
+        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $modified = JFactory::getDate();
 	   $modified_by = $user->get('id');
@@ -180,9 +180,9 @@ $this->jsmquery->clear();
     $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
 
     switch ($post['persontype'])
             {
@@ -200,7 +200,7 @@ $this->jsmquery->clear();
                 $mdlTable->season_id = $this->_season_id;
                 $mdlTable->persontype = 1;
                 
-                $mdlTable->modified = $db->Quote(''.$modified.'');
+                $mdlTable->modified = $date->toSql();
                 $mdlTable->modified_by = $modified_by;
                 
                 $mdlTable->picture = $mdlPersonTable->picture;
@@ -278,7 +278,7 @@ $this->jsmquery->clear();
                 $mdlTable->season_id = $this->_season_id;
                 $mdlTable->persontype = 2;
                 
-                $mdlTable->modified = $db->Quote(''.$modified.'');
+                $mdlTable->modified = $date->toSql();
                 $mdlTable->modified_by = $modified_by;
                 
                 $mdlTable->picture = $mdlPersonTable->picture;
@@ -356,9 +356,9 @@ $this->jsmquery->clear();
                 $query->select('id'); 
          $query->from('#__sportsmanagement_season_person_id'); 
          $query->where('person_id = '.$cid[$x]); 
-         $query->where('team_id = 0');
+         //$query->where('team_id = 0');
          $query->where('season_id = '.$this->_season_id);
-         $query->where('persontype = 3');
+         //$query->where('persontype = 3');
          $db->setQuery($query); 
 	 $season_person_id = $db->loadResult(); 
           
@@ -369,7 +369,7 @@ $mdlTable->id = $season_person_id;
               $mdlTable->person_id = $cid[$x];
                 $mdlTable->team_id = 0;
                 $mdlTable->season_id = $this->_season_id;
-                $mdlTable->modified = $db->Quote(''.$modified.'');
+                $mdlTable->modified = $date->toSql();
                 $mdlTable->modified_by = $modified_by;
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->persontype = 3;
