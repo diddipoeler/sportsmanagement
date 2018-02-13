@@ -73,10 +73,13 @@ function commentsaved(response)
    {
   jQuery("#ajaxresponse").addClass("ajaxerror");
 	jQuery("#ajaxresponse").text(resp[1]);
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-commentary").addEvent('click', button_delete_commentary);	   
 	}
 }
 
-function button_delete_commentary()
+function button_delete_commentary(eventid,baseajaxurl)
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
