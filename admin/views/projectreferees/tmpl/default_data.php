@@ -172,7 +172,7 @@ JHtml::_( 'behavior.mootools' );
 								else
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									$picture = JPATH_SITE.DS.$row->picture;
+									$picture = $row->picture;
 									//echo sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
 echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'.$row->id,$picture,$playerName,'20',$picture);                                                   									
 								}
