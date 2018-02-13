@@ -332,6 +332,51 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         }
         $rosters = array('home' => $homeRoster, 'away' => $awayRoster);
 
+foreach ($rosters['home'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	$temp[] = $obj;
+}
+$lists['homeroster'] = JHtml::_('select.genericlist', $temp, 'homerosterid', 'style="font-size:12px;height:auto;min-width:15em;" size="18" class="inputbox" multiple="true" size="18"', 'value', 'text');;        
+foreach ($rosters['away'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	$temp[] = $obj;
+}
+$lists['awayroster'] = JHtml::_('select.genericlist', $temp, 'awayrosterid', 'style="font-size:12px;height:auto;min-width:15em;" size="18" class="inputbox" multiple="true" size="18"', 'value', 'text');;
+
+//$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents awayRoster<br><pre>'.print_r($lists,true).'</pre>'   ),'');        
+        
         $matchCommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         $matchevents = sportsmanagementModelMatch::getMatchEvents($this->match->id);
         //$document->addScriptDeclaration( $javascript );
