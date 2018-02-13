@@ -74,6 +74,7 @@ readonly="true"
 				description="COM_SPORTSMANAGEMENT_ADMIN_P_REF_PIC_DESC"
 				class="inputbox"
 				preview="show"
+			       targetfolder="persons"
 				directory=""/>
       <field
 			name="cr_picture"
