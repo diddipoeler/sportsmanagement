@@ -31,7 +31,7 @@ $params = $this->form->getFieldsets('params');
 	<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='editreferees' method='post' style='display:inline' name='editreferees' >
 	<fieldset>
 		<div class="fltrt">
-<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.save', this.form);">
+<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">
 <?php echo JText::_('JSAVE');?></button>			
 		</div>
 		<div class="configuration" >
