@@ -37,7 +37,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 
 <script type="text/javascript">
-<!--
+
 var homeroster = new Array;
 <?php
 $i = 0;
@@ -88,8 +88,6 @@ foreach ($this->rosters['away'] as $player)
 ?>
 var rosters = Array(homeroster, awayroster);
 
-
-//-->
 </script>
 
            
