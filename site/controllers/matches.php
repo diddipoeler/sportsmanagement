@@ -149,7 +149,8 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		JFactory::getApplication()->close();
     }	
 	
-	
+
+
 	
 	
 

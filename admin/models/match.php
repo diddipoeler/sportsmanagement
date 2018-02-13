@@ -1950,7 +1950,7 @@ $paramsmail = JComponentHelper::getParams($option)->get('ishd_referee_insert_mat
                  }
 		}
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
         
 		//if ( $peid == null )
         if ( !$peid )

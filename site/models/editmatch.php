@@ -93,9 +93,11 @@ function updateReferees($data)
     $config->get( 'fromname' ) 
 );
 
+        $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$data['project_id']);
+        $data['positions'] = $positions;
         
-        
-        
+        $result = sportsmanagementModelMatch::updateReferees($data);
+return $result;
         }
         
 	/**
