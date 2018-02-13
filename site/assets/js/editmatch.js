@@ -14,7 +14,7 @@ function save_new_comment(matchid,projecttime,baseajaxurl)
 jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
           var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
-          var rowid = this.id.substr(5);
+          //var rowid = this.id.substr(5);
 
 				var ctype = jQuery("#ctype").val();
 				var token = jQuery("#token").val();
@@ -43,11 +43,7 @@ jQuery.ajax({
         alert(xhr.status);
         alert(thrownError);
       }
-  
-//  error: function (xhr, ajaxOptions, thrownError) {
-//        alert(xhr.status);
-//        alert(thrownError);
-//      }
+
 });
     
 }
@@ -82,7 +78,53 @@ function commentsaved(response)
 	}
 }
 
+function button_delete_commentary()
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
+var eventid = this.id.substr(14);  
 
+var token = jQuery("#token").val();       
+var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
+var querystring = '&event_id=' + eventid;
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+
+ dataType:"json",
+ success: commentarydeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+}); 
+
+function commentarydeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var eventid = resp[2]; 
+
+	if (resp[0] != '0') 
+  {
+
+jQuery("#rowcomment-" + eventid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
+
+	
+}
+	
+	
 function save_new_subst(matchid,teamid,projecttime,baseajaxurl)
 {
 //jQuery("#ajaxresponse").html(matchid);
