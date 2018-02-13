@@ -60,7 +60,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 $post = $app->input->post->getArray(array());		
 		
 $model = $this->getModel('editmatch');
-	  $return = $model->updateReferees($data);
+	  $return = $model->updateReferees($post);
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
 $routeparameter['s'] = $post['s'];
