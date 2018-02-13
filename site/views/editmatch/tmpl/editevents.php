@@ -249,7 +249,7 @@ var rosters = Array(homeroster, awayroster);
 								?>
 							</td>
 							<td style='text-align:center; ' >
-								<input	id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
+<input onclick="button_delete_commentary(<?php echo $event->id; ?>,<?php echo $baseurl; ?>)" id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
 										value="<?php echo JText::_('JACTION_DELETE' ); ?>" />
 							</td>
 						</tr>
