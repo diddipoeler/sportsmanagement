@@ -105,7 +105,7 @@ $params = $this->form->getFieldsets('params');
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="view" value="" />
 		<input type="hidden" name="close" id="close" value="0" />
-		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
+		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
 		<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 		<input type="hidden" name="changes_check" value="0" id="changes_check" />
 		<input type="hidden" name="p" value="<?php echo sportsmanagementModelEditMatch::$projectid; ?>" />
