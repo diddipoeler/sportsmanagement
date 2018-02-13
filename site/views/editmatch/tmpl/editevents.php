@@ -109,7 +109,7 @@ var rosters = Array(homeroster, awayroster);
 	
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
-			<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
+			<!-- Dont remove this -->
 			<div id="ajaxresponse"></div>
 			<table id="table-event" class='adminlist'>
 				<thead>
@@ -121,7 +121,6 @@ var rosters = Array(homeroster, awayroster);
 						<th>
 							<?php
 							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME');
-							#echo JText::_('Hrs') . ' ' . JText::_('Mins') . ' ' . JText::_('Secs');
 							?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
@@ -191,7 +190,6 @@ var rosters = Array(homeroster, awayroster);
 					<th>
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						#echo JText::_( 'Hrs' ) . ' ' . JText::_( 'Mins' ) . ' ' . JText::_( 'Secs' );
 						?>
 					</th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
