@@ -149,7 +149,33 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		JFactory::getApplication()->close();
     }	
 	
-	
+
+function saveReferees()
+    {
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->post->getArray(array());
+        //$model = $this->getModel();
+        $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$post['project_id']);
+        $post['positions'] = $positions;
+        
+        if (sportsmanagementModelMatch::updateReferees($post))
+		{
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES');
+		}
+		else
+		{
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
+		}
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
+        {
+            $link = 'index.php?option='.$option.'&view=close&tmpl=component';
+        }
+        else
+        {
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+        }
+		$this->setRedirect($link,$msg);
+    }	
 	
 	
 
