@@ -295,59 +295,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
 
-
-        $javascript = "\n";
-        $javascript .= "var baseajaxurl = '" . JUri::root() . "index.php?option=com_sportsmanagement&";
-
-        if (version_compare(JVERSION, '3.0.0', 'ge')) {
-            $javascript .= JSession::getFormToken();
-        } else {
-            $javascript .= JUtility::getToken();
-        }
-
-        $javascript .= "=1';" . "\n";
-
-        $javascript .= "var matchid = " . $this->match->id . ";" . "\n";
-        $javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
-        $javascript .= "var str_delete = '" . JText::_('JACTION_DELETE') . "';" . "\n";
-
-        $javascript .= 'jQuery(document).ready(function() {' . "\n";
-        $javascript .= "updatePlayerSelect();" . "\n";
-        $javascript .= "$('team_id').addEvent('change', updatePlayerSelect);" . "\n";
-        $javascript .= '  });' . "\n";
-        $javascript .= "\n";
-        $document->addScriptDeclaration($javascript);
-
-        $javascript = "function updatePlayerSelect() {" . "\n";
-        //$javascript .= " alert('value -> ' + matchid);";
-
-        $javascript .= "if($('cell-player'))" . "\n";
-        $javascript .= "$('cell-player').empty().appendChild(" . "\n";
-        $javascript .= "getPlayerSelect($('team_id').selectedIndex));" . "\n";
-
-        $javascript .= "}" . "\n";
-
-        $document->addScriptDeclaration($javascript);
-
-
-        $javascript = "function getPlayerSelect(index) {" . "\n";
-        $javascript .= "// homeroster and awayroster must be defined globally (in the view calling" . "\n";
-        $javascript .= "// the script)" . "\n";
-        $javascript .= "var roster = rosters[index];" . "\n";
-        $javascript .= "// build select" . "\n";
-        $javascript .= "var select = new Element('select', {" . "\n";
-        $javascript .= "id : 'teamplayer_id'" . "\n";
-        $javascript .= "});" . "\n";
-        $javascript .= "for ( var i = 0, n = roster.length; i < n; i++) {" . "\n";
-        $javascript .= "new Element('option', {" . "\n";
-        $javascript .= "value : roster[i].value" . "\n";
-        $javascript .= "}).set('text',roster[i].text).injectInside(select);" . "\n";
-        $javascript .= "}" . "\n";
-        $javascript .= "return select;" . "\n";
-        $javascript .= "}" . "\n";
-
-        $document->addScriptDeclaration($javascript);
-
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         // mannschaften der paarung
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
@@ -358,7 +305,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $teamlist = array();
         $teamlist[] = JHtml::_('select.option', $teams->projectteam1_id, $teams->team1);
         $teamlist[] = JHtml::_('select.option', $teams->projectteam2_id, $teams->team2);
-        $lists['teams'] = JHtml::_('select.genericlist', $teamlist, 'team_id', 'class="inputbox select-team" ');
+        $lists['teams'] = JHtml::_('select.genericlist', $teamlist, 'team_id', 'onchange="updatePlayerSelect();" class="inputbox select-team" ');
         // events
         $events = sportsmanagementModelMatch::getEventsOptions($this->project_id, 0);
         if (!$events) {
