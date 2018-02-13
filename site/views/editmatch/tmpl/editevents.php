@@ -34,63 +34,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JFactory::getURI();
 }
 ?>
-
-
-<script type="text/javascript">
-
-var homeroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['home'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var awayroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['away'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var rosters = Array(homeroster, awayroster);
-
-</script>
-
-           
+          
 <form  action="<?php echo $uri->toString(); ?>" id='editevents' method='post' style='display:inline' name='editevents' >
 <div id="gamesevents">
 
