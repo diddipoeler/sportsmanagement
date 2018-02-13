@@ -83,7 +83,7 @@ function button_delete_commentary(eventid,baseajaxurl)
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
-var eventid = this.id.substr(14);  
+//var eventid = this.id.substr(14);  
 
 var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
