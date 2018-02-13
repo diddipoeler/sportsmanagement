@@ -8,6 +8,125 @@ jQuery(document).ready(function()  {
 });
 
 // hier sind die funktionen
+
+function save_new_comment(matchid,projecttime,baseajaxurl)
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+          jQuery("#ajaxresponse").addClass('ajax-loading');
+          var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
+				var ctype = jQuery("#ctype").val();
+				var token = jQuery("#token").val();
+        var comnt = encodeURIComponent(jQuery("#notes").val())
+				var time = jQuery("#c_event_time").val();
+				
+				var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
+				+ matchid + '&notes='
+				+ comnt + '&projecttime=' + projecttime;
+         //jQuery("#ajaxresponse").html(url + querystring); 
+
+//alert(token);
+         
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+//  data: {
+//            'token': '1' // <-- THIS IS IMPORTANT
+//            
+//        }, // data to be post
+  //data: jQuery("#component-form").serialize(),
+  dataType:"json",
+//  success: commentsaved
+  success: commentsaved, //function to be called on successful reply from server
+  error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      }
+
+});
+    
+}
+
+function commentsaved(response) 
+{
+	jQuery("#ajaxresponse").removeClass('ajax-loading');
+	// first line contains the status, second line contains the new row.
+	var resp = response.split('&');
+	
+	if (resp[0] != '0') 
+  {
+    	
+    jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
+    + resp[0] + '"><td>' 
+    + jQuery("#ctype").val() + '</td><td>' 
+    + jQuery("#c_event_time").val() + '</td><td>' 
+    + jQuery("#notes").val() + '</td><td><input	id="deletecomment-' + resp[0] 
+    + '" type="button" class="inputbox button-delete-commentary" value="' 
+    + str_delete + '"</td></tr>');
+		
+    jQuery("#ajaxresponse").addClass("ajaxsuccess");
+    jQuery("#ajaxresponse").text(resp[1]);
+      jQuery("#notes").val('');
+      jQuery("#c_event_time").val('');
+		
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-commentary").addEvent('click', button_delete_commentary);	   
+	}
+}
+
+function button_delete_commentary(eventid,baseajaxurl)
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');
+//var eventid = this.id.substr(14);  
+
+var token = jQuery("#token").val();       
+var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
+var querystring = '&event_id=' + eventid;
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+
+ dataType:"json",
+ success: commentarydeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+}); 
+}
+
+function commentarydeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var eventid = resp[2]; 
+
+	if (resp[0] != '0') 
+  {
+
+jQuery("#rowcomment-" + eventid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
+
+	
+}
+	
+	
 function save_new_subst(matchid,teamid,projecttime,baseajaxurl)
 {
 //jQuery("#ajaxresponse").html(matchid);

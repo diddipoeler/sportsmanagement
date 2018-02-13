@@ -571,6 +571,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
             }
         }
         $this->positions = $projectpositions;
+        $this->lists = $lists;
     }
 
 }

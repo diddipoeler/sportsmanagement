@@ -2572,7 +2572,7 @@ if (!$db->execute())
         $values = array($data['event_time'],$data['match_id'],$data['type'],'\''.$data['notes'].'\'');
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'))
+            ->insert($db->quoteName('#__sportsmanagement_match_commentary'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
@@ -2586,29 +2586,7 @@ if (!$db->execute())
         {
             $object->id = $db->insertid();
         }
-        
-        //$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
-//        $object->event_time = $data['event_time'];
-//		$object->match_id = $data['match_id'];
-//		$object->type = $data['type'];
-//		$object->notes = $data['notes'];
-		//$object->bind($data);
-		//if (!$object->check())
-//		{
-//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
-//			return false;
-//		}
-		
-        //if (!$object->store())
-//		{
-//			//$this->setError(JFactory::getDbo()->getErrorMsg());
-//			return false;
-//		}
-//        else
-//        {
-//            $object->id = JFactory::getDbo()->insertid();
-//        }
-        
+       
 		return $object->id;
 	}
     
