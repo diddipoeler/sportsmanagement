@@ -69,7 +69,7 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
-        //$model = $this->getModel();
+
 		if (!$result = sportsmanagementModelMatch::savesubstitution($data)){
 			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.sportsmanagementModelMatch::getError();
 		} else {
@@ -88,7 +88,7 @@ class sportsmanagementControllermatches extends JControllerLegacy
     function removeSubst()
 	{
 		$substid = JFactory::getApplication()->input->getInt('substid',0);
-		//$model = $this->getModel();
+		
 		if (!$result = sportsmanagementModelMatch::removeSubstitution($substid))
 		{
 			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.sportsmanagementModelMatch::getError();
@@ -118,14 +118,39 @@ class sportsmanagementControllermatches extends JControllerLegacy
         // diddipoeler
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
-        $model = $this->getModel();
-		if (!$result = $model->savecomment($data)) {
-            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
+       
+		if (!$result = sportsmanagementModelMatch::savecomment($data)) {
+            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.sportsmanagementModelMatch::getError();
         } else {
             $result = $result.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
 		echo json_encode($result);
 		JFactory::getApplication()->close();
     }
+	
+/**
+     * sportsmanagementControllermatches::removeCommentary()
+     * 
+     * @return void
+     */
+    public function removeCommentary()
+    {
+        $event_id = JFactory::getApplication()->input->getInt('event_id');
+		
+		if (!$result = sportsmanagementModelMatch::deletecommentary($event_id))
+		{
+			$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.sportsmanagementModelMatch::getError();
+		}
+		else
+		{
+			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+    }	
+	
+	
+	
+	
 
 }
