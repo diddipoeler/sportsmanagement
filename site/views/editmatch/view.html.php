@@ -352,7 +352,7 @@ foreach ($rosters['home'] as $player)
 	}
 	$temp[] = $obj;
 }
-$lists['homeroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam1_id, 'style="" size="" class="inputbox" size="1"', 'value', 'text');;        
+$lists['homeroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam1_id, 'style="" size="" class="inputbox" size="1"', 'value', 'text');
 foreach ($rosters['away'] as $player)
 {
 	$obj = new stdclass();
@@ -373,7 +373,7 @@ foreach ($rosters['away'] as $player)
 	}
 	$temp[] = $obj;
 }
-$lists['awayroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam2_id, 'style="" size="1" class="inputbox" size="1"', 'value', 'text');;
+$lists['awayroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam2_id, 'style="" size="1" class="inputbox" size="1"', 'value', 'text');
 
 //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents awayRoster<br><pre>'.print_r($lists,true).'</pre>'   ),'');        
         
