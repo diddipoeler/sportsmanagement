@@ -11,7 +11,7 @@ jQuery(document).ready(function()  {
 function updatePlayerSelect() {
 if(jQuery('#cell-player'))
 jQuery('#cell-player').empty().append(
-vgetPlayerSelect(jQuery('#team_id')[0].selectedIndex));
+getPlayerSelect(jQuery('#team_id')[0].selectedIndex));
 }
 
 function getPlayerSelect(index) {
