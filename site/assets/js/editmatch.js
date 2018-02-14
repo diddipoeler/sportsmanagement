@@ -33,6 +33,41 @@ jQuery(".show" + roster ).css("display", "block");
 //return select;
 }
 
+function save_new_event(matchid,projecttime,baseajaxurl)
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+          jQuery("#ajaxresponse").addClass('ajax-loading');
+          
+					var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
+					var player = jQuery("#teamplayer_id").val();
+					var event = jQuery("#event_type_id").val();
+					var team = jQuery("#team_id").val();
+					var time = jQuery("#event_time").val();
+          var notice = encodeURIComponent(jQuery("#notice").val());
+          var event_sum = jQuery("#event_sum").val();
+					var querystring = 'teamplayer_id=' + player +
+					'&projectteam_id=' + team + 
+					'&event_type_id=' + event + 
+					'&event_time=' + time + 
+					'&match_id=' + matchid +
+          '&projecttime=' + projecttime + 
+					'&event_sum=' + event_sum +
+					'&notice=' + notice;
+         
+       
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+  dataType:"json",
+  success: commentsaved, //function to be called on successful reply from server
+  error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      }
+  
+});
+        
+}
 
 function save_new_comment(matchid,projecttime,baseajaxurl)
 {
