@@ -2580,7 +2580,7 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
-	return = $db->insertid();
+	return $db->insertid();
             }
             catch (Exception $e)
             {
@@ -2644,7 +2644,7 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-	return = $db->insertid();
+	return $db->insertid();
             }
             catch (Exception $e)
             {
