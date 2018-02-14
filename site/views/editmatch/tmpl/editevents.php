@@ -34,65 +34,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JFactory::getURI();
 }
 ?>
-
-
-<script type="text/javascript">
-<!--
-var homeroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['home'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var awayroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['away'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var rosters = Array(homeroster, awayroster);
-
-
-//-->
-</script>
-
-           
+          
 <form  action="<?php echo $uri->toString(); ?>" id='editevents' method='post' style='display:inline' name='editevents' >
 <div id="gamesevents">
 
@@ -109,19 +51,18 @@ var rosters = Array(homeroster, awayroster);
 	
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
-			<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
+			<!-- Dont remove this -->
 			<div id="ajaxresponse"></div>
 			<table id="table-event" class='adminlist'>
 				<thead>
 					<tr>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TEAM'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
+						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM'); ?></th>
 						<th>
 							<?php
 							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME');
-							#echo JText::_('Hrs') . ' ' . JText::_('Mins') . ' ' . JText::_('Secs');
 							?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
@@ -164,7 +105,8 @@ var rosters = Array(homeroster, awayroster);
 					?>
 					<tr id="row-new">
 						<td><?php echo $this->lists['teams']; ?></td>
-						<td id="cell-player">&nbsp;</td>
+						<td id="cell-player-home"><?php echo $this->lists['homeroster']; ?></td>
+						<td id="cell-player-away"><?php echo $this->lists['awayroster']; ?></td>
 						<td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
@@ -191,7 +133,6 @@ var rosters = Array(homeroster, awayroster);
 					<th>
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						#echo JText::_( 'Hrs' ) . ' ' . JText::_( 'Mins' ) . ' ' . JText::_( 'Secs' );
 						?>
 					</th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
