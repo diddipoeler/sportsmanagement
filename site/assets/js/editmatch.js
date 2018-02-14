@@ -80,11 +80,13 @@ var resp = response.split('&');
 	
 if (resp[0] != '0') 
   {
-    	
+  var team = jQuery("#team_id").val();
+var player = jQuery("#" + team ).val();
+	  
     jQuery("#table-commentary").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
-    + jQuery("#ctype").val() + '</td><td>' 
-    + jQuery("#c_event_time").val() + '</td><td>' 
+    + jQuery("#event_type_id").val() + '</td><td>' 
+    + jQuery("#event_time").val() + '</td><td>' 
     + jQuery("#notes").val() + '</td><td><input	id="deleteevent-' + resp[0] 
     + '" type="button" class="inputbox button-delete-event" value="' 
     + str_delete + '"</td></tr>');
