@@ -8,24 +8,29 @@ jQuery(document).ready(function()  {
 });
 
 // hier sind die funktionen
-function updatePlayerSelect() {
-if(jQuery('#cell-player'))
-jQuery('#cell-player').empty().append(
-getPlayerSelect(jQuery('#team_id')[0].selectedIndex));
-}
+//function updatePlayerSelect() {
+//if(jQuery('#cell-player'))
+//jQuery('#cell-player').empty().append(
+vgetPlayerSelect(jQuery('#team_id')[0].selectedIndex));
+//}
 
 function getPlayerSelect(index) {
+var roster = jQuery("#team_id").val();
+
+jQuery(".hide" + roster ).css("display", "none");
+jQuery(".show" + roster ).css("display", "block");
+	
 // homeroster and awayroster must be defined globally (in the view calling
 // the script)
-var roster = rosters[index];
+//var roster = rosters[index];
 // build select
-    	var select = jQuery("<select>").attr({id: 'teamplayer_id',class:'span3'});
+//    	var select = jQuery("<select>").attr({id: 'teamplayer_id',class:'span3'});
 
-    for (var i = 0, n = roster.length; i < n; i++) {
-		select.append(jQuery("<option>").attr({value : roster[i].value}).text(roster[i].text));
-	}
+//    for (var i = 0, n = roster.length; i < n; i++) {
+//		select.append(jQuery("<option>").attr({value : roster[i].value}).text(roster[i].text));
+//	}
 
-return select;
+//return select;
 }
 
 
