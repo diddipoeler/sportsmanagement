@@ -2541,7 +2541,8 @@ if (!$db->execute())
      */
     function savecomment($data)
 	{
-		
+$date = JFactory::getDate();
+$user = JFactory::getUser();	
         // live kommentar speichern
         if ( empty($data['event_time']) )
 		{
@@ -2566,28 +2567,32 @@ if (!$db->execute())
         $db = JFactory::getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
-        // Insert columns.
-        $columns = array('event_time','match_id','type','notes');
-        // Insert values.
-        $values = array($data['event_time'],$data['match_id'],$data['type'],'\''.$data['notes'].'\'');
-        // Prepare the insert query.
-        $query
-            ->insert($db->quoteName('#__sportsmanagement_match_commentary'))
-            ->columns($db->quoteName($columns))
-            ->values(implode(',', $values));
-        // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
-        if (!$db->execute())
-		{
-			$result = false;
-            $object->id = $db->getErrorMsg();
-		}
-        else
-        {
-            $object->id = $db->insertid();
-        }
-       
-		return $object->id;
+	$temp = new stdClass();   
+$temp->event_time = $data['event_time'];	    
+$temp->match_id = $data['match_id'];
+$temp->type = $data['type'];
+$temp->notes = $data['notes'];
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');	    
+	    
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
+		//$object->id = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	    //$object->id = $e->getMessage();		    
+	return false;	    
+            }	
+	    
+	    return true;    
+	    
+        
 	}
     
     /**
@@ -2623,7 +2628,7 @@ $user = JFactory::getUser();
         // Create a new query object.
         $query = $db->getQuery(true);
 	    $temp = new stdClass();
-	    $object = new stdClass();
+	    //$object = new stdClass();
 $temp->match_id = $data['match_id'];	    
 $temp->projectteam_id = $data['projectteam_id'];
 $temp->teamplayer_id = $data['teamplayer_id'];
@@ -2639,13 +2644,13 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-		$object->id = $db->insertid();
+		//$object->id = $db->insertid();
             }
             catch (Exception $e)
             {
             //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
 	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
-	    $object->id = $e->getMessage();		    
+	    //$object->id = $e->getMessage();		    
 	return false;	    
             }	
 	    
