@@ -39,9 +39,10 @@ jQuery("#ajaxresponse").html(baseajaxurl);
           jQuery("#ajaxresponse").addClass('ajax-loading');
           
 					var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
-					var player = jQuery("#teamplayer_id").val();
+					//var player = jQuery("#teamplayer_id").val();
 					var event = jQuery("#event_type_id").val();
 					var team = jQuery("#team_id").val();
+	var player = jQuery("#" + team ).val();
 					var time = jQuery("#event_time").val();
           var notice = encodeURIComponent(jQuery("#notice").val());
           var event_sum = jQuery("#event_sum").val();
@@ -59,7 +60,7 @@ jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
   dataType:"json",
-  success: commentsaved, //function to be called on successful reply from server
+  success: eventsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
@@ -67,6 +68,17 @@ jQuery.ajax({
   
 });
         
+}
+
+
+function eventsaved(response) 
+{
+	jQuery("#ajaxresponse").removeClass('ajax-loading');
+	// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+	
+	
+	
 }
 
 function save_new_comment(matchid,projecttime,baseajaxurl)
@@ -82,20 +94,11 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 				var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
 				+ matchid + '&notes='
 				+ comnt + '&projecttime=' + projecttime;
-         //jQuery("#ajaxresponse").html(url + querystring); 
-
-//alert(token);
-         
+        
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-//  data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
-  //data: jQuery("#component-form").serialize(),
   dataType:"json",
-//  success: commentsaved
   success: commentsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
