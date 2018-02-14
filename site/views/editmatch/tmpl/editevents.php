@@ -105,8 +105,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					?>
 					<tr id="row-new">
 						<td><?php echo $this->lists['teams']; ?></td>
-						<td id="cell-player-home"><?php echo $this->lists['homeroster']; ?></td>
-						<td id="cell-player-away"><?php echo $this->lists['awayroster']; ?></td>
+						<td id="cell-player-<?php echo $this->teams->projectteam2_id; ?>"><?php echo $this->lists['homeroster']; ?></td>
+						<td id="cell-player-<?php echo $this->teams->projectteam1_id; ?>"><?php echo $this->lists['awayroster']; ?></td>
 						<td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
