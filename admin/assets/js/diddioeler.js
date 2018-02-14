@@ -84,7 +84,7 @@ jQuery.ajax({
   //data: jQuery("#component-form").serialize(),
   dataType:"json",
 //  success: commentsaved
-  success: commentsaved, //function to be called on successful reply from server
+  success: eventsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
@@ -96,6 +96,20 @@ jQuery.ajax({
 //      }
 });
         
+}
+
+
+function eventsaved(response) 
+{
+jQuery("#ajaxresponse").removeClass('ajax-loading');
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+
+	
+	
+	
+	
+	
 }
 
 function save_new_comment()
