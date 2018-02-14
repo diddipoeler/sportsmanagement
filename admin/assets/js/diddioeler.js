@@ -93,8 +93,8 @@ var resp = response.split('&');
 
 if (resp[0] != '0') 
   {
-  var team = jQuery("#team_id").val();
-var player = jQuery("#teamplayer_id option:selected" ).text();
+  //var team = jQuery("#team_id").val();
+var player = jQuery("#teamplayer_id option:selected").text();
 	  
     jQuery("#table-commentary").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
