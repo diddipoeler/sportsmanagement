@@ -105,8 +105,8 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					?>
 					<tr id="row-new">
 						<td><?php echo $this->lists['teams']; ?></td>
-						<td id="cell-player-home"><?php echo $this->lists['homeroster']; ?></td>
-						<td id="cell-player-away"><?php echo $this->lists['awayroster']; ?></td>
+<td class="hide<?php echo $this->teams->projectteam2_id; ?> show<?php echo $this->teams->projectteam1_id; ?>" style="display:;" id="cell-player-<?php echo $this->teams->projectteam1_id; ?>"><?php echo $this->lists['homeroster']; ?></td>
+<td class="hide<?php echo $this->teams->projectteam1_id; ?> show<?php echo $this->teams->projectteam2_id; ?>" style="display:none;" id="cell-player-<?php echo $this->teams->projectteam2_id; ?>"><?php echo $this->lists['awayroster']; ?></td>
 						<td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
@@ -115,8 +115,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
                         
                         
 						<td style='text-align:center; ' >
-							
-							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE'); ?>" />
+<input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
 						</td>
 					</tr>
 				</tbody>
