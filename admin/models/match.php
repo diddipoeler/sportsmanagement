@@ -2505,7 +2505,7 @@ $conditions = array(
     $db->quoteName('id') . '='.$event_id
 );
  
-$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'));
+$query->delete($db->quoteName('#__sportsmanagement_match_commentary'));
 $query->where($conditions);
  
 $db->setQuery($query);    
@@ -2598,7 +2598,8 @@ if (!$db->execute())
      */
     function saveevent($data)
 	{
-
+$date = JFactory::getDate();
+$user = JFactory::getUser();
         if ( empty($data['event_time']) )
 		{
 		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
@@ -2616,24 +2617,39 @@ if (!$db->execute())
 		$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
 		return false;
 		}
-   
-        $object = JTable::getInstance('MatchEvent','sportsmanagementTable');
-		$object->bind($data);
-		//if (!$object->check())
-//		{
-//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
-//			return false;
-//		}
-		if (!$object->store())
-		{
-			$this->setError(JFactory::getDbo()->getErrorMsg());
-			return false;
-		}
-        else
-        {
-            $object->id = JFactory::getDbo()->insertid();
-        }
-		return $object->id;
+   	
+	// Get a db connection.
+        $db = JFactory::getDbo();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+	    $temp = new stdClass();
+$temp->match_id = $data['match_id'];	    
+$temp->projectteam_id = $data['projectteam_id'];
+$temp->teamplayer_id = $data['teamplayer_id'];
+$temp->event_time = $data['event_time'];
+$temp->event_type_id = $data['event_type_id'];
+$temp->event_sum = $data['event_sum'];
+$temp->notice = $data['notice'];
+$temp->notes = $data['notes'];
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');	    
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
+		$object->id = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	    $object->id = $e->getMessage();		    
+	return false;	    
+            }	
+	    
+	    return true;
+	    
 	}
     
     
@@ -2652,7 +2668,7 @@ if (!$db->execute())
         $query = $db->getQuery(true);
         
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
+        $query->from('#__sportsmanagement_match_commentary');
         $query->where('match_id = '.$match_id);
         $query->order('event_time DESC');
         
