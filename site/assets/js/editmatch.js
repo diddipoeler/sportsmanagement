@@ -8,11 +8,11 @@ jQuery(document).ready(function()  {
 });
 
 // hier sind die funktionen
-//function updatePlayerSelect() {
-//if(jQuery('#cell-player'))
-//jQuery('#cell-player').empty().append(
+function updatePlayerSelect() {
+if(jQuery('#cell-player'))
+jQuery('#cell-player').empty().append(
 vgetPlayerSelect(jQuery('#team_id')[0].selectedIndex));
-//}
+}
 
 function getPlayerSelect(index) {
 var roster = jQuery("#team_id").val();
