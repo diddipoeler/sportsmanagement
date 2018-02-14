@@ -2623,6 +2623,7 @@ $user = JFactory::getUser();
         // Create a new query object.
         $query = $db->getQuery(true);
 	    $temp = new stdClass();
+	    $object = new stdClass();
 $temp->match_id = $data['match_id'];	    
 $temp->projectteam_id = $data['projectteam_id'];
 $temp->teamplayer_id = $data['teamplayer_id'];
