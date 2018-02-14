@@ -78,7 +78,31 @@ function eventsaved(response)
 	// first line contains the status, second line contains the new row.
 var resp = response.split('&');
 	
-	
+if (resp[0] != '0') 
+  {
+    	
+    jQuery("#table-commentary").last().append('<tr id="rowevent-' 
+    + resp[0] + '"><td>' 
+    + jQuery("#ctype").val() + '</td><td>' 
+    + jQuery("#c_event_time").val() + '</td><td>' 
+    + jQuery("#notes").val() + '</td><td><input	id="deleteevent-' + resp[0] 
+    + '" type="button" class="inputbox button-delete-event" value="' 
+    + str_delete + '"</td></tr>');
+		
+    jQuery("#ajaxresponse").addClass("ajaxsuccess");
+    jQuery("#ajaxresponse").text(resp[1]);
+      jQuery("#notes").val('');
+      jQuery("#c_event_time").val('');
+		
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-event").addEvent('click', button_delete_event);	   
+	}	
 	
 }
 
