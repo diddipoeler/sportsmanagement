@@ -165,12 +165,17 @@ else
 	</td>
 	<?php
 	}
-		?>
+	if ( $this->config['show_edit_match_time_present'] )
+	{
+	?>
 	<!-- Edit time present -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='time_present<?php echo $thismatch->id; ?>' value='<?php echo substr($thismatch->time_present,0,5); ?>'
 			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+	}	
+	?>
 	<!-- Edit home team -->
 	<td align="center" nowrap="nowrap" valign="top">
 		<!-- Edit home line-up -->
