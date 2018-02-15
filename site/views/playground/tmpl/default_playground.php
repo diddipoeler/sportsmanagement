@@ -10,7 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 ?>
-
+<div class="row-fluid">
 <table class="table">
 	<tr class="">
 		<th colspan="2">
@@ -99,4 +99,5 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	}
 	?>
 </table>
+</div>	
 <br />
