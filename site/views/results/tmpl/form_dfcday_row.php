@@ -80,46 +80,13 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 	<!-- Edit match details -->
 	<td valign="top">
-		<?php
-//		JHtml::_('behavior.modal','a.mymodal');
-//		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
-$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'edit',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
-//		$imgTitle = JText::_('Edit match details');
-//		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
-		?>
-<!--
-		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
--->
-
-<!-- bootstrap -->
-<a data-target="#match_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/edit.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="match_lineup" 
-aria-hidden="true"  
-id="match_lineup<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
+<?php
+$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'edit',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');				
+?>
+<!-- Button HTML (to Trigger Modal) -->
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/edit.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),'20',$url);        
+?>		
 
 	</td>
 		<?php 
