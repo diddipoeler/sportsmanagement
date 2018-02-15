@@ -124,11 +124,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
 	</td>
 		<?php 
 		} 
+		if ( $this->config['show_edit_match_number'] )
+		{
 		?>
+	<!-- Edit number -->
 	<td align='center' valign='top'>
     <input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
 		value="<?php echo $thismatch->match_number;?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+		}		
+if ( $this->config['show_edit_match_date'] )
+	{	
+	?>
 	<!-- Edit date -->
 	<td nowrap='nowrap' align='center' valign='top'>
 	<?php
@@ -155,6 +163,7 @@ else
                     ?>
 	</td>
 	<?php
+}
 	if ( $this->config['show_edit_match_time'] )
 	{	
 	?>
