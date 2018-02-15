@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <form>
-
-	<fieldset	name= "details"
+<!-- register 1 -->
+	<fieldset name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 	
@@ -60,17 +60,10 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-<!--
-		<field	name="show_results_ranking" type="extensionradiobutton" default="0"
-				label="Show project ranking under results?"
-				description="NOT ADAPTED YET! With this option you can allow to show the ranking of the project nder the results-view.">
-			<option value="0">No</option>
-			<option value="1">JYES</option>
-		</field>
--->
-	</fieldset>
 
-	<fieldset	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	</fieldset>
+<!-- register 2 -->
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
@@ -91,12 +84,7 @@
       
 		</field>
     
-    <field	name="result_style_edit" type="list" default="0"
-				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_RESULT_STYLE_EDIT"
-				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_RESULT_STYLE_EDIT">
-			<option value="form">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION0_RESULT_STYLE_EDIT</option>
-			<option value="form_dfcday">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_RESULT_STYLE_EDIT</option>
-		</field>
+   
 
 		<field	name="switch_home_guest" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"
@@ -196,7 +184,21 @@
 		</field>
 
 	</fieldset>
+
+<!-- register 3 -->
+<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_EDIT_OPTIONS" 
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_EDIT_OPTIONS" 
+	description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_EDIT_OPTIONS">	
+ 
+	<field	name="result_style_edit" type="list" default="0"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_RESULT_STYLE_EDIT"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_RESULT_STYLE_EDIT">
+			<option value="form">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION0_RESULT_STYLE_EDIT</option>
+			<option value="form_dfcday">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_RESULT_STYLE_EDIT</option>
+		</field>
 	
+</fieldset>	
+<!-- register 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_DIV_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_DIV_OPTIONS">	
