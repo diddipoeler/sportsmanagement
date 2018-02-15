@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      form_dfcday_row.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage results
@@ -271,6 +271,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->pr
 	</td>
 		<?php
 		}
+if ( $this->config['show_edit_match_events'] )
+		{				
 		?>
 	<!-- Edit match events -->
 	<td valign="top">
@@ -283,6 +285,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch
 ?>
 	
     </td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_statistic'] )
+	{
+	?>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
@@ -293,8 +300,10 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
 ?>
 
-	
     </td>
+	<?php
+	}
+	?>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>
 		<input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
