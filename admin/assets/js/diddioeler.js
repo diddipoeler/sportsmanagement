@@ -37,7 +37,6 @@ var playerin = jQuery("#in").val();
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+  '&projecttime=' + projecttime;
 				var url = baseajaxurl + '&task=matches.savesubst&tmpl=component';
-        //jQuery("#ajaxresponse").html(url + querystring);
         
         jQuery.ajax({
   type: 'POST', // type of request either Get or Post
@@ -139,30 +138,17 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 				var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
 				+ matchid + '&notes='
 				+ comnt + '&projecttime=' + projecttime;
-         //jQuery("#ajaxresponse").html(url + querystring); 
 
-//alert(token);
-         
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-//  data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
-  //data: jQuery("#component-form").serialize(),
   dataType:"json",
-//  success: commentsaved
   success: commentsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
       }
   
-//  error: function (xhr, ajaxOptions, thrownError) {
-//        alert(xhr.status);
-//        alert(thrownError);
-//      }
 });
     
 }
@@ -218,11 +204,6 @@ var querystring = '&event_id=' + eventid;
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
-// data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
- //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
@@ -297,22 +278,7 @@ function commentsaved(response)
 	if (resp[0] != '0') 
   {
 
-// create new row in comments table
-//		var newrow = new Element('tr', {
-//			id : 'row-' + resp[0]
-//		});
-//		new Element('td').inject(newrow);
-//		new Element('td').set('text',$('c_event_time').value).inject(newrow);
-//		new Element('td', {
-//			title : $('notes').value
-//		}).addClass("hasTip").set('text',$('notes').value).inject(newrow);
-//		var deletebutton = new Element('input', {
-//			id : 'deletecomment-' + resp[0],
-//			type : 'button',
-//			value : str_delete
-//		}).addClass('inputbox button-delete-commentary').addEvent('click', button_delete_commentary);
-//		new Element('td').appendChild(deletebutton).inject(newrow);
-//		newrow.insertBefore($('rowcomment-new'));	
+
     	
     jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
     + resp[0] + '"><td>' 
@@ -374,8 +340,7 @@ function substdeleted(response)
 
 	if (resp[0] != '0') 
   {
-//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
-//		currentrow.dispose();
+
 jQuery("#sub-" + substid).remove();
 	jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);

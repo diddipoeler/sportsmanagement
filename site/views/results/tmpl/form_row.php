@@ -124,11 +124,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
 	</td>
 		<?php 
 		} 
+		if ( $this->config['show_edit_match_number'] )
+		{
 		?>
+	<!-- Edit number -->
 	<td align='center' valign='top'>
     <input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
 		value="<?php echo $thismatch->match_number;?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+		}		
+if ( $this->config['show_edit_match_date'] )
+	{	
+	?>
 	<!-- Edit date -->
 	<td nowrap='nowrap' align='center' valign='top'>
 	<?php
@@ -154,16 +162,29 @@ else
 }                    
                     ?>
 	</td>
+	<?php
+}
+	if ( $this->config['show_edit_match_time'] )
+	{	
+	?>
 	<!-- Edit start time -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='match_time<?php echo $thismatch->id; ?>' value='<?php echo substr($uhrzeit,0,5); ?>'
 			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_time_present'] )
+	{
+	?>
 	<!-- Edit time present -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='time_present<?php echo $thismatch->id; ?>' value='<?php echo substr($thismatch->time_present,0,5); ?>'
 			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+	}	
+	?>
 	<!-- Edit home team -->
 	<td align="center" nowrap="nowrap" valign="top">
 		<!-- Edit home line-up -->
@@ -317,6 +338,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->pr
 	</td>
 		<?php
 		}
+		if ( $this->config['show_edit_match_events'] )
+		{	
 		?>
 	<!-- Edit match events -->
 	<td valign="top">
@@ -328,6 +351,11 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),'20',$url);        
 ?>
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_statistic'] )
+	{
+	?>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
@@ -338,6 +366,11 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
 ?>        
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_referees'] )
+	{		
+	?>
 	<!-- Edit referee -->
 	<td valign="top">
 		<?php
@@ -349,6 +382,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatc
 ?>         
 
 	</td>
+	<?php
+	}
+	?>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>
 		<input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'

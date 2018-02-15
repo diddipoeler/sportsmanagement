@@ -83,20 +83,20 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
         $this->divclass = 'col p-2';
     } elseif ($this->overallconfig['use_bootstrap_version'] && !$params->get('use_jsmgrid')) {
         //$this->divclass = 'col p-2';
-        $this->divclass .= "p-2 col-xs-" . round((12 / $this->columns));
-        $this->divclass .= " p-2 col-sm-" . round((12 / $this->columns));
-        $this->divclass .= " p-2 col-md-" . round((12 / $this->columns));
-        $this->divclass .= " p-2 col-lg-" . round((12 / $this->columns));
+        $this->divclass .= "col-xs-" . round((12 / $this->columns));
+        $this->divclass .= " col-sm-" . round((12 / $this->columns));
+        $this->divclass .= " col-md-" . round((12 / $this->columns));
+        $this->divclass .= " col-lg-" . round((12 / $this->columns));
     } else {
         $this->divclass = "span" . round((12 / $this->columns));
     }
     ?>
-    <div class="container-fluid no-gutters">
+<!--    <div class="container-fluid no-gutters">-->
         <div class="row no-gutters">
-            <div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
-            <div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
-            <div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
-            <div class="<?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
         </div>
         <?php
         foreach ($this->leaguerankoverviewdetail as $league => $summary) {
@@ -120,7 +120,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     }
     ?>
 
-    </div>
+    <!--</div>-->
     <?php
 }
 ?> 
