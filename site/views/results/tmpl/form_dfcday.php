@@ -46,7 +46,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 	<!-- section header e.g. ranking, results etc. -->
 	<table class="table table-responsive">
 		<tr>
-			<td class="contentheading">
+			<td class="">
 				<?php
 				if ($this->roundid>0)
 				{
@@ -84,7 +84,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$colspan=($this->project->allow_add_time) ? 15 : 14;
 			?>
 			<thead>
-				<tr class="sectiontableheader">
+				<tr class="">
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
@@ -112,10 +112,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						<?php
 					}
 					?>
+					<?php
+				if ( $this->config['show_edit_match_events'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_statistic'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
-					
-					
+					<?php
+				}
+				?>	
 				</tr>
 			</thead>
 			<!-- Start of the matches for the selected round -->
