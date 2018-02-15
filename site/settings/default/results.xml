@@ -126,7 +126,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field	name="show_match_number" type="extensionradiobutton" default="0"
+    <field name="show_match_number" type="extensionradiobutton" default="0"
     class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_MATCH_NUMBERS"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_MATCH_NUMBERS">
@@ -196,6 +196,68 @@
 			<option value="form">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION0_RESULT_STYLE_EDIT</option>
 			<option value="form_dfcday">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_RESULT_STYLE_EDIT</option>
 		</field>
+ 
+	<field	name="show_edit_match_number" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_MATCH_NUMBERS"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_MATCH_NUMBERS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
+	<field	name="show_edit_match_date" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_DATE"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_MATCH_DATE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
+	<field	name="show_edit_match_time" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_TIME"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_MATCH_TIME">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
+	<field	name="show_edit_match_time_present" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_PRESENT"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_MATCH_TIME_PRESENT">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
+<field	name="show_edit_match_events" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_EVENTS"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_MATCH_EVENTS">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>	
+<field	name="show_edit_match_statistic" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_STATISTIC"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_STATISTIC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>	
+<field	name="show_edit_match_referees" type="extensionradiobutton" default="0"
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_EDIT_MATCH_REFEREES"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_EDIT_MATCH_REFEREES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </fieldset>	
 <!-- register 4 -->	
