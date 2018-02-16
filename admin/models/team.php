@@ -72,8 +72,16 @@ class sportsmanagementModelteam extends JSMModelAdmin
         
 
         $db->setQuery( $query );
+	try{    
         $result = $db->loadObjectList();
-
+ }
+catch (Exception $e){
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	$result = false;
+}	
+	    
         return $result;
     }
     
