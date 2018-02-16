@@ -113,7 +113,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_logo_small" type="list" default="1"
+		<field	name="show_logo_small" type="list" default="0"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_LOGO_SMALL">
 			<option value="0">JNO</option>
