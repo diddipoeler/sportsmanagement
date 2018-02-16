@@ -15,7 +15,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php
 
 if ( $this->games )
-#if (1==1)
 {
 	?>
 	<!-- Playground next games -->
@@ -65,10 +64,10 @@ if ( $this->games )
 										?>
 									</td>
 									<?php
-									if ($this->config['show_logo'] == 1) {
+									if ( $this->config['show_logo'] ) {
 										//$model = $this->getModel();
-										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id);
-										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id);
+										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
+										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
 										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml( $home_logo[0], 1 );
 										$teamA .= '</td>';
@@ -82,7 +81,7 @@ if ( $this->games )
 									</td>
 									<td class="nowrap">-</td>
 									<?php
-									if ($this->config['show_logo'] == 1) {
+									if ( $this->config['show_logo'] ) {
 										$teamB = '<td align="right" valign="top" class="nowrap">';
 										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml( $away_logo[0], 1 );
 										$teamB .= '</td>';

@@ -56,7 +56,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
      * @param mixed $team_id
      * @return
      */
-    public static function getTeamLogo($team_id)
+    public static function getTeamLogo($team_id, $club_logo = 'small')
     {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
@@ -64,7 +64,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	$query = $db->getQuery(true);
         
         // Select some fields
-	$query->select('c.logo_small,c.logo_middle,c.logo_big,c.country,t.name,t.id as team_id');
+	$query->select('c.logo_'.$club_logo.' as logo_small,c.country,t.name,t.id as team_id');
         // From table
 	$query->from('#__sportsmanagement_team as t');
         $query->join('LEFT', '#__sportsmanagement_club c ON c.id = t.club_id');

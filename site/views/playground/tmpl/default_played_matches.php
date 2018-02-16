@@ -15,7 +15,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ( $this->playedgames )
 {
 	?>
-	<!-- Playground next games -->
+	<!-- Playground played games -->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
 		<div class="row-fluid">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
@@ -60,10 +60,10 @@ if ( $this->playedgames )
 										?>
 									</td>
 									<?php
-									if ($this->config['show_logo'] == 1) {
+									if ( $this->config['show_logo'] ) {
 										//$model = $this->getModel();
-										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id);
-										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id);
+										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
+										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
 										$teamA .= " " . sportsmanagementModelProject::getClubIconHtml( $home_logo[0], 1 );
 										$teamA .= '</td>';
@@ -77,7 +77,7 @@ if ( $this->playedgames )
 									</td>
 									<td class="nowrap">-</td>
 									<?php
-									if ($this->config['show_logo'] == 1) {
+									if ( $this->config['show_logo'] ) {
 										$teamB = '<td align="right" valign="top" class="nowrap">';
 										$teamB .= " " . sportsmanagementModelProject::getClubIconHtml( $away_logo[0], 1 );
 										$teamB .= '</td>';
@@ -97,7 +97,7 @@ if ( $this->playedgames )
 					</table>
 			</div>
 	
-	<!-- End of playground next games -->
+	<!-- End of playground played games -->
 	<?php
 }
 ?>

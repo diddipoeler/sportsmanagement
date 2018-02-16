@@ -11,10 +11,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
-
 /**
  * sportsmanagementModelPlayground
  * 
@@ -68,13 +64,17 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 	}
     
     
+    
     /**
      * sportsmanagementModelPlayground::getNextGames()
      * 
      * @param integer $project
+     * @param integer $pgid
+     * @param integer $played
+     * @param integer $allproject
      * @return
      */
-    function getNextGames( $project = 0, $pgid = 0, $played = 0 )
+    function getNextGames( $project = 0, $pgid = 0, $played = 0, $allproject = 0 )
     {
         $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
@@ -110,7 +110,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             $query->where('m.published = 1');
             $query->where('p.published = 1');
 
-            if ( $project )
+            if ( $project && !$allproject )
             {
                 $query->where('p.id = '. (int)$project);
             }
