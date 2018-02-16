@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <form>
+<!-- register 1 -->	
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
@@ -81,9 +82,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_played_matches" type="extensionradiobutton" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_PLAYED_MATCHES"
+			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_PLAYED_MATCHES">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
 	</fieldset>
-
+<!-- register 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
@@ -119,7 +128,7 @@
         </field>
 
 	</fieldset>
-	
+<!-- register 3 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
@@ -148,17 +157,7 @@
 			
 		</field>
 		
-<!--		
-		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
+
 					
 	</fieldset>	
 	
