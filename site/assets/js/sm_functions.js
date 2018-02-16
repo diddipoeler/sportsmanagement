@@ -13,6 +13,12 @@ console.log("document.location.hostname : "+document.location.hostname);
 console.log("document.location.host : "+document.location.host);
 console.log("document.location.pathname : "+document.location.pathname);
 console.log("title : "+jQuery("title").text());
+
+console.log("current window width : "+windowWidth );
+console.log("current window height : "+windowHeight );
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+
 //registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
 //    alert("Embedded block of JS here");
 });
