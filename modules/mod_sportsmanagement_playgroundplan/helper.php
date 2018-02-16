@@ -37,8 +37,8 @@ class modSportsmanagementPlaygroundplanHelper
 	   $app = JFactory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
-		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
-		$playgroundstring = (is_array($usedpid)) ? implode(",", $usedpid) : $usedpid;
+		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : $usedp;
+		$playgroundstring = (is_array($usedpid)) ? implode(",", array_map('intval',$usedpid) ) : $usedpid;
 
 		$numberofmatches = $params->get('maxmatches','5');
 
