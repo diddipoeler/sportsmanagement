@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      helper.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_playgroundplan
@@ -37,8 +37,8 @@ class modSportsmanagementPlaygroundplanHelper
 	   $app = JFactory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
-		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : $usedp;
-		$playgroundstring = (is_array($usedpid)) ? implode(",", array_map('intval',$usedpid) ) : $usedpid;
+		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : (int)$usedp;
+		$playgroundstring = (is_array($usedpid)) ? implode(",", array_map('intval',$usedpid) ) : (int)$usedpid;
 
 		$numberofmatches = $params->get('maxmatches','5');
 
