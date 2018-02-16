@@ -113,12 +113,14 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_logo" type="extensionradiobutton" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_LOGO" description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_LOGO">
+		<field	name="show_logo_small" type="list" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_LOGO_SMALL"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_LOGO_SMALL">
 			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+			<option value="small">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
+			<option value="middle">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION3_LOGO_SMALL</option>
+			<option value="big">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION4_LOGO_SMALL</option>
+</field>
                 
         <field 	name="show_shortname" type="extensionradiobutton" default="0" 
         class="radio btn-group btn-group-yesno"
