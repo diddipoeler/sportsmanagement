@@ -41,13 +41,7 @@ class JSMCountries {
      * @return void
      */
     function Countries() {
-//      $lang = JFactory::getLanguage();
-//		$extension = "com_sportsmanagement_countries";
-//		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
-//		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
-//		||	$lang->load($extension, $source, null, false, false)
-//		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
-//		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+
     }
 
     // Hints:
@@ -112,11 +106,6 @@ class JSMCountries {
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // welche tabelle soll genutzt werden
-//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $params->get( 'cfg_which_database_table' );
-        // Get a db connection.
-//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $db = sportsmanagementHelper::getDBConnection();
 
 // Create a new query object.
@@ -147,11 +136,6 @@ class JSMCountries {
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // welche tabelle soll genutzt werden
-//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $params->get( 'cfg_which_database_table' );
-        // Get a db connection.
-//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $db = sportsmanagementHelper::getDBConnection();
 
 // Create a new query object.
@@ -161,8 +145,6 @@ class JSMCountries {
         // From table
         $query->from('#__sportsmanagement_countries');
         $query->where('alpha3 LIKE \'' . $iso_code_3 . '\'');
-
-
 
         $db->setQuery($query);
 
@@ -184,12 +166,7 @@ class JSMCountries {
     public static function getIso3Flag($iso_code_3) {
         $iso2 = self::convertIso3to2($iso_code_3);
         if ($iso2) {
-            //$path = 'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
             $path = 'images/com_sportsmanagement/database/flags/' . strtolower($iso2) . '.png';
-//            if ( !JFile::exists('images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
-//			{
-//                $path = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
-//            }    
             return $path;
         }
         return null;
@@ -214,15 +191,10 @@ class JSMCountries {
         $cssflags = $params->get('cfg_flags_css');
         
         // Get a db connection.
-        //$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $db = sportsmanagementHelper::getDBConnection();
 
         $src = self::getIso3Flag($countrycode);
         if (!$src) {
-            //return '';
-            // welche tabelle soll genutzt werden
-            //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-            //$database_table	= $params->get( 'cfg_which_database_table' );
             // Create a new query object.
             $query = $db->getQuery(true);
             // Select some fields
@@ -262,11 +234,6 @@ class JSMCountries {
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        // welche tabelle soll genutzt werden
-//$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $params->get( 'cfg_which_database_table' );
-        // Get a db connection.
-//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $db = sportsmanagementHelper::getDBConnection();
 
 // Create a new query object.
@@ -282,9 +249,7 @@ class JSMCountries {
         $db->setQuery($query);
         $res = $db->loadResult();
 
-        //$countries=JSMCountries::getCountries();
         if ($res)
-        //return JText::_($countries[$iso3]['name']);
             return JText::_($res);
     }
 
@@ -336,14 +301,6 @@ class JSMCountries {
     public static function convertAddressString($name = '', $address = '', $state = '', $zipcode = '', $location = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') {
         $resultString = '';
 
-//echo __METHOD__.'-'.__LINE__.'- '.$name.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$address.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$state.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$zipcode.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$location.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$country.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$addressString.'<br />';
-
         if ((!empty($address)) ||
                 (!empty($state)) ||
                 (!empty($zipcode)) ||
@@ -351,9 +308,7 @@ class JSMCountries {
         ) {
             $countryFlag = self::getCountryFlag($country);
             $countryName = self::getCountryName($country);
-            //$dummy = self::removeEmptyFields($name, $address, $state, $zipcode, $location, $countryFlag, $countryName, JText::_($addressString));
             $dummy = JText::_($addressString);
-//echo __METHOD__.'-'.__LINE__.'- dummy '.$dummy.'<br />';			
             $dummy = str_replace('%NAME%', $name, $dummy);
             $dummy = str_replace('%ADDRESS%', $address, $dummy);
             $dummy = str_replace('%STATE%', $state, $dummy);
@@ -382,15 +337,6 @@ class JSMCountries {
      * @return
      */
     public static function removeEmptyFields($name = '', $address = '', $state = '', $zipcode = '', $location = '', $flag = '', $country = '', $addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM') {
-
-//echo __METHOD__.'-'.__LINE__.'- '.$name.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$address.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$state.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$zipcode.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$location.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$flag.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$country.'<br />';
-//echo __METHOD__.'-'.__LINE__.'- '.$addressString.'<br />';
 
         if (empty($name))
             $address = self::checkAddressString('%NAME%', '', $address);
