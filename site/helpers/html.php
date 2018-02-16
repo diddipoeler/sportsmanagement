@@ -42,12 +42,13 @@ class sportsmanagementHelperHtml
 	 * @param string $height
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='',$width='100',$height='200')
+	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='',$width='100',$height='200',$use_jquery_modal = 0)
     {
     $app = JFactory::getApplication();
     // JInput object
     $jinput = $app->input;    
 
+/*
 $modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
@@ -56,6 +57,7 @@ if ( !$url )
 {
 	$url = $picture;
 }
+
 
 $modaltext .= JHtml::_('bootstrap.renderModal',
 	$target,
@@ -66,7 +68,16 @@ $modaltext .= JHtml::_('bootstrap.renderModal',
 	'width' => $width
 	)
 	);	
+*/
 
+
+if ( $use_jquery_modal )
+{
+    
+    
+}
+else
+{
 if ( $url )
 {
 $modaltext = '<a title="'.$text.'" class="modal" href="'.$url.'">';
@@ -76,7 +87,8 @@ else
 $modaltext = '<a title="'.$text.'" class="modal" href="'.$picture.'">';
 }
 $modaltext .= '<img width="'.$picturewidth.'" alt="'.$text.'" src="'.$picture.'"></a>';   
-		
+
+}		
 return $modaltext;    
     
     }
