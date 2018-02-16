@@ -13,7 +13,7 @@ console.log("document.location.hostname : "+document.location.hostname);
 console.log("document.location.host : "+document.location.host);
 console.log("document.location.pathname : "+document.location.pathname);
 console.log("title : "+jQuery("title").text());
-registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
+//registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
 //    alert("Embedded block of JS here");
 });
 
