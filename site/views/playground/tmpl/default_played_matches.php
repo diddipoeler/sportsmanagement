@@ -1,42 +1,37 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
- * @file      default_matches.php
+ * @file      default_played_matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @subpackage playground
  */
-
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
 ?>
 
 <?php
 
-if ( $this->games )
-#if (1==1)
+if ( $this->playedgames )
 {
 	?>
 	<!-- Playground next games -->
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEXT_GAMES'); ?></h2>
+<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
 		<div class="row-fluid">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
 						//sort games by dates
 						$gamesByDate = Array();
-						foreach ( $this->games as $game )
+						foreach ( $this->playedgames as $game )
 						{
 							$gamesByDate[substr( $game->match_date, 0, 10 )][] = $game;
 						}
 						// $teams = $this->project->getTeamsFromMatches( $this->games );
-
 						$colspan = 5;
 						if ($this->config['show_logo'] == 1) 
                         {
 							$colspan = 7;
 						}
-
 						foreach ( $gamesByDate as $date => $games )
 						{
 							?>
@@ -50,8 +45,8 @@ if ( $this->games )
 							<?php
 							foreach ( $games as $game )
 							{
-								$home = $this->gamesteams[$game->team1];
-								$away = $this->gamesteams[$game->team2];
+								$home = $this->playedgamesteams[$game->team1];
+								$away = $this->playedgamesteams[$game->team2];
 								?>
 								<tr class="sectiontableentry1">
 									<td>

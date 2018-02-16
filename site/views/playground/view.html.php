@@ -37,9 +37,11 @@ class sportsmanagementViewPlayground extends sportsmanagementView
     	$this->playground = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt( "pgid", 0 ),1);
         $this->address_string = $this->model->getAddressString();
 	$this->teams = $mdlJSMTeams->getTeams($this->playground->id);
-	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
+	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ),0);
+	$this->playedgames = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ),1);	
 	$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->games );
-        
+        $this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->playedgames );
+	//$this->gamesteams = array_merge($this->playedgamesteams, $this->notplayedgamesteams);
         //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'   ),'');
         
         // diddipoeler
