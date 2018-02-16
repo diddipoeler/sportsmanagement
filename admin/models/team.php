@@ -60,13 +60,13 @@ class sportsmanagementModelteam extends JSMModelAdmin
     {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+	$db = JFactory::getDbo();
+	$query = $db->getQuery(true);
         
         // Select some fields
-		$query->select('c.logo_small,c.country,t.name,t.id as team_id');
+	$query->select('c.logo_small,c.country,t.name,t.id as team_id');
         // From table
-		$query->from('#__sportsmanagement_team t');
+	$query->from('#__sportsmanagement_team t');
         $query->join('LEFT', '#__sportsmanagement_club c ON c.id = t.club_id');
         $query->where('t.id = '.$team_id);
         
@@ -79,6 +79,7 @@ catch (Exception $e){
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
 $code = $e->getCode(); // Returns '500';
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
 	$result = false;
 }	
 	    
