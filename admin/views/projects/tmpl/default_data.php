@@ -35,11 +35,6 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-                    <th width="">
-						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
 					<th class="title">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
@@ -208,7 +203,6 @@ echo $row->league.'<br>';
 							
 							?>
 							</td>
-                        <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="center"><?php echo $row->season; ?></td>
                         
 						<td class="center">
