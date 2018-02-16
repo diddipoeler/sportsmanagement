@@ -15,11 +15,7 @@ if ( $this->overallconfig['use_jquery_modal'] )
 {
 ?>
 <style>
-
-.modaljsm {
-    width: 80%;
-    height: 60%;
-  }  
+  
 
 </style>
 
