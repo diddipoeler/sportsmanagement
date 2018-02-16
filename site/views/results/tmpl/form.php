@@ -103,7 +103,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$colspan=($this->project->allow_add_time) ? 15 : 14;
 			?>
 			<thead>
-				<tr class="sectiontableheader">
+				<tr class="">
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
@@ -118,10 +118,33 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					<?php 
 						}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_number'] )
+				{
+					?>
 					<th width="20" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_date'] )
+				{	
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time_present'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PRESENT'); ?></th>
+					<?php
+				}
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
 					<th style="text-align: center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
@@ -133,9 +156,27 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						<?php
 					}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_events'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+				<?php
+				}
+				if ( $this->config['show_edit_match_statistic'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_referees'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?></th>
+					<?php
+				}
+					?>
 					<th width="1%" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></th>
 				</tr>
 			</thead>
