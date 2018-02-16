@@ -108,7 +108,20 @@ class sportsmanagementModelteam extends JSMModelAdmin
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		return $this->jsmdb->loadObject();
+		//return $this->jsmdb->loadObject();
+try{
+            $result = $this->jsmdb->loadObject();
+		 }
+catch (Exception $e){
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	$result = false;
+}	
+	
+	return $result;
+	
+	
 	}
  
     /**
