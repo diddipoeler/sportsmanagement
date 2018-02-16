@@ -102,7 +102,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/edit.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>
 
     </td>
