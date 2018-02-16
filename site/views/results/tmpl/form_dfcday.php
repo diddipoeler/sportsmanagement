@@ -17,17 +17,27 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JFactory::getURI();
 }
 
+if ( $this->overallconfig['use_jquery_modal'] )
+{
+?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
+<?php 
+}
+
 if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
+
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
 $document = JFactory::getDocument();
 
-
+/*
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -38,9 +48,11 @@ else
 JHtml::_( 'behavior.mootools' );   
 require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
 }
+*/
 
 //$version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+
 ?>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- section header e.g. ranking, results etc. -->
