@@ -45,8 +45,8 @@ if ( $this->playedgames )
 							<?php
 							foreach ( $games as $game )
 							{
-								$home = $this->gamesteams[$game->team1];
-								$away = $this->gamesteams[$game->team2];
+								$home = $this->playedgamesteams[$game->team1];
+								$away = $this->playedgamesteams[$game->team2];
 								?>
 								<tr class="sectiontableentry1">
 									<td>
