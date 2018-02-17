@@ -1,9 +1,9 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  * @version   1.0.00
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @subpackage mod_sportsmanagement_matchesslider
  */ 
@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	$(function() { //on DOM ready
 		$("#scroller").simplyScroll({
 			customClass: 'custom',
-			direction: 'backwards',
+			direction: <?php echo $params->get('slide_direction'); ?>,
 			pauseOnHover: false,
 			frameRate: 20,
 			speed: 2

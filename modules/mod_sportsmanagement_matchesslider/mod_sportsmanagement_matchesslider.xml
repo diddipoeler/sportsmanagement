@@ -51,9 +51,7 @@
 <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 						 
-    <field name="spacer0" type="spacer" class="text" label=""/>       
-
-    <field name="cfg_which_database" 
+    <field name="cfg_which_database"
     type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
@@ -63,10 +61,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="spacer1" type="spacer" class="text" label=""/>
-    <field name="spacer2" type="spacer" class="text" label=""/>
- 
- <field	name="s" 
+ <field	name="s"
     task="seasons" 
       type="dependsql"
       depends="cfg_which_database"
@@ -77,12 +72,7 @@
 					required="">
 			</field>
       
-      <field name="spacer3" type="spacer" class="text" label=""/>
-      <field name="spacer4" type="spacer" class="text" label=""/> 
-			
-			<field type="jsmsubtitle" title="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FIELD_THEMES_LABEL" />
-			
-			<field 	name="project" 
+			<field 	name="project"
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -104,7 +94,15 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
+
+				<field name="slide_direction" type="list" default="backwards"
+					   class="radio btn-group btn-group-yesno"
+					   label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION"
+					   description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_DESCR">
+					<option value="backwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_LEFT_TO_RIGHT</option>
+					<option value="forwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_RIGHT_TO_LEFT</option>
+				</field>
 
 			</fieldset>
 
