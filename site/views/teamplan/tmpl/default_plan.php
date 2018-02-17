@@ -776,7 +776,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
             }
 
-			$score = "<td align='center'>".$result.'</td>';
+			$score = "<td class='center'>".$result.'</td>';
 		}
 		else
 		{
