@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	$(function() { //on DOM ready
 		$("#scroller").simplyScroll({
 			customClass: 'custom',
-			direction: <?php echo $params->get('slide_direction'); ?>,
+			direction: '<?php echo $params->get('slide_direction'); ?>',
 			pauseOnHover: false,
 			frameRate: 20,
 			speed: 2
