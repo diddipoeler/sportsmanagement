@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  * @version   1.0.05
  * @file      default_playerstats.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage player
@@ -125,7 +125,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					array(	"title" => JText::_($eventtype->name),
 						"align" => "top",
 						"hspace" => "2"));
-				?>&nbsp;</th>
+				?></th>
 				<?php
 						}
 					}
@@ -139,7 +139,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 							if ($stat->showInPlayer()) {
 						
 				?>
-				<th class="td_c"><?php echo !empty($stat) ? $stat->getImage() : ""; ?>&nbsp;</th>
+				<th class="td_c"><?php echo !empty($stat) ? $stat->getImage() : ""; ?></th>
 				<?php 			}
 						}
 					}
