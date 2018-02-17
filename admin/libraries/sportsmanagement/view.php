@@ -130,6 +130,9 @@ class sportsmanagementView extends JViewLegacy
 	$this->project_id = $this->jinput->get('pid');
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
+        $this->state = $this->get('State');
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
 		
 if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
 {
@@ -217,9 +220,6 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case 'treeto';
             break;
             default:
-            $this->state = $this->get('State'); 
-            $this->sortDirection = $this->state->get('list.direction');
-            $this->sortColumn = $this->state->get('list.ordering');
             $this->items = $this->get('Items');
             $this->total = $this->get('Total');
 		    $this->pagination = $this->get('Pagination');    
