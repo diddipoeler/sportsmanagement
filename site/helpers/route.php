@@ -842,6 +842,22 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	}
 
     /**
+	 * sportsmanagementHelperRoute::getNextMatchRoute()
+	 *
+     * @param mixed $project_id
+     * @param mixed $match_id
+     * @return string
+     */
+    public static function getNextMatchRoute($project_id, $match_id) {
+        $params = array();
+        $params['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+        $params['s'] = JFactory::getApplication()->input->getInt('s',0);
+        $params['p'] = $project_id;
+        $params['mid'] = $match_id;
+        return sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$params);
+    }
+
+    /**
      * sportsmanagementHelperRoute::getIcalRoute()
      *
      * @param mixed $projectid
