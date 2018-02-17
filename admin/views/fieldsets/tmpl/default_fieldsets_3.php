@@ -159,7 +159,7 @@ switch ($this->fieldset) {
 
             <table class="table">
         <?php
-        if ($this->lists) {
+        if (isset($this->lists) && $this->lists) {
             for ($p = 0; $p < count($this->lists['ext_fields']); $p++) {
                 ?>
                         <tr>
