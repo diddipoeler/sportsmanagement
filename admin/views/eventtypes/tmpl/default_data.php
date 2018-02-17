@@ -60,9 +60,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_EVENTS_STANDARD_NAME_OF_EVENT', 'obj.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
-                <th>
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
-                </th>
                 <th width="10%">
                     <?php
                     echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_EVENTS_ICON', 'obj.icon', $this->sortDirection, $this->sortColumn);
