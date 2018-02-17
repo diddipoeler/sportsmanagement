@@ -72,6 +72,10 @@ echo $this->loadTemplate('debug');
 		echo $this->loadTemplate('matches');
 	}	
 
+	if ( $this->config['show_played_matches'] )
+	{ 
+		echo $this->loadTemplate('played_matches');
+	}
 	
 	?>
 <div id="backbuttonfooter">

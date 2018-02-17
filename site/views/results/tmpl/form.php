@@ -21,11 +21,12 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 if ( $this->overallconfig['use_jquery_modal'] )
 {
 ?>
-<!-- jQuery Modal -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-<?PHP
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
+<?php 
 }
+
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 

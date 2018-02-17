@@ -37,10 +37,16 @@ class sportsmanagementViewPlayground extends sportsmanagementView
     	$this->playground = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt( "pgid", 0 ),1);
         $this->address_string = $this->model->getAddressString();
 	$this->teams = $mdlJSMTeams->getTeams($this->playground->id);
-	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
+	if ( $this->config['show_matches'] )
+	{ 
+    $this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ),0,$this->config['show_all_projects']);
 	$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->games );
-        
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'   ),'');
+    }
+    if ( $this->config['show_played_matches'] )
+	{ 
+    $this->playedgames = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ),1,$this->config['show_all_projects']);	
+	$this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->playedgames );
+	}
         
         // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();
