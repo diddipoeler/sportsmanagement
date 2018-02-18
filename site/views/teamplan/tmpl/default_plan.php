@@ -917,7 +917,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			?>
 		<td><?php
 		if (!$match->cancel) {
-            $link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+            //$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
             if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
@@ -925,8 +925,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
-				
-				$viewReport=JHtml::link($link, $href_text);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);				
+				$viewReport = JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
@@ -936,8 +940,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
-
-				$viewPreview=JHtml::link($link, $href_text);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+				$viewPreview = JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}
