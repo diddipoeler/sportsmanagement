@@ -88,7 +88,8 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $playground = self::getPlayground($pgid);
         if ( $playground->id > 0 )
         {
-            $query->select('m.*, DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
+            $query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
+            $query->select('DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
             $query->select('p.name AS project_name');
             $query->select('st1.team_id AS team1');
             $query->select('st2.team_id AS team2');
