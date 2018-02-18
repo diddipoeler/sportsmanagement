@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
+//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
 ?>
 
 <?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
@@ -25,8 +25,31 @@ jQuery(document).ready(function()  {
           zoom: 13,
           center: {lat: 40.771, lng: -73.974}
         });
-
+getLocation();
 });
+
+function geoSuccess(position) {
+
+
+}
+
+function geoError() {
+console.log("getLocation geoError : "+ "Geocoder failed.");
+
+        }
+        
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
+                console.log("getLocation : "+ "Geolocation is supported by this browser.");
+
+            } else {
+            console.log("getLocation : "+ "Geolocation is not supported by this browser.");
+
+            }
+        }
+
+
 </script>
 <?php 
 
