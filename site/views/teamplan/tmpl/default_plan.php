@@ -776,7 +776,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
             }
 
-			$score = "<td align='center'>".$result.'</td>';
+			$score = "<td class='center'>".$result.'</td>';
 		}
 		else
 		{
@@ -917,7 +917,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			?>
 		<td><?php
 		if (!$match->cancel) {
-			if (isset($match->team1_result))
+            //$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+            if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
 					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
@@ -928,9 +929,8 @@ $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getIn
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-				
-				$viewReport=JHtml::link($link, $href_text);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);				
+				$viewReport = JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
@@ -940,8 +940,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
-				$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
-				$viewPreview=JHtml::link($link, $href_text);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+				$viewPreview = JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}

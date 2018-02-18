@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  * @version   1.0.05
  * @file      default_person_player.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage roster
@@ -272,7 +272,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 								$totalEvents[$eventId]=0;
 							}
 							$totalEvents[$eventId] += (int) $stat;
-							echo '<div title="'.$this->positioneventtypes[$this->row->position_id][$eventId]->name.': '.$stat.'" class="jl_roster_event'.$eventId.' jl_roster_event">
+							echo '<div title="'.$this->positioneventtypes[$this->row->position_id][$eventId-1]->name.': '.$stat.'" class="jl_roster_event'.$eventId.' jl_roster_event">
 							'.$stat.'		</div>
 							';
 						}
