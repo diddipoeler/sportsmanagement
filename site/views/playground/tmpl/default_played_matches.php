@@ -26,9 +26,8 @@ if ( $this->playedgames )
 						{
 							$gamesByDate[substr( $game->match_date, 0, 10 )][] = $game;
 						}
-						// $teams = $this->project->getTeamsFromMatches( $this->games );
 						$colspan = 5;
-						if ($this->config['show_logo'] == 1) 
+						if ( $this->config['show_logo'] ) 
                         {
 							$colspan = 7;
 						}
@@ -36,7 +35,7 @@ if ( $this->playedgames )
 						{
 							?>
 							<tr>
-								<td align="left" colspan="<?php echo $colspan; ?>" class="sectiontableheader">
+								<td align="left" colspan="<?php echo $colspan; ?>" class="">
 									<?php
 									echo JHtml::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>
@@ -48,7 +47,7 @@ if ( $this->playedgames )
 								$home = $this->playedgamesteams[$game->team1];
 								$away = $this->playedgamesteams[$game->team2];
 								?>
-								<tr class="sectiontableentry1">
+								<tr class="">
 									<td>
 										<?php
 										echo substr( $game->match_date, 11, 5 );
@@ -61,7 +60,6 @@ if ( $this->playedgames )
 									</td>
 									<?php
 									if ( $this->config['show_logo'] ) {
-										//$model = $this->getModel();
 										$home_logo = sportsmanagementModelteam::getTeamLogo($home->id,$this->config['show_logo_small']);
 										$away_logo = sportsmanagementModelteam::getTeamLogo($away->id,$this->config['show_logo_small']);
 										$teamA = '<td align="right" valign="top" class="nowrap">';
@@ -75,7 +73,11 @@ if ( $this->playedgames )
 										echo $home->name;
 										?>
 									</td>
-									<td class="nowrap">-</td>
+									<td class="nowrap">
+                                    <?php echo $game->team1_result; ?>
+                                    -
+                                    <?php echo $game->team2_result; ?>
+                                    </td>
 									<?php
 									if ( $this->config['show_logo'] ) {
 										$teamB = '<td align="right" valign="top" class="nowrap">';

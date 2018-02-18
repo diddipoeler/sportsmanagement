@@ -48,18 +48,21 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	$this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->playedgames );
 	}
         
-        // diddipoeler
+/**
+ * diddipoeler
+ */
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
 
 		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
-		// Set page title
+/**
+ * Set page title
+ */
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE' );
 		if ( isset( $this->playground->name ) )
 		{
 			$pageTitle .= ' - ' . $this->playground->name;
 		}
-        // Set page title
 		$this->document->setTitle( $pageTitle );
 		$this->document->addCustomTag( '<meta property="og:title" content="' . $this->playground->name .'"/>' );
 		$this->document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );
