@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
+$latitude = $this->playground->latitude;
+$longitude = $this->playground->longitude;
 ?>
 
 <?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
@@ -23,7 +25,7 @@ jQuery(document).ready(function()  {
 // Create a map and center it on Manhattan.
         var map = new google.maps.Map(document.getElementById('map-route'), {
           zoom: 13,
-          center: {lat: 40.771, lng: -73.974}
+          center: {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>}
         });
 getLocation();
 });
@@ -48,6 +50,43 @@ console.log("getLocation geoError : "+ "Geocoder failed.");
 
             }
         }
+
+function calcRoute() {
+
+    var start = new google.maps.LatLng(43.786161, 11.250510);
+    var end = new google.maps.LatLng(<?PHP echo $latitude; ?>, <?PHP echo $longitude; ?>);
+
+    createMarker(start, 'start');
+    createMarker(end, 'end');
+
+    var request = {
+        origin: start,
+        destination: end,
+        optimizeWaypoints: true,
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+    };
+
+    directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            var route = response.routes[0];
+        }
+    });
+}
+
+function createMarker(latlng, title) {
+
+    var marker = new google.maps.Marker({
+        position: latlng,
+        title: title,
+        map: map
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(title);
+        infowindow.open(map, marker);
+    });
+}
 
 
 </script>
