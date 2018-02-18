@@ -11,140 +11,111 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyCL5lnwcI1WJFThmI-q-hj7kfQPF2XP6mE');
+$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true');
 $latitude = $this->playground->latitude;
 $longitude = $this->playground->longitude;
 ?>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL5lnwcI1WJFThmI-q-hj7kfQPF2XP6mE&callback=initMap">
-    </script>
-    
+
+
 <?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_GOOGLE_ROUTE'); ?>
 <div class="row-fluid">
+
+
+<div id="divlos" >
+<button id="los">Los!</button></div>
+<div id="divausgabe" ></div>
+
 <div id="map-route" style="width:100%;height:800px;"></div>
 
 <script type="text/javascript">
-//var directionsService = new google.maps.DirectionsService;
-//var directionsDisplay = new google.maps.DirectionsRenderer;
-
-//jQuery(document).ready(function()  {
-//// Create a map and center it on Manhattan.
-//        var map = new google.maps.Map(document.getElementById('map-route'), {
-//          zoom: 13,
-//          center: {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>}
-//        });
-//directionsDisplay.setMap(map);  
-//calculateAndDisplayRoute(directionsService, directionsDisplay);      
-////getLocation();
-//});
-
-function initMap() {
+// https://gist.github.com/stevenzeiler/3660644
+//https://wiki.selfhtml.org/wiki/JavaScript/Geolocation
+            
+jQuery(document).ready(function()  {
+// Create a map and center it on Manhattan.
         var map = new google.maps.Map(document.getElementById('map-route'), {
-          center: {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>},
-          zoom: 6
+          zoom: 13,
+          center: {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>}
         });
-        var infoWindow = new google.maps.InfoWindow({map: map});
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+var button =document.getElementById('los'); 
+button.addEventListener ('click', ermittlePosition);
+var ausgabe = document.getElementById('divausgabe');
+  
+//get_location();
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
+});
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
-      
-      
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-          origin: 'Gelsenkirchen',
-          destination: 'München',
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        })
-       } 
-        
-function geoSuccess(position) {
-
-
+function ermittlePosition() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler);
+    } else { 
+        ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
+    }
 }
 
-function geoError() {
-console.log("getLocation geoError : "+ "Geocoder failed.");
-
-        }
-        
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(geoSuccess, geoError);
-                console.log("getLocation : "+ "Geolocation is supported by this browser.");
-
-            } else {
-            console.log("getLocation : "+ "Geolocation is not supported by this browser.");
-
-            }
-        }
-
-function calcRoute() {
-
-    var start = new google.maps.LatLng(43.786161, 11.250510);
-    var end = new google.maps.LatLng(<?PHP echo $latitude; ?>, <?PHP echo $longitude; ?>);
-
-    createMarker(start, 'start');
-    createMarker(end, 'end');
-
-    var request = {
-        origin: start,
-        destination: end,
-        optimizeWaypoints: true,
-        travelMode: google.maps.DirectionsTravelMode.WALKING
-    };
-
-    directionsService.route(request, function (response, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(response);
-            var route = response.routes[0];
-        }
-    });
+function zeigePosition(position) {
+    ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude + 
+    "<br>Länge: " + position.coords.longitude;	
 }
 
-function createMarker(latlng, title) {
 
-    var marker = new google.maps.Marker({
-        position: latlng,
-        title: title,
-        map: map
-    });
-
-    google.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent(title);
-        infowindow.open(map, marker);
-    });
+function zeigeFehler(error) {
+console.log("error code : "+ error.code);
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            document.getElementById('divausgabe').innerHTML = "Benutzer lehnte Standortabfrage ab.";
+            console.log("error text : "+ "Benutzer lehnte Standortabfrage ab.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            document.getElementById('divausgabe').innerHTML = "Standortdaten sind nicht verfügbar."
+            console.log("error text : "+ "Standortdaten sind nicht verfügbar.");
+            break;
+        case error.TIMEOUT:
+            document.getElementById('divausgabe').innerHTML = "Die Standortabfrage dauerte zu lange (Time-out)."
+            console.log("error text : "+ "Die Standortabfrage dauerte zu lange (Time-out).");
+            break;
+        case error.UNKNOWN_ERROR:
+            document.getElementById('divausgabe').innerHTML = "unbekannter Fehler."
+            console.log("error text : "+ "unbekannter Fehler.");
+            break;
+    }
 }
 
+
+
+
+function get_location() {
+  if ( supports_geolocation() ) {
+  console.log("getLocation : "+ "Geolocation is supported by this browser.");
+    navigator.geolocation.getCurrentPosition(show_map, handle_error);
+  } else {
+    // no native support;
+	console.log("getLocation : "+ "Geolocation is not supported by this browser.");
+  }
+}
+
+function handle_error(err) {
+console.log("error code : "+ err.code);
+  if (err.code == 1) {
+    // user said no!
+    console.log("error text : "+ "You chose not to share your location.");
+  }
+}
+
+function supports_geolocation() {
+  return !!navigator.geolocation;
+}
+
+function show_map(position) {
+	var latitude = position.coords.latitude;
+	var longitude = position.coords.longitude;
+	
+console.log("getLocation : "+ latitude);
+	
+	// let's show a map or do something interesting!
+	
+}	
 
 </script>
 <?php 
