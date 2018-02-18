@@ -56,7 +56,12 @@ echo $this->loadTemplate('debug');
 	{ 
 		echo $this->loadTemplate('googlemap');
 	}
-		
+	
+    if ( $this->config['show_route'] )
+	{ 
+		echo $this->loadTemplate('googlemap_route');
+	}
+    	
 	if ( $this->config['show_description'] )
 	{ 
 		echo $this->loadTemplate('description');
