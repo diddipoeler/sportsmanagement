@@ -115,7 +115,7 @@ var player = jQuery("#teamplayer_id option:selected").text();
 	jQuery("#ajaxresponse").text(resp[1]);
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt
-$$(".button-delete-event").addEvent('click', button_delete_event);	   
+jQuery(".button-delete-event").addEvent('click', button_delete_event);	   
 } 	
 	
 	

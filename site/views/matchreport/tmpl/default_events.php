@@ -15,15 +15,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <h2>
 <?php 
-if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
-{
-echo $this->loadTemplate('timeline');
-}
-	
 echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
 ?>
 </h2>		
 
+<?php
+if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
+{
+echo $this->loadTemplate('timeline');
+}
+?>
 <table class="table table-responsive" >
 			<?php
 			foreach ( $this->eventtypes as $event )
