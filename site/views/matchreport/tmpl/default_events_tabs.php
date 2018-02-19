@@ -91,7 +91,7 @@ $text = JText::_($event->name);
 <?PHP   
 
 ?>
-</div>
+
 <?PHP
 $idxTab++;
 foreach ($this->matchevents AS $me)
@@ -156,6 +156,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 
 }
 ?>
+</div>	
 </div>
 </div>
 </div> 
