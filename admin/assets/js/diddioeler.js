@@ -201,7 +201,7 @@ jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
  dataType:"json",
- success: commentarydeleted,   //function to be called on successful reply from server
+ success: eventdeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
  {
        jQuery("#ajaxresponse").html(xhr);
@@ -321,21 +321,15 @@ function commentsaved(response)
 	}
 }
 
-function commentarydeleted(response) 
+function eventdeleted(response) 
 {
     jQuery("#ajaxresponse").removeClass('ajax-loading');
 	var resp = response.split("&");
   var eventid = resp[2]; 
-  
-//    alert(resp[0]);
-//    alert(resp[1]);
-//    alert(eventid);
 
 	if (resp[0] != '0') 
   {
-//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
-//		currentrow.dispose();
-jQuery("#rowcomment-" + eventid).remove();
+jQuery("#row-" + eventid).remove();
 	jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
 	}
@@ -345,6 +339,26 @@ jQuery("#rowcomment-" + eventid).remove();
 	jQuery("#ajaxresponse").text(resp[1]);
 	}
 
+	
+}
+
+function commentarydeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var eventid = resp[2]; 
+
+	if (resp[0] != '0') 
+  {
+jQuery("#rowcomment-" + eventid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
 	
 }
 
