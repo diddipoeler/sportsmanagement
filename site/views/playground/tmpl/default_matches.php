@@ -28,10 +28,8 @@ if ( $this->games )
 						{
 							$gamesByDate[substr( $game->match_date, 0, 10 )][] = $game;
 						}
-						// $teams = $this->project->getTeamsFromMatches( $this->games );
-
 						$colspan = 5;
-						if ($this->config['show_logo'] == 1) 
+						if ( $this->config['show_logo'] ) 
                         {
 							$colspan = 7;
 						}
@@ -40,7 +38,7 @@ if ( $this->games )
 						{
 							?>
 							<tr>
-								<td align="left" colspan="<?php echo $colspan; ?>" class="sectiontableheader">
+								<td align="left" colspan="<?php echo $colspan; ?>" class="">
 									<?php
 									echo JHtml::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>

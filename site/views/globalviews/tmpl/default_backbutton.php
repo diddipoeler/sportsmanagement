@@ -1,11 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
- * @file      default_backbutton.php
+ * @file      deafault_backbutton.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
- */ 
+ * @package   sportsmanagement
+ * @subpackage globalviews
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -25,7 +27,6 @@ if ( isset( $this->overallconfig['show_back_button'] ) )
 	if ( $this->overallconfig['show_back_button'] != '0' )
 	{
 	    	
-	//echo $alignStr;
 	?>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:<?php echo $alignStr; ?>; ">
     
