@@ -2488,12 +2488,14 @@ $db->setQuery($query);
  * Delete the object from the table.
  */
             try{
-            $db->execute()
+            $db->execute();
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return true;
             }
             catch (Exception $e)
             {
-	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    
@@ -2527,12 +2529,14 @@ $db->setQuery($query);
  * Delete the object from the table.
  */
             try{
-            $db->execute()
+            $db->execute();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return true;
             }
             catch (Exception $e)
             {
-	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');	    
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');	
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    
@@ -2588,11 +2592,14 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
-	return $db->insertid();
+		    $result = $db->insertid();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return $result;
             }
             catch (Exception $e)
             {
-	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    
@@ -2650,13 +2657,14 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-	return $db->insertid();
+	$result = $db->insertid();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return $result;
             }
             catch (Exception $e)
             {
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
 	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
-	    //$object->id = $e->getMessage();		    
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    
