@@ -1,25 +1,22 @@
 // ajax save substitution
 window.addEvent('domready', function()
 {	
-//updatePlayerSelect();    
-
 // neuen wechsel speichern     
 $$(".button-save-subst").addEvent('click', save_new_subst);
-    
 // neues ereignis speichern  
 $$(".button-save-event").addEvent('click', save_new_event);
-
 // neuen kommentar speichern  
 $$(".button-save-comment").addEvent('click', save_new_comment);
-
 // hier wird die funktion für das löschen der
 // wechsel hinzugefügt
 $$(".button-delete-subst").addEvent('click', button_delete_subst);
-
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt
 $$(".button-delete-commentary").addEvent('click', button_delete_commentary);
-     
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-event").addEvent('click', button_delete_event);
+	
 });
 
 // hier sind die funktionen
@@ -189,12 +186,19 @@ jQuery.ajax({
     
 }
 
+
+function button_delete_event()
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');	
+	
+}	
+
 function button_delete_commentary()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var eventid = this.id.substr(14);  
-//alert('löschen kommentar -> ' + eventid); 
 var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 var querystring = '&event_id=' + eventid;
