@@ -124,7 +124,7 @@ var rosters = Array(homeroster, awayroster);
 						{
 							if ($event->event_type_id != 0) {
 							?>
-							<tr id="row-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
+							<tr id="rowevent-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
 								<td><?php echo $event->team; ?></td>
 								<td>
 								<?php
