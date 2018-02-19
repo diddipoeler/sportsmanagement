@@ -97,7 +97,9 @@ $text = JText::_($event->name);
 $idxTab++;
 foreach ($this->matchevents AS $me)
 				{
-					if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
+					if ( $me->event_type_id == $event->id && 
+					   ( $me->ptid == $this->match->projectteam1_id or $me->ptid == $this->match->projectteam2_id )
+					   )
 					{
 						
 						if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
