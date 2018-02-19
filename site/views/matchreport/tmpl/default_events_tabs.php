@@ -14,13 +14,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <h2>
 <?php 
+echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 	
+?>
+</h2>	
+<?php
 if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
 {
 echo $this->loadTemplate('timeline');
 }
 	
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
-
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
@@ -164,7 +166,6 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 else
 {
 ?>
-</h2>		
 
 <table class="table" border="0">
     <tr>
