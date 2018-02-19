@@ -791,9 +791,19 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            // Define tabs options for version of Joomla! 3.0
+            
+	$start = 1;	    
+	foreach ($projectevents AS $event)
+			{	    
+		 if ( $start == 1 )
+		{
+		// Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
-            "active" => "tab0_id" // It is the ID of the active tab.
+            "active" => 'tab'.$event->id.'_id'.$matchInfo->id // It is the ID of the active tab.
+		}
+		$start++;
+		}	
+		
         );  
         
         $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
