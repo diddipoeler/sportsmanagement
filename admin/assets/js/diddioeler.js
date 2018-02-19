@@ -191,7 +191,24 @@ function button_delete_event()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');	
-	
+var eventid = this.id.substr(12);  
+var url = baseajaxurl + '&task=matches.removeEvent&tmpl=component';
+var querystring = '&event_id=' + eventid;
+
+//jQuery("#ajaxresponse").html(url + querystring);
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+ dataType:"json",
+ success: commentarydeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+});   	
 }	
 
 function button_delete_commentary()
@@ -213,7 +230,6 @@ jQuery.ajax({
  error: function (xhr, ajaxOptions, thrownError) 
  {
        jQuery("#ajaxresponse").html(xhr);
-       //alert(xhr);
        alert(xhr.status);
        alert(thrownError);
      }
