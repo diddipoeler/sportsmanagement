@@ -92,7 +92,7 @@ if (resp[0] != '0')
   //var team = jQuery("#team_id").val();
 var player = jQuery("#teamplayer_id option:selected").text();
 	  
-    jQuery("#table-commentary").last().append('<tr id="rowevent-' 
+    jQuery("#table-event").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
     + jQuery("#event_type_id option:selected").text() + ' ' + player + '</td><td>' 
     + jQuery("#event_time").val() + '</td><td>' 
@@ -329,7 +329,7 @@ function eventdeleted(response)
 
 	if (resp[0] != '0') 
   {
-jQuery("#row-" + eventid).remove();
+jQuery("#rowevent-" + eventid).remove();
 	jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
 	}
