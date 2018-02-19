@@ -97,12 +97,19 @@ var team = jQuery("#team_id option:selected").text();
     + resp[0] + '"><td>' 
 	+ team + '</td><td>' + player + '</td><td>' 
     + jQuery("#event_type_id option:selected").text() + '</td><td>' 
-	+ jQuery("#event_sum").text() + '</td><td>' 
+	+ jQuery("#event_sum").val() + '</td><td>' 
     + jQuery("#event_time").val() + '</td><td>' 
     + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
     + '" type="button" class="inputbox button-delete-event" value="' 
     + str_delete + '"</td></tr>');
-		
+
+console.log("team : " + team);
+console.log("player : " + player);
+console.log("event_type_id : " + jQuery("#event_type_id option:selected").text());
+console.log("event_sum : " + jQuery("#event_sum").val());
+console.log("event_time : " + jQuery("#event_time").val());
+console.log("notice : " + jQuery("#notice").val());
+	
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
     jQuery("#ajaxresponse").text(resp[1]);
       jQuery("#notice").val('');
