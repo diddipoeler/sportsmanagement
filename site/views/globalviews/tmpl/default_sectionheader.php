@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_sectionheader.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage globalviews
@@ -365,7 +365,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     case 'teaminfo':
     ?>
 <!-- START: Contentheading -->
-<div class="contentpaneopen">
+<div class="">
 	<h4>
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
@@ -394,7 +394,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     case 'clubinfo':
 ?>
 
-<!--	<div class="contentpaneopen"> -->
+
 		<h4>
 			<?php
 				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
@@ -403,14 +403,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 	            {
 	                
                     $link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->id, $this->club->id, "club.edit" );
-//	                $desc = JHtml::image(
-//	                                      "media/COM_SPORTSMANAGEMENT/jl_images/edit.png",
-//	                                      JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EDIT' ),
-//	                                      array( "title" => JText::_( "COM_SPORTSMANAGEMENT_CLUBINFO_EDIT" ) )
-//	                                   );
-//	                echo " ";
-//	                echo JHtml::_('link', $link, $desc );
-                    
                     
                  ?>   
 	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
