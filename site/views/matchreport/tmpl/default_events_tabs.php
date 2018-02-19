@@ -65,7 +65,7 @@ $text = JText::_($event->name);
 
 
 ?>
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
+<li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
 </li>
 
 <?PHP
@@ -87,7 +87,7 @@ $active = ($idxTab==0) ? 'in active' : '';
 $text = JText::_($event->name);
 
 ?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $text; ?>">
+<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="event<?PHP echo $event->id; ?>">
 <?PHP   
 
 ?>
@@ -96,9 +96,8 @@ $text = JText::_($event->name);
 $idxTab++;
 foreach ($this->matchevents AS $me)
 				{
-					if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam1_id)
+					if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
 					{
-						//echo '<li class="list">';
 						
 						if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
 						{
