@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage editmatch
@@ -18,7 +18,7 @@ jimport('joomla.application.component.controller');
  * sportsmanagementControllermatches
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2018
  * @version $Id$
  * @access public
@@ -54,6 +54,36 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		return $instance;
 	}
     
+	
+	
+
+    function saveevent()
+    {
+        $option = JFactory::getApplication()->input->getCmd('option');
+		$data = array();
+		$data['teamplayer_id']	= JFactory::getApplication()->input->getInt('teamplayer_id');
+		$data['projectteam_id']	= JFactory::getApplication()->input->getInt('projectteam_id');
+		$data['event_type_id']	= JFactory::getApplication()->input->getInt('event_type_id');
+		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('match_id');
+		$data['event_sum']		= JFactory::getApplication()->input->getVar('event_sum', '');
+		$data['notice']			= JFactory::getApplication()->input->getVar('notice', '');
+		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
+        
+        // diddipoeler
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
+        
+        
+		if (!$result = sportsmanagementModelMatch::saveevent($data)) {
+			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.sportsmanagementModelMatch::getError();
+        } else {
+			$result = JFactory::getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+		}    
+ 
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+    }
+	
     /**
      * sportsmanagementControllermatches::savesubst()
      * 
@@ -69,16 +99,39 @@ class sportsmanagementControllermatches extends JControllerLegacy
 		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
-        $model = $this->getModel();
-		if (!$result = $model->savesubstitution($data)){
-			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
+
+		if (!$result = sportsmanagementModelMatch::savesubstitution($data)){
+			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.sportsmanagementModelMatch::getError();
 		} else {
-            $result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+            $result = JFactory::getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
 	}
     
+	
+/**
+     * sportsmanagementControllermatches::removeSubst()
+     * 
+     * @return void
+     */
+    function removeSubst()
+	{
+		$substid = JFactory::getApplication()->input->getInt('substid',0);
+		
+		if (!$result = sportsmanagementModelMatch::removeSubstitution($substid))
+		{
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.sportsmanagementModelMatch::getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+	}	
+	
+	
     /**
      * sportsmanagementControllermatches::savecomment()
      * 
@@ -95,14 +148,40 @@ class sportsmanagementControllermatches extends JControllerLegacy
         // diddipoeler
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
-        $model = $this->getModel();
-		if (!$result = $model->savecomment($data)) {
-            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
+       
+		if (!$result = sportsmanagementModelMatch::savecomment($data)) {
+            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.sportsmanagementModelMatch::getError();
         } else {
             $result = $result.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
 		echo json_encode($result);
 		JFactory::getApplication()->close();
     }
+	
+/**
+     * sportsmanagementControllermatches::removeCommentary()
+     * 
+     * @return void
+     */
+    public function removeCommentary()
+    {
+        $event_id = JFactory::getApplication()->input->getInt('event_id');
+		
+		if (!$result = sportsmanagementModelMatch::deletecommentary($event_id))
+		{
+			$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.sportsmanagementModelMatch::getError();
+		}
+		else
+		{
+			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+    }	
+	
+
+
+	
+	
 
 }

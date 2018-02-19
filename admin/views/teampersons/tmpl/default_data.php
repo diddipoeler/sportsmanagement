@@ -280,11 +280,10 @@ if ($project_ref_positions) {
         }
 foreach($position_ids as $items => $item) {
     if($item->position_id == $position_id) {
-       $results = $item->value;
+        $selectedvalue = $item->value;
     }
 }
 //echo '<pre>'.print_r($results,true).'</pre>';
-$selectedvalue = $results;
 								
 								
 								

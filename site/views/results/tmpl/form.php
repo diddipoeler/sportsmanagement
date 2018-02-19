@@ -21,11 +21,12 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 if ( $this->overallconfig['use_jquery_modal'] )
 {
 ?>
-<!-- jQuery Modal -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-<?PHP
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
+<?php 
 }
+
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
@@ -51,8 +52,12 @@ else
   
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
+<script>
+var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
+var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
+</script>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->
 	<table class="table table-responsive">
@@ -99,7 +104,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$colspan=($this->project->allow_add_time) ? 15 : 14;
 			?>
 			<thead>
-				<tr class="sectiontableheader">
+				<tr class="">
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
@@ -114,10 +119,33 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					<?php 
 						}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_number'] )
+				{
+					?>
 					<th width="20" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_date'] )
+				{	
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time_present'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PRESENT'); ?></th>
+					<?php
+				}
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
 					<th style="text-align: center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
@@ -129,9 +157,27 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						<?php
 					}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_events'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+				<?php
+				}
+				if ( $this->config['show_edit_match_statistic'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_referees'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?></th>
+					<?php
+				}
+					?>
 					<th width="1%" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></th>
 				</tr>
 			</thead>

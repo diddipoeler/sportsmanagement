@@ -26,15 +26,6 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-<!--
-    <field 	name="show_highslide" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_HIGHSLIDE" 
-				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_HIGHSLIDE">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
--->
 		
 		<field 	name="show_players" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYERS" 
@@ -82,20 +73,20 @@
 			<option value="1">JYES</option>
 		</field>
 
+		<field 	name="show_average_age" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+				  label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_AVERAGE_AGE"
+				  description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_AVERAGE_AGE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
 		<field 	name="show_events_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_EVENTS_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_EVENTS_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-<!--		
-		<field 	name="show_events_stats_totals" type="extensionradiobutton" default="1" 
-				label="Show event totals stats?" 
-				description="If this option is activated, the players event stats totals row is shown.">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
--->
+
 		<field 	name="show_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STATS">
@@ -168,12 +159,6 @@
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
-<!-- wird automatisch berechnet			
-		<field 	name="player_picture_height" type="text" default="40"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
-		</field>
--->				
 		<field 	name="link_player" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_LINK_PLAYER" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_LINK_PLAYER">
@@ -260,12 +245,6 @@
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
-<!-- wird automatisch berechnet			
-		<field 	name="staff_picture_height" type="text" default="40"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_HEIGHT">
-		</field>
--->
 		<field 	name="link_staff" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_LINK_PLAYER" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_LINK_PLAYER">

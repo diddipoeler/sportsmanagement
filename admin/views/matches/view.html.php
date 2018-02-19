@@ -49,7 +49,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
 
         $starttime = microtime();
-
+        
+        // Must fix this code up one day.
+        //Notice: Undefined index: code 
         $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' code <br><pre>' . print_r($_GET['code'], true) . '</pre><br>', 'Notice');
 
         //$this->state = $this->get('State'); 
@@ -147,7 +149,8 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid)) {
                 $teams = array_merge($teams, $projectteams);
             }
-            $lists['teams_' + $divhomeid] = $teams;
+
+            $lists['teams_' . $divhomeid] = $teams;
             unset($teams);
 
             // sind die verzeichnisse vorhanden ?
@@ -161,8 +164,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'');
             }
         }
-
-
 
         //build the html options for extratime
         $match_result_type[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
@@ -178,7 +179,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         }
         $lists['articles'] = $articles;
         unset($articles);
-
 
         //build the html options for divisions
         $divisions[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
@@ -206,8 +206,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
                 }
             }
         }
-
-
 
         //$this->assignRef('division',$division);
 

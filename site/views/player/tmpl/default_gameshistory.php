@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
  * @version   1.0.05
  * @file      default_gameshistory.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage player
@@ -156,6 +156,10 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 				
 				// gespielte zeit
                 $model = $this->getModel();
+                if ( !isset($this->overallconfig['person_events']) )
+                {
+                    $this->overallconfig['person_events'] = NULL;
+                }
                 $timePlayed = $model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']);
                 
 //echo __FILE__.' '.__LINE__.' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';

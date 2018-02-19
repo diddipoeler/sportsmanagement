@@ -130,7 +130,12 @@ class sportsmanagementView extends JViewLegacy
 	$this->project_id = $this->jinput->get('pid');
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
-		
+        $this->state = $this->get('State');
+        if(isset($this->state)) {
+            $this->sortDirection = $this->state->get('list.direction');
+            $this->sortColumn = $this->state->get('list.ordering');
+        }
+
 if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
 {
 $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
@@ -217,9 +222,6 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case 'treeto';
             break;
             default:
-            $this->state = $this->get('State'); 
-            $this->sortDirection = $this->state->get('list.direction');
-            $this->sortColumn = $this->state->get('list.ordering');
             $this->items = $this->get('Items');
             $this->total = $this->get('Total');
 		    $this->pagination = $this->get('Pagination');    
@@ -233,8 +235,12 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+        if(isset($this->sortDirection)) {
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
+        }
+        if(isset($this->sortColumn)) {
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+        }
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         }
         

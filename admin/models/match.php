@@ -1347,15 +1347,14 @@ $tournement_round = $this->jsmdb->loadResult();
         //$query->select('ppos.position_id,ppos.id AS pposid');
 
         // From 
-		$query->from('#__sportsmanagement_match_player AS mp');
-        
+	$query->from('#__sportsmanagement_match_player AS mp');
         $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
         $query->join('INNER',' #__sportsmanagement_person AS pl ON pl.id = sp.person_id ');
         
         //$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = pl.id');
-        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = pl.id and ppp.persontype = sp.persontype');
+       // $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = pl.id and ppp.persontype = sp.persontype');
         
-        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
         $query->join('LEFT',' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         
@@ -1364,7 +1363,7 @@ $tournement_round = $this->jsmdb->loadResult();
         
         $query->where('mp.match_id = '.$match_id);
         
-        $query->where('ppp.project_id = '.self::$_project_id);
+        $query->where('ppos.project_id = '.self::$_project_id);
         
         //$query->where('tpl.projectteam_id = '.$team_id);
         $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
@@ -1374,7 +1373,7 @@ $tournement_round = $this->jsmdb->loadResult();
 		{
           //$query->where('pl.position_id = '.$project_position_id);
           //$query->where('sp.project_position_id = '.$project_position_id);
-          $query->where('ppp.project_position_id = '.$project_position_id);
+          $query->where('ppos.id = '.$project_position_id);
           //$query->where('ppos.id = '.$project_position_id);
 		}
 
@@ -1950,7 +1949,7 @@ $paramsmail = JComponentHelper::getParams($option)->get('ishd_referee_insert_mat
                  }
 		}
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
         
 		//if ( $peid == null )
         if ( !$peid )
@@ -2505,7 +2504,7 @@ $conditions = array(
     $db->quoteName('id') . '='.$event_id
 );
  
-$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'));
+$query->delete($db->quoteName('#__sportsmanagement_match_commentary'));
 $query->where($conditions);
  
 $db->setQuery($query);    
@@ -2541,7 +2540,8 @@ if (!$db->execute())
      */
     function savecomment($data)
 	{
-		
+$date = JFactory::getDate();
+$user = JFactory::getUser();	
         // live kommentar speichern
         if ( empty($data['event_time']) )
 		{
@@ -2566,50 +2566,32 @@ if (!$db->execute())
         $db = JFactory::getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
-        // Insert columns.
-        $columns = array('event_time','match_id','type','notes');
-        // Insert values.
-        $values = array($data['event_time'],$data['match_id'],$data['type'],'\''.$data['notes'].'\'');
-        // Prepare the insert query.
-        $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary'))
-            ->columns($db->quoteName($columns))
-            ->values(implode(',', $values));
-        // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
-        if (!$db->execute())
-		{
-			$result = false;
-            $object->id = $db->getErrorMsg();
-		}
-        else
-        {
-            $object->id = $db->insertid();
-        }
+	$temp = new stdClass();   
+$temp->event_time = $data['event_time'];	    
+$temp->match_id = $data['match_id'];
+$temp->type = $data['type'];
+$temp->notes = $data['notes'];
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');	    
+	    
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
+	return $db->insertid();
+            }
+            catch (Exception $e)
+            {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	    //$object->id = $e->getMessage();		    
+	return false;	    
+            }	
+	    
+	    return true;    
+	    
         
-        //$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
-//        $object->event_time = $data['event_time'];
-//		$object->match_id = $data['match_id'];
-//		$object->type = $data['type'];
-//		$object->notes = $data['notes'];
-		//$object->bind($data);
-		//if (!$object->check())
-//		{
-//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
-//			return false;
-//		}
-		
-        //if (!$object->store())
-//		{
-//			//$this->setError(JFactory::getDbo()->getErrorMsg());
-//			return false;
-//		}
-//        else
-//        {
-//            $object->id = JFactory::getDbo()->insertid();
-//        }
-        
-		return $object->id;
 	}
     
     /**
@@ -2620,7 +2602,8 @@ if (!$db->execute())
      */
     function saveevent($data)
 	{
-
+$date = JFactory::getDate();
+$user = JFactory::getUser();
         if ( empty($data['event_time']) )
 		{
 		$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_NO_TIME'));
@@ -2638,24 +2621,40 @@ if (!$db->execute())
 		$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_EVENT_TIME_OVER_PROJECTTIME',$data['event_time'],$data['projecttime']));
 		return false;
 		}
-   
-        $object = JTable::getInstance('MatchEvent','sportsmanagementTable');
-		$object->bind($data);
-		//if (!$object->check())
-//		{
-//			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_CHECK_FAILED'));
-//			return false;
-//		}
-		if (!$object->store())
-		{
-			$this->setError(JFactory::getDbo()->getErrorMsg());
-			return false;
-		}
-        else
-        {
-            $object->id = JFactory::getDbo()->insertid();
-        }
-		return $object->id;
+   	
+	// Get a db connection.
+        $db = JFactory::getDbo();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+	    $temp = new stdClass();
+	    //$object = new stdClass();
+$temp->match_id = $data['match_id'];	    
+$temp->projectteam_id = $data['projectteam_id'];
+$temp->teamplayer_id = $data['teamplayer_id'];
+$temp->event_time = $data['event_time'];
+$temp->event_type_id = $data['event_type_id'];
+$temp->event_sum = $data['event_sum'];
+$temp->notice = $data['notice'];
+$temp->notes = $data['notes'];
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');	    
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
+	return $db->insertid();
+            }
+            catch (Exception $e)
+            {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+	    //$object->id = $e->getMessage();		    
+	return false;	    
+            }	
+	    
+	    return true;
+	    
 	}
     
     
@@ -2674,7 +2673,7 @@ if (!$db->execute())
         $query = $db->getQuery(true);
         
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary');
+        $query->from('#__sportsmanagement_match_commentary');
         $query->where('match_id = '.$match_id);
         $query->order('event_time DESC');
         

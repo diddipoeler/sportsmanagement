@@ -441,7 +441,8 @@ $this->request_url	= $uri->toString();
         $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JSession::getFormToken()."=1';" . "\n";
+        //$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JSession::getFormToken()."=1';" . "\n";
+$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement';". "\n";	    
         $javascript .= "var matchid = ".$this->item->id.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
@@ -733,8 +734,9 @@ $javascript .= "}". "\n";
         
         
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JHtml::_('form.token')."=1';" . "\n";
-        $javascript .= "var matchid = ".$this->item->id.";" . "\n";
+        //$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JHtml::_('form.token')."=1';" . "\n";
+        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement';". "\n";	   
+	$javascript .= "var matchid = ".$this->item->id.";" . "\n";
         $javascript .= "var teamid = ".$this->tid.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";

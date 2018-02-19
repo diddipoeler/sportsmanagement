@@ -1,43 +1,21 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editevents.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage editmatch
+ */
 
 defined('_JEXEC') or die('Restricted access');
+$savenewcomment = array();
+$savenewcomment[] = $this->match->id;
+$savenewcomment[] = $this->eventsprojecttime;
+$savenewcomment[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
 //$params = $this->form->getFieldsets('params');
@@ -56,65 +34,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JFactory::getURI();
 }
 ?>
-
-
-<script type="text/javascript">
-<!--
-var homeroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['home'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var awayroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['away'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var rosters = Array(homeroster, awayroster);
-
-
-//-->
-</script>
-
-           
+          
 <form  action="<?php echo $uri->toString(); ?>" id='editevents' method='post' style='display:inline' name='editevents' >
 <div id="gamesevents">
 
@@ -131,21 +51,16 @@ var rosters = Array(homeroster, awayroster);
 	
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
-			<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
+			<!-- Dont remove this -->
 			<div id="ajaxresponse"></div>
 			<table id="table-event" class='adminlist'>
 				<thead>
 					<tr>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TEAM'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
+						<th colspan=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_PLAYER'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM'); ?></th>
-						<th>
-							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME');
-							#echo JText::_('Hrs') . ' ' . JText::_('Mins') . ' ' . JText::_('Secs');
-							?>
-						</th>
+						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE'); ?></th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION'); ?></th>
 					</tr>
@@ -186,7 +101,8 @@ var rosters = Array(homeroster, awayroster);
 					?>
 					<tr id="row-new">
 						<td><?php echo $this->lists['teams']; ?></td>
-						<td id="cell-player">&nbsp;</td>
+<td class="hide<?php echo $this->teams->projectteam2_id; ?> show<?php echo $this->teams->projectteam1_id; ?>" style="display:;" id="cell-player-<?php echo $this->teams->projectteam1_id; ?>"><?php echo $this->lists['homeroster']; ?></td>
+<td class="hide<?php echo $this->teams->projectteam1_id; ?> show<?php echo $this->teams->projectteam2_id; ?>" style="display:none;" id="cell-player-<?php echo $this->teams->projectteam2_id; ?>"><?php echo $this->lists['awayroster']; ?></td>
 						<td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
@@ -195,8 +111,7 @@ var rosters = Array(homeroster, awayroster);
                         
                         
 						<td style='text-align:center; ' >
-							
-							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE'); ?>" />
+<input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
 						</td>
 					</tr>
 				</tbody>
@@ -213,7 +128,6 @@ var rosters = Array(homeroster, awayroster);
 					<th>
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						#echo JText::_( 'Hrs' ) . ' ' . JText::_( 'Mins' ) . ' ' . JText::_( 'Secs' );
 						?>
 					</th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
@@ -236,7 +150,7 @@ var rosters = Array(homeroster, awayroster);
 						<textarea rows="2" cols="70" id="notes" name="notes" ></textarea>
 					</td>
 					<td style='text-align:center; ' >
-						<input id="save-new-comment" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JSAVE' ); ?>" />
+<input id="save-new-comment" onclick="save_new_comment(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-comment" value="<?php echo JText::_('JSAVE' ); ?>" />
 					</td>
 				</tr>
 				<?php
@@ -271,7 +185,7 @@ var rosters = Array(homeroster, awayroster);
 								?>
 							</td>
 							<td style='text-align:center; ' >
-								<input	id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
+<input onclick="button_delete_commentary(<?php echo $event->id; ?>,<?php echo $baseurl; ?>)" id="deletecomment-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-commentary"
 										value="<?php echo JText::_('JACTION_DELETE' ); ?>" />
 							</td>
 						</tr>

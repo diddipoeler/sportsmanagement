@@ -124,9 +124,21 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	 */
 	protected function getListQuery()
 	{
-        $this->_season_id	= $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
+        //$this->_season_id = $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
         self::$_project_id = $this->jsmjinput->getVar('pid');
-        self::$_division_id	= $this->jsmjinput->getInt('division',0);
+        self::$_division_id = $this->jsmjinput->getInt('division',0);
+		
+	// Create a new query object.		
+	$this->jsmquery->clear();	
+	// Select some fields
+	$this->jsmquery->select('p.season_id');
+        // From table
+	$this->jsmquery->from('#__sportsmanagement_project AS p');
+	$this->jsmquery->where('p.id = ' . self::$_project_id);	
+	$this->jsmdb->setQuery($this->jsmquery);	
+	$this->_season_id = $this->jsmdb->loadResult();	
+	$this->jsmapp->setUserState( "$this->jsmoption.season_id", $this->_season_id);
+		
         if ( !self::$_project_id )
         {
         self::$_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );

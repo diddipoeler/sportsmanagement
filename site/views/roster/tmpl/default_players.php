@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage roster
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 
 //echo 'project<pre>',print_r($this->project,true),'</pre>';
@@ -634,9 +635,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
   }
 		?>
 	<tr class="">
-    <td class="td_r" colspan="3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
-		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?></b></td>
-        <td class="td_r"> : </td>
+        <td class="td_r"></td>
+        <td class="td_r" colspan="3">
+            <?php
+            if ($this->config['show_average_age']) {
+                echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
+            }
+            ?>
+        </td>
+        <td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>">
+            <b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?>:</b></td>
 		<?php
 		if ($this->config['show_events_stats'])
 		{

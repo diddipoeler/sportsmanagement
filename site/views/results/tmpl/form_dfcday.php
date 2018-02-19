@@ -17,17 +17,27 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JFactory::getURI();
 }
 
+if ( $this->overallconfig['use_jquery_modal'] )
+{
+?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+
+<?php 
+}
+
 if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
+
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
 $document = JFactory::getDocument();
 
-
+/*
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -38,15 +48,17 @@ else
 JHtml::_( 'behavior.mootools' );   
 require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
 }
+*/
 
 //$version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+
 ?>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- section header e.g. ranking, results etc. -->
 	<table class="table table-responsive">
 		<tr>
-			<td class="contentheading">
+			<td class="">
 				<?php
 				if ($this->roundid>0)
 				{
@@ -84,7 +96,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$colspan=($this->project->allow_add_time) ? 15 : 14;
 			?>
 			<thead>
-				<tr class="sectiontableheader">
+				<tr class="">
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
@@ -112,10 +124,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						<?php
 					}
 					?>
+					<?php
+				if ( $this->config['show_edit_match_events'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_statistic'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
-					
-					
+					<?php
+				}
+				?>	
 				</tr>
 			</thead>
 			<!-- Start of the matches for the selected round -->

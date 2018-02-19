@@ -37,7 +37,6 @@ var playerin = jQuery("#in").val();
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+  '&projecttime=' + projecttime;
 				var url = baseajaxurl + '&task=matches.savesubst&tmpl=component';
-        //jQuery("#ajaxresponse").html(url + querystring);
         
         jQuery.ajax({
   type: 'POST', // type of request either Get or Post
@@ -69,33 +68,59 @@ jQuery("#ajaxresponse").html(baseajaxurl);
           '&projecttime=' + projecttime + 
 					'&event_sum=' + event_sum +
 					'&notice=' + notice;
-          //jQuery("#ajaxresponse").html(url + querystring);
-          
-        //alert("hallo");
-        //jQuery("#ajaxresponse").html("hallo");    
-        
+
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-//  data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
-  //data: jQuery("#component-form").serialize(),
   dataType:"json",
-//  success: commentsaved
-  success: commentsaved, //function to be called on successful reply from server
+  success: eventsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
       }
   
-//  error: function (xhr, ajaxOptions, thrownError) {
-//        alert(xhr.status);
-//        alert(thrownError);
-//      }
 });
         
+}
+
+
+function eventsaved(response) 
+{
+jQuery("#ajaxresponse").removeClass('ajax-loading');
+// first line contains the status, second line contains the new row.
+var resp = response.split('&');
+
+if (resp[0] != '0') 
+  {
+  //var team = jQuery("#team_id").val();
+var player = jQuery("#teamplayer_id option:selected").text();
+	  
+    jQuery("#table-commentary").last().append('<tr id="rowevent-' 
+    + resp[0] + '"><td>' 
+    + jQuery("#event_type_id option:selected").text() + ' ' + player + '</td><td>' 
+    + jQuery("#event_time").val() + '</td><td>' 
+    + jQuery("#notes").val() + '</td><td><input	id="deleteevent-' + resp[0] 
+    + '" type="button" class="inputbox button-delete-event" value="' 
+    + str_delete + '"</td></tr>');
+		
+    jQuery("#ajaxresponse").addClass("ajaxsuccess");
+    jQuery("#ajaxresponse").text(resp[1]);
+      jQuery("#notes").val('');
+      jQuery("#c_event_time").val('');
+		
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-event").addEvent('click', button_delete_event);	   
+} 	
+	
+	
+	
+	
 }
 
 function save_new_comment()
@@ -113,30 +138,17 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 				var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
 				+ matchid + '&notes='
 				+ comnt + '&projecttime=' + projecttime;
-         //jQuery("#ajaxresponse").html(url + querystring); 
 
-//alert(token);
-         
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-//  data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
-  //data: jQuery("#component-form").serialize(),
   dataType:"json",
-//  success: commentsaved
   success: commentsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
         alert(xhr.status);
         alert(thrownError);
       }
   
-//  error: function (xhr, ajaxOptions, thrownError) {
-//        alert(xhr.status);
-//        alert(thrownError);
-//      }
 });
     
 }
@@ -192,11 +204,6 @@ var querystring = '&event_id=' + eventid;
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
-// data: {
-//            'token': '1' // <-- THIS IS IMPORTANT
-//            
-//        }, // data to be post
- //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
@@ -271,22 +278,7 @@ function commentsaved(response)
 	if (resp[0] != '0') 
   {
 
-// create new row in comments table
-//		var newrow = new Element('tr', {
-//			id : 'row-' + resp[0]
-//		});
-//		new Element('td').inject(newrow);
-//		new Element('td').set('text',$('c_event_time').value).inject(newrow);
-//		new Element('td', {
-//			title : $('notes').value
-//		}).addClass("hasTip").set('text',$('notes').value).inject(newrow);
-//		var deletebutton = new Element('input', {
-//			id : 'deletecomment-' + resp[0],
-//			type : 'button',
-//			value : str_delete
-//		}).addClass('inputbox button-delete-commentary').addEvent('click', button_delete_commentary);
-//		new Element('td').appendChild(deletebutton).inject(newrow);
-//		newrow.insertBefore($('rowcomment-new'));	
+
     	
     jQuery("#table-commentary").last().append('<tr id="rowcomment-' 
     + resp[0] + '"><td>' 
@@ -348,8 +340,7 @@ function substdeleted(response)
 
 	if (resp[0] != '0') 
   {
-//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
-//		currentrow.dispose();
+
 jQuery("#sub-" + substid).remove();
 	jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);

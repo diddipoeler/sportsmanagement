@@ -10,7 +10,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+$savenewsubst = array();
+$savenewsubst[] = $this->match->id;
+$savenewsubst[] = $this->tid;
+$savenewsubst[] = $this->eventsprojecttime;
+$savenewsubst[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 
+$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 ?>
 
 <!-- SUBSTITUTIONS START -->
@@ -75,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 								?>
 							</td>
 							<td>
-								<input	id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
+		<input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)" id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
 										value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 							</td>
 						</tr>
@@ -93,7 +99,7 @@ defined('_JEXEC') or die('Restricted access');
                         
                         
 						<td>
-							<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JSAVE'); ?>" />
+<input id="save-new-subst" onclick="save_new_subst(<?php echo implode(",",$savenewsubst); ?>)" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JSAVE'); ?>" />
                             
 						</td>
 					</tr>
