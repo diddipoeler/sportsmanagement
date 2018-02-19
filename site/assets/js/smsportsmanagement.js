@@ -73,23 +73,13 @@ jQuery('div.clubplandate').hide();
 
 function switchMenu(obj) 
 {
-jQuery('div.rankingteam').hide();
-
-//alert(obj);
-
-jQuery("#page-" + obj ).show();
-
-jQuery('div.resultsevents').hide();
-jQuery("#" + obj ).show();
-
-
-//  	var joomleague_el = document.getElementById(obj);
-//  	if ( joomleague_el.style.display != "none" ) {
-//  		joomleague_el.style.display = 'none';
-//  	}
-//  	else {
-//  		joomleague_el.style.display = 'block';
-//  	}
+  	var sportsmanagement_events = document.getElementById(obj);
+  	if ( sportsmanagement_events.style.display != "none" ) {
+  		sportsmanagement_events.style.display = 'none';
+  	}
+  	else {
+  		sportsmanagement_events.style.display = 'block';
+  	}
 	
 }
 

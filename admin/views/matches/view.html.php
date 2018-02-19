@@ -219,7 +219,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->roundws = $roundws;
         //$this->pagination	= $pagination;
         $this->request_url = $uri->toString();
-        //$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
+        $this->prefill = $params->get('use_prefilled_match_roster',0);
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
 
         if ($this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3') {
