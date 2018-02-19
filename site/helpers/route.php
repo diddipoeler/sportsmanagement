@@ -354,37 +354,25 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 		$params = array("option" => "com_sportsmanagement",
 					"view" => "clubinfo");
 
-		$params["cfg_which_database"] = $cfg_which_database;
+
+	$params["cfg_which_database"] = $cfg_which_database;
         $params["s"] = $s;
-        
         $params["p"] = $projectid;
         $params["cid"] = $clubid;
         
-        //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
         
         if ( ! is_null( $task ) ) 
         { 
-			
-            if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-    $layout = 'edit'; 
-    }
-    else
-    {
-        $layout = 'edit';
-    }
-            
-            if($task=='club.edit') 
+
+            if( $task=='club.edit' ) 
             {
-				$params["layout"] = $layout; 
-				$params["view"] = 'club'; 
-                $params["id"] = $clubid;
-			}
-			$query = self::buildQuery( $params );
+	$params["view"] = 'editclub'; 
+        $params["id"] = $clubid;
+	}
+	$query = self::buildQuery( $params );
             // diddipoeler
             // nicht im backend, sondern im frontend
-			$link = JRoute::_( "administrator/index.php?" . $query. '&tmpl=component', false );
-            //$link = JRoute::_( "index.php?" . $query, false );
+	$link = JRoute::_( "index.php?" . $query. '&tmpl=component', false );
 		} 
         else 
         {
@@ -392,9 +380,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 			$link = JRoute::_( "index.php?" . $query, false );
 		}
         self::sportsmanagementBuildRoute($params);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
         
 		return $link;
 	}
