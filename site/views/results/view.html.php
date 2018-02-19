@@ -781,7 +781,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	public static function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array(),$project=array() )
 	{
 	   $app = JFactory::getApplication();
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchInfo'.'<pre>'.print_r($matchInfo,true).'</pre>' ),'');
        
 		$output = '';
 		$result = '';
@@ -796,7 +796,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
             "active" => "tab0_id" // It is the ID of the active tab.
         );  
         
-        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group', $tabsOptions);
+        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
         
             }
             else
@@ -839,7 +839,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',JText::_($event->name) ); 
+            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,JText::_($event->name) ); 
             //$output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',$tab_content);
             }
             else
