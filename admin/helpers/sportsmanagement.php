@@ -2237,13 +2237,9 @@ catch (Exception $e) {
 		if ($showIcons)
 		{
 			$output .= JHtml::link('javascript:void(0);',$desc,$params);
-            //$output .= '<ul id="submenu"><li><a id="'.$containerId.'" >'.$formattedTeamName.'</a></li></ul>';
-			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';" class="rankingteam jsmeventsshowhide">';
-            //$output .= '<div id="config-document">';
-            //$output .= '<'.$container.' id="page-'.$containerId.'" >';
+			$output .= '<'.$container.' id="'.$containerId.'" style="'.$style_append.';" class="rankingteam jsmeventsshowhide">';
 			$output .= self::showTeamIcons ($team,$config,$cfg_which_database);
 			$output .= '</'.$container.'>';
-            //$output .= '</div>';
 		}
 		else
 		{
@@ -2254,8 +2250,6 @@ catch (Exception $e) {
 		{
 			$output = JHtml::link($link, $output);
 		}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'');
 
 		return $output;
 	}
