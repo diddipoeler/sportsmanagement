@@ -627,7 +627,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	<!-- show icon for editing events in edit mode -->
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
-		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents" >
+		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents jsmeventsshowhide" >
 		<table class='table' >
 			<tr>
 				<td><?php
