@@ -1,5 +1,4 @@
 ALTER TABLE `#__sportsmanagement_team` ADD `team_stars` INT(11) NOT NULL DEFAULT '0';
-ALTER TABLE `#__sportsmanagement_team` ADD `email` VARCHAR(250) NULL;
 
 ALTER TABLE `#__sportsmanagement_league` ADD `league_level` INT(11) NOT NULL DEFAULT '0';
 ALTER TABLE `#__sportsmanagement_league` ADD `league_id_up` INT(11) NOT NULL DEFAULT '0';
