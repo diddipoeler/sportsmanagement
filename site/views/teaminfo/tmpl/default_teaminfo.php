@@ -132,7 +132,7 @@ if (!isset($this->team)) {
                             <?php
                         }
                     }
-                    print_r($this->team);
+
                     if ($this->config['show_team_info']) {
                         ?>
                         <address>
