@@ -2265,7 +2265,7 @@ catch (Exception $e) {
 		{
 			$output .= JHtml::link('javascript:void(0);',$desc,$params);
             //$output .= '<ul id="submenu"><li><a id="'.$containerId.'" >'.$formattedTeamName.'</a></li></ul>';
-			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';" class="rankingteam">';
+			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';" class="rankingteam jsmeventsshowhide">';
             //$output .= '<div id="config-document">';
             //$output .= '<'.$container.' id="page-'.$containerId.'" >';
 			$output .= self::showTeamIcons ($team,$config,$cfg_which_database);
