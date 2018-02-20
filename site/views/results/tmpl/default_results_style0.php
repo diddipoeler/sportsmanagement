@@ -30,9 +30,9 @@ function example_alertBox( boxText )
 </script>
 
 <?php
-$nbcols			= 7;
-$nbcols_header	= 0;
-$dates			= sportsmanagementViewResults::sortByDate($this->matches);
+$nbcols	= 7;
+$nbcols_header = 0;
+$dates = sportsmanagementViewResults::sortByDate($this->matches);
 
 if($this->config['show_division']){$nbcols++;}
 if($this->config['show_match_number']){$nbcols++;}
@@ -627,7 +627,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	<!-- show icon for editing events in edit mode -->
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
-		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents" >
+		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents jsmeventsshowhide" >
 		<table class='table' >
 			<tr>
 				<td><?php

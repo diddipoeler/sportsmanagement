@@ -626,6 +626,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `birthday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `deathday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `second_country` VARCHAR(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),

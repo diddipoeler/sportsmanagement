@@ -73,7 +73,17 @@ jQuery('div.clubplandate').hide();
 
 function switchMenu(obj) 
 {
-jQuery('#' + obj).toggle();
+//jQuery('#' + obj).toggle();
+	
+jQuery('.jsmeventsshowhide').each(function(index) {
+          if (jQuery(this).attr("id") == obj) {
+               $(this).toggle();
+          }
+          else {
+               $(this).hide();
+          }
+     });
+	
 //	var sportsmanagement_events = document.getElementById(obj);
 //  	if ( sportsmanagement_events.style.display != "none" ) {
 //  		sportsmanagement_events.style.display = 'none';

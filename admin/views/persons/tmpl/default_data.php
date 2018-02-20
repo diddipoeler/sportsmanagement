@@ -187,31 +187,32 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$append='';
                                 $date1 = sportsmanagementHelper::convertDate($row->birthday, 1); 
                                 if (($date1 == '00-00-0000') || ($date1 == ''))
-								{
-									$append=' style="background-color:#FFCCCC;" ';
-								}
+				{
+				$append=' style="background-color:#FFCCCC;" ';
+				$date1 = '';
+				}
 /**
  * das wurde beim kalender geändert
-  $attribs = array(
-			'onChange' => "alert('it works')",
-			"showTime" => 'false',
-			"todayBtn" => 'true',
-			"weekNumbers" => 'false',
-			"fillTable" => 'true',
-			"singleHeader" => 'false',
-		);
-	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+ * $attribs = array(
+ *			'onChange' => "alert('it works')",
+ *			"showTime" => 'false',
+ *			"todayBtn" => 'true',
+ *			"weekNumbers" => 'false',
+ *			"fillTable" => 'true',
+ *			"singleHeader" => 'false',
+ *		);
+ *	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 
                                 $attribs = array(
 			'onChange' => "document.getElementById('cb".$i."').checked=true",
 		);                          
-                                   echo JHtml::calendar($date1,
-														'birthday'.$row->id,
-														'birthday'.$row->id,
-														'%d-%m-%Y',
-														$attribs);                         
+                echo JHtml::calendar($date1,
+				'birthday'.$row->id,
+				'birthday'.$row->id,
+				'%d-%m-%Y',
+				$attribs);                         
 //								}
 								?>
 							</td>
