@@ -87,8 +87,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getDivision()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	$option = JFactory::getApplication()->input->getCmd('option');
+	$app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -101,25 +101,21 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         // Select some fields
         $query->select('d.*,CONCAT_WS(\':\',id,alias) AS slug');
         // From 
-		$query->from('#__sportsmanagement_division AS d');
+	$query->from('#__sportsmanagement_division AS d');
         // Where
         $query->where('d.id = '.self::$divisionid);
-			
-            $db->setQuery($query,0,1);
+        $db->setQuery($query,0,1);
+
+        try{
+	$division = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+          }
+            catch (Exception $e)
+            {
+	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+            }	  
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-			$division = $db->loadObject();
-            
-            if (!$division )
-		{
-		  $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-			//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-		}
         
 		}
 		return $division;
@@ -142,36 +138,26 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         // Select some fields
         $query->select('pt.id');
         // From 
-		$query->from('#__sportsmanagement_project_team as pt');
+	$query->from('#__sportsmanagement_project_team as pt');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         $query->join('INNER',' #__sportsmanagement_team as t ON t.id = st.team_id ');
         // Where
         $query->where('pt.project_id = '.self::$projectid);
         $query->where('t.id='.self::$teamid);
-                 
-		$db->setQuery($query,0,1);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-		if ( !$result = $db->loadResult())
-		{
-			//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            self::$pro_teamid = 0;
-            return 0;
+	$db->setQuery($query,0,1);
+		
+		try{
+		$result = $db->loadResult();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $my_text = 'team_id -><pre>'.print_r($result,true).'</pre>';
-          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
-        }
+        catch (Exception $e)
+            {
+	self::$pro_teamid = 0;
+            return 0;	
+	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+            }
+       
         
 		self::$pro_teamid = $result;
         self::$projectteamid = $result;
@@ -279,7 +265,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         // Select some fields
         $query->select('id');
         // From 
-		$query->from('#__sportsmanagement_division');
+	$query->from('#__sportsmanagement_division');
         // Where
         $query->where('parent_id = '.self::$divisionid);
 
