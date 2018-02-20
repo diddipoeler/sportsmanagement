@@ -530,16 +530,19 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 
 			$db->setQuery($query);
             
-           
+           try{
+	$referees = $db->loadObjectList();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+          }
+            catch (Exception $e)
+            {
+	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+            }	
         
-			if (! $referees = $db->loadObjectList())
-			{
-			 if ( $db->getErrorNum() )
-             {
-				$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-                }
-			}
-			$matches[$index]->referees=$referees;
+			
+			
+			$matches[$index]->referees = $referees;
 		}
 		return $matches;
 	}
