@@ -1851,7 +1851,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         
 	// Select some fields
         $query->clear();
-        $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');
+        $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
         $query->from('#__sportsmanagement_match_player AS mp');
         
         $query->where('mp.match_id = '.(int)$match_id);
