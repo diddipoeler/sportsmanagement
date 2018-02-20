@@ -17,7 +17,7 @@
 		/>
 		<field
 			name="project_id"
-			type="hidden"
+			type="number"
 		       label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
 			class="readonly" 
