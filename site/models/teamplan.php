@@ -555,15 +555,16 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	function getEventTypes($match_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	$option = JFactory::getApplication()->input->getCmd('option');
+	$app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
+	$result = NULL;
         // Select some fields
         $query->select('et.id as etid,me.event_type_id as id,et.*');
         // From 
-		$query->from('#__sportsmanagement_eventtype as et');
+	$query->from('#__sportsmanagement_eventtype as et');
         $query->join('INNER',' #__sportsmanagement_match_event as me ON et.id = me.event_type_id ');
         $query->join('INNER',' #__sportsmanagement_match as m ON m.id = me.match_id ');
         // Where
@@ -571,8 +572,18 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         // Order
         $query->order('et.ordering');
 
-		$db->setQuery($query);
-		return $db->loadObjectList('etid');
+	$db->setQuery($query);
+		
+		 try{
+	$result = $db->loadObjectList('etid');
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+          }
+            catch (Exception $e)
+            {
+	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+            }	
+		return $result;
 	}
 
 }
