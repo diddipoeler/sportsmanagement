@@ -839,30 +839,24 @@ $s = $configcolors;
                 $query->where('project_id = '.(int)self::$projectid);
                 // order
                 $query->order('roundcode ASC');
-
-			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+           
+            try{
+        $db->setQuery($query);
+		self::$_rounds = $db->loadObjectList();
         }
-        
-			self::$_rounds = $db->loadObjectList();
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+			
 		}
-		
-        if ( !self::$_rounds && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-	    }
         
         if ($ordering == 'DESC') 
         {
 			return array_reverse(self::$_rounds);
 		}
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+
         
         return self::$_rounds;
 	}
