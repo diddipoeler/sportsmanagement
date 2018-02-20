@@ -150,7 +150,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		if (!$result = $model->saveevent($data)) {
 			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
         } else {
-			$result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+			$result = $result."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
 		}    
  
 		echo json_encode($result);
