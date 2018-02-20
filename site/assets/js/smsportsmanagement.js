@@ -75,8 +75,8 @@ function switchMenu(obj)
 {
 //jQuery('#' + obj).toggle();
 	
-$('.jsmeventsshowhide').each(function(index) {
-          if ($(this).attr("id") == obj) {
+jQuery('.jsmeventsshowhide').each(function(index) {
+          if (jQuery(this).attr("id") == obj) {
                $(this).toggle();
           }
           else {
