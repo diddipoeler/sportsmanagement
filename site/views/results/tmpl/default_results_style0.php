@@ -30,9 +30,9 @@ function example_alertBox( boxText )
 </script>
 
 <?php
-$nbcols			= 7;
-$nbcols_header	= 0;
-$dates			= sportsmanagementViewResults::sortByDate($this->matches);
+$nbcols	= 7;
+$nbcols_header = 0;
+$dates = sportsmanagementViewResults::sortByDate($this->matches);
 
 if($this->config['show_division']){$nbcols++;}
 if($this->config['show_match_number']){$nbcols++;}
