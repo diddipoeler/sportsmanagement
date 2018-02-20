@@ -1897,6 +1897,15 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$inout->out_lastname = $result1->out_lastname;
 	$inout->out_ptid = $result1->out_ptid;	
 	$inout->out_person_id = $result1->person_slug;
+	$query->clear();	
+	$query->select('pos.name');	
+	$query->from('#__sportsmanagement_position AS pos');
+	$query->join('INNER','#__sportsmanagement_match_player AS mp ON mp.project_position_id = pos.id ');	
+	$query->where('mp.teamplayer_id = '.$inout->in_for );
+	$query->where('mp.match_id = '.(int)$match_id);	
+	$db->setQuery($query);	
+	$inout->out_position = $db->loadResult();	
+		
 	$query->clear();
 	$query->select('pt.team_id,pt.id AS ptid');
 	$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
