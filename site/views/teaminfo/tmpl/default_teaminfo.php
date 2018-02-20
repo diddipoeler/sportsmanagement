@@ -132,6 +132,7 @@ if (!isset($this->team)) {
                             <?php
                         }
                     }
+                    print_r($this->team);
                     if ($this->config['show_team_info']) {
                         ?>
                         <address>
@@ -171,7 +172,7 @@ if (!isset($this->team)) {
                             </address>
                             <?php
                         }
-                        if ($this->team->website) {
+                        if ($this->team->team_website) {
                             ?>
                             <address>
                                 <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE'); ?></strong>
@@ -180,6 +181,21 @@ if (!isset($this->team)) {
                                 echo JHtml::link($this->team->team_website, $this->team->team_website, array("target" => "_blank"));
                                 }
                                 ?>
+                            </address>
+                            <?php
+                        }
+                        if ($this->team->team_email) {
+                            ?>
+                            <address>
+                                <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_EMAIL'); ?></strong>
+                                <?php
+                                    $user = JFactory::getUser();
+                                    if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
+                                        echo JHtml::link('mailto:' . $this->team->team_email, $this->team->team_email);
+                                    } else {
+                                        echo JHtml::_('email.cloak', $this->team->team_email);
+                                    }
+                                    ?>
                             </address>
                             <?php
                         }
