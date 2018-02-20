@@ -1907,6 +1907,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$inout->out_lastname = $result1->out_lastname;
 	$inout->out_ptid = $result1->out_ptid;	
 	$inout->out_person_id = $result1->person_slug;
+    $inout->person_slug = $result1->person_slug;
 	
     $query->clear();	
 	$query->select('pos.id,pos.name');	
@@ -1940,6 +1941,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$result1 = $db->loadObject();
 	$inout->ptid = $result1->ptid;	
 	$inout->team_id = $result1->team_slug;
+    $inout->team_slug = $result1->team_slug;
 	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 	
 	
