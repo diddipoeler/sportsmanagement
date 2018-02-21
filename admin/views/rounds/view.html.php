@@ -118,7 +118,6 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $uri = JFactory::getURI();
 
         $model = $this->getModel();
-        $projectws = $this->get('Data', 'projectws');
 
         $document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
         //$version = urlencode(sportsmanagementHelper::getVersion());
@@ -136,6 +135,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $teams = $mdlProject->getProjectTeamsOptions($this->project_id);
+        $projectws = $mdlProject->getProject($this->project_id);
 
         $options = array();
         foreach ($teams as $t) {
