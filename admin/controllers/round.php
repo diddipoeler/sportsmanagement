@@ -46,6 +46,20 @@ class sportsmanagementControllerround extends JSMControllerForm
 	$msg = '';
 	$model = $this->getModel('rounds');	
 	$post = JFactory::getApplication()->input->post->getArray(array());	
+	$project_id = $post['project_id'];
+	$scheduling = $post['scheduling'];
+	$time       = $post['time'];
+	$interval   = $post['interval'];
+	$start      = $post['start'];
+	$roundname  = $post['roundname'];
+	$teamsorder = $post['teamsorder']
+	
+	if ( !$teamsorder )
+	{
+	$msg = Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
+	$msgType = 'error';
+	}
+		
 //JFactory::getApplication()->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($post,true).'</pre>'),'');		
 		
 	$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds', $msg, $msgType);	
