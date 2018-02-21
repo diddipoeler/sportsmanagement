@@ -249,6 +249,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->where('tp.published = 1');
         $query->where('tp.persontype = '.$persontype);
         $query->where('tp.season_id = '.self::$seasonid);  
+	$query->where('pt.project_id = '.self::$projectid);
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
            
             $db->setQuery($query);
@@ -364,6 +365,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	public static function getPlayerEventStats()
 	{
+		$app = JFactory::getApplication();		
 		$playerstats=array();
 		$rows = self::getTeamPlayers();
 		if (!empty($rows))
@@ -382,6 +384,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 				foreach ($eventtypes as $eventtype)
 				{
 					$teamstats = self::getTeamEventStat($eventtype->eventtype_id);
+// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamstats <br><pre>'.print_r($teamstats ,true).'</pre>'),'Notice');					
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
