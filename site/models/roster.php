@@ -423,6 +423,7 @@ class sportsmanagementModelRoster extends JModelLegacy
     $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query->where('me.event_type_id = '.$eventtype_id);
     $query->where('pt.id = '.$projectteam->id);
+    $query->where('pt.project_id = '.self::$projectid);
     $query->group('tp.person_id');
        
         $db->setQuery($query);
