@@ -93,7 +93,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 if ( $this->overallconfig['use_squeezebox_modal'] ) 
 {
 ?>
-<a href="http://www.example.com" rel="moodalbox">External Site Test</a>		
+<a href="<?php echo $url; ?>" width="660" class="popdown btn">External Site Test</a>		
 <?php		
 }
 else
