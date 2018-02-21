@@ -417,7 +417,8 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 			$time = '20:00';
 		}
 		
-		$teams = $this->getProjectTeams();
+		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$teams = $mdlProject->getProjectTeamsOptions($project_id);
 		
 		if ($teamsorder)
 		{
