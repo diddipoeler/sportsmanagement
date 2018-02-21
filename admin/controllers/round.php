@@ -43,11 +43,12 @@ class sportsmanagementControllerround extends JSMControllerForm
 	function startpopulate()
 	{
 	$msgType = 'message';
+	$msg = '';
 	$model = $this->getModel('rounds');	
 		
 		
 		
-		
+	$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds', $msg, $msgType);	
 	}
  
 
