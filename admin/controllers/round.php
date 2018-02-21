@@ -61,7 +61,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 	}
 	else
 	{
-	//$res = $model->populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder)	
+	$res = $model->populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder);	
 	}
 //JFactory::getApplication()->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($post,true).'</pre>'),'');		
 		
