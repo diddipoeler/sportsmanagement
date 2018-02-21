@@ -27,6 +27,10 @@ if ( $this->overallconfig['use_jquery_modal'] )
 <?php 
 }
 
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+	
+}	
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
