@@ -42,6 +42,11 @@ class sportsmanagementControllerround extends JSMControllerForm
 
 	function startpopulate()
 	{
+	$msgType = 'message';
+	$model = $this->getModel('rounds');	
+		
+		
+		
 		
 	}
  
