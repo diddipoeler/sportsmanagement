@@ -410,6 +410,9 @@ $option = $app->input->getCmd('option');
 	
 function populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder = null)
 	{		
+	$db = sportsmanagementHelper::getDBConnection();
+	$date = JFactory::getDate();
+        $user = JFactory::getUser();
 	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'class.roundrobin.php');	
 	if (!strtotime($start)) {
 			$start = strftime('%Y-%m-%d');
@@ -468,7 +471,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM'));
 			return false;
 		}
-		$rounds = $this->getData();
+		$rounds = $this->getRoundsOptions($project_id);
 		$rounds = $rounds ? $rounds : array();
 		
 		if ($scheduling < 2)
@@ -496,20 +499,30 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 			}
 			else // create the round !
 			{
-				$round = JTable::getInstance('Round', 'Table');
+				$round = new stdClass();
 				$round->project_id       = $project_id;
 				$round->round_date_first = strtotime($current_date) ? strftime('%Y-%m-%d', strtotime($current_date) + $interval*24*3600) : $start;
 				$round->round_date_last = $round->round_date_first;
 				$round->roundcode = $current_code ? $current_code + 1 : 1;
 				$round->name      = sprintf($roundname, $round->roundcode);
-				if (!($round->check() && $round->store())) {
-					$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_CREATING_ROUND').': '.$round->getError());
-					return false;	
-				}				
+				$round->modified = $date->toSql();
+				$round->modified_by = $user->get('id');	
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_round', $round);
+		    $result = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED');	
+	return false;	    
+            }					
 				$current_date = $round->round_date_first;
 				$current_code = $round->roundcode;
 				
-				$round_id = $round->id;
+				$round_id = $result;
 			}
 			
 			// create games !
@@ -518,17 +531,31 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 				if (!isset($g[0]) || !isset($g[1])) { // happens if number of team is odd ! one team gets a by
 					continue;
 				}
-				$game = JTable::getInstance('Match', 'Table');
+				$game = new stdClass();
 				$game->round_id = $round_id;
-        $game->division_id = 0;
+        			$game->division_id = 0;
 				$game->projectteam1_id = $g[0]->projectteam_id;
 				$game->projectteam2_id = $g[1]->projectteam_id;
 				$game->published = 1;
 				$game->match_date = $current_date.' '.$time;
-				if (!($game->check() && $game->store())) {
-					$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_CREATING_GAME').': '.$game->getError());
-					return false;	
-				}
+				$game->modified = $date->toSql();
+				$game->modified_by = $user->get('id');	
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match', $game);
+		    $result = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_FAILED');	
+	return false;	    
+            }					
+				
+				
+				
+				
 			}
 		}
 		
