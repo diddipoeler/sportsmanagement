@@ -45,8 +45,8 @@ class sportsmanagementControllerround extends JSMControllerForm
 	$msgType = 'message';
 	$msg = '';
 	$model = $this->getModel('rounds');	
-		
-		
+	$post = JFactory::getApplication()->input->post->getArray(array());	
+//JFactory::getApplication()->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($post,true).'</pre>'),'');		
 		
 	$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds', $msg, $msgType);	
 	}
