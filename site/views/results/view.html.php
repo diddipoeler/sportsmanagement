@@ -45,6 +45,8 @@ class sportsmanagementViewResults extends sportsmanagementView
         $default_name_format = '';
 
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+		
+
         //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
         /*
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
@@ -92,6 +94,12 @@ class sportsmanagementViewResults extends sportsmanagementView
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
             $this->extended = $extended;
 
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+}	
+			
+			
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
 	  $mod_name = "mod_jw_srfr";
