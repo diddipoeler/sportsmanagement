@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage project
+ * @subpackage models
  */
 
 // No direct access to this file
@@ -430,90 +430,6 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}
-       
-   /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function savenichtmehr($data)
-	{
-	   $app = JFactory::getApplication();
-       $address_parts = array();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->post->getArray(array());
-       // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       $date = time();    // aktuelles Datum
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-       
-       //$data['modified'] = date('Y-m-d H:i:s', $date);
-       //$post['modified'] = $date->toSql();
-       
-       $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
-       
-       $data['sports_type_id'] = $data['request']['sports_type_id'];
-       $data['agegroup_id'] = $data['request']['agegroup_id'];
-       
-       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
-       
-       $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extendeduser']);
-			$data['extendeduser'] = (string)$parameter;
-		}
-        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask -> '.JFactory::getApplication()->input->getVar('task').''),'');
-       
-       // for save as copy
-		if (JFactory::getApplication()->input->getVar('task') == 'save2copy')
-		{
-			$data['current_round'] = 0;
-		}
-        
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
-       //-------extra fields-----------//
-        sportsmanagementHelper::saveExtraFields($post,$data['id']); 
-       
-        return true;  
-       
-        
-       
-    }    
-    
+
 	
 }
