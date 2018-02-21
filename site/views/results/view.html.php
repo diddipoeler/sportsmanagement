@@ -837,7 +837,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				}
 				if($cnt==0){continue;}
 				
-				if ($config['show_events_with_icons'] == 1)
+				if ( $config['show_events_with_icons'] )
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_($event->name);
@@ -850,8 +850,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,JText::_($event->name) ); 
-            //$output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',$tab_content);
+            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,$tab_content ); 
             }
             else
             {
