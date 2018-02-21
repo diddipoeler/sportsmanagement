@@ -410,7 +410,8 @@ $option = $app->input->getCmd('option');
 	
 function populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder = null)
 	{		
-		if (!strtotime($start)) {
+	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'class.roundrobin.php');	
+	if (!strtotime($start)) {
 			$start = strftime('%Y-%m-%d');
 		}
 		if (!preg_match("/^[0-9]+:[0-9]+$/", $time)) {
