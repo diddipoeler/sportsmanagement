@@ -426,12 +426,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		}
 		if ($this->overallconfig['use_jl_substitution'])
 		{
-			// Events of COM_SPORTSMANAGEMENT_substitutions are shown
 			$model = $this->getModel();
 			
-            //$this->assign('InOutStat',$model->getInOutStats($row->pid));
-            //$this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
-            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0));
             
 //echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';
@@ -439,10 +436,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 //echo __FILE__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($row->season_team_person_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' person_id<br><pre>'.print_r($row->pid,true).'</pre><br>';
             
-//            if ( $row->pid == 846 )
-//            {
-//echo __FILE__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre><br>';                
-//            }
+
             
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{
@@ -479,7 +473,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
             {
                 $this->overallconfig['person_events'] = NULL;
             }
-            $this->assign('timePlayed',sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+            $this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']);
             $timePlayed  = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{
@@ -629,7 +623,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 					?>
 		<td class="td_c">
         <?php 
-        //echo number_format($value, 0, '', '.');
         echo ($value > 0 ? number_format($value, 0, '', '.') : $this->overallconfig['zero_events_value']);
         ?>
         </td>
