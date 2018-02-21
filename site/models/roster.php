@@ -225,10 +225,10 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');    
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');    
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__sportsmanagement_person AS pr ON tp.person_id = pr.id');
-        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
+        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id'); 
         $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
         $query->join('LEFT','#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = pro.id AND perpos.person_id = pr.id');
         $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
@@ -250,6 +250,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->where('tp.persontype = '.$persontype);
         $query->where('tp.season_id = '.self::$seasonid);  
 	$query->where('pt.project_id = '.self::$projectid);
+	$query->where('pro.id = '.self::$projectid);
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
            
             $db->setQuery($query);
@@ -419,11 +420,13 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('tp.person_id');
 	$query->from('#__sportsmanagement_match_event AS me'); 
     $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');  
+    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');  
     $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id'); 
     $query->where('me.event_type_id = '.$eventtype_id);
     $query->where('pt.id = '.$projectteam->id);
     $query->where('pt.project_id = '.self::$projectid);
+    $query->where('pro.project_id = '.self::$projectid);
     $query->group('tp.person_id');
        
         $db->setQuery($query);
