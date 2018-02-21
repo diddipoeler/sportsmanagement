@@ -133,7 +133,10 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $lists['scheduling'] = JHtml::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
         //TODO-add error message - what if there are no teams assigned to the project
-        $teams = $this->get('projectteams');
+        $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $teams = $mdlProject->getProjectTeamsOptions($this->project_id);
+
         $options = array();
         foreach ($teams as $t) {
             $options[] = JHtml::_('select.option', $t->projectteam_id, $t->text);
