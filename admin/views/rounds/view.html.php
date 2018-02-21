@@ -31,6 +31,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
     public function init() {
         $app = JFactory::getApplication();
         $this->massadd = 0;
+        $this->populate = 0;
         $tpl = NULL;
         /**
          * dadurch werden die spaltenbreiten optimiert
@@ -146,8 +147,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $this->projectws = $projectws;
         $this->request_url = $uri->toString();
         $this->lists = $lists;
-
-        $this->addToolbar_Populate();
+$this->populate = 1;
         $this->setLayout('populate');
     }
 
@@ -157,16 +157,19 @@ class sportsmanagementViewRounds extends sportsmanagementView {
      * @since	1.6
      */
     protected function addToolbar() {
-//	// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
 
         if (!$this->massadd) {
 
+if ( $this->populate ) {
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
+JToolbarHelper::apply('round.startpopulate');
+        JToolbarHelper::back();
+        parent::addToolbar();
+}
+else
+{
             //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
             JToolbarHelper::publishList('rounds.publish');
             JToolbarHelper::unpublishList('rounds.unpublish');
@@ -184,29 +187,16 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
             JToolbarHelper::deleteList('', 'rounds.deleteroundmatches', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
             //JToolbarHelper::custom('rounds.deletematches','delete.png','delete.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'),false);
-
-
-
             parent::addToolbar();
+            }
         } else {
             JToolbarHelper::custom('round.cancelmassadd', 'cancel.png', 'cancel_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'), false);
+            
         }
-        //JToolbarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
-//parent::addToolbar();  
+
     }
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since	1.6
-     */
-    protected function addToolbar_Populate() {
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
-        JToolbarHelper::apply('round.startpopulate');
-        JToolbarHelper::back();
-    }
+   
 
 }
 
