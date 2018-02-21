@@ -616,10 +616,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 				foreach ($this->positioneventtypes[$row->position_id] AS $eventtype)
 				{
 					$value = '0';
-					//if ( array_key_exists($eventtype->eventtype_id,$totalEvents[$row->position_id]))
-					//{
-						$value = $totalEvents[$row->position_id][$eventtype->eventtype_id];
-					//}
+					if ( array_key_exists($eventtype->eventtype_id,$totalEvents[$row->pposid]))
+					{
+						$value = $totalEvents[$row->pposid][$eventtype->eventtype_id];
+					}
 					?>
 		<td class="td_c">
         <?php 
