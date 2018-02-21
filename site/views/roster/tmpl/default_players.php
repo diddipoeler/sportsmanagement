@@ -587,7 +587,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 	}
 	?>
 	<!-- end players rows -->
-	<!-- position totals -->
+	<!-- position totals anfang -->
 	<?php
 	if ($this->config['show_totals'] && ($this->config['show_stats'] || $this->config['show_events_stats']))
 	{
@@ -675,7 +675,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 	<?php
 	}
 	?>
-	<!-- total end -->
+	<!-- position totals ende -->
 	<?php
 	$k=(1-$k);
 	}
