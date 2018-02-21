@@ -139,7 +139,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
         $options = array();
         foreach ($teams as $t) {
-            $options[] = JHtml::_('select.option', $t->projectteam_id, $t->text);
+            $options[] = JHtml::_('select.option', $t->value, $t->text);
         }
         $lists['teamsorder'] = JHtml::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
 
