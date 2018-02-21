@@ -494,11 +494,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		<td class="td_c"><?php
 				if ($stat !='' && $stat > 0)
 				{
-					if (!isset($totalEvents[$row->pid][$eventId]))
+					if (!isset($totalEvents[$row->pposid][$eventId]))
 					{
-						$totalEvents[$row->pid][$eventId] = 0;
+						$totalEvents[$row->pposid][$eventId] = 0;
 					}
-					$totalEvents[$row->pid][$eventId] = (int) $totalEvents[$row->pid][$eventId] + (int) $stat;
+					$totalEvents[$row->pposid][$eventId] = (int) $totalEvents[$row->pposid][$eventId] + (int) $stat;
 				}
 				//echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : 0;
                 echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
