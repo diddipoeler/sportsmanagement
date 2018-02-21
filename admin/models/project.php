@@ -117,7 +117,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
         if ( $this->project_art_id == 3 )
         {
             // Select some fields
-		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text");
+		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.notes");
             // From table
 		    $query->from('#__sportsmanagement_person AS t');
             $query->join('LEFT', '#__sportsmanagement_season_person_id AS st on st.person_id = t.id');
