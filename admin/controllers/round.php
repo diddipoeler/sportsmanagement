@@ -52,7 +52,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 	$interval   = $post['interval'];
 	$start      = $post['start'];
 	$roundname  = $post['roundname'];
-	$teamsorder = $post['teamsorder']
+	$teamsorder = $post['teamsorder'];
 	
 	if ( !$teamsorder )
 	{
