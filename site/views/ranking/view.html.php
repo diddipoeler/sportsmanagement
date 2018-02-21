@@ -165,8 +165,8 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         }
 
         $no_ranking_reason = '';
+        $ranking_reason = array();
         if ($this->config['show_notes']) {
-            $ranking_reason = array();
             foreach ($this->teams as $teams) {
                 if ($teams->start_points) {
                     if ($teams->start_points < 0) {
