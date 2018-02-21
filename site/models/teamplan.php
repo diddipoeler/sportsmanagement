@@ -408,7 +408,6 @@ try{
         $query = $db->getQuery(true);
         $starttime = microtime();
         
-		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
