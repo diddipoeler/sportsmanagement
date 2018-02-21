@@ -431,7 +431,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 			{
 				foreach ($teams as $t) 
 				{
-					if ($t->projectteam_id == $ptid) {
+					if ($t->value == $ptid) {
 						$ordered[] = $t;
 						break;
 					}
@@ -451,7 +451,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
     $roundrobin = new roundrobin($rrteams);
     $roundrobin->free_ticket = false; // free tickets off
     $roundrobin->create_matches();
-    echo '<pre>',print_r($roundrobin->matches,true),'</pre><br>';
+    //echo '<pre>',print_r($roundrobin->matches,true),'</pre><br>';
     
     if ($roundrobin->finished) 
     {
@@ -534,8 +534,8 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 				$game = new stdClass();
 				$game->round_id = $round_id;
         			$game->division_id = 0;
-				$game->projectteam1_id = $g[0]->projectteam_id;
-				$game->projectteam2_id = $g[1]->projectteam_id;
+				$game->projectteam1_id = $g[0]->value;
+				$game->projectteam2_id = $g[1]->value;
 				$game->published = 1;
 				$game->match_date = $current_date.' '.$time;
 				$game->modified = $date->toSql();
