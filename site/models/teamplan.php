@@ -285,6 +285,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 			$div_for_teams[] = self::getDivision()->id;
 		}
 
+try{
 		$query->clear();
         // Select some fields
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
@@ -312,21 +313,26 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
         // Where
         $query->where('m.published=1');
 
-//win matches
+/**
+ * win matches
+ */
 		if ((self::$mode)== 1)
 		{
 		  //$query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result < m.team2_result) )');
           $query->where('( (m.projectteam1_id = ' .self::$projectteamid. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id = ' .self::$projectteamid. ' AND m.team1_result < m.team2_result) )');
 		}
-//draw matches
+/**
+ * draw matches
+ */
 		if ((self::$mode)== 2)
 		{
 		  $query->where('m.team1_result = m.team2_result');
 		}
-//lost matches
+/**
+ * lost matches
+ */
 		if ((self::$mode)== 3)
 		{
- 		  //$query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result < m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result > m.team2_result) )');
 			$query->where('( (m.projectteam1_id = ' .self::$projectteamid. ' AND m.team1_result < m.team2_result)'.' OR (m.projectteam2_id = ' .self::$projectteamid. ' AND m.team1_result > m.team2_result) )');
 		}
 	
@@ -349,7 +355,6 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 
 		if (self::$teamid != 0)
 		{
-            //$query->where("(m.projectteam1_id=".$team." OR m.projectteam2_id=".$team.")");
             $query->where("(m.projectteam1_id = ".self::$projectteamid." OR m.projectteam2_id = ".self::$projectteamid.")");
 		}
         
@@ -363,11 +368,9 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
             $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
             $query->join('LEFT',' #__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
 		}
-
 		
 		$db->setQuery($query);
-        
-               try{
+               
 	$matches = $db->loadObjectList();
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
           }
