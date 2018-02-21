@@ -169,7 +169,6 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
             $zeit = $this->params->get('result_add_time',0) * $stunden * $minuten * $sekunden;
             break;
         }
-        // $enddatum = $enddatum + ($stunden * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
         $startdatum_played_matches = $enddatum_played_matches - ($zeit);  
         }
 /**
@@ -196,15 +195,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
             $zeit = $this->params->get('period_int',0) * $stunden * $minuten * $sekunden;
             break;
         }
-        // $enddatum = $enddatum + ($stunden * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
         $enddatum_next_matches = $startdatum_next_matches + ($zeit);      
             
         }
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' show_played<br><pre>'.print_r($this->params->get('show_played',0),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result_add_unit<br><pre>'.print_r($this->params->get('result_add_unit','HOUR'),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result_add_time<br><pre>'.print_r($this->params->get('result_add_time',0),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' startdatum<br><pre>'.print_r($startdatum,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' enddatum<br><pre>'.print_r($enddatum,true).'</pre>'),'Notice');
         
         $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
         
@@ -246,7 +239,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
             
         }
  
-		$query->clear();
+	$query->clear();
         $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
         $query->select('m.team1_result_ot,m.team2_result_ot,m.team1_result_so,m.team2_result_so');
@@ -318,8 +311,8 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
                     
         if ($this->id > 0) 
         {
-		$query->where('m.id = ' . $this->id );
-		}
+	$query->where('m.id = ' . $this->id );
+	}
         
         $query->where('p.id IN ( '.$projectstring.' )');  
         
@@ -340,19 +333,19 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         
         if ( $this->params->get('order_by_project') == 0 ) 
         {
-		  if ( $this->params->get('lastsortorder') == 'desc' ) 
-          {
-		    $query->order('match_date DESC');
-		  }
-		  else 
-          {
-            $query->order('match_date');
-		  }
-		}
-		else 
+	if ( $this->params->get('lastsortorder') == 'desc' ) 
         {
-            $query->order('match_date, p.ordering ASC');
-		}
+	$query->order('match_date DESC');
+	}
+	else 
+        {
+        $query->order('match_date');
+	}
+	}
+	else 
+        {
+        $query->order('match_date, p.ordering ASC');
+	}
         
         try {
         $db->setQuery($query,0,$limit);
