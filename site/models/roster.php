@@ -75,7 +75,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	public static function getProjectTeam()
+	public static function getProjectTeam($team_picture_which = 'project_team' )
 	{
 	   $app = JFactory::getApplication();
         $option = $app->input->getCmd('option');
@@ -125,23 +125,14 @@ class sportsmanagementModelRoster extends JModelLegacy
 			}
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
 			self::$projectteam = $db->loadObject();
+           
+        if (self::$projectteamid)
+	{
+	self::$projectid = self::$projectteam->project_id; // if only ttid was set
+        self::$teamid = self::$projectteam->season_team_id;
+	}
 			
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->projectteam,true).'</pre>'),'');
-            
-            if (self::$projectteamid)
-			{
-				self::$projectid = self::$projectteam->project_id; // if only ttid was set
-				//$this->teamid = $this->projectteam->team_id; // if only ttid was set
-                self::$teamid = self::$projectteam->season_team_id;
-			}
 		}
 		return self::$projectteam;
 	}
