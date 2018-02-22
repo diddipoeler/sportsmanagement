@@ -49,7 +49,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		}
 
                 
-        // name für den titel setzen
+/**
+ * name für den titel setzen
+ */
         $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
@@ -108,7 +110,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$javascript .= '});' . "\n"; 
 	$this->document->addScriptDeclaration( $javascript );
     
-    // Load the language files for the contact integration
+/**
+ * Load the language files for the contact integration
+ */
 	$jlang = JFactory::getLanguage();
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
