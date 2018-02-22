@@ -290,8 +290,8 @@
 		<field name="team_picture_which" type="list" default="project_team"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_WHICH_PICTURE" 
       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_WHICH_PICTURE">
-      <option value="project_team">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PROJECTTEAM_PICTURE</option>
-      <option value="team">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TEAM_PICTURE</option>
+      <option value="pt">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PROJECTTEAM_PICTURE</option>
+      <option value="t">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TEAM_PICTURE</option>
 		</field>
 		
 		<field name="team_picture_style" type="list" default=""
