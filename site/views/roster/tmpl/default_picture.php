@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <?php
 	// Show team-picture if defined.
-	if ( ( $this->config['show_team_logo'] == 1 ) )
+	if ( $this->config['show_team_logo'] )
 	{
 		?>
 		<table class="table">
