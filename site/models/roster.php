@@ -75,7 +75,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	public static function getProjectTeam($team_picture_which = 'project_team' )
+	public static function getProjectTeam($team_picture_which = 'pt' )
 	{
 	   $app = JFactory::getApplication();
         $option = $app->input->getCmd('option');
