@@ -119,7 +119,7 @@ $this->form->setValue('project_position_id', null, $results);
 $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
         
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
 		$this->extended = $extended;
 		$this->lists = $lists;
         
