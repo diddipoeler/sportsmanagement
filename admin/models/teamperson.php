@@ -424,7 +424,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
         $db->quoteName('away_detail') .'=\''.$data['away_detail'].'\'',
         $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
         $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\'',
-        $db->quoteName('extended') .'=\''.$data['extended'].'\'',
+        //$db->quoteName('extended') .'=\''.$data['extended'].'\'',
         $db->quoteName('modified') .' = '. $db->Quote( '' . $date->toSql() . '' ) .'',
         $db->quoteName('modified_by') .'='.$user->get('id')
         );
