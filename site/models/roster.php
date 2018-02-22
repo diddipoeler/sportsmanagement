@@ -95,6 +95,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 				$query->select('pt.*,st.team_id as season_team_id');
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+		$query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
                 $query->where('pt.id = '.(int)self::$projectteamid );
  
 			}
@@ -116,7 +117,7 @@ class sportsmanagementModelRoster extends JModelLegacy
                 $query->select('pt.*,st.team_id as season_team_id');
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');   
-               
+               $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
                 $query->where('st.team_id = '.(int)self::$teamid);
                 $query->where('pt.project_id = '.(int)self::$projectid);
                 
