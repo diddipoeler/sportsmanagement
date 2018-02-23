@@ -345,7 +345,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 				$posEvents=array();
 				foreach ($result as $r)
 				{
-					$posEvents[$r->position_id][]=$r;
+					$posEvents[$r->position_id][$r->eventtype_id] = $r;
 				}
 				return ($posEvents);
 			}
