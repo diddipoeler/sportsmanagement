@@ -58,7 +58,6 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->project_team = $project_team;
 		}
         
-		//$person_id = $this->item->person_id;
 		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
@@ -119,7 +118,7 @@ $this->form->setValue('project_position_id', null, $results);
 $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
         
-		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamplayer');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
 		$this->extended = $extended;
 		$this->lists = $lists;
         
