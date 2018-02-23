@@ -114,7 +114,8 @@ defined('_JEXEC') or die('Restricted access');
 		<td><?php echo $season->league; ?></td>
         <td><?php 
      
-$picture = ( $season->season_picture = '' ) ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
+//$picture = ( $season->season_picture = '' ) ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
+$picture = $season->season_picture;		
         echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$picture,$this->team->name,'50');
         ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
