@@ -186,12 +186,13 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="person_events" type="sql" default="0"
+		<field name="person_events" type="eventtypelist" default="0"
 		size="20"
 		multiple="true"
-		query="SELECT e.id , e.name  FROM #__sportsmanagement_eventtype e WHERE published=1 ORDER BY name"
+		
 		key_field="id" value_field="name"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS">
 		</field>
 		
 	</fieldset>
