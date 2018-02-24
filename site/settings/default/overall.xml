@@ -191,8 +191,8 @@
 		multiple="true"
 		
 		key_field="id" value_field="name"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS" 
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS_OUT" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS_OUT">
 		</field>
 		
 	</fieldset>
