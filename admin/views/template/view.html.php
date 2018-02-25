@@ -70,8 +70,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
-            //if ( empty($colors_ranking[1]['von']) )
-            //{
+
             $count = 1;    
             $teile = explode(";", $colors);    
 
@@ -82,7 +81,6 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $count++;  
             }
             $this->form->setValue('colors_ranking', null, $colors_ranking);
-            //}
             
             break;
         }
@@ -92,11 +90,11 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $res = $this->model->getAllTemplatesList($project->id, $master_id);
         $templates = array_merge($templates, $res);
         $lists['templates'] = JHtml::_('select.genericlist',$templates, 
-														'new_id', 
-														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
-														'value', 
-														'text', 
-														$this->item->id);
+		'new_id', 
+		'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
+		'value', 
+		'text', 
+		$this->item->id);
         
 		$this->template = $this->item;
         
