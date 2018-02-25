@@ -1,5 +1,13 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treeto.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage controllers
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -46,50 +54,12 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
         $this->jsmdocument = JFactory::getDocument();
 	}
 
-	//public function display($cachable = false, $urlparams = false)
-//	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$document = JFactory::getDocument();
-//		$model = $this->getModel('treetos');
-//		$viewType = $document->getType();
-//		$view = $this->getView('treetos',$viewType);
-//		$view->setModel($model,true);  // true is for the default model;
-//
-//		$projectws = $this->getModel('project');
-//		//$projectws->setId($app->getUserState($option.'project',0));
-//		$view->setModel($projectws);
-//				
-//		switch($this->getTask())
-//		{
-//			case 'add':
-//			{
-//				JFactory::getApplication()->input->setVar('hidemainmenu',0);
-//				JFactory::getApplication()->input->setVar('layout','edit');
-//				JFactory::getApplication()->input->setVar('view','treeto');
-//				JFactory::getApplication()->input->setVar('edit',false);
-//
-//				$model=$this->getModel('treeto');
-//				//$model->checkout();
-//				break;
-//			} 
-//
-//			case 'edit':
-//			{
-//				JFactory::getApplication()->input->setVar('hidemainmenu',0);
-//				JFactory::getApplication()->input->setVar('layout','edit');
-//				JFactory::getApplication()->input->setVar('view','treeto');
-//				JFactory::getApplication()->input->setVar('edit',true);
-//
-//				$model=$this->getModel('treeto');
-//				//$model->checkout();
-//				break;
-//			}
-//		}
-//		parent::display();
-//	}
-
 	// save the checked rows inside the treetos list (save division assignment)
+	/**
+	 * sportsmanagementControllerTreeto::saveshort()
+	 * 
+	 * @return void
+	 */
 	public function saveshort()
 	{
 //		$option		= JFactory::getApplication()->input->getCmd('option');
@@ -154,6 +124,11 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	}
 
 
+	/**
+	 * sportsmanagementControllerTreeto::generatenode()
+	 * 
+	 * @return void
+	 */
 	public function generatenode()
 	{
 		JSession::checkToken() or die(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
@@ -176,50 +151,11 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		$this->setRedirect( $link, $msg );
 	}
 
-//	/**
-//	 * sportsmanagementControllerTreeto::save()
-//	 * 
-//	 * @return void
-//	 */
-//	public function save()
-//	{
-//		JSession::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
-//		//$app = JFactory::getApplication();
-//        $post = $this->jsmjinput->post->getArray(array());
-//        $cid = $this->jsmjinput->post->get('cid');
-//        
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' $post <pre>'.print_r($post, true).'</pre><br>',''); 
-//        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' $cid <pre>'.print_r($cid, true).'</pre><br>',''); 
-//        
-//        /*
-//		$post = JFactory::getApplication()->input->post->getArray(array());
-//		$cid = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-//		$post['id'] = (int) $cid[0];
-//		$msg='';
-//
-//		$model = $this->getModel('treeto');
-//		if ($model->store($post))
-//		{
-//			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');
-//		}
-//		else
-//		{
-//			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED').$model->getError();
-//		}
-//		// Check the table in so it can be edited.... we are done with it anyway
-//		$model->checkin();
-//		if ( $this->getTask() == 'save' )
-//		{
-//			$link = 'index.php?option=com_sportsmanagement&view=treetos&task=treeto.display';
-//		}
-//		else
-//		{
-//			$link = 'index.php?option=com_sportsmanagement&task=treeto.edit&cid[]='.$post['id'];
-//		}
-//		$this->setRedirect($link,$msg);
-//        */
-//	}
-
+	/**
+	 * sportsmanagementControllerTreeto::remove()
+	 * 
+	 * @return void
+	 */
 	public function remove()
 	{
 		$cid = $this->jsmjinput->get('cid',array(),'array');
@@ -230,6 +166,12 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
 	}
 
+	/**
+	 * sportsmanagementControllerTreeto::cancel()
+	 * 
+	 * @param mixed $key
+	 * @return void
+	 */
 	public function cancel($key = NULL)
 	{
 		// Checkin the project

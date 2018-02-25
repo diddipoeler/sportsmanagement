@@ -1,16 +1,40 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treetonode.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage controllers
+ */
+ 
 defined('_JEXEC') or die;
 
 //jimport('joomla.application.component.controller');
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
 
+/**
+ * sportsmanagementControllerTreetonode
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerTreetonode extends JControllerForm
 {
 
 
 
+	/**
+	 * sportsmanagementControllerTreetonode::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
 	{
 		//$app = JFactory::getApplication();
@@ -43,6 +67,12 @@ class sportsmanagementControllerTreetonode extends JControllerForm
 
 
 
+/**
+ * sportsmanagementControllerTreetonode::cancel()
+ * 
+ * @param mixed $key
+ * @return void
+ */
 function cancel($key = NULL)
 {
 $pid = $this->jsmapp->getUserState( $this->jsmoption . '.pid' );
@@ -53,6 +83,13 @@ $this->setRedirect($link,$msg);
 }
 
 //public function save($key = NULL, $urlVar = NULL)
+/**
+ * sportsmanagementControllerTreetonode::save()
+ * 
+ * @param mixed $key
+ * @param mixed $urlVar
+ * @return void
+ */
 function save($key = NULL, $urlVar = NULL)
 	{
 	   //$data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
@@ -108,85 +145,15 @@ function save($key = NULL, $urlVar = NULL)
  
     
     }
-/*
-    public function edit($key = NULL, $urlVar = NULL)
-    {
-        
-        
-        
-        
-    }
-*/
-
-//	/**
-//	 *
-//	 */
-//	public function __constructOBS()
-//	{
-//		parent::__construct();
-//
-//		// Register Extra tasks
-//		$this->registerTask('edit','display');
-//		$this->registerTask('apply','save');
-//	}
-
-//	/**
-//	 *
-//	 */
-//	public function displayOBS($cachable = false,$urlparams = false)
-//	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$document = JFactory::getDocument();
-//		$model = $this->getModel('treetonodes');
-//		$viewType = $document->getType();
-//		$view = $this->getView('treetonodes',$viewType);
-//		$view->setModel($model,true); // true is for the default model;
-//
-//		$projectws = $this->getModel('project');
-//		$projectws->setId($app->getUserState($option . 'project',0));
-//		$view->setModel($projectws);
-//
-//		$tid = $jinput->get('tid',array(),'array');
-//
-//		if($tid)
-//		{
-//			// set Treeto_id
-//			JArrayHelper::toInteger($tid);
-//			$app->setUserState($option . 'treeto_id',$tid[0]);
-//		}
-//		$treetows = $this->getModel('treeto');
-//		$treetows->setId($app->getUserState($option . 'treeto_id'));
-//		$view->setModel($treetows);
-//
-//		$task = $this->getTask();
-//
-//		switch($task)
-//		{
-//			case 'edit':
-//				{
-//					$model = $this->getModel('treetonode');
-//					$viewType = $document->getType();
-//					$view = $this->getView('treetonode',$viewType);
-//					$view->setModel($model,true); // true is for the default
-//					                               // model;
-//					$view->setModel($projectws);
-//
-//					$jinput->set('hidemainmenu',false);
-//					$jinput->set('layout','form');
-//					$jinput->set('view','treetonode');
-//					$jinput->set('edit',true);
-//
-//					$model = $this->getModel('treetonode');
-//					$model->checkout();
-//				}
-//				break;
-//		}
-//		parent::display();
-//	}
 
 
+
+
+	/**
+	 * sportsmanagementControllerTreetonode::removenode()
+	 * 
+	 * @return void
+	 */
 	public function removenode()
 	{
 		//$app = JFactory::getApplication();
@@ -210,53 +177,12 @@ function save($key = NULL, $urlVar = NULL)
 		$link = 'index.php?option=com_sportsmanagement&view=treetos';
 		$this->setRedirect($link,$msg);
 	}
-    
-//	/**
-//	 *
-//	 */
-//	public function removenodeOBS()
-//	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$post = $jinput->post->getArray();
-//		$post['treeto_id'] = $app->getUserState($option . 'treeto_id',0);
-//
-//		$model = $this->getModel('treetonodes');
-//		if($model->setRemoveNode())
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_REMOVENODE');
-//		}
-//		else
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_REMOVENODE');
-//		}
-//		$link = 'index.php?option=com_sportsmanagement&view=treetos';
-//		$this->setRedirect($link,$msg);
-//	}
 
-//	/**
-//	 *
-//	 */
-//	public function unpublishnodeOBS()
-//	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$post = $jinput->post->getArray();
-//		$model = $this->getModel('treetonode');
-//		if($model->setUnpublishNode())
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_UNPUBLISHNODE');
-//		}
-//		else
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_UNPUBLISHNODE');
-//		}
-//		$link = 'index.php?option=com_sportsmanagement&view=treetonodes';
-//		$this->setRedirect($link,$msg);
-//	}
-
-
+	/**
+	 * sportsmanagementControllerTreetonode::saveshortleaf()
+	 * 
+	 * @return void
+	 */
 	public function saveshortleaf()
 	{
 		// Check for token
@@ -286,6 +212,11 @@ function save($key = NULL, $urlVar = NULL)
 	}
 
 
+	/**
+	 * sportsmanagementControllerTreetonode::savefinishleaf()
+	 * 
+	 * @return void
+	 */
 	public function savefinishleaf()
 	{
 		// Check for token
@@ -310,8 +241,11 @@ function save($key = NULL, $urlVar = NULL)
 		$this->setRedirect($link,$msg);
 	}
 
+	
 	/**
-	 * save the checked nodes inside the trees
+	 * sportsmanagementControllerTreetonode::saveshort()
+	 * 
+	 * @return void
 	 */
 	public function saveshort()
 	{
@@ -337,68 +271,5 @@ function save($key = NULL, $urlVar = NULL)
 		$link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');
 		$this->setRedirect($link,$msg);
 	}
-
-//	/**
-//	 *
-//	 */
-//	public function saveOBS()
-//	{
-//		// Check for token
-//		JSession::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-//
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$post = $jinput->post->getArray();
-//
-//		$model = $this->getModel('treetonode');
-//		if($model->store($post))
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_SAVED');
-//		}
-//		else
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_SAVED') . $model->getError();
-//		}
-//		// Check the table in so it can be edited.... we are done with it anyway
-//		$model->checkin();
-//
-//		$task = $this->getTask();
-//
-//		if($task == 'save')
-//		{
-//			$link = 'index.php?option=com_sportsmanagement&view=treetonodes';
-//		}
-//		else
-//		{
-//			$link = 'index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.edit&id=' . $post['id'];
-//		}
-//		$this->setRedirect($link,$msg);
-//	}
-
-//	/**
-//	 * assign (empty)match to node from editmatches view
-//	 */
-//	public function assignmatchOBS()
-//	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$post = $jinput->post->getArray();
-//		$post['project_id'] = $app->getUserState($option . 'project',0);
-//		$post['node_id'] = $app->getUserState($option . 'node_id',0);
-//
-//		$model = $this->getModel('treetonode');
-//		if($model->store($post))
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ADD_MATCH');
-//		}
-//		else
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CTRL_ERROR_ADD_MATCH') . $model->getError();
-//		}
-//		$link = 'index.php?option=com_sportsmanagement&view=matches';
-//		$this->setRedirect($link,$msg);
-//	}
     
 }
