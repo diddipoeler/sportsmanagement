@@ -24,7 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementViewPlayground extends sportsmanagementView
 {
 	
-	
 	/**
 	 * sportsmanagementViewPlayground::init()
 	 * 
@@ -43,7 +42,9 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         
 		
  
-		// Check for errors.
+/**
+ * Check for errors.
+ */
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));

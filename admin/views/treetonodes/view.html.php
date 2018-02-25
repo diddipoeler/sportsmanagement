@@ -1,5 +1,13 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treetonodes
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -7,9 +15,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewTreetonodes
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewTreetonodes extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewTreetonodes::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		//$app = JFactory::getApplication();
@@ -24,6 +46,11 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	//	parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewTreetonodes::_displayDefault()
+	 * 
+	 * @return void
+	 */
 	function _displayDefault()
 	{
 		//$option = JFactory::getApplication()->input->getCmd('option');
@@ -111,6 +138,11 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	}
     
     
+    	/**
+    	 * sportsmanagementViewTreetonodes::addToolBar()
+    	 * 
+    	 * @return void
+    	 */
     	protected function addToolBar()
 	{
 	  // $istree = $this->treetows->tree_i;

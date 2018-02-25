@@ -12,7 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewPerson
  * 
@@ -24,7 +23,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewPerson extends sportsmanagementView
 {
-	
 	
 	/**
 	 * sportsmanagementViewPerson::init()

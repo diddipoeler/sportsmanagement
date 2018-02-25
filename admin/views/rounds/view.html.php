@@ -38,7 +38,6 @@ class sportsmanagementViewRounds extends sportsmanagementView {
          */
         $this->document->addStyleSheet(JUri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 
-
         if ($this->getLayout() == 'default' || $this->getLayout() == 'default_3' || $this->getLayout() == 'default_4') {
             $this->_displayDefault($tpl);
             return;
