@@ -64,14 +64,14 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             case 'ranking':
             $mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
 			$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
-			$this->assignRef('teamscount',$iProjectTeamsCount);
+			$this->teamscount = $iProjectTeamsCount;
 			$this->form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
             $this->form->setFieldAttribute('colors','type' , 'hidden');
             
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
-            if ( empty($colors_ranking[1]['von']) )
-            {
+            //if ( empty($colors_ranking[1]['von']) )
+            //{
             $count = 1;    
             $teile = explode(";", $colors);    
 
@@ -82,7 +82,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $count++;  
             }
             $this->form->setValue('colors_ranking', null, $colors_ranking);
-            }
+            //}
             
             break;
         }
