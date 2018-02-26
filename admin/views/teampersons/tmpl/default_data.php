@@ -283,18 +283,10 @@ foreach($position_ids as $items => $item) {
         $selectedvalue = $item->value;
     }
 }
-//echo '<pre>'.print_r($results,true).'</pre>';
-								
-								
-								
-								
 								
 								}
 								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
-								
-//                                echo '<br>project_position_id -> '.$row->project_position_id.'';
-//                                echo '<br>position_id -> '.$row->position_id.'';
-//                                echo '<br>person_position_id -> '.$row->person_position_id.'';
+
                                 ?>
                                 <input type="hidden" name="position_id<?php echo $row->id; ?>"	value="<?php echo $row->position_id; ?>" />
                                 <input type="hidden" name="person_id<?php echo $row->id; ?>"	value="<?php echo $row->tpid; ?>" />
@@ -309,23 +301,23 @@ foreach($position_ids as $items => $item) {
 								if ( $row->injury > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/injured.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/suspension.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/away.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
 								?>
 								&nbsp;
