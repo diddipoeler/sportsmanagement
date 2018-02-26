@@ -141,9 +141,7 @@
 <field
 			name="birthday"
 			type="calendar"
-			size="10"
-			translateformat="true"
-       			filter="user_utc"
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
@@ -154,9 +152,7 @@
 		<field
 			name="deathday"
 			type="calendar"
-			size="10"
-			translateformat="true"
-       			filter="user_utc"
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
 			class="inputbox"
@@ -452,16 +448,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_START_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="injury_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURY_END_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>		
+			format="%d-%m-%Y"/>		
 	</fieldset>
  
    <fieldset name="suspension" 
@@ -490,16 +484,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_START_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="susp_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSP_END_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>		
+			format="%d-%m-%Y"/>		
 
 	</fieldset>
   
@@ -529,16 +521,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_START_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>
+			format="%d-%m-%Y"/>
 	<field
 			name="away_date_end"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_END_DESC"
 			class="inputbox"
-			translateformat="true"
-       			filter="user_utc"/>		
+			format="%d-%m-%Y"/>		
 
 	</fieldset>
   

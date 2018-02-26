@@ -181,22 +181,16 @@
   
 	<field
 			name="founded"
-			size="10"
-translateformat="true"
-filter="user_utc"
 			type="calendar"
-		
+	       		format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
 			class="inputbox"/>
     	
 	<field
 			name="dissolved"
-			size="10"
-translateformat="true"
-filter="user_utc"
 			type="calendar"
-		
+	       format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
 			class="inputbox"/>
