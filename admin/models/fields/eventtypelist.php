@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      positionlist.php
+ * @file      eventtypelist.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
@@ -17,7 +17,7 @@ JFormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldpositionlist
+ * JFormFieldeventtypelist
  * 
  * @package   
  * @author 
@@ -25,14 +25,14 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldpositionlist extends JFormFieldList
+class JFormFieldeventtypelist extends JFormFieldList
 {
     
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'positionlist';
+	public $type = 'eventtypelist';
 
 	/**
 	 * Method to get the field options.
@@ -50,14 +50,13 @@ class JFormFieldpositionlist extends JFormFieldList
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
-    $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
+    //$vartable = (string) $this->element['targettable'];
+//		$select_id = JFactory::getApplication()->input->getVar('id');
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');
-			$query->from('#__sportsmanagement_position as pos');
-			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+			$query->from('#__sportsmanagement_eventtype as pos');
 			$query->where('pos.published = 1');
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);

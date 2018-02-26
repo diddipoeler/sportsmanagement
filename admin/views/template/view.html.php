@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage template
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -62,43 +34,12 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-        //$app = JFactory::getApplication();
-        // JInput object
-//        $this->jinput = $app->input;
-        //$option = $this->jinput->getCmd('option');
-		//$uri = JFactory::getURI();
-//		$user = JFactory::getUser();
-		//$app = JFactory::getApplication();
-		//$model = $this->getModel();
 		$lists = array();
 		$starttime = microtime();
 
-		//get template data
-		//$template =& $this->get('data');
-		//$isNew=($template->id < 1);
-        
-        // get the Data
-		//$form = $this->get('Form');
-		//$item = $this->get('Item');
-        
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
-        
-		//$script = $this->get('Script');
- 
- /*       
-        if (is_array($this->item->params))
-        {
-        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($this->item->params,true).'</pre>'),'Error');  
-        $this->item->params = json_encode($this->item->params,true);  
-        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($this->item->params,true).'</pre>'),'Error');
-        }
+/**
+ * Check for errors.
  */
- 
-		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
@@ -112,37 +53,27 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         
 		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
 		$xmlfile = $templatepath.DS.'default'.DS.$this->item->template.'.xml';
-        
-        //$this->app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
-        
+       
 		$form = JForm::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
-		//$form->bind($jRegistry);
 		$form->bind($this->item->params);
       
-		//$this->item = $item;
-        // Assign the Data
 		$this->form = $form;
-		//$this->item = $item;
-		//$this->script = $script;
-        
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
         
         switch ( $this->form->getName() )
         {
             case 'ranking':
             $mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
 			$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
-			$this->assignRef('teamscount',$iProjectTeamsCount);
+			$this->teamscount = $iProjectTeamsCount;
 			$this->form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
             $this->form->setFieldAttribute('colors','type' , 'hidden');
             
             $colors = $this->form->getValue('colors');
             $colors_ranking = $this->form->getValue('colors_ranking');
-            if ( empty($colors_ranking[1]['von']) )
-            {
+
             $count = 1;    
             $teile = explode(";", $colors);    
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
+
             foreach($teile as $key => $value )
             {
             $teile2 = explode(",",$value);      
@@ -150,10 +81,6 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $count++;  
             }
             $this->form->setValue('colors_ranking', null, $colors_ranking);
-            }
-            //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
-            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
             
             break;
         }
@@ -163,22 +90,21 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $res = $this->model->getAllTemplatesList($project->id, $master_id);
         $templates = array_merge($templates, $res);
         $lists['templates'] = JHtml::_('select.genericlist',$templates, 
-														'new_id', 
-														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
-														'value', 
-														'text', 
-														$this->item->id);
+		'new_id', 
+		'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
+		'value', 
+		'text', 
+		$this->item->id);
         
-        
-        //$this->request_url = $uri->toString();
 		$this->template = $this->item;
         
         $this->templatename = $this->form->getName();
 		$this->project = $project;
 		$this->lists = $lists;
-		//$this->user = $user;
         
-        // Load the language files for the contact integration
+/**
+ * Load the language files for the contact integration
+ */
 		$jlang = JFactory::getLanguage();
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
@@ -192,15 +118,11 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	
         JFactory::getApplication()->input->set('hidemainmenu', true);
         JFactory::getApplication()->input->set('pid', $this->project_id);
         $this->item->name = $this->item->template;
-		//$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
-        //$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT');
         $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(JText::_($this->item->title)));
         $this->icon = 'template';
-        
         parent::addToolbar();
 	}
     

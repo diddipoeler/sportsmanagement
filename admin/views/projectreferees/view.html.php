@@ -41,8 +41,6 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-
-
         $items = $this->get('Items');
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
@@ -58,10 +56,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
-        //build the html options for position
+/**
+ * build the html options for position
+ */
         $position_id[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
-        //$project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
         $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
         if ($project_ref_positions) {
             $position_id = array_merge($position_id, $project_ref_positions);
@@ -69,8 +68,6 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         }
         $lists['project_position_id'] = $position_id;
         unset($position_id);
-
-
 
         $this->user = JFactory::getUser();
         $this->config = JFactory::getConfig();

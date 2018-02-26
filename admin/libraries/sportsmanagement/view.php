@@ -454,6 +454,14 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			JHtml::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
 		);
         }
+
+        if ( isset($this->search_agegroup) ) {
+            JHtmlSidebar::addFilter(
+                JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
+                'filter_search_agegroup',
+                JHtml::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
+            );
+        }
          
         }    
         

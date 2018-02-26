@@ -157,71 +157,46 @@ if (!empty($this->rows))
 		if ( $this->overallconfig['use_jl_substitution'] )
 		{
 			if ( $this->config['show_games_played'] )
-			{ ?>
-		<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
+			{ 
+		?>
+		<th class="td_c">
+		<?php
+		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
                 $picture = $picture_path_sport_type_name.'/played.png';
                 
-//echo __FILE__.' '.__LINE__.' '.$picture;                
-
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+                echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php 
 			}
 			if ( $this->config['show_substitution_stats'] )
-			{ ?>
-		<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
+			{ 
+		?>
+		<th class="td_c">
+		<?php
+		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
                 $picture = $picture_path_sport_type_name.'/startroster.png';
                 
-//echo __FILE__.' '.__LINE__.' '.$picture;
-                
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
+		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
                 $picture = $picture_path_sport_type_name.'/in.png';
                 
-//echo __FILE__.' '.__LINE__.' '.$picture;
-                
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
+		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
                 $picture = $picture_path_sport_type_name.'/out.png';
                 
-//echo __FILE__.' '.__LINE__.' '.$picture;
-                
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
         
-        <th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+        <th class="td_c">
+		<?php
+		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
-                
-//echo __FILE__.' '.__LINE__.' '.$picture;
-                
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
+
+		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
 			<?php
@@ -246,17 +221,11 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 						{
 							$iconPath = $eventtype->icon;
 
-//echo __FILE__.' '.__LINE__.' icon '.$iconPath.'<br>';
-                            
 							if (!strpos(' '.$iconPath,'/'))
 							{
 								$iconPath = 'images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-                            if ( !curl_init($iconPath) )
-{
-$iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
-							$eventtype_header = JHtml::image(	$iconPath,
+                            				$eventtype_header = JHtml::image(	$iconPath,
 																JText::_($eventtype->name),
 																array(	'title'=> JText::_($eventtype->name),
 																		  'align'=> 'top',
@@ -271,13 +240,13 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				}
 			}
 		}
-		if ($this->config['show_stats'] && isset($this->stats[$row->position_id]))
+		if ( $this->config['show_stats'] && isset($this->stats[$row->position_id]) )
 		{
-			foreach ($this->stats[$row->position_id] as $stat)
+			foreach ( $this->stats[$row->position_id] as $stat )
 			{
-				if ($stat->showInRoster())
+				if ( $stat->showInRoster() )
 				{
-				    if ($stat->position_id==$row->position_id)
+				    if ( $stat->position_id == $row->position_id )
 				    {
 					?>
 		<th class="td_c"><?php echo $stat->getImage(); ?></th>
@@ -457,12 +426,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		}
 		if ($this->overallconfig['use_jl_substitution'])
 		{
-			// Events of COM_SPORTSMANAGEMENT_substitutions are shown
 			$model = $this->getModel();
 			
-            //$this->assign('InOutStat',$model->getInOutStats($row->pid));
-            //$this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
-            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0));
             
 //echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';
@@ -470,10 +436,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 //echo __FILE__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($row->season_team_person_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' person_id<br><pre>'.print_r($row->pid,true).'</pre><br>';
             
-//            if ( $row->pid == 846 )
-//            {
-//echo __FILE__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre><br>';                
-//            }
+
             
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{
@@ -510,7 +473,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
             {
                 $this->overallconfig['person_events'] = NULL;
             }
-            $this->assign('timePlayed',sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+            $this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']);
             $timePlayed  = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{
@@ -531,11 +494,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		<td class="td_c"><?php
 				if ($stat !='' && $stat > 0)
 				{
-					if (!isset($totalEvents[$eventId]))
+					if (!isset($totalEvents[$row->pposid][$eventId]))
 					{
-						$totalEvents[$eventId]=0;
+						$totalEvents[$row->pposid][$eventId] = 0;
 					}
-					$totalEvents[$eventId]=(int) $totalEvents[$eventId] + (int) $stat;
+					$totalEvents[$row->pposid][$eventId] = (int) $totalEvents[$row->pposid][$eventId] + (int) $stat;
 				}
 				//echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : 0;
                 echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
@@ -624,7 +587,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 	}
 	?>
 	<!-- end players rows -->
-	<!-- position totals -->
+	<!-- position totals anfang -->
 	<?php
 	if ($this->config['show_totals'] && ($this->config['show_stats'] || $this->config['show_events_stats']))
 	{
@@ -652,15 +615,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 			{
 				foreach ($this->positioneventtypes[$row->position_id] AS $eventtype)
 				{
-					$value='0';
-					if (array_key_exists($eventtype->eventtype_id,$totalEvents))
+					$value = '0';
+					if ( array_key_exists($eventtype->eventtype_id,$totalEvents[$row->pposid]))
 					{
-						$value=$totalEvents[$eventtype->eventtype_id];
+						$value = $totalEvents[$row->pposid][$eventtype->eventtype_id];
 					}
 					?>
 		<td class="td_c">
         <?php 
-        //echo number_format($value, 0, '', '.');
         echo ($value > 0 ? number_format($value, 0, '', '.') : $this->overallconfig['zero_events_value']);
         ?>
         </td>
@@ -713,7 +675,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 	<?php
 	}
 	?>
-	<!-- total end -->
+	<!-- position totals ende -->
 	<?php
 	$k=(1-$k);
 	}

@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage teamperson
+ * @subpackage models
  */
 
 // No direct access to this file
@@ -392,7 +392,14 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        //$query2 = $db->getQuery(true);
-        
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+		
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
@@ -412,12 +419,12 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
         $db->quoteName('susp_date_start') .'=\''.$data['susp_date_start'].'\'',
         $db->quoteName('susp_date_end') .'=\''.$data['susp_date_end'].'\'',
         $db->quoteName('away') .'=\''.$data['away'].'\'',
-		$db->quoteName('away_date') .'=\''.$data['away_date'].'\'',
+	$db->quoteName('away_date') .'=\''.$data['away_date'].'\'',
         $db->quoteName('away_end') .'=\''.$data['away_end'].'\'',
         $db->quoteName('away_detail') .'=\''.$data['away_detail'].'\'',
         $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
         $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\'',
-        
+        //$db->quoteName('extended') .'=\''.$data['extended'].'\'',
         $db->quoteName('modified') .' = '. $db->Quote( '' . $date->toSql() . '' ) .'',
         $db->quoteName('modified_by') .'='.$user->get('id')
         );
@@ -499,13 +506,7 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_p
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }  
         
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
+       
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         

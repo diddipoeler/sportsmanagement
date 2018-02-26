@@ -31,14 +31,13 @@ class sportsmanagementViewRound extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
         
         $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
         $this->project_art_id	= $this->app->getUserState( "$this->option.project_art_id", '0' );
-        
-		
- 
-		// Check for errors.
+
+/**
+ * Check for errors.
+ */
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));

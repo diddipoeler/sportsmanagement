@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default_gameshistory.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage player
@@ -33,39 +33,26 @@ if (count($this->games))
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = $picture_path_sport_type_name.'/startroster.png';
-                    //echo $picture;
-                    if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
+                   
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = $picture_path_sport_type_name.'/in.png';
-                    if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
+                    
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = $picture_path_sport_type_name.'/out.png';
-                    if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
+                   
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
                     
                     <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
-                if ( !curl_init($picture) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
+                
 				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
@@ -85,15 +72,12 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 						$iconPath = "images/com_sportsmanagement/database/events/".$iconPath;
 					}
                     
-                    if ( !curl_init($iconPath) )
-{
-$iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
-}
+                    
 
-					echo JHtml::image(	$iconPath,JText::_($eventtype->name),
+					echo JHtml::image($iconPath,JText::_($eventtype->name),
 					array(	"title" => JText::_($eventtype->name),
-																		"align" => "top",
-																		"hspace" => "2"));
+					"align" => "top",
+					"hspace" => "2"));
 					?></th>
 					<?php
 							}

@@ -12,7 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewPerson
  * 
@@ -24,7 +23,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewPerson extends sportsmanagementView
 {
-	
 	
 	/**
 	 * sportsmanagementViewPerson::init()
@@ -41,7 +39,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 
-		// Check for errors.
+/**
+ * Check for errors.
+ */
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
@@ -49,7 +49,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		}
 
                 
-        // name für den titel setzen
+/**
+ * name für den titel setzen
+ */
         $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
@@ -108,7 +110,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$javascript .= '});' . "\n"; 
 	$this->document->addScriptDeclaration( $javascript );
     
-    // Load the language files for the contact integration
+/**
+ * Load the language files for the contact integration
+ */
 	$jlang = JFactory::getLanguage();
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
