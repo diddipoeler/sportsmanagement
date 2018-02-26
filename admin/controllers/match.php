@@ -392,10 +392,8 @@ class sportsmanagementControllermatch extends JControllerForm
 		JFactory::getApplication()->input->setVar('layout','readpressebericht');
 		JFactory::getApplication()->input->setVar('view','match');
 		JFactory::getApplication()->input->setVar('edit',true);
-
-		
-		//parent::display();    
-        
+		parent::display();    
+       
         
     }
     
@@ -411,13 +409,14 @@ class sportsmanagementControllermatch extends JControllerForm
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->post->getArray(array());
+		$post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');
 
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			//$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+            $upload = $app->input->files->get('import_package');
             //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
             $match_id = JFactory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
@@ -519,7 +518,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 	JFactory::getApplication()->input->setVar('view','match');
 	JFactory::getApplication()->input->setVar('edit',true);
 	
-//	parent::display();
+	parent::display();
     }
         
     /**
@@ -534,7 +533,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 	JFactory::getApplication()->input->setVar('view','match');
 	JFactory::getApplication()->input->setVar('edit',true);
 	
-//	parent::display();    
+	parent::display();    
         
     }
     
