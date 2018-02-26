@@ -394,7 +394,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		JFactory::getApplication()->input->setVar('edit',true);
 
 		
-		parent::display();    
+		//parent::display();    
         
         
     }
@@ -519,7 +519,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 	JFactory::getApplication()->input->setVar('view','match');
 	JFactory::getApplication()->input->setVar('edit',true);
 	
-	parent::display();
+//	parent::display();
     }
         
     /**
@@ -534,7 +534,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 	JFactory::getApplication()->input->setVar('view','match');
 	JFactory::getApplication()->input->setVar('edit',true);
 	
-	parent::display();    
+//	parent::display();    
         
     }
     
