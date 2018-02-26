@@ -12,11 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//Ordering allowed ?
-//$ordering = ( $this->sortColumn == 'ppl.ordering' );
-//$ordering = ( $this->sortColumn == 'ppl.ordering' );
-
-//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -192,19 +187,17 @@ JHtml::_('behavior.modal');
 								if ( $row->season_picture == '' )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
-									echo JHtml::_(	'image',
-													'administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 
 								}
 								elseif ( $row->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
-										echo JHtml::_(	'image',
-														'administrator/components/com_sportsmanagement/assets/images/information.png',
-														$imageTitle,
-														'title= "' . $imageTitle . '"' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 ?>
 <a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
@@ -319,6 +312,15 @@ foreach($position_ids as $items => $item) {
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
 								}
+						if ( !$row->injury &&
+						   !$row->suspension &&
+						   !$row->away )
+						{
+						$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS' );
+						echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/players.png',
+							$imageTitle,
+							'title= "' . $imageTitle . '"' );	
+						}
 								?>
 								&nbsp;
 							</td>
