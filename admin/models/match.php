@@ -2959,8 +2959,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->status = $csv_file->data[0][$find_csv.'-S'.$a.'-Status'];
         
         $teile = explode(",",$csv_file->data[0][$find_csv.'-S'.$a.'-Spieler']);
-        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->lastname = trim($teile[0]);
-        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->firstname = trim($teile[1]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->lastname = utf8_encode (trim($teile[0]));
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->firstname = utf8_encode (trim($teile[1]));
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = 0;
@@ -2974,8 +2974,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
 
 		$db->setQuery($query);
 		try{
@@ -3027,8 +3027,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->status = $csv_file->data[0][$find_csv.'-A'.$a.'-Status'];
         
         $teile = explode(",",$csv_file->data[0][$find_csv.'-A'.$a.'-Spieler']);
-        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->lastname = trim($teile[0]);
-        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->firstname = trim($teile[1]);
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->lastname = utf8_encode (trim($teile[0]));
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->firstname = utf8_encode (trim($teile[1]));
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = 0;
@@ -3042,8 +3042,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
 
 		$db->setQuery($query);
 		try{
@@ -3170,8 +3170,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Trainer';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainer'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3185,8 +3185,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3227,8 +3227,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Trainerassistent';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainerassistent'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3241,8 +3241,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3283,8 +3283,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Arzt';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Arzt'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3297,8 +3297,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3339,8 +3339,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Masseur';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Masseur'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3353,8 +3353,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3395,8 +3395,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Zeugwart';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3409,8 +3409,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3451,8 +3451,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->position = 'Mannschaftsverantwortlicher';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Mannschaftsverantwortlicher'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = trim($teile[1]);
-    $this->csv_staff[$i]->firstname = trim($teile[0]);
+    $this->csv_staff[$i]->lastname = utf8_encode (trim($teile[1]));
+    $this->csv_staff[$i]->firstname = utf8_encode (trim($teile[0]));
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
@@ -3465,8 +3465,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('firstname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[0])) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . utf8_encode (trim($teile[1])) . '' ) );
 
     $db->setQuery($query);
 	    try{
