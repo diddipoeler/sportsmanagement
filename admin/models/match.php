@@ -2901,6 +2901,13 @@ $db = sportsmanagementHelper::getDBConnection();
     $tblproject = JTable::getInstance("project", "sportsmanagementTable");
     $tblproject->load($project_id);
     $favteam = $tblproject->fav_team;
+	    
+    if ( !$favteam )
+    {
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT_NO_FAV_TEAM'),'error');
+return false;	    
+    }
+	    
     $tblteam = JTable::getInstance("team", "sportsmanagementTable");
     $tblteam->load($favteam);
     
