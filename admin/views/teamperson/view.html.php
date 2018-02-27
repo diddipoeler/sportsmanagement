@@ -9,7 +9,6 @@
  * @subpackage teamperson
  */
 
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -58,7 +57,6 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->project_team = $project_team;
 		}
         
-		//$person_id = $this->item->person_id;
 		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
@@ -73,17 +71,17 @@ $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 2
 if ($project_ref_positions) {
             $position_id = array_merge($position_id, $project_ref_positions);
         }
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_id<br><pre>'.print_r($position_id,true).'</pre>'),'');
-
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_person<br><pre>'.print_r($project_person,true).'</pre>'),'');
-        
-        // name für titel setzen
+      
+/**
+ * name für titel setzen
+ */
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
         
         $this->project_person = $project_person;
         
-        // personendaten setzen
+/**
+ * personendaten setzen
+ */
         $this->form->setValue('position_id', null, $project_person->position_id);
         $this->form->setValue('projectteam_id', null, $this->project_team_id);
 		$this->form->setValue('injury', null, $project_person->injury);
@@ -118,12 +116,8 @@ foreach($position_id as $items => $item) {
 $this->form->setValue('project_position_id', null, $results);
 $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
-		
-		
-		
-		
         
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
 		$this->extended = $extended;
 		$this->lists = $lists;
         

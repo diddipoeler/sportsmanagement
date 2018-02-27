@@ -69,6 +69,14 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 		</field>          
 
+	  <field
+			name="second_country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+		</field> 
 
 <field name="geocomplete" type="geocomplete" class="inputbox"
 			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
@@ -133,24 +141,22 @@
 <field
 			name="birthday"
 			type="calendar"
-			size="10"
-			default=""
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>
+			/>
 
 
 			
 		<field
 			name="deathday"
 			type="calendar"
-			size="10"
-			default=""
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>
+			/>
 			
 
 			
@@ -200,22 +206,7 @@ landesverband
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-<!--
-    <field
-			name="associations"
-			type="countryassociation" 
-      size="10"
-			default="0"
-      varname="cid"
-      targettable="person"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="inputbox">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>	
-		        -->
+
 	<field
 			name="phone"
 			type="text"

@@ -381,23 +381,19 @@ class sportsmanagementControllermatch extends JControllerForm
   
   }
   
-  /**
-   * sportsmanagementControllermatch::readpressebericht()
-   * 
-   * @return void
-   */
-  function readpressebericht()
-    {
-    JFactory::getApplication()->input->setVar('hidemainmenu',1);
-		JFactory::getApplication()->input->setVar('layout','readpressebericht');
-		JFactory::getApplication()->input->setVar('view','match');
-		JFactory::getApplication()->input->setVar('edit',true);
-
-		
-		parent::display();    
-        
-        
-    }
+//  /**
+//   * sportsmanagementControllermatch::readpressebericht()
+//   * 
+//   * @return void
+//   */
+//  function readpressebericht()
+//    {
+//    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+//		JFactory::getApplication()->input->setVar('layout','readpressebericht');
+//		JFactory::getApplication()->input->setVar('view','match');
+//		JFactory::getApplication()->input->setVar('edit',true);
+//		parent::display();    
+//    }
     
     /**
      * sportsmanagementControllermatch::savepressebericht()
@@ -411,13 +407,14 @@ class sportsmanagementControllermatch extends JControllerForm
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->post->getArray(array());
+		$post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');
 
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			//$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+            $upload = $app->input->files->get('import_package');
             //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
             $match_id = JFactory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
@@ -501,8 +498,9 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 			}
 		}
         //$csv_file = $model->getPressebericht();  
-		$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
-		$this->setRedirect($link,$msg);    
+		//$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
+		$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
+	    $this->setRedirect($link,$msg);    
         
         
     }

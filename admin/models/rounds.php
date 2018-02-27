@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage rounds
+ * @subpackage models
  */
 
 // Check to ensure this file is included in Joomla!
@@ -408,7 +408,159 @@ $option = $app->input->getCmd('option');
         return $result;
 	}
 	
-	
+function populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder = null)
+	{		
+	$db = sportsmanagementHelper::getDBConnection();
+	$date = JFactory::getDate();
+        $user = JFactory::getUser();
+	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'class.roundrobin.php');	
+	if (!strtotime($start)) {
+			$start = strftime('%Y-%m-%d');
+		}
+		if (!preg_match("/^[0-9]+:[0-9]+$/", $time)) {
+			$time = '20:00';
+		}
+		
+		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$teams = $mdlProject->getProjectTeamsOptions($project_id);
+		
+		if ($teamsorder)
+		{
+			$ordered = array();
+			foreach ($teamsorder as $ptid) 
+			{
+				foreach ($teams as $t) 
+				{
+					if ($t->value == $ptid) {
+						$ordered[] = $t;
+						break;
+					}
+				}
+			}
+			if (count($ordered)) {
+				$teams = $ordered;
+			}
+		}
+		
+    // diddipoeler
+    $rrteams = array();
+    foreach ( $teams as $team )
+    {
+    $rrteams[] = $team;
+    }
+    $roundrobin = new roundrobin($rrteams);
+    $roundrobin->free_ticket = false; // free tickets off
+    $roundrobin->create_matches();
+    //echo '<pre>',print_r($roundrobin->matches,true),'</pre><br>';
+    
+    if ($roundrobin->finished) 
+    {
+    $i = 1;
+    while ($roundrobin->next_matchday()) {
+        echo "-------Matchday ".$i."-------<br />";
+        while ($match = $roundrobin->next_match()) {
+            //echo $match[0]."  <b>vs</b>  ".$match[1]."<br />";
+        }
+        $i++;
+        echo"<br />";
+    }
+    }
+    
+    
+		if (!$teams || !count($teams)) {
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM'));
+			return false;
+		}
+		$rounds = $this->getRoundsOptions($project_id);
+		$rounds = $rounds ? $rounds : array();
+		
+		if ($scheduling < 2)
+		{
+			require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'RRobin.class.php');
+			$helper = new RRobin();
+			$helper->create($teams);
+			$schedule = $helper->getSchedule($scheduling+1);			
+		}
+		else
+		{
+			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_UNDEFINED_SCHEDULING'));
+			return false;			
+		}
+		
+		$current_date = null;
+		$current_code = 0;
+		foreach ($schedule as $k => $games)
+		{
+			if (isset($rounds[$k])) // round exists
+			{
+				$round_id  = $rounds[$k]->id;
+				$current_date = $rounds[$k]->round_date_first;
+				$current_code = $rounds[$k]->roundcode;
+			}
+			else // create the round !
+			{
+				$round = new stdClass();
+				$round->project_id       = $project_id;
+				$round->round_date_first = strtotime($current_date) ? strftime('%Y-%m-%d', strtotime($current_date) + $interval*24*3600) : $start;
+				$round->round_date_last = $round->round_date_first;
+				$round->roundcode = $current_code ? $current_code + 1 : 1;
+				$round->name      = sprintf($roundname, $round->roundcode);
+				$round->modified = $date->toSql();
+				$round->modified_by = $user->get('id');	
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_round', $round);
+		    $result = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED');	
+	return false;	    
+            }					
+				$current_date = $round->round_date_first;
+				$current_code = $round->roundcode;
+				
+				$round_id = $result;
+			}
+			
+			// create games !
+			foreach ($games as $g)
+			{
+				if (!isset($g[0]) || !isset($g[1])) { // happens if number of team is odd ! one team gets a by
+					continue;
+				}
+				$game = new stdClass();
+				$game->round_id = $round_id;
+        			$game->division_id = 0;
+				$game->projectteam1_id = $g[0]->value;
+				$game->projectteam2_id = $g[1]->value;
+				$game->published = 1;
+				$game->match_date = $current_date.' '.$time;
+				$game->modified = $date->toSql();
+				$game->modified_by = $user->get('id');	
+/**
+ * Insert the object into the table.
+ */
+            try{
+            $resultinsert = $db->insertObject('#__sportsmanagement_match', $game);
+		    $result = $db->insertid();
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_FAILED');	
+	return false;	    
+            }					
+				
+				
+				
+				
+			}
+		}
+		
+		return true;
+	}	
 
 	
 }

@@ -1,25 +1,22 @@
 // ajax save substitution
 window.addEvent('domready', function()
 {	
-//updatePlayerSelect();    
-
 // neuen wechsel speichern     
 $$(".button-save-subst").addEvent('click', save_new_subst);
-    
 // neues ereignis speichern  
 $$(".button-save-event").addEvent('click', save_new_event);
-
 // neuen kommentar speichern  
 $$(".button-save-comment").addEvent('click', save_new_comment);
-
 // hier wird die funktion für das löschen der
 // wechsel hinzugefügt
 $$(".button-delete-subst").addEvent('click', button_delete_subst);
-
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt
 $$(".button-delete-commentary").addEvent('click', button_delete_commentary);
-     
+// hier wird die funktion für das löschen der
+// kommentare hinzugefügt
+$$(".button-delete-event").addEvent('click', button_delete_event);
+	
 });
 
 // hier sind die funktionen
@@ -94,20 +91,30 @@ if (resp[0] != '0')
   {
   //var team = jQuery("#team_id").val();
 var player = jQuery("#teamplayer_id option:selected").text();
+var team = jQuery("#team_id option:selected").text();
 	  
-    jQuery("#table-commentary").last().append('<tr id="rowevent-' 
+    jQuery("#table-event").last().append('<tr id="rowevent-' 
     + resp[0] + '"><td>' 
-    + jQuery("#event_type_id option:selected").text() + ' ' + player + '</td><td>' 
+	+ team + '</td><td>' + player + '</td><td>' 
+    + jQuery("#event_type_id option:selected").text() + '</td><td>' 
+	+ jQuery("#event_sum").val() + '</td><td>' 
     + jQuery("#event_time").val() + '</td><td>' 
-    + jQuery("#notes").val() + '</td><td><input	id="deleteevent-' + resp[0] 
+    + jQuery("#notice").val() + '</td><td><input id="deleteevent-' + resp[0] 
     + '" type="button" class="inputbox button-delete-event" value="' 
     + str_delete + '"</td></tr>');
-		
+
+console.log("team : " + team);
+console.log("player : " + player);
+console.log("event_type_id : " + jQuery("#event_type_id option:selected").text());
+console.log("event_sum : " + jQuery("#event_sum").val());
+console.log("event_time : " + jQuery("#event_time").val());
+console.log("notice : " + jQuery("#notice").val());
+	
     jQuery("#ajaxresponse").addClass("ajaxsuccess");
     jQuery("#ajaxresponse").text(resp[1]);
-      jQuery("#notes").val('');
-      jQuery("#c_event_time").val('');
-		
+      jQuery("#notice").val('');
+      jQuery("#event_time").val('');
+	jQuery("#event_sum").val('');
 	}
    else 
    {
@@ -115,7 +122,7 @@ var player = jQuery("#teamplayer_id option:selected").text();
 	jQuery("#ajaxresponse").text(resp[1]);
 // hier wird die funktion für das löschen der
 // kommentare hinzugefügt
-$$(".button-delete-event").addEvent('click', button_delete_event);	   
+//jQuery(".button-delete-event").addEvent('click', button_delete_event);	   
 } 	
 	
 	
@@ -189,12 +196,36 @@ jQuery.ajax({
     
 }
 
+
+function button_delete_event()
+{
+jQuery("#ajaxresponse").html(baseajaxurl);
+jQuery("#ajaxresponse").addClass('ajax-loading');	
+var eventid = this.id.substr(12);  
+var url = baseajaxurl + '&task=matches.removeEvent&tmpl=component';
+var querystring = '&event_id=' + eventid;
+
+//jQuery("#ajaxresponse").html(url + querystring);
+
+jQuery.ajax({
+ type: 'POST', // type of request either Get or Post
+ url: url + querystring, // Url of the page where to post data and receive response 
+ dataType:"json",
+ success: eventdeleted,   //function to be called on successful reply from server
+ error: function (xhr, ajaxOptions, thrownError) 
+ {
+       jQuery("#ajaxresponse").html(xhr);
+       alert(xhr.status);
+       alert(thrownError);
+     }
+});   	
+}	
+
 function button_delete_commentary()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var eventid = this.id.substr(14);  
-//alert('löschen kommentar -> ' + eventid); 
 var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 var querystring = '&event_id=' + eventid;
@@ -209,7 +240,6 @@ jQuery.ajax({
  error: function (xhr, ajaxOptions, thrownError) 
  {
        jQuery("#ajaxresponse").html(xhr);
-       //alert(xhr);
        alert(xhr.status);
        alert(thrownError);
      }
@@ -301,21 +331,15 @@ function commentsaved(response)
 	}
 }
 
-function commentarydeleted(response) 
+function eventdeleted(response) 
 {
     jQuery("#ajaxresponse").removeClass('ajax-loading');
 	var resp = response.split("&");
   var eventid = resp[2]; 
-  
-//    alert(resp[0]);
-//    alert(resp[1]);
-//    alert(eventid);
 
 	if (resp[0] != '0') 
   {
-//		var currentrow = jQuery('rowcomment-' + this.options.rowid);
-//		currentrow.dispose();
-jQuery("#rowcomment-" + eventid).remove();
+jQuery("#rowevent-" + eventid).remove();
 	jQuery("#ajaxresponse").addClass("ajaxsuccess");
 		jQuery("#ajaxresponse").text(resp[1]);
 	}
@@ -325,6 +349,26 @@ jQuery("#rowcomment-" + eventid).remove();
 	jQuery("#ajaxresponse").text(resp[1]);
 	}
 
+	
+}
+
+function commentarydeleted(response) 
+{
+    jQuery("#ajaxresponse").removeClass('ajax-loading');
+	var resp = response.split("&");
+  var eventid = resp[2]; 
+
+	if (resp[0] != '0') 
+  {
+jQuery("#rowcomment-" + eventid).remove();
+	jQuery("#ajaxresponse").addClass("ajaxsuccess");
+		jQuery("#ajaxresponse").text(resp[1]);
+	}
+   else 
+   {
+  jQuery("#ajaxresponse").addClass("ajaxerror");
+	jQuery("#ajaxresponse").text(resp[1]);
+	}
 	
 }
 

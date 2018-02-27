@@ -90,6 +90,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+?>
+<a href="<?php echo $url; ?>" width="660" class="popdown btn">External Site Test</a>		
+<?php		
+}
+else
+{		
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
@@ -97,7 +105,8 @@ JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
 $url,
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal']);        
+$this->overallconfig['use_jquery_modal']);  
+}		
 ?>
 
     </td>

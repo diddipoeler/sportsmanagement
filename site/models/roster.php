@@ -1,10 +1,12 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      roster.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -73,7 +75,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	public static function getProjectTeam()
+	public static function getProjectTeam($team_picture_which = 'pt' )
 	{
 	   $app = JFactory::getApplication();
         $option = $app->input->getCmd('option');
@@ -90,9 +92,11 @@ class sportsmanagementModelRoster extends JModelLegacy
 			{
 			 $query = $db->getQuery(true);
              $query->clear();
-				$query->select('pt.*,st.team_id as season_team_id');
+				$query->select('pt.project_id,pt.id,st.team_id as season_team_id');
+                $query->select("'".$team_picture_which.".picture' as picture");
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+		$query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
                 $query->where('pt.id = '.(int)self::$projectteamid );
  
 			}
@@ -111,10 +115,11 @@ class sportsmanagementModelRoster extends JModelLegacy
                 
                 $query = $db->getQuery(true);
                 $query->clear();
-                $query->select('pt.*,st.team_id as season_team_id');
+                $query->select('pt.project_id,pt.id,st.team_id as season_team_id');
+                $query->select("'".$team_picture_which.".picture' as picture");
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');   
-               
+               $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
                 $query->where('st.team_id = '.(int)self::$teamid);
                 $query->where('pt.project_id = '.(int)self::$projectid);
                 
@@ -123,23 +128,14 @@ class sportsmanagementModelRoster extends JModelLegacy
 			}
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-            
 			self::$projectteam = $db->loadObject();
+           
+        if (self::$projectteamid)
+	{
+	self::$projectid = self::$projectteam->project_id; // if only ttid was set
+        self::$teamid = self::$projectteam->season_team_id;
+	}
 			
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->projectteam,true).'</pre>'),'');
-            
-            if (self::$projectteamid)
-			{
-				self::$projectid = self::$projectteam->project_id; // if only ttid was set
-				//$this->teamid = $this->projectteam->team_id; // if only ttid was set
-                self::$teamid = self::$projectteam->season_team_id;
-			}
 		}
 		return self::$projectteam;
 	}
@@ -223,10 +219,10 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');    
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');    
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__sportsmanagement_person AS pr ON tp.person_id = pr.id');
-        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
+        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id'); 
         $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
         $query->join('LEFT','#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = pro.id AND perpos.person_id = pr.id');
         $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
@@ -247,6 +243,8 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->where('tp.published = 1');
         $query->where('tp.persontype = '.$persontype);
         $query->where('tp.season_id = '.self::$seasonid);  
+	$query->where('pt.project_id = '.self::$projectid);
+	$query->where('pro.id = '.self::$projectid);
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
            
             $db->setQuery($query);
@@ -347,7 +345,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 				$posEvents=array();
 				foreach ($result as $r)
 				{
-					$posEvents[$r->position_id][]=$r;
+					$posEvents[$r->position_id][$r->eventtype_id] = $r;
 				}
 				return ($posEvents);
 			}
@@ -362,6 +360,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	public static function getPlayerEventStats()
 	{
+		$app = JFactory::getApplication();		
 		$playerstats=array();
 		$rows = self::getTeamPlayers();
 		if (!empty($rows))
@@ -380,6 +379,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 				foreach ($eventtypes as $eventtype)
 				{
 					$teamstats = self::getTeamEventStat($eventtype->eventtype_id);
+// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamstats <br><pre>'.print_r($teamstats ,true).'</pre>'),'Notice');					
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
@@ -414,10 +414,13 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('tp.person_id');
 	$query->from('#__sportsmanagement_match_event AS me'); 
     $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');  
+    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');  
     $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id'); 
     $query->where('me.event_type_id = '.$eventtype_id);
     $query->where('pt.id = '.$projectteam->id);
+    $query->where('pt.project_id = '.self::$projectid);
+    $query->where('pro.id = '.self::$projectid);
     $query->group('tp.person_id');
        
         $db->setQuery($query);

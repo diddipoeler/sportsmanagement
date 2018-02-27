@@ -839,30 +839,24 @@ $s = $configcolors;
                 $query->where('project_id = '.(int)self::$projectid);
                 // order
                 $query->order('roundcode ASC');
-
-			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+           
+            try{
+        $db->setQuery($query);
+		self::$_rounds = $db->loadObjectList();
         }
-        
-			self::$_rounds = $db->loadObjectList();
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+			
 		}
-		
-        if ( !self::$_rounds && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');   
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-	    }
         
         if ($ordering == 'DESC') 
         {
 			return array_reverse(self::$_rounds);
 		}
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+
         
         return self::$_rounds;
 	}
@@ -1844,30 +1838,30 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	public static function getMatchSubstitutions($match_id,$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
-		$option = $app->input->getCmd('option');
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-        $query = $db->getQuery(true);
+	$option = $app->input->getCmd('option');
+    // Get a db connection.
+    $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+    $query = $db->getQuery(true);
         
 	// Select some fields
-        $query->clear();
-        $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');
-        $query->from('#__sportsmanagement_match_player AS mp');
+    $query->clear();
+    $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
+    $query->from('#__sportsmanagement_match_player AS mp');
         
-        $query->where('mp.match_id = '.(int)$match_id);
-        $query->where('mp.came_in > 0');
-        $db->setQuery($query);
+    $query->where('mp.match_id = '.(int)$match_id);
+    $query->where('mp.came_in > 0');
+    $db->setQuery($query);
 	$result = $db->loadObjectList();
 	
 	foreach ($result AS $inout)
 	{
-        $query->clear();
-        $query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
+    $query->clear();
+    $query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
 	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
-        $query->from('#__sportsmanagement_person AS p');
-        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
-        $query->where('tp1.id = '.$inout->teamplayer_id );
-        $db->setQuery($query);
+    $query->from('#__sportsmanagement_person AS p');
+    $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
+    $query->where('tp1.id = '.$inout->teamplayer_id );
+    $db->setQuery($query);
 	$result1 = $db->loadObject();
 	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result1 ,true).'</pre>'),'Notice');
 	$inout->firstname = $result1->firstname;
@@ -1875,20 +1869,59 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$inout->lastname = $result1->lastname;
 	$inout->playerid = $result1->playerid;
 	$inout->person_id = $result1->person_slug;
+	$inout->sub_person_slug = $result1->person_slug;
+    
+    $query->clear();	
+	$query->select('pos.id,pos.name');	
+	$query->from('#__sportsmanagement_position AS pos');	
+	$query->where('pos.id = '.$inout->project_position_id );
+	$db->setQuery($query);
+    $result1 = $db->loadObject();
+	$inout->in_position = $result1->name;	
+	
+    $query->clear();
+    $query->select('ppos.id');	
+	$query->from('#__sportsmanagement_project_position AS ppos');
+    $query->where('ppos.position_id = '.$result1->id );
+    $query->where('ppos.project_id = '.(int)self::$projectid );
+	$db->setQuery($query);
+    $result2 = $db->loadObject();
+	$inout->pposid1 = $result2->id;
+    	
 	$query->clear();
-        $query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
+    $query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
 	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
-        $query->from('#__sportsmanagement_person AS p');
-        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
-        $query->where('tp1.id = '.$inout->in_for );
-        $db->setQuery($query);
+    $query->from('#__sportsmanagement_person AS p');
+    $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
+    $query->where('tp1.id = '.$inout->in_for );
+    $db->setQuery($query);
 	$result1 = $db->loadObject();
-	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result1 ,true).'</pre>'),'Notice');
 	$inout->out_firstname = $result1->out_firstname;
 	$inout->out_nickname = $result1->out_nickname;
 	$inout->out_lastname = $result1->out_lastname;
 	$inout->out_ptid = $result1->out_ptid;	
 	$inout->out_person_id = $result1->person_slug;
+    $inout->person_slug = $result1->person_slug;
+	
+    $query->clear();	
+	$query->select('pos.id,pos.name');	
+	$query->from('#__sportsmanagement_position AS pos');
+	$query->join('INNER','#__sportsmanagement_match_player AS mp ON mp.project_position_id = pos.id ');	
+	$query->where('mp.teamplayer_id = '.$inout->in_for );
+	$query->where('mp.match_id = '.(int)$match_id);	
+	$db->setQuery($query);	
+    $result1 = $db->loadObject();
+	$inout->out_position = $result1->name;	
+	
+    $query->clear();
+    $query->select('ppos.id');	
+	$query->from('#__sportsmanagement_project_position AS ppos');
+    $query->where('ppos.position_id = '.$result1->id );
+    $query->where('ppos.project_id = '.(int)self::$projectid );
+	$db->setQuery($query);
+    $result2 = $db->loadObject();
+	$inout->pposid2 = $result2->id;
+    	
 	$query->clear();
 	$query->select('pt.team_id,pt.id AS ptid');
 	$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
@@ -1902,6 +1935,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	$result1 = $db->loadObject();
 	$inout->ptid = $result1->ptid;	
 	$inout->team_id = $result1->team_slug;
+    $inout->team_slug = $result1->team_slug;
 	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 	
 	

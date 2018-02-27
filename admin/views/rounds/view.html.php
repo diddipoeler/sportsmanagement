@@ -1,42 +1,14 @@
 <?php
-
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage rounds
  */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -59,12 +31,12 @@ class sportsmanagementViewRounds extends sportsmanagementView {
     public function init() {
         $app = JFactory::getApplication();
         $this->massadd = 0;
+        $this->populate = 0;
         $tpl = NULL;
         /**
          * dadurch werden die spaltenbreiten optimiert
          */
         $this->document->addStyleSheet(JUri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
-
 
         if ($this->getLayout() == 'default' || $this->getLayout() == 'default_3' || $this->getLayout() == 'default_4') {
             $this->_displayDefault($tpl);
@@ -146,7 +118,6 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $uri = JFactory::getURI();
 
         $model = $this->getModel();
-        $projectws = $this->get('Data', 'projectws');
 
         $document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'));
         //$version = urlencode(sportsmanagementHelper::getVersion());
@@ -161,18 +132,21 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $lists['scheduling'] = JHtml::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
         //TODO-add error message - what if there are no teams assigned to the project
-        $teams = $this->get('projectteams');
+        $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $teams = $mdlProject->getProjectTeamsOptions($this->project_id);
+        $projectws = $mdlProject->getProject($this->project_id);
+
         $options = array();
         foreach ($teams as $t) {
-            $options[] = JHtml::_('select.option', $t->projectteam_id, $t->text);
+            $options[] = JHtml::_('select.option', $t->value, $t->text);
         }
         $lists['teamsorder'] = JHtml::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
 
         $this->projectws = $projectws;
         $this->request_url = $uri->toString();
         $this->lists = $lists;
-
-        $this->addToolbar_Populate();
+$this->populate = 1;
         $this->setLayout('populate');
     }
 
@@ -182,16 +156,19 @@ class sportsmanagementViewRounds extends sportsmanagementView {
      * @since	1.6
      */
     protected function addToolbar() {
-//	// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE');
 
         if (!$this->massadd) {
 
+if ( $this->populate ) {
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
+JToolbarHelper::apply('round.startpopulate');
+        JToolbarHelper::back();
+        parent::addToolbar();
+}
+else
+{
             //JLToolBarHelper::custom('round.roundrobin','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUND_ROBIN_MASSADD_BUTTON'),false);
             JToolbarHelper::publishList('rounds.publish');
             JToolbarHelper::unpublishList('rounds.unpublish');
@@ -209,29 +186,16 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
             JToolbarHelper::deleteList('', 'rounds.deleteroundmatches', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
             //JToolbarHelper::custom('rounds.deletematches','delete.png','delete.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'),false);
-
-
-
             parent::addToolbar();
+            }
         } else {
             JToolbarHelper::custom('round.cancelmassadd', 'cancel.png', 'cancel_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_CANCEL'), false);
+            
         }
-        //JToolbarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
-//parent::addToolbar();  
+
     }
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since	1.6
-     */
-    protected function addToolbar_Populate() {
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE');
-        JToolbarHelper::apply('round.startpopulate');
-        JToolbarHelper::back();
-    }
+   
 
 }
 

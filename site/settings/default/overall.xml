@@ -12,6 +12,14 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_SQUEEZEBOX_MODAL"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_SQUEEZEBOX_MODAL">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 		<field name="use_table_or_bootstrap" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_TABLE_OR_BOOTSTRAP"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_TABLE_OR_BOOTSTRAP">
@@ -178,12 +186,13 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="person_events" type="sql" default="0"
+		<field name="person_events" type="eventtypelist" default="0"
 		size="20"
 		multiple="true"
-		query="SELECT e.id , e.name  FROM #__sportsmanagement_eventtype e WHERE published=1 ORDER BY name"
+		
 		key_field="id" value_field="name"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS">
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS_OUT" 
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS_OUT">
 		</field>
 		
 	</fieldset>

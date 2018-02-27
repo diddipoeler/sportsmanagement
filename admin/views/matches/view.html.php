@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
@@ -9,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage matches
  */
+ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -219,7 +219,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->roundws = $roundws;
         //$this->pagination	= $pagination;
         $this->request_url = $uri->toString();
-        //$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
+        $this->prefill = $params->get('use_prefilled_match_roster',0);
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
 
         if ($this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3') {

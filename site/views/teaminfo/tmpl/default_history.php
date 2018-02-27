@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      deafult_history.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teaminfo
@@ -114,8 +114,9 @@ defined('_JEXEC') or die('Restricted access');
 		<td><?php echo $season->league; ?></td>
         <td><?php 
      
-
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$season->season_picture,$this->team->name,'50');
+$picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
+		
+        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$picture,$this->team->name,'50');
         ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
 		<td><?php echo $season->division_name; ?></td>

@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jlxmlimport.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage jlxmlimport
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -145,7 +117,7 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->post->getArray(array());
+		$post = JFactory::getApplication()->input->post->getArray(array());
         
         $projectid = JFactory::getApplication()->input->getVar('projektfussballineuropa',null);
 
@@ -185,13 +157,13 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 		{
 			//$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
 			$upload = $app->input->files->get('import_package');
-			$tempFilePath=$upload['tmp_name'];
+			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
-			$filename='';
-			$msg='';
-			$dest=JPATH_SITE.DS.'tmp'.DS.$upload['name'];
-			$extractdir=JPATH_SITE.DS.'tmp';
-			$importFile=JPATH_SITE.DS.'tmp'. DS.'joomleague_import.jlg';
+			$filename = '';
+			$msg = '';
+			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
+			$extractdir = JPATH_SITE.DS.'tmp';
+			$importFile = JPATH_SITE.DS.'tmp'. DS.'joomleague_import.jlg';
             
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dest <br><pre>'.print_r($dest,true).'</pre>'),'');
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extractdir <br><pre>'.print_r($extractdir,true).'</pre>'),'');

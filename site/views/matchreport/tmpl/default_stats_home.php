@@ -55,7 +55,7 @@ $routeparameter['tid'] = $player->team_slug;
 $routeparameter['pid'] = $player->person_slug;  
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  
 										
-										    //$player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
+
 										    $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
 										    $match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team)); 
@@ -86,9 +86,9 @@ $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getIn
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);  
 $routeparameter['p'] = $this->project->slug;  
 $routeparameter['tid'] = $sub->team_slug;  
-$routeparameter['pid'] = $sub->person_slug;  
+$routeparameter['pid'] = $sub->sub_person_slug;  
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  										
-										   // $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
+
 										    $match_player = sportsmanagementHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team)); 
 										    

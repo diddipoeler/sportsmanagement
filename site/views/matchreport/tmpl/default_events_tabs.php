@@ -14,13 +14,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <h2>
 <?php 
+echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 	
+?>
+</h2>	
+<?php
 if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
 {
 echo $this->loadTemplate('timeline');
 }
 	
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
-
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
@@ -37,10 +39,11 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 $idxTab = 0; 
 
 ?>
-<!-- This is a list with tabs names. --> 
+<!-- This is a list with tabs names. anfang --> 
 <div class="panel with-nav-tabs panel-default"> 
+<!-- Tabs-heading anfang --> 
 <div class="panel-heading"> 
-<!-- Tabs-Navs --> 
+<!-- Tabs-Navs anfang --> 
 <ul class="nav nav-tabs" role="tablist"> 
 <?PHP
 foreach ($this->eventtypes AS $event)
@@ -63,19 +66,22 @@ $text = JText::_($event->name);
 
 
 ?>
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
+<li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
 </li>
 
 <?PHP
 $idxTab++;
 }
 ?>
+<!-- Tabs-Navs ende --> 
 </ul> 
+<!-- Tabs-heading ende --> 
 </div> 
 
 
-<!-- Tab-Inhalte -->
+<!-- Tab-Inhalte anfang-->
 <div class="panel-body">
+<!-- Tab-content anfang-->
 <div class="tab-content">
 <?PHP	
 $idxTab = 0;
@@ -85,18 +91,16 @@ $active = ($idxTab==0) ? 'in active' : '';
 $text = JText::_($event->name);
 
 ?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $text; ?>">
-<?PHP   
-
-?>
-</div>
+<!-- Tab-event anfang-->
+<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="event<?PHP echo $event->id; ?>">
 <?PHP
 $idxTab++;
 foreach ($this->matchevents AS $me)
 				{
-					if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam1_id)
+					if ( $me->event_type_id == $event->id && 
+					   ( $me->ptid == $this->match->projectteam1_id or $me->ptid == $this->match->projectteam2_id )
+					   )
 					{
-						//echo '<li class="list">';
 						
 						if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
 						{
@@ -149,14 +153,19 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 						echo '<br>';
 					}
 				}
+?>
+<!-- Tab-event ende-->
+</div>	
 
-
-
-
+<?php
 }
 ?>
+
+<!-- Tab-content ende-->
 </div>
+<!-- Tab-Inhalte ende-->
 </div>
+<!-- This is a list with tabs names. ende --> 
 </div> 
 
 <?PHP
@@ -164,7 +173,6 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 else
 {
 ?>
-</h2>		
 
 <table class="table" border="0">
     <tr>

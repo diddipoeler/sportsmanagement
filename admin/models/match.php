@@ -2472,18 +2472,35 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
      */
     function deleteevent($event_id)
 	{
-		$object = JTable::getInstance('MatchEvent','sportsmanagementTable');
-		//if (!$object->canDelete($event_id))
-//		{
-//			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETE');
-//			return false;
-//		}
-		if (!$object->delete($event_id))
-		{
-			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED');
-			return false;
-		}
-		return true;
+	$db = JFactory::getDbo();
+ 
+$query = $db->getQuery(true);
+ 
+// delete all custom keys
+$conditions = array(
+    $db->quoteName('id') . '='.$event_id
+);	
+$query->delete($db->quoteName('#__sportsmanagement_match_event'));
+$query->where($conditions);
+$db->setQuery($query);
+	    
+/**
+ * Delete the object from the table.
+ */
+            try{
+            $db->execute();
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return true;
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return false;	    
+            }	
+	    
+	    return true;   	    
+
 	}
     
     
@@ -2506,29 +2523,25 @@ $conditions = array(
  
 $query->delete($db->quoteName('#__sportsmanagement_match_commentary'));
 $query->where($conditions);
- 
-$db->setQuery($query);    
-if (!$db->execute())
-		{
-			
-            $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
-			return false;
-		}
+$db->setQuery($query);  
+	    
+/**
+ * Delete the object from the table.
+ */
+            try{
+            $db->execute();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return true;
+            }
+            catch (Exception $e)
+            {
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');	
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return false;	    
+            }	
+	    
+	    return true;  	    
 
-/*
-		$object = JTable::getInstance('MatchCommentary','sportsmanagementTable');
-		//if (!$object->canDelete($event_id))
-//		{
-//			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETE_COMMENTARY');
-//			return false;
-//		}
-		if (!$object->delete($event_id))
-		{
-			$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
-			return false;
-		}
-*/        
-		return true;
 	}
     
     
@@ -2579,13 +2592,14 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
-	return $db->insertid();
+		    $result = $db->insertid();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return $result;
             }
             catch (Exception $e)
             {
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
-	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
-	    //$object->id = $e->getMessage();		    
+	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    
@@ -2643,13 +2657,14 @@ $temp->modified_by = $user->get('id');
  */
             try{
             $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-	return $db->insertid();
+	$result = $db->insertid();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+	return $result;
             }
             catch (Exception $e)
             {
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
 	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
-	    //$object->id = $e->getMessage();		    
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 	return false;	    
             }	
 	    

@@ -6,7 +6,7 @@
 * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license   This file is part of SportsManagement.
-* @subpackage player
+* @subpackage models
 */
 
 defined('_JEXEC') or die('Restricted access');
@@ -376,20 +376,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'player_id <pre>' . print_r($player_id, true) . '</pre>';
-            $my_text .= 'game_regular_time <pre>' . print_r($game_regular_time, true) . '</pre>';
-            $my_text .= 'cards <pre>' . print_r($cards, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' player_id<br><pre>'.print_r($player_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game_regular_time<br><pre>'.print_r($game_regular_time,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
-        }
-
-
         $result = 0;
         // startaufstellung ohne ein und auswechselung
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
@@ -413,16 +399,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         if ($totalresult) {
             $result += $totalresult->totalmatch * $game_regular_time;
         }
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'totalresult <pre>' . print_r($totalresult, true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalmatch<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalresult<br><pre>'.print_r($totalresult,true).'</pre>'),'');
-        }
-
+        
         // einwechselung
         $query = $db->getQuery(true);
         $query->clear();
@@ -444,16 +421,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $db->setQuery($query);
         $cameinresult = $db->loadObject();
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'cameinresult <pre>' . print_r($cameinresult, true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalin<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameinresult<br><pre>'.print_r($cameinresult,true).'</pre>'),'');
-        }
 
         if ($cameinresult) {
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
@@ -479,16 +446,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $db->setQuery($query);
         $cameautresult = $db->loadObject();
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'cameautresult <pre>' . print_r($cameautresult, true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalout<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameautresult<br><pre>'.print_r($cameautresult,true).'</pre>'),'');
-        }
 
         if ($cameautresult) {
             // bug erkannt durch @player2000    

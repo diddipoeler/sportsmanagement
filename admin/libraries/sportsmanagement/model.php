@@ -967,6 +967,7 @@ catch (Exception $e) {
            } 
         break;  
 		case 'round':
+	/*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -978,6 +979,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
         $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
         }
+	*/
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -1016,7 +1018,7 @@ catch (Exception $e) {
 
         break;
         }
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1026,7 +1028,7 @@ catch (Exception $e) {
         {
         $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
         }
-        
+        */
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -1083,7 +1085,7 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1095,7 +1097,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('founded', 'type', 'customcalendar');  
         $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
         }
-        
+        */
         $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
@@ -1261,7 +1263,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1275,7 +1277,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('birthday', 'type', 'customcalendar');
         $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
         }
-        
+        */
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 			$this->jsmquery->from('information_schema.columns');

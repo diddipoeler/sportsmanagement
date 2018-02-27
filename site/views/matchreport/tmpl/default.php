@@ -85,10 +85,12 @@ echo $this->loadTemplate('debug');
     
     if ( !empty( $this->matchevents ) )
 	{
-    if ( $this->config['show_timeline_under_results'] )
+	    /*
+    if ( !$this->config['show_timeline_under_results'] )
 	{
 		echo $this->loadTemplate('timeline');
 	}
+	*/    
     }
     
   // ################################################################

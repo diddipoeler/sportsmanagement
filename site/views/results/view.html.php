@@ -45,6 +45,8 @@ class sportsmanagementViewResults extends sportsmanagementView
         $default_name_format = '';
 
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+		
+
         //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
         /*
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
@@ -92,6 +94,12 @@ class sportsmanagementViewResults extends sportsmanagementView
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
             $this->extended = $extended;
 
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+}	
+			
+			
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
 	  $mod_name = "mod_jw_srfr";
@@ -781,7 +789,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	public static function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array(),$project=array() )
 	{
 	   $app = JFactory::getApplication();
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchInfo'.'<pre>'.print_r($matchInfo,true).'</pre>' ),'');
        
 		$output = '';
 		$result = '';
@@ -791,12 +799,23 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            // Define tabs options for version of Joomla! 3.0
+            
+	$start = 1;	    
+	foreach ($projectevents AS $event)
+			{	    
+		 if ( $start == 1 )
+		{
+		// Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
-            "active" => "tab0_id" // It is the ID of the active tab.
-        );  
+            "active" => 'tab'.$event->id.'_id'.$matchInfo->id // It is the ID of the active tab.
+	);
+		}
+		$start++;
+		}	
+		
+          
         
-        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group', $tabsOptions);
+        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
         
             }
             else
@@ -826,7 +845,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				}
 				if($cnt==0){continue;}
 				
-				if ($config['show_events_with_icons'] == 1)
+				if ( $config['show_events_with_icons'] )
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_($event->name);
@@ -839,8 +858,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',JText::_($event->name) ); 
-            //$output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',$tab_content);
+            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,$tab_content ); 
             }
             else
             {

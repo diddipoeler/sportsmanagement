@@ -17,7 +17,13 @@
 		/>
 		<field
 			name="project_id"
-			type="hidden"
+			type="number"
+		       label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+readonly="true"
 		/>
 		<field
 			name="roundcode"
@@ -43,21 +49,21 @@
 		<field
 			name="round_date_first"
 			size="10"
-			default=""
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>	
+			translateformat="true"
+       			filter="user_utc"/>	
 		<field
 			name="round_date_last"
 			size="10"
-			default=""
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>		
+			translateformat="true"
+       			filter="user_utc"/>		
       
       <field
 			name="tournement"

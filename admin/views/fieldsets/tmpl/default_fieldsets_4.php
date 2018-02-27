@@ -246,6 +246,46 @@ switch ($this->fieldset) {
         }
         break;
 
+case 'teamperson':
+        if (isset($this->extended)) {
+            foreach ($this->extended->getFieldsets() as $fieldset) {
+                ?>
+                <fieldset class="adminform">
+
+                    <?php
+                    $fields = $this->extended->getFieldset($fieldset->name);
+
+                    if (!count($fields)) {
+                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    }
+
+                    foreach ($fields as $field) {
+                        if (COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5') {
+                            echo $field->label;
+                            echo $field->input;
+                        } else {
+                            ?>
+                            <div class="control-group">
+                                <div class="control-label">
+                        <?php echo $field->label; ?>
+                                </div>
+                                <div class="controls">
+                        <?php echo $field->input; ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
+                    ?>
+                </fieldset>
+                    <?php
+                }
+            } else {
+                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            }
+
+            break;
+            
     /**
      * tabellenpositionen in de gruppen/divisionen
      */

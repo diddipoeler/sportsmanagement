@@ -203,7 +203,7 @@
 		</field>
 		
 	</fieldset>	
-	
+<!-- reiter 3 -->	
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS"
   label= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_DESCR_OPTIONS"
@@ -270,7 +270,7 @@
 		</field>
 		
 	</fieldset>
-	
+<!-- reiter 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
@@ -285,6 +285,13 @@
 		<field 	name="team_picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		</field>
+		
+		<field name="team_picture_which" type="list" default="project_team"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_WHICH_PICTURE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_WHICH_PICTURE">
+      <option value="pt">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PROJECTTEAM_PICTURE</option>
+      <option value="t">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TEAM_PICTURE</option>
 		</field>
 		
 		<field name="team_picture_style" type="list" default=""
