@@ -2967,8 +2967,9 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
 		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-try{
+
 		$db->setQuery($query);
+		try{
 		$person_id = $db->loadResult();
 		}
 catch (Exception $e){
