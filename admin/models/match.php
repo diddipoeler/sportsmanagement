@@ -2974,8 +2974,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
 
 		$db->setQuery($query);
 		try{
@@ -3042,8 +3042,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
 
 		$db->setQuery($query);
 		try{
@@ -3185,8 +3185,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3241,8 +3241,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3297,8 +3297,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3353,8 +3353,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3409,8 +3409,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
@@ -3465,8 +3465,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $query->select('id');
         // From the table
 		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
 
     $db->setQuery($query);
 	    try{
