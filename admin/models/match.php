@@ -2889,8 +2889,8 @@ $csv->auto($dcsv['cachefile']);
     function getPresseberichtReadPlayers($csv_file)
     {
     $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication(); 
-	$db = sportsmanagementHelper::getDBConnection();
+$app = JFactory::getApplication(); 
+$db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
     
     $csv_player_count = 40;
@@ -2906,26 +2906,24 @@ $csv->auto($dcsv['cachefile']);
     
     // Select some fields
     $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
-        $query->where('project_id = '.$project_id);  
-        $query->where('team_id = '.$favteam);   
+    $query->select('id');
+    // From the table
+$query->from('#__sportsmanagement_project_team');
+    $query->where('project_id = '.$project_id);  
+    $query->where('team_id = '.$favteam);   
         
-    //$query="SELECT id
-//			FROM #__joomleague_project_team
-//			WHERE project_id=$project_id AND team_id=$favteam";
 			$db->setQuery($query);
-			$projectteamid = $db->loadResult();
-    //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers projectteamid<br><pre>'.print_r($projectteamid,true).'</pre>'   ),'');    
+try{
+	    $projectteamid = $db->loadResult();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     
-    /*
-    // bereinigen des csv files
-    foreach ( $csv_file->data[0] as $key )
-    {
-        $key = ereg_replace(" ", "-", $key);
-    }
-    */
+
     
     if ( $projectteamid )
     {
@@ -2966,12 +2964,21 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
 
 		$db->setQuery($query);
+		try{
 		$person_id = $db->loadResult();
+		}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
+		
     }
     
         if ( $person_id )
@@ -2980,12 +2987,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
+		$query->from('#__sportsmanagement_team_player');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
             
 			$db->setQuery($query);
+		try{
 			$projectpersonid = $db->loadObject();
+		}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -3017,12 +3032,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
 
 		$db->setQuery($query);
+		try{
 		$person_id = $db->loadResult();
+		}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }
         if ( $person_id )
         {
@@ -3030,13 +3053,21 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
+		$query->from('#__sportsmanagement_team_player');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
         
             
 			$db->setQuery($query);
+		try{
 			$projectpersonid = $db->loadObject();
+		}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -3107,23 +3138,24 @@ $csv->auto($dcsv['cachefile']);
     	$query->clear();
         $query->select('event_type_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event');
+		$query->from('#__sportsmanagement_match_event');
         $query->where('match_id = ' . $match_id );
         $query->where('projectteam_id = ' . $projectteamid );
         $query->where('teamplayer_id = ' . $project_person_id );
         
 		$db->setQuery($query);
+	    try{
 		$match_event_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
         $this->csv_cards[$key]->event_type_id = $match_event_id;
     }    
     }
-        
-        
-        
-        
-        
-        
-    
     // mannschaftsverantwortliche
     $i = 1;
     $this->csv_staff[$i]->position = 'Trainer';
@@ -3143,12 +3175,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }
     if ( $person_id )
     {
@@ -3156,12 +3196,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+		$query->from('#__sportsmanagement_team_staff');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
             
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3183,12 +3231,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }        
     if ( $person_id )
     {
@@ -3196,12 +3252,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+		$query->from('#__sportsmanagement_team_staff');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
             
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3223,12 +3287,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }
     if ( $person_id )
     {
@@ -3236,12 +3308,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+		$query->from('#__sportsmanagement_team_staff');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
             
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3263,12 +3343,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }
     if ( $person_id )
     {
@@ -3276,12 +3364,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+		$query->from('#__sportsmanagement_team_staff');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
             
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3303,12 +3399,20 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     }
     if ( $person_id )
     {
@@ -3316,12 +3420,20 @@ $csv->auto($dcsv['cachefile']);
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+		$query->from('#__sportsmanagement_team_staff');
         $query->where('person_id = ' . $person_id );
         $query->where('projectteam_id = ' . $projectteamid );
         
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3343,21 +3455,42 @@ $csv->auto($dcsv['cachefile']);
         $query->clear();
         $query->select('id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
+		$query->from('#__sportsmanagement_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
 
     $db->setQuery($query);
+	    try{
 	$person_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+}	
     }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
+	    $query->clear();
+	    $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__sportsmanagement_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+	    
+            
 			$db->setQuery($query);
+	    try{
 			$projectpersonid = $db->loadObject();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
