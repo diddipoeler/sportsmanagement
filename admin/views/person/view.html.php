@@ -72,14 +72,50 @@ class sportsmanagementViewPerson extends sportsmanagementView
             $this->map = true;
         }
         
-		$isNew = $this->item->id == 0;
-        if ( $isNew )
+	$isNew = $this->item->id == 0;
+        if ( $this->item->birthday == '0000-00-00' )
         {
-            $this->form->setValue('person_art', null, '1');
-            $this->form->setValue('birthday', null, '0000-00-00');
-            $this->form->setValue('deathday', null, '0000-00-00');
+        $this->item->birthday = '';
+        $this->form->setValue('birthday','');
+        }
+	if ( $this->item->deathday == '0000-00-00' )
+        {
+        $this->item->birthday = '';
+        $this->form->setValue('deathday','');
+        }
+	if ( $this->item->injury_date_start == '0000-00-00' )
+        {
+        $this->item->injury_date_start = '';
+        $this->form->setValue('injury_date_start','');
+        }
+	if ( $this->item->injury_date_end == '0000-00-00' )
+        {
+        $this->item->injury_date_end = '';
+        $this->form->setValue('injury_date_end','');
         }
         
+	if ( $this->item->susp_date_start == '0000-00-00' )
+        {
+        $this->item->susp_date_start = '';
+        $this->form->setValue('susp_date_start','');
+        }
+	if ( $this->item->susp_date_end == '0000-00-00' )
+        {
+        $this->item->susp_date_end = '';
+        $this->form->setValue('susp_date_end','');
+        }
+		
+	if ( $this->item->away_date_start == '0000-00-00' )
+        {
+        $this->item->away_date_start = '';
+        $this->form->setValue('away_date_start','');
+        }
+	if ( $this->item->away_date_end == '0000-00-00' )
+        {
+        $this->item->away_date_end = '';
+        $this->form->setValue('away_date_end','');
+        }
+	
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
 	$this->extended =  $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'person');		
