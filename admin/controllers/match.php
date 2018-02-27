@@ -381,21 +381,19 @@ class sportsmanagementControllermatch extends JControllerForm
   
   }
   
-  /**
-   * sportsmanagementControllermatch::readpressebericht()
-   * 
-   * @return void
-   */
-  function readpressebericht()
-    {
-    JFactory::getApplication()->input->setVar('hidemainmenu',1);
-		JFactory::getApplication()->input->setVar('layout','readpressebericht');
-		JFactory::getApplication()->input->setVar('view','match');
-		JFactory::getApplication()->input->setVar('edit',true);
-		parent::display();    
-       
-        
-    }
+//  /**
+//   * sportsmanagementControllermatch::readpressebericht()
+//   * 
+//   * @return void
+//   */
+//  function readpressebericht()
+//    {
+//    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+//		JFactory::getApplication()->input->setVar('layout','readpressebericht');
+//		JFactory::getApplication()->input->setVar('view','match');
+//		JFactory::getApplication()->input->setVar('edit',true);
+//		parent::display();    
+//    }
     
     /**
      * sportsmanagementControllermatch::savepressebericht()
@@ -500,8 +498,9 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 			}
 		}
         //$csv_file = $model->getPressebericht();  
-		$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
-		$this->setRedirect($link,$msg);    
+		//$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
+		$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
+	    $this->setRedirect($link,$msg);    
         
         
     }
