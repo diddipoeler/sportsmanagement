@@ -2901,7 +2901,8 @@ $db = sportsmanagementHelper::getDBConnection();
     $tblproject = JTable::getInstance("project", "sportsmanagementTable");
     $tblproject->load($project_id);
     $favteam = $tblproject->fav_team;
-	    
+	$season_id = $tblproject->season_id;
+        
     if ( !$favteam )
     {
 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT_NO_FAV_TEAM'),'error');
@@ -2996,9 +2997,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_player');
+		$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
             
 			$db->setQuery($query);
 		try{
