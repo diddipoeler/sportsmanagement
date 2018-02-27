@@ -24,7 +24,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
     $container = "container-fluid";
 }
 ?>
-<div class="<?php echo $container ?>" id="clubinfo">';
+<div class="<?php echo $container ?>" id="clubinfo">
     <?php
     if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
         echo $this->loadTemplate('debug');
