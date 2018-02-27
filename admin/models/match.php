@@ -2913,11 +2913,13 @@ return false;
     
     // Select some fields
     $query->clear();
-    $query->select('id');
+    $query->select('pt1.id');
     // From the table
-$query->from('#__sportsmanagement_project_team');
-    $query->where('project_id = '.$project_id);  
-    $query->where('team_id = '.$favteam);   
+$query->from('#__sportsmanagement_project_team as pt1');
+$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+$query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+    $query->where('pt1.project_id = '.$project_id);  
+    $query->where('st1.team_id = '.$favteam);   
         
 			$db->setQuery($query);
 try{
