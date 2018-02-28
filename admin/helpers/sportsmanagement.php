@@ -3564,36 +3564,36 @@ function sec_to_time($seconds)
        * JSMInfo 
        */
         public static function jsminfo(){
-            echo '<div class="flexitem">
+            echo '<div class="d-flex align-self-center jsm-logo-box">
             <img src="components/com_sportsmanagement/assets/icons/boxklein.png" />
         </div>
             <hr>
-        <div class="dashboard-icons">
-            <div class="jsm-info">'.JText::_('COM_SPORTSMANAGEMENT_VERSION').': 1.0.59</div>
+        <div class="d-flex flex-wrap">
+            <div class="p-1">'.JText::_('COM_SPORTSMANAGEMENT_VERSION').': 1.0.59</div>
         </div>
-        <div class="dashboard-icons>"
-             <div class="jsm-info">'.JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS').': </div>     
-            <div class="jsm-info">
+        <div class="d-flex flex-column flex-wrap">
+             <div class="p-1">'.JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS').': </div>     
+            <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg" alt="diddipoeler" height="80px">
-                <span class="name">diddipoeler</span><br>
+                <span>diddipoeler</span><br>
             </div>
-            <div class="jsm-info">
+            <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
-                <span class="name">svdoldie</span><br>
-            </div><div class="jsm-info">
+                <span>svdoldie</span><br>
+            </div><div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
-                <span class="name">donclumsy</span><br>
+                <span>donclumsy</span><br>
             </div>
-            <div class="jsm-info">
+            <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
-                <span class="name">stony</span><br>
+                <span>stony</span><br>
             </div>
 
-            <div class="jsm-info">'.JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') .': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
+            <div class="p-1 mb-2">'.JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') .': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
 
-            <div class="jsm-info">'.JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') .': &copy; 2014 fussballineuropa, All rights reserved.</div>
+            <div class="p-1 mb-2">'.JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') .': &copy; 2014 fussballineuropa, All rights reserved.</div>
 
-            <div class="jsm-info">'.JText::_('COM_SPORTSMANAGEMENT_LICENSE') .': GNU General Public License</div>            
+            <div class="p-1 mb-2">'.JText::_('COM_SPORTSMANAGEMENT_LICENSE') .': GNU General Public License</div>            
         </div>'
             ;
         }

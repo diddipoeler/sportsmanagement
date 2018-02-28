@@ -18,6 +18,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 JHtml::_('jquery.framework');
 JHtml::_('behavior.framework', true);
+
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
@@ -92,7 +93,8 @@ class sportsmanagementView extends JViewLegacy
  * alles aufrufen was für die views benötigt wird
  */
         
-        $this->document	= JFactory::getDocument();   
+        $this->document	= JFactory::getDocument();
+        $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/flex.css', 'text/css');
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');

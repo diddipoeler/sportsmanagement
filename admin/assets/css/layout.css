@@ -15,6 +15,22 @@
 font-size:20px;
 padding-top:10px;
 }
+/*JSM INFO*/
+
+.jsm-info-team img{
+    max-width: 60px;
+}
+
+.jsm-logo-box img{
+    flex: 0 0 auto;
+    max-width: 150px;
+    max-height: 100%;
+    align-self: center;
+    -webkit-align-self: center;
+    margin: auto;
+    object-fit: scale-down;
+}
+
 /* ----------*/
 #sidebar {
 	float: none;
