@@ -2865,7 +2865,7 @@ $csv->auto($dcsv['cachefile']);
     $tblmatch->load($match_id);
     $match_number = $tblmatch->match_number;
     //$app->enqueueMessage(JText::_('getPresseberichtMatchnumber match number<br><pre>'.print_r($match_number,true).'</pre>'   ),'');
-    $csv_match_number = $csv_file->data[0][Spielberichtsnummer];
+    $csv_match_number = $csv_file->data[0]['Spielberichtsnummer'];
     //$app->enqueueMessage(JText::_('getPresseberichtMatchnumber csv match number<br><pre>'.print_r($csv_match_number,true).'</pre>'   ),'');
     $teile = explode(".",$csv_match_number);
     

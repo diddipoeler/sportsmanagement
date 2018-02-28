@@ -344,7 +344,7 @@ $this->request_url	= $uri->toString();
 		unset( $position_id );
         
         // events
-		$events = $model->getEventsOptions($this->project_id);
+		$events = $model->getEventsOptions($this->project_id, $matchnumber);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
