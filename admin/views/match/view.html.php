@@ -872,7 +872,7 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return void
      */
-    function _displaySavePressebericht($tpl)
+    function _displaySavePressebericht()
     {
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
@@ -893,7 +893,7 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return
      */
-    function _displayPressebericht($tpl)
+    function _displayPressebericht()
     {
         $app = JFactory::getApplication();
 		$jinput = $app->input;
