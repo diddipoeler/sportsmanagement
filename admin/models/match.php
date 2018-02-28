@@ -23,7 +23,6 @@ JLoader::import('joomla.utilities.simplecrypt');
 JLoader::import('libraries.joomla.google.google', JPATH_ADMINISTRATOR);
 JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 
-
 /**
  * sportsmanagementModelMatch
  * 
@@ -3526,6 +3525,11 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     
     }
          
+/**
+ * sportsmanagementModelMatch::savePressebericht()
+ * 
+ * @return void
+ */
 function savePressebericht()
 {
 // Reference global application object
@@ -3541,6 +3545,11 @@ $project_position_id = $post['project_position_id'];
 $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_position_id<br><pre>'.print_r($project_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_staff_position_id<br><pre>'.print_r($project_staff_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' inout_position_id<br><pre>'.print_r($inout_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_events_id<br><pre>'.print_r($project_events_id,true).'</pre>'),'error');
 	
 // Get a db connection.
 $db = sportsmanagementHelper::getDBConnection();
@@ -3548,8 +3557,25 @@ $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
 $query->clear();
 
-// positions zuordnung der spieler zum team
 $my_text = '';	
+
+foreach ( $project_position_id as $key => $value )
+{
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 $this->_success_text['Importing general Person data:'] = $my_text; 	
