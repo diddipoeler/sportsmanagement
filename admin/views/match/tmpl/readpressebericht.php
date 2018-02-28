@@ -35,24 +35,20 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         ?>
@@ -100,24 +96,20 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         ?>
@@ -208,13 +200,11 @@ if ( $this->matchnumber )
         <?PHP
         if ( $value->event_type_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/ok.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_joomleague/assets/images/error.png',
-														'','title= "'.''.'"').'</td>';
+            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         ?>
                 
