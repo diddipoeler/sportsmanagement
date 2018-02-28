@@ -39,15 +39,19 @@ JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 class sportsmanagementModelMatch extends JSMModelAdmin
 {
 
-	const MATCH_ROSTER_STARTER			= 0;
-	const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
-	const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
-	const MATCH_ROSTER_RESERVE			= 3;
+const MATCH_ROSTER_STARTER = 0;
+const MATCH_ROSTER_SUBSTITUTE_IN = 1;
+const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
+const MATCH_ROSTER_RESERVE = 3;
     
-    var $teams = NULL;
+var $teams = NULL;
 static $_season_id = 0;
 static $_project_id = 0;
 
+var $storeFailedColor = 'red';
+var $storeSuccessColor = 'green';
+var $existingInDbColor = 'orange';
+	
 	/**
 	 * Override parent constructor.
 	 *
@@ -3522,6 +3526,38 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     
     }
          
-    
+function savePressebericht()
+{
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$project_id = $app->getUserState( "$option.pid", '0' );
+$post = $app->input->post->getArray(array());	
+$projectteamid = $app->getUserState($option.'projectteamid');	
+$match_id = $app->input->getVar('match_id'); 	
+$project_position_id = $post['project_position_id'];
+$project_staff_position_id = $post['project_staff_position_id'];
+$inout_position_id = $post['inout_position_id'];
+$project_events_id = $post['project_events_id'];
+	
+// Get a db connection.
+$db = sportsmanagementHelper::getDBConnection();
+// Create a new query object.
+$query = $db->getQuery(true);
+$query->clear();
+
+// positions zuordnung der spieler zum team
+$my_text = '';	
+	
+	
+$this->_success_text['Importing general Person data:'] = $my_text; 	
+	
+	
+	
+}
+	
+	
 }
 ?>
