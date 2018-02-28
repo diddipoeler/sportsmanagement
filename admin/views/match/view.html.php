@@ -303,7 +303,7 @@ $this->request_url	= $uri->toString();
 		if ( $matchnumber )
 			{
 				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-				$this->asscsvplayers	= $model->csv_player;   
+				$this->csvplayers = $model->csv_player;   
 				$this->csvinout	= $model->csv_in_out;
 				$this->csvcards	= $model->csv_cards;
 				$this->csvstaff	= $model->csv_staff;
