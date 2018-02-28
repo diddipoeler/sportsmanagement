@@ -313,6 +313,11 @@ $this->request_url	= $uri->toString();
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,1,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_position_id'] = $position_id;
@@ -322,6 +327,11 @@ $this->request_url	= $uri->toString();
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_staff_position_id'] = $position_id;
