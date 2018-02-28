@@ -105,7 +105,8 @@ $this->request_url	= $uri->toString();
 	case 'savepressebericht';
 	case 'savepressebericht_3';		
 	case 'savepressebericht_4';		
-	$this->setLayout('savepressebericht');		
+	$this->setLayout('savepressebericht');	
+	$this->_displaySavePressebericht();		
 	break;
         case 'readpressebericht';
         case 'readpressebericht_3';
@@ -883,7 +884,7 @@ $javascript .= "}". "\n";
     
     $this->importData	= $model->_success_text;
         
-    parent::display($tpl);    
+   // parent::display($tpl);    
     }
     
     /**
