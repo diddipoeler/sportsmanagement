@@ -515,12 +515,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 // Reference global application object
 $app = JFactory::getApplication();
 $post = $app->input->post->getArray(array());
-$app->input->set('post', $post);        
-//    JFactory::getApplication()->input->setVar('hidemainmenu',1);
-//	JFactory::getApplication()->input->setVar('layout','savepressebericht');
-//	JFactory::getApplication()->input->setVar('view','match');
-//	JFactory::getApplication()->input->setVar('edit',true);
-//	parent::display();
+$app->input->post->set('post', $post);	  
+	  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+	  
 $match_id = JFactory::getApplication()->input->getInt('id',0);	  
 $msg = '';
 $link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=savepressebericht&match_id='.$match_id;

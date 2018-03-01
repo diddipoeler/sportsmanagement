@@ -27,8 +27,8 @@ if ( $this->matchnumber )
 <th class="">Projektposition</th>
 </tr>	
 	
-		<?php foreach ($this->csvplayers as $value): ?>
-		<tr>
+	<?php foreach ($this->csvplayers as $value): ?>
+	<tr>
         <td><?php echo $value->nummer; ?></td>
         <td><?php echo $value->firstname; ?></td>
         <td><?php echo $value->lastname; ?></td>
@@ -54,27 +54,26 @@ if ( $this->matchnumber )
         ?>
         <td>
         <?php 
-        //$inputappend = ' disabled="disabled"'; 
         $inputappend = '';
         if ( $value->project_position_id != 0 )
-								{
-									$selectedvalue = $value->project_position_id;
-									$append = '';
-								}
-								else
-								{
-									$selectedvalue = 0;
-									$append = ' style="background-color:#FFCCCC"';
-								}
+	{
+	$selectedvalue = $value->project_position_id;
+	$append = '';
+	}
+	else
+	{
+	$selectedvalue = 0;
+	$append = ' style="background-color:#FFCCCC"';
+	}
         if ( $value->project_position_id == 0 )
-								{
-									$append=' style="background-color:#FFCCCC"';
-								}
-								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	{
+	$append=' style="background-color:#FFCCCC"';
+	}
+	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
-		<?php endforeach; ?>
+	<?php endforeach; ?>
 	
 </table>
 
@@ -118,30 +117,26 @@ if ( $this->matchnumber )
         //$inputappend = ' disabled="disabled"'; 
         $inputappend = '';
         if ( $value->project_position_id != 0 )
-								{
-									$selectedvalue = $value->project_position_id;
-									$append = '';
-								}
-								else
-								{
-									$selectedvalue = 0;
-									$append = ' style="background-color:#FFCCCC"';
-								}
+	{
+	$selectedvalue = $value->project_position_id;
+	$append = '';
+	}
+	else
+	{
+	$selectedvalue = 0;
+	$append = ' style="background-color:#FFCCCC"';
+	}
         if ( $value->project_position_id == 0 )
-								{
-									$append=' style="background-color:#FFCCCC"';
-								}
-								echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->nummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	{
+	$append=' style="background-color:#FFCCCC"';
+	}
+	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
-		<?php endforeach; ?>
+	<?php endforeach; ?>
 	
 </table>
-
-
-
-
 
 <table id="<?php echo $dcsv['tableid']; ?>" class="table_from_csv_sortable<? if ($dcsv['sortable'] == false){ echo '_not';} ?>" width="<?php echo $dcsv['tablewidth']; ?>" border="<?php echo $dcsv['border']; ?>" cellspacing="<?php echo $dcsv['cellspacing']; ?>" cellpadding="<?php echo $dcsv['cellpadding']; ?>" bgcolor="<?php echo $dcsv['tablebgcolor']; ?>">
 <tr>	
@@ -154,8 +149,8 @@ if ( $this->matchnumber )
 </tr>	
 	
 	
-		<?php foreach ($this->csvinout as $value): ?>
-		<tr>
+	<?php foreach ($this->csvinout as $value): ?>
+	<tr>
         <td><?php echo $value->spieler; ?></td>
         <td><?php echo $value->in_out_time; ?></td>
         <td><?php echo $value->in; ?></td>
@@ -165,15 +160,13 @@ if ( $this->matchnumber )
         <?php 
          
         $inputappend = '';
-		$selectedvalue = 0;
-		$append = ' style="background-color:#FFCCCC"';
-		echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	$selectedvalue = 0;
+	$append = ' style="background-color:#FFCCCC"';
+	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
-        
-        
-		<?php endforeach; ?>
+	<?php endforeach; ?>
 	
 	
 </table>
@@ -190,8 +183,8 @@ if ( $this->matchnumber )
 </tr>	
 	
 	
-		<?php foreach ($this->csvcards as $value): ?>
-		<tr>
+	<?php foreach ($this->csvcards as $value): ?>
+	<tr>
         <td><?php echo $value->spieler; ?></td>
         <td><?php echo $value->event_time; ?></td>
         <td><?php echo $value->event_name; ?></td>
@@ -212,31 +205,25 @@ if ( $this->matchnumber )
         <?php
         $inputappend = '';
         if ( $value->event_type_id != 0 )
-								{
-									$selectedvalue = $value->event_type_id;
-									$append = '';
-								}
-								else
-								{
-									$selectedvalue = 0;
-									$append = ' style="background-color:#FFCCCC"';
-								}
+	{
+	$selectedvalue = $value->event_type_id;
+	$append = '';
+	}
+	else
+	{
+	$selectedvalue = 0;
+	$append = ' style="background-color:#FFCCCC"';
+	}
         if ( $value->event_type_id == 0 )
-								{
-									$append=' style="background-color:#FFCCCC"';
-								}
-        //$selectedvalue = $value->event_type_id;;
-        //$append = ' style="background-color:#FFCCCC"';
-        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->spielernummer.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
-        //echo $this->lists['events']; 
+	{
+	$append=' style="background-color:#FFCCCC"';
+	}
+        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
-		<?php endforeach; ?>
-	
-	
+	<?php endforeach; ?>
+		
 </table>
-
-
 
 <?PHP
 }
