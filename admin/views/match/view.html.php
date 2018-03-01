@@ -874,13 +874,15 @@ $javascript .= "}". "\n";
      */
     function _displaySavePressebericht()
     {
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+	$app = JFactory::getApplication();
+	$jinput = $app->input;
+	$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
+$post = $app->input->post->getArray(array());
+// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
     $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
-    $csv_file_save = $model->savePressebericht();
+    $csv_file_save = $model->savePressebericht($post);
     
     $this->importData	= $model->_success_text;
         
