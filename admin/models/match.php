@@ -3067,9 +3067,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_player');
+		$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
         
             
 			$db->setQuery($query);
@@ -3210,9 +3211,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+		$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
             
 			$db->setQuery($query);
 	    try{
@@ -3266,9 +3268,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+	$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
             
 			$db->setQuery($query);
 	    try{
@@ -3322,9 +3325,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+	$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
             
 			$db->setQuery($query);
 	    try{
@@ -3378,9 +3382,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+	$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
             
 			$db->setQuery($query);
 	    try{
@@ -3434,9 +3439,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
             $query->clear();
         $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+	$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
         
 			$db->setQuery($query);
 	    try{
@@ -3490,9 +3496,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
 	    $query->clear();
 	    $query->select('id,project_position_id');
         // From the table
-		$query->from('#__sportsmanagement_team_staff');
+	$query->from('#__sportsmanagement_season_team_person_id');
         $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('team_id = ' . $favteam);
+        $query->where('season_id = ' . $season_id );
 	    
             
 			$db->setQuery($query);
