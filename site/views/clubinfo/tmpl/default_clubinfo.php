@@ -32,7 +32,7 @@ if (!isset($this->club)) {
 } else {
     ?>
     <div class="<?php echo $params->get('boostrap_div_class'); ?>">
-        <div class="<?php echo $this->divclass; ?>3">
+        <div class="<?php echo $this->divclass; ?>3 center">
             <?PHP ?>
             <!-- SHOW LOGO - START -->
             <?php

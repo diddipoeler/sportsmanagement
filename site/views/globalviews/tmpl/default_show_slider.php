@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div class="container-fluid" id="show_slider">
+<div class="row-fluid" id="show_slider">
     <?php
     if (version_compare(JSM_JVERSION, '4', 'eq')) {
 // Joomla! 4.0 code here
@@ -105,12 +105,12 @@ defined('_JEXEC') or die('Restricted access');
             ?>
         </div>
     </div>
-        <?PHP
-    } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
+    <?PHP
+} elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
 // Joomla! 1.7 code here
-    } elseif (version_compare(JVERSION, '1.6.0', 'ge')) {
+} elseif (version_compare(JVERSION, '1.6.0', 'ge')) {
 // Joomla! 1.6 code here
-    } else {
+} else {
 // Joomla! 1.5 code here
-    }
-    ?>
+}
+?>
