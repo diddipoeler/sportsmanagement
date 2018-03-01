@@ -3537,7 +3537,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
  * 
  * @return void
  */
-function savePressebericht()
+function savePressebericht($post = NULL)
 {
 // Reference global application object
 $app = JFactory::getApplication();
@@ -3545,7 +3545,7 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $project_id = $app->getUserState( "$option.pid", '0' );
-$post = $app->input->post->get('post');	
+//$post = $app->input->post->get('post');	
 $projectteamid = $app->getUserState($option.'projectteamid');	
 $match_id = $app->input->getVar('match_id'); 	
 $project_position_id = $post['project_position_id'];
