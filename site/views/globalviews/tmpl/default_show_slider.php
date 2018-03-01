@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
             }
             ?>
         </div>
-    </div>
+    
     <?PHP
 } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
 // Joomla! 1.7 code here
@@ -114,3 +114,4 @@ defined('_JEXEC') or die('Restricted access');
 // Joomla! 1.5 code here
 }
 ?>
+</div>
