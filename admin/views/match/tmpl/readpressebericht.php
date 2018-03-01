@@ -243,5 +243,5 @@ if ( $this->matchnumber )
 
 ?>
 <input type='submit' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVE_PRESSEBERICHT'); ?>' onclick='' />
-<input type="hidden" name="task"				value="match.savecsvpressebericht" />
+<input type="hidden" name="task" value="match.savecsvpressebericht" />
 </form>

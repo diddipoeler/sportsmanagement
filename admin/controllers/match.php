@@ -512,6 +512,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
    */
   function savecsvpressebericht()
     {
+// Reference global application object
+$app = JFactory::getApplication();
+$post = $app->input->post->getArray(array());
+$app->input->set('post', $post);        
 //    JFactory::getApplication()->input->setVar('hidemainmenu',1);
 //	JFactory::getApplication()->input->setVar('layout','savepressebericht');
 //	JFactory::getApplication()->input->setVar('view','match');
