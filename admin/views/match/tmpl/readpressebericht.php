@@ -233,4 +233,5 @@ if ( $this->matchnumber )
 <input type="hidden" name="layout" value="savepressebericht" />
 <input type="hidden" name="view" value="match" />
 <input type="hidden" name="tmpl" value="component" />
+<input type="hidden" name="match_id" value="<?php echo $this->item->id; ?>" />	
 </form>
