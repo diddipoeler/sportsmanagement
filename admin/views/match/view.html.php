@@ -322,7 +322,7 @@ $this->request_url	= $uri->toString();
 			foreach( $res as $pos )
 			{
 			$pos->text = JText::_( $pos->text );
-			$pos->value = $pos->posid
+			$pos->value = $pos->posid;
 			}
 
 			$position_id = array_merge( $position_id, $res );
@@ -337,7 +337,7 @@ $this->request_url	= $uri->toString();
 			foreach( $res as $pos )
 			{
 			$pos->text = JText::_( $pos->text );
-			$pos->value = $pos->posid
+			$pos->value = $pos->posid;
 			}
 
 			$position_id = array_merge( $position_id, $res );
