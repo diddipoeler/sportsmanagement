@@ -2988,24 +2988,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         // Select some fields
         if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-
-		$db->setQuery($query);
-		try{
-		$person_id = $db->loadResult();
-		}
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[1], $teile[0]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//
+//		$db->setQuery($query);
+//		try{
+//		$person_id = $db->loadResult();
+//		}
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
 		
     }
     
@@ -3058,24 +3058,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         // Select some fields
         if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-
-		$db->setQuery($query);
-		try{
-		$person_id = $db->loadResult();
-		}
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[1], $teile[0]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//
+//		$db->setQuery($query);
+//		try{
+//		$person_id = $db->loadResult();
+//		}
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }
         if ( $person_id )
         {
@@ -3203,24 +3203,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // Select some fields
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }
     if ( $person_id )
     {
@@ -3261,24 +3261,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }        
     if ( $person_id )
     {
@@ -3319,24 +3319,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }
     if ( $person_id )
     {
@@ -3377,24 +3377,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }
     if ( $person_id )
     {
@@ -3435,24 +3435,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
-}	
+$person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+//}	
     }
     if ( $person_id )
     {
@@ -3493,24 +3493,24 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__sportsmanagement_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
-
-    $db->setQuery($query);
-	    try{
-	$person_id = $db->loadResult();
-	    }
-catch (Exception $e){
-$msg = $e->getMessage(); // Returns "Normally you would have other code...
-$code = $e->getCode(); // Returns '500';
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
-}	
+    $person_id = $this->getPersonId($teile[0], $teile[1]);
+//        $query->clear();
+//        $query->select('id');
+//        // From the table
+//		$query->from('#__sportsmanagement_person');
+//        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) );
+//        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) );
+//
+//    $db->setQuery($query);
+//	    try{
+//	$person_id = $db->loadResult();
+//	    }
+//catch (Exception $e){
+//$msg = $e->getMessage(); // Returns "Normally you would have other code...
+//$code = $e->getCode(); // Returns '500';
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+//}	
     }        
     if ( $person_id )
     {
@@ -3554,6 +3554,43 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $app->setUserState($option.'projectteamid',$projectteamid);
     
     }
+
+
+/**
+ * sportsmanagementModelMatch::getPersonId()
+ * 
+ * @param string $firstname
+ * @param string $lastname
+ * @return void
+ */
+function getPersonId($firstname='', $lastname='')
+{
+// Reference global application object
+$app = JFactory::getApplication();    
+// Get a db connection.
+$db = sportsmanagementHelper::getDBConnection();
+$person_id = 0;
+// Create a new query object.
+$query = $db->getQuery(true);        
+$query->select('id');
+// From the table
+$query->from('#__sportsmanagement_person');
+$query->where('firstname LIKE ' . $db->Quote( '' . trim($firstname) . '' ) );
+$query->where('lastname LIKE ' . $db->Quote( '' . trim($lastname) . '' ) );
+$db->setQuery($query);
+try{
+$person_id = $db->loadResult();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+}    
+
+return $person_id;    
+    
+}
 
 
 /**
