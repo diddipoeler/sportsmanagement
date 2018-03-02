@@ -2905,7 +2905,22 @@ $db = sportsmanagementHelper::getDBConnection();
     $tblproject->load($project_id);
     $favteam = $tblproject->fav_team;
 	$season_id = $tblproject->season_id;
-        
+
+for($a=0; $a < sizeof($csv_file->titles); $a++ )
+    {
+$csv_file->titles[$a] = utf8_encode ( $csv_file->titles[$a] );
+    }
+
+foreach( $csv_file->data as $key => $key2 )
+{
+foreach( $key2 as $key3 => $value )
+{
+$key3 = utf8_encode ($key3);
+$key4[$key3] = utf8_encode ($value );
+}
+$csv_file->data[$key] = $key4;
+}
+	    
     if ( !$favteam )
     {
 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT_NO_FAV_TEAM'),'error');
