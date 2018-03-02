@@ -3231,12 +3231,17 @@ abstract class sportsmanagementHelper {
                 <img src="components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg" alt="svdoldie" height="80px">
                 <span>svdoldie</span><br>
             </div><div class="jsm-info-team p-1">
-                <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
+                <img src="components/com_sportsmanagement/assets/icons/appu-konrad.jpg" alt="appukonrad" height="80px">
                 <span>donclumsy</span><br>
             </div>
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
                 <span>stony</span><br>
+            </div>
+            
+            </div><div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
+                <span>donclumsy</span><br>
             </div>
 
             <div class="p-1 mb-2">' . JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') . ': <a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></div>
