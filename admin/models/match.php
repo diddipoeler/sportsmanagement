@@ -3537,7 +3537,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
  * 
  * @return void
  */
-function savePressebericht()
+function savePressebericht($post = NULL)
 {
 // Reference global application object
 $app = JFactory::getApplication();
@@ -3545,7 +3545,7 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $project_id = $app->getUserState( "$option.pid", '0' );
-$post = $app->input->post->get('post');	
+//$post = $app->input->post->get('post');	
 $projectteamid = $app->getUserState($option.'projectteamid');	
 $match_id = $app->input->getVar('match_id'); 	
 $project_position_id = $post['project_position_id'];
@@ -3553,6 +3553,16 @@ $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
 
+$this->csv_staff = $app->getUserState($option.'csv_staff');
+$this->csv_cards = $app->getUserState($option.'csv_cards');
+$this->csv_in_out = $app->getUserState($option.'csv_in_out');
+$this->csv_player = $app->getUserState($option.'csv_player');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' cards<br><pre>'.print_r($this->csv_cards,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' in out<br><pre>'.print_r($this->csv_in_out,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' player<br><pre>'.print_r($this->csv_player,true).'</pre>'),'notice');
+	
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post<br><pre>'.print_r($post,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_position_id<br><pre>'.print_r($project_position_id,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_staff_position_id<br><pre>'.print_r($project_staff_position_id,true).'</pre>'),'error');
