@@ -4,99 +4,172 @@
         <message>
             <![CDATA[COM_SPORTSMANAGEMENT_XML_ALLCLUBS_LAYOUT_DESCR]]>
         </message>
-    </layout>
-    
-    <fields name="request"
-    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
-		<fieldset	name="request"
-					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-					>
+    </layout>  
+     
+    <fields
+        name="request"
+        addfieldpath ="/administrator/components/com_sportsmanagement/models/fields"
+    >
+        
+        <fieldset
+            name="request"
+            label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+        >
+            
+            <field 
+                type="extensionversion" 
+                version="1.1.0" 
+            />
+            
+            <field
+                type="extensionauthor" 
+            />
+            
+            <field
+                type="extensiontranslators"
+                translators="COM_SPORTSMANAGEMENT_TRANSLATORS"
+            />
+            
+            <field 
+                type="extensionlink"
+                linktype="translate" link="https://www.transifex.com/opentranslators/"
+            />	
+            
+            <field
+                type="extensionlink"
+                linktype="onlinedoc"
+                link="http://jsm-wiki.diddipoeler.de/index.php?title=JSM-Menue:All_Clubs"
+            />
+            
+            <field
+                type="extensionlink"
+                linktype="forum"
+                link="http://www.fussballineuropa.de/"
+            />	   
+                     	
+            <field
+                type="extensionlink"
+                linktype="support"
+                link="http://www.fussballineuropa.de/"
+            />
+            
+            <field
+                type="extensionlink"
+                linktype="report" 
+                link="https://github.com/diddipoeler/sportsmanagement/issues" 
+            />	
+            
+            <field
+                type="extensionlink" 
+                linktype="donate"
+                link="http://www.fussballineuropa.de/" 
+            />	 
+            				
+            <field
+                name="use_current_season"
+                type="extensionradiobutton"
+                default="0"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_USE_CURRENT_SEASON"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-<field type="extensionversion" version="1.1.0" />
-<field type="extensionauthor" />
-<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
-<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=JSM-Menue:All_Clubs" />
-<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
-<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
-<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
-<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-					
-         <field name="use_current_season" type="extensionradiobutton" default="0"
-		class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_USE_CURRENT_SEASON"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_USE_CURRENT_SEASON">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-
-          <field 	name="table_class" type="extensionradiobutton" default="table" 
-		class="radio btn-group"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
-
-
-		</fieldset>
-	</fields>
-
-<fields name="params">
-    <!---
-		<fieldset name="basic"
-		          label="COM_SPORTSMANAGEMENT_ATTRIBS_MAIN_SETTINGS_LABEL">
-    
-    </fieldset>
-    -->
-    <fieldset  name="advanced" label="">
-            <field name="picture" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PICTURE"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_PICTURE">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
+            <field
+                name="table_class" type="extensionradiobutton" default="table"
+                class="radio btn-group"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+                <option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+                <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+                <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+                <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+                <option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>	
             </field>
-            <field name="website" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_WEBSITE"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_WEBSITE">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-            <field name="address" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_ADDRESS"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_ADDRESS">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-            <field name="zip_code" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_ZIP_CODE"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_ZIP_CODE">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-            <field name="city" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_CITY"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_CITY">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-            <field name="country" type="extensionradiobutton" default="1"
-                       class="radio btn-group btn-group-yesno"
-                       label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COUNTRY"
-                       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_COUNTRY">
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
+            
         </fieldset>
-	</fields>	
+        
+    </fields>
     
+    <fields 
+        name="params"
+    >
+        
+        <fieldset
+            name="advanced"
+            label=""
+        >
+            <field
+                name="picture"
+                type="extensionradiobutton"
+                default="1"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PICTURE"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_PICTURE"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            
+            <field name="website" type="extensionradiobutton" default="1"
+                   class="radio btn-group btn-group-yesno"
+                   label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_WEBSITE"
+                   description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_WEBSITE">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            
+            <field
+                name="address"
+                type="extensionradiobutton"
+                default="1"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_ADDRESS"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_ADDRESS"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            
+            <field
+                name="zip_code"
+                type="extensionradiobutton"
+                default="1"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_ZIP_CODE"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_ZIP_CODE"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            
+            <field
+                name="city"
+                type="extensionradiobutton"
+                default="1"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_CITY"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_CITY"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            
+            <field
+                name="country"
+                type="extensionradiobutton"
+                default="1"
+                class="radio btn-group btn-group-yesno"
+                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_COUNTRY"
+                description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_COUNTRY">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+
+        </fieldset>
+
+    </fields>	   
+
 </metadata>
