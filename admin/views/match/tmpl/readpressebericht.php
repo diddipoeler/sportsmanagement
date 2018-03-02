@@ -73,6 +73,11 @@ if ( $this->matchnumber )
 	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
+	<td>
+        <?php 	
+	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', 0 );
+	?>
+	</td>	
         </tr>
 	<?php endforeach; ?>
 	
