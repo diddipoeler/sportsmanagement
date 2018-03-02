@@ -25,6 +25,7 @@ if ( $this->matchnumber )
 <th class="">In der Datenbank ?</th>
 <th class="">Projektteam zugeordnet ?</th>
 <th class="">Projektposition</th>
+<th class="">Startaufstellung</th>	
 </tr>	
 	
 	<?php foreach ($this->csvplayers as $value): ?>
