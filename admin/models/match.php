@@ -3557,6 +3557,11 @@ $this->csv_staff = $app->getUserState($option.'csv_staff');
 $this->csv_cards = $app->getUserState($option.'csv_cards');
 $this->csv_in_out = $app->getUserState($option.'csv_in_out');
 $this->csv_player = $app->getUserState($option.'csv_player');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' cards<br><pre>'.print_r($this->csv_cards,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' in out<br><pre>'.print_r($this->csv_in_out,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' player<br><pre>'.print_r($this->csv_player,true).'</pre>'),'notice');
 	
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post<br><pre>'.print_r($post,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_position_id<br><pre>'.print_r($project_position_id,true).'</pre>'),'error');
