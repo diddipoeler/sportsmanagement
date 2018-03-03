@@ -224,7 +224,7 @@ jimport('joomla.html.html.bootstrap');
                     </div>
                     <div class="span3">
                         <?php sportsmanagementHelper::jsminfo(); ?>
-                        <div class="center">
+                        <div class="span3">
                             <?php
                             $start = 1;
                             // Define slides options
