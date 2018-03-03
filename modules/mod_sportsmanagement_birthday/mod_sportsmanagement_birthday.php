@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 
 if (!defined('DS')) {
