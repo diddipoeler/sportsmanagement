@@ -3239,7 +3239,7 @@ abstract class sportsmanagementHelper {
                 <span>stony</span><br>
             </div>
             
-            </div><div class="jsm-info-team p-1">
+            <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
                 <span>donclumsy</span><br>
             </div>
