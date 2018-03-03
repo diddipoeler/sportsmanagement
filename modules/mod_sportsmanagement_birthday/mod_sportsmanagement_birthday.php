@@ -52,13 +52,20 @@ $mode = $params->def("mode");
 
 switch ($mode) {
     case 'B':
-        break;
+    break;
     default:
+    if ( $mode == 'L' && $params->get('show_player_card') )
+    {
+    $attribs['layout'] = 'default_player_card.php';    
+    }
+    else
+    {
 //add css file
-        $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
-        break;
+    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    break;
 }
 
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
