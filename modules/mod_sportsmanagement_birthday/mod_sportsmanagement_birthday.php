@@ -127,24 +127,11 @@ switch ($mode) {
 
                 <?php
                 if ($params->get('show_picture')) {
-//			if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
-//            {
-//				$thispic = $person['picture'];
-//			}
-//			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
-//            {
-//				$thispic = $person['default_picture'];
-//			}
-
                     if (sportsmanagementHelper::existPicture($person['picture']) && $person['picture'] != '') {
                         $thispic = $person['picture'];
                     } elseif (sportsmanagementHelper::existPicture($person['default_picture']) && $person['default_picture'] != '') {
                         $thispic = $person['default_picture'];
                     }
-
-                    //echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
-                    //if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
-                    //echo ' /><br />';
                 }
                 switch ($person['days_to_birthday']) {
                     case 0: $whenmessage = $params->get('todaymessage');
@@ -165,22 +152,14 @@ switch ($mode) {
                 $birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
                 $birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
                 $text .= '<br> ' . $birthdaytext;
-                //echo $birthdaytext;
                 ?>
                 <?php
                 $showname = '';
                 $html_li .= '<div><a href="' . $person_link . '"><img u="image" src="' . $thispic . '" /></a>';
-//$html_li .= '<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">';
-//$html_li .= $text;
-
                 $html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $showname . '</div>';
                 $html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $text . '</div>';
-//$html_li .= '<div u="caption" t="B-T" style="position:absolute;left:380px;top:80px;width:130px;height:40px;font-size:36px;color:#000;line-height:40px;">Please!</div>';
-//$html_li .= '</div>';
                 $html_li .= '</div>';
 
-                //$html_li .= '<li><a href="'.$club_link.'"><img src="'.$thispic.'" alt="'.$text.'" title="'.$text.'" id="wows1_'.$id.'" /></a></li>';    
-                //$html_li .= '<li><img src="'.$thispic.'" alt="" title="" id="wows1_'.$id.'" /></li>';
                 $id++;
                 $k = 1 - $k;
                 $counter++;
@@ -190,7 +169,7 @@ switch ($mode) {
 }
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-    <?PHP
-    require(JModuleHelper::getLayoutPath($module->module, $layout));
-    ?>
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module, $layout));
+?>
 </div>
