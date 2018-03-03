@@ -56,7 +56,7 @@ switch ($mode) {
     default:
     if ( $mode == 'L' && $params->get('show_player_card') )
     {
-    $attribs['layout'] = 'default_player_card.php';    
+    $attribs['layout'] = 'default_player_card';    
     }
     else
     {
