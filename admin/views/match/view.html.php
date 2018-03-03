@@ -358,10 +358,14 @@ $this->request_url	= $uri->toString();
 		
         $lists['events'] = $eventlist;
         unset( $eventlist );
-        
-        $this->lists	= $lists;
-    
-		$this->setLayout('readpressebericht');
+        // build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
+    	$this->setLayout('readpressebericht');
     
     }
     
@@ -918,7 +922,7 @@ $this->matchnumber	= $matchnumber;
 if ( $matchnumber )
 {
 $readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-$this->csvplayers	= $model->csv_player;   
+$this->csvplayers = $model->csv_player;   
 $this->csvinout	= $model->csv_in_out;
 $this->csvcards	= $model->csv_cards;
 $this->csvstaff	= $model->csv_staff;
@@ -956,7 +960,13 @@ $this->csvstaff	= $model->csv_staff;
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->lists	= $lists;
+	// build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
  
         parent::display($tpl);
     }

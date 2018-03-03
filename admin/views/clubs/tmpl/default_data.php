@@ -194,109 +194,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         </td>
 						<td class="center">
 							<?php
-							if ($row->logo_big == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-
-							}
-							elseif ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_big)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                    
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
+$picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,JURI::root().$row->logo_big,$imageTitle,'20',JURI::root().$row->logo_big);                            
 							?>
 						</td>
 						<td class="center">
 							<?php
-							if ($row->logo_middle == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-							}
-							elseif ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_middle)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                                                   
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
+$picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                            
 							?>
 						</td>
 						<td class="center">
 							<?php
-							if ($row->logo_small == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-							}
-							elseif ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-				  								$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                 
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_small)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                     
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
-						
+$picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,JURI::root().$row->logo_small,$imageTitle,'20',JURI::root().$row->logo_small);
 /*
 <td class=""><?php echo $row->zipcode; ?></td>
 <td class=""><?php echo $row->location; ?></td>

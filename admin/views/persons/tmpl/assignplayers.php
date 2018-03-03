@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.tooltip');
 jimport('joomla.filesystem.file');
-
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 
@@ -194,23 +193,13 @@ $userId		= $user->get('id');
 							</td>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								else
-								{
-									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-								}
+								$picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png'; 
+                                $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+                                
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id,JURI::root().$row->picture,$playerName,'20',JURI::root().$row->picture);
 								?>
 							</td>
 							<td class="nowrap" class="center">
