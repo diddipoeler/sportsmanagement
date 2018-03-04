@@ -14,3 +14,89 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+<?php
+foreach ($persons AS $person) {
+switch ($person['days_to_birthday']) {
+case 0: $whenmessage = $params->get('todaymessage');
+break;
+case 1: $whenmessage = $params->get('tomorrowmessage');
+break;
+default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
+break;
+}
+
+$birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+$dayformat = htmlentities(trim($params->get('dayformat')));
+$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+$birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
+$birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
+$birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'] . '-' . $person['daymonth'])), $birthdaytext);
+$birthdaytext = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+$birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
+$birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
+$birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
+
+$person_link = "";
+$person_type = $person['type'];
+
+if ($person_type == 1) {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+$routeparameter['s'] = JRequest::getInt('s', 0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
+} else if ($person_type == 2) {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+$routeparameter['s'] = JRequest::getInt('s', 0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
+} else if ($person_type == 3) {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+$routeparameter['s'] = JRequest::getInt('s', 0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
+}
+$showname = JHTML::link($person_link, $usedname);
+
+
+
+?>
+<div class="card">
+<?php
+                            if ($params->get('show_picture') == 1) {
+                                if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '') {
+                                    $thispic = $person['picture'];
+                                } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
+                                    $thispic = $person['default_picture'];
+                                }
+                                echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+                                if ($params->get('picture_width') != '') {
+                                    echo ' width="' . $params->get('picture_width') . '"';
+                                }
+                                echo ' /><br />';
+                            }
+?>                            
+<!-- <img class="photo" src="http://www.sparta.cz/img/edee/u/team/members/thumbs/2151-stanciu.jpg" alt="Kevin Storm" title="Nicolae Stanciu" width="180"> -->
+<div class="name"><img class="flag" src="https://lipis.github.io/flag-icon-css/flags/4x3/ro.svg" alt="Romania Flag"> Nicolae Stanciu</div>
+<div class="position">Mittelfeldspieler - AC Sparta Praha</div>
+<div class="birthday-text">... wird 25 Jahre alt
+in 65 Tagen </div>
+<div class="birthday-text"> am 07. Mai 2018 
+(* 07.05.1993)</div>
+  
+  
+<p><button><i class="fas fa-info-circle"></i> Spielerinformationen</button></p>
+</div>
+<i class="fas fa-info-circle"></i> 
+
+<?php
+}
+?>
