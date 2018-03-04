@@ -74,18 +74,18 @@ $showname = JHTML::link($person_link, $usedname);
 ?>
 <div class="card">
 <?php
-                            if ($params->get('show_picture') == 1) {
-                                if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '') {
-                                    $thispic = $person['picture'];
-                                } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
-                                    $thispic = $person['default_picture'];
-                                }
-                                echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
-                                if ($params->get('picture_width') != '') {
-                                    echo ' width="' . $params->get('picture_width') . '"';
-                                }
-                                echo ' /><br />';
-                            }
+if ($params->get('show_picture') == 1) {
+if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '') {
+$thispic = $person['picture'];
+} elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
+$thispic = $person['default_picture'];
+}
+echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+if ($params->get('picture_width') != '') {
+echo ' width="' . $params->get('picture_width') . '"';
+}
+echo ' /><br />';
+}
 ?>                            
 
 <div class="name">

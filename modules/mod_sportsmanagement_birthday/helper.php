@@ -184,9 +184,9 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0) {
 
     $query->from('#__sportsmanagement_person AS p ');
     $query->join('INNER', '#__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
-    $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
+    $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id and st.season_id = stp.season_id ');
     $query->join('INNER', '#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
-    $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id');
+    $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
     $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
 
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
