@@ -94,7 +94,7 @@ echo ' /><br />';
     ?>
 </div>
 
-<div class="position">Mittelfeldspieler - <?php echo $person['team_name']; ?></div>
+<div class="position"><?php echo JText::_($person['position_name']); ?> - <?php echo $person['team_name']; ?></div>
 
 <div class="birthday-text">
 <?php echo $birthdaytext; ?>
