@@ -1,0 +1,19 @@
+div {
+  border: 0px solid grey;
+}
+
+.position {
+  background-color: gray;
+  color: white;
+  font-weight: bold;
+}
+
+.line {
+  border-right: 1px solid grey;
+  
+}
+
+.list {
+  min-width: 40%;
+  max-width: 40%;
+}
