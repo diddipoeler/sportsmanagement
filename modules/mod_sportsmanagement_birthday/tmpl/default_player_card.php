@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_play_card.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
@@ -87,13 +87,20 @@ $showname = JHTML::link($person_link, $usedname);
                                 echo ' /><br />';
                             }
 ?>                            
-<div class="name"><img class="flag" src="https://lipis.github.io/flag-icon-css/flags/4x3/<?php echo strtolower( JSMCountries::convertIso3to2($person['country']) ); ?>.svg" alt="<?php echo $text; ?>"><?php echo $text; ?></div>
+
+<div class="name">
+    <?php
+        echo JSMCountries::getCountryFlag($person['country']) . " " . $text;              
+    ?>
+</div>
+
 <div class="position">Mittelfeldspieler - <?php echo $person['team_name']; ?></div>
+
 <div class="birthday-text">
 <?php echo $birthdaytext; ?>
 </div>
   
-<p><button><i class="fas fa-info-circle"></i> Spielerinformationen</button></p>
+<p><div class="player-info"><i class="fas fa-info-circle"></i> Spielerinformationen</div></p>
 </div>
 
 

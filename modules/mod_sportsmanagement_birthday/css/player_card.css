@@ -3,8 +3,7 @@
     max-width: 300px;
     margin: auto;
     text-align: center;
-    margin-top: 20px;
-    
+     
 }
 
 .photo {
@@ -16,7 +15,7 @@
     font-size: 18px;
 }
 
-button {
+.player-info {
     border: none;
     outline: 0;
     display: inline-block;
@@ -45,6 +44,6 @@ button:hover, a:hover {
   margin-bottom: 5px;
 }
 
-.flag {
+.name > .flag-icon {
   width: 20px;
 }
