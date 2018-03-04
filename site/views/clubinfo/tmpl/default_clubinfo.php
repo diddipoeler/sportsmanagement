@@ -10,12 +10,29 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+//$this->columns = 2;
+$this->divclass = '';
+
+$params = JComponentHelper::getParams('com_sportsmanagement');
+
+if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
+    $this->divclass = 'p-2 col';
+} elseif ($this->overallconfig['use_bootstrap_version'] && !$params->get('use_jsmgrid')) {
+    //$this->divclass = 'col p-2';
+    $this->divclass .= "col-xs-" ;
+    $this->divclass .= " col-sm-";
+    $this->divclass .= " col-md-";
+    $this->divclass .= " col-lg-";
+} else {
+    $this->divclass = "span";
+}
+
 if (!isset($this->club)) {
     JError::raiseWarning('ERROR_CODE', JText::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
-    <div class="row-fluid">
-        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+    <div class="<?php echo $params->get('boostrap_div_class'); ?>">
+        <div class="<?php echo $this->divclass; ?>3 center">
             <?PHP ?>
             <!-- SHOW LOGO - START -->
             <?php
@@ -63,7 +80,7 @@ if (!isset($this->club)) {
         <?php
         if ($this->config['show_club_info']) {
             ?>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+            <div class="<?php echo $this->divclass; ?>9">
                 <?php
                 if ($this->club->address || $this->club->zipcode || $this->club->location) {
 
@@ -297,13 +314,8 @@ if (!isset($this->club)) {
                         </ul>
                     </div>
                 </div>
-                <?PHP
-//}
-                ?>
             </div>
-            <!-- </div> --> 
-            <!--    </div> -->
-            <?php
-        }
-    }
-    ?>
+        <?php }
+        ?>
+    </div>
+<?php } ?>

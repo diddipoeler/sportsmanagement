@@ -23,7 +23,6 @@ JLoader::import('joomla.utilities.simplecrypt');
 JLoader::import('libraries.joomla.google.google', JPATH_ADMINISTRATOR);
 JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 
-
 /**
  * sportsmanagementModelMatch
  * 
@@ -39,15 +38,19 @@ JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 class sportsmanagementModelMatch extends JSMModelAdmin
 {
 
-	const MATCH_ROSTER_STARTER			= 0;
-	const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
-	const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
-	const MATCH_ROSTER_RESERVE			= 3;
+const MATCH_ROSTER_STARTER = 0;
+const MATCH_ROSTER_SUBSTITUTE_IN = 1;
+const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
+const MATCH_ROSTER_RESERVE = 3;
     
-    var $teams = NULL;
+var $teams = NULL;
 static $_season_id = 0;
 static $_project_id = 0;
 
+var $storeFailedColor = 'red';
+var $storeSuccessColor = 'green';
+var $existingInDbColor = 'orange';
+	
 	/**
 	 * Override parent constructor.
 	 *
@@ -2861,7 +2864,7 @@ $csv->auto($dcsv['cachefile']);
     $tblmatch->load($match_id);
     $match_number = $tblmatch->match_number;
     //$app->enqueueMessage(JText::_('getPresseberichtMatchnumber match number<br><pre>'.print_r($match_number,true).'</pre>'   ),'');
-    $csv_match_number = $csv_file->data[0][Spielberichtsnummer];
+    $csv_match_number = $csv_file->data[0]['Spielberichtsnummer'];
     //$app->enqueueMessage(JText::_('getPresseberichtMatchnumber csv match number<br><pre>'.print_r($csv_match_number,true).'</pre>'   ),'');
     $teile = explode(".",$csv_match_number);
     
@@ -2889,8 +2892,8 @@ $csv->auto($dcsv['cachefile']);
     function getPresseberichtReadPlayers($csv_file)
     {
     $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication(); 
-	$db = sportsmanagementHelper::getDBConnection();
+$app = JFactory::getApplication(); 
+$db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
     
     $csv_player_count = 40;
@@ -2901,31 +2904,54 @@ $csv->auto($dcsv['cachefile']);
     $tblproject = JTable::getInstance("project", "sportsmanagementTable");
     $tblproject->load($project_id);
     $favteam = $tblproject->fav_team;
+	$season_id = $tblproject->season_id;
+
+for($a=0; $a < sizeof($csv_file->titles); $a++ )
+    {
+$csv_file->titles[$a] = utf8_encode ( $csv_file->titles[$a] );
+    }
+
+foreach( $csv_file->data as $key => $key2 )
+{
+foreach( $key2 as $key3 => $value )
+{
+$key3 = utf8_encode ($key3);
+$key4[$key3] = utf8_encode ($value );
+}
+$csv_file->data[$key] = $key4;
+}
+	    
+    if ( !$favteam )
+    {
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT_NO_FAV_TEAM'),'error');
+return false;	    
+    }
+	    
     $tblteam = JTable::getInstance("team", "sportsmanagementTable");
     $tblteam->load($favteam);
     
     // Select some fields
     $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
-        $query->where('project_id = '.$project_id);  
-        $query->where('team_id = '.$favteam);   
+    $query->select('pt1.id');
+    // From the table
+$query->from('#__sportsmanagement_project_team as pt1');
+$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+$query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+    $query->where('pt1.project_id = '.$project_id);  
+    $query->where('st1.team_id = '.$favteam);   
         
-    //$query="SELECT id
-//			FROM #__joomleague_project_team
-//			WHERE project_id=$project_id AND team_id=$favteam";
 			$db->setQuery($query);
-			$projectteamid = $db->loadResult();
-    //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers projectteamid<br><pre>'.print_r($projectteamid,true).'</pre>'   ),'');    
+try{
+	    $projectteamid = $db->loadResult();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
     
-    /*
-    // bereinigen des csv files
-    foreach ( $csv_file->data[0] as $key )
-    {
-        $key = ereg_replace(" ", "-", $key);
-    }
-    */
+
     
     if ( $projectteamid )
     {
@@ -2962,30 +2988,13 @@ $csv->auto($dcsv['cachefile']);
         // Select some fields
         if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-
-		$db->setQuery($query);
-		$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[1], $teile[0]);
     }
     
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -3013,30 +3022,12 @@ $csv->auto($dcsv['cachefile']);
         // Select some fields
         if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-
-		$db->setQuery($query);
-		$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[1], $teile[0]);
     }
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-        
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -3052,9 +3043,9 @@ $csv->auto($dcsv['cachefile']);
             $this->csv_in_out[$a]->in_out_time = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit'];
             $this->csv_in_out[$a]->came_in = 1;
             $this->csv_in_out[$a]->in = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Nr'];
-            $this->csv_in_out[$a]->out = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-FuerNr'];
+            $this->csv_in_out[$a]->out = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Für Nr'];
             $this->csv_in_out[$a]->spieler = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Spieler'];
-            $this->csv_in_out[$a]->spielerout = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-fuer-Spieler'];
+            $this->csv_in_out[$a]->spielerout = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-für-Spieler'];
         }
     }
     
@@ -3107,23 +3098,24 @@ $csv->auto($dcsv['cachefile']);
     	$query->clear();
         $query->select('event_type_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event');
+		$query->from('#__sportsmanagement_match_event');
         $query->where('match_id = ' . $match_id );
         $query->where('projectteam_id = ' . $projectteamid );
         $query->where('teamplayer_id = ' . $project_person_id );
         
 		$db->setQuery($query);
+	    try{
 		$match_event_id = $db->loadResult();
+	    }
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');	
+}	
         $this->csv_cards[$key]->event_type_id = $match_event_id;
     }    
     }
-        
-        
-        
-        
-        
-        
-    
     // mannschaftsverantwortliche
     $i = 1;
     $this->csv_staff[$i]->position = 'Trainer';
@@ -3139,29 +3131,12 @@ $csv->auto($dcsv['cachefile']);
     // Select some fields
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3179,29 +3154,12 @@ $csv->auto($dcsv['cachefile']);
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[0], $teile[1]);
     }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3219,29 +3177,12 @@ $csv->auto($dcsv['cachefile']);
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3259,29 +3200,12 @@ $csv->auto($dcsv['cachefile']);
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-            
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3299,29 +3223,12 @@ $csv->auto($dcsv['cachefile']);
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+$person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query->clear();
-        $query->select('id,project_position_id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
-        $query->where('person_id = ' . $person_id );
-        $query->where('projectteam_id = ' . $projectteamid );
-        
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3339,34 +3246,16 @@ $csv->auto($dcsv['cachefile']);
     // gibt es den staff ?
     if ( $teile[0] )
     {
-
-        $query->clear();
-        $query->select('id');
-        // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
-
-    $db->setQuery($query);
-	$person_id = $db->loadResult();
+    $person_id = $this->getPersonId($teile[0], $teile[1]);
     }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			$db->setQuery($query);
-			$projectpersonid = $db->loadObject();
+            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
-
-    
-    //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers player<br><pre>'.print_r($this->csv_player,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers wechsel<br><pre>'.print_r($this->csv_in_out,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers wechsel<br><pre>'.print_r($this->csv_cards,true).'</pre>'   ),'');
-    
+   
     
     }
     
@@ -3377,7 +3266,158 @@ $csv->auto($dcsv['cachefile']);
     $app->setUserState($option.'projectteamid',$projectteamid);
     
     }
-         
+
+
+/**
+ * sportsmanagementModelMatch::getPersonId()
+ * 
+ * @param string $firstname
+ * @param string $lastname
+ * @return void
+ */
+function getPersonId($firstname='', $lastname='')
+{
+// Reference global application object
+$app = JFactory::getApplication();    
+// Get a db connection.
+$db = sportsmanagementHelper::getDBConnection();
+$person_id = 0;
+// Create a new query object.
+$query = $db->getQuery(true);        
+$query->select('id');
+// From the table
+$query->from('#__sportsmanagement_person');
+$query->where('firstname LIKE ' . $db->Quote( '' . trim($firstname) . '' ) );
+$query->where('lastname LIKE ' . $db->Quote( '' . trim($lastname) . '' ) );
+$db->setQuery($query);
+try{
+$person_id = $db->loadResult();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+}    
+
+return $person_id;    
     
+}
+
+
+/**
+ * sportsmanagementModelMatch::getSeasonTeamPersonId()
+ * 
+ * @param integer $person_id
+ * @param integer $favteam
+ * @param mixed $season_id
+ * @return void
+ */
+function getSeasonTeamPersonId($person_id=0,$favteam=0,$season_id)
+{
+// Reference global application object
+$app = JFactory::getApplication();    
+// Get a db connection.
+$db = sportsmanagementHelper::getDBConnection();
+// Create a new query object.
+$query = $db->getQuery(true);    
+$query->select('id,project_position_id');
+// From the table
+$query->from('#__sportsmanagement_season_team_person_id');
+$query->where('person_id = ' . $person_id );
+$query->where('team_id = ' . $favteam);
+$query->where('season_id = ' . $season_id );
+            
+$db->setQuery($query);
+try{
+$projectpersonid = $db->loadObject();
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+$projectpersonid = new stdClass();	
+$projectpersonid->id = 0;
+$projectpersonid->project_position_id = 0;
+}    
+    
+return $projectpersonid;    
+    
+}
+
+
+         
+/**
+ * sportsmanagementModelMatch::savePressebericht()
+ * 
+ * @return void
+ */
+function savePressebericht($post = NULL)
+{
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$project_id = $app->getUserState( "$option.pid", '0' );
+//$post = $app->input->post->get('post');	
+$projectteamid = $app->getUserState($option.'projectteamid');	
+$match_id = $app->input->getVar('match_id'); 	
+$project_position_id = $post['project_position_id'];
+$project_staff_position_id = $post['project_staff_position_id'];
+$inout_position_id = $post['inout_position_id'];
+$project_events_id = $post['project_events_id'];
+
+$this->csv_staff = $app->getUserState($option.'csv_staff');
+$this->csv_cards = $app->getUserState($option.'csv_cards');
+$this->csv_in_out = $app->getUserState($option.'csv_in_out');
+$this->csv_player = $app->getUserState($option.'csv_player');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' cards<br><pre>'.print_r($this->csv_cards,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' in out<br><pre>'.print_r($this->csv_in_out,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' player<br><pre>'.print_r($this->csv_player,true).'</pre>'),'notice');
+	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post<br><pre>'.print_r($post,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_position_id<br><pre>'.print_r($project_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_staff_position_id<br><pre>'.print_r($project_staff_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' inout_position_id<br><pre>'.print_r($inout_position_id,true).'</pre>'),'error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_events_id<br><pre>'.print_r($project_events_id,true).'</pre>'),'error');
+	
+// Get a db connection.
+$db = sportsmanagementHelper::getDBConnection();
+// Create a new query object.
+$query = $db->getQuery(true);
+$query->clear();
+
+$my_text = '';	
+
+foreach ( $project_position_id as $key => $value )
+{
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+$this->_success_text['Importing general Person data:'] = $my_text; 	
+	
+	
+	
+}
+	
+	
 }
 ?>

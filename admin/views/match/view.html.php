@@ -102,9 +102,16 @@ $this->request_url	= $uri->toString();
         case 'pressebericht_4';
         $this->setLayout('pressebericht');
         break;
+	case 'savepressebericht';
+	case 'savepressebericht_3';		
+	case 'savepressebericht_4';		
+	$this->setLayout('savepressebericht');	
+	$this->_displaySavePressebericht();		
+	break;
         case 'readpressebericht';
         case 'readpressebericht_3';
         case 'readpressebericht_4';
+	$this->setLayout('readpressebericht');
         $this->initPressebericht(); 
         break;
         case 'editreferees';
@@ -122,19 +129,20 @@ $this->request_url	= $uri->toString();
         case 'editeventsbb';
         case 'editeventsbb_3';
         case 'editeventsbb_4';
+	$this->setLayout('editeventsbb');
         $this->initEditEeventsBB();
         break;
         case 'editstats';
         case 'editstats_3';
         case 'editstats_4';
         $this->setLayout('editstats');  
-		$this->initEditStats();
+	$this->initEditStats();
         break;
         case 'editlineup';
         case 'editlineup_3';
         case 'editlineup_4';
         $this->setLayout('editlineup');
-		$this->initEditLineup(); 
+	$this->initEditLineup(); 
         break;
         case 'edit';
         case 'edit_3';
@@ -144,6 +152,7 @@ $this->request_url	= $uri->toString();
         case 'picture';
         case 'picture_3';
         case 'picture_4';
+	$this->setLayout('picture');
         $this->initPicture();   
         break;
         }
@@ -300,7 +309,7 @@ $this->request_url	= $uri->toString();
 		if ( $matchnumber )
 			{
 				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-				$this->asscsvplayers	= $model->csv_player;   
+				$this->csvplayers = $model->csv_player;   
 				$this->csvinout	= $model->csv_in_out;
 				$this->csvcards	= $model->csv_cards;
 				$this->csvstaff	= $model->csv_staff;
@@ -310,6 +319,12 @@ $this->request_url	= $uri->toString();
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,1,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			$pos->value = $pos->posid;
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_position_id'] = $position_id;
@@ -319,13 +334,19 @@ $this->request_url	= $uri->toString();
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			$pos->value = $pos->posid;
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_staff_position_id'] = $position_id;
 		unset( $position_id );
         
         // events
-		$events = $model->getEventsOptions($this->project_id);
+		$events = $model->getEventsOptions($this->project_id, $matchnumber);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
@@ -337,10 +358,14 @@ $this->request_url	= $uri->toString();
 		
         $lists['events'] = $eventlist;
         unset( $eventlist );
-        
-        $this->lists	= $lists;
-    
-		$this->setLayout('readpressebericht');
+        // build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
+    	$this->setLayout('readpressebericht');
     
     }
     
@@ -853,19 +878,21 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return void
      */
-    function _displaySavePressebericht($tpl)
+    function _displaySavePressebericht()
     {
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+	$app = JFactory::getApplication();
+	$jinput = $app->input;
+	$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
+$post = $app->input->post->getArray(array());
+// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
     $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
-    $csv_file_save = $model->savePressebericht();
+    $csv_file_save = $model->savePressebericht($post);
     
     $this->importData	= $model->_success_text;
         
-    parent::display($tpl);    
+   // parent::display($tpl);    
     }
     
     /**
@@ -874,7 +901,7 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return
      */
-    function _displayPressebericht($tpl)
+    function _displayPressebericht()
     {
         $app = JFactory::getApplication();
 		$jinput = $app->input;
@@ -895,7 +922,7 @@ $this->matchnumber	= $matchnumber;
 if ( $matchnumber )
 {
 $readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-$this->csvplayers	= $model->csv_player;   
+$this->csvplayers = $model->csv_player;   
 $this->csvinout	= $model->csv_in_out;
 $this->csvcards	= $model->csv_cards;
 $this->csvstaff	= $model->csv_staff;
@@ -933,7 +960,13 @@ $this->csvstaff	= $model->csv_staff;
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->lists	= $lists;
+	// build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
  
         parent::display($tpl);
     }

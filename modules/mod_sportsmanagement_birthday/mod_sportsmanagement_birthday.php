@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 
 if (!defined('DS')) {
@@ -52,13 +53,23 @@ $mode = $params->def("mode");
 
 switch ($mode) {
     case 'B':
-        break;
+    break;
     default:
+    if ( $mode == 'L' && $params->get('show_player_card') )
+    {
+    $attribs['layout'] = 'default_player_card';    
+    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    else
+    {
 //add css file
-        $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
-        break;
+    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    break;
 }
 
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
@@ -127,24 +138,11 @@ switch ($mode) {
 
                 <?php
                 if ($params->get('show_picture')) {
-//			if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
-//            {
-//				$thispic = $person['picture'];
-//			}
-//			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
-//            {
-//				$thispic = $person['default_picture'];
-//			}
-
                     if (sportsmanagementHelper::existPicture($person['picture']) && $person['picture'] != '') {
                         $thispic = $person['picture'];
                     } elseif (sportsmanagementHelper::existPicture($person['default_picture']) && $person['default_picture'] != '') {
                         $thispic = $person['default_picture'];
                     }
-
-                    //echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
-                    //if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
-                    //echo ' /><br />';
                 }
                 switch ($person['days_to_birthday']) {
                     case 0: $whenmessage = $params->get('todaymessage');
@@ -165,22 +163,14 @@ switch ($mode) {
                 $birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
                 $birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
                 $text .= '<br> ' . $birthdaytext;
-                //echo $birthdaytext;
                 ?>
                 <?php
                 $showname = '';
                 $html_li .= '<div><a href="' . $person_link . '"><img u="image" src="' . $thispic . '" /></a>';
-//$html_li .= '<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">';
-//$html_li .= $text;
-
                 $html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $showname . '</div>';
                 $html_li .= '<div u="caption" t="' . $params->get('jssor_captiontransitions') . '" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">' . $text . '</div>';
-//$html_li .= '<div u="caption" t="B-T" style="position:absolute;left:380px;top:80px;width:130px;height:40px;font-size:36px;color:#000;line-height:40px;">Please!</div>';
-//$html_li .= '</div>';
                 $html_li .= '</div>';
 
-                //$html_li .= '<li><a href="'.$club_link.'"><img src="'.$thispic.'" alt="'.$text.'" title="'.$text.'" id="wows1_'.$id.'" /></a></li>';    
-                //$html_li .= '<li><img src="'.$thispic.'" alt="" title="" id="wows1_'.$id.'" /></li>';
                 $id++;
                 $k = 1 - $k;
                 $counter++;
@@ -190,7 +180,7 @@ switch ($mode) {
 }
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-    <?PHP
-    require(JModuleHelper::getLayoutPath($module->module, $layout));
-    ?>
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module, $layout));
+?>
 </div>

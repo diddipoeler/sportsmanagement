@@ -60,27 +60,27 @@
 		</field>
 
 	
-    <field	name="s" 
+    <field name="s" 
     task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
-			</field>
+    type="dependsql"
+    depends="cfg_which_database"
+    value_field="cfg_which_database"
+    key_field="season_id"
+	label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+	description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+	required="">
+	</field>
 		
-		  <field 	name="projects"
-      size="5" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
+	<field name="projects"
+    size="5" 
+	task="projects" 
+    type="dependsql"
+    depends="s"
+    key_field="season_id"
+	value_field="s"
+	required=""
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
 
 				<field 	name="use_fav" 
         type="extensionradiobutton" 
@@ -135,20 +135,21 @@
 
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
 			
-       <field name="mode" type="list" default="L" 
-					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
-					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
-<!--					<option value="T">TICKER</option> -->
-					<option value="L">LIST</option>
-					<option value="B">BOOTSTRAP</option> -->
-					<option value="J">Jssor Slider</option>
-				</field>
-      
-      	<!--
-        <field 	name="@spacer" type="spacer" default="" 
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
-						description="" />
-				-->
+    <field name="mode" type="list" default="L" 
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
+	<option value="L">LIST</option>
+	<option value="B">BOOTSTRAP</option>
+	<option value="J">Jssor Slider</option>
+	</field>
+     
+	<field name="show_player_card" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_LABEL" 
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_DESCR">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+	</field>
+	 
 				<field name="name_format" type="nameformat"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_DESCR" />

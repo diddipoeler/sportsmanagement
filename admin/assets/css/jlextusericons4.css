@@ -30,14 +30,20 @@
     object-fit: scale-down;
 }
 
-.jsm-info{
-    padding: 5px;
-    flex-grow: 1;
-    flex-basis: 120px;
+/*JSM INFO*/
+
+.jsm-info-team img{
+    max-width: 60px;
 }
 
-.jsm-info img{
-    max-width: 60px;
+.jsm-logo-box img{
+    flex: 0 0 auto;
+    max-width: 150px;
+    max-height: 100%;
+    align-self: center;
+    -webkit-align-self: center;
+    margin: auto;
+    object-fit: scale-down;
 }
 
 
