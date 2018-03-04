@@ -100,7 +100,7 @@ echo ' /><br />';
 <?php echo $birthdaytext; ?>
 </div>
   
-<p><div class="player-info"><i class="fas fa-info-circle"></i> Spielerinformationen</div></p>
+<p><div class="player-info"><a href="<?php echo $person_link; ?>" ><i class="fas fa-info-circle"></i> Spielerinformationen</a></div></p>
 </div>
 
 
