@@ -74,18 +74,18 @@ $showname = JHTML::link($person_link, $usedname);
 ?>
 <div class="card">
 <?php
-                            if ($params->get('show_picture') == 1) {
-                                if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '') {
-                                    $thispic = $person['picture'];
-                                } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
-                                    $thispic = $person['default_picture'];
-                                }
-                                echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
-                                if ($params->get('picture_width') != '') {
-                                    echo ' width="' . $params->get('picture_width') . '"';
-                                }
-                                echo ' /><br />';
-                            }
+if ($params->get('show_picture') == 1) {
+if (file_exists(JPATH_BASE . '/' . $person['picture']) && $person['picture'] != '') {
+$thispic = $person['picture'];
+} elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
+$thispic = $person['default_picture'];
+}
+echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+if ($params->get('picture_width') != '') {
+echo ' width="' . $params->get('picture_width') . '"';
+}
+echo ' /><br />';
+}
 ?>                            
 
 <div class="name">
@@ -94,13 +94,13 @@ $showname = JHTML::link($person_link, $usedname);
     ?>
 </div>
 
-<div class="position">Mittelfeldspieler - <?php echo $person['team_name']; ?></div>
+<div class="position"><?php echo JText::_($person['position_name']); ?> - <?php echo $person['team_name']; ?></div>
 
 <div class="birthday-text">
 <?php echo $birthdaytext; ?>
 </div>
   
-<p><div class="player-info"><i class="fas fa-info-circle"></i> Spielerinformationen</div></p>
+<p><div class="player-info"><a href="<?php echo $person_link; ?>" ><i class="fas fa-info-circle"></i> Spielerinformationen</a></div></p>
 </div>
 
 
