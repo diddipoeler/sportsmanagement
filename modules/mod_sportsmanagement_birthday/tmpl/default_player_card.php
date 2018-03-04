@@ -87,7 +87,7 @@ $showname = JHTML::link($person_link, $usedname);
                                 echo ' /><br />';
                             }
 ?>                            
-<div class="name"><img class="flag" src="https://lipis.github.io/flag-icon-css/flags/4x3/ro.svg" alt="<?php echo $text; ?>"><?php echo $text; ?></div>
+<div class="name"><img class="flag" src="https://lipis.github.io/flag-icon-css/flags/4x3/<?php echo JSMCountries::convertIso3to2($person['country']); ?>.svg" alt="<?php echo $text; ?>"><?php echo $text; ?></div>
 <div class="position">Mittelfeldspieler - AC Sparta Praha</div>
 <div class="birthday-text">
 <?php echo $birthdaytext; ?>
