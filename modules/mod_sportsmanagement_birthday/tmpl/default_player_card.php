@@ -17,6 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 foreach ($persons AS $person) {
+//echo '<pre>'.print_r($person,true).'</pre>';    
 $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');    
 switch ($person['days_to_birthday']) {
 case 0: $whenmessage = $params->get('todaymessage');
@@ -67,7 +68,8 @@ $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', 
 }
 $showname = JHTML::link($person_link, $usedname);
 
-
+//echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
+//echo 'birthdayformat<pre>'.print_r($birthdayformat,true).'</pre>';
 
 ?>
 <div class="card">
@@ -87,15 +89,13 @@ $showname = JHTML::link($person_link, $usedname);
 ?>                            
 <div class="name"><img class="flag" src="https://lipis.github.io/flag-icon-css/flags/4x3/ro.svg" alt="<?php echo $text; ?>"><?php echo $text; ?></div>
 <div class="position">Mittelfeldspieler - AC Sparta Praha</div>
-<div class="birthday-text">... wird 25 Jahre alt
-in 65 Tagen </div>
-<div class="birthday-text"> am 07. Mai 2018 
-(* 07.05.1993)</div>
-  
+<div class="birthday-text">
+<?php echo $birthdaytext; ?>
+</div>
   
 <p><button><i class="fas fa-info-circle"></i> Spielerinformationen</button></p>
 </div>
-<i class="fas fa-info-circle"></i> 
+
 
 <?php
 }
