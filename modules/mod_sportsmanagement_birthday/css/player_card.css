@@ -44,6 +44,6 @@ button:hover, a:hover {
   margin-bottom: 5px;
 }
 
-.flag {
+.name > .flag-icon {
   width: 20px;
 }
