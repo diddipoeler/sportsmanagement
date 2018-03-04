@@ -58,6 +58,7 @@ switch ($mode) {
     if ( $mode == 'L' && $params->get('show_player_card') )
     {
     $attribs['layout'] = 'default_player_card';    
+    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
     }
     else
     {
