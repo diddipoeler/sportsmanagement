@@ -97,7 +97,7 @@ $showname = JHTML::link($person_link, $usedname);
 <?php echo $birthdaytext; ?>
 </div>
   
-<p><button><i class="fas fa-info-circle"></i> Spielerinformationen</button></p>
+<p><div class="player-info"><i class="fas fa-info-circle"></i> Spielerinformationen</div></p>
 </div>
 
 

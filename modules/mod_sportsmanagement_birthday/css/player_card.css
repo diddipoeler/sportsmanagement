@@ -15,7 +15,7 @@
     font-size: 18px;
 }
 
-button {
+.player-info {
     border: none;
     outline: 0;
     display: inline-block;
