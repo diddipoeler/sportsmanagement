@@ -87,12 +87,15 @@ $showname = JHTML::link($person_link, $usedname);
                                 echo ' /><br />';
                             }
 ?>                            
+
 <div class="name">
     <?php
         echo JSMCountries::getCountryFlag($person['country']) . " " . $text;              
     ?>
 </div>
-<div class="position">Mittelfeldspieler - AC Sparta Praha</div>
+
+<div class="position">Mittelfeldspieler - <?php echo $person['team_name']; ?></div>
+
 <div class="birthday-text">
 <?php echo $birthdaytext; ?>
 </div>

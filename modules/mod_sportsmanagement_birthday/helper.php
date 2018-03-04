@@ -65,8 +65,10 @@ $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $use
 
 $usedteams = "";
 
-// get favorite team(s), we have to make a function for this
-if ($params->get('use_fav') == 1) {
+/**
+ * get favorite team(s), we have to make a function for this
+ */
+if ( $params->get('use_fav') ) {
     $query = $database->getQuery(true);
     $query->select('fav_team');
     $query->from('#__sportsmanagement_project');
@@ -116,12 +118,13 @@ if ($params->get('use_which') <= 1) {
     $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+    $query->select('t.name as team_name');
 
     $query->from('#__sportsmanagement_person AS p ');
     $query->join('INNER', '#__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
-    $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
+    $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id and st.season_id = stp.season_id ');
     $query->join('INNER', '#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
-    $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id');
+    $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
     $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 1');
