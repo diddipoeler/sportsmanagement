@@ -118,6 +118,7 @@ if ($params->get('use_which') <= 1) {
     $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+    $query->select('t.name as team_name');
 
     $query->from('#__sportsmanagement_person AS p ');
     $query->join('INNER', '#__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
