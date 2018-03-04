@@ -1,131 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-		<field
-			name="name"
-			type="text"
-			size="50"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required=""/>
-
-<field name="field_type" type="extensionradiobutton" default="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_DESC">
-			<option value="text">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_TEXT</option>
-			<option value="link">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_LINK</option>
-		</field>		
-      
-      <field
-			name="template_backend"
-			type="list"
-			default=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND_DESC">
-			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="club">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUB</option>
-		<option value="team">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEAM</option>
-		<option value="person">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PERSON</option>
-		<option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
-		<option value="template">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEMPLATE</option>
-		</field>		
-
-    <field
-			name="template_frontend"
-			type="list"
-			default=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND_DESC">
-			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
-
-		</field>	
-		
-    <field
-			name="fieldtyp"
-			type="list"
-			class="inputbox"
-			default=""
-			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPES"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPES_DESC">
-			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-			<option
-				value="1">
-				COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_FIELD</option>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_SELECT_OPTION</option>
-		</field>	
-
-    <field
-			name="views_backend"
-			type="list"
-			default=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_DESC">
-			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="matches">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES</option>
-
-		</field>
-
-    <field
-			name="views_backend_field"
-			type="list"
-			default=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD"
-			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD_DESC">
-			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="result_type">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RESULT_TYP</option>
-
-		</field>	
-
-<field 	name="select_columns" type="textarea" default="" 
-				label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS" 
-				description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_DESC" 
-				rows="4" cols="70">
-		</field>
-<field 	name="select_values" type="textarea" default="" 
-				label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_VALUE" 
-				description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_VALUE_DESC" 
-				rows="4" cols="70">
-		</field>
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
     
-    <field
-			name="published"
-			type="list"
-			class="inputbox"
-			default="1"
-			size="1"
-			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC">
-			<option
-				value="1">
-				JPUBLISHED</option>
-			<option
-				value="0">
-				JUNPUBLISHED</option>
-		</field>	
+    <fieldset
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+    >
+        
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
+        
+        <field
+            name="name"
+            type="text"
+            size="50"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required=""
+        />
+
+        <field 
+            name="field_type"
+            type="extensionradiobutton"
+            default="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_DESC">
+            <option value="text">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_TEXT</option>
+            <option value="link">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_LINK</option>
+        </field>		
+      
+        <field
+            name="template_backend"
+            type="list"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+            <option value="club">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUB</option>
+            <option value="team">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEAM</option>
+            <option value="person">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PERSON</option>
+            <option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
+            <option value="template">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEMPLATE</option>
+        </field>		
+
+        <field
+            name="template_frontend"
+            type="list"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+            <option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
+
+        </field>	
+		
+        <field
+            name="fieldtyp"
+            type="list"
+            class="inputbox"
+            default=""
+            size="1"
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPES"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPES_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+            <option value="1">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_FIELD</option>
+            <option value="0">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_SELECT_OPTION</option>
+        </field>	
+
+        <field
+            name="views_backend"
+            type="list"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+            <option value="matches">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES</option>
+
+        </field>
+
+        <field
+            name="views_backend_field"
+            type="list"
+            default=""
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+            <option value="result_type">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RESULT_TYP</option>
+
+        </field>	
+
+        <field 	
+            name="select_columns"
+            type="textarea"
+            default="" 
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_DESC" 
+            rows="4"
+            cols="70">
+        </field>
+        
+        <field 	
+            name="select_values"
+            type="textarea"
+            default="" 
+            label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_VALUE" 
+            description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELDS_VALUE_DESC"
+            rows="4"
+            cols="70">
+        </field>
+    
+        <field
+            name="published"
+            type="list"
+            class="inputbox"
+            default="1"
+            size="1"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC">
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>	
     		
-	</fieldset>		
-  
-  
-		
-		
+    </fieldset>		
   		
 </form>

@@ -1,132 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  
+    >
 	
-  <field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
 		
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"/>
 			
-	<field
-			name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>		
+        <field
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"/>		
 
-<field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>
+        <field
+            name="country"
+            type="country"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY_DESC"
+            class="inputbox">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
 	
-<field
-		  addfieldpath="/administrator/components/com_sportsmanagement/elements"
-			name="sportstype_id"
-			type="sportstypes"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-			required="false">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
-		</field>
+        <field
+            addfieldpath="/administrator/components/com_sportsmanagement/elements"
+            name="sportstype_id"
+            type="sportstypes"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+            required="false">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
+        </field>
         			
-	<field
-			name="info"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO_DESC"
-			class="inputbox"/>
+        <field
+            name="info"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_INFO_DESC"
+            class="inputbox"
+        />
 
-
-<field
-			name="age_from"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM_DESC"
-			class="inputbox"
-			required=""/>
-<field
-			name="age_to"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO_DESC"
-			class="inputbox"
-			required=""/>
-<field
-			name="deadline_day"
-			type="calendar"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY_DESC"
-			class="inputbox"
-			required=""
-      format="%Y-%m-%d"/>            		
-      	
-	</fieldset>			
-	
-	<fieldset name="description" 
-  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
-  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
-			<field
-				name="notes"
-				type="editor"
-				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
-				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
-				width="450" 
-				filter="safehtml"/>			
-	</fieldset>		
-	
-	
-	<fieldset name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-			<field
-				name="picture"
-				type="media"
-				default=""					
-				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE_DESC"
-				class="inputbox"
-				preview="show"
-				targetfolder="agegroups"
-				directory=""/>	
+        <field
+            name="age_from"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM_DESC"
+            class="inputbox"
+            required=""
+        />
         
-     <field
-			name="cr_picture"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_PICTURE_CR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_PICTURE_CR_DESC"
-			class="inputbox"/>   	
-	</fieldset>	
+        <field
+            name="age_to"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO_DESC"
+            class="inputbox"
+            required=""
+        />
+        
+        <field
+            name="deadline_day"
+            type="calendar"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY_DESC"
+            class="inputbox"
+            required=""
+            format="%Y-%m-%d"
+        />            		
+      	
+    </fieldset>			
 	
-<fieldset name="extended"
-  label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
-  description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
-  
-  </fieldset>
+    <fieldset 
+        name="description" 
+        label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+        description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC"
+    >		
+    
+        <field
+            name="notes"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
+            width="450" 
+            filter="safehtml"
+        />			
+    
+    </fieldset>		
+	
+    <fieldset 
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE" 
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
+    >
+        
+        <field
+            name="picture"
+            type="media"
+            default=""					
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_EDIT_PICTURE_DESC"
+            class="inputbox"
+            preview="show"
+            targetfolder="agegroups"
+            directory=""
+        />	
+        
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_PICTURE_CR_DESC"
+            class="inputbox"
+        />   	
+        
+    </fieldset>	
+	
+    <fieldset 
+        name="extended"
+        label="COM_SPORTSMANAGEMENT_TABS_EXTENDED"
+        description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC"
+    >
+        
+    </fieldset>
 	
 </form>
