@@ -59,6 +59,8 @@ switch ($mode) {
     {
     $attribs['layout'] = 'default_player_card';    
     $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
     }
     else
     {
