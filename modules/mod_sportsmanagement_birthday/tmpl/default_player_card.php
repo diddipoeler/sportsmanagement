@@ -61,6 +61,11 @@ foreach ($persons AS $person) {
         $routeparameter['pid'] = $person['person_slug'];
         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
     }
+    
+$flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
+$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
+$usedname = $flag . $text;
+    
     $showname = JHTML::link($person_link, $usedname);
 //echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
 //echo 'birthdayformat<pre>'.print_r($birthdayformat,true).'</pre>';
