@@ -30,21 +30,26 @@ if (!function_exists('jsm_birthday_sort')) {
      */
     function jsm_birthday_sort($array, $arguments = '-', $keys = true) {
      $mainframe = JFactory::getApplication(); 
-     usort($array, 'sortByDaysToBirthday');
 
+// Hole eine Liste von Spalten
+foreach ($array as $key => $row) {
+    $days_to_birthday[$key] = $row['days_to_birthday'];
+    $age[$key] = $row['age'];
+}
+
+$sort_age = ( $arguments == '-' ) ? 'SORT_ASC' : 'SORT_DESC';
+
+array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
+
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
 //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' array<br><pre>'.print_r($array,true).'</pre>'),''); 
      
         return $array;
     }
 
-function sortByDaysToBirthday($a, $b)
-{
-    $a = $a['days_to_birthday'];
-    $b = $b['days_to_birthday'];
 
-    if ($a == $b) return 0;
-    return ($a < $b) ? -1 : 1;
-} 
  
  
  
