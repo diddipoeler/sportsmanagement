@@ -104,47 +104,39 @@ if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlacehol
 {
 $picture = $player->ppic;
 }
-                                                if ( !curl_init( $picture ) )
-                                                {
-                                                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-                                                }
-                                                if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
-                                                {
+if ( !curl_init( $picture ) )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+}
+if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);
-                                                ?>
+?>
                                                 
-                                                <?PHP
-                                                } 
-                                                else 
-                                                {
+<?PHP
+} 
+else 
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);
-                                                    ?>
 
- 
+if ( $this->config['show_player_profile_link_alignment'] == 1 )
+{
+echo '<br>';
+echo JHtml::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+}
+echo '&nbsp;';
+}
 
-                                                <?PHP
-                                                //    echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
-                        ?>
-                                                
-                                                <?PHP
-                        if ( $this->config['show_player_profile_link_alignment'] == 1 )
-												{
-												echo '<br>';
-                        echo JHtml::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
-                        }
-                                                    
-                                                    echo '&nbsp;';
-                                                }
-                                            }
-											?>
-										</li>
-									<?php
-									}
-								}
-								?>
-							</ul>
-						</div>
-					</td>
+}
+?>
+</li>
+<?php
+}
+}
+?>
+</ul>
+</div>
+</td>
 					<!-- list of guest-team -->
 					<td class="list">
 						<div style="text-align: left;">
@@ -172,76 +164,69 @@ $routeparameter['tid'] = $player->team_slug;
 $routeparameter['pid'] = $player->person_slug;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 
-											$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
-											$match_player=sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-											$isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
+$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
+$match_player=sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+$isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
-                                            if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
-                                            {
-                                                $imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
-                                                $picture=$player->picture;
-                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
-                                                {
-                                                    $picture = $player->ppic;
-                                                }
-                                                if ( !curl_init( $picture ) )
-                                                {
-                                                    $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-                                                }
-                                                 if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
-                                                 {
-
-                                                    echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
-												                            if ( $this->config['show_player_profile_link_alignment'] == 1 )
-												                            {
-                                                    echo '<br>';
-                                                    echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
-                                                    }
-                                                }
-                                                else 
-                                                {
+if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
+{
+$imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
+$picture=$player->picture;
+if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
+{
+$picture = $player->ppic;
+}
+if ( !curl_init( $picture ) )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
+}
+if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
+{
+echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
+if ( $this->config['show_player_profile_link_alignment'] == 1 )
+{
+echo '<br>';
+echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+}
+}
+else 
+{
 echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);                         
-                                                    ?>
-    
-
-
-
-                                                <?PHP
-                                                    
-                                                    //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
-                                                    
-                                                     ?>
+?>
+<?PHP
+//echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
+?>
                                                      
-                                                     <?PHP
-                                                    if ( $this->config['show_player_profile_link_alignment'] == 1 )
-												                            {
-                                                    echo '<br>';
-                                                    echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
-                                                    }
-                                                    echo '&nbsp;';
-                                                }
-                                            }
+<?PHP
+if ( $this->config['show_player_profile_link_alignment'] == 1 )
+{
+echo '<br>';
+echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+}
+echo '&nbsp;';
+}
+}
 
-											if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
-                                            {
-												if ($this->config['show_player_picture'] == 2) {
-													echo '';
-												} else {
-													//echo JHtml::link($player_link,$match_player);
-												if ( $this->config['show_player_profile_link_alignment'] == 0 )
-												{
-                          echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
-                        }
+if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
+{
+if ($this->config['show_player_picture'] == 2) {
+echo '';
+} else {
+//echo JHtml::link($player_link,$match_player);
+if ( $this->config['show_player_profile_link_alignment'] == 0 )
+{
+echo JHtml::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+}
                           
-												}
-                                            } else {
-												if ($this->config['show_player_picture'] == 2) {
-													echo '';
-												} else {
-													//echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
-                          echo $match_player;
-												}
-                                            }
+}
+} else {
+if ($this->config['show_player_picture'] == 2) {
+echo '';
+} else {
+//echo JHtml::link($player_link,JHtml::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+echo $match_player;
+}
+}
 /**
 * ist der spieler ein spielführer ?
 */                  
