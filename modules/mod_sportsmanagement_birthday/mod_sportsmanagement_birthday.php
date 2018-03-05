@@ -75,7 +75,7 @@ switch ($mode) {
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 $persons = array_merge((array) $players, (array) $crew);
 if (count($persons) > 1) {
-    $persons = jl_birthday_sort($persons, array("n+days_to_birthday", "n" . $params->get('sort_order') . "age"), false);
+    $persons = jsm_birthday_sort($persons, $params->get('sort_order'), false);
 }
 
 if ($show_debug_info) {
