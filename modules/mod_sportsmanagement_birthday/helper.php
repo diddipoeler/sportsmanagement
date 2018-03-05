@@ -37,10 +37,9 @@ foreach ($array as $key => $row) {
     $age[$key] = $row['age'];
 }
 
-$sort_age = ( $arguments == '-' ) ? 'SORT_ASC' : 'SORT_DESC';
+$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
 
-array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
-
+//array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
 //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
 //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
 //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
