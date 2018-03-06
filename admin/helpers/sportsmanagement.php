@@ -3238,7 +3238,10 @@ abstract class sportsmanagementHelper {
                 <img src="components/com_sportsmanagement/assets/icons/galun-siegfried02.png" alt="stony" height="80px">
                 <span>stony</span><br>
             </div>
-            
+            <div class="jsm-info-team p-1">
+                <img src="components/com_sportsmanagement/assets/icons/dittmann-timo.png" alt="tdittmann" height="80px">
+                <span>tdittmann</span><br>
+            </div>
             <div class="jsm-info-team p-1">
                 <img src="components/com_sportsmanagement/assets/icons/keller-jens.jpg" alt="donclumsy" height="80px">
                 <span>donclumsy</span><br>
