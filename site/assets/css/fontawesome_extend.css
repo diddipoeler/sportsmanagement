@@ -1,0 +1,20 @@
+/*colors*/
+
+.draw {
+    color: #c09853;
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+   
+}
+
+.lost {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+.won {
+        color: #468847;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}

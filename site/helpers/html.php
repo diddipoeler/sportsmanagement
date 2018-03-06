@@ -8,7 +8,6 @@
  * @package   sportsmanagement
  * @subpackage helpers
  */
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -104,7 +103,7 @@ class sportsmanagementHelperHtml {
      * @return string html
      */
     public static function showMatchTime(&$game, &$config, &$overallconfig, &$project) {
-    // overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php
+        // overallconfig could be deleted here and replaced below by config as both array were merged in view.html.php
         $output = '';
 
         if (!isset($overallconfig['time_format'])) {
@@ -519,7 +518,7 @@ class sportsmanagementHelperHtml {
             ?>
             <span class='hasTip'
                   title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 
-            <?php echo JHtml::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
+                <?php echo JHtml::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
 
             <?php
         }
@@ -569,34 +568,59 @@ class sportsmanagementHelperHtml {
      * @return string image html code
      */
     public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) {
+        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $usefontawesome = $params->get('use_fontawesome');
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
         if ($res === false) {
             return false;
         }
 
         if ($res == 0) {
-            $img = 'media/com_sportsmanagement/jl_images/draw.png';
-            $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
-            $title = $alt;
+            if ($usefontawesome) {
+                echo '<span class="fa-stack">
+                    <i class="fa fa-square fa-stack-2x draw"></i>
+                    <i class="fa fa-handshake-o fa-stack-1x fa-inverse"></i>
+                    </span>';
+            } else {
+                $img = 'media/com_sportsmanagement/jl_images/draw.png';
+                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $title = $alt;
+            }
         } else if ($res < 0) {
-            $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
-            $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
-            $title = $alt;
+            if ($usefontawesome) {
+                echo '<span class="fa-stack">
+                    <i class="fa fa-square fa-stack-2x lost"></i>
+                    <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                    </span>';
+            } else {
+                $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
+                $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                $title = $alt;
+            }
         } else {
-            $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
-            $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
-            $title = $alt;
+            if ($usefontawesome) {
+                echo '<span class="fa-stack">
+                    <i class="fa fa-square fa-stack-2x won"></i>
+                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                    </span>';
+            } else {
+                $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
+                $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                $title = $alt;
+            }
         }
 
-        // default title attribute, if not specified in passed attributes
-        $def_attribs = array('title' => $title);
-        if ($attributes) {
-            $attributes = array_merge($def_attribs, $attributes);
-        } else {
-            $attributes = $def_attribs;
-        }
+        if (!$usefontawesome) {
+            // default title attribute, if not specified in passed attributes
+            $def_attribs = array('title' => $title);
+            if ($attributes) {
+                $attributes = array_merge($def_attribs, $attributes);
+            } else {
+                $attributes = $def_attribs;
+            }
 
-        return JHtml::image($img, $alt, $attributes);
+            return JHtml::image($img, $alt, $attributes);
+        }
     }
 
     /**
@@ -630,6 +654,7 @@ class sportsmanagementHelperHtml {
      * @return string image html code
      */
     public static function getLastRankImg($team, $previous, $ptid, $attributes = null) {
+        $usefontawesome = false;
         if (isset($previous[$ptid]->rank)) {
             $imgsrc = JURI::root() . 'media/com_sportsmanagement/jl_images/';
             if (( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" )) {
@@ -637,22 +662,32 @@ class sportsmanagementHelperHtml {
                 $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
                 $title = $alt;
             } elseif ($team->rank < $previous[$ptid]->rank) {
-                $imgsrc .= "up.png";
-                $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_UP');
-                $title = $alt;
+                if ($usefontawesome) {
+                    echo '<i class="fa fa-angle-double-up succes" aria-hidden="true"></i>';
+                } else {
+                    $imgsrc .= "up.png";
+                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_UP');
+                    $title = $alt;
+                }
             } elseif ($team->rank > $previous[$ptid]->rank) {
-                $imgsrc .= "down.png";
-                $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
-                $title = $alt;
+                if ($usefontawesome) {
+                    echo '<i class="fa fa-angle-double-down warning" aria-hidden="true"></i>';
+                } else {
+                    $imgsrc .= "down.png";
+                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
+                    $title = $alt;
+                }
             }
 
-            $def_attribs = array('title' => $title);
-            if ($attributes) {
-                $attributes = array_merge($def_attribs, $attributes);
-            } else {
-                $attributes = $def_attribs;
+            if (!$usefontawesome) {
+                $def_attribs = array('title' => $title);
+                if ($attributes) {
+                    $attributes = array_merge($def_attribs, $attributes);
+                } else {
+                    $attributes = $def_attribs;
+                }
+                return JHtml::image($imgsrc, $alt, $attributes);
             }
-            return JHtml::image($imgsrc, $alt, $attributes);
         }
     }
 
@@ -735,7 +770,6 @@ class sportsmanagementHelperHtml {
             }
 
             $params['type'] = $jinput->request->get('type', '0', 'STR');
-
 
             if (isset($paramconfig['r'])) {
                 $params['r'] = $paramconfig['r'];

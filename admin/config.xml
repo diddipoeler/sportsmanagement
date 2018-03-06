@@ -567,15 +567,41 @@ class="radio btn-group btn-group-yesno"
       description="COM_SPORTSMANAGEMENT_SETTINGS_LOGO_PICTURE_WIDTH_DESC">
 		</field>
  
-	<field name="use_jsmgrid" type="extensionradiobutton" default="0"
+	
+                <field name="use_jsmflex" type="extensionradiobutton" default="0"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+                <field
+			name="spacer3"
+			type="spacer"
+			hr="true"
+		/>
+                <field 
+                    name="testing" 
+                    type="note" 
+                    label="Testing - only for testing !!!!" 
+                    description="Deault state is off" 
+                    class="alert-error" 
+                     
+                />
+                <field name="use_jsmgrid" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-                <field name="use_jsmflex" type="extensionradiobutton" default="0"
+                <field name="use_fontawesome" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+                <field name="add_fontawesome" type="extensionradiobutton" default="0"
+class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
