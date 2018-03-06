@@ -10,10 +10,15 @@
 defined('_JEXEC') or die();
 
 $document = JFactory::getDocument();
+$stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/fontawesome-all.css' . '" type="text/css" />' . "\n";
+$document->addCustomTag($stylelink);    
+
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $jsmgrid	= $params->get( 'use_jsmgrid' );
 $jsmflex	= $params->get( 'use_jsmflex' );
 $cssflags	= $params->get( 'cfg_flags_css' );
+$usefontawesome	= $params->get( 'use_fontawesome' );
+$addfontawesome	= $params->get( 'add_fontawesome' );
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -28,6 +33,10 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     }
     if($jsmgrid){
     $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    if($usefontawesome){
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
