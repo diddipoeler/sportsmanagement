@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+<!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
 
 <?php
 foreach ($persons AS $person) {
@@ -65,6 +65,8 @@ foreach ($persons AS $person) {
 $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
 $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 $usedname = $flag . $text;
+$params = JComponentHelper::getParams('com_sportsmanagement');
+        $usefontawesome = $params->get('use_fontawesome');
     
     $showname = JHTML::link($person_link, $usedname);
 //echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
@@ -88,19 +90,28 @@ $usedname = $flag . $text;
 
         <div class="name">
             <?php
-            echo JSMCountries::getCountryFlag($person['country']) . " " . $text;
+            if ($params->get('show_player_flag') == 1) {
+                echo JSMCountries::getCountryFlag($person['country']). " " . $text;                    
+            } else {
+                echo $text;                
+            }           
             ?>
         </div>
 
-        <div class="position"><?php echo JText::_($person['position_name']); ?> - <?php echo $person['team_name']; ?></div>
-
+        <div class="position">
+            <?php echo JText::_($person['position_name']); ?> 
+            <br />
+            <?php echo $person['team_name']; ?></div>
         <div class="birthday-text">
             <?php echo $birthdaytext; ?>
         </div>
 
         <div class="player-info">
             <a href="<?php echo $person_link; ?>" >
-                <i aria-hidden class="fas fa-info-circle" title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>"></i> <?php echo JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
+                <?php if($usefontawesome){
+                    echo '<i aria-hidden class="fa fa-info-circle" title="'.JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
+                }?>
+                <?php echo JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
             </a>
         </div>
     </div>
