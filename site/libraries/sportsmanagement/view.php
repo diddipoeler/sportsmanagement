@@ -39,6 +39,10 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
+    if($addfontawesome){
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.mim.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
 // Joomla! 2.5 code here
 //JHtml::_('behavior.modal');

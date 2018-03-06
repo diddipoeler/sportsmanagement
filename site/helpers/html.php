@@ -573,14 +573,15 @@ class sportsmanagementHelperHtml {
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
         if ($res === false) {
             return false;
-        }
+        }      
 
         if ($res == 0) {
             if ($usefontawesome) {
-                echo '<span class="fa-stack fa-xs">
-                    <i class="fa fa-square fa-stack-2x"></i>
-                    <i class="fa fa-handshake-o fa-stack-1x draw"></i>
-                    </span>';
+                $icon = 'fa-handshake-o';
+                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $title = $alt;
+                $icon_color = 'draw';
+
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/draw.png';
                 $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
@@ -588,10 +589,11 @@ class sportsmanagementHelperHtml {
             }
         } else if ($res < 0) {
             if ($usefontawesome) {
-                echo '<span class="fa-stack fa-xs">
-                    <i class="fa fa-square fa-stack-2x"></i>
-                    <i class="fa fa-thumbs-down fa-stack-1x lost"></i>
-                    </span>';
+                 $icon = 'fa-thumbs-down';
+                 $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                $title = $alt;
+                $icon_color = 'lost';
+                 
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
                 $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
@@ -599,18 +601,18 @@ class sportsmanagementHelperHtml {
             }
         } else {
             if ($usefontawesome) {
-                echo '<span class="fa-stack fa-xs">
-                    <i class="fa fa-square fa-stack-2x"></i>
-                    <i class="fa fa-thumbs-up fa-stack-1x won"></i>
-                    </span>';
+                 $icon = 'fa-thumbs-up';
+                 $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                $title = $alt;
+                $icon_color = 'won';
+                 
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
                 $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
             }
         }
-
-        if (!$usefontawesome) {
+        
             // default title attribute, if not specified in passed attributes
             $def_attribs = array('title' => $title);
             if ($attributes) {
@@ -618,7 +620,12 @@ class sportsmanagementHelperHtml {
             } else {
                 $attributes = $def_attribs;
             }
-
+            if ($usefontawesome) {
+            return '<span class="fa-stack fa-xs '.$icon_color.'">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa '. $icon . ' fa-stack-1x fa-inverse" title="'.implode("|",$attributes).'"></i>
+                    </span>';
+            }else{
             return JHtml::image($img, $alt, $attributes);
         }
     }
@@ -654,16 +661,21 @@ class sportsmanagementHelperHtml {
      * @return string image html code
      */
     public static function getLastRankImg($team, $previous, $ptid, $attributes = null) {
-        $usefontawesome = false;
+        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $usefontawesome = $params->get('use_fontawesome');
         if (isset($previous[$ptid]->rank)) {
             $imgsrc = JURI::root() . 'media/com_sportsmanagement/jl_images/';
             if (( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" )) {
-                $imgsrc .= "same.png";
-                $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
-                $title = $alt;
+                if ($usefontawesome) {
+                    echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
+                } else {
+                    $imgsrc .= "same.png";
+                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
+                    $title = $alt;
+                }
             } elseif ($team->rank < $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-angle-double-up succes" aria-hidden="true"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-up won" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_UP').'"></i>';
                 } else {
                     $imgsrc .= "up.png";
                     $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_UP');
@@ -671,7 +683,7 @@ class sportsmanagementHelperHtml {
                 }
             } elseif ($team->rank > $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-angle-double-down warning" aria-hidden="true"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-down lost" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN').'"></i>';
                 } else {
                     $imgsrc .= "down.png";
                     $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
