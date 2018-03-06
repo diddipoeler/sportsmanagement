@@ -577,9 +577,9 @@ class sportsmanagementHelperHtml {
 
         if ($res == 0) {
             if ($usefontawesome) {
-                echo '<span class="fa-stack">
-                    <i class="fa fa-square fa-stack-2x draw"></i>
-                    <i class="fa fa-handshake-o fa-stack-1x fa-inverse"></i>
+                echo '<span class="fa-stack fa-xs">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa fa-handshake-o fa-stack-1x draw"></i>
                     </span>';
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/draw.png';
@@ -588,9 +588,9 @@ class sportsmanagementHelperHtml {
             }
         } else if ($res < 0) {
             if ($usefontawesome) {
-                echo '<span class="fa-stack">
-                    <i class="fa fa-square fa-stack-2x lost"></i>
-                    <i class="fa fa-thumbs-down fa-stack-1x fa-inverse"></i>
+                echo '<span class="fa-stack fa-xs">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa fa-thumbs-down fa-stack-1x lost"></i>
                     </span>';
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
@@ -599,9 +599,9 @@ class sportsmanagementHelperHtml {
             }
         } else {
             if ($usefontawesome) {
-                echo '<span class="fa-stack">
-                    <i class="fa fa-square fa-stack-2x won"></i>
-                    <i class="fa fa-thumbs-up fa-stack-1x fa-inverse"></i>
+                echo '<span class="fa-stack fa-xs">
+                    <i class="fa fa-square fa-stack-2x"></i>
+                    <i class="fa fa-thumbs-up fa-stack-1x won"></i>
                     </span>';
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';

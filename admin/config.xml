@@ -595,13 +595,13 @@ class="radio btn-group btn-group-yesno"
 		</field>
                 <field name="use_fontawesome" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_FONTAWESOME_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
                 <field name="add_fontawesome" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME" description="COM_SPORTSMANAGEMENT_SETTINGS_ADD_FONTAWESOME_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
