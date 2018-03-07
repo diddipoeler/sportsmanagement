@@ -10,8 +10,6 @@
 defined('_JEXEC') or die();
 
 $document = JFactory::getDocument();
-$stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/fontawesome-all.css' . '" type="text/css" />' . "\n";
-$document->addCustomTag($stylelink);    
 
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 $jsmgrid	= $params->get( 'use_jsmgrid' );
@@ -40,7 +38,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     $document->addCustomTag($stylelink);
     }
     if($addfontawesome){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.mim.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
