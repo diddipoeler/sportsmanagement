@@ -6,17 +6,19 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage libraries
  */
 defined('_JEXEC') or die();
 
 $document = JFactory::getDocument();
 
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$jsmgrid	= $params->get( 'use_jsmgrid' );
-$jsmflex	= $params->get( 'use_jsmflex' );
-$cssflags	= $params->get( 'cfg_flags_css' );
-$usefontawesome	= $params->get( 'use_fontawesome' );
-$addfontawesome	= $params->get( 'add_fontawesome' );
+$params_com = JComponentHelper::getParams( 'com_sportsmanagement' );
+$jsmgrid	= $params_com->get( 'use_jsmgrid' );
+$jsmflex	= $params_com->get( 'use_jsmflex' );
+$cssflags	= $params_com->get( 'cfg_flags_css' );
+$usefontawesome	= $params_com->get( 'use_fontawesome' );
+$addfontawesome	= $params_com->get( 'add_fontawesome' );
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
