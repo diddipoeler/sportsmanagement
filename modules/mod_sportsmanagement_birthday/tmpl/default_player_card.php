@@ -65,8 +65,8 @@ foreach ($persons AS $person) {
 $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
 $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 $usedname = $flag . $text;
-$params = JComponentHelper::getParams('com_sportsmanagement');
-        $usefontawesome = $params->get('use_fontawesome');
+$params_com = JComponentHelper::getParams('com_sportsmanagement');
+$usefontawesome = $params_com->get('use_fontawesome');
     
     $showname = JHTML::link($person_link, $usedname);
 //echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
