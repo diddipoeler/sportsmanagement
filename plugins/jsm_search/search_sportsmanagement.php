@@ -1,41 +1,13 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      search_sportsmanagement.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage plugins
+ */
 
 /**
  * Search plugin
@@ -137,10 +109,14 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 	 */
 	function onContentSearchAreas()
 	{
-		static $areas = array(
-				'search_sportsmanagement' => 'search_sportsmanagement'
-		);
-		return $areas;
+		static $areas = array();
+
+	if (empty($areas))
+	{
+		$areas['search_sportsmanagement'] = JText::_('PLG_SEARCH_SPORTSMANAGEMENT_XML');
+	}
+
+	return $areas;
 	}
 
 	/**
@@ -171,12 +147,7 @@ class plgSearchsearch_sportsmanagement extends JPlugin
 		$search_referees	= $this->params->def('search_referees',	1 );
         $search_projects	= $this->params->def('search_projects',	1 );
 		$text = trim( $text );
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' text<br><pre>'.print_r($text,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' phrase<br><pre>'.print_r($phrase,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ordering<br><pre>'.print_r($ordering,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' areas<br><pre>'.print_r($areas,true).'</pre>'),'Notice');
-        
+       
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
@@ -512,10 +483,6 @@ $escape = 'getEscaped';
 			$rows[] = $list;
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rows<br><pre>'.print_r($rows,true).'</pre>'),'Notice');
-        
-
-        
         $results = array();
 
 		if(count($rows))
@@ -526,8 +493,6 @@ $escape = 'getEscaped';
 			{
 			foreach($row as $output )
 			{
-			//echo 'country<pre>'.print_r($output->country,true).'</pre><br>';
-			//echo 'picture<pre>'.print_r($output->picture,true).'</pre><br>';
             $output->href = JRoute::_($output->href);
 			if ( $output->country)
 			{
@@ -545,9 +510,6 @@ $escape = 'getEscaped';
 			
 			foreach($rows as $row)
 			{
-			// diddipoeler
-			// testausgabe
-			//echo '<pre>'.print_r($row,true).'</pre><br>';
 				$results = array_merge($results, (array) $row);
 			}
 		}
