@@ -142,6 +142,10 @@ fieldset button {
 
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
+						if ( $date == '0000-00-00' )
+						{
+						$date = '';
+						}
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 						<?php if(($row->cancel)>0)
