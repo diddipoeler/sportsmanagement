@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version                1.0.05
  * @file                   agegroups.php
- * @author                 diddipoeler, stony und svdoldie (diddipoeler@arcor.de)
+ * @author                 diddipoeler, stony und svdoldie (diddipoeler@gmx.de)
  * @copyright              Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license                This file is part of SportsManagement.
  *

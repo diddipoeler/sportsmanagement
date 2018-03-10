@@ -3,7 +3,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      sportsmanagement.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -207,20 +207,6 @@ $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_hei
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER', JComponentHelper::getParams($option)->get('cfg_help_server', ''));
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER', JComponentHelper::getParams($option)->get('cfg_bugtracker_server', ''));
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_VIEW', $view);
-
-//if ( $app->isAdmin() )
-//{
-//if($task == '' && $option == 'com_sportsmanagement') 
-//{
-//$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
-//$document->addScriptDeclaration( $js );
-//}
-//}
-//else
-//{
-//$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
-//$document->addScriptDeclaration( $js );    
-//}
 
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'controller.php' );
 // Component Helper

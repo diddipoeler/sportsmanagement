@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file components/sportsmanagement/views/allteams/tmpl/default_items.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *

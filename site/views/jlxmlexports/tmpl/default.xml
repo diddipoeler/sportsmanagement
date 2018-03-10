@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="XML_XML_EXPORT_LAYOUT_TITLE">
-        <message>
-            <![CDATA[XML_XML_EXPORT_LAYOUT_DESCR]]>
-        </message>
-    </layout>
-    <state>
-        <name>XML_XML_EXPORT_STATE_NAME</name>
-        <description>XML_XML_EXPORT_STATE_DESCR</description>
-        <url>
-            <param type="sql" name="l" label="XML_XML_EXPORT_SELECT_PROJECT_LABEL" description="XML_XML_EXPORT_SELECT_PROJECT_DESCR"
-                query="SELECT id AS value, name AS l FROM #__joomleague_project ORDER BY name" />
-        
 
-        </url>
-    </state>
 </metadata>

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -1471,8 +1471,6 @@ return implode(",",$varresults);
 function checkStartExtension()
 {
 $application = JFactory::getApplication();
-//echo "<script type=\"text/javascript\">registerhome('".JURI::base()."','Tournament Tree Extension','".$application->getCfg('sitename')."','0');</script>";
-
 }
 
 }

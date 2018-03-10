@@ -3,7 +3,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -108,9 +108,6 @@ class sportsmanagementView extends JViewLegacy {
         $this->view = $this->jinput->getVar("view");
 
         $this->model = $this->getModel();
-//        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$this->app->getCfg('sitename')."','0');". "\n";
-//        $this->document->addScriptDeclaration( $js );
-
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
