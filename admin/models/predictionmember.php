@@ -30,8 +30,6 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' .
 class sportsmanagementModelpredictionmember extends JSMModelAdmin
 {
 	
-  
-	
     /**
      * sportsmanagementModelpredictionmember::save_memberlist()
      * 

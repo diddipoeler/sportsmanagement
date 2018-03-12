@@ -82,10 +82,8 @@ class sportsmanagementModelPredictionTemplates extends JSMModelList
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
-        
 
 	}
-	
 
 	/**
 	 * sportsmanagementModelPredictionTemplates::getListQuery()

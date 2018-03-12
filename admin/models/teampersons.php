@@ -54,8 +54,6 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
         }
-    
-    
 
 	/**
 	 * Method to auto-populate the model state.
