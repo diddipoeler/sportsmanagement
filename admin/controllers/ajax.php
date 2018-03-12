@@ -12,9 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//jimport('joomla.application.component.controller');
-
-
 /**
  * sportsmanagementControllerAjax
  * 
@@ -25,7 +22,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @access public
  */
 class sportsmanagementControllerAjax extends JControllerLegacy
-//class sportsmanagementControllerAjax extends JControllerForm
 {
 
 /**
@@ -41,15 +37,7 @@ public function __construct()
 		$document->setMimeEncoding('application/json');
 		parent::__construct();
 	}
-       // /**
-//         * sportsmanagementControllerAjax::__construct()
-//         * 
-//         * @return
-//         */
-//        public function __construct()
-//        {
-//                parent::__construct();
-//        }
+       
         
         
  /**
