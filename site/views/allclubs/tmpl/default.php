@@ -41,7 +41,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
         Joomla.submitform('', this.form)
     }
 </script>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="row-fluid">
     <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString()); ?>" method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt">
