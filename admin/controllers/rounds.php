@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
- 
 
 /**
  * sportsmanagementControllerrounds
@@ -42,7 +41,6 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
-		//$this->registerTask('saveshort',	'saveshort');
 	}
   
   

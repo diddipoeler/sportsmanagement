@@ -11,10 +11,6 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controllerform library
-//jimport('joomla.application.component.controllerform');
-
 
 /**
  * sportsmanagementControllerclubname
@@ -35,9 +31,9 @@ class sportsmanagementControllerclubname extends JSMControllerForm
 	 * @return	void
 	 * @since	1.5
 	 */
-//	function __construct($config = array())
-//	{
-//		parent::__construct($config);
-//    }   
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+    }   
 
 }

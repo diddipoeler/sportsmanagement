@@ -36,11 +36,4 @@ class sportsmanagementControllerteam extends JSMControllerForm
 		parent::__construct($config);
     }    
 
-
-
-
-
-    
-    
-
 }

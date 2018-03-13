@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
- 
 
 /**
  * sportsmanagementControllerround
@@ -40,6 +39,11 @@ class sportsmanagementControllerround extends JSMControllerForm
 		parent::__construct($config);
     }    
 
+	/**
+	 * sportsmanagementControllerround::startpopulate()
+	 * 
+	 * @return void
+	 */
 	function startpopulate()
 	{
 	$msgType = 'message';
