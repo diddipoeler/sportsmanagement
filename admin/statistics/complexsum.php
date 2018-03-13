@@ -223,29 +223,17 @@ class SMStatisticComplexsum extends SMStatistic
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id');
-        
-//		$query	= ' SELECT ms.value, ms.statistic_id, tp.id AS tpid'
-//				. ' FROM #__joomleague_match_statistic AS ms'
-//				. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id'
-//				. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//				. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-//				. ' WHERE pt.project_id = '. $db->Quote($project_id);
-		
+	
         $query->where('pt.project_id = ' . $project_id);   
         
         if ($division_id != 0)
 		{
-			//$query .= ' AND pt.division_id = '. $db->Quote($division_id);
             $query->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			//$query .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query->where('st.team_id = ' . $team_id);
 		}
-//		$query .= '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-//				. '   AND m.published = 1 '
-//		;
         
         $query->where('ms.statistic_id IN ('. implode(',', $sqids) .')');
         $query->where('m.published = 1');

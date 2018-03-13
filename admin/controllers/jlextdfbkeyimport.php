@@ -13,8 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
-//require_once ( JPATH_COMPONENT . DS . 'controllers' . DS . 'joomleague.php' );
-
 
 /**
  * sportsmanagementControllerjlextdfbkeyimport

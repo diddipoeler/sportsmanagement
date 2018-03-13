@@ -210,49 +210,6 @@ class SMStatisticDifference extends SMStatistic
 		$sids = self::getQuotedSids('');
 		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
-
-//		$query_add = ' SELECT SUM(ms.value) AS num, tp.id AS tpid, tp.person_id '
-//			. ' FROM #__joomleague_team_player AS tp '
-//			. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//			. ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-//			. '   AND ms.statistic_id IN ('. implode(',', $sids['add']) .')'
-//			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//			. '   AND m.published = 1 '
-//			. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//		;
-//		if ($division_id != 0)
-//		{
-//			$query_add .= ' AND pt.division_id = '. $db->Quote($division_id);
-//		}
-//		if ($team_id != 0)
-//		{
-//			$query_add .= '   AND pt.team_id = ' . $db->Quote($team_id);
-//		}
-//		$query_add .= ' GROUP BY tp.id ';
-//		
-//        
-//        
-//		$query_sub = ' SELECT SUM(ms.value) AS den, tp.id AS tpid, tp.person_id '
-//			. ' FROM #__joomleague_team_player AS tp '
-//			. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//			. ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-//			. '   AND ms.statistic_id IN ('. implode(',', $sids['sub']) .')'
-//			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//			. '   AND m.published = 1 '
-//			. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//		;
-//		if ($division_id != 0)
-//		{
-//			$query_sub .= ' AND pt.division_id = '. $db->Quote($division_id);
-//		}
-//		if ($team_id != 0)
-//		{
-//			$query_sub .= '   AND pt.team_id = ' . $db->Quote($team_id);
-//		}
-//		$query_sub .= '   AND value > 0 '
-//			. ' GROUP BY tp.id '
-//		;
-        
         
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['add'],'SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['sub'],'SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
@@ -261,8 +218,6 @@ class SMStatisticDifference extends SMStatistic
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_sub<br><pre>'.print_r($query_sub->dump(),true).'</pre>'),'');
         
         //$query_sub = SMStatistic::getTeamsRankingStatisticDenQuery($project_id, $division_id, $team_id,$sids);
-
-		//$query_select_count = ' SELECT COUNT(DISTINCT tp.id) as count';
 
 		$query_select_details	= 'n.num - d.den AS total, n.person_id, 1 as rank,'
 								. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'

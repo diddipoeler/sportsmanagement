@@ -31,7 +31,6 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	var $team = null;
 	var $club = null;
 	static $divisionid = 0;
-	var $joomleague = null;
 	static $mode = 0;
     
     static $cfg_which_database = 0;

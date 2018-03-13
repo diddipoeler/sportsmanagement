@@ -268,27 +268,15 @@ class SMStatisticPercentage extends SMStatistic
         $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids['num']) .')');
         $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
         $query_num->where('pt.project_id = ' . $project_id);
-        
-//		$query_num	= ' SELECT SUM(ms.value) AS num, tp.id AS tpid'
-//					. ' FROM #__joomleague_team_player AS tp '
-//					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//					. ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-//					. '   AND ms.statistic_id IN ('. implode(',', $sids['num']) .')'
-//					. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//					. '   AND m.published = 1 '
-//					. ' WHERE pt.project_id = '. $db->Quote($project_id);
-                    
+                  
 		if ($division_id != 0)
 		{
-			//$query_num .= ' AND pt.division_id = '. $db->Quote($division_id);
             $query_num->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			//$query_num .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query_num->where('st.team_id = ' . $team_id);
 		}
-		//$query_num .= ' GROUP BY tp.id ';
         $query_num->group('tp.id');
         
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),''); 

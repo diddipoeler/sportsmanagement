@@ -47,7 +47,6 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 
 		//build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
-		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
 		$sportstypes = array_merge($sportstypes, $allSportstypes);

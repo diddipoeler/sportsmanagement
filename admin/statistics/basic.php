@@ -195,31 +195,14 @@ class SMStatisticBasic extends SMStatistic
         $query_core->where('pt.project_id = ' . $project_id);
         $query_core->where('p.published = 1');
         
-//        $query_core	= ' FROM #__joomleague_team_player AS tp'
-//					. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
-//					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//					. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
-//					. ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id'
-//					. '   AND ms.statistic_id = '. $db->Quote($this->id)
-//					. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-//					. '   AND m.published = 1'
-//					. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//					. '   AND p.published = 1 '
-//		;
-
 		if ($division_id != 0)
 		{
-			//$query_core .= '   AND pt.division_id = '. $db->Quote($division_id);
             $query_core->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			//$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query_core->where('st.team_id = ' . $team_id);
 		}
-//		$query_end_details	= ' GROUP BY tp.id '
-//							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'
-//		;
 
 		$res = new stdclass;
 		$db->setQuery($query_core);

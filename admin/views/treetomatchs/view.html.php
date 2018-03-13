@@ -202,9 +202,8 @@ protected function addToolBarEditlist()
 JToolbarHelper::save( 'treetomatch.save_matcheslist' );
 
 // for existing items the button is renamed `close` and the apply button is showed
-//JLToolBarHelper::cancel( 'cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
 JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
-       
+     
        
        }
        

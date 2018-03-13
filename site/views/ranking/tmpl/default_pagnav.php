@@ -18,7 +18,6 @@ defined('_JEXEC') or die('Restricted access');
             <?php
             if (!empty($this->rounds)) {
                 $pageNavigation = "<div class='pagenav'>";
-                //$pageNavigation .= JoomleaguePagination::pagenav($this->project);
                 $pageNavigation .= "</div>";
                 echo $pageNavigation;
             }

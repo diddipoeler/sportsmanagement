@@ -2,8 +2,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
-//$version = urlencode(JoomleagueHelper::getVersion());
-//JHtml::script('JL_matchdetailsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
+
 JHtml::_('behavior.tooltip');
 
 $templatesToLoad = array('footer','listheader');

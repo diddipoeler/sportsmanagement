@@ -454,8 +454,6 @@ $lists['awayroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam
     function initEditMatch() {
         $app = JFactory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');  
-        // match relation tab
-        //$mdlMatch = JModelLegacy::getInstance ( 'match', 'JoomleagueModel' );
         $oldmatches [] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
         $res = array();
         $new_match_id = ($this->match->new_match_id) ? $this->match->new_match_id : 0;

@@ -1079,12 +1079,7 @@ try{
 		// 3. the player has an event registered for the match
 		// If any of these conditions are met, we assume the player was part of the match
 		
-//        $common_query_part 	= ' INNER JOIN #__joomleague_match AS m ON m.id = md.match_id'
-//							. ' INNER JOIN #__joomleague_team_player AS tp ON tp.id = md.teamplayer_id'
-//							. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id=tp.projectteam_id'
-//							. ' INNER JOIN #__joomleague_project AS p ON p.id=pt.project_id'
-//							. ' WHERE tp.person_id = '.$db->Quote($person_id);
-		
+
         
         
         if ($projectteam_id)
@@ -1403,17 +1398,6 @@ try{
 
 		// Get the number of matches played per teamplayer of the projectteam.
 		// This is derived from three tables: match_player, match_statistic and match_event
-//		$common_query_part 	= ' INNER JOIN #__joomleague_match AS m ON m.id = md.match_id'
-//							. ' INNER JOIN #__joomleague_team_player AS tp ON tp.id = md.teamplayer_id'
-//							. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id=tp.projectteam_id'
-//							. ' INNER JOIN #__joomleague_project AS p ON p.id=pt.project_id'
-//							. ' WHERE pt.team_id='.$team_id
-//							. '   AND p.id='.$project_id;
-
-// Do we also need this part in the query?
-// 		       . ' INNER JOIN #__joomleague_project_position AS ppos ON ppos.id = tp.project_position_id ' 
-// 		       . ' INNER JOIN #__joomleague_position AS pos ON pos.id=ppos.position_id ' 
-
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
 		// All of them have a match_id and teamplayer_id.
         $query_mp->select('DISTINCT m.id AS mid, tp.id AS tpid');

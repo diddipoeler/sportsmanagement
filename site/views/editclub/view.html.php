@@ -39,10 +39,6 @@ class sportsmanagementViewEditClub extends JViewLegacy
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
         $document = JFactory::getDocument();
-		//$version = urlencode(JoomleagueHelper::getVersion());
-		//$css='components/com_joomleague/assets/css/tabs.css?v='.$version;
-		//$document->addStyleSheet($css);
-        
 		$model	= $this->getModel();
         $this->club = $model->getClub();
 

@@ -68,9 +68,6 @@ class sportsmanagementViewRanking extends JViewLegacy
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         
-        //$version = urlencode(JoomleagueHelper::getVersion());
-		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-		//$document->addStyleSheet($css);
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();

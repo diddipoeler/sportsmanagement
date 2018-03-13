@@ -976,17 +976,10 @@ $query->clear();
                         $sortarray['cnt_matches'] = SORT_ASC;
                         break;
                 }
-                //uasort( $ranking, array("JoomleagueModelRankingalltime",$c ));
 
             }
 
-//            foreach ($ranking as $row) {
-//                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
-//            }
-            
-            //$arr2 = $this->array_msort($arr2, array('sum_points'=>SORT_DESC,  'diff_team_results'=>SORT_DESC ) );
-            //$sortarray2 = implode (",", $sortarray);
-            //$arr2 = $this->array_msort($arr2, array($sortarray2) );
+
             $arr2 = $this->array_msort($arr2, $sortarray);
 
             unset($ranking);

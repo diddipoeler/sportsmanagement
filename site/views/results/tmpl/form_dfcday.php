@@ -50,9 +50,6 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 }
 */
 
-//$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
-
 ?>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- section header e.g. ranking, results etc. -->

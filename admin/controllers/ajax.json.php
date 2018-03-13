@@ -937,7 +937,5 @@ try
         }
 
 }
-// Register the error handler.
-//JError::setErrorHandling(E_ALL, 'callback', array('JoomleagueControllerAjax', 'sendResponse'));
 
 ?>
