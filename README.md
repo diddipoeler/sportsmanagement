@@ -31,6 +31,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   10-03-2018: **1.0.61** Start der offiziellen Komponente
 *   20-02-2018: **1.0.60** Neue Felder bei den Personen und Mannschaften hizugefügt.
 *   08-11-2017: **1.0.59** Neue Felder bei den Ligen und Mannschaften hizugefügt.
 *   13-01-2017: **1.0.58** Entfernung von doppelten Funktionen. Verbesserte Datenbankabfragen.

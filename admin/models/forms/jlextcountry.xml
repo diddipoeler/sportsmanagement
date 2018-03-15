@@ -1,113 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC" 
+    >
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
+        
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"
+        />
 
-    <field
-			name="alpha2"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2_DESC"
-			class="inputbox"
-			/>  
+        <field
+            name="alpha2"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2_DESC"
+            class="inputbox"
+        />  
 			
-			<field
-			name="alpha3"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3_DESC"
-			class="inputbox"
-			/>
-      <field
-			name="itu"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU_DESC"
-			class="inputbox"
-			/>
+        <field
+            name="alpha3"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="itu"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU_DESC"
+            class="inputbox"
+        />
 			
-			<field
-			name="fips"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS_DESC"
-			class="inputbox"
-			/>
-			<field
-			name="ioc"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC_DESC"
-			class="inputbox"
-			/>
-			<field
-			name="fifa"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA_DESC"
-			class="inputbox"
-			/>
-			<field
-			name="ds"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS_DESC"
-			class="inputbox"
-			/>
-			<field
-			name="wmo"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO"
-			description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO_DESC"
-			class="inputbox"
-			/>
+        <field
+            name="fips"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="ioc"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="fifa"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="ds"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="wmo"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO_DESC"
+            class="inputbox"
+        />
 			
-      <field
-			name="federation"
-			type="federationslist"
-			class="inputbox"
-			size="30"
-			multiple="false"
-			targettable="federations"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
-	</fieldset>			
+        <field
+            name="federation"
+            type="federationslist"
+            class="inputbox"
+            size="30"
+            multiple="false"
+            targettable="federations"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"
+        />	
+        
+    </fieldset>			
 
-<fieldset name="picture"
-label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-			<field
-				name="picture"
-				type="media"
-				default=""				
-				label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"		
-        targetfolder="flags"		
-				directory=""/>
-	</fieldset>
-	
-	
-  	
+    <fieldset 
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
+    >
+        <field
+            name="picture"
+            type="media"
+            default=""				
+            label="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_PICTURE"
+            class="inputbox"
+            preview="show"		
+            targetfolder="flags"		
+            directory=""
+        />
+        
+    </fieldset>	
+	  	
 </form>

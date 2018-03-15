@@ -3,7 +3,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
  * @version         1.0.05
  * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license                This file is part of SportsManagement.
  *
@@ -426,9 +426,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
 
         $rank = array();
-        //if ( $projectid == 49393 || $projectid == 46636)
-        //{
-        //$model = &JLGModel::getInstance('Project', 'JoomleagueModel');
+
         sportsmanagementModelProject::setProjectID($projectid, self::$cfg_which_database);
         $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
         $tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking", self::$cfg_which_database);

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      default.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -41,7 +41,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
         Joomla.submitform('', this.form)
     }
 </script>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="row-fluid">
     <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString()); ?>" method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt">

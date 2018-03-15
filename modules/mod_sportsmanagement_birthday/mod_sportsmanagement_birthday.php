@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_birthday.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -75,7 +75,7 @@ switch ($mode) {
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 $persons = array_merge((array) $players, (array) $crew);
 if (count($persons) > 1) {
-    $persons = jl_birthday_sort($persons, array("n+days_to_birthday", "n" . $params->get('sort_order') . "age"), false);
+    $persons = jsm_birthday_sort($persons, $params->get('sort_order'), false);
 }
 
 if ($show_debug_info) {

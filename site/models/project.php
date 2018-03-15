@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      project.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -2043,13 +2043,6 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         $query->join('INNER','#__sportsmanagement_round AS r on r.id = m.round_id ');
         $query->join('INNER','#__sportsmanagement_project AS p on r.project_id = p.id ');
         $query->where('m.id = '.(int)self::$matchid );
-        
-//			$query='SELECT m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone 
-//					FROM #__joomleague_match AS m 
-//					INNER JOIN #__joomleague_round AS r on r.id=m.round_id 
-//					INNER JOIN #__joomleague_project AS p on r.project_id=p.id 
-//					WHERE m.id='. $db->Quote(self::$matchid)
-//			      ;
 			
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {

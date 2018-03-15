@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  * @version   1.0.05
  * @file      form_dfcday.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -49,9 +49,6 @@ JHtml::_( 'behavior.mootools' );
 require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
 }
 */
-
-//$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
 
 ?>
 <div class="row-fluid" style="overflow:auto;">

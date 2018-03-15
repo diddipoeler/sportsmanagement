@@ -1,119 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">	
-	<field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+    >	
+        
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
 		
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
-	<field
-			name="middle_name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME_DESC"
-			class="inputbox"/>
-	<field
-			name="short_name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME_DESC"
-			class="inputbox"
-			required="true"/>
-	<field
-			name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>	
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"
+        />
+        
+        <field
+            name="middle_name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_MIDDLE_NAME_DESC"
+            class="inputbox"
+        />
+        
+        <field
+            name="short_name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ASSOC_SHORT_NAME_DESC"
+            class="inputbox"
+            required="true"
+        />
+        
+        <field
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            class="inputbox"
+        />			
 		
-		
-  <field
-			name="parent_id"
-			type="federationslist"
-			class="inputbox"
-			size="30"
-			multiple="false"
-			targettable="federations"
-			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>
+        <field
+            name="parent_id"
+            type="federationslist"
+            class="inputbox"
+            size="30"
+            multiple="false"
+            targettable="federations"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"
+        />
 
-<field
-			name="sports_type_id"
-			type="sportstypelist"
-			
-			class="inputbox validate-select-required"
-			default="0"
-			size="1"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
-			required="true"
-			validate="superiorzero">
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
-		</field>
+        <field
+            name="sports_type_id"
+            type="sportstypelist"			
+            class="inputbox validate-select-required"
+            default="0"
+            size="1"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_SPORTSTYPE_DESC"
+            required="true"
+            validate="superiorzero">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
+        </field>
     			
-	<field
-			name="website"
-			type="text"
-			class="inputbox"
-   		label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"/>	
-      
-      
-  
+        <field
+            name="website"
+            type="text"
+            class="inputbox"
+            label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_WEBSITE_DESC"
+        />  
   	
-</fieldset>
+    </fieldset>
 			
-	<fieldset 	name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+    <fieldset 	
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
+    >
 				
-		<field 	name="assocflag" 
-				type="media" 
-				default=""
-				directory=""
-				preview="show"	
-        targetfolder="flags_associations"			
-				label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
-				description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC">
-		</field>
-		<field 	name="picture" 
-				type="media"
-        default=""  
-				directory=""
-				preview="show"			
-        targetfolder="associations"	
-				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
-				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
-		</field>
+        <field 	
+            name="assocflag"
+            type="media" 
+            default=""
+            directory=""
+            preview="show"
+            targetfolder="flags_associations"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_FLAG" 
+            description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC"
+        >
+        </field>
+        
+        <field 	
+            name="picture" 
+            type="media"     
+            default=""    
+            directory=""
+            preview="show"
+            targetfolder="associations"	
+            label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
+            description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
+        >
+        </field>
 		
-		<field
-			name="cr_picture"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR_DESC"
-			class="inputbox"/>
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_FEDERATION_PICTURE_CR_DESC"
+            class="inputbox"
+        />
 			
-	</fieldset>
-  
-  
+    </fieldset>  
   			
 </form>

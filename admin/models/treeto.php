@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treeto.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -98,97 +70,16 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
 	function getTreeToData($treeto_id)
 	{
 		// Lets load the content if it doesn't already exist
-		//if ( empty( $this->_data ) )
-//		{
     $this->jsmquery->clear();
-    // Select the required fields from the table.
+
 		$this->jsmquery->select('*');
 		$this->jsmquery->from('#__sportsmanagement_treeto');
         $this->jsmquery->where('id = ' . $treeto_id);
         
-//			$query ='	SELECT tt.*
-//					FROM #__sportsmanagement_treeto AS tt
-//					WHERE tt.id = ' . (int) $treeto_id;
-
 			$this->jsmdb->setQuery( $this->jsmquery );
 			return $this->jsmdb->loadObject();
-//			return $this->_data;
-		//}
-//		return true;
+
 	}
-
-	//function _initData()
-//	{
-//		// Lets load the content if it doesn't already exist
-//		if ( empty( $this->_data ) )
-//		{
-//			$treeto = new stdClass();
-//			$treeto->id					= 0;
-//			$treeto->project_id			= 0;
-//			$treeto->division_id		= 0;
-//			$treeto->tree_i				= 0;
-//			$treeto->name				= null;
-//			$treeto->global_bestof		= 0;
-//			$treeto->global_matchday	= 0;
-//			$treeto->global_known		= 0;
-//			$treeto->global_fake		= 0;
-//			$treeto->leafed				= 0;
-//			$treeto->mirror				= 0;
-//			$treeto->hide				= 0;
-//			$treeto->trophypic			= null;
-//			$treeto->extended			= null;
-//			$treeto->published			= 0;
-//			$treeto->checked_out		= 0;
-//			$treeto->checked_out_time	= 0;
-//			$treeto->modified			= null;
-//			$treeto->modified_by		= null;
-//
-//			$this->_data			= $treeto;
-//			return (boolean) $this->_data;
-//		}
-//		return true;
-//	}
-
-	//function deleteOne($project_id)
-//	{
-//		if ($project_id > 0)
-//		{
-//			$query='SELECT id FROM #__joomleague_treeto WHERE project_id='.$project_id;
-//			$this->_db->setQuery($query);
-//			if (!$result=$this->_db->loadColumn())
-//			{
-//				if ($this->_db->getErrorNum() > 0)
-//				{
-//					$this->setError($this->_db->getErrorMsg());
-//					return false;
-//				}
-//			}
-//			$this->delete($result);
-//		}
-//		return true;
-//	}
-
-//	function delete(&$pks=array())
-//	{
-//		if (count($pks))
-//		{
-//			$cids=implode(',',$pks);
-//
-//			$query= ' DELETE tt, ttn, ttm ';
-//			$query .= ' FROM #__joomleague_treeto AS tt ';
-//			$query .= ' LEFT JOIN #__joomleague_treeto_node AS ttn ON ttn.treeto_id=tt.id ';
-//			$query .= ' LEFT JOIN #__joomleague_treeto_match AS ttm ON ttm.node_id=ttn.id ';
-//			$query .= ' WHERE tt.id IN (' . $cids . ')';
-//			$this->_db->setQuery($query);
-//			if (!$this->_db->query())
-//			{
-//				$this->setError($this->_db->getErrorMsg());
-//				return false;
-//			}
-//			return parent::delete($pks);
-//		}
-//		return true;
-//	}
 
 	
     /**
@@ -236,20 +127,7 @@ $object->leafed = 2 ;
 $object->tree_i = $tree_i ;
 // Update their details in the users table using id as the primary key.
 $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
-			
-//            //data(global parameters) to treeto
-//			$query = ' UPDATE #__sportsmanagement_treeto AS tt ';
-//			$query .= ' SET ';
-//			$query .= ' global_bestof = '. $global_bestof ;
-//			$query .= ' ,global_matchday = '. $global_matchday ;
-//			$query .= ' ,global_known = '. $global_known ;
-//			$query .= ' ,global_fake = '. $global_fake ;
-//			$query .= ' ,leafed = '. 2 ;
-//			$query .= ' ,tree_i = '. $tree_i ;
-//			$query .= ' WHERE tt.id = ' . $treeto_id ;
-//			$query .= ';';
-//			$this->_db->setQuery( $query );
-//			$this->_db->query( $query );
+
 			// nodes to treeto_node
 			for($nod=1;$nod<=((pow(2,$tree_i+1))-1);$nod++)
 			{
@@ -289,82 +167,10 @@ $profile->bestof = $global_bestof;
 // Insert the object into the user profile table.
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_node', $profile);
                 
-			//	$query = ' INSERT INTO #__sportsmanagement_treeto_node ';
-//				$query .= ' SET ';
-//				$query .= ' treeto_id = ' . $treeto_id ;
-//				$query .= ' ,node = ' . $nod ;
-//				$query .= ' ,row = ' . $row ;
-//				$query .= ' ,bestof = ' . $global_bestof ;
-//				$query .= ';';
-//				$this->_db->setQuery( $query );
-//				$this->_db->query( $query );
+
 			}
 			return true;
 		}
 	}
-    
-    
-//	/**
-//	 * Returns a Table object, always creating it
-//	 *
-//	 * @param	type	The table type to instantiate
-//	 * @param	string	A prefix for the table class name. Optional.
-//	 * @param	array	Configuration array for model. Optional.
-//	 * @return	JTable	A database object
-//	 * @since	1.6
-//	 */
-//	public function getTable($type = 'treeto', $prefix = 'sportsmanagementTable', $config = array())
-//	{
-//	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-//		return JTable::getInstance($type, $prefix, $config);
-//	}
-
-//	/**
-//	 * Method to get the record form.
-//	 *
-//	 * @param	array	$data		Data for the form.
-//	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-//	 * @return	mixed	A JForm object on success, false on failure
-//	 * @since	1.7
-//	 */
-//	public function getForm($data = array(), $loadData = true)
-//	{
-//		// Get the form.
-//	//	$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
-////				array('load_data' => $loadData) );
-//        $form = $this->loadForm('com_sportsmanagement.treeto', 'treeto', array('control' => 'jform', 'load_data' => $loadData));
-//		if (empty($form))
-//		{
-//			return false;
-//		}
-//		return $form;
-//	}
-
-//	/**
-//	 * sportsmanagementModelTreeto::getScript()
-//	 * 
-//	 * @return
-//	 */
-//	public function getScript()
-//	{
-//		return 'administrator/components/com_sportsmanagement/models/forms/treeto.js';
-//	}
-    
-//	/**
-//	 * Method to get the data that should be injected in the form.
-//	 *
-//	 * @return	mixed	The data for the form.
-//	 * @since	1.7
-//	 */
-//	protected function loadFormData()
-//	{
-//		// Check the session for previously entered form data.
-//		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
-//		if (empty($data))
-//		{
-//			$data = $this->getItem();
-//		}
-//		return $data;
-//	}
 }
 ?>

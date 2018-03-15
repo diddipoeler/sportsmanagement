@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      view.html.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -39,10 +39,6 @@ class sportsmanagementViewEditClub extends JViewLegacy
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
         $document = JFactory::getDocument();
-		//$version = urlencode(JoomleagueHelper::getVersion());
-		//$css='components/com_joomleague/assets/css/tabs.css?v='.$version;
-		//$document->addStyleSheet($css);
-        
 		$model	= $this->getModel();
         $this->club = $model->getClub();
 

@@ -2,11 +2,11 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      jlxmlimport.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage jlxmlimport
+ * @subpackage controllers
  */
 
 // Check to ensure this file is included in Joomla!
@@ -245,7 +245,6 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
         {
             $link='index.php?option=com_sportsmanagement&task=jlxmlimport.edit&project_id='.$projectid;
         }    
-		//$link='index.php?option=com_joomleague&task=jlxmlimport.edit';
 		$this->setRedirect($link,$msg);
 	}
 

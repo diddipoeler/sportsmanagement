@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      jlextlmoimports.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -263,7 +235,7 @@ echo $this->pane->startPane('pane');
 
 // projektname
   $query = 'SELECT pro.name,pro.id
-FROM #__joomleague_project as pro
+FROM #__sportsmanagement_project as pro
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
 $row = $this->_db->loadAssoc();
@@ -272,8 +244,8 @@ $app->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
 
 // saisonname  
   $query = 'SELECT se.name,se.id
-FROM #__joomleague_season as se
-inner join #__joomleague_project as pro
+FROM #__sportsmanagement_season as se
+inner join #__sportsmanagement_project as pro
 on se.id = pro.season_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
@@ -292,8 +264,8 @@ $tempprovorschlag = str_replace(array_keys($convert), array_values($convert), $t
 
 // liganame  
   $query = 'SELECT le.name,le.country,le.id
-FROM #__joomleague_league as le
-inner join #__joomleague_project as pro
+FROM #__sportsmanagement_league as le
+inner join #__sportsmanagement_project as pro
 on le.id = pro.league_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
@@ -322,8 +294,8 @@ $app->enqueueMessage(JText::_('league '.$temp->name.''),'');
  
 // sporttyp  
   $query = 'SELECT st.name,st.id
-FROM #__joomleague_sports_type as st
-inner join #__joomleague_project as pro
+FROM #__sportsmanagement_sports_type as st
+inner join #__sportsmanagement_project as pro
 on st.id = pro.sports_type_id
 WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
@@ -371,87 +343,28 @@ $exportmatch = array();
 $exportmatchplayer = array();
 $exportmatchevent = array();
 $exportevent = array();  
-    /*
-    echo '<pre>';
-    print_r($file);
-    echo '</pre>';
-    */
+    
     $parse = $this->parse_ini_file_ersatz($file);
     
-// echo '<pre>';
-// print_r($parse);
-// echo '</pre><br>';
-       
-    /*
-    foreach ($parseobj AS $tempobj)
-		{
-		echo 'options<pre>';
-    print_r($tempobj);
-    echo '</pre>';
-		//echo 'key -> <pre>'.$key.'</pre> - value -> <pre>'.$value.'</pre><br>';
-		
-		echo '->Options<pre>';
-    print_r($tempobj->Options);
-    echo '</pre>';
-    
-    
-    
-    foreach ($tempobj->Options AS $options)
-		{
-		$temp = new stdClass();
-    $temp->name = $options->Title;
-    $this->_datas['exportversion'] = $temp;
-		echo 'options->Title -> '.$options->Title.'<br>';
-		
-		$teile = explode(" ",$options->Name); 
-    $temp = new stdClass();
-    $temp->name = array_pop($teile);
-    $this->_datas['season'] = $temp;
-    
-    $temp = new stdClass();
-    $temp->name = $options->Name;
-    $temp->country = 'DEU';
-    $this->_datas['league'] = $temp;
-    echo 'options->Name -> '.$options->Name.'<br>';
-    
-		}
-
-    }
-    */
-    
-    
-    
-//     $parse = parse_ini_file($file, TRUE);
+      
 
 
-    
-//     $temp = new stdClass();
-//     $temp->serveroffset = '00:00';
-//     $this->_datas['project'] = $temp;
-    
     
     // select options for the project 
     foreach ($parse['Options'] AS $key => $value)
 		{
-		
-// 		echo 'key -> '.$key.' value ->'.$value.'<br>';
-		
+	
 		if ( $key == 'Title' )
 		{
-    //$this->_datas['exportversion']['name'] = $value;
+    
     $exportname = $value;
-//     $temp = new stdClass();
-//     $temp->name = $value;
-//     $this->_datas['exportversion'] = $temp;
+
     }
     
 		if ( $key == 'Name' )
 		{
     $projectname = utf8_encode ( $value );
-    //$temp->name = $value;
-//     if ( !$project )
-//     {   
-
+    
 if (array_key_exists('season',$this->_datas))
 		{
     // nichts machen
@@ -486,9 +399,7 @@ if (array_key_exists('league',$this->_datas))
     $this->_datas['league'] = $temp;
     }      
     
-    
-//     $this->_datas['project'] = $temp;
-//     }
+
         
     }
     
@@ -552,9 +463,7 @@ if (array_key_exists('league',$this->_datas))
     unset ( $export );
     $matchnumber = 1;
     
-//     echo 'parse<pre>';
-//     print_r($parse);
-//     echo '</pre><br>';
+
     
     for($a=1; $a <= $countrounds; $a++ )
     {
@@ -636,11 +545,10 @@ if (array_key_exists('league',$this->_datas))
 
      if (array_key_exists( 'AT'.$lfdmatch ,$parse['Round'.$a] ))
      {
-     //echo 'AT'.$lfdmatch.' existiert in der runde '.$a.'<br>';
+
      }
      else
      {
-     //echo 'AT'.$lfdmatch.' existiert nicht in der runde '.$a.'<br>';
      
      $lfdmatch++;
      
@@ -671,15 +579,11 @@ if (array_key_exists('league',$this->_datas))
 
 		}
     
-//     if (array_key_exists('AT'.$spielnummerrunde,$parse))
-//     {
+
     if ( substr($key, 0, 2) == 'AT' )
 		{
 		$timestamp = $value;
-// 		$datetime = strtotime($value);
-// 		$mazch_date = date('Y-m-d', $datetime);
-// 		$mazch_time = date('H:i', $datetime);
-// 		echo 'datum -> '.$mazch_date." ".$mazch_time.'<br>';
+
 
 if ( $timestamp )
 {
@@ -720,9 +624,6 @@ if ( $timestamp )
     
     $this->_datas['match'] = array_merge($exportmatch);
     
-//     echo 'this->_datas<pre>';
-//     print_r($this->_datas['match']);
-//     echo '</pre><br>';
     
     // select clubs
     unset ( $export );
@@ -730,7 +631,7 @@ if ( $timestamp )
     foreach ($parse['Teams'] AS $key => $value)
 		{
 		
-// der clubname muss um die mannschaftsnummer verkürzt werden
+// der clubname muss um die mannschaftsnummer verkÃ¼rzt werden
 if ( substr($value, -4, 4) == ' III')
 {
 $convert = array (
@@ -902,25 +803,18 @@ $countjoomleagueteams = $this->_db->loadResult();
 
 if (  $countlmoteams != $countjoomleagueteams  )
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
+$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht Ã¼berein!'),'Error');
 }
 else
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
+$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt Ã¼berein!'),'Notice');
 }
     
     }
 		
-		//$app->setUserState('com_joomleague'.'lmoimportxml',$this->_datas);
-		
-		//JFactory::getApplication()->input->setVar('lmoimportxml', $this->_datas, 'post');
-
-// echo '<pre>';
-// print_r($this->_datas);
-// echo '</pre><br>';
 
 /**
- * das ganze für den standardimport aufbereiten
+ * das ganze fÃ¼r den standardimport aufbereiten
  */
 $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
 // open the project
@@ -1038,28 +932,6 @@ echo $this->pane->endPane();
 }
 
 
-    
-
-    
-    
-
-
-
-    
-
-    
-
-        
-
-    
-
-    
-
-
-
-
-
-	
 
 
 
@@ -1289,270 +1161,6 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 
 
 
-	/**
-	 * _getCountryByOldid
-	 *
-	 * Get ISO-Code for countries to convert in old jlg import file
-	 *
-	 * @param object $obj object where we find the key
-	 * @param string $key key what we find in the object
-	 *
-	 * @access public
-	 * @since  1.5
-	 *
-	 * @return void
-	 */
-	/*
-    public function getCountryByOldid()
-	{
-		$country['0']='';
-		$country['1']='AFG';
-		$country['2']='ALB';
-		$country['3']='DZA';
-		$country['4']='ASM';
-		$country['5']='AND';
-		$country['6']='AGO';
-		$country['7']='AIA';
-		$country['8']='ATA';
-		$country['9']='ATG';
-		$country['10']='ARG';
-		$country['11']='ARM';
-		$country['12']='ABW';
-		$country['13']='AUS';
-		$country['14']='AUT';
-		$country['15']='AZE';
-		$country['16']='BHS';
-		$country['17']='BHR';
-		$country['18']='BGD';
-		$country['19']='BRB';
-		$country['20']='BLR';
-		$country['21']='BEL';
-		$country['22']='BLZ';
-		$country['23']='BEN';
-		$country['24']='BMU';
-		$country['25']='BTN';
-		$country['26']='BOL';
-		$country['27']='BIH';
-		$country['28']='BWA';
-		$country['29']='BVT';
-		$country['30']='BRA';
-		$country['31']='IOT';
-		$country['32']='BRN';
-		$country['33']='BGR';
-		$country['34']='BFA';
-		$country['35']='BDI';
-		$country['36']='KHM';
-		$country['37']='CMR';
-		$country['38']='CAN';
-		$country['39']='CPV';
-		$country['40']='CYM';
-		$country['41']='CAF';
-		$country['42']='TCD';
-		$country['43']='CHL';
-		$country['44']='CHN';
-		$country['45']='CXR';
-		$country['46']='CCK';
-		$country['47']='COL';
-		$country['48']='COM';
-		$country['49']='COG';
-		$country['50']='COK';
-		$country['51']='CRI';
-		$country['52']='CIV';
-		$country['53']='HRV';
-		$country['54']='CUB';
-		$country['55']='CYP';
-		$country['56']='CZE';
-		$country['57']='DNK';
-		$country['58']='DJI';
-		$country['59']='DMA';
-		$country['60']='DOM';
-		$country['61']='TMP';
-		$country['62']='ECU';
-		$country['63']='EGY';
-		$country['64']='SLV';
-		$country['65']='GNQ';
-		$country['66']='ERI';
-		$country['67']='EST';
-		$country['68']='ETH';
-		$country['69']='FLK';
-		$country['70']='FRO';
-		$country['71']='FJI';
-		$country['72']='FIN';
-		$country['73']='FRA';
-		$country['74']='FXX';
-		$country['75']='GUF';
-		$country['76']='PYF';
-		$country['77']='ATF';
-		$country['78']='GAB';
-		$country['79']='GMB';
-		$country['80']='GEO';
-		$country['81']='DEU';
-		$country['82']='GHA';
-		$country['83']='GIB';
-		$country['84']='GRC';
-		$country['85']='GRL';
-		$country['86']='GRD';
-		$country['87']='GLP';
-		$country['88']='GUM';
-		$country['89']='GTM';
-		$country['90']='GIN';
-		$country['91']='GNB';
-		$country['92']='GUY';
-		$country['93']='HTI';
-		$country['94']='HMD';
-		$country['95']='HND';
-		$country['96']='HKG';
-		$country['97']='HUN';
-		$country['98']='ISL';
-		$country['99']='IND';
-		$country['100']='IDN';
-		$country['101']='IRN';
-		$country['102']='IRQ';
-		$country['103']='IRL';
-		$country['104']='ISR';
-		$country['105']='ITA';
-		$country['106']='JAM';
-		$country['107']='JPN';
-		$country['108']='JOR';
-		$country['109']='KAZ';
-		$country['110']='KEN';
-		$country['111']='KIR';
-		$country['112']='PRK';
-		$country['113']='KOR';
-		$country['114']='KWT';
-		$country['115']='KGZ';
-		$country['116']='LAO';
-		$country['117']='LVA';
-		$country['118']='LBN';
-		$country['119']='LSO';
-		$country['120']='LBR';
-		$country['121']='LBY';
-		$country['122']='LIE';
-		$country['123']='LTU';
-		$country['124']='LUX';
-		$country['125']='MAC';
-		$country['126']='MKD';
-		$country['127']='MDG';
-		$country['128']='MWI';
-		$country['129']='MYS';
-		$country['130']='MDV';
-		$country['131']='MLI';
-		$country['132']='MLT';
-		$country['133']='MHL';
-		$country['134']='MTQ';
-		$country['135']='MRT';
-		$country['136']='MUS';
-		$country['137']='MYT';
-		$country['138']='MEX';
-		$country['139']='FSM';
-		$country['140']='MDA';
-		$country['141']='MCO';
-		$country['142']='MNG';
-		$country['143']='MSR';
-		$country['144']='MAR';
-		$country['145']='MOZ';
-		$country['146']='MMR';
-		$country['147']='NAM';
-		$country['148']='NRU';
-		$country['149']='NPL';
-		$country['150']='NLD';
-		$country['151']='ANT';
-		$country['152']='NCL';
-		$country['153']='NZL';
-		$country['154']='NIC';
-		$country['155']='NER';
-		$country['156']='NGA';
-		$country['157']='NIU';
-		$country['158']='NFK';
-		$country['159']='MNP';
-		$country['160']='NOR';
-		$country['161']='OMN';
-		$country['162']='PAK';
-		$country['163']='PLW';
-		$country['164']='PAN';
-		$country['165']='PNG';
-		$country['166']='PRY';
-		$country['167']='PER';
-		$country['168']='PHL';
-		$country['169']='PCN';
-		$country['170']='POL';
-		$country['171']='PRT';
-		$country['172']='PRI';
-		$country['173']='QAT';
-		$country['174']='REU';
-		$country['175']='ROM';
-		$country['176']='RUS';
-		$country['177']='RWA';
-		$country['178']='KNA';
-		$country['179']='LCA';
-		$country['180']='VCT';
-		$country['181']='WSM';
-		$country['182']='SMR';
-		$country['183']='STP';
-		$country['184']='SAU';
-		$country['185']='SEN';
-		$country['186']='SYC';
-		$country['187']='SLE';
-		$country['188']='SGP';
-		$country['189']='SVK';
-		$country['190']='SVN';
-		$country['191']='SLB';
-		$country['192']='SOM';
-		$country['193']='ZAF';
-		$country['194']='SGS';
-		$country['195']='ESP';
-		$country['196']='LKA';
-		$country['197']='SHN';
-		$country['198']='SPM';
-		$country['199']='SDN';
-		$country['200']='SUR';
-		$country['201']='SJM';
-		$country['202']='SWZ';
-		$country['203']='SWE';
-		$country['204']='CHE';
-		$country['205']='SYR';
-		$country['206']='TWN';
-		$country['207']='TJK';
-		$country['208']='TZA';
-		$country['209']='THA';
-		$country['210']='TGO';
-		$country['211']='TKL';
-		$country['212']='TON';
-		$country['213']='TTO';
-		$country['214']='TUN';
-		$country['215']='TUR';
-		$country['216']='TKM';
-		$country['217']='TCA';
-		$country['218']='TUV';
-		$country['219']='UGA';
-		$country['220']='UKR';
-		$country['221']='ARE';
-		$country['222']='GBR';
-		$country['223']='USA';
-		$country['224']='UMI';
-		$country['225']='URY';
-		$country['226']='UZB';
-		$country['227']='VUT';
-		$country['228']='VAT';
-		$country['229']='VEN';
-		$country['230']='VNM';
-		$country['231']='VGB';
-		$country['232']='VIR';
-		$country['233']='WLF';
-		$country['234']='ESH';
-		$country['235']='YEM';
-		$country['238']='ZMB';
-		$country['239']='ZWE';
-		$country['240']='ENG';
-		$country['241']='SCO';
-		$country['242']='WAL';
-		$country['243']='ALA';
-		$country['244']='NEI';
-		$country['245']='MNE';
-		$country['246']='SRB';
-		return $country;
-	}
-  	*/
 }
 
 

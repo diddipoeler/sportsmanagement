@@ -3,17 +3,22 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage libraries
  */
 defined('_JEXEC') or die();
 
 $document = JFactory::getDocument();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$jsmgrid	= $params->get( 'use_jsmgrid' );
-$jsmflex	= $params->get( 'use_jsmflex' );
-$cssflags	= $params->get( 'cfg_flags_css' );
+
+$params_com = JComponentHelper::getParams( 'com_sportsmanagement' );
+$jsmgrid	= $params_com->get( 'use_jsmgrid' );
+$jsmflex	= $params_com->get( 'use_jsmflex' );
+$cssflags	= $params_com->get( 'cfg_flags_css' );
+$usefontawesome	= $params_com->get( 'use_fontawesome' );
+$addfontawesome	= $params_com->get( 'add_fontawesome' );
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -28,6 +33,14 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     }
     if($jsmgrid){
     $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    if($usefontawesome){
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
+    $document->addCustomTag($stylelink);
+    }
+    if($addfontawesome){
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
@@ -95,9 +108,6 @@ class sportsmanagementView extends JViewLegacy {
         $this->view = $this->jinput->getVar("view");
 
         $this->model = $this->getModel();
-//        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$this->app->getCfg('sitename')."','0');". "\n";
-//        $this->document->addScriptDeclaration( $js );
-
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');

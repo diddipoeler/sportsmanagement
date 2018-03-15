@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -74,49 +74,3 @@ if (!empty($this->match->preview))
 <?php
 }
 
-//// Comments integration
-//if (!$commentsDisabled) {
-//
-//	JPluginHelper::importPlugin( 'joomleague' );
-//	$dispatcher = JDispatcher::getInstance();
-//	$comments = '';
-//
-//	// get joomleague comments plugin params
-//	$plugin	= JPluginHelper::getPlugin('content', 'joomleague_comments');
-//	if (is_object($plugin)) 
-//    {
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//    $pluginParams = new JInput($plugin->params);
-//    }
-//    else
-//    {
-//		$pluginParams = new JParameter($plugin->params);
-//        }
-//	}
-//	else 
-//    {
-//        if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//    $pluginParams = new JInput('');
-//    }
-//    else
-//    {
-//		$pluginParams = new JParameter('');
-//        }
-//	}
-//	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
-//
-//	if ($separate_comments) {
-//		// Comments integration trigger when separate_comments in plugin is set to yes/1
-//		if ($dispatcher->trigger( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
-//			echo $comments;
-//		}
-//	}
-//	else {
-//		// Comments integration trigger when separate_comments in plugin is set to no/0
-//		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
-//			echo $comments;
-//		}
-//	}
-//}

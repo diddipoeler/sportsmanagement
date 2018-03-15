@@ -12,7 +12,7 @@
 /** 
 * Modified by Sports Management Entwickler: diddipoeler, stony, svdoldie und  donclumsy
 * http://fussballineuropa.de/
-* Email: diddipoeler@arcor.de
+* Email: diddipoeler@gmx.de
 * Date: 2014
 * Release: 1.0.47
 * License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 

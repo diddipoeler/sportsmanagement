@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      imagehandler.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -61,8 +61,6 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
 		//$ftp = JClientHelper::getCredentials( 'ftp' );
 
-		//set the target directory
-		//$base_Dir = JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS;
 		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<pre>'.print_r($jinput,true).'</pre>'),'');

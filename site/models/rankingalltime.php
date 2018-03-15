@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -976,17 +976,10 @@ $query->clear();
                         $sortarray['cnt_matches'] = SORT_ASC;
                         break;
                 }
-                //uasort( $ranking, array("JoomleagueModelRankingalltime",$c ));
 
             }
 
-//            foreach ($ranking as $row) {
-//                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
-//            }
-            
-            //$arr2 = $this->array_msort($arr2, array('sum_points'=>SORT_DESC,  'diff_team_results'=>SORT_DESC ) );
-            //$sortarray2 = implode (",", $sortarray);
-            //$arr2 = $this->array_msort($arr2, array($sortarray2) );
+
             $arr2 = $this->array_msort($arr2, $sortarray);
 
             unset($ranking);

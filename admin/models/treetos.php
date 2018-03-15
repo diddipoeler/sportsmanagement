@@ -1,19 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treetos.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 
 
+/**
+ * sportsmanagementModelTreetos
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelTreetos extends JModelList
 {
 	var $_identifier = "treetos";
 	static $_project_id = 0;
     
+    /**
+     * sportsmanagementModelTreetos::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {
             $app = JFactory::getApplication();
@@ -30,16 +52,17 @@ class sportsmanagementModelTreetos extends JModelList
                 parent::__construct($config);
         }
         
+	/**
+	 * sportsmanagementModelTreetos::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 	   $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $search	= $this->getState('filter.search');
-        
-//		// Get the WHERE and ORDER BY clauses for the query
-//		$where		= $this->_buildContentWhere();
-//		$orderby	= $this->_buildContentOrderBy();
-		
+	
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('tt.*');
@@ -48,37 +71,18 @@ class sportsmanagementModelTreetos extends JModelList
         $query->join('LEFT', '#__sportsmanagement_division d on d.id = tt.division_id');
         $query->where('tt.project_id = ' . self::$_project_id);
 		
-//        $query = '	SELECT	tt.* ';
-//		$query .=	' FROM #__joomleague_treeto AS tt ';
-//		$query .=	' LEFT JOIN #__joomleague_division d on d.id = tt.division_id ';
-//		$query .=	$where . $orderby ;
-
-
 		return $query;
 	}
 
 
-	//function _buildContentOrderBy()
-//	{
-//		$orderby 	= ' ORDER BY tt.id DESC ';
-//		return $orderby;
-//	}
 
-	//function _buildContentWhere()
-//	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app	= JFactory::getApplication();
-//		$project_id = $app->getUserState( $option . 'project' );
-//		$division = (int) $app->getUserStateFromRequest( $option.'tt_division', 'division', 0 );
-//		$division=JString::strtolower($division);
-//		$where = ' WHERE  tt.project_id = ' . $project_id ;
-//		if($division > 0)
-//		{
-//			$where .= ' AND d.id = ' . $this->_db->Quote($division) ;
-//		}
-//		return $where;
-//	}
-
+	/**
+	 * sportsmanagementModelTreetos::storeshort()
+	 * 
+	 * @param mixed $cid
+	 * @param mixed $data
+	 * @return
+	 */
 	function storeshort( $cid, $data )
 	{
 		$result = true;

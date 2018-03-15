@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      stats.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -120,27 +92,10 @@ class sportsmanagementModelStats extends JModelLegacy
             $query->join('INNER','#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
             
             $query->where('pt1.project_id = '.self::$projectid);
-            
-//            $query  = ' SELECT t1.name AS hometeam, '
-//				. ' t2.name AS guestteam, '
-//				. ' t1.id AS hometeam_id, '
-//				. ' pt1.id AS project_hometeam_id, '
-//				. ' team1_result AS homegoals, '
-//				. ' team2_result AS guestgoals, '
-//				. ' t2.id AS awayteam_id, '
-//				. ' pt2.id AS project_awayteam_id '
-//				. ' FROM #__joomleague_match as matches '
-//				. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-//				. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-//				. ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-//				. ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-//				. ' WHERE pt1.project_id = '.$this->projectid
-//			;
-            
+           
 			if (self::$divisionid != 0)
 			{
 			 $query->where('pt1.division.id = '.self::$divisionid);
-//				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
             $query->where('matches.published = 1');
@@ -160,13 +115,6 @@ class sportsmanagementModelStats extends JModelLegacy
                 
             }
             
-//			$query .= ' AND published=1 '
-//				. ' AND alt_decision=0 '
-//				. ' AND team1_result > team2_result '
-//				. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'	
-//				. ' ORDER BY (team1_result-team2_result) DESC '
-//			;
-
 			$db->setQuery($query, 0, 1);
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -196,105 +144,6 @@ class sportsmanagementModelStats extends JModelLegacy
 		//}
 		//return $this->highest_home;
 	}
-    
-    
-    
-//    /**
-//	 * sportsmanagementModelStats::getHighestHome()
-//	 * 
-//	 * @return
-//	 */
-//	function getHighestHome( )
-//	{
-//	   $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
-//        // Create a new query object.
-//		$db		= sportsmanagementHelper::getDBConnection();
-//		$query	= $db->getQuery(true);
-//        $starttime = microtime(); 
-//        
-//		if ( is_null( $this->highest_home ) )
-//		{
-//			$query  = ' SELECT t1.name AS hometeam, '
-//				. ' t2.name AS guestteam, '
-//				. ' t1.id AS hometeam_id, '
-//				. ' pt1.id AS project_hometeam_id, '
-//				. ' team1_result AS homegoals, '
-//				. ' team2_result AS guestgoals, '
-//				. ' t2.id AS awayteam_id, '
-//				. ' pt2.id AS project_awayteam_id '
-//				. ' FROM #__joomleague_match as matches '
-//				. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-//				. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-//				. ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-//				. ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-//				. ' WHERE pt1.project_id = '.$this->projectid
-//			;
-//			if ($this->divisionid != 0)
-//			{
-//				$query .= ' AND pt1.division_id = '.$this->divisionid;
-//			}
-//			$query .= ' AND published=1 '
-//				. ' AND alt_decision=0 '
-//				. ' AND team1_result > team2_result '
-//				. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'	
-//				. ' ORDER BY (team1_result-team2_result) DESC '
-//			;
-//
-//			$this->_db->setQuery($query, 0, 1);
-//			//echo($this->_db->getQuery());
-//			$this->highest_home = $this->_db->loadObject();
-//		}
-//		return $this->highest_home;
-//	}
-
-//	/**
-//	 * sportsmanagementModelStats::getHighestAway()
-//	 * 
-//	 * @return
-//	 */
-//	function getHighestAway( )
-//	{
-//	   $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
-//        // Create a new query object.
-//		$db		= sportsmanagementHelper::getDBConnection();
-//		$query	= $db->getQuery(true);
-//        $starttime = microtime(); 
-//        
-//		if ( is_null( $this->highest_away ) )
-//		{
-//			$query  = ' SELECT t1.name AS hometeam, '
-//				. ' t1.id AS hometeam_id, '
-//				. ' pt1.id AS project_hometeam_id, '
-//				. ' t2.name AS guestteam, '
-//				. ' pt2.id AS project_awayteam_id, '
-//				. ' t2.id AS awayteam_id, '
-//				. ' team1_result AS homegoals, '
-//				. ' team2_result AS guestgoals '
-//				. ' FROM #__joomleague_match as matches '
-//				. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-//				. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-//				. ' INNER JOIN #__joomleague_project_team pt2 ON pt2.id = matches.projectteam2_id '
-//				. ' INNER JOIN #__joomleague_team t2 ON t2.id = pt2.team_id '
-//				. ' WHERE pt1.project_id = '.$this->projectid
-//			;
-//			if ($this->divisionid != 0)
-//			{
-//				$query .= ' AND pt1.division_id = '.$this->divisionid;
-//			}
-//			$query .= ' AND published=1 '
-//				. ' AND alt_decision=0 '
-//				. ' AND team2_result > team1_result '
-//				. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'	
-//				. ' ORDER BY (team2_result-team1_result) DESC '
-//			;
-//
-//			$this->_db->setQuery($query, 0, 1);
-//			$this->highest_away = $this->_db->loadObject();
-//		}
-//		return $this->highest_away;
-//	}
 
 	/**
 	 * sportsmanagementModelStats::getSeasonTotals()
@@ -338,38 +187,15 @@ class sportsmanagementModelStats extends JModelLegacy
             
           $query->where('pt1.project_id = '.self::$projectid);
             
-//            $query  = ' SELECT '
-//				. ' COUNT(matches.id) AS totalmatches, '
-//				. ' COUNT(team1_result) AS playedmatches, '
-//				. ' SUM(team1_result) AS homegoals, '
-//				. ' SUM(team2_result) AS guestgoals, '
-//				. ' SUM(team1_result + team2_result) AS sumgoals, '
-//				. ' (SELECT COUNT(crowd) '
-//				. '		 FROM #__joomleague_match AS sub1 '
-//				. '		 INNER JOIN #__joomleague_project_team sub2 ON sub2.id = sub1.projectteam1_id '
-//				. '		 WHERE sub1.crowd > 0 '
-//				. ' 		AND sub1.published = 1 '
-//				. ' 		AND (sub1.cancel IS NULL OR sub1.cancel = 0) '
-//				. ' 		AND sub2.project_id = '.$this->projectid.') AS attendedmatches, '
-//                
-//				. ' SUM(crowd) AS sumspectators '
-//				. ' FROM #__joomleague_match AS matches'
-//				. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-//				. ' WHERE pt1.project_id = '.$this->projectid
-//			;
-            
+           
 			if (self::$divisionid != 0)
 			{
 			 $query->where('pt1.division.id = '.self::$divisionid);
-//				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
             $query->where('matches.published = 1');
             $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
             
-//			$query .= ' AND published=1 '
-//				. ' AND (matches.cancel IS NULL OR matches.cancel = 0)'	
-//			;
             
 			$db->setQuery($query, 0, 1);
             
@@ -411,37 +237,21 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->from('#__sportsmanagement_round AS rounds');
           $query->join('LEFT','#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');
           
-//			$query  = ' SELECT rounds.id,'
-//				. ' COUNT(matches.id) AS totalmatchespd,'
-//				. ' COUNT(matches.team1_result) as playedmatchespd,'
-//				. ' SUM(matches.team1_result) AS homegoalspd,'
-//				. ' SUM(matches.team2_result) AS guestgoalspd,'
-//				. ' rounds.roundcode'
-//				. ' FROM #__joomleague_round AS rounds'
-//				. ' LEFT JOIN #__joomleague_match AS matches ON rounds.id = matches.round_id'
-//			;
+
 			if (self::$divisionid != 0)
 			{
 			 $query->join('INNER','#__sportsmanagement_division AS division ON division.project_id = rounds.project_id');
              $query->where('rounds.project_id = '.self::$projectid);
              $query->where('division.id = '.self::$divisionid);
-             
-//				$query .= ' INNER JOIN #__joomleague_division AS division ON division.project_id=rounds.project_id'
-//					. ' WHERE rounds.project_id = '.$this->projectid
-//					. ' AND division.id = '.$this->divisionid;
 			}
 			else
 			{
 			 $query->where('rounds.project_id = '.self::$projectid);
-//				$query .= ' WHERE rounds.project_id = '.$this->projectid;
  			}
             
             $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
             $query->group('rounds.roundcode');
             
-//			$query .= ' AND (matches.cancel IS NULL OR matches.cancel = 0)'
-//				. ' GROUP BY rounds.roundcode'
-//			;
 			$db->setQuery( $query );
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -475,10 +285,6 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->from('#__sportsmanagement_round');
           $query->where('project_id = '.self::$projectid);
           
-//			$query  = ' SELECT COUNT(id)'
-//				. ' FROM #__joomleague_round'
-//				. ' WHERE project_id = '.$this->projectid
-//			;
 			$db->setQuery($query);
 			$this->totalrounds = $db->loadResult();
 		}
@@ -520,37 +326,16 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->join('LEFT','#__sportsmanagement_playground AS playground ON pt1.standard_playground = playground.id');
           
           $query->where('pt1.project_id = '.self::$projectid);
-          
-//			$query  = ' SELECT '
-//				. ' SUM(matches.crowd) AS sumspectatorspt, '
-//				. ' AVG(matches.crowd) AS avgspectatorspt, '
-//				. ' t1.name AS team, '
-//				. ' t1.id AS teamid, '
-//				. ' playground.max_visitors AS capacity '
-//				. ' FROM #__joomleague_match AS matches '
-//				. ' INNER JOIN #__joomleague_project_team pt1 ON pt1.id = matches.projectteam1_id '
-//				. ' INNER JOIN #__joomleague_team t1 ON t1.id = pt1.team_id '
-//				. ' LEFT JOIN #__joomleague_playground AS playground ON pt1.standard_playground = playground.id '
-//				. ' WHERE pt1.project_id = '.$this->projectid
-//			;
-            
+           
 			if (self::$divisionid != 0)
 			{
 			 $query->where('pt1.division.id = '.self::$divisionid);
-//				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
             $query->where('matches.published = 1');
-            //$query->where('matches.crowd > 0');
             $query->group('matches.projectteam1_id');
             $query->order('avgspectatorspt DESC');
             
-//			$query .= ' AND matches.published=1 '
-//				. ' AND matches.crowd > 0 '
-//				. ' GROUP BY matches.projectteam1_id '
-//				. ' ORDER BY avgspectatorspt DESC'
-//			;
-
 			$db->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

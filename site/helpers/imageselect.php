@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      imageselect.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -263,97 +263,95 @@ $app = JFactory::getApplication();
 	{
 		switch( $type )
 		{
-			case	"clubs_small":
+			case "clubs_small":
 				return "clubs/small";
 				break;
-			case	"clubs_medium":
+			case "clubs_medium":
 				return "clubs/medium";
 				break;
-			case	"clubs_large":
+			case "clubs_large":
 				return "clubs/large";
 				break;
 				
-			case	"clubs_trikot_home":
-				//return "clubs/trikot_home";
+			case "clubs_trikot_home":
                 return "clubs/trikot";
 				break;
-			case	"clubs_trikot_away":
-				//return "clubs/trikot_away";
+			case "clubs_trikot_away":
                 return "clubs/trikot";
 				break;
-        	case	"flags":
+        	case "flags":
 				return "flags";
 				break;	
-        case	"flags_associations":
+        case "flags_associations":
 				return "flags_associations";
 				break;
-			case	"associations":
+			case "associations":
 				return "associations";
 				break;	
         
-			case	"events":
+			case "events":
 				return "events";
 				break;	
-			case	"leagues":
+			case "leagues":
 				return "leagues";
 				break;
-				case	"divisions":
+				case "divisions":
 				return "divisions";
 				break;
-      case	"persons":
+      case "persons":
 				return "persons";
 				break;
-case	"projectreferee":
+case "projectreferee":
 				return "persons";
 				break;				
-      case	"playgrounds":
+      case "playgrounds":
 				return "playgrounds";
 				break;
                 
-                case	"positions":
+                case "positions":
 				return "positions";
 				break;
                 
-      case	"projects":
+      case "projects":
 				return "projects";
 				break;	
-      case	"projectteams":
+      case "projectteams":
 				return "projectteams";
 				break;
 			
-      case	"projectteams_trikot_home":
+      case "projectteams_trikot_home":
 				return "projectteams/trikot_home";
 				break;
-      case	"projectteams_trikot_away":
+      case "projectteams_trikot_away":
 				return "projectteams/trikot_away";
 				break;
           	
-		  case	"seasons":
+		  case "seasons":
 				return "seasons";
 				break;
-			case	"sport_types":
+			case "sport_types":
 				return "sport_types";
 				break;
-			case	"statistics":
+			case "statistics":
 				return "statistics";
 				break;
-			case	"teamplayers":
+			case "teamplayers":
 				return "teamplayers";
 				break;
-			case	"teams":
+			case "teams":
 				return "teams";
 				break;
-			case	"teamstaffs":
+			case "teamstaffs":
 				return "teamstaffs";
 				break;
-			case	"venues":
+			case "venues":
 				return "venues";
 				break;
-                case	"rounds":
+                case "rounds":
 				return "rounds";
 				break;
                 
-            case	"agegroups":
+            case "agegroups":
 				return "agegroups";
 				break;    
 				

@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file		components/sportsmanagement/views/ranking/view.html.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
@@ -68,9 +68,6 @@ class sportsmanagementViewRanking extends JViewLegacy
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         
-        //$version = urlencode(JoomleagueHelper::getVersion());
-		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-		//$document->addStyleSheet($css);
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();

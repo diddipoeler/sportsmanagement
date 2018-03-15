@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      ajax.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -11,9 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//jimport('joomla.application.component.controller');
-
 
 /**
  * sportsmanagementControllerAjax
@@ -25,7 +22,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @access public
  */
 class sportsmanagementControllerAjax extends JControllerLegacy
-//class sportsmanagementControllerAjax extends JControllerForm
 {
 
 /**
@@ -41,15 +37,7 @@ public function __construct()
 		$document->setMimeEncoding('application/json');
 		parent::__construct();
 	}
-       // /**
-//         * sportsmanagementControllerAjax::__construct()
-//         * 
-//         * @return
-//         */
-//        public function __construct()
-//        {
-//                parent::__construct();
-//        }
+       
         
         
  /**

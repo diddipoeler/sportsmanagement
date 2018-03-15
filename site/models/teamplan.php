@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      teamplan.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -31,7 +31,6 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	var $team = null;
 	var $club = null;
 	static $divisionid = 0;
-	var $joomleague = null;
 	static $mode = 0;
     
     static $cfg_which_database = 0;

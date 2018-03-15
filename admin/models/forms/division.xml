@@ -1,94 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form
-	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
-	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	<fieldset name="details"
-  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
-  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-	     <field
-			name="id" 
-			type="number" 
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC" 
-			class="readonly" 
-			size="11" 
-			default="0"
-			readonly="true"
-		/>
-	     <field
-			name="project_id"
-			type="hidden"
-			default="0"			
-		/>
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
-			required="true"/>
-		<field
-			name="alias"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
-			class="inputbox"/>	
+    addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+    
+    <fieldset 
+        name="details"
+        label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+        description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"
+    >
+        
+        <field
+            name="id" 
+            type="number" 
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC" 
+            class="readonly" 
+            size="11" 
+            default="0"
+            readonly="true"
+        />
+        
+        <field
+            name="project_id"
+            type="hidden"
+            default="0"			
+        />
+        
+        <field
+            name="name"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+            class="inputbox"
+            required="true"
+        />
+        
+        <field
+            name="alias"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS"
+            description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
+            class="inputbox"
+        />	
 
-		<field
-			name="shortname"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME_DESC"
-			class="inputbox"/>	
-
+        <field
+            name="shortname"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME"
+            description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_S_NAME_DESC"
+            class="inputbox"
+        />	
 			
-	<field
-			name="notes"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR_DESC"
-			class="inputbox"/>	
+        <field
+            name="notes"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_DESCR_DESC"
+            class="inputbox"
+        />	
 			
-			<field
-			name="parent_id"
-			type="parentdivision"
-			size="10"
-			default="0"
-			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PARENT_ID"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PARENT_ID_DESC"
-			class="inputbox"
-			>
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DPARENT_ID</option>
-			 </field>
-	</fieldset>		
+        <field
+            name="parent_id"
+            type="parentdivision"
+            size="10"
+            default="0"
+            label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PARENT_ID"
+            description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PARENT_ID_DESC"
+            class="inputbox"
+        >
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DPARENT_ID</option>
+        </field>
+        
+    </fieldset>		
 	
-	<fieldset name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-			<field
-				name="picture"
-				type="media"
-				default=""				
-				label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
-				class="inputbox"
-				preview="show"				
-				directory=""/>
+    <fieldset 
+        name="picture"
+        label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+        description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC"
+    >
+        
+        <field
+            name="picture"
+            type="media"
+            default=""				
+            label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+            description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
+            class="inputbox"
+            preview="show"				
+            directory=""
+        />
 				
-			<field
-			name="cr_picture"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR_DESC"
-			class="inputbox"/>	
-	</fieldset>
+        <field
+            name="cr_picture"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR"
+            description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR_DESC"
+            class="inputbox"
+        />	
+    </fieldset>
 	
-  <fieldset name="paramsranking"
-  label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
-  description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC">
+    <fieldset 
+        name="paramsranking"
+        label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
+        description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC"
+    >
       				
-	</fieldset>
+    </fieldset>
 	
 </form>

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      seasons.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
- 
 
 /**
  * sportsmanagementControllerseasons
@@ -107,36 +106,6 @@ class sportsmanagementControllerseasons extends JControllerAdmin
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
         
     }
-  
-  
-  
-  
-  
-  
-//  /**
-//	 * Save the manual order inputs from the categories list page.
-//	 *
-//	 * @return	void
-//	 * @since	1.6
-//	 */
-//	public function saveorder()
-//	{
-//		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-//
-//		// Get the arrays from the Request
-//		$order	= JFactory::getApplication()->input->getVar('order',	null, 'post', 'array');
-//		$originalOrder = explode(',', JFactory::getApplication()->input->getString('original_order_values'));
-//
-//		// Make sure something has changed
-//		if (!($order === $originalOrder)) {
-//			parent::saveorder();
-//		} else {
-//			// Nothing to reorder
-//			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-//			return true;
-//		}
-//	}
-  
   
   /**
 	 * Proxy for getModel.

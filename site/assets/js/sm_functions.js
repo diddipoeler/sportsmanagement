@@ -19,7 +19,6 @@ console.log("current window height : "+windowHeight );
 console.log("jquery version : "+jQuery().jquery);
 console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 
-//registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
 //    alert("Embedded block of JS here");
 });
 
@@ -164,24 +163,6 @@ if (selected == 2)
 }
 	
 }
-
-function registerhome(homepage,notes,homepagename,isadmin)
-	{
-var url='http://www.fussballineuropa.de/jsmpaket.php';		
-var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-jQuery.ajax({
-						  type: 'POST',
-						  url: url,
-						  //url: "index.php?option=com_content&id=6",
-	  					  //dataType: "json"
-						  //dataType: "html",
-						  data: data
-						  //success: function(msg, response){alert( "Data Saved: " + msg );}
-						});                    		
-		
-		}
-
 
 function registerproject(homepage,project,homepagename,isadmin)
 	{

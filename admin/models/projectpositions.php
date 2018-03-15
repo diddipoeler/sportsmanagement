@@ -2,10 +2,11 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      projectpositions.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
- * @subpackage projectpositions
+ * @package   sportsmanagement
+ * @subpackage models
  */
 
 // Check to ensure this file is included in Joomla!
@@ -145,6 +146,13 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
     
     
    
+   /**
+    * sportsmanagementModelProjectpositions::updateprojectpositions()
+    * 
+    * @param mixed $items
+    * @param integer $project_id
+    * @return
+    */
    function updateprojectpositions($items=NULL,$project_id=0)
    {
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');	   	   
@@ -257,29 +265,31 @@ $resultupdate = $this->jsmdb->execute();
         
     }
 
+	
 	/**
-	 * Method to return the positions which are subpositions and are equal to a sportstype array (id,name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
+	 * sportsmanagementModelProjectpositions::getSubPositions()
+	 * 
+	 * @param integer $sports_type_id
+	 * @return
 	 */
 	function getSubPositions($sports_type_id=1)
 	{
-		$query='	SELECT	id AS value,
-							name AS text,
-							sports_type_id AS type,
-							parent_id AS parentID
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position
-					WHERE published=1 AND sports_type_id='.$sports_type_id.'
-					ORDER BY parent_id ASC,name ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		//echo '<br /><pre>2~'.print_r($result,true).'~</pre><br />';
+$this->jsmquery->clear();
+$this->jsmquery->select('id AS value,name AS text,sports_type_id AS type,parent_id AS parentID');
+$this->jsmquery->from('#__sportsmanagement_position');
+$this->jsmquery->where('sports_type_id = '.$sports_type_id);
+$this->jsmquery->where('published = 1');
+$this->jsmquery->order('parent_id ASC,name ASC');
+try{
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadObjectList();
+ }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+        
 		return $result;
 	}
 

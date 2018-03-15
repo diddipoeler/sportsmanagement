@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      roster.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -93,7 +93,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 			 $query = $db->getQuery(true);
              $query->clear();
 				$query->select('pt.project_id,pt.id,st.team_id as season_team_id');
-                $query->select("'".$team_picture_which.".picture' as picture");
+                $query->select("".$team_picture_which.".picture as picture");
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
 		$query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
@@ -116,7 +116,7 @@ class sportsmanagementModelRoster extends JModelLegacy
                 $query = $db->getQuery(true);
                 $query->clear();
                 $query->select('pt.project_id,pt.id,st.team_id as season_team_id');
-                $query->select("'".$team_picture_which.".picture' as picture");
+                $query->select("".$team_picture_which.".picture as picture");
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');   
                $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');

@@ -32,8 +32,8 @@
 	</languages>
 <config>
 		<fields name="params">
-			<fieldset 	name="basic"
-						addfieldpath="/administrator/components/com_sportsmanagement/elements">  
+			<fieldset name="basic"
+				addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">  
 
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />

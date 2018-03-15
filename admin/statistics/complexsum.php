@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      complexsum.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage statistics
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -72,23 +44,7 @@ class SMStatisticComplexsum extends SMStatistic
 		parent::__construct();
 	}
 	
-//	function getSids()
-//	{
-//		$params = &$this->getParams();
-//		$stat_ids = explode(',', $params->get('stat_ids'));
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//		
-//		$db = &sportsmanagementHelper::getDBConnection();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = (int)$s;
-//		}
-//		return $sids;
-//	}
-	
+
 	/**
 	 * SMStatisticComplexsum::getFactors()
 	 * 
@@ -114,23 +70,6 @@ class SMStatisticComplexsum extends SMStatistic
 		return $sids;
 	}
 	
-	
-//	function getQuotedSids()
-//	{
-//		$params = &$this->getParams();
-//		$stat_ids = explode(',', $params->get('stat_ids'));
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//		
-//		$db = &sportsmanagementHelper::getDBConnection();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = $db->Quote($s);
-//		}
-//		return $sids;
-//	}
 	
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
@@ -218,34 +157,22 @@ class SMStatisticComplexsum extends SMStatistic
 		
 		// get all stats
         $query->select('ms.value, ms.statistic_id, tp.id AS tpid');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id');
-        
-//		$query	= ' SELECT ms.value, ms.statistic_id, tp.id AS tpid'
-//				. ' FROM #__joomleague_match_statistic AS ms'
-//				. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id'
-//				. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//				. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-//				. ' WHERE pt.project_id = '. $db->Quote($project_id);
-		
+        $query->from('#__sportsmanagement_match_statistic AS ms');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id');
+	
         $query->where('pt.project_id = ' . $project_id);   
         
         if ($division_id != 0)
 		{
-			//$query .= ' AND pt.division_id = '. $db->Quote($division_id);
             $query->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			//$query .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query->where('st.team_id = ' . $team_id);
 		}
-//		$query .= '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-//				. '   AND m.published = 1 '
-//		;
         
         $query->where('ms.statistic_id IN ('. implode(',', $sqids) .')');
         $query->where('m.published = 1');
@@ -285,43 +212,27 @@ class SMStatisticComplexsum extends SMStatistic
 		
         $query->clear();
         $query->select('tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,p.firstname, p.nickname, p.lastname, p.picture, p.country,st.team_id, pt.picture AS projectteam_picture,t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
         $query->where('pt.project_id = '. $project_id);
         $query->where('p.published = 1');
         $query->where('tp.id IN ('. implode(',', $ids) .')');
-        
-//		$query  = ' SELECT tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
-//				. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-//				. ' pt.team_id, pt.picture AS projectteam_picture,'
-//				. ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name'
-//				. ' FROM #__joomleague_team_player AS tp'
-//				. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
-//				. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//				. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
-//				. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//				. '   AND p.published = 1 '
-//				. '   AND tp.id IN ('. implode(',', $ids) .')';
+
 		if ($division_id != 0)
 		{
-			//$query .= '   AND pt.division_id = '. $db->Quote($division_id);
             $query->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			//$query .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query->where('st.team_id = ' . $team_id);
 		}
 
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$details = $db->loadObjectList('teamplayer_id');
 
@@ -378,18 +289,6 @@ class SMStatisticComplexsum extends SMStatistic
         $statistic_id = implode(',', $sqids);
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
 
-		
-//		// get all stats
-//		$query = ' SELECT ms.value, ms.statistic_id, pt.team_id '
-//		       . ' FROM #__joomleague_match_statistic AS ms '
-//		       . ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id '
-//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
-//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-//		       . '   AND tp.published = 1 '
-//		       . '   AND m.published = 1 '
-//		       ;
 		$db->setQuery($query);
  
 try{       
@@ -488,21 +387,10 @@ $stats = $db->loadObjectList();
 		
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE);
-        
-//		$query = ' SELECT ms.value, ms.statistic_id '
-//		       . ' FROM #__joomleague_team_staff AS tp '
-//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//		       . '   AND m.published = 1 '
-//		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-//		       . '   AND pt.project_id = '. $db->Quote($project_id)
-//		       . '   AND tp.person_id = '. $db->Quote($person_id)
-//		       ;
+
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		
@@ -534,21 +422,10 @@ $stats = $db->loadObjectList();
 		$db = sportsmanagementHelper::getDBConnection();
 		
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE);
-        
-//		$query = ' SELECT ms.value AS value, ms.statistic_id '
-//		       . ' FROM #__joomleague_team_staff AS tp '
-//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-//		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
-//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-//		       . '   AND m.published = 1 '
-//		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
-//		       . '   AND p.published = 1 '
-//		       ;
+
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		

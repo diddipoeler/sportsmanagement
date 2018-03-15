@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      defaul_matches.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -142,6 +142,10 @@ fieldset button {
 
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
+						if ( $date == '0000-00-00' )
+						{
+						$date = '';
+						}
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 						<?php if(($row->cancel)>0)

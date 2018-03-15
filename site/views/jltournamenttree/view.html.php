@@ -3,7 +3,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
  * @version         1.0.05
  * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license                This file is part of SportsManagement.
  *
@@ -79,11 +79,7 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy {
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
 
         if ($this->project->project_type == 'TOURNAMENT_MODE') {
-//	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$app->getCfg('sitename')."','0');". "\n";
-//  $document->addScriptDeclaration( $js );	
-            //$model =& $this->getModel( 'jlxmlexports' ); 
             $model = $this->getModel();
-            //$model->checkStartExtension();
             $bracket_request = JFactory::getApplication()->input->get();
             $this->logo = $bracket_request['tree_logo'];
             $this->color_from = $model->getColorFrom();

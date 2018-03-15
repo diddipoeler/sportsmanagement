@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      helper.php
- * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
@@ -18,41 +18,40 @@ $crew = array();
 
 //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
-if (!function_exists('jl_birthday_sort')) {
+if (!function_exists('jsm_birthday_sort')) {
 
-    // snippet taken from http://de3.php.net/manual/en/function.uasort.php
     /**
-     * jl_birthday_sort()
+     * jsm_birthday_sort()
      * 
      * @param mixed $array
      * @param mixed $arguments
      * @param bool $keys
      * @return
      */
-    function jl_birthday_sort($array, $arguments = array(), $keys = true) {
-        $code = "\$result=0;";
-        foreach ($arguments as $argument) {
-            $field = substr($argument, 2, strlen($argument));
-            $type = $argument[0];
-            $order = $argument[1];
-            $code .= "if (!Is_Numeric(\$result) || \$result == 0) ";
-            if (strtolower($type) == "n") {
-                $code .= $order == "-" ? "\$result = (intval(\$a['{$field}']) > intval(\$b['{$field}']) ? -1 : (intval(\$a['{$field}']) < intval(\$b['{$field}']) ? 1 : 0));" : "\$result = (intval(\$a['{$field}']) > intval(\$b['{$field}']) ? 1 : (intval(\$a['{$field}']) < intval(\$b['{$field}']) ? -1 : 0));";
-            } else {
-                $code .= $order == "-" ? "\$result = strcoll(\$a['{$field}'], \$b['{$field}']) * -1;" : "\$result = strcoll(\$a['{$field}'], \$b['{$field}']);";
-            }
-        }
-        $code .= "return \$result;";
-        $compare = create_function('$a, $b', $code);
+    function jsm_birthday_sort($array, $arguments = '-', $keys = true) {
+     $mainframe = JFactory::getApplication(); 
 
-        if ($keys) {
-            uasort($array, $compare);
-        } else {
-            usort($array, $compare);
-        }
+// Hole eine Liste von Spalten
+foreach ($array as $key => $row) {
+    $days_to_birthday[$key] = $row['days_to_birthday'];
+    $age[$key] = $row['age'];
+}
+
+$sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
+
+//array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
+//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' array<br><pre>'.print_r($array,true).'</pre>'),''); 
+     
         return $array;
     }
 
+
+ 
+ 
+ 
 }
 
 $usedp = $params->get('projects', '0');
