@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      base.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage statistics
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -197,6 +169,7 @@ class SMStatistic extends JObject
     
     
     
+    
     /**
      * SMStatistic::getStaffStatsQuery()
      * 
@@ -204,6 +177,8 @@ class SMStatistic extends JObject
      * @param mixed $team_id
      * @param mixed $project_id
      * @param mixed $sids
+     * @param mixed $select
+     * @param bool $history
      * @return
      */
     function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false)
@@ -218,7 +193,15 @@ class SMStatistic extends JObject
     $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_core->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');
+    if ( $sids )
+    {
+    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');    
+    }
+    else
+    {
+    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id ');    
+    }
+    
     $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_core->where('p.published = 1');
     $query_core->where('tp.person_id = '. $person_id);
@@ -235,6 +218,7 @@ class SMStatistic extends JObject
 	}
     
     
+    
     /**
      * SMStatistic::getPlayersRankingStatisticQuery()
      * 
@@ -243,6 +227,7 @@ class SMStatistic extends JObject
      * @param mixed $team_id
      * @param mixed $sids
      * @param mixed $select
+     * @param string $which
      * @return
      */
     function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select,$which='statistic')
@@ -379,12 +364,7 @@ class SMStatistic extends JObject
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
         
         $stat_ids = $params->get($id_field);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat_ids<br><pre>'.print_r($stat_ids,true).'</pre>'),'');
- }
-        
+       
 		if (!count($stat_ids)) 
         {
 			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
