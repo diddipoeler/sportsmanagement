@@ -54,57 +54,36 @@ class SMStatisticWinpergame extends SMStatistic
         $query = JFactory::getDbo()->getQuery(true);
         
         $query->select('COUNT(m.id) AS value, tp.person_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        
-//		$query = ' SELECT COUNT(m.id) AS value, tp.person_id '
-//		       . ' FROM #__joomleague_team_player AS tp '
-//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id ';
-               
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+             
 		if ($sports_type_id)
 		{
-		  $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+		  $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
           $query->where('p.sports_type_id = ' . $sports_type_id);
-//			$query .= ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
-//					. '   AND p.sports_type_id = '. $db->Quote($sports_type_id);
 		}
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.teamplayer_id = tp.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = mp.match_id AND m.published = 1');
+        $query->join('INNER','#__sportsmanagement_match_player AS mp ON mp.teamplayer_id = tp.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = mp.match_id AND m.published = 1');
         
         $query->where('CASE WHEN pt.id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END');
         $query->where('tp.person_id = '. $person_id);
         $query->where('tp.published = 1');
         
-//		$query.= ' INNER JOIN #__joomleague_match_player AS mp ON mp.teamplayer_id = tp.id '
-//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = mp.match_id '
-//		       . '   AND m.published = 1 '
-//		       . ' WHERE CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END'
-//		       . '   AND tp.person_id = '. $db->Quote($person_id)
-//		       . '   AND tp.published = 1 ';
-
 		if ($projectteam_id)
 		{
-		       //$query .= '   AND pt.id = '. $db->Quote($projectteam_id);
                $query->where('pt.id = ' . $projectteam_id);
 		}
 
 		if ($project_id)
 		{
-		       //$query .= '   AND pt.project_id = '. $db->Quote($project_id);
                $query->where('pt.project_id = ' . $project_id);
 		}
 
-		//$query .= ' GROUP BY tp.id ';
         $query->group('tp.id');
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       
 		$num = $db->loadResult();
 		
 		$den = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
@@ -126,52 +105,29 @@ class SMStatisticWinpergame extends SMStatistic
 
 		// Determine the wins per game for each project team player
         $query->select('COUNT(m.id) AS value, tp.person_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.teamplayer_id = tp.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = mp.match_id AND m.published = 1 ');
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_match_player AS mp ON mp.teamplayer_id = tp.id ');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = mp.match_id AND m.published = 1 ');
         $query->where('st.team_id = '. $team_id);
         $query->where('pt.project_id = ' . $project_id);
         $query->where('ppos.position_id = '. $position_id);
         $query->where('CASE WHEN pt.id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END');
         $query->group('tp.id');
-        
-//		$query	= ' FROM #__joomleague_team_player AS tp' 
-//				. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id' 
-//				. ' INNER JOIN #__joomleague_match_player AS mp ON mp.teamplayer_id = tp.id'
-//				. ' INNER JOIN #__joomleague_project_position AS ppos ON ppos.id = tp.project_position_id' 
-//				. ' INNER JOIN #__joomleague_match AS m ON m.id = mp.match_id'
-//				. '  AND m.published = 1'
-//				. ' WHERE pt.team_id = '. $db->Quote($team_id)
-//				. ' AND pt.project_id = '. $db->Quote($project_id)
-//				. ' AND ppos.position_id = '. $db->Quote($position_id)
-//				. ' AND CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END'
-//					;
-                    
-		//$db->setQuery(' SELECT COUNT(m.id) AS value, tp.person_id ' . $query . ' GROUP BY tp.id ');
+                   
         $db->setQuery($query);
             
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{    
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
             
 		$num = $db->loadObjectList('person_id');
 
 		// Determine the wins per game for the project team
-		//$db->setQuery(' SELECT COUNT(m.id) AS value ' . $query);
         $query->clear('select');
         $query->clear('group');
         $query->select('COUNT(m.id) AS value');
         $db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{    
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-            
 		$num['totals'] = new stdclass;
 		$num['totals']->person_id = 'totals';
 		$num['totals']->value = $db->loadResult();
@@ -366,35 +322,30 @@ class SMStatisticWinpergame extends SMStatistic
 		return $res;
 	}
 	
+	/**
+	 * SMStatisticWinpergame::getStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{		
-		$db = &sportsmanagementHelper::getDBConnection();
-		$query = ' SELECT COUNT(m.id) AS value, tp.person_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff AS ms ON ms.team_staff_id = tp.id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END'
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
+		$db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
+        $select = 'COUNT(m.id) AS value, tp.person_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE,'match_staff');
+        $query->where('CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END');
+
 		$db->setQuery($query);
 		$num = $db->loadResult();
 		
-		$query = ' SELECT COUNT(ms.id) AS value, tp.person_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff AS ms ON ms.team_staff_id = tp.id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
+        $query->clear();
+        $select = 'COUNT(ms.id) AS value, tp.person_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE,'match_staff');
+        
 		$db->setQuery($query);
 		$den = $db->loadResult();
 	
@@ -402,37 +353,42 @@ class SMStatisticWinpergame extends SMStatistic
 	}
 	
 
+	/**
+	 * SMStatisticWinpergame::getHistoryStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @return
+	 */
 	function getHistoryStaffStats($person_id)
 	{		
-		$db = &sportsmanagementHelper::getDBConnection();
-		$query = ' SELECT COUNT(m.id) AS value, tp.person_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff AS ms ON ms.team_staff_id = tp.id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END'
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
+		$db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
+        $select = 'COUNT(m.id) AS value, tp.person_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE,'match_staff');
+        $query->where('CASE WHEN tp.projectteam_id = m.projectteam1_id THEN m.team1_result > m.team2_result ELSE m.team1_result < m.team2_result END');
+        
 		$db->setQuery($query);
 		$num = $db->loadResult();
 		
-		$query = ' SELECT COUNT(ms.id) AS value, tp.person_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff AS ms ON ms.team_staff_id = tp.id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
+        $query->clear();
+        $select = 'COUNT(ms.id) AS value, tp.person_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE,'match_staff');
+        
 		$db->setQuery($query);
 		$den = $db->loadResult();
 	
 		return $this->formatValue($num, $den, $this->getPrecision());
 	}
 
+	/**
+	 * SMStatisticWinpergame::formatValue()
+	 * 
+	 * @param mixed $num
+	 * @param mixed $den
+	 * @param mixed $precision
+	 * @return
+	 */
 	function formatValue($num, $den, $precision)
 	{
 		$value = (!empty($num) && !empty($den)) ? $num / $den : 0;

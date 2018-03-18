@@ -345,13 +345,13 @@ class SMStatisticEventPergame extends SMStatistic
 		$db = sportsmanagementHelper::getDBConnection();
         
         $select = 'SUM(ms.value) AS value, tp.person_id';
-        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids,$select,TRUE);
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids,$select,TRUE);
         
 		$db->setQuery($query);
 		$num = $db->loadResult();
 		
         $select = 'SUM(ms.value) AS value, tp.person_id';
-        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, '',$select,TRUE);
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, '',$select,TRUE);
 		$db->setQuery($query);
 		$den = $db->loadResult();
 	

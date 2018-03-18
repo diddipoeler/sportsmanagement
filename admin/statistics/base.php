@@ -170,6 +170,7 @@ class SMStatistic extends JObject
     
     
     
+   
     /**
      * SMStatistic::getStaffStatsQuery()
      * 
@@ -179,28 +180,41 @@ class SMStatistic extends JObject
      * @param mixed $sids
      * @param mixed $select
      * @param bool $history
+     * @param string $table
      * @return
      */
-    function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false)
+    function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false,$table = 'match_staff_statistic')
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_core = JFactory::getDbo()->getQuery(true);
+    $query_core = $db->getQuery(true);
     
 	$query_core->select($select);
     $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_core->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-    if ( $sids )
+    
+    switch ( $table )
     {
-    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');    
+        case 'match_staff_statistic':
+        if ( $sids )
+        {
+        $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.team_staff_id = tp.id AND ms.statistic_id IN ('. $sids .')');    
+        }
+        else
+        {
+        $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.team_staff_id = tp.id ');    
+        }
+        break;
+        case 'match_staff':
+        $query_core->join('INNER','#__sportsmanagement_match_staff AS ms ON ms.team_staff_id = tp.id '); 
+        break;
+        
     }
-    else
-    {
-    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id ');    
-    }
+    
+    
     
     $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_core->where('p.published = 1');

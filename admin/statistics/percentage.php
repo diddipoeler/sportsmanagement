@@ -493,13 +493,13 @@ try{
 		
 		$db = sportsmanagementHelper::getDBConnection();
         $select = 'SUM(ms.value) AS value, tp.person_id';
-        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids['num'],$select,TRUE);
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids['num'],$select,TRUE);
         
 		$db->setQuery($query);
 		$num = $db->loadResult();
 		
         $select = 'SUM(ms.value) AS value, tp.person_id';
-        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids['den'],$select,TRUE);
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sids['den'],$select,TRUE);
         
 		$db->setQuery($query);
 		$den = $db->loadResult();
