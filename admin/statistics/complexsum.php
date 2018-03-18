@@ -205,12 +205,7 @@ class SMStatisticComplexsum extends SMStatistic
         $query->where('m.published = 1');
         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       
 		$stats = $db->loadObjectList();
 		
 		// now calculate per player

@@ -265,37 +265,40 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		return $res;
 	}
 
-	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
+	
+	/**
+	 * SMStatisticComplexsumpergame::getTeamsRanking()
+	 * 
+	 * @param integer $project_id
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
+	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{		
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
 		
-		$db = &sportsmanagementHelper::getDBConnection();
-	
-		// team games
-		$query = ' SELECT COUNT(m.id) AS value, pt.team_id '
-		       . ' FROM #__joomleague_project_team AS pt '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id'
-		       . '   AND m.published = 1 '
-		       . '   AND m.team1_result IS NOT NULL '
-		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
-		       . ' GROUP BY pt.id '
-		       ;
+		$db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+	    // team games
+		$query->select('COUNT(m.id) AS value, st.team_id');
+        $query->from('#__sportsmanagement_project_team AS pt');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.published = 1 AND m.team1_result IS NOT NULL');
+        $query->where('pt.project_id = ' . $project_id);
+        $query->group('pt.id');
+        
 		$db->setQuery($query);
 		$gp = $db->loadObjectList('team_id');
 				
 		// get all stats
-		$query = ' SELECT ms.value, ms.statistic_id, pt.team_id '
-		       . ' FROM #__joomleague_match_statistic AS ms '
-		       . ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
-		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-		       . '   AND tp.published = 1 '
-		       . '   AND m.published = 1 '
-		       ;
+        $query->clear();
+        $select = 'ms.value, ms.statistic_id, st.team_id ';
+        $statistic_id = implode(',', $sqids);
+        $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
 		$db->setQuery($query);
 		$stats = $db->loadObjectList();
 		

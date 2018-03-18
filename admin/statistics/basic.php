@@ -129,18 +129,19 @@ class SMStatisticBasic extends SMStatistic
 		return $res;
 	}
 	
+	
 	/**
 	 * SMStatisticBasic::getPlayersRanking()
 	 * 
-	 * @param mixed $project_id
-	 * @param mixed $division_id
-	 * @param mixed $team_id
+	 * @param integer $project_id
+	 * @param integer $division_id
+	 * @param integer $team_id
 	 * @param integer $limit
 	 * @param integer $limitstart
 	 * @param mixed $order
 	 * @return
 	 */
-	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
+	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{		
 		$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
@@ -218,20 +219,22 @@ class SMStatisticBasic extends SMStatistic
 		return $res;
 	}
 	
+	
 	/**
 	 * SMStatisticBasic::getTeamsRanking()
 	 * 
-	 * @param mixed $project_id
+	 * @param integer $project_id
 	 * @param integer $limit
 	 * @param integer $limitstart
 	 * @param mixed $order
+	 * @param string $select
+	 * @param integer $statistic_id
 	 * @return
 	 */
-	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null, $select = '', $statistic_id = 0)
+	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{		
 		$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		//$query_core = JFactory::getDbo()->getQuery(true);
 		
         $select = 'SUM(ms.value) AS total, st.team_id ';
         $statistic_id = $this->id;

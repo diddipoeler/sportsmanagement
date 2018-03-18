@@ -105,11 +105,9 @@ class SMStatistic extends JObject
     $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
     $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_num->where('pt.project_id = ' . $project_id);
-    
     $query_num->group('pt.id');
     
     return $query_num;
-        
     }
     
     /**
@@ -166,10 +164,6 @@ class SMStatistic extends JObject
     $query_core->group('total');
     return $query_core;
     }
-    
-    
-    
-    
    
     /**
      * SMStatistic::getStaffStatsQuery()
@@ -322,6 +316,7 @@ class SMStatistic extends JObject
         
     }
     
+   
     /**
      * SMStatistic::getPlayersRankingStatisticCoreQuery()
      * 
@@ -330,16 +325,17 @@ class SMStatistic extends JObject
      * @param mixed $team_id
      * @param mixed $query_num
      * @param mixed $query_den
+     * @param mixed $select
      * @return
      */
-    function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den)
+    function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den,$select)
     {
     $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
     
-    $query_core->select('COUNT(DISTINCT tp.id) as count');
+    $query_core->select($select);
     $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_core->join('INNER','('.$query_num.') AS n ON n.tpid = tp.id');
     $query_core->join('INNER','('.$query_den.') AS d ON d.tpid = tp.id');
@@ -794,12 +790,13 @@ class SMStatistic extends JObject
 	{
         $app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		$query_core = JFactory::getDbo()->getQuery(true);
+		$query_core = $db->getQuery(true);
 		
         switch ($this->_name)
         {
             case 'basic':
-            $query_core->select('SUM(ms.value) AS total, st.team_id');
+            case 'complexsum':
+            $query_core->select($select);
             $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
             $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
             $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
@@ -816,8 +813,6 @@ class SMStatistic extends JObject
             break;
         }
         
-//        JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
-//		return $query_core;
 	}
 	
 	/**
