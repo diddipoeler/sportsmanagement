@@ -563,7 +563,7 @@ catch (Exception $e){
 
 			
 			//previous rank
-			if( $tableconfig['last_ranking']==1 )
+			if( $tableconfig['last_ranking'] )
 			{
 				if ( self::$to == 1 || ( self::$to == self::$from ) )
 				{

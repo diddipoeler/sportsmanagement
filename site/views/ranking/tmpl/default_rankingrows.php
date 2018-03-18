@@ -113,7 +113,7 @@ foreach ($current as $ptid => $team) {
         echo ' style="background-color:' . $color . '"';
     }
     echo '>';
-    if (( $this->tableconfig['last_ranking'] == 1 ) && ( isset($previous[$ptid]->rank) )) {
+    if (( $this->tableconfig['last_ranking'] ) && ( isset($previous[$ptid]->rank) )) {
         echo "(" . $previous[$ptid]->rank . ")";
     }
     //echo '</span>';
