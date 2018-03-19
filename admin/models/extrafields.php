@@ -87,7 +87,7 @@ class sportsmanagementModelextrafields extends JSMModelList
 		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields))
 		{
-			$orderCol = 'pl.lastname';
+			$orderCol = 'objcountry.name';
 		}
 		$this->setState('list.ordering', $orderCol);
 		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
