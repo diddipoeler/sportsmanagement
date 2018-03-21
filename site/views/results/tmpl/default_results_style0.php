@@ -345,7 +345,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 			<!-- show team-icons and/or -names -->
 			<td width='<?PHP echo $width;?>'>
 				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                echo sportsmanagementViewResults::getTeamClubIcon($team1,
+                $this->config['show_logo_small'],
+                array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
                 ?>
 			</td>
 			<td>

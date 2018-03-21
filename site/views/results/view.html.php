@@ -256,13 +256,17 @@ $this->setLayout('form_bootstrap');
 	}
 	
 	/**
+	 * sportsmanagementViewResults::getTeamClubIcon()
 	 * returns html <img> for club assigned to team
-	 * @param object team
-	 * @param int type=1 for club small image,or 2 for club country
-	 * @param boolean $with_space
-	 * @return unknown_type
+	 * @param mixed $team
+	 * @param integer $type
+	 * @param mixed $attribs
+	 * @param string $modalwidth
+	 * @param string $modalheight
+	 * @param integer $use_jquery_modal
+	 * @return
 	 */
-	public static function getTeamClubIcon($team, $type=1, $attribs=array() )
+	public static function getTeamClubIcon($team, $type=1, $attribs=array(),$modalwidth = '100',$modalheight = '200',$use_jquery_modal = 0 )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -299,9 +303,9 @@ $this->setLayout('form_bootstrap');
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
@@ -310,9 +314,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         elseif ($type==5)
@@ -326,9 +330,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
@@ -337,9 +341,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         elseif ($type==6)
@@ -357,9 +361,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -372,9 +376,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         
@@ -390,9 +394,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
@@ -405,9 +409,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
@@ -421,9 +425,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
@@ -436,9 +440,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
@@ -452,9 +456,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
@@ -467,9 +471,9 @@ $this->overallconfig['use_jquery_modal']);
                 $title,
                 $attribs['width'],
                 '',
-$this->modalwidth,
-$this->modalheight,
-$this->overallconfig['use_jquery_modal']);
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
 		else
