@@ -13,11 +13,11 @@ defined('_JEXEC') or die('Restricted access');
 //$this->columns = 2;
 $this->divclass = '';
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
 
-if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
+if (version_compare(JSM_JVERSION, '4', 'eq') || $paramscomponent->get('use_jsmgrid')) {
     $this->divclass = 'p-2 col';
-} elseif ($this->overallconfig['use_bootstrap_version'] && !$params->get('use_jsmgrid')) {
+} elseif ($this->overallconfig['use_bootstrap_version'] && !$paramscomponent->get('use_jsmgrid')) {
     //$this->divclass = 'col p-2';
     $this->divclass .= "col-xs-" ;
     $this->divclass .= " col-sm-";
@@ -31,7 +31,7 @@ if (!isset($this->club)) {
     JError::raiseWarning('ERROR_CODE', JText::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
-    <div class="<?php echo $params->get('boostrap_div_class'); ?>">
+    <div class="<?php echo $paramscomponent->get('boostrap_div_class'); ?>">
         <div class="<?php echo $this->divclass; ?>3 center">
             <?PHP ?>
             <!-- SHOW LOGO - START -->
@@ -45,7 +45,7 @@ if (!isset($this->club)) {
                 $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
             }
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id, $picture, $club_emblem_title, $this->config['club_logo_width'],'','','',1);            
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id, $picture, $club_emblem_title, $this->config['club_logo_width'],'','','',$this->overallconfig['use_jquery_modal']);            
 
             if ($this->config['show_club_logo_copyright']) {
                 //echo JText::_( "COM_SPORTSMANAGEMENT_PAINTER_INFO" );
