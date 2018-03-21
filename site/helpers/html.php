@@ -43,45 +43,22 @@ class sportsmanagementHelperHtml {
         // JInput object
         $jinput = $app->input;
 
-        /*
-          $modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
-          $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-          $modaltext .= '</a>';
-
-          if ( !$url )
-          {
-          $url = $picture;
-          }
-
-
-          $modaltext .= JHtml::_('bootstrap.renderModal',
-          $target,
-          array(
-          'title' => $text,
-          'url' => $url,
-          'height' => $height,
-          'width' => $width
-          )
-          );
-         */
-
-
         if ($use_jquery_modal) {
-//$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
-//$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-//$modaltext .= '</a>';
-
-            $modaltext = '<!-- Button HTML (to Trigger Modal) -->';
-            $modaltext .= '<a href="' . $url . '" role="button" class="btn btn-large btn-primary" data-toggle="modal" data-target="#' . $target . '">Launch Demo Modal</a>';
-
-            $modaltext .= '<!-- Modal HTML -->';
-            $modaltext .= '<div id="' . $target . '" class="modal fade">';
-            $modaltext .= '    <div class="modal-dialog">';
-            $modaltext .= '        <div class="modal-content">';
-            $modaltext .= '            <!-- Content will be loaded here from "remote.php" file -->';
-            $modaltext .= '        </div>';
-            $modaltext .= '    </div>';
-            $modaltext .= '</div>';
+$modaltext = '<a href="#'.$target.'">';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext .= '</a>';
+if ($url) {
+$modaltext .= '<a id="'.$target.'" href="'.$url.'" class="popup"></a>';
+} else {
+$modaltext .= '<a id="'.$target.'" href="#" class="popup"></a>';
+}
+$modaltext .= '<div class="popup">';
+if ($picture) {
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="" />';
+}
+$modaltext .= '<a class="close x" href="#">x</a>';
+$modaltext .= '<a class="close word" href="#">Close</a>';
+$modaltext .= '</div> ';
         } else {
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
