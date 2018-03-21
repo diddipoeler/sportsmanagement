@@ -45,7 +45,7 @@ if (!isset($this->club)) {
                 $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
             }
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id, $picture, $club_emblem_title, $this->config['club_logo_width']);
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id, $picture, $club_emblem_title, $this->config['club_logo_width'],'','','',1);            
 
             if ($this->config['show_club_logo_copyright']) {
                 //echo JText::_( "COM_SPORTSMANAGEMENT_PAINTER_INFO" );
