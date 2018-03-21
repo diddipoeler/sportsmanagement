@@ -361,7 +361,10 @@ $this->overallconfig['use_jquery_modal']);
 			</td>
 			<td width='<?PHP echo $width;?>'>
 				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
                 ?>
 			</td>
 			<td>
@@ -393,7 +396,12 @@ $this->overallconfig['use_jquery_modal']);
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1,
+                 $this->config['show_logo_small'],
+                  array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<!-- show match score -->
 			<td width='' class='' nowrap='nowrap'>
@@ -404,7 +412,10 @@ $this->overallconfig['use_jquery_modal']);
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td class=''>
 				<?php
@@ -429,13 +440,19 @@ $this->overallconfig['use_jquery_modal']);
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td width=''>
 			-
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td class=''>
 				<?php
