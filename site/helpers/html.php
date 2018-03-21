@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage helpers
  */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -52,10 +53,16 @@ $modaltext .= '<a id="'.$target.'" href="'.$url.'" class="popup"></a>';
 } else {
 $modaltext .= '<a id="'.$target.'" href="#" class="popup"></a>';
 }
-$modaltext .= '<div class="popup">';
-if ($picture) {
+$modaltext .= '<div id="'.$target.'"class="popup">';
+if ( $picture && !$url ) {
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="" />';
 }
+            
+if ($url) {
+$modaltext .= '<object type="text/html" data="'.$url.'" width="800px" height="600px" style="overflow:auto;border:5px ridge blue">
+</object>';
+}            
+            
 $modaltext .= '<a class="close x" href="#">x</a>';
 $modaltext .= '<a class="close word" href="#">Close</a>';
 $modaltext .= '</div> ';
