@@ -66,6 +66,12 @@ $modaltext .= '<object type="text/html" data="'.$url.'" width="'.$width.'px" hei
 $modaltext .= '<a class="close x" href="#">x</a>';
 $modaltext .= '<a class="close word" href="#">Close</a>';
 $modaltext .= '</div> ';
+$modaltext .= '<style> ';
+$modaltext .= 'div.popup {
+	width		: '.$width.'px; /* width */
+	height		: '.$height.'px; /* height */
+}';
+$modaltext .= '</style> ';            
         } else {
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
