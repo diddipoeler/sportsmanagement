@@ -90,14 +90,8 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-if ( $this->overallconfig['use_squeezebox_modal'] ) 
+if ( $this->overallconfig['use_jquery_modal'] ) 
 {
-?>
-<a href="<?php echo $url; ?>" width="660" class="popdown btn">External Site Test</a>		
-<?php		
-}
-else
-{		
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
@@ -199,13 +193,14 @@ else
 <?php
 if ( $this->overallconfig['use_jquery_modal'] )
 {
-?>	
-<a href="<?php echo $url;?>" rel="modaljsm:open">Login</a>
-<?php		
-}
-else
-{
-echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 }
 ?>			
 
@@ -238,7 +233,17 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),'20',$url);        
+if ( $this->overallconfig['use_jquery_modal'] )
+{
+echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+}
 ?>
 
 	
