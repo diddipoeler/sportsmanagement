@@ -33,7 +33,8 @@ class sportsmanagementViewRanking extends sportsmanagementView {
     function init() {
 
         $this->document->addScript(JUri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
-
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+        
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
         $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
