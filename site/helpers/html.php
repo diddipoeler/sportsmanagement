@@ -64,7 +64,7 @@ $modaltext .= '<object type="text/html" data="'.$url.'" width="'.$width.'px" hei
 }            
             
 $modaltext .= '<a class="close x" href="#">x</a>';
-$modaltext .= '<a class="close word" href="#">Close</a>';
+$modaltext .= '<a class="close word" href="#">'.JText::_('JPREVIOUS').'</a>';
 $modaltext .= '</div> ';
 $modaltext .= '<style> ';
 $modaltext .= 'div.popup {
