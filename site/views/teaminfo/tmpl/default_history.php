@@ -116,7 +116,14 @@ defined('_JEXEC') or die('Restricted access');
      
 $picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
 		
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$picture,$this->team->name,'50');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,
+$picture,
+$this->team->name,
+'50',
+'',							
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
         ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
 		<td><?php echo $season->division_name; ?></td>
