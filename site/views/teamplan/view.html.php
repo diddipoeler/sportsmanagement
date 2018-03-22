@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teamplan
@@ -37,7 +37,8 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	{
 	        
         $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
-        
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+		
 		sportsmanagementHelperHtml::$project = $this->project;
 		
 		if (isset($this->project))
@@ -70,7 +71,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         
 /**
- *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
+ *         da wir komplett mit bootstrap arbeiten benÃ¶tigen wir das nicht mehr 
  *         $view = $jinput->getVar( "view") ;
  *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
  *         $document->addCustomTag($stylelink);
