@@ -352,7 +352,14 @@ $use_jquery_modal);
 
             if ( !empty($team->logo_big) )
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_big,$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+			$team->logo_big,
+			$title,
+			$attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
