@@ -1735,7 +1735,7 @@ catch (Exception $e)
 	 * @param integer $roundcode
 	 * @return
 	 */
-	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0,$roundcode = 0)
+	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0,$roundcode = 0,$modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
 	{
 	$app = JFactory::getApplication();
 $option = $app->input->getCmd('option');    
@@ -1750,7 +1750,14 @@ $option = $app->input->getCmd('option');
     $team->$club_icon = sportsmanagementHelper::getDefaultPlaceholder($club_icon);    
     }
 
-$image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$team->team_id,$team->$club_icon,$team->name,'20');
+$image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$team->team_id,
+$team->$club_icon,
+$team->name,
+'20',
+'',
+$modalwidth,
+$modalheight,
+$use_jquery_modal]);
 
             return $image;
 		}
