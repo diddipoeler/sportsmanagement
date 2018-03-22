@@ -94,7 +94,16 @@ if ( !sportsmanagementHelper::existPicture( $picture ) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig"); 
 }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',$picture,$this->project->name,$this->overallconfig['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',
+$picture,
+$this->project->name,
+$this->overallconfig['picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);
+
 if ( $copyright )
 {
 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
