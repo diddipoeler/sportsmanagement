@@ -1757,7 +1757,7 @@ $team->name,
 '',
 $modalwidth,
 $modalheight,
-$use_jquery_modal]);
+$use_jquery_modal);
 
             return $image;
 		}
