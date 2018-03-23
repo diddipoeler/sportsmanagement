@@ -268,6 +268,16 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $myoptions[] = JHtml::_('select.option', '1', JText::_('JYES'));
         $lists['captain'] = $myoptions;
 
+	$document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
+	$javascript = "\n";
+        $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsmanagement';". "\n";	   
+	$javascript .= "var matchid = ".$this->match->id.";" . "\n";
+        $javascript .= "var teamid = ".$this->tid.";" . "\n";
+        $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
+        $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
+        $document->addScriptDeclaration( $javascript );
+	    
+	    
         $this->positions = $projectpositions;
         $this->staffpositions = $staffpositions;
         $this->substitutions = $substitutions[$tid];
