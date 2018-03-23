@@ -22,61 +22,12 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 
 ?>
 <script>
-var baseajaxurl = <?php echo $baseurl;?>;
-var teamid = <?php echo $this->tid;?>;
-var matchid = <?php echo $this->match->id;?>;
-var projecttime = <?php echo $this->eventsprojecttime;?>;
 
-var homeroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['home'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var awayroster = new Array;
-<?php
-$i = 0;
-foreach ($this->rosters['away'] as $player)
-{
-	$obj = new stdclass();
-	$obj->value = $player->value;
-	switch ($this->default_name_dropdown_list_order)
-	{
-		case 'lastname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-		case 'firstname':
-			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-		case 'position':
-			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
-			break;
-	}
-	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
-}
-?>
-var rosters = Array(homeroster, awayroster);
 </script>	
 <?php
 
-$document = JFactory::getDocument();
-$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/diddioeler.js');
+//$document = JFactory::getDocument();
+//$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/diddioeler.js');
 
 //echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
 //echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
