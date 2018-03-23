@@ -27,13 +27,13 @@ console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 //    alert("Embedded block of JS here");
 });
 
-function openRequestedSinglePopup(strUrl) {
+function openRequestedSinglePopup(strUrl,Width,Height) {
   if(windowObjectReference == null || windowObjectReference.closed) {
     windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
-         "resizable,scrollbars,status");
+         "resizable,scrollbars,status,width=" + Width  + ",height=" + Height + "");
   } else if(PreviousUrl != strUrl) {
     windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
-      "resizable=yes,scrollbars=yes,status=yes");
+      "resizable=yes,scrollbars=yes,status=yes,width=" + Width  + ",height=" + Height + "");
     /* if the resource to load is different,
        then we load it in the already opened secondary window and then
        we bring such window back on top/in front of its parent window. */
