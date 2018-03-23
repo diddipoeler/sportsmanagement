@@ -398,28 +398,7 @@ $javascript .= "updatePlayerSelect();". "\n";
 $javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
 $javascript .= '  });' . "\n";
 $javascript .= "\n";
-
-//$javascript .= "function updatePlayerSelect() {". "\n";	    
-//$javascript .= "if(jQuery('#cell-player'))". "\n";
-//$javascript .= "jQuery('#cell-player').empty().append(". "\n";
-//$javascript .= "getPlayerSelect(jQuery('#team_id')[0].selectedIndex));". "\n";
-//$javascript .= "}". "\n";	    
-//$javascript .= "function getPlayerSelect(index) {". "\n";
-//$javascript .= "// homeroster and awayroster must be defined globally (in the view calling". "\n";
-//$javascript .= "// the script)". "\n";
-//$javascript .= "var roster = rosters[index];". "\n";
-//$javascript .= "// build select". "\n";
-//$javascript .= "
-//var select = jQuery(\"<select>\").attr({id: 'teamplayer_id',class:'span3'});
-//    ". "\n";
-//$javascript .= "
-//    for (var i = 0, n = roster.length; i < n; i++) {
-//		select.append(jQuery(\"<option>\").attr({value : roster[i].value}).text(roster[i].text));
-//	}
-//    ". "\n";
-//	$javascript .= "return select;". "\n";
-//$javascript .= "}". "\n";
-	    
+    
 $document->addScriptDeclaration( $javascript );	    
 	    
         $this->matchevents = $matchevents;
