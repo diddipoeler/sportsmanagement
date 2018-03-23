@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage helpers
@@ -63,35 +63,7 @@ $modaltext .= '>';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
 $modaltext .= '</a>';
 }		
-/*		
-$modaltext = '<a href="#'.$target.'">';
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-$modaltext .= '</a>';
-if ($url) {
-$modaltext .= '<a id="'.$target.'" href="'.$url.'" class="popup"></a>';
-} else {
-$modaltext .= '<a id="'.$target.'" href="#" class="popup"></a>';
-}
-$modaltext .= '<div id="'.$target.'"class="popup">';
-if ( $picture && !$url ) {
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="" />';
-}
-            
-if ($url) {
-$modaltext .= '<object type="text/html" data="'.$url.'" width="'.$width.'px" height="'.$height.'px" style="overflow:auto;border:5px ridge blue">
-</object>';
-}            
-            
-$modaltext .= '<a class="close x" href="#">x</a>';
-$modaltext .= '<a class="close word" href="#">'.JText::_('JPREVIOUS').'</a>';
-$modaltext .= '</div> ';
-$modaltext .= '<style> ';
-$modaltext .= 'div.popup {
-	width		: '.$width.'px; 
-	height		: '.$height.'px;
-}';
-$modaltext .= '</style> ';  
-*/		
+		
         } else {
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
