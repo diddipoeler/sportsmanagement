@@ -76,12 +76,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $this->match = $match;
         $this->form = $this->get('Form');
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($this->match,true).'</pre>'),'');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-        //$document->addScript(JURI::base() . 'administrator/components/' . $option . '/assets/js/diddioeler.js');
-        //$document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
-
-        switch ($this->getLayout()) {
+	switch ($this->getLayout()) {
             case 'editreferees';
             case 'editreferees_3';
             case 'editreferees_4';
@@ -293,9 +288,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $params = JComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
-
-$document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
-	    
+    
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         // mannschaften der paarung
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
