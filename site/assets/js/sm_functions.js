@@ -28,12 +28,14 @@ console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 });
 
 function openRequestedSinglePopup(strUrl,Width,Height) {
+var left = (screen.width/2)-(Width/2);
+  var top = (screen.height/2)-(Height/2);
   if(windowObjectReference == null || windowObjectReference.closed) {
     windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
-         "resizable,scrollbars,status,width=" + Width  + ",height=" + Height + "");
+         "resizable,scrollbars,status,width=" + Width  + ",height=" + Height + ",top="+top+", left="+left);
   } else if(PreviousUrl != strUrl) {
     windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
-      "resizable=yes,scrollbars=yes,status=yes,width=" + Width  + ",height=" + Height + "");
+      "resizable=yes,scrollbars=yes,status=yes,width=" + Width  + ",height=" + Height + ",top="+top+", left="+left);
     /* if the resource to load is different,
        then we load it in the already opened secondary window and then
        we bring such window back on top/in front of its parent window. */
@@ -46,6 +48,7 @@ function openRequestedSinglePopup(strUrl,Width,Height) {
   /* explanation: we store the current url in order to compare url
      in the event of another call of this function. */
 }
+
 
 
 
