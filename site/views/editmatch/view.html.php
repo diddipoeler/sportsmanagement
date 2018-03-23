@@ -295,6 +295,8 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
 
+$document->addScript(JURI::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');
+	    
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         // mannschaften der paarung
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
