@@ -53,8 +53,16 @@ $modaltext .= ' title="'.$text.'"';
 $modaltext .= '>';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
 $modaltext .= '</a>';
-	
 }	
+if (!$url) {
+$modaltext = '<a id="'.$target.'" href="'.$picture.'" class=""';
+$modaltext .= ' target="SingleSecondaryWindowName"';
+$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+$modaltext .= ' title="'.$text.'"';
+$modaltext .= '>';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+$modaltext .= '</a>';
+}		
 /*		
 $modaltext = '<a href="#'.$target.'">';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
