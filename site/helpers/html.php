@@ -45,6 +45,17 @@ class sportsmanagementHelperHtml {
         $jinput = $app->input;
 
         if ($use_jquery_modal) {
+if ($url) {
+$modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
+$modaltext .= ' target="SingleSecondaryWindowName"';
+$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+$modaltext .= ' title="'.$text.'"';
+$modaltext .= '>';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+$modaltext .= '</a>';
+	
+}	
+/*		
 $modaltext = '<a href="#'.$target.'">';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
@@ -68,10 +79,11 @@ $modaltext .= '<a class="close word" href="#">'.JText::_('JPREVIOUS').'</a>';
 $modaltext .= '</div> ';
 $modaltext .= '<style> ';
 $modaltext .= 'div.popup {
-	width		: '.$width.'px; /* width */
-	height		: '.$height.'px; /* height */
+	width		: '.$width.'px; 
+	height		: '.$height.'px;
 }';
-$modaltext .= '</style> ';            
+$modaltext .= '</style> ';  
+*/		
         } else {
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
