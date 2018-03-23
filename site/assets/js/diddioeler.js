@@ -422,7 +422,7 @@ jQuery("#sub-" + substid).remove();
 //	var select = jQuery("<select>").attr({id: 'teamplayer_id',class:'span12'});
 //	// add options
 //	for (var i = 0, n = roster.length; i < n; i++) {
-		select.append(jQuery("<option>").attr({value : roster[i].value}).text(roster[i].text));
+//		select.append(jQuery("<option>").attr({value : roster[i].value}).text(roster[i].text));
 //	}
 
 //	return select;
