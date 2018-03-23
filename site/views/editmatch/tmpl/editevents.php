@@ -23,6 +23,9 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 ?>
 <script>
 var baseajaxurl = <?php echo $baseurl;?>;
+var teamid = <?php echo $this->tid;?>;
+var matchid = <?php echo $this->match->id;?>;
+var projecttime = <?php echo $this->eventsprojecttime;?>;
 </script>	
 <?php
 //echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
