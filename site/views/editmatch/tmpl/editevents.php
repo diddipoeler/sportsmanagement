@@ -16,10 +16,6 @@ $savenewcomment[] = $this->eventsprojecttime;
 $savenewcomment[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
-//$params = $this->form->getFieldsets('params');
-
 ?>
 <script>
 var homeroster = new Array;
@@ -67,20 +63,9 @@ foreach ($this->rosters['away'] as $player)
 }
 ?>
 var rosters = Array(homeroster, awayroster);	
-	
-	
+
 </script>	
 <?php
-
-//$document = JFactory::getDocument();
-//$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/diddioeler.js');
-
-//echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents item->id<br><pre>'.print_r($this->item->id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditReferees lists<br><pre>'.print_r($this->lists,true).'</pre>';
-
-#echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JUri::getInstance();   
@@ -155,9 +140,13 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					?>
 					<tr id="row-new">
 						<td><?php echo $this->lists['teams']; ?></td>
+<!--
 <td class="hide<?php echo $this->teams->projectteam2_id; ?> show<?php echo $this->teams->projectteam1_id; ?>" style="display:;" id="cell-player-<?php echo $this->teams->projectteam1_id; ?>"><?php echo $this->lists['homeroster']; ?></td>
 <td class="hide<?php echo $this->teams->projectteam1_id; ?> show<?php echo $this->teams->projectteam2_id; ?>" style="display:none;" id="cell-player-<?php echo $this->teams->projectteam2_id; ?>"><?php echo $this->lists['awayroster']; ?></td>
-						<td><?php echo $this->lists['events']; ?></td>
+-->
+
+						<td id="cell-player">&nbsp;</td>
+                        <td><?php echo $this->lists['events']; ?></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
