@@ -416,7 +416,7 @@ function updatePlayerSelect() {
  */
 function getPlayerSelect(index) {
 	
-  alert(index);
+  //alert(index);
 	// homeroster and awayroster must be defined globally (in the view calling the script)
 	var roster = rosters[index];
 
