@@ -72,12 +72,12 @@ foreach ($this->rosters['away'] as $player)
 }
 ?>
 var rosters = Array(homeroster, awayroster);
-
-
-
-
 </script>	
 <?php
+
+$document = JFactory::getDocument();
+$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/diddioeler.js');
+
 //echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
 //echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
 //echo 'sportsmanagementViewMatch _displayEditevents item->id<br><pre>'.print_r($this->item->id,true).'</pre>';
