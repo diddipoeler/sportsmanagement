@@ -478,7 +478,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         $javascript .= '  });' . "\n";
         $javascript .= "\n";
         
-        
+/*        
         $javascript .= "function updatePlayerSelect() {". "\n";
         //$javascript .= " alert('value -> ' + matchid);";
         
@@ -508,6 +508,7 @@ $javascript .= "function getPlayerSelect(index) {". "\n";
     ". "\n";
 	$javascript .= "return select;". "\n";
 $javascript .= "}". "\n";
+*/
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         
