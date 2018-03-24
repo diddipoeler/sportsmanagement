@@ -283,7 +283,14 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
         <?PHP
 if ( $game->content_id )
 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgcontent,$imgTitle,'20',JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,$this->modalwidth,$this->modalheight);                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,
+$imgcontent,
+$imgTitle,
+'20',
+JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                
 }
         ?>
             </td>
