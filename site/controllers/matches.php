@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      matches.php
@@ -9,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage editmatch
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
@@ -49,6 +49,11 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         return $instance;
     }
 
+    /**
+     * sportsmanagementControllermatches::saveevent()
+     * 
+     * @return void
+     */
     function saveevent() {
         $option = JFactory::getApplication()->input->getCmd('option');
         $data = array();

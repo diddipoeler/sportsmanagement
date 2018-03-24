@@ -21,9 +21,10 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 if ( $this->overallconfig['use_jquery_modal'] )
 {
 ?>
+<!--
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
-
+-->
 <?php 
 }
 
@@ -56,11 +57,11 @@ else
   
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
+//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
 <script>
-var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
-var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
+//var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
+//var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
 </script>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->

@@ -28,8 +28,12 @@ console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 });
 
 function openRequestedSinglePopup(strUrl,Width,Height) {
+
+Width = (screen.width/2);
+Height = (screen.height/2);	
 var left = (screen.width/2)-(Width/2);
-  var top = (screen.height/2)-(Height/2);
+var top = (screen.height/2)-(Height/2);
+
   if(windowObjectReference == null || windowObjectReference.closed) {
     windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
          "resizable,scrollbars,status,width=" + Width  + ",height=" + Height + ",top="+top+", left="+left);
