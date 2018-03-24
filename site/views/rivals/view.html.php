@@ -20,30 +20,27 @@ defined('_JEXEC') or die;
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewRivals extends JViewLegacy
+class sportsmanagementViewRivals extends sportsmanagementView
 {
-    
-    
+	
 	/**
-	 * sportsmanagementViewRivals::display()
+	 * sportsmanagementViewRivals::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	public function display($tpl = null)
+	function init()
 	{
-	   $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+//	   $app = JFactory::getApplication();
+//       // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
+//        
+//		// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
         
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
-		$model	= $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		
 		$this->project = sportsmanagementModelProject::getProject();
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
@@ -52,12 +49,10 @@ class sportsmanagementViewRivals extends JViewLegacy
 		{
 			$this->overallconfig['seperator'] = "-";
 		}
-		$this->config = $config;
-		$this->opos = $model->getOpponents();
-		$this->team = $model->getTeam();
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' <br><pre>'.print_r($this->opos,true).'</pre>'),'');
-        
+		//$this->config = $config;
+		$this->opos = $this->model->getOpponents();
+		$this->team = $this->model->getTeam();
+       
 		// Set page title
 		$titleInfo = sportsmanagementHelper::createTitleInfo(JText::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
 		if (!empty($this->team))
@@ -76,10 +71,9 @@ class sportsmanagementViewRivals extends JViewLegacy
 		}
                 		
         $this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-		$document->setTitle($this->pagetitle);
+		$this->document->setTitle($this->pagetitle);
         
         $this->headertitle = $this->pagetitle;
 
-		parent::display($tpl);
 	}
 }
