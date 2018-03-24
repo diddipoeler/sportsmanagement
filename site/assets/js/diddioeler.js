@@ -23,7 +23,7 @@ $$(".button-delete-event").addEvent('click', button_delete_event);
 function save_new_subst()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
-          jQuery("#ajaxresponse").addClass('ajax-loading');
+jQuery("#ajaxresponse").addClass('ajax-loading');
           
 var playerin = jQuery("#in").val();
 				var playerout = jQuery("#out").val();
@@ -34,7 +34,11 @@ var playerin = jQuery("#in").val();
 						+ time + '&teamid=' + teamid + '&matchid=' + matchid
 						+  '&projecttime=' + projecttime;
 				var url = baseajaxurl + '&task=matches.savesubst&tmpl=component';
-        
+
+console.log("diddioeler query : " + querystring); 
+console.log("diddioeler url : " + url); 
+console.log("diddioeler baseajaxurl : " + baseajaxurl); 
+				
         jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
@@ -268,8 +272,8 @@ function substsaved(response)
 	// first line contains the status, second line contains the new row.
 	var resp = response.split('&');
 	
-	//alert(resp[0]);
-	//alert(resp[1]);
+console.log("resp 0 : " + resp[0]);
+console.log("resp 1 : " + resp[1]);
 	
 	if (resp[0] != '0') 
   {
