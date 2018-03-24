@@ -260,7 +260,14 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                        ?>
 				<td>
                 <?PHP
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team1_id,$game->$picture,$game->tname1,'20')
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team1_id,
+                $game->$picture,
+                $game->tname1,
+                '20',
+                '',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal'])
                 ?>
                 
                 </td>
@@ -277,7 +284,14 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                        ?>
 				<td>
                 <?PHP
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team2_id,$game->$picture,$game->tname2,'20')
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team2_id,
+                $game->$picture,
+                $game->tname2,
+                '20',
+                '',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal'])
                 ?>
                 </td>
 					<?php 

@@ -95,11 +95,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 				break;
 		}
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allmatches <br><pre>'.print_r($this->allmatches,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homematches <br><pre>'.print_r($this->homematches,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
-        
-        
 		$this->startdate = $this->model->getStartDate();
 		$this->enddate = $this->model->getEndDate();
 		$this->teams = $this->model->getTeams();

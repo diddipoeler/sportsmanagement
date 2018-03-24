@@ -1,5 +1,14 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage rivals
+ */
+ 
 defined('_JEXEC') or die;
 
 // Make sure that in case extensions are written for mentioned (common) views,
@@ -10,18 +19,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <div class="">
-	<?php
-	if ( $this->config['show_sectionheader'] )
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+<?php
+if ( $this->config['show_sectionheader'] )
+{
+echo $this->loadTemplate('sectionheader');
+}
 	
-	echo $this->loadTemplate( 'projectheading' );
+echo $this->loadTemplate( 'projectheading' );
 
-	echo $this->loadTemplate('rivals');
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+echo $this->loadTemplate('rivals');
+?>
+<div>
+<?php
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
+?>
+</div>
 </div>
