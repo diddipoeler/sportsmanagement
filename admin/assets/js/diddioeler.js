@@ -294,6 +294,10 @@ jQuery("#table-substitutions").last().append('<tr id="sub-'
 		
 jQuery("#ajaxresponse").addClass("ajaxsuccess");
 jQuery("#ajaxresponse").text(resp[1]);
+jQuery("#in_out_time").val('');
+jQuery('#in option:selected').removeAttr('selected')
+jQuery('#out option:selected').removeAttr('selected')	
+jQuery('#project_position_id option:selected').removeAttr('selected')
 $$(".button-delete-subst").addEvent('click', button_delete_subst);				
 }
 else 
