@@ -82,7 +82,6 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 <div id="ajaxresponse" ></div>
 	<fieldset>
-
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
 		</div>
@@ -139,18 +138,15 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					}
 					?>
 					<tr id="row-new">
-						<td><?php echo $this->lists['teams']; ?></td>
-						<td id="cell-player">&nbsp;</td>
-                        <td><?php echo $this->lists['events']; ?></td>
-						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
-						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
-						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
-                        
-                        
-                        
-						<td style='text-align:center; ' >
-<input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
-						</td>
+					<td><?php echo $this->lists['teams']; ?></td>
+					<td id="cell-player">&nbsp;</td>
+                    <td><?php echo $this->lists['events']; ?></td>
+					<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
+					<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
+					<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
+					<td style='text-align:center; ' >
+                    <input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
+					</td>
 					</tr>
 				</tbody>
 			</table>
@@ -163,11 +159,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE' ); ?></th>
-					<th>
-						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						?>
-					</th>
+					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' ); ?></th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION' ); ?></th>
 				</tr>

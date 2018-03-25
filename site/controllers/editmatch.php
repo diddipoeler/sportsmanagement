@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      editmatch.php
@@ -52,6 +51,11 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+    /**
+     * sportsmanagementControllerEditMatch::saveReferees()
+     * 
+     * @return void
+     */
     function saveReferees() {
         $app = JFactory::getApplication();
         $post = $app->input->post->getArray(array());
@@ -86,16 +90,17 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         $return = $model->updateRoster($post);
         $return = $model->updateStaff($post);
 
-        $routeparameter = array();
-        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-        $routeparameter['s'] = $post['s'];
-        $routeparameter['p'] = $post['p'];
-        $routeparameter['r'] = $post['r'];
-        $routeparameter['division'] = $post['division'];
-        $routeparameter['mode'] = 0;
-        $routeparameter['order'] = 0;
-        $routeparameter['layout'] = 'form';
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+//        $routeparameter = array();
+//        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
+//        $routeparameter['s'] = $post['s'];
+//        $routeparameter['p'] = $post['p'];
+//        $routeparameter['r'] = $post['r'];
+//        $routeparameter['division'] = $post['division'];
+//        $routeparameter['mode'] = 0;
+//        $routeparameter['order'] = 0;
+//        $routeparameter['layout'] = 'form';
+//        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+        $link = $_SERVER['HTTP_REFERER'];
         $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         $this->setRedirect($link, $msg);
@@ -150,19 +155,17 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
         $data['team2_result_decision'] = $post['team2_result_decision'];
         $data['decision_info'] = $post['decision_info'];
 
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//       Create an object for the record we are going to update.
-
+/**
+ * Create an object for the record we are going to update.
+ */
         $object = new stdClass();
-
         foreach ($data as $key => $value) {
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' $key --> '.$key.''),'Notice');
             $object->$key = $value;
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object,true).'</pre>'),'Notice');
-        // Update their details in the table using id as the primary key.
+/**
+ * Update their details in the table using id as the primary key.
+ */
         $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 
         $routeparameter = array();
