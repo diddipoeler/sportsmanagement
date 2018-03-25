@@ -45,17 +45,23 @@ if (!isset($this->club)) {
                 $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
             }
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id, $picture, $club_emblem_title, $this->config['club_logo_width'],'','','',$this->overallconfig['use_jquery_modal']);            
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id,
+            $picture,
+            $club_emblem_title,
+            $this->config['club_logo_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);            
 
             if ($this->config['show_club_logo_copyright']) {
-                //echo JText::_( "COM_SPORTSMANAGEMENT_PAINTER_INFO" );
                 if ($this->club->cr_logo_big) {
                     echo JText::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->club->cr_logo_big . '</i>');
                 }
                 ?> 
                 <!--        : &copy; -->	
                 <?PHP
-                //echo $this->club->cr_logo_big;  			
+ 			
             }
             ?>
             <br />
@@ -83,21 +89,11 @@ if (!isset($this->club)) {
             <div class="<?php echo $this->divclass; ?>9">
                 <?php
                 if ($this->club->address || $this->club->zipcode || $this->club->location) {
-
-//echo $this->club->name.'<br />';
-//echo $this->club->address.'<br />';
-//echo $this->club->state.'<br />';
-//echo $this->club->zipcode.'<br />';
-//echo $this->club->location.'<br />';
-//echo $this->club->country.'<br />';
                     $addressString = JSMCountries::convertAddressString($this->club->name, $this->club->address, $this->club->state, $this->club->zipcode, $this->club->location, $this->club->country, 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM');
                     ?>
                     <address>
                         <strong><?php
                             echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
-                            //$dummyStr = explode('<br />', $addressString);
-                            //for ($i = 0; $i < count($dummyStr); $i++) { echo '<br />'; }
-                            //echo '<br />';
                             ?></strong>
                         <?php echo $addressString; ?>
 
@@ -275,13 +271,6 @@ if (!isset($this->club)) {
                     </span>
                     <?PHP
                 }
-
-//if ( $this->clubhistorysorttree )
-//{
-                /*
-                  echo JHtml::_('select.genericlist',$this->clubhistoryfamilytree,'division_id'.$row->id,
-                  'class="form-control form-control-inline" size="'.sizeof($this->clubhistoryfamilytree).'"'.$append,'id','treename',$row->division_id);
-                 */
 
                 if ($this->familytree) {
                     $class_collapse = 'collapse in';

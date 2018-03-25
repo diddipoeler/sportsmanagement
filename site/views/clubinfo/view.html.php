@@ -140,7 +140,7 @@ $this->document->addScriptDeclaration( $javascript );
 		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
 	}
         $this->document->setTitle( $pageTitle );
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 /**
  *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
  *         $view = $jinput->getVar( "view") ;
