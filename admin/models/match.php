@@ -2663,6 +2663,22 @@ $user = JFactory::getUser();
         $db = JFactory::getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
+	    
+	$query->clear();
+        $query->select('mp.id');
+        $query->from('#__sportsmanagement_match_event as mp');
+        $query->where('mp.match_id = '.$data['match_id']);
+        $query->where('mp.projectteam_id = '.$data['projectteam_id']);
+        $query->where('mp.teamplayer_id = '.$data['teamplayer_id']);
+        $query->where('mp.event_time = '.$data['event_time']);
+        $query->where('mp.event_sum = '.$data['event_sum']);
+        $db->setQuery( $query );
+	$match_event_id = $db->loadResult();
+        if ( $match_event_id )
+        {
+            return false;
+        }
+	    
 	    $temp = new stdClass();
 	    //$object = new stdClass();
 $temp->match_id = $data['match_id'];	    
