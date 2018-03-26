@@ -73,7 +73,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         if (!$result = sportsmanagementModelMatch::saveevent($data)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . sportsmanagementModelMatch::getError();
         } else {
-            $result = JFactory::getDbo()->insertid() . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+            $result = $result . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
         }
 
         echo json_encode($result);
@@ -98,7 +98,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         if (!$result = sportsmanagementModelMatch::savesubstitution($data)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . sportsmanagementModelMatch::getError();
         } else {
-            $result = JFactory::getDbo()->insertid() . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+            $result = $result . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
         }
         echo json_encode($result);
         JFactory::getApplication()->close();
