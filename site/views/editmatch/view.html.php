@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      view.html.php
@@ -276,6 +275,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $javascript .= "var teamid = ".$this->tid.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
+	$javascript .= 'jQuery(document).ready(function() {' . "\n";
+	$javascript .= "updatePlayerSelect();". "\n";
+	$javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
+	$javascript .= '  });' . "\n";
+	$javascript .= "\n";    
         $document->addScriptDeclaration( $javascript );
 	    
 	    
