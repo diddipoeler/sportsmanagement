@@ -145,6 +145,26 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         echo json_encode($result);
         JFactory::getApplication()->close();
     }
+ 
+ /**
+     * sportsmanagementControllermatches::removeEvent()
+     * 
+     * @return void
+     */
+    function removeEvent()
+    {
+		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
+		{
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
+    }
 
     /**
      * sportsmanagementControllermatches::removeCommentary()
