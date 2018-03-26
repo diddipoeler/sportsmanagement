@@ -11,10 +11,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';    
-}
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
@@ -35,7 +31,14 @@ if ($this->config['show_player_icon'])
 			<div class="jl_rosterperson_picture_column">
 				<div class="jl_rosterperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,$picture,$personName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,
+$picture,
+$personName,
+$this->config['player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
      
       	
     
