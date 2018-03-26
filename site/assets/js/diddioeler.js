@@ -38,7 +38,7 @@ function save_new_event()
 {
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
-var rowid = this.id.substr(5);
+//var rowid = this.id.substr(5);
 var url = baseajaxurl + '&task=matches.saveevent&tmpl=component&';
 var player = jQuery("#teamplayer_id").val();
 var event = jQuery("#event_type_id").val();
@@ -162,7 +162,7 @@ function save_new_comment()
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var url = baseajaxurl + '&task=matches.savecomment&tmpl=component';
-var rowid = this.id.substr(5);
+//var rowid = this.id.substr(5);
 var ctype = jQuery("#ctype").val();
 var token = jQuery("#token").val();
 var comnt = encodeURIComponent(jQuery("#notes").val())
