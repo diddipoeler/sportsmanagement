@@ -105,6 +105,7 @@ jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notice").val('');
 jQuery("#event_time").val('');
 jQuery("#event_sum").val('');
+$$(".button_delete_event").addEvent('click', button_delete_event); 	
 }
 else 
 {
@@ -211,6 +212,7 @@ jQuery("#ajaxresponse").addClass("ajaxsuccess");
 jQuery("#ajaxresponse").text(resp[1]);
 jQuery("#notes").val('');
 jQuery("#c_event_time").val('');
+$$(".button_delete_commentary").addEvent('click', button_delete_commentary); 	
 }
 else 
 {
