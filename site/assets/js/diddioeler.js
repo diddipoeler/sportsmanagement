@@ -75,6 +75,9 @@ jQuery("#ajaxresponse").removeClass('ajax-loading');
 // first line contains the status, second line contains the new row.
 var resp = response.split('&');
 
+console.log("resp 0 : " + resp[0]);
+console.log("resp 1 : " + resp[1]);
+	
 if (resp[0] != '0') 
 {
 var player = jQuery("#teamplayer_id option:selected").text();
