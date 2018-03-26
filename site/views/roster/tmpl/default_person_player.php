@@ -224,7 +224,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 		if ( $this->overallconfig['use_jl_substitution'] )
 		{
 			// Events of substitutions are shown
-            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->season_team_id,$this->row->season_team_person_id,$this->project->game_regular_time);
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->projectteam_id,$this->row->season_team_person_id,$this->project->game_regular_time);
             
             //echo ' project_id<br><pre>'.print_r($this->row->project_id,true).'</pre>';
             //echo ' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>';
