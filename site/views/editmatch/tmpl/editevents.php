@@ -64,6 +64,11 @@ foreach ($this->rosters['away'] as $player)
 ?>
 var rosters = Array(homeroster, awayroster);	
 
+jQuery(document).ready(function() {
+updatePlayerSelect();
+jQuery('#team_id').change(updatePlayerSelect);
+  });
+
 </script>	
 <?php
 

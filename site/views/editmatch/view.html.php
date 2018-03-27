@@ -397,10 +397,10 @@ $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsma
 $javascript .= "var matchid = ".$this->match->id.";" . "\n";
 $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
 $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
-$javascript .= 'jQuery(document).ready(function() {' . "\n";
-$javascript .= "updatePlayerSelect();". "\n";
-$javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
-$javascript .= '  });' . "\n";
+//$javascript .= 'jQuery(document).ready(function() {' . "\n";
+//$javascript .= "updatePlayerSelect();". "\n";
+//$javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
+//$javascript .= '  });' . "\n";
 $javascript .= "\n";
     
 $document->addScriptDeclaration( $javascript );	    
