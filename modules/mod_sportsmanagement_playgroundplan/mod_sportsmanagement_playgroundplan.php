@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_playgroundplan
  */
 
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -23,10 +22,14 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-//add the classes for handling
+/**
+ * add the classes for handling
+ */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -34,15 +37,18 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
 
-// get helper
+/**
+ * get helper
+ */
 require_once (dirname(__FILE__).DS.'helper.php');
-
 
 $list = modSportsmanagementPlaygroundplanHelper::getData($params);
 
 $document = JFactory::getDocument();
 
-//add css file
+/**
+ * add css file
+ */
 $document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 $mode = $params->def("mode");
