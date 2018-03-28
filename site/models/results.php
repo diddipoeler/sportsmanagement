@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      results.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @subpackage results
  */
@@ -699,7 +699,7 @@ else
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			// änderungen im datum oder der uhrzeit
+			// Ã¤nderungen im datum oder der uhrzeit
             $tbl = $this->getTable();;
             $tbl->load((int) $pks[$x]);
             
@@ -726,8 +726,14 @@ else
                 
             }
 
-			$object->match_number	= $post['match_number'.$pks[$x]];
+			if ( $post['match_number'.$pks[$x]] )
+			{
+	$object->match_number	= $post['match_number'.$pks[$x]];
+			}
+			if ( $post['match_date'.$pks[$x]] )
+			{
             $object->match_date = $post['match_date'.$pks[$x]];
+			}
             $object->result_type = $post['result_type'.$pks[$x]];
             $object->match_result_type = $post['match_result_type'.$pks[$x]];
             $object->crowd = $post['crowd'.$pks[$x]];
