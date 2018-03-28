@@ -104,7 +104,9 @@ $textdiv.= '</div>';
 $textdiv .= '<div class="jlplplanedate">';
 $textdiv .= JHtml::date( $match->match_date,$dateformat );
 $textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
-$textdiv .= JHtml::date( $match->match_date,$timeformat );
+list($date,$time) = explode(" ",$match->match_date);
+$time = strftime("%H:%M",strtotime($time));
+$textdiv .= $time;
 $textdiv.= '</div>';
 
 if ($params->get ('show_project_name',0)) 
