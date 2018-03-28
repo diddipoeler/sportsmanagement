@@ -73,18 +73,14 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $this->teamPlayer->team_id;
 $routeparameter['pid'] = $this->person->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter,'person.edit');
-	
-	?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $link; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
-									?>
-								</a>
-                <?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);  	
                 
   }
 
@@ -130,19 +126,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			
 			if ( $this->showediticon )
 	{
-		
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 		
 	
-	?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
-									?>
-								</a>
-                <?PHP
+	
                 
   }
   ?>
@@ -370,18 +364,16 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
-			
-        ?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=<?php echo $this->projectteamid; ?>&tid=<?php echo $this->teamid; ?>&p=<?php echo $this->project->id; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS').'"');
-									?>
-								</a>
-                <?PHP    
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=<?php echo $this->projectteamid; ?>&tid=<?php echo $this->teamid; ?>&p=<?php echo $this->project->id; ?>"			
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 			
+            
 		} else {
 			//echo "no permission";
 		}
@@ -404,17 +396,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 	                
                     $link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->id, $this->club->id, "club.edit" );
                     
-                 ?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $link; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS').'"');
-									?>
-								</a>
-                <?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                  
                 
                 
                 }
