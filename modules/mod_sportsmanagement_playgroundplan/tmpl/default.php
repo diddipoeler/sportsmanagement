@@ -22,7 +22,6 @@ $n = 1;
 <div class="row-fluid" id="modjlplaygroundplan<?php echo $mode; ?>">
 
 <?php
-echo '<div class="row" id="modjlplaygroundplan'.$mode.'">';
 foreach ($list as $match)
  	{
 
