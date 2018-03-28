@@ -709,7 +709,8 @@ else
             $object->id = $pks[$x];
             $object->team1_result = NULL;
             $object->team2_result = NULL;
-        
+        if ( $post['match_date'.$pks[$x]] )
+			{
             list($date,$time) = explode(" ",$tbl->match_date);
             $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
             $this->_match_date_new = $post['match_date'.$pks[$x]];
@@ -722,10 +723,8 @@ else
             if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
             {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
-                //self::sendEmailtoPlayers();
-                
             }
-
+		}
 			if ( $post['match_number'.$pks[$x]] )
 			{
 	$object->match_number	= $post['match_number'.$pks[$x]];
