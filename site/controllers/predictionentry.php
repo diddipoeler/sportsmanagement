@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      predictionentry.php
@@ -38,15 +37,6 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
-        //$post	= JFactory::getApplication()->input->post->getArray(array());
-        // Register Extra tasks
-        //$this->registerTask( 'add',			'display' );
-        //$this->registerTask( 'edit',		'display' );
-        //$this->registerTask( 'apply',		'save' );
-        //$this->registerTask( 'copy',		'copysave' );
-        //$this->registerTask( 'apply',		'savepredictiongame' );
         parent::__construct();
     }
 
@@ -58,15 +48,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
      * @return void
      */
     function display($cachable = false, $urlparams = false) {
-        // Get the view name from the query string
-        //$viewName = JFactory::getApplication()->input->getVar( 'view', 'editmatch' );
-        //$viewName = JFactory::getApplication()->input->getVar( 'view' );
-        //echo '<br /><pre>~' . print_r( $viewname, true ) . '~</pre><br />';
-        // Get the view
-        //$view =& $this->getView( $viewName );
-//		$this->showprojectheading();
-//		$this->showbackbutton();
-//		$this->showfooter();
+
         parent::display($cachable, $urlparams = false);
     }
 
@@ -89,9 +71,6 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
         $link = '';
         $post = JFactory::getApplication()->input->post->getArray(array());
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-
         $predictionGameID = JFactory::getApplication()->input->getVar('prediction_id', '', 'post', 'int');
         $joomlaUserID = JFactory::getApplication()->input->getVar('user_id', '', 'post', 'int');
         $approved = JFactory::getApplication()->input->getVar('approved', 0, '', 'int');
@@ -109,10 +88,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                 $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_4');
                 $link = JFactory::getURI()->toString();
             } else {
-                //$post['registerDate'] = JHTML::date(time(),'Y-m-d h:i:s');
                 $post['registerDate'] = JHtml::date($input = 'now', 'Y-m-d h:i:s', false);
-                //if (!$model->store($post,'PredictionEntry'))
-                //$model = JTable::getInstance('PredictionEntry','sportsmanagementTable');
                 if (!$mdlPredictionEntry->store($post)) {
                     $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5');
                     $link = JFactory::getURI()->toString();
@@ -177,21 +153,11 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
         $jinput = $app->input;
 
         JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
-        //$post	= JFactory::getApplication()->input->post->getArray(array());
         $pID = $jinput->get('prediction_id', 0, '');
         $groupID = $jinput->get('pggroup', 0, '');
         $pjID = $jinput->get('pj', 0, '');
         $rID = $jinput->get('r', 0, '');
         $uID = $jinput->get('uid', 0, '');
-
-//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	null,	'post',	'int');
-//        
-//        // diddipoeler
-//		//$pjID	= JFactory::getApplication()->input->getVar('project_id',	null,	'post',	'int');
-//        $pjID	= JFactory::getApplication()->input->getVar('p',	null,	'post',	'int');
-//        
-//		$rID	= JFactory::getApplication()->input->getVar('r',				null,	'post',	'int');
-//		$uID	= JFactory::getApplication()->input->getVar('uid',			null,	'post',	'int');
         $link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID, $uID, $rID, $pjID, $groupID);
         $this->setRedirect($link);
     }
@@ -287,9 +253,6 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                 }
             }
         }
-
-        //echo '<br />' . $link . '<br />';
-        //echo '<br />' . $msg . '<br />';
 
         $this->setRedirect($link, $msg);
     }

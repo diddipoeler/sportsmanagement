@@ -1,6 +1,13 @@
 <?php 
-
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treetonode
+ */
 
 defined('_JEXEC') or die;
 
@@ -9,20 +16,20 @@ defined('_JEXEC') or die;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="joomleague">
-	<?php
-	if ($this->config['show_sectionheader']==1)
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+<div class="row-fluid">
+<?php
+if ($this->config['show_sectionheader']==1)
+{
+	echo $this->loadTemplate('sectionheader');
+}
 
-	echo $this->loadTemplate('projectheading');
-
-	echo $this->loadTemplate('treetonode');
-
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
-	?>
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('treetonode');
+?>
+<div>
+<?php    
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
+?>
+</div>
 </div>

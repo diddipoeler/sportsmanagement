@@ -3,8 +3,6 @@ Sports-Management
 
 Die neue Sports-Management Komponente für Joomla 2.5 / 3 ![Joomla 2.5](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/compat_25.png) ![Joomla 3.8](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/Compat_icon_3_8_long.png)
 
-
-
 Das Team
 ================
 * Entwickler: diddipoeler
@@ -31,6 +29,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   30-03-2018: **1.0.62** Neues Datenbankfeld zur Turnierdarstellung
 *   10-03-2018: **1.0.61** Start der offiziellen Komponente
 *   20-02-2018: **1.0.60** Neue Felder bei den Personen und Mannschaften hizugefügt.
 *   08-11-2017: **1.0.59** Neue Felder bei den Ligen und Mannschaften hizugefügt.
