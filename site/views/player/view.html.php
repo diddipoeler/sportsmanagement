@@ -76,16 +76,15 @@ class sportsmanagementViewPlayer extends JViewLegacy {
             }
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
-
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $model::$cfg_which_database);
-//        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
+
         if ($this->checkextrafields) {
             $this->extrafields = sportsmanagementHelper::getUserExtraFields($person->id, 'frontend', $model::$cfg_which_database);
         }
 
-        // Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
+/**
+ * Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
+ */
         $teamPlayer = null;
         if (count($this->teamPlayers)) {
             $currentProjectTeamId = 0;
@@ -108,17 +107,9 @@ class sportsmanagementViewPlayer extends JViewLegacy {
         $this->showediticon = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
         $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'Notice');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'stats <pre>' . print_r($this->stats, true) . '</pre>';
-            //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
-        }
-
-        // Get events and stats for current project
+/**
+ * Get events and stats for current project
+ */
         if ($config['show_gameshistory']) {
             $this->games = $model->getGames();
             $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
@@ -126,62 +117,34 @@ class sportsmanagementViewPlayer extends JViewLegacy {
             $this->gamesstats = $model->getPlayerStatsByGame();
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'gamesstats <pre>' . print_r($this->gamesstats, true) . '</pre>';
-            //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
-        }
-
-        // Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
+/**
+ * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
+ */
         if ($config['show_career_stats']) {
             $this->stats = $model->getStats();
             $this->projectstats = $model->getPlayerStatsByProject($sportstype);
         }
 
         $extended = '';
-        //if ( $person )
-        //{
         $extended = sportsmanagementHelper::getExtended($person->extended, 'person');
-        //}
         $this->extended = $extended;
         unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'extended <pre>' . print_r($this->extended, true) . '</pre>';
-            $my_text .= 'projectstats <pre>' . print_r($this->projectstats, true) . '</pre>';
-            $my_text .= 'form_value <pre>' . print_r($form_value, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectstats<br><pre>'.print_r($this->projectstats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
-        }
-
-        // nebenposition vorhanden ?
-        $this->assignRef('person_parent_positions', $form_value);
-//        if ( $form_value )
-//        {
-//            $this->assignRef ('person_parent_positions', explode(",",$form_value) );
-//        }
+/**
+ * nebenposition vorhanden ?
+ */
+        $this->person_parent_positions = $form_value;
 
         unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            //$my_text = 'extended <pre>'.print_r($this->extended,true).'</pre>';
-            //$my_text .= 'projectstats <pre>'.print_r($this->projectstats,true).'</pre>';   
-            $my_text = 'form_value <pre>' . print_r($form_value, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
-        }
-
         if ($form_value) {
             //$this->assignRef ('person_position', $form_value );
         } else {
-            // wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
+/**
+ * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
+ */
             switch ($this->teamPlayer->position_name) {
                 case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
                     $form_value = 'hp2';
@@ -196,8 +159,8 @@ class sportsmanagementViewPlayer extends JViewLegacy {
                     $form_value = 'hp7';
                     break;
             }
-            //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
         }
+
         $this->person_position = $form_value;
         $this->hasDescription = $this->teamPlayer->notes;
 

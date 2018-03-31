@@ -8,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage player
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- person data START -->
@@ -25,7 +26,14 @@ defined('_JEXEC') or die('Restricted access');
                 $picture = $this->person->picture;
             }
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo' . $this->person->id, $picture, $imgTitle, $this->config['picture_width']);
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo' . $this->person->id,
+            $picture,
+            $imgTitle,
+            $this->config['picture_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);
         }
 
         if ($this->config['show_player_logo_copyright']) {

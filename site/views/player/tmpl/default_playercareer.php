@@ -92,8 +92,16 @@ if ( !curl_init( $station->project_picture ) )
 				{
 					$station->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,$station->project_picture,$station->project_name,'20'); 
-							}	
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,
+                            $station->project_picture,
+                            $station->project_name,
+                            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']); 
+							
+                            }	
                                 echo JHtml::link($link1,$station->project_name);
 							?></td>
 							<td class="td_l">
@@ -113,11 +121,25 @@ if ( !curl_init( $station->club_picture ) )
 				{
 					$station->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                  
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,$station->club_picture,$station->team_name,'20');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,
+$station->club_picture,
+$station->team_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
                             }
 			if ( $this->config['show_team_picture'] ) 
                             { 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteampicture'.$station->project_id.'-'.$station->team_id,$station->team_picture,$station->team_name,'40');				
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteampicture'.$station->project_id.'-'.$station->team_id,
+$station->team_picture,
+$station->team_name,
+'40',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);				
 				
 			}	
 			
@@ -138,8 +160,15 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteampicture
                             ?>
                             <td>
                 <?PHP
-                //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,$station->season_picture,$station->team_name,'50');
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,
+$station->season_picture,
+$station->team_name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 </td>
                  <?PHP
