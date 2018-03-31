@@ -15,7 +15,6 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
             
 ?>
-
 <!-- Player stats History START -->
 <h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
 <table class="<?PHP echo $this->config['player_table_class']; ?> table-responsive " >
@@ -165,17 +164,6 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				{
 					$model = $this->getModel();
 					$this->inoutstat = $model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid);
-
-//echo __FILE__.' '.__LINE__.' project->id <br><pre>'.print_r($player_hist->project_id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' projectteam->id <br><pre>'.print_r($player_hist->ptid,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' teamplayer->id <br><pre>'.print_r($player_hist->tpid,true).'</pre><br>';
-                    
-//                    if ( $player_hist->tpid == 846 )
-//            {
-//echo __FILE__.' '.__LINE__.' player_hist<br><pre>'.print_r($player_hist,true).'</pre><br>';
-//            }
-            
-					
                     
                     // gespielte zeit
                     if ( !isset($this->overallconfig['person_events']) )
@@ -184,10 +172,6 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     }
                     
                     $timePlayed = $model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id);
-
-//echo __FILE__.' '.__LINE__.' Player->id<br><pre>'.print_r($player_hist->tpid,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
                                     
                     $routeparameter = array();
        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
@@ -215,7 +199,14 @@ if ( !curl_init( $player_hist->project_picture ) )
 					$player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}
                                                 
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->project_picture,$player_hist->project_name,'20'); 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,
+$player_hist->project_picture,
+$player_hist->project_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
                 }
                 echo JHtml::link($link1,$player_hist->project_name); 
                 ?>
@@ -232,12 +223,26 @@ if ( !curl_init( $player_hist->club_picture ) )
 				{
 					$player_hist->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->club_picture,$player_hist->team_name,'20');                                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,
+$player_hist->club_picture,
+$player_hist->team_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                                
                             }    
 
 			if ( $this->config['show_team_picture'] ) 
                             { 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->team_picture,$player_hist->team_name,'40');                                				
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'.$player_hist->project_id.'-'.$player_hist->team_id,
+$player_hist->team_picture,
+$player_hist->team_name,
+'40',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                                				
 				
 			}
 			
@@ -261,8 +266,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
                 ?>
                 <td>
                 <?PHP
-                //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->season_picture,$player_hist->team_name,'50');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,
+$player_hist->season_picture,
+$player_hist->team_name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 </td>
                 <?PHP
@@ -270,7 +281,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
                 ?>
 				<!-- Player stats History - played start -->
 				<td class="td_c"><?php
-				//echo ($this->inoutstat->played > 0) ? $this->inoutstat->played : '0';
                 echo ($this->inoutstat->played > 0) ? $this->inoutstat->played : $this->overallconfig['zero_events_value'];
 				$career['played'] += $this->inoutstat->played;
 				?></td>
@@ -284,19 +294,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
 						<!-- Player stats History - startroster start -->
 						<td class="td_c"><?php
 						$career['started'] += $this->inoutstat->started;
-						//echo ($this->inoutstat->started);
                         echo ($this->inoutstat->started > 0 ? $this->inoutstat->started : $this->overallconfig['zero_events_value']);
 						?></td>
 						<!-- Player stats History - substitution in start -->
 						<td class="td_c"><?php
 						$career['in'] += $this->inoutstat->sub_in;
-						//echo ($this->inoutstat->sub_in );
                         echo ($this->inoutstat->sub_in > 0 ? $this->inoutstat->sub_in : $this->overallconfig['zero_events_value']);
 						?></td>
 						<!-- Player stats History - substitution out start -->
 						<td class="td_c"><?php
 						$career['out'] += $this->inoutstat->sub_out;
-						//echo ($this->inoutstat->sub_out) ;
                         echo ($this->inoutstat->sub_out > 0 ? $this->inoutstat->sub_out : $this->overallconfig['zero_events_value']);
 						?></td>
                         
@@ -338,10 +345,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
 				<td class="td_c hasTip" title="<?php echo JText::_($stat->name); ?>">
 				<?php
 							if(isset($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid])) {
-								//echo $this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid];
                                 echo ($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] > 0 ? $this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] : $this->overallconfig['zero_events_value']);
 							} else {
-								//echo 0;
                                 echo $this->overallconfig['zero_events_value'];
 							}
 						    }
@@ -371,7 +376,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
 				<td class="td_c"><?php echo ($career['started'] > 0 ? $career['started'] : $this->overallconfig['zero_events_value']); ?></td>
 				<td class="td_c"><?php echo ($career['in'] > 0 ? $career['in'] : $this->overallconfig['zero_events_value']); ?></td>
 				<td class="td_c"><?php echo ($career['out'] > 0 ? $career['out'] : $this->overallconfig['zero_events_value']); ?></td>
-                
                 <td class="td_c"><?php echo ($career['playedtime'] ); ?></td>
 				<?php
 				}
@@ -414,13 +418,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteampicture'
 								if (isset($this->projectstats) &&
 								    array_key_exists($stat->id, $this->projectstats))
 								{
-									//echo $this->projectstats[$stat->id]['totals'];
-                                    //echo 'hallo';
                                     echo ($this->projectstats[$stat->id]['totals'] > 0 ? $this->projectstats[$stat->id]['totals'] : $this->overallconfig['zero_events_value']);
 								}
 								else	// In case there are no stats for the player
 								{
-									//echo 0;
                                     echo $this->overallconfig['zero_events_value'];
 								}
 							?>
