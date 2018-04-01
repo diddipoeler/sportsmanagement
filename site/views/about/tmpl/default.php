@@ -84,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
         <td>
             <b>
                 <?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?>
-            </b><
+            </b>
         </td>
         <td>
             <a href="<?php echo $this->about->github; ?>" target="_blank">
