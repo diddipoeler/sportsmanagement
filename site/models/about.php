@@ -10,8 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-
 jimport('joomla.application.component.model');
 
 /**
@@ -35,7 +33,7 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about = new stdClass();
 		
 		//Translations Hosted by
-		$about->translations = '<a href="https://opentranslators.transifex.com/projects/p/joomleague/">https://opentranslators.transifex.com/projects/p/joomleague/</a>';
+		$about->translations = '<a href="https://www.transifex.com/opentranslators/sportsmanagement/">https://www.transifex.com/opentranslators/sportsmanagement/</a>';
 		//Repository Hosted by
 		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
 		//version
@@ -50,13 +48,13 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about->page = 'http://sportsmanagement.fussballineuropa.de/';
 
 		//e-mail
-		$about->email = 'http://www.JoomLeague.net/forum/index.php?action=contact';
+		$about->email = 'diddipoeler@gmx.de';
 
 		//forum
-		$about->forum = 'http://fussballineuropa.de/index.php?option=com_kunena&view=home&defaultmenu=1169&Itemid=1167&lang=de';
+		$about->forum = 'http://www.fussballineuropa.de/index.php/forum';
 		
 		//bugtracker
-		$about->bugs = 'http://mantisbugtracker.fussballineuropa.de/my_view_page.php';
+		$about->bugs = 'https://github.com/diddipoeler/sportsmanagement/issues';
 		
 		//wiki
 		$about->wiki = 'http://smwiki.diddipoeler.de/';
@@ -65,13 +63,8 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about->date = '2014-01-01';
 
 		//developer
-		//$about->developer = '<a href="http://stats.joomleague.net/authors.html" target="_blank">JoomLeague-Team</a>';
         $about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Galun) ';
-/*
-		//designer
-		$about->designer = 'Kasi';
-		$about->designer .= ', <a href="http://www.cg-design.net" target="_blank">cg design</a>&nbsp;(Carsten Grob) ';
-*/
+
 		//designer
 		$about->designer = 'DonClumsy';
 		$about->designer .= ' (Tim Keller), ';
@@ -93,14 +86,14 @@ class sportsmanagementModelAbout extends JModelLegacy
 
 
     //page
-    $about->github = 'https://github.com/diddipoeler/joomleague-2-komplettpaket';
+    $about->github = 'https://github.com/diddipoeler/sportsmanagement';
 		$about->diddipoelerpage = 'http://www.fussballineuropa.de';
 
 		//e-mail
 		$about->diddipoeleremail = 'diddipoeler@gmx.de';
 
 		//forum
-		$about->diddipoelerforum = 'http://www.fussballineuropa.de/index.php?option=com_kunena&view=category&catid=247&Itemid=530';
+		$about->diddipoelerforum = 'http://www.fussballineuropa.de/index.php/forum/sports-management';
 
 		$this->_about = $about;
 
