@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 jimport('joomla.application.component.view');
 
 /**
@@ -22,41 +21,30 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPlayer extends JViewLegacy {
+class sportsmanagementViewPlayer extends sportsmanagementView {
 
+    
     /**
-     * sportsmanagementViewPlayer::display()
+     * sportsmanagementViewPlayer::init()
      * 
-     * @param mixed $tpl
-     * @return
+     * @return void
      */
-    function display($tpl = null) {
-        // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-// JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $model = $this->getModel();
+    function init() {
 
-        $model::$projectid = $jinput->getInt('p', 0);
-        $model::$personid = $jinput->getInt('pid', 0);
-        $model::$teamplayerid = $jinput->getInt('pt', 0);
+        $model = $this->model;
 
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p', 0), $model::$cfg_which_database);
-        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(), $model::$cfg_which_database);
+        $model::$projectid = $this->jinput->getInt('p', 0);
+        $model::$personid = $this->jinput->getInt('pid', 0);
+        $model::$teamplayerid = $this->jinput->getInt('pt', 0);
+
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), $model::$cfg_which_database);
 
         $person = sportsmanagementModelPerson::getPerson(0, $model::$cfg_which_database, 1);
         $nickname = isset($person->nickname) ? $person->nickname : "";
         if (!empty($nickname)) {
             $nickname = "'" . $nickname . "'";
         }
-        $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']);
-        $project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-        $this->project = $project;
-        $this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-        $this->config = $config;
+        $this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($this->config['show_contact_team_member_only']);
         $this->person = $person;
         $this->nickname = $nickname;
         $this->teamPlayers = $model->getTeamPlayers($model::$cfg_which_database);
@@ -98,19 +86,19 @@ class sportsmanagementViewPlayer extends JViewLegacy {
                 $teamPlayer = $this->teamPlayers[$currentProjectTeamId];
             }
         }
-        $sportstype = $config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
+        $sportstype = $this->config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
 
         $this->teamPlayer = $teamPlayer;
         $this->historyPlayer = $model->getPlayerHistory($sportstype, 'ASC', 1, $model::$cfg_which_database);
         $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, 'ASC', 2, $model::$cfg_which_database);
         $this->AllEvents = $model->getAllEvents($sportstype);
-        $this->showediticon = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
+        $this->showediticon = sportsmanagementModelPerson::getAllowed($this->config['edit_own_player']);
         $this->stats = sportsmanagementModelProject::getProjectStats(0, 0, $model::$cfg_which_database);
 
 /**
  * Get events and stats for current project
  */
-        if ($config['show_gameshistory']) {
+        if ($this->config['show_gameshistory']) {
             $this->games = $model->getGames();
             $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
             $this->gamesevents = $model->getGamesEvents();
@@ -120,7 +108,7 @@ class sportsmanagementViewPlayer extends JViewLegacy {
 /**
  * Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
  */
-        if ($config['show_career_stats']) {
+        if ($this->config['show_career_stats']) {
             $this->stats = $model->getStats();
             $this->projectstats = $model->getPlayerStatsByProject($sportstype);
         }
@@ -140,7 +128,6 @@ class sportsmanagementViewPlayer extends JViewLegacy {
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION');
 
         if ($form_value) {
-            //$this->assignRef ('person_position', $form_value );
         } else {
 /**
  * wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
@@ -191,11 +178,11 @@ class sportsmanagementViewPlayer extends JViewLegacy {
             $name = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
         }
         $this->playername = $name;
-        $document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
+        $this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
-        $view = $jinput->getVar("view");
+        $view = $this->jinput->getVar("view");
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
 
         if (!isset($this->config['table_class'])) {
             $this->config['table_class'] = 'table';
@@ -204,7 +191,6 @@ class sportsmanagementViewPlayer extends JViewLegacy {
             $this->config['show_players_layout'] = 'no_tabs';
         }
 
-        parent::display($tpl);
     }
 
 }
