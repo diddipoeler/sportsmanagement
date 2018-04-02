@@ -6,11 +6,10 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage models
+ * @subpackage stats
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.application.component.model');
 
 /**

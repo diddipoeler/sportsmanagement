@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
 

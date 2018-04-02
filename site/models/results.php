@@ -9,7 +9,6 @@
  */
 
 defined('_JEXEC') or die(JText('Restricted access'));
-
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 JHtml::_('behavior.tooltip');
