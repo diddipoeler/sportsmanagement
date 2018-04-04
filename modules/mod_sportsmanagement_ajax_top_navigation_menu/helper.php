@@ -1009,14 +1009,12 @@ $app = JFactory::getApplication();
             $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
             $query->where('p.published = 1');
             $query->where('p.league_id = '. $league_id);
-            $query->order('s.name DESC');
+            $query->order('s.name DESC, p.name ASC');
 
 		$db->setQuery($query);
         
         $this->getProjectSelect = $query->dump();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
 		$res = $db->loadObjectList();
 		
 		if ($res) 
@@ -1037,17 +1035,12 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 */
 	public function getTeamSelect($project_id)
 	{
-//		if (!self::$_project_id) {
-//			return false;
-//		}
-//		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
 		$res = $this->getTeamsOptions($project_id);
 		if ($res) 
 		{
 		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
 			$options = array_merge($options, $res);
 		}
-//		return JHTML::_('select.genericlist', $options, 'tid', 'class="jlnav-team"', 'value', 'text', $this->getTeamId());
         return $options;		
 	}
 	
@@ -1074,9 +1067,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             $query->order('t.name ASC');
               
 			$db->setQuery($query);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-            
+           
 			$res = $db->loadObjectList();
 			
 			if (!$res) 
@@ -1098,9 +1089,6 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	   $app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r($this->_project,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r(self::$_project_id,true).'</pre>'),'Notice');
         
 		if (!$this->_project)
 		{
