@@ -1,41 +1,13 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
+ */
 
 // no direct access
 
@@ -105,19 +77,9 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $this->_params = $params;
 		$this->_db = sportsmanagementHelper::getDBConnection();
         $this->_query = $this->_db->getQuery(true);
-//        $projectid = JRequest::getInt('p',0);
-//        if ( $projectid )
-//        {
-//        self::$_project_id = $projectid ;
-//        }
         
     if ( self::$_project_id )
 		{
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r(self::$_project_id,true).'</pre>'),'Notice');
-
-//JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry(self::$_project_id) );
-
     JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
     JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
     JRequest::setVar( 'jlamtopproject', self::$_project_id );
@@ -942,17 +904,7 @@ $app = JFactory::getApplication();
             $query->where('l.country = \'' . $country_id. '\'' );
             $query->group('l.name');
             $query->order('l.name');
-/*
-select l.id AS value, l.name AS text
-from j25_sportsmanagement_league AS l
-inner join j25_sportsmanagement_project AS p on l.id = p.league_id
-inner join j25_sportsmanagement_season AS s on s.id = p.season_id
-where l.associations = 0
-and l.country = '889'
-group by l.name
-order by l.name
 
-*/
 
 		$db->setQuery($query);
         
@@ -1058,50 +1010,7 @@ $app = JFactory::getApplication();
             $query->where('p.published = 1');
             $query->where('p.league_id = '. $league_id);
             $query->order('s.name DESC');
-            
-            
-//		$query_base = ' SELECT p.id AS value, p.name AS text ' 
-//		       . ' FROM #__joomleague_project AS p ' 
-//		       . ' INNER JOIN #__joomleague_season AS s on s.id = p.season_id '
-//		       . ' INNER JOIN #__joomleague_league AS l on l.id = p.league_id '
-//		       . ' WHERE p.published = 1 ';
-//		       . ' ORDER BY s.name DESC ';
-		       
-//      $query = $query_base;
-//		if ($this->getParam('show_project_dropdown') == 'season' && $this->getProject()) 
-//		{
-			//$query .= ' AND p.season_id = '. $season_id;
-//			$query .= ' AND p.league_id = '. $league_id;
-//			$query .= ' ORDER BY s.name DESC ';
-//		}
-		
-//		switch ($this->getParam('project_ordering', 0)) 
-//		{
-//			case 0:
-//				$query .= ' ORDER BY p.ordering ASC';				
-//			break;
-//			
-//			case 1:
-//				$query .= ' ORDER BY p.ordering DESC';				
-//			break;
-//			
-//			case 2:
-//				$query .= ' ORDER BY s.ordering ASC, l.ordering ASC, p.ordering ASC';				
-//			break;
-//			
-//			case 3:
-//				$query .= ' ORDER BY s.ordering DESC, l.ordering DESC, p.ordering DESC';				
-//			break;
-//			
-//			case 4:
-//				$query .= ' ORDER BY s.name DESC';				
-//			break;
-//			
-//			case 5:
-//				$query .= ' ORDER BY p.name DESC';				
-//			break;
-//		}
-		
+
 		$db->setQuery($query);
         
         $this->getProjectSelect = $query->dump();
