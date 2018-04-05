@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="system" method="upgrade">
+    <name>System - JCE MediaBox</name>
+    <author>Ryan Demmer</author>
+    <creationDate>05-04-2017</creationDate>
+    <copyright>Copyright (C) 2006 - 2016 Ryan Demmer. All rights reserved</copyright>
+    <license>GNU/GPL Version 2 or later - http://www.gnu.org/licenses/gpl-2.0.html</license>
+    <authorEmail>info@joomlacontenteditor.net</authorEmail>
+    <authorUrl>www.joomlacontenteditor.net</authorUrl>
+    <version>1.2.9</version>
+    <description>PLG_SYSTEM_JCEMEDIABOX_XML_DESC</description>
+
+    <config>
+        <fields name="params">
+            <fieldset name="general" group="general">
+                <field name="theme" type="folderlist" directory="plugins/system/jcemediabox/themes" hide_none="true" hide_default="true" exclude="(css|img)" default="standard" label="JCEMEDIABOX_THEME" description="JCEMEDIABOX_THEMEDESC" />
+                <field name="imgpath" type="text" size="50" default="plugins/system/jcemediabox/img" label="JCEMEDIABOX_IMAGEPATH" description="JCEMEDIABOX_IMAGEPATHDESC"/>
+
+                <field name="mediafallback" type="radio" default="0" label="JCEMEDIABOX_MEDIAFALLBACK" class="btn-group btn-group-yesno" description="JCEMEDIABOX_MEDIAFALLBACKDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+
+                <field name="mediaselector" type="text" size="50" default="audio,video" label="JCEMEDIABOX_MEDIASELECTOR" description="JCEMEDIABOX_MEDIASELECTORDESC"/>
+
+            </fieldset>
+            <fieldset name="popup" group="popup">
+                <field type="spacer" default="JCEMEDIABOX_POPUP" />
+                <field name="fadespeed" type="text" default="500" label="JCEMEDIABOX_FADESPEED" description="JCEMEDIABOX_FADESPEEDDESC"/>
+                <field name="scalespeed" type="text" default="500" label="JCEMEDIABOX_SCALESPEED" description="JCEMEDIABOX_SCALESPEEDDESC"/>
+                <field name="overlay" type="radio" default="1" label="JCEMEDIABOX_OVERLAY" class="btn-group btn-group-yesno" description="JCEMEDIABOX_OVERLAYDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="overlayopacity" type="list" default="0.8" label="JCEMEDIABOX_OVERLAYOPACITY" description="JCEMEDIABOX_OVERLAYOPACITYDESC">
+                    <option value="0">0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1</option>
+                </field>
+                <field name="overlaycolor" type="text" default="#000000" class="color" label="JCEMEDIABOX_OVERLAYCOLOR" description="JCEMEDIABOX_OVERLAYCOLORDESC" />
+                <field name="width" type="text" default="" label="JCEMEDIABOX_WIDTH" description="JCEMEDIABOX_WIDTHDESC" />
+                <field name="height" type="text" default="" label="JCEMEDIABOX_HEIGHT" description="JCEMEDIABOX_HEIGHTDESC" />
+                <field name="resize" type="radio" default="1" label="JCEMEDIABOX_RESIZE" class="btn-group btn-group-yesno" description="JCEMEDIABOX_RESIZEDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="close" type="list" default="2" label="JCEMEDIABOX_CLOSE_ACTION" description="JCEMEDIABOX_CLOSE_ACTIONDESC">
+                    <option value="1">JCEMEDIABOX_CLOSE_BUTTON</option>
+                    <option value="2">JCEMEDIABOX_CLOSE_BUTTON_OVERLAY</option>
+                </field>
+                <field name="icons" type="radio" default="1" label="JCEMEDIABOX_ICONS" class="btn-group btn-group-yesno" description="JCEMEDIABOX_ICONSDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="hideobjects" type="radio" default="0" label="JCEMEDIABOX_HIDEOBJECTS" class="btn-group btn-group-yesno" description="JCEMEDIABOX_HIDEOBJECTSDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="scrolling" type="radio" default="fixed" label="JCEMEDIABOX_SCROLLPOSITION" description="JCEMEDIABOX_SCROLLPOSITIONDESC">
+                    <option value="scroll">JCEMEDIABOX_SCROLL</option>
+                    <option value="fixed">JCEMEDIABOX_FIXED</option>
+                </field>
+                <field name="components" type="text" size="50" default="" label="JCEMEDIABOX_COMPONENTS" description="JCEMEDIABOX_COMPONENTSDESC" />
+                <field name="menu" type="menuitem" state="1" default="" multiple="multiple" size="10" label="JCEMEDIABOX_MENU" description="JCEMEDIABOX_MENUDESC" />
+                <field name="menu_exclude" type="menuitem" state="1" default="" multiple="multiple" size="10" label="JCEMEDIABOX_MENU_EXCLUDE" description="JCEMEDIABOX_MENU_EXCLUDEDESC" />
+                <field name="dynamic_themes" type="radio" default="0" label="JCEMEDIABOX_DYNAMICTHEMES" class="btn-group btn-group-yesno" description="JCEMEDIABOX_DYNAMICTHEMESDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="legacy" type="radio" default="0" label="JCEMEDIABOX_LEGACY" class="btn-group btn-group-yesno" description="JCEMEDIABOX_LEGACYDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="lightbox" type="radio" default="0" label="JCEMEDIABOX_LIGHTBOX" class="btn-group btn-group-yesno" description="JCEMEDIABOX_LIGHTBOXDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                <field name="shadowbox" type="radio" default="0" label="JCEMEDIABOX_SHADOWBOX" class="btn-group btn-group-yesno" description="JCEMEDIABOX_SHADOWBOXDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field>
+                
+                <field name="cookie_expiry" type="text" size="5" default="" label="JCEMEDIABOX_COOKIE_EXPIRY" description="JCEMEDIABOX_COOKIE_EXPIRYDESC" />
+                
+                <!--field name="google_viewer" type="radio" default="0" label="JCEMEDIABOX_GOOGLE_VIEWER" description="JCEMEDIABOX_GOOGLE_VIEWERDESC">
+                    <option value="1">JCEMEDIABOX_YES</option>
+                    <option value="0">JCEMEDIABOX_NO</option>
+                </field-->
+                
+            </fieldset>
+            <fieldset name="tooltip" group="tooltip">
+                <field type="spacer" default="JCEMEDIABOX_TOOLTIP" />
+                <field name="tipclass" type="text" default="tooltip" label="JCEMEDIABOX_TOOLTIPCLASS" description="JCEMEDIABOX_TOOLTIPCLASSDESC"/>
+                <field name="tipopacity" type="list" default="0.8" label="JCEMEDIABOX_TOOLTIPOPACITY" description="JCEMEDIABOX_TOOLTIPOPACITYDESC">
+                    <option value="0">0</option>
+                    <option value="0.1">0.1</option>
+                    <option value="0.2">0.2</option>
+                    <option value="0.3">0.3</option>
+                    <option value="0.4">0.4</option>
+                    <option value="0.5">0.5</option>
+                    <option value="0.6">0.6</option>
+                    <option value="0.7">0.7</option>
+                    <option value="0.8">0.8</option>
+                    <option value="0.9">0.9</option>
+                    <option value="1">1</option>
+                </field>
+                <field name="tipspeed" type="text" default="150" label="JCEMEDIABOX_TOOLTIPSPEED" description="JCEMEDIABOX_TOOLTIPSPEEDDESC"/>
+                <field name="tipposition" type="list" default="br" label="JCEMEDIABOX_TOOLTIPPOSITION" description="JCEMEDIABOX_TOOLTIPPOSITIONDESC">
+                    <option value="tl">JCEMEDIABOX_TOPLEFT</option>
+                    <option value="tr">JCEMEDIABOX_TOPRIGHT</option>
+                    <option value="tc">JCEMEDIABOX_TOPCENTRE</option>
+                    <option value="bl">JCEMEDIABOX_BOTTOMLEFT</option>
+                    <option value="br">JCEMEDIABOX_BOTTOMRIGHT</option>
+                    <option value="bc">JCEMEDIABOX_BOTTOMCENTRE</option>
+                </field>
+                <field name="tipoffsets_x" type="text" default="16" label="JCEMEDIABOX_TOOLTIPXOFFSET" description="JCEMEDIABOX_TOOLTIPXOFFSETDESC"/>
+                <field name="tipoffsets_y" type="text" default="16" label="JCEMEDIABOX_TOOLTIPYOFFSET" description="JCEMEDIABOX_TOOLTIPYOFFSETDESC"/>
+            </fieldset>
+        </fields>
+    </config>
+	
+    <files folder="plugins/system/jcemediabox">
+        <file plugin="jcemediabox">jcemediabox.php</file>
+        <folder>addons</folder>
+        <folder>css</folder>
+        <folder>elements</folder>
+        <folder>img</folder>
+        <folder>js</folder>
+        <folder>themes</folder>
+        <folder>mediaplayer</folder>
+    </files>
+	
+    <languages folder="administrator/language/en-GB">
+        <language tag="en-GB">en-GB.plg_system_jcemediabox.ini</language>
+        <language tag="en-GB">en-GB.plg_system_jcemediabox.sys.ini</language>
+    </languages>
+    
+    <updateservers>
+	<server type="extension" priority="1" name="JCE MediaBox Updates"><![CDATA[https://www.joomlacontenteditor.net/index.php?option=com_updates&view=update&format=xml&file=jcemediabox.xml]]></server>
+    </updateservers>
+</extension>
