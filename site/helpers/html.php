@@ -44,7 +44,18 @@ class sportsmanagementHelperHtml {
         // JInput object
         $jinput = $app->input;
 
-        if ($use_jquery_modal) {
+	    switch ($use_jquery_modal)
+	    {	 
+	  case 2:		    
+if ($url) {
+$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+}	
+if (!$url) {
+$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';		
+}	
+$modaltext .= '</a>';			    
+break;			    
+        case 1:
 if ($url) {
 $modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
 $modaltext .= ' target="SingleSecondaryWindowName"';
@@ -63,15 +74,17 @@ $modaltext .= '>';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
 $modaltext .= '</a>';
 }		
-		
-        } else {
+	break;	
+        case 0:
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
             } else {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
             }
             $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
-        }
+        break;
+	    
+    }    
         return $modaltext;
     }
 
