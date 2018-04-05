@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.62</version>
+	<version>1.0.63</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -204,7 +204,7 @@
 <plugins>
 <plugin plugin="jqueryeasy" group="system" />	
 <plugin plugin="jw_ts" group="content" />
-<!-- <plugin plugin="plugin_googlemap3" group="system" /> -->
+<plugin plugin="jcemediabox" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
 <plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_ishupdate" group="system" />
@@ -218,7 +218,7 @@
 <plugin plugin="jsm_userprofile" group="user" />
 <plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_ishupdate" group="system" />
-<!-- <plugin plugin="plugin_googlemap3" group="system" /> -->
+<plugin plugin="jcemediabox" group="system" />
 </plugins3>
      
 </extension>

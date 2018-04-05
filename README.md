@@ -29,6 +29,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   05-04-2018: **1.0.63** JCE MediaBox for Joomla! 3
 *   30-03-2018: **1.0.62** Neues Datenbankfeld zur Turnierdarstellung
 *   10-03-2018: **1.0.61** Start der offiziellen Komponente
 *   20-02-2018: **1.0.60** Neue Felder bei den Personen und Mannschaften hizugefügt.
