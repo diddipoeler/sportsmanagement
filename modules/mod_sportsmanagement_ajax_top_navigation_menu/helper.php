@@ -10,7 +10,6 @@
  */
 
 // no direct access
-
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
@@ -86,9 +85,6 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
     JRequest::setVar( 'jlamtopteam', $this->_team_id );
     JRequest::setVar( 'jlamtopdivisionid', $this->_division_id );
     }
-    
-		
-		
 		
 	}
 
@@ -110,7 +106,6 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $db->setQuery($query);
         
         self::$query_getFederations = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
     
@@ -141,7 +136,6 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubSubAssocSelect = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -175,7 +169,6 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubAssocSelect = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -213,7 +206,6 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountryAssocSelect = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -253,7 +245,6 @@ $query->order('s.name DESC');
 $db->setQuery($query);
 
 self::$query_getFederationSelect = $query->dump();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 $res = $db->loadObjectList();
 
@@ -276,13 +267,9 @@ if ($res)
       }
 			
 		}
-		
 
 		return $options;
 	}
-	
-    
-    
     
 	/**
 	 * modSportsmanagementAjaxTopNavigationMenuHelper::getCountryFederation()
@@ -294,7 +281,6 @@ if ($res)
 	{
 	   $app = JFactory::getApplication();
        $result = FALSE;
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'Notice');
        if ( $country_id )
        {
        $result = self::$_country_fed[$country_id]; 
@@ -313,13 +299,7 @@ if ($res)
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-       
-       //$test = $jinput->get('p', 0, 'INT');
-      // $test = $jinput->request->get('p', 0, 'INT');
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' test<pre>'.print_r($test,true).'</pre><br>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' input<pre>'.print_r($jinput,true).'</pre><br>'),'');
-       
+      
        $uri = JFactory::getURI();
        
        $varAdd_array = array();
@@ -339,159 +319,9 @@ if ($res)
        $varAdd_array['mid'] = $jinput->request->get('mid', 0, 'INT');
        $varAdd_array['tid'] = $jinput->request->get('tid', 0, 'INT');
        $varAdd_array['cid'] = $jinput->request->get('cid', 0, 'INT');
-       
            
        $varAdd_array['Itemid'] = $jinput->request->get('Itemid', 0, 'INT');
-       
-//       $router = JSite::getRouter();
-//   $var = $router->getVars();
-//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' var<pre>'.print_r($var,true).'</pre><br>'),'');
-//   
-//   $query_string_array = JRequest::get( 'get' ); 
-//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_string_array<pre>'.print_r($query_string_array,true).'</pre><br>'),'');
-   
-//   $url = $_SERVER["REQUEST_URI"]; 
-//   $u = JURI::getInstance( $url );
-//   $var = $router->_parseRawRoute($u);
-//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' var<pre>'.print_r($var,true).'</pre><br>'),'');
-   
-	// diddipoeler
-	/*
-	muss ich erstmal so machen, da die request variablen falsch 
-	uebernommen werden.
-	kommt vor, wenn das modul nach einen anderen modul dargestellt wird
-	*/
 
-/*	
-	$url = $_SERVER["REQUEST_URI"]; 
-    $parsearray = parse_url($url);
-    $startseo = 0;
-    $jltemplate = '';
-    $varAdd_array = array();
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url<pre>'.print_r($url,true).'</pre><br>'),'');
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' uri<pre>'.print_r($uri->getQuery(),true).'</pre><br>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parsearray<pre>'.print_r($parsearray,true).'</pre><br>'),'');
-    
-    if ( isset($parsearray['query']) )
-    {
-    $varAdd = explode('&', $parsearray['query']);
-        foreach($varAdd as $varOne)
-        {
-            $name_value = explode('=', $varOne);
-            
-            //$app->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[0],true).'</pre><br>'),'');
-            //$app->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[1],true).'</pre><br>'),'');
-            
-            switch ($name_value[0])
-            {
-            case 'p':
-            case 'r':
-            case 'division':
-            case 'mode':
-            case 'mid':
-            case 'tid':
-            case 'pid':
-            case 'cid':
-            $varAdd_array[$name_value[0]] = (int) $name_value[1];
-            break;
-            case 'l':
-            $project = $this->getProject($name_value[1]);
-            //$project = $this->getProjectSelect($name_value[1]);
-            $varAdd_array['p'] = self::$_project_id;
-            break;
-            default:
-            $varAdd_array[$name_value[0]] = $name_value[1];
-            break;
-            }
-            
-       }
-
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd_array<pre>'.print_r($varAdd_array,true).'</pre><br>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<pre>'.print_r($project,true).'</pre><br>'),'');
-
-    }
-    else
-    {
-    $varAdd = explode('/', $parsearray['path']);    
-    
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd<pre>'.print_r($varAdd,true).'</pre><br>'),'');
-    
-    foreach( $varAdd as $key => $value )
-    {
-    
-    if ( $value == 'sportsmanagement' )
-    {
-    $startseo = $key + 1;
-    $jltemplate = $varAdd[$startseo];
-    
-    //echo 'jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>';
-    $app->enqueueMessage(JText::_('jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>'),'');
-    
-    switch ($jltemplate)
-    {
-    case 'clubinfo':
-    case 'clubplan':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    $varAdd_array['cid'] = $varAdd[$startseo + 2];
-    break;
-    
-    case 'roster':
-    case 'teamplan':
-    case 'teaminfo':
-    case 'teamstats':
-    case 'curve':
-    case 'rosteralltime':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    $varAdd_array['tid'] = $varAdd[$startseo + 2];
-    break;
-    
-    case 'ranking':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    $varAdd_array['r'] = $varAdd[$startseo + 3];
-    break;
-    
-    case 'rankingalltime':
-    //getProject($varAdd[$startseo + 1]);
-    break;
-    
-    case 'results':
-    case 'resultsmatrix':
-    case 'resultsranking':
-    case 'jlallprojectrounds':
-    case 'jltournamenttree':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    $varAdd_array['r'] = $varAdd[$startseo + 2];
-    break;
-    
-    case 'matchreport':
-    case 'nextmatch':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    $varAdd_array['mid'] = $varAdd[$startseo + 2];
-    break;
-    
-    case 'eventsranking':
-    case 'matrix':
-    case 'referees':
-    case 'stats':
-    case 'teams':
-    case 'statsranking':
-    $varAdd_array['p'] = $varAdd[$startseo + 1];
-    break;
-        
-    }   
-     
-    }   
-     
-    }   
-     
-    }  
-*/       
-//     echo 'request queries -> <pre>'.print_r($varAdd_array,true).'</pre><br>';
-	  
-      
-      
       return $varAdd_array;
 	}
 	
@@ -528,9 +358,6 @@ if ($res)
 	
 	$this->_division_id = $division_id;
 
-// echo 'setDivisionID <br>';
-// echo '_division_id ->'.$this->_division_id.'<br>';
-	
 	}
 	
 	/**
@@ -544,9 +371,6 @@ if ($res)
 	
 	$this->_team_id = $team_id;
 
-// echo 'setTeamID <br>';
-// echo '_team_id ->'.$this->_team_id.'<br>';
-	
 	}
 	
 	
@@ -612,7 +436,6 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getAssocParentId = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -650,7 +473,6 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getLeagueAssocId = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -717,7 +539,6 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getClubId = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObject();
     
@@ -753,13 +574,9 @@ return $user->username ;
             $query->where('id = '. $project_id );
 
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
 		$teams = $db->loadResult();
-		
-    //echo 'teams -><pre>'.print_r($teams,true).'</pre><br>';
-		
+	
 		if ( $teams )
 		{
 		  $query->clear();
@@ -768,9 +585,7 @@ return $user->username ;
             $query->where('t.id in ('. $teams . ')' );
    	
 				$db->setQuery($query);
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-                
+               
 				$res = $db->loadObjectList();
 				return $res;
     }
@@ -808,7 +623,6 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getTeamId = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -822,8 +636,6 @@ return $user->username ;
     return false;
     }
     
-    
-//     return $this->_team_id;
 	}
 	
 	/**
@@ -847,13 +659,10 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
 		$res = $db->loadObjectList();
 		if ($res) {
 			$options = array_merge($options, $res);
 		}
-		//return JHTML::_('select.genericlist', $options, 's', 'class="jlajaxmenu-select" onchange="jlamnewproject('.$module->id.');"', 'value', 'text', $this->getSeasonId());
 		return $options;
 	}	
 	
@@ -881,7 +690,7 @@ $options = array();
     $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
 		$options = array_merge($options, $res);
 		}
-//		return JHTML::_('select.genericlist', $options, 'd', 'class="jlnav-division"', 'value', 'text', $this->getDivisionId());
+
     return $options;
 	}
 	
@@ -905,11 +714,9 @@ $app = JFactory::getApplication();
             $query->group('l.name');
             $query->order('l.name');
 
-
 		$db->setQuery($query);
         
         $this->getAssocLeagueSelect = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -940,7 +747,6 @@ $app = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getProjectCountry = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -980,7 +786,6 @@ $app = JFactory::getApplication();
 		$db->setQuery($query);
         
         $this->getLeagueSelect = $query->dump();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -988,7 +793,7 @@ $app = JFactory::getApplication();
         $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
 			$options = array_merge($options, $res);
 		}
-//		return JHTML::_('select.genericlist', $options, 'l', 'class="jlnav-select"', 'value', 'text', $this->getLeagueId());
+
 		return $options;
 	}
 
@@ -1108,11 +913,9 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
           $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id');
             
             $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
-            //$query->join('INNER','#__sportsmanagement_round AS r on p.id = r.project_id ');
             $query->join('LEFT','#__sportsmanagement_round AS r on p.current_round = r.id ');
             
-//          $query->where('p.id = ' . self::$_project_id);
-         
+        
          if ( $league_id )
          {
             $query->where('p.league_id = ' . $league_id);
@@ -1122,8 +925,6 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             $query->where('p.id = ' . self::$_project_id);
          }
 			$db->setQuery($query);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$this->_project = $db->loadObject();
             self::$_project_id = $this->_project->id;
@@ -1203,13 +1004,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 		if (!self::$_project_id) {
 			return false;
 		}
-		
-// echo 'getLink <br>';
-// echo 'round_id ->'.$this->_round_id.'<br>';
-// echo 'project_id ->'.self::$_project_id.'<br>';
-// echo 'division_id ->'.$this->_division_id.'<br>';
-// echo 'team_id ->'.$this->_team_id.'<br>';		
-		
+
 		switch ($view)
 		{								
 			case "calendar":
@@ -1232,7 +1027,6 @@ $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['r'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);
-				//$link = sportsmanagementHelperRoute::getMatrixRoute( $this->_project_slug, $this->_division_id );
 				break;
 				
 			case "referees":
@@ -1250,7 +1044,6 @@ $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
-				//$link = sportsmanagementHelperRoute::getResultsRoute( $this->_project_slug, $this->_round_slug, $this->_division_id );
 				break;
 				
 			case "resultsmatrix":
@@ -1268,7 +1061,6 @@ $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
-				//$link = sportsmanagementHelperRoute::getResultsRankingRoute( $this->_project_slug, $this->_round_slug, $this->_division_id  );
 				break;
 			
             case "rankingalltime":
@@ -1347,7 +1139,6 @@ $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teams',$routeparameter);            
-				//$link = sportsmanagementHelperRoute::getTeamsRoute( $this->_project_slug,$this->_division_id );
 				break;    
 				
 			case "treetonode":
@@ -1377,7 +1168,6 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $this->_division_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
-				//$link = sportsmanagementHelperRoute::getRankingRoute( $this->_project_slug, $this->_round_slug,null,null,0,$this->_division_id );
 		}
 		return $link;
 	}
