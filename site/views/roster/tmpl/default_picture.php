@@ -29,7 +29,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 										
 					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
            
-echo sportsmanagementHelperHtml::getBootstrapModalImage('roster'.$this->team->name,$picture,$this->team->name,$this->config['team_picture_width']);      
+echo sportsmanagementHelperHtml::getBootstrapModalImage('roster'.$this->team->name,
+$picture,
+$this->team->name,
+$this->config['team_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);      
       ?>
 
    
