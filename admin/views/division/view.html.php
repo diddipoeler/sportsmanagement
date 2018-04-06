@@ -12,9 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
-
-
 /**
  * sportsmanagementViewDivision
  * 
@@ -38,11 +35,6 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $starttime = microtime(); 
 		$lists = array();
 
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
@@ -50,7 +42,6 @@ class sportsmanagementViewDivision extends sportsmanagementView
 			return false;
 		}
 
-        //$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
@@ -58,29 +49,7 @@ $count_teams = $this->model->count_teams_division($this->item->id);
 $extended = sportsmanagementHelper::getExtended($this->item->rankingparams, 'division');
 $this->extended = $extended;
 $this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_teams);
-		
-		
-/*		
-        if ( !$this->item->rankingparams )
-        {
-        $count_teams = $this->model->count_teams_division($this->item->id);
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($count_teams,true).'</pre>'),'Notice');
-        
-for($a=0; $a < $count_teams; $a++ )
-{
-$colors_ranking[$a]['von'] = '';
-$colors_ranking[$a]['bis'] = '';
-$colors_ranking[$a]['color'] = '';
-$colors_ranking[$a]['text'] = ''; 
-}
-$this->form->setValue('rankingparams', null, $colors_ranking);
-*/
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form,true).'</pre>'),'Notice');
-        
-        
-        
-        //}
-	
+
 	}
 
 	
