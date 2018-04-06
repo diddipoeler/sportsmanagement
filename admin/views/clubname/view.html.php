@@ -39,10 +39,7 @@ class sportsmanagementViewclubname extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-    
-//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' item <br><pre>'.print_r($this->item,true).'</pre>'),'');
-//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
-        
+       
 	}
  
 	
