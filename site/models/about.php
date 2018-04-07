@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage abaout
+ * @subpackage about
  */
 
 defined('_JEXEC') or die('Restricted access');
