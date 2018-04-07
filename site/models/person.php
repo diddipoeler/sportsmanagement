@@ -63,8 +63,6 @@ class sportsmanagementModelPerson extends JModelLegacy
  		$this->teamplayerid	= (int) $jinput->get( 'pt', 0 );
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
  	}
 
 

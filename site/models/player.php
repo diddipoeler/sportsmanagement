@@ -67,8 +67,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $option = $jinput->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
-        //$db = sportsmanagementHelper::getDBConnection();
-        //$db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         // Select some fields
@@ -84,12 +82,12 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('rawayto.round_date_last as away_end,rawayto.name as raway_to');
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
         $query->join('INNER', '#__sportsmanagement_person AS pe ON pe.id = tp.person_id');
-        $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id and p.season_id = st.season_id');
 
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pe.id');
-        $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
+        $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id and ppos.project_id = perpos.project_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
 
         $query->join('LEFT', '#__sportsmanagement_round AS rinjuryfrom ON pe.injury_date = rinjuryfrom.id');
@@ -100,24 +98,12 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->join('LEFT', '#__sportsmanagement_round AS rawayto ON pe.away_end = rawayto.id');
         $query->where('pt.project_id = ' . self::$projectid);
         $query->where('tp.person_id = ' . self::$personid);
+        $query->where('pe.id = ' . self::$personid);
         $query->where('p.published = 1');
         $db->setQuery($query);
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');        
         self::$_teamplayers = $db->loadObjectList('projectteam_id');
-
-        if (!self::$_teamplayers && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r(self::$_teamplayers,true).'</pre>'),'');
         return self::$_teamplayers;
     }
 
@@ -174,20 +160,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $db->setQuery($query);
         self::$_inproject = $db->loadObjectList();
-        if (!self::$_inproject && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-
+        
         return self::$_inproject;
     }
 
@@ -222,13 +195,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $db->setQuery($query);
         self::$_inproject = $db->loadObject();
 
-        if (!self::$_inproject && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . '<br><pre>' . print_r($db->getErrorMsg(), true) . '</pre>'), 'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(get_class($this) . ' ' . __FUNCTION__ . ' ' . __LINE__ . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), '');
-        }
-
-
         return self::$_inproject;
     }
 
@@ -246,8 +212,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
-        //$db = sportsmanagementHelper::getDBConnection();
-        //$db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
         $query->select('pr.id AS pid,pr.firstname,pr.lastname');
@@ -290,23 +254,6 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $db->setQuery($query);
         $result = $db->loadObjectList();
-
-        if (!$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-            //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-
 
         switch ($persontype) {
             case 1:
@@ -375,7 +322,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query = $db->getQuery(true);
 
         $result = 0;
-        // startaufstellung ohne ein und auswechselung
+/**
+ * startaufstellung ohne ein und auswechselung
+ */
         $query->select('COUNT(distinct mp.match_id) as totalmatch');
         $query->from('#__sportsmanagement_match_player as mp');
         $query->where('mp.teamplayer_id = ' . $player_id);
@@ -398,7 +347,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $result += $totalresult->totalmatch * $game_regular_time;
         }
         
-        // einwechselung
+/**
+ * einwechselung
+ */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalin');
@@ -424,7 +375,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $result += ( $cameinresult->totalmatch * $game_regular_time ) - ( $cameinresult->totalin );
         }
 
-        // auswechselung
+/**
+ * auswechselung
+ */
         $query = $db->getQuery(true);
         $query->clear();
         $query->select('count(distinct mp.match_id) as totalmatch, SUM(mp.in_out_time) as totalout');
@@ -446,12 +399,12 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $cameautresult = $db->loadObject();
 
         if ($cameautresult) {
-            // bug erkannt durch @player2000    
-            //$result += ( $cameautresult->totalout );
             $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
         }
 
-        // jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
+/**
+ * jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
+ */
         if ($cards) {
             $query = $db->getQuery(true);
             $query->clear();
@@ -481,15 +434,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
             }
-            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-                $my_text .= 'cardsresult <pre>' . print_r($cardsresult, true) . '</pre>';
-                //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
 
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' match_event<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cardsresult<br><pre>'.print_r($cardsresult,true).'</pre>'),'');
-            }
         }
 
         //$app->enqueueMessage(JText::_('result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
