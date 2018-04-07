@@ -51,7 +51,7 @@ $query->join('INNER','#__sportsmanagement_league as le on le.id = pro.league_id'
 $query->join('INNER','#__sportsmanagement_round as r on r.id = pro.current_round');		
 $query->where('le.published_act_season = 1 ');
 $query->where('pro.season_id IN ('.$seasons.')');
-$query->order('le.country');
+$query->order('le.country ASC, pro.name ASC');
 
 $db->setQuery( $query );
 $result = $db->loadObjectList();
@@ -59,8 +59,5 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		return $result;
 		
 	}
-	
-	
-
 	
 }

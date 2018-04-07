@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_act_season
  */
 
-
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -23,10 +22,14 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-//add the classes for handling
+/**
+ * add the classes for handling
+ */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -37,7 +40,9 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-// get helper
+/**
+ * get helper
+ */
 require_once (dirname(__FILE__).DS.'helper.php');
 
 $document = JFactory::getDocument();
@@ -48,7 +53,7 @@ $document = JFactory::getDocument();
 $language = JFactory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-$season_ids      = JComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );
+$season_ids = JComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );
 
 $list = modJSMActSeasonHelper::getData($season_ids);
 
