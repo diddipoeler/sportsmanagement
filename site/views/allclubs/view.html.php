@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
@@ -9,8 +8,8 @@
  * @package   sportsmanagement
  * @subpackage allclubs
  */
-defined('_JEXEC') or die('Restricted access');
 
+defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 if (!defined('JSM_PATH')) {
@@ -18,7 +17,7 @@ if (!defined('JSM_PATH')) {
 }
 
 /**
- * pr�ft vor Benutzung ob die gew�nschte Klasse definiert ist
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
 if (!class_exists('sportsmanagementHelperHtml')) {
     /**
