@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage models
+ * @subpackage jlxmlimport
  */
 
 // Check to ensure this file is included in Joomla!
@@ -57,17 +57,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
     var $_league_new_country = '';
     var $_import_project_id = 0;
     
-//    public function __construct($config = array())
-//        {   
-////            $app = JFactory::getApplication();
-////            
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'Notice');
-////            
-////                parent::__construct($config);
-////                parent::setDbo(sportsmanagementHelper::getDBConnection());
-//        }
-
 	/**
 	 * sportsmanagementModelJLXMLImport::_getXml()
 	 * 
@@ -88,11 +77,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			{
 				return @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg','SimpleXMLElement',LIBXML_NOCDATA);
 			}
-            
-//            $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg');  
-//            return $xml;
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($xml,true).'</pre>'),'');
-              
+             
             }
             else
             {
@@ -126,16 +111,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
     $app = JFactory::getApplication();
     $option = JFactory::getApplication()->input->getCmd('option');
     $project_id = $app->getUserState( "$option.pid", '0' ); 
-    
-    //$app->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
-    
+   
     if ( $project_id )
     {
     $model = JModelLegacy::getInstance('project', 'sportsmanagementmodel');
     $update_project = $model->getProject($project_id);  
-    //$update_project = JTable::getInstance('Project','Table');
-    //$update_project->load($project_id);
-    //$app->enqueueMessage(JText::_('_displayUpdate import_project_id -> '.'<pre>'.print_r($update_project->import_project_id ,true).'</pre>' ),'');
     return $update_project->import_project_id;  
     }
     else
@@ -226,40 +206,19 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         
         $this->pl_import = $app->getUserState($option.'pltree'); ;
         
-        //$app->enqueueMessage(JText::_('pl_import<br><pre>'.print_r($this->pl_import ,true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('exportplayer<br><pre>'.print_r($app->getUserState($option.'exportplayer'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('exportteamplayer<br><pre>'.print_r($app->getUserState($option.'exportteamplayer'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('exportmatchplayer<br><pre>'.print_r($app->getUserState($option.'exportmatchplayer'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('exportmatchstaff<br><pre>'.print_r($app->getUserState($option.'exportmatchstaff'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('exportevent<br><pre>'.print_r($app->getUserState($option.'exportevent'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('exportmatchevent<br><pre>'.print_r($app->getUserState($option.'exportmatchevent'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('exportteamstaff<br><pre>'.print_r($app->getUserState($option.'exportteamstaff'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('exportreferee<br><pre>'.print_r($app->getUserState($option.'exportreferee'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('pl_matchreferee<br><pre>'.print_r($app->getUserState($option.'pl_matchreferee'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('tempexportteamplayer<br><pre>'.print_r($app->getUserState($option.'tempexportteamplayer'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_('getData _import_project_id<br><pre>'.print_r($this->_import_project_id ,true).'</pre>'),'');
-        
+
         libxml_use_internal_errors(true);
 		if ( !$xmlData = $this->_getXml() )
 		{
 			$errorFound = false;
-			//echo JText::_('Load of the importfile failed:').'<br />';
             JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
 			foreach(libxml_get_errors() as $error)
 			{
-				//echo "<br>",$error->message;
                 JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
 				$errorFound = true;
 			}
 			if (!$errorFound)
             {
-                //echo ' '.JText::_('Unknown error :-(');
                 JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
             }
 		}
@@ -439,9 +398,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($xmlData->record[$i]['object']=='SportsType')
 				{
 					$this->_datas['sportstype']=$xmlData->record[$i];
-//                    JError::raiseNotice(0,$this->_datas['sportstype']);
-//                    $this->_datas['sportstype']->name    = str_replace('COM_SPORTSMANAGEMENT', strtoupper($option), $this->_datas['sportstype']->name);
-//                    $app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
 				}
 
 				// collect the projectreferee data
@@ -680,11 +636,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 
             }    
             }
-            
-            
-            
-            
-                
+    
             //$app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_datas['league'],true).'</pre>'   ),'');
             if ( isset($this->_datas['league']) )
             {
@@ -1021,11 +973,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS r on r.person_id = ppl.id');
         $query->where('r.id = '.(int)$teamstaff_id);  
         
-//		$query="	SELECT	ppl.firstname,
-//					ppl.lastname
-//				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person as ppl
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_staff AS r on r.person_id=ppl.id
-//				WHERE r.id=".(int)$teamstaff_id;
 		JFactory::getDbo()->setQuery($query);
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 		if (JFactory::getDbo()->getAffectedRows())
@@ -1051,13 +998,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as ppl');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS r on r.person_id = ppl.id');
         $query->where('r.id = '.(int)$teamplayer_id);   
-        
-//		$query ="	SELECT	ppl.firstname,
-//					ppl.lastname
-//				FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person as ppl
-//				INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_team_player AS r on r.person_id=ppl.id
-//				WHERE r.id=".(int)$teamplayer_id;
-                
+               
 		JFactory::getDbo()->setQuery($query);
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 		if (JFactory::getDbo()->getAffectedRows())
@@ -1083,13 +1024,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as ppl');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr on pr.person_id = ppl.id');
         $query->where('pr.id = '.(int)$project_referee_id);   
-        
-//		$query ="	SELECT	ppl.firstname,
-//					ppl.lastname
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person as ppl
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr on pr.person_id=ppl.id
-//				WHERE pr.id=".(int)$project_referee_id;
-                
+               
 		JFactory::getDbo()->setQuery($query);
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 		if (JFactory::getDbo()->getAffectedRows())
@@ -1252,7 +1187,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         $object->id = $playground_id;
         $object->club_id = $club_id;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground', $object, 'id');
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_playground', $object, 'id');
         
 		//$query='UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground SET club_id='.(int)$club_id.' WHERE id='.(int)$playground_id;
 //		JFactory::getDbo()->setQuery($query);
@@ -1272,7 +1207,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		//$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         $query->select('name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
+        $query->from('#__sportsmanagement_round ');
         $query->where('id = '.(int)$round_id);
         		
         JFactory::getDbo()->setQuery($query);
@@ -1301,14 +1236,12 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		//$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         $query->select('name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+        $query->from('#__sportsmanagement_project_position AS ppos ');
+        $query->join('INNER','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         $query->where('ppos.id = '.(int)$project_position_id);
         
 		JFactory::getDbo()->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 		if ($object = JFactory::getDbo()->loadResult())
         {
@@ -1592,29 +1525,17 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
        $db = JFactory::getDbo();
        //$db = sportsmanagementHelper::getDBConnection();
        $query = $db->getQuery(true);
-       
-		/*
-		TO BE FIXED again
-		$query="	SELECT id
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
-					WHERE name='$this->_name' AND league_id='$this->_league_id' AND season_id='$this->_season_id'";
-		*/
+
         $query->clear();
           // Select some fields
         $query->select('id');
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         $query->where('name LIKE '.$db->Quote(''.addslashes(stripslashes($this->_name)).''));
-        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			$db->setQuery($query);
-            
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
-        
-//		$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project WHERE name='".addslashes(stripslashes($this->_name))."'";
-//		JFactory::getDbo()->setQuery($query);
-//		sportsmanagementModeldatabasetool::runJoomlaQuery();
+
 		if ($db->getNumRows() > 0)
         {
             return false;
@@ -1642,7 +1563,6 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$tableName);
         $query->where('id = '.$id);
-//		$query="SELECT $fieldName FROM #__".COM_SPORTSMANAGEMENT_TABLE."_$tableName WHERE id=$id";
 		JFactory::getDbo()->setQuery($query);
 		if ($result=JFactory::getDbo()->loadResult())
         {
@@ -1670,13 +1590,10 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		// From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($this->_sportstype_new)).''));
-        //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_club->country.''));
 			JFactory::getDbo()->setQuery($query);
-            
 
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
-//			$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type WHERE name='".addslashes(stripslashes($this->_sportstype_new))."'";
-//			JFactory::getDbo()->setQuery($query);
+
 			if ($sportstypeObject=JFactory::getDbo()->loadObject())
 			{
 				$this->_sportstype_id = $sportstypeObject->id;
