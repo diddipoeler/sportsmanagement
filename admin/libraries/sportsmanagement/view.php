@@ -644,6 +644,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
             case '':
             case 'githubinstall':
             case 'extensions':
+	case 'projectteams':
 		case 'cpanel':	    
 	case 'jlxmlimports':	
 		    case 'projectpositions':
