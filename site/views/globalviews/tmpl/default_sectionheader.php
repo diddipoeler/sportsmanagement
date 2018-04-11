@@ -364,8 +364,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
-$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=<?php echo $this->projectteamid; ?>&tid=<?php echo $this->teamid; ?>&p=<?php echo $this->project->id; ?>";			
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
 '20',
