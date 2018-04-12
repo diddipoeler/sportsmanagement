@@ -1,13 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      deafult_teaminfo.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teaminfo
  */
+
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?PHP
@@ -25,7 +26,14 @@ if (!isset($this->team)) {
             $pic = $this->config['show_picture'];
             $picture = $this->team->$pic;
 
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo' . $this->team->id, $picture, $this->team->name, $this->config['team_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo' . $this->team->id,
+$picture,
+$this->team->name,
+$this->config['team_picture_width'],
+'',							
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
 
             if ($this->team->cr_projectteam_picture) {
                 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO', '<i>' . $this->team->cr_projectteam_picture . '</i>');
