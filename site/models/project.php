@@ -1721,9 +1721,14 @@ catch (Exception $e)
           $query->from('#__sportsmanagement_project_position AS ppos');
           $query->join('INNER','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
           $query->where('ppos.project_id = '.(int)self::$projectid );
-
+try{
 			$db->setQuery($query);
 			self::$_positions = $db->loadObjectList('id');
+			}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		}
 		return self::$_positions;
 	}
