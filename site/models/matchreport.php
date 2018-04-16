@@ -92,10 +92,14 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->where('project_position_id = 0');
         $db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+        try{
         $result = $db->loadObjectList();
-        
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+	    
         if ( $result )
         {
         
@@ -112,9 +116,13 @@ class sportsmanagementModelMatchReport extends JModelLegacy
             $query->where('tp.id = '.(int)$row->teamplayer_id);
             $db->setQuery($query);
         
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-            $position = $db->loadResult();
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($position,true).'</pre>'),'Notice');
+ try{
+		$position = $db->loadResult();
+	}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}	
             
             if ( $position )
             {
@@ -280,17 +288,14 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$query->where('ppos.project_id = '.(int)$this->projectid);    
         $query->group('pos.id');
         $query->order('pos.ordering ASC');
-        
+        try{
         $db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+       
         $result = $db->loadObjectList();
 		return $result;
         
@@ -364,28 +369,17 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' matchid<br><pre>'.print_r($this->matchid,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->loadObjectList(),true).'</pre>'),'Notice');
-        
-           $my_text = 'matchid<pre>'.print_r($this->matchid,true).'</pre>'; 
-        $my_text .= 'loadObjectList<pre>'.print_r($db->loadObjectList(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        
-        }
-        
+
+	    try{
         $result = $db->loadObjectList();
+		    }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
         if ( !$result )
 	    {
-	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        }
+	      
         
 	    }
 
@@ -421,11 +415,15 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->where('mr.match_id='.(int)$this->matchid);
         $query->where('p.published = 1');
         $query->where('tp.persontype = 3');
-        
-        // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-              
+             
 		$db->setQuery($query);
+	    try{
         $result = $db->loadObjectList();
+	    }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		return $result;
 	}
 
@@ -453,7 +451,13 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->order('pet.ordering');
                     
 		$db->setQuery($query);
+		try{
         $result = $db->loadObjectList();
+		}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		return $result;
 	}
 
@@ -531,21 +535,16 @@ class sportsmanagementModelMatchReport extends JModelLegacy
          $query->select('*');
         $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
-        
-        
-//		$query=' SELECT * FROM #__sportsmanagement_match_statistic '
-//		      .' WHERE match_id='. $this->_db->Quote($match->id);
-              
+             
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+ try{       
 		$res = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		$stats = array(	$match->projectteam1_id => array(),
 						$match->projectteam2_id => array());
 		if(count($stats)>0 && count($res)>0) {
@@ -579,21 +578,16 @@ class sportsmanagementModelMatchReport extends JModelLegacy
             $query->select('*');
         $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
-
-//			$query=' SELECT * FROM #__sportsmanagement_match_statistic '
-//			      .' WHERE match_id='. $this->_db->Quote($match->id);
-                  
                   
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+           
+ try{       
 			$res = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 			$stats=array();
 			if (count($res))
 			{
@@ -635,14 +629,14 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 			
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+        try{
 			$res = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+			
 			$events = array();
 			if (count($res))
 			{
@@ -682,20 +676,16 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$query->from('#__sportsmanagement_match_staff_statistic');
         // Where
         $query->where('match_id = '. $match->id );
-
-//			$query=' SELECT * FROM #__sportsmanagement_match_staff_statistic '
-//			      .' WHERE match_id='. $this->_db->Quote($match->id);
-			
+		
             $db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+try{       
 			$res = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 			$stats = array();
 			if (count($res))
 			{
@@ -749,8 +739,13 @@ class sportsmanagementModelMatchReport extends JModelLegacy
   }
   		
         $db->setQuery($query);
+	  try{
 		$res = $db->loadResult();
-		
+		}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
