@@ -152,7 +152,6 @@ catch (Exception $e)
 	 */
 	function getClubinfo($clubid)
 	{
-		//$this->club =& $this->getTable('Club','Table');
         $mdl = JModelLegacy::getInstance("club", "sportsmanagementModel");
         $this->club = $mdl->getTable();
 		$this->club->load($clubid);
@@ -167,14 +166,7 @@ catch (Exception $e)
 	 */
 	function getRound()
 	{
-		//$match=$this->getMatch();
         $match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
-
-		//$round =& $this->getTable('Round','sportsmanagementTable');
-		//$round->load($match->round_id);
-        //$mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
-        //$round = $mdl->getTable();
-        //$round->load($match->round_id);
         
         $round = sportsmanagementModelround::getRound($match->round_id,sportsmanagementModelProject::$cfg_which_database);
 
@@ -290,13 +282,15 @@ catch (Exception $e)
         $query->order('pos.ordering ASC');
         try{
         $db->setQuery($query);
+        $result = $db->loadObjectList();
         }
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
 }
        
-        $result = $db->loadObjectList();
+        
 		return $result;
         
     }    
@@ -348,12 +342,7 @@ catch (Exception $e)
 	   $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id ');
 	   $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id = p.id ');
 	   $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
-//	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
-       
-//       $query->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
-//       $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
-//	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
-       
+      
        $query->where('pt.project_id = '.$this->projectid);
        $query->where('ppos.project_id = '.$this->projectid);
        $query->where('mp.match_id = '.(int)$this->matchid);
@@ -362,8 +351,6 @@ catch (Exception $e)
               
        $db->setQuery($query);
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
-        
         if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
         {        
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -376,13 +363,8 @@ catch (Exception $e)
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
 }
-        if ( !$result )
-	    {
-	      
-        
-	    }
-
 
 		return $result;
    }    
@@ -423,8 +405,9 @@ catch (Exception $e)
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
 }
-		return $result;
+	return $result;	
 	}
 
 
@@ -457,8 +440,9 @@ catch (Exception $e)
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
 }
-		return $result;
+		
 	}
 
     
