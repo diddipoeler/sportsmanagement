@@ -1640,10 +1640,15 @@ catch (Exception $e)
             $query->where('stat.published = 1');
             $query->where('pos.published = 1');
             $query->order('pos.ordering,ps.ordering');
-
+try{
 			$db->setQuery($query);
 			self::$_stats = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
+		
 		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
