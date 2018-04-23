@@ -193,33 +193,16 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 // Joomla! 1.5 code here
             }
 
-//$app = JFactory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrPCat<br><pre>'.print_r(self::$arrPCat,true).'</pre>'),'Notice');
-
             if (version_compare(JSM_JVERSION, '4', 'eq')) {
                 try {
                     $feed = new \JFeedFactory;
                     //$feeds = new stdclass();
                     $rssDoc = $feed->getFeed($rssId);
-                    // channel header and link
-                    //$feeds->title = $rssDoc->title;
-//			$feeds->description = $rssDoc->description;
-//            $feeds->items = array_slice($rssDoc, 0, $rssitems);
-//for ($i = 0, $max = count($rssDoc); $i < $max; $i++) 
-//{            
-//$feed4 = new stdclass();
-//$feed4->title = $rssDoc[$i]->title;
-//$feed4->content = $rssDoc[$i]->content;
-//$feeds->items[] = $feed4;
-//}            
                     return $rssDoc;
-                    //JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' feed<br><pre>'.print_r($rssDoc,true).'</pre>'),'Notice');
                 } catch (\InvalidArgumentException $e) {
                     JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
-                    //$msg = \JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
                 } catch (\RuntimeException $e) {
                     JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
-                    //$msg = \JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED');
                 }
             } else {
                 $feed = new stdclass();
@@ -242,9 +225,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 return $lists;
             }
         }
-        //var_dump($lists);
-        //echo 'getRssFeeds lists<pre>',print_r($lists,true),'</pre><br>';
-        //return $lists;         
+      
     }
 
     /**
@@ -296,7 +277,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             $result = $db->execute();
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+     
     }
 
     /**
@@ -359,47 +340,15 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 
             $query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
             $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-
             $query->select('COALESCE((SELECT MAX(pt.project_id)
 				FROM #__sportsmanagement_project_team as pt
 				RIGHT JOIN #__sportsmanagement_project as p on pt.project_id = p.id
                 RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
 				WHERE st.team_id = t.id and p.published = 1), 0) as pid');
-
-            // Select some fields
-//          $query->select('t.id,prot.trikot_home,prot.trikot_away,prot.picture as project_team_picture');
-//          $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-//          $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
             $query->from('#__sportsmanagement_team as t ');
-//          $query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
-//          $query->join('LEFT','#__sportsmanagement_project_team as prot ON prot.team_id = st.id ');
-            /*
-              // Select some fields
-              //$subquery1->select('CONCAT_WS( \':\', MAX(pt.project_id) , p.alias )');
-              $subquery1->select('MAX(pt.project_id)');
-              // From
-              $subquery1->from('#__sportsmanagement_project_team AS pt');
-              $subquery1->join('RIGHT','#__sportsmanagement_project p ON pt.project_id = p.id ');
-              $subquery1->where('pt.team_id = st.id');
-              $subquery1->where('p.published = 1');
-              //$subquery1->group('p.alias');
-
-              // Select some fields
-              $subquery2->select('pt.id');
-              // From
-              $subquery2->from('#__sportsmanagement_project_team AS pt');
-              $subquery2->join('RIGHT','#__sportsmanagement_project p ON pt.project_id = p.id ');
-              $subquery2->where('pt.team_id = st.id');
-              $subquery2->where('p.published = 1');
-              $subquery2->where('pt.project_id = pid');
-              //$subquery2->group('pt.id');
-
-              $query->select('('.$subquery1.' ) as pid');
-              $query->select('('.$subquery2.' ) as ptid');
-             */
+            
             $query->where('t.club_id = ' . (int) self::$clubid);
 
-            //$query->group('t.id,t.alias,t.name,prot.trikot_home,prot.trikot_away,prot.picture,t.short_name,t.info,st.id');
             try {
                 $db->setQuery($query);
                 $teams = $db->loadObjectList();
@@ -424,22 +373,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                     $db->setQuery($subquery1);
                     $team->pid = $db->loadResult();
                 }
-
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-                //if ( !$teams )
-//            {
-//            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-//        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-//        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-//            }
-
-                if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                    $my_text = 'teams<pre>' . print_r($teams, true) . '</pre>';
-                    $my_text .= 'dump<pre>' . print_r($query->dump(), true) . '</pre>';
-                    sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-                }
+               
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
