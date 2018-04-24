@@ -1159,7 +1159,6 @@
       <targetplatform name="joomla" version=".*" />
    </update> 	
                             
-</updates>
 
 <update>
       <name>Sports-Management</name>
