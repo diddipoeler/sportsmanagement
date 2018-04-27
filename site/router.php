@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      router.php
@@ -102,14 +101,12 @@ if (class_exists('JComponentRouterBase')) {
  */
 class SportsmanagementRouter3 extends SportsmanagementRouterBase {
 
+    
     /**
-     * Build the route for the com_banners component
-     *
-     * @param   array  &$query  An array of URL arguments
-     *
-     * @return  array  The URL arguments to use to assemble the subsequent URL.
-     *
-     * @since   3.3
+     * SportsmanagementRouter3::build3()
+     * 
+     * @param mixed $query
+     * @return
      */
     public function build3(&$query) {
         $app = JFactory::getApplication();
@@ -230,10 +227,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                     $segments[] = $query['prediction_id'];
                     unset($query['prediction_id']);
                 }
-//            if (isset($query['p'])) {
-//                $segments[] = $query['p'];
-//                unset($query['p']);
-//            }
                 if (isset($query['pggroup'])) {
                     $segments[] = $query['pggroup'];
                     unset($query['pggroup']);
@@ -264,8 +257,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                     unset($query['to']);
                 }
 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-
                 break;
             case 'predictionentry':
                 if (isset($query['prediction_id'])) {
@@ -276,10 +267,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                     $segments[] = $query['pggroup'];
                     unset($query['pggroup']);
                 }
-//            if (isset($query['s'])) {
-//                $segments[] = $query['s'];
-//                unset($query['s']);
-//            }
                 if (isset($query['pj'])) {
                     $segments[] = $query['pj'];
                     unset($query['pj']);
@@ -298,10 +285,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                     $segments[] = $query['prediction_id'];
                     unset($query['prediction_id']);
                 }
-//            if (isset($query['p'])) {
-//                $segments[] = $query['p'];
-//                unset($query['p']);
-//            }
                 if (isset($query['pggroup'])) {
                     $segments[] = $query['pggroup'];
                     unset($query['pggroup']);
@@ -642,6 +625,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
             case 'clubs':
             case 'stats':
             case 'teams':
+            case 'teamstree':
                 if (isset($query['division'])) {
                     $segments[] = $query['division'];
                     unset($query['division']);
@@ -674,16 +658,15 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'segments -><pre>' . print_r($segments, true) . '</pre>';
-            //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__method__, __function__, 'sportsmanagementRoute', __line__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-        }
-
         return $segments;
     }
 
+    /**
+     * SportsmanagementRouter3::parse3()
+     * 
+     * @param mixed $segments
+     * @return
+     */
     /**
      * Parse the segments of a URL.
      *
@@ -695,21 +678,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
      */
     public function parse3(&$segments) {
         $app = JFactory::getApplication();
-        //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-        //    $show_debug_info = $paramscomponent->get( 'show_debug_info' );
-        //    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-        //    if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-        //{
-        //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
-        //}
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'segments -><pre>' . print_r($segments, true) . '</pre>';
-            //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__method__, __function__, 'sportsmanagementRoute', __line__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-        }
 
         $vars = array();
 
@@ -917,7 +885,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'clubinfo':
-
                 if (isset($segments[4])) {
                     $vars['cid'] = $segments[4];
                 }
@@ -925,7 +892,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'curve':
-
                 if (isset($segments[4])) {
                     $vars['tid1'] = $segments[4];
                 }
@@ -939,7 +905,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'eventsranking':
-
                 if (isset($segments[4])) {
                     $vars['division'] = $segments[4];
                 }
@@ -956,7 +921,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'editevents':
-
                 if (isset($segments[4])) {
                     $vars['mid'] = $segments[4];
                 }
@@ -964,7 +928,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'matrix':
-
                 if (isset($segments[4])) {
                     $vars['division'] = $segments[4];
                 }
@@ -975,7 +938,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'playground':
-
                 if (isset($segments[4])) {
                     $vars['pgid'] = $segments[4];
                 }
@@ -983,9 +945,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case "ranking":
-
             case 'rankingmatrix':
-
                 if (isset($segments[4])) {
                     $vars['type'] = $segments[4];
                 }
@@ -1021,7 +981,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'teamplan':
-
                 if (isset($segments[4])) {
                     $vars['tid'] = $segments[4];
                 }
@@ -1039,7 +998,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'clubplan':
-
                 if (isset($segments[4])) {
                     $vars['cid'] = $segments[4];
                 }
@@ -1050,11 +1008,8 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'roster':
-
             case 'teaminfo':
-
             case 'teamstats':
-
                 if (isset($segments[4])) {
                     $vars['tid'] = $segments[4];
                 }
@@ -1069,7 +1024,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'jltournamenttree':
-
                 if (isset($segments[4])) {
                     $vars['r'] = $segments[4];
                 }
@@ -1077,9 +1031,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'results':
-
             case 'editmatch':
-
                 if (isset($segments[4])) {
                     $vars['r'] = $segments[4];
                 }
@@ -1117,9 +1069,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'resultsmatrix':
-
             case 'resultsranking':
-
                 if (isset($segments[4])) {
                     $vars['r'] = $segments[4];
                 }
@@ -1139,9 +1089,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'matchreport':
-
             case 'nextmatch':
-
                 if (isset($segments[4])) {
                     $vars['mid'] = $segments[4];
                 }
@@ -1154,9 +1102,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'player':
-
             case 'staff':
-
                 if (isset($segments[4])) {
                     $vars['tid'] = $segments[4];
                 }
@@ -1167,10 +1113,9 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'clubs':
-
             case 'stats':
-
             case 'teams':
+            case 'teamstree':
 
                 if (isset($segments[4])) {
                     $vars['division'] = $segments[4];
@@ -1179,7 +1124,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'statsranking':
-
                 if (isset($segments[4])) {
                     $vars['division'] = $segments[4];
                 }
@@ -1191,7 +1135,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
 
             // /standard-referee/referee/46/2
             case 'referee':
-
                 if (isset($segments[4])) {
                     $vars['pid'] = $segments[4];
                 }
@@ -1199,7 +1142,6 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'tree':
-
                 if (isset($segments[5])) {
                     $vars['did'] = $segments[5];
                 }
@@ -1210,13 +1152,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'vars -><pre>' . print_r($vars, true) . '</pre>';
-            $my_text .= 'segments -><pre>' . print_r($segments, true) . '</pre>';
-            //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__method__, __function__, 'sportsmanagementRoute', __line__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-        }
+        
 
         return $vars;
     }
