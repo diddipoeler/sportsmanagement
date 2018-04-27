@@ -800,10 +800,13 @@ catch (Exception $e)
         
 	}
 	
+
 	/**
 	 * sportsmanagementModelProject::_getTeams()
 	 * 
 	 * @param string $teamname
+	 * @param integer $cfg_which_database
+	 * @param string $call_function
 	 * @return
 	 */
 	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '')
@@ -824,7 +827,7 @@ catch (Exception $e)
           $query->select('t.picture as team_picture,t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
           $query->select('u.username,u.email');
           $query->select('st.team_id');
-          $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website');
+          $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id');
           $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
           $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
           $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
@@ -855,11 +858,14 @@ catch (Exception $e)
 	}
 
 	
+	
 	/**
 	 * sportsmanagementModelProject::getTeams()
 	 * 
 	 * @param integer $division
 	 * @param string $teamname
+	 * @param integer $cfg_which_database
+	 * @param string $call_function
 	 * @return
 	 */
 	public static function getTeams($division=0,$teamname='name',$cfg_which_database = 0,$call_function = '')
