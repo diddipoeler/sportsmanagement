@@ -32,11 +32,11 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
                                 <?php
                                 if (!$this->config['show_bootstrap_tree']) {
                                     ?>
-                                    <span><i class="icon-folder-open"></i> Parent</span>	
+                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>	
                                     <?php
                                 }
                                 ?>	
-                                <a href="#"><?PHP echo JHTML::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
+                                <a href="#"><?PHP echo JHTML::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->name; ?></a>
                                 <?php
                                 echo $rowvalue;
                                 ?>

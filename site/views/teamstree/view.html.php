@@ -37,8 +37,8 @@ $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "di
 foreach( $this->teams as $rowclub )
 {
     
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_id,true).'</pre>'),'');
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_name,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_id,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_name,true).'</pre>'),'');
 
 $mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
@@ -48,8 +48,9 @@ $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($rowclub->club_id);
 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($rowclub->club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
 $this->genfamilytree = $mdlClubInfo::generateTree($rowclub->club_id,$this->config['show_bootstrap_tree']);
 $this->familytree = $mdlClubInfo::$historyhtmltree;
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
 $this->familyteamstree[$rowclub->club_id] = $this->familytree;  
+$this->familyclub[$rowclub->club_id] = $rowclub;
 }
 
 $javascript = "\n";	
@@ -75,7 +76,7 @@ jQuery(function ($) {
 $this->document->addScriptDeclaration( $javascript );
 $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
 
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
 }
 
