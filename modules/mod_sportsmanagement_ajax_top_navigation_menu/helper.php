@@ -652,10 +652,9 @@ return $user->username ;
 		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
         
         $query->select('s.id AS value, s.name AS text');
-            $query->from('#__sportsmanagement_season AS s');
-            $query->where('s.published = 1');
-            $query->order('s.name DESC');
-
+        $query->from('#__sportsmanagement_season AS s');
+        $query->where('s.published = 1');
+        $query->order('s.name DESC');
                 
 		$db->setQuery($query);
         
@@ -1139,7 +1138,7 @@ $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0)
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teams',$routeparameter);            
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
 				break;    
 				
 			case "treetonode":
