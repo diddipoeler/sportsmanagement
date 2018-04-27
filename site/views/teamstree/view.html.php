@@ -34,6 +34,12 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 
 $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
 
+foreach( $this->teams as $rowclub )
+{
+echo $rowclub->club_id.'<br>';    
+    
+}
+
 $javascript = "\n";	
 $javascript .= "
 jQuery(function ($) {
@@ -55,7 +61,9 @@ jQuery(function ($) {
 ";	
 	
 $this->document->addScriptDeclaration( $javascript );
-		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
 }
 
