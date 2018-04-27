@@ -12,7 +12,13 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			<option value="1">JYES</option>
 		</field>
 		
-		
+		<field name="show_bootstrap_tree" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_TREE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_TREE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_CLUBINFO_TREE</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_CLUBINFO_FAMILY</option>
+		</field>
 		
 </fieldset>
 
