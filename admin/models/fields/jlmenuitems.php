@@ -63,7 +63,7 @@ class JFormFieldJLMenuItems extends JFormFieldList
 				JHTML::_('select.option', 'clubplan', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBPLAN')),
                 JHTML::_('select.option', 'teaminfo', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMINFO')),
                 JHTML::_('select.option', 'teams', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMS')),
-                JHTML::_('select.option', 'teamstree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMS')),
+                JHTML::_('select.option', 'teamstree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTREE')),
 				JHTML::_('select.option', 'teamplan', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMPLAN')),
 				JHTML::_('select.option', 'teamstats', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMSTATS')),
                 JHTML::_('select.option', 'jltournamenttree', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_JLTOURNAMENTTREE')),
