@@ -33,7 +33,7 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 	{
 
 $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
-
+$this->config['show_bootstrap_tree'] = 0;
 foreach( $this->teams as $rowclub )
 {
     
@@ -53,6 +53,12 @@ $this->familyteamstree[$rowclub->club_id] = $this->familytree;
 $this->familyclub[$rowclub->club_id] = $rowclub;
 }
 
+	if ( $this->config['show_bootstrap_tree'] )
+	{	
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
+	}
+	else
+	{
 $javascript = "\n";	
 $javascript .= "
 jQuery(function ($) {
@@ -74,7 +80,10 @@ jQuery(function ($) {
 ";	
 	
 $this->document->addScriptDeclaration( $javascript );
-$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+	}
+
+$this->document->setTitle( JText::_( 'COM_SPORTSMANAGEMENT_TEAMSTREE_PAGE_TITLE' ) );
 
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
