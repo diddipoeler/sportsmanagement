@@ -21,7 +21,7 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
 ?>
 <a href="#fusion<?php echo $rowclub; ?>" class="btn btn-info btn-block" data-toggle="collapse">
                     <strong>
-                        <?php echo JText::_('Fusionen'); ?>
+                        <?php echo JText::_($this->familyclub[$rowclub]->name); ?>
                     </strong>
                 </a>
                 <div id="fusion<?php echo $rowclub; ?>" class="<?PHP echo $class_collapse; ?>">
@@ -36,7 +36,7 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
                                     <?php
                                 }
                                 ?>	
-                                <a href="#"><?PHP echo JHTML::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->name; ?></a>
+                                <a href="#"><?PHP echo JHTML::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->club_name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->club_name; ?></a>
                                 <?php
                                 echo $rowvalue;
                                 ?>
