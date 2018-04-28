@@ -33,7 +33,7 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 	{
 
 $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
-$this->config['show_bootstrap_tree'] = 0;
+//$this->config['show_bootstrap_tree'] = 0;
 foreach( $this->teams as $rowclub )
 {
     
@@ -43,6 +43,11 @@ foreach( $this->teams as $rowclub )
 $mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
 $mdlClubInfo::$historyhtmltree = '';
+/**
+ * ist das die erste club_id in der kette des stammbaumes ?
+ */
+$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->new_club_id); 
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($this->firstclubid,true).'</pre>'),'');
 $this->clubhistory = $mdlClubInfo::getClubHistory($rowclub->club_id);
 $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($rowclub->club_id);
 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($rowclub->club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);

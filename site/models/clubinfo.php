@@ -61,6 +61,36 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     }
 
     /**
+     * sportsmanagementModelClubInfo::getFirstClubId()
+     * 
+     * @param integer $new_club_id
+     * @return void
+     */
+    static function getFirstClubId($new_club_id=0)
+    {
+    // Get a db connection.
+    $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
+    $query = $db->getQuery(true);
+    // Select some fields
+    $query->select('new_club_id');
+    // From 
+    $query->from('#__sportsmanagement_club');
+    // Where
+    $query->where('id = ' . $new_club_id);
+    $db->setQuery($query);
+    $club_id = $db->loadResult();
+    if ( $club_id )
+    {
+    self::getFirstClubId($club_id);    
+    }
+    else
+    {
+    return $new_club_id;    
+    }
+                
+    }
+    
+    /**
      * sportsmanagementModelClubInfo::generateTree()
      * 
      * @param mixed $parent
@@ -68,7 +98,6 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     static function generateTree($parent, $tree = 0) {
         $app = JFactory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrPCat<br><pre>'.print_r(self::$arrPCat,true).'</pre>'),'Notice');
 
         if (array_key_exists($parent, self::$arrPCat)) {
             self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
@@ -102,7 +131,6 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     static function fbTreeRecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1) {
         $app = JFactory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' children<br><pre>'.print_r($children,true).'</pre>'),'Notice');
 
         if (isset($children[$id]) && $level <= $maxlevel) {
             foreach ($children[$id] as $v) {
@@ -127,14 +155,12 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 $list[$id]->section = ($v->new_club_id == 0);
 
                 $list = self::fbTreeRecurse($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list <br><pre>'.print_r($list ,true).'</pre>'),'Notice');       
+  
             }
         }
         return $list;
     }
 
-    // limit count word
     /**
      * sportsmanagementModelClubInfo::limitText()
      * 
