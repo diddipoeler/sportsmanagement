@@ -27,6 +27,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     static $clubid = 0;
     static $club = null;
     static $new_club_id = 0;
+    static $first_club_id = 0;
     static $historyhtml = '';
     static $historyobj = array();
     var $catssorted = array();
@@ -73,8 +74,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
+    if ( $new_club_id > 0 )
+    {
     // Select some fields
-    $query->select('new_club_id');
+    $query->select('id,new_club_id');
     // From 
     $query->from('#__sportsmanagement_club');
     // Where
@@ -83,8 +86,8 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     $club_id = $db->loadObject();
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
-    if ( !empty($club_id->new_club_id) )
-    {
+    
+    //self::$first_club_id = $club_id->id;    
     self::getFirstClubId($club_id->id,$club_id->new_club_id);    
     }
     return $club_id; 

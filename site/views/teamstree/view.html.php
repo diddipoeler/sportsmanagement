@@ -48,7 +48,8 @@ $mdlClubInfo::$historyhtmltree = '';
  */
 if ( $rowclub->new_club_id )
 {
-$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id,$rowclub->new_club_id); 
+$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id,$rowclub->new_club_id);
+//$this->firstclubid = $mdlClubInfo::$first_club_id; 
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($this->firstclubid,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($rowclub->new_club_id,true).'</pre>'),'');
 }
