@@ -63,11 +63,13 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     /**
      * sportsmanagementModelClubInfo::getFirstClubId()
      * 
+     * @param integer $club_id
      * @param integer $new_club_id
-     * @return void
+     * @return
      */
-    static function getFirstClubId($new_club_id=0)
+    static function getFirstClubId($club_id=0,$new_club_id=0)
     {
+    $app = JFactory::getApplication();
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
@@ -78,16 +80,14 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     // Where
     $query->where('id = ' . $new_club_id);
     $db->setQuery($query);
-    $club_id = $db->loadResult();
-    if ( $club_id )
+    $club_id = $db->loadObject();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
+    if ( !empty($club_id->new_club_id) )
     {
-    self::getFirstClubId($club_id);    
+    self::getFirstClubId($club_id->id,$club_id->new_club_id);    
     }
-    else
-    {
-    return $new_club_id;    
-    }
-                
+    return $club_id; 
     }
     
     /**

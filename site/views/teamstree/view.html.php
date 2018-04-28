@@ -46,8 +46,12 @@ $mdlClubInfo::$historyhtmltree = '';
 /**
  * ist das die erste club_id in der kette des stammbaumes ?
  */
-$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->new_club_id); 
+if ( $rowclub->new_club_id )
+{
+$this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id,$rowclub->new_club_id); 
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($this->firstclubid,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($rowclub->new_club_id,true).'</pre>'),'');
+}
 $this->clubhistory = $mdlClubInfo::getClubHistory($rowclub->club_id);
 $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($rowclub->club_id);
 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($rowclub->club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
