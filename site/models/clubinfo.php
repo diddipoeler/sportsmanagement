@@ -74,6 +74,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
+    
     if ( $new_club_id > 0 )
     {
     // Select some fields
@@ -83,14 +87,24 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     // Where
     $query->where('id = ' . $new_club_id);
     $db->setQuery($query);
-    $club_id = $db->loadObject();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
+    $result_club_id = $db->loadObject();
     
-    //self::$first_club_id = $club_id->id;    
-    self::getFirstClubId($club_id->id,$club_id->new_club_id);    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($result_club_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
+    
+    
+    self::$first_club_id = $result_club_id->id;    
+    self::getFirstClubId($result_club_id->id,$result_club_id->new_club_id);    
     }
-    return $club_id->id; 
+    else
+    {
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
+    self::$first_club_id = $club_id;
+    return $club_id; 
+    }
+    
     }
     
     /**
