@@ -90,7 +90,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     //self::$first_club_id = $club_id->id;    
     self::getFirstClubId($club_id->id,$club_id->new_club_id);    
     }
-    return $club_id; 
+    return $club_id->id; 
     }
     
     /**
