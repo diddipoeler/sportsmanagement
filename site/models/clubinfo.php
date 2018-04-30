@@ -121,7 +121,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             foreach (self::$arrPCat[$parent] as $arrC) {
 
                 if (!$tree) {
-                    $treespan = '<span><i class="icon-minus-sign"></i> Fusion</span>';
+                    $treespan = '<span><i class="icon-minus-sign"></i>'.JHTML::_('image', 'media/com_sportsmanagement/jl_images/arrow_left.png').'</span>';
                 } else {
                     $treespan = '';
                 }
