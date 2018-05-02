@@ -6,11 +6,10 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage models
+ * @subpackage ranking
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -563,7 +562,7 @@ catch (Exception $e){
 
 			
 			//previous rank
-			if( $tableconfig['last_ranking']==1 )
+			if( $tableconfig['last_ranking'] )
 			{
 				if ( self::$to == 1 || ( self::$to == self::$from ) )
 				{

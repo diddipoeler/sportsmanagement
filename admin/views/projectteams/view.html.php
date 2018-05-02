@@ -31,13 +31,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-		//$app = JFactory::getApplication();
-        // JInput object
-		//$jinput = $app->input;
-		//$option = $jinput->getCmd('option');
-		//$uri = JFactory::getURI();
-		//$model	= $this->getModel();
 
 		$this->state = $this->get('State'); 
 		$this->sortDirection = $this->state->get('list.direction');
@@ -52,10 +45,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
        
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'   ),'');
-        
+       
 		$this->project_art_id = $project->project_art_id;
 		$this->season_id = $project->season_id;
 		$this->sports_type_id = $project->sports_type_id;
@@ -216,8 +206,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $lists['country_teams'] = $this->model->getCountryTeams();
         $lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
         }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture<br><pre>'.print_r($lists['country_teams_picture'],true).'</pre>'   ),'');
         
         //build the html select list for all teams
 		$allTeams = array();
@@ -228,10 +216,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 		$lists['all_teams']=$all_teams;
 		unset($all_teams);
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
-
         
         $myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
@@ -239,20 +223,15 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
-		//$this->user = JFactory::getUser();
 		$this->config = JFactory::getConfig();
 		$this->lists = $lists;
         $this->divisions = $projectdivisions;
 		$this->projectteam = $items;
 		$this->pagination = $pagination;
-		//$this->request_url = $uri->toString();
         $this->project = $project;
         $this->project_art_id = $this->project_art_id;
         $this->lists = $lists;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
-        
+       
         switch ( $this->getLayout() )
         {
         case 'editlist';
@@ -281,16 +260,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-        
-	//// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
 
-		$app->setUserState( "$option.pid", $this->project_id );
+	$app->setUserState( "$option.pid", $this->project_id );
         $app->setUserState( "$option.season_id", $this->season_id );
         $app->setUserState( "$option.project_art_id", $this->project_art_id );
         $app->setUserState( "$option.sports_type_id", $this->sports_type_id );

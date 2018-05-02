@@ -19,7 +19,7 @@ foreach ( $list as $row )
 if ( $start == 1 )
 {
 ?>    
-<div class="row-">
+<div class="row-fluid">
 <?PHP    
 }    
 $createroute = array("option" => "com_sportsmanagement",

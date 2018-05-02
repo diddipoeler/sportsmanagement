@@ -261,9 +261,6 @@ if ( $this->config['show_pictures'] )
 		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 
-		//$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE');
-		//$imgTitle2=array(' title' => $imgTitle);
-		//$result=JHtml::image($pic_time,$imgTitle,$imgTitle2).'&nbsp;'.$sub->in_out_time;
 		$result='<b>'.$sub->in_out_time.'. '. JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
 		$result .= '<br />';
 		$outName = sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
@@ -389,9 +386,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 		return $result;
 	}
 
-	
-
-
 	/**
 	 * sportsmanagementViewMatchReport::getTimelineMatchTime()
 	 * 
@@ -505,14 +499,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	function _formatTimelineSubstitution($sub,$firstname,$nickname,$lastname,$out_firstname,$out_nickname,$out_lastname,$two_substitutions_per_minute=0)
 	{
 
-		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-		$pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/change.png';
+		$pic_out = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		$pic_in = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		$pic_time = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/change.png';
 
-		$time=$sub->in_out_time;
-                $matchtime=$this->getTimelineMatchTime();
-                $time2=($time / $matchtime) *100;
-		$tiptext=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
+		$time = $sub->in_out_time;
+        $matchtime = $this->getTimelineMatchTime();
+        $time2 = ($time / $matchtime) *100;
+		$tiptext = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
 		$tiptext .= $time;
 		$tiptext .= ' ::';
 		$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($pic_in);

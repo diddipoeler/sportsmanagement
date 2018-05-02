@@ -113,7 +113,7 @@ foreach ($current as $ptid => $team) {
         echo ' style="background-color:' . $color . '"';
     }
     echo '>';
-    if (( $this->tableconfig['last_ranking'] == 1 ) && ( isset($previous[$ptid]->rank) )) {
+    if (( $this->tableconfig['last_ranking'] ) && ( isset($previous[$ptid]->rank) )) {
         echo "(" . $previous[$ptid]->rank . ")";
     }
     //echo '</span>';
@@ -144,16 +144,14 @@ foreach ($current as $ptid => $team) {
         } else {
             $pic = $config['show_logo_small_table'];
 
-            //if ( !sportsmanagementHelper::existPicture($team->team->$pic) )
-//   if ( !sportsmanagementHelper::existPicture($team->team->$pic) )
-//    {
-//    $team->team->$pic = sportsmanagementHelper::getDefaultPlaceholder($pic);    
-//    }
-
-            echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow . 'teamranking' . $team->team->id, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->team->$pic, $team->team->name, '20')
-            ?>    
-
-            <?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow . 'teamranking' . $team->team->id,
+COM_SPORTSMANAGEMENT_PICTURE_SERVER . $team->team->$pic,
+$team->team->name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
 
         }
 

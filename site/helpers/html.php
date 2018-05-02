@@ -1,13 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage helpers
  */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
@@ -43,53 +44,47 @@ class sportsmanagementHelperHtml {
         // JInput object
         $jinput = $app->input;
 
-        /*
-          $modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
-          $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-          $modaltext .= '</a>';
-
-          if ( !$url )
-          {
-          $url = $picture;
-          }
-
-
-          $modaltext .= JHtml::_('bootstrap.renderModal',
-          $target,
-          array(
-          'title' => $text,
-          'url' => $url,
-          'height' => $height,
-          'width' => $width
-          )
-          );
-         */
-
-
-        if ($use_jquery_modal) {
-//$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
-//$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
-//$modaltext .= '</a>';
-
-            $modaltext = '<!-- Button HTML (to Trigger Modal) -->';
-            $modaltext .= '<a href="' . $url . '" role="button" class="btn btn-large btn-primary" data-toggle="modal" data-target="#' . $target . '">Launch Demo Modal</a>';
-
-            $modaltext .= '<!-- Modal HTML -->';
-            $modaltext .= '<div id="' . $target . '" class="modal fade">';
-            $modaltext .= '    <div class="modal-dialog">';
-            $modaltext .= '        <div class="modal-content">';
-            $modaltext .= '            <!-- Content will be loaded here from "remote.php" file -->';
-            $modaltext .= '        </div>';
-            $modaltext .= '    </div>';
-            $modaltext .= '</div>';
-        } else {
+	    switch ($use_jquery_modal)
+	    {	 
+	  case 2:		    
+if ($url) {
+$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$url.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+}	
+if (!$url) {
+$modaltext = '<a class="jcepopup jcemediabox-image" title="'.$text.'" href="'.$picture.'" data-mediabox="1" data-mediabox-title="'.$text.'"><img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';		
+}	
+$modaltext .= '</a>';			    
+break;			    
+        case 1:
+if ($url) {
+$modaltext = '<a id="'.$target.'" href="'.$url.'" class=""';
+$modaltext .= ' target="SingleSecondaryWindowName"';
+$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+$modaltext .= ' title="'.$text.'"';
+$modaltext .= '>';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+$modaltext .= '</a>';
+}	
+if (!$url) {
+$modaltext = '<a id="'.$target.'" href="'.$picture.'" class=""';
+$modaltext .= ' target="SingleSecondaryWindowName"';
+$modaltext .= ' onclick="openRequestedSinglePopup(this.href,'.$width.','.$height.'); return false;"';
+$modaltext .= ' title="'.$text.'"';
+$modaltext .= '>';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';	
+$modaltext .= '</a>';
+}		
+	break;	
+        case 0:
             if ($url) {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
             } else {
                 $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
             }
             $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
-        }
+        break;
+	    
+    }    
         return $modaltext;
     }
 

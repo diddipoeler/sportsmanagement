@@ -13,7 +13,6 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
-
 /**
  * sportsmanagementModelallpersons
  * 
@@ -45,9 +44,7 @@ var $_identifier = "allpersons";
         $jinput = $app->input;
         $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
                 $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-//                JFactory::getApplication()->input->setVar('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
-                //$this->setState('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
-              //  $this->limit = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
+
                 $config['filter_fields'] = array(
                         'v.lastname',
                         'v.firstname',

@@ -37,11 +37,6 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $starttime = microtime(); 
-    
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
 
         $this->table = JTable::getInstance('division', 'sportsmanagementTable');
         $this->projectws = $project;

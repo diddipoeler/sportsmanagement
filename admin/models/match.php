@@ -2377,13 +2377,33 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 		$in_out_time			= $data['in_out_time'];
 		$project_position_id 	= $data['project_position_id'];
 
-		if ( $project_position_id == 0 && $player_in > 0 )
+/**
+ * nicht anlegen, wenn der wechsel schon existiert
+ */
+		
+        $query->clear();
+        $query->select('mp.id');
+        $query->from('#__sportsmanagement_match_player as mp');
+        $query->where('mp.match_id = '.$match_id);
+        $query->where('mp.teamplayer_id = '.$player_in);
+        $query->where('mp.in_for = '.$player_out);
+        $query->where('mp.in_out_time = '.$in_out_time);
+        $query->where('mp.came_in = 1');
+        $db->setQuery( $query );
+		$substitution_id = $db->loadResult();
+        if ( $substitution_id )
+        {
+            return false;
+        }
+        
+        
+        if ( $project_position_id == 0 && $player_in > 0 )
 		{
 /**
  * retrieve normal position of player getting in
  */
 			$query->clear();
-            $query->select('project_position_id');
+            $query->select('pt.project_position_id');
             $query->from('#__sportsmanagement_team_player AS pt');
             $query->where('pt.player_id = '.$player_in);
 			$db->setQuery( $query );
@@ -2643,6 +2663,22 @@ $user = JFactory::getUser();
         $db = JFactory::getDbo();
         // Create a new query object.
         $query = $db->getQuery(true);
+	    
+	$query->clear();
+        $query->select('mp.id');
+        $query->from('#__sportsmanagement_match_event as mp');
+        $query->where('mp.match_id = '.$data['match_id']);
+        $query->where('mp.projectteam_id = '.$data['projectteam_id']);
+        $query->where('mp.teamplayer_id = '.$data['teamplayer_id']);
+        $query->where('mp.event_time = '.$data['event_time']);
+        $query->where('mp.event_sum = '.$data['event_sum']);
+        $db->setQuery( $query );
+	$match_event_id = $db->loadResult();
+        if ( $match_event_id )
+        {
+            return false;
+        }
+	    
 	    $temp = new stdClass();
 	    //$object = new stdClass();
 $temp->match_id = $data['match_id'];	    

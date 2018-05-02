@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_person_staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage roster
@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 //echo 'getTeamPlayers staff<br><pre>'.print_r($this->row,true).'</pre><br>';
 
 ?>
-		<div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
+<div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
 <?php 
 $personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
 if ($this->config['show_staff_icon'] == 1)
@@ -34,7 +34,14 @@ if ($this->config['show_staff_icon'] == 1)
 			<div class="jl_rosterperson_staffpicture_column">
 				<div class="jl_roster_staffperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,$picture,$personName,$this->config['staff_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,
+$picture,
+$personName,
+$this->config['staff_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
 
 ?>
 				</div><!-- /.jl_roster_staffperson_pic -->

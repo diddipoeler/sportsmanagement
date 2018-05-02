@@ -14,7 +14,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
 
-
 /**
  * SMStatisticComplexsum
  * 
@@ -26,7 +25,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
  */
 class SMStatisticComplexsum extends SMStatistic 
 {
-//also the name of the associated xml file	
+/**
+ * also the name of the associated xml file
+ */	
 	var $_name = 'complexsum';
 	
 	var $_calculated = 1;
@@ -71,6 +72,13 @@ class SMStatisticComplexsum extends SMStatistic
 	}
 	
 	
+	/**
+	 * SMStatisticComplexsum::getMatchPlayerStat()
+	 * 
+	 * @param mixed $gamemodel
+	 * @param mixed $teamplayer_id
+	 * @return
+	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
 		$gamestats = $gamemodel->getPlayersStats();
@@ -87,6 +95,13 @@ class SMStatisticComplexsum extends SMStatistic
 		return $this->formatValue($res, $this->getPrecision());
 	}
 
+	/**
+	 * SMStatisticComplexsum::getPlayerStatsByGame()
+	 * 
+	 * @param mixed $teamplayer_ids
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
@@ -103,6 +118,15 @@ class SMStatisticComplexsum extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticComplexsum::getPlayerStatsByProject()
+	 * 
+	 * @param mixed $person_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @param integer $sports_type_id
+	 * @return
+	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
@@ -112,11 +136,14 @@ class SMStatisticComplexsum extends SMStatistic
 		return self::formatValue($res, $this->getPrecision());
 	}
 
+	
 	/**
-	 * Get players stats
-	 * @param $team_id
-	 * @param $project_id
-	 * @return array
+	 * SMStatisticComplexsum::getRosterStats()
+	 * 
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @param mixed $position_id
+	 * @return
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
@@ -153,7 +180,7 @@ class SMStatisticComplexsum extends SMStatistic
 		
 		$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		$query = JFactory::getDbo()->getQuery(true);
+		$query = $db->getQuery(true);
 		
 		// get all stats
         $query->select('ms.value, ms.statistic_id, tp.id AS tpid');
@@ -178,12 +205,7 @@ class SMStatisticComplexsum extends SMStatistic
         $query->where('m.published = 1');
         
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       
 		$stats = $db->loadObjectList();
 		
 		// now calculate per player
@@ -352,6 +374,13 @@ $stats = $db->loadObjectList();
 	}
 
 
+	/**
+	 * SMStatisticComplexsum::getMatchStaffStat()
+	 * 
+	 * @param mixed $gamemodel
+	 * @param mixed $team_staff_id
+	 * @return
+	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{
 		$gamestats = $gamemodel->getMatchStaffStats();

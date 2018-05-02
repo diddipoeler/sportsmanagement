@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_staff.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage roster
@@ -132,7 +132,15 @@ if (count($this->stafflist) > 0)
 				<td width="40" class="td_c" nowrap="nowrap">
                 <?php
                 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('staff'.$row->playerid,$picture,$playerName,$this->config['staff_picture_width']);	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('staff'.$row->playerid,
+$picture,
+$playerName,
+$this->config['staff_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);	
 
       
               

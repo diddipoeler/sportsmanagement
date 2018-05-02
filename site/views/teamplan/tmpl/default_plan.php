@@ -545,11 +545,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id );
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
 				break;
@@ -557,11 +573,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 5 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_middle',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_middle',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -569,11 +601,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 6 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_big',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_big',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
             break;

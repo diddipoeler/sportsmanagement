@@ -106,10 +106,13 @@ class sportsmanagementView extends JViewLegacy {
         $this->option = $this->jinput->getCmd('option');
         $this->user = JFactory::getUser();
         $this->view = $this->jinput->getVar("view");
+        
+        $this->backbuttonreferer = $_SERVER['HTTP_REFERER'];
 
         $this->model = $this->getModel();
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
 
         /**

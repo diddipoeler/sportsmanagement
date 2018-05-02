@@ -12,7 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewJlextassociation
  * 
@@ -24,7 +23,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewJlextassociation extends sportsmanagementView
 {
-	
 
 	/**
 	 * sportsmanagementViewJlextassociation::init()
@@ -35,12 +33,6 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 	{
 		
         $starttime = microtime(); 
-                       
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
 		 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -48,7 +40,6 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-        
 
 	}
  

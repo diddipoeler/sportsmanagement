@@ -307,7 +307,15 @@ if (!empty($this->rows))
             ?>
 		<td width="40" class="td_c" nowrap="nowrap">
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,$picture,$playerName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
+$picture,
+$playerName,
+$this->config['player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']							
+);
 ?>
 
 		</td>

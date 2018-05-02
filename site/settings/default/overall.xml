@@ -8,8 +8,9 @@
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="0">Bootstrap Modal</option>
+			<option value="1">Window open</option>
+			<option value="2">JCE Modal</option>
 		</field>
 		
 		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="0"

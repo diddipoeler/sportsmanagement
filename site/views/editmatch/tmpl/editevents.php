@@ -16,17 +16,61 @@ $savenewcomment[] = $this->eventsprojecttime;
 $savenewcomment[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
-//$params = $this->form->getFieldsets('params');
+?>
+<script>
+var homeroster = new Array;
+<?php
+$i = 0;
+foreach ($this->rosters['home'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($this->default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	echo 'homeroster['.($i++).']='.json_encode($obj).";\n";
+}
+?>
+var awayroster = new Array;
+<?php
+$i = 0;
+foreach ($this->rosters['away'] as $player)
+{
+	$obj = new stdclass();
+	$obj->value = $player->value;
+	switch ($this->default_name_dropdown_list_order)
+	{
+		case 'lastname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+		case 'firstname':
+			$obj->text  = sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+		case 'position':
+			$obj->text  = '('.JText::_($player->positionname).') - '.sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $this->default_name_format);
+			break;
+	}
+	echo 'awayroster['.($i++).']='.json_encode($obj).";\n";
+}
+?>
+var rosters = Array(homeroster, awayroster);	
 
+jQuery(document).ready(function() {
+updatePlayerSelect();
+jQuery('#team_id').change(updatePlayerSelect);
+  });
 
-//echo 'sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($this->teams,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents project_id<br><pre>'.print_r($this->project_id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditevents item->id<br><pre>'.print_r($this->item->id,true).'</pre>';
-//echo 'sportsmanagementViewMatch _displayEditReferees lists<br><pre>'.print_r($this->lists,true).'</pre>';
-
-#echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
+</script>	
+<?php
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JUri::getInstance();   
@@ -43,7 +87,6 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 <div id="ajaxresponse" ></div>
 	<fieldset>
-
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
 		</div>
@@ -100,19 +143,15 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					}
 					?>
 					<tr id="row-new">
-						<td><?php echo $this->lists['teams']; ?></td>
-<td class="hide<?php echo $this->teams->projectteam2_id; ?> show<?php echo $this->teams->projectteam1_id; ?>" style="display:;" id="cell-player-<?php echo $this->teams->projectteam1_id; ?>"><?php echo $this->lists['homeroster']; ?></td>
-<td class="hide<?php echo $this->teams->projectteam1_id; ?> show<?php echo $this->teams->projectteam2_id; ?>" style="display:none;" id="cell-player-<?php echo $this->teams->projectteam2_id; ?>"><?php echo $this->lists['awayroster']; ?></td>
-						<td><?php echo $this->lists['events']; ?></td>
-						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
-						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
-						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
-                        
-                        
-                        
-						<td style='text-align:center; ' >
-<input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
-						</td>
+					<td><?php echo $this->lists['teams']; ?></td>
+					<td id="cell-player">&nbsp;</td>
+                    <td><?php echo $this->lists['events']; ?></td>
+					<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
+					<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
+					<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
+					<td style='text-align:center; ' >
+                    <input id="save-new-event" onclick="save_new_event(<?php echo implode(",",$savenewcomment); ?>)" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JSAVE' ); ?>" />							
+					</td>
 					</tr>
 				</tbody>
 			</table>
@@ -125,11 +164,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_TYPE' ); ?></th>
-					<th>
-						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' );
-						?>
-					</th>
+					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' ); ?></th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_LIVE_NOTES' ); ?></th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_EVENT_ACTION' ); ?></th>
 				</tr>

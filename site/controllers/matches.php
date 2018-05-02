@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      matches.php
@@ -9,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage editmatch
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
@@ -49,6 +49,11 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         return $instance;
     }
 
+    /**
+     * sportsmanagementControllermatches::saveevent()
+     * 
+     * @return void
+     */
     function saveevent() {
         $option = JFactory::getApplication()->input->getCmd('option');
         $data = array();
@@ -68,7 +73,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         if (!$result = sportsmanagementModelMatch::saveevent($data)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . sportsmanagementModelMatch::getError();
         } else {
-            $result = JFactory::getDbo()->insertid() . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+            $result = $result . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
         }
 
         echo json_encode($result);
@@ -93,7 +98,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         if (!$result = sportsmanagementModelMatch::savesubstitution($data)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . sportsmanagementModelMatch::getError();
         } else {
-            $result = JFactory::getDbo()->insertid() . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+            $result = $result . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
         }
         echo json_encode($result);
         JFactory::getApplication()->close();
@@ -139,6 +144,26 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         }
         echo json_encode($result);
         JFactory::getApplication()->close();
+    }
+ 
+ /**
+     * sportsmanagementControllermatches::removeEvent()
+     * 
+     * @return void
+     */
+    function removeEvent()
+    {
+		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
+		{
+			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+		}
+		else
+		{
+			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
+		}
+		echo json_encode($result);
+		JFactory::getApplication()->close();
     }
 
     /**

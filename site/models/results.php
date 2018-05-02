@@ -1,15 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      results.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @subpackage results
  */
 
 defined('_JEXEC') or die(JText('Restricted access'));
-
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 JHtml::_('behavior.tooltip');
@@ -699,7 +698,7 @@ else
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			// änderungen im datum oder der uhrzeit
+			// Ã¤nderungen im datum oder der uhrzeit
             $tbl = $this->getTable();;
             $tbl->load((int) $pks[$x]);
             
@@ -709,7 +708,8 @@ else
             $object->id = $pks[$x];
             $object->team1_result = NULL;
             $object->team2_result = NULL;
-        
+        if ( $post['match_date'.$pks[$x]] )
+			{
             list($date,$time) = explode(" ",$tbl->match_date);
             $this->_match_time_new = $post['match_time'.$pks[$x]].':00';
             $this->_match_date_new = $post['match_date'.$pks[$x]];
@@ -722,12 +722,16 @@ else
             if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
             {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
-                //self::sendEmailtoPlayers();
-                
             }
-
-			$object->match_number	= $post['match_number'.$pks[$x]];
+		}
+			if ( $post['match_number'.$pks[$x]] )
+			{
+	$object->match_number	= $post['match_number'.$pks[$x]];
+			}
+			if ( $post['match_date'.$pks[$x]] )
+			{
             $object->match_date = $post['match_date'.$pks[$x]];
+			}
             $object->result_type = $post['result_type'.$pks[$x]];
             $object->match_result_type = $post['match_result_type'.$pks[$x]];
             $object->crowd = $post['crowd'.$pks[$x]];

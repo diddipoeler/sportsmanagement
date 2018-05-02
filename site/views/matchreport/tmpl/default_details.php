@@ -157,7 +157,14 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                     } 
 if ( $this->config["show_playground_picture"] )
 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->playground_id,$this->match->playground_picture,$this->match->playground_name,$this->config['playground_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->playground_id,
+$this->match->playground_picture,
+$this->match->playground_name,
+$this->config['playground_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
 }                     
                     ?>
             </address>
@@ -196,7 +203,14 @@ $referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',
                         $first = false;
 if ( $this->config["show_referee_picture"] )
 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchreferee'.$referee->id,$referee->picture,$referee_name,$this->config['referee_picture_width']);                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchreferee'.$referee->id,
+$referee->picture,
+$referee_name,
+$this->config['referee_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                        
 }                        
                     endforeach;	
             

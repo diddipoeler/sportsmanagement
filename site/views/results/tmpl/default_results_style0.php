@@ -283,7 +283,14 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
         <?PHP
 if ( $game->content_id )
 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgcontent,$imgTitle,'20',JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,$this->modalwidth,$this->modalheight);                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,
+$imgcontent,
+$imgTitle,
+'20',
+JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                
 }
         ?>
             </td>
@@ -345,7 +352,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 			<!-- show team-icons and/or -names -->
 			<td width='<?PHP echo $width;?>'>
 				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                echo sportsmanagementViewResults::getTeamClubIcon($team1,
+                $this->config['show_logo_small'],
+                array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
                 ?>
 			</td>
 			<td>
@@ -356,7 +368,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 			</td>
 			<td width='<?PHP echo $width;?>'>
 				<?php 
-                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
                 ?>
 			</td>
 			<td>
@@ -388,7 +403,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1,
+                 $this->config['show_logo_small'],
+                  array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<!-- show match score -->
 			<td width='' class='' nowrap='nowrap'>
@@ -399,7 +419,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td class=''>
 				<?php
@@ -424,13 +447,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 				?>
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td width=''>
 			-
 			</td>
 			<td width=''>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo'),
+                $this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); ?>
 			</td>
 			<td class=''>
 				<?php

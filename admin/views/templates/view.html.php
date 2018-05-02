@@ -59,12 +59,6 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         }
 
         $total = $this->get('Total');
-//		$pagination = $this->get('Pagination');
-        //$projectws =& $this->get('Data','projectws');
-        //$this->project_id	= $app->getUserState( "$option.pid", '0' );
-//        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-//	    $project = $mdlProject->getProject($this->project_id);
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($project,true).'</pre>'),'');
 
         if ($project->master_template) {
             // das sind die templates aus einenm anderen projekt
@@ -73,7 +67,6 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
             $model->set('_getALL', 0);
             $masterTemplates = $model->getMasterTemplatesList();
 
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total Templates<br><pre>'.print_r($masterTemplates,true).'</pre>'),'');
             // Build in JText of template title here
             foreach ($masterTemplates as $temptext) {
                 $temptext->text = JText::_($temptext->text);
@@ -90,10 +83,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
             $total = count($templates);
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'');
-        //$total = $this->get('Total');
         $pagination = $this->get('Pagination');
-
         $this->user = JFactory::getUser();
         $this->lists = $lists; //otherwise no indication of the list in default_data.php on line 64!
         $this->templates = $templates;
@@ -108,17 +98,8 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        //// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//		// Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
-        if (COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE) {
-            
-        } else {
             JToolbarHelper::editList('template.edit');
             JToolbarHelper::save('template.save');
 
@@ -128,7 +109,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
             } else {
                 JToolbarHelper::custom('template.reset', 'restore', 'restore', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
             }
-        }
+
         JToolbarHelper::checkin('templates.checkin');
         parent::addToolbar();
     }

@@ -24,32 +24,32 @@ if (count($this->games))
 		<td>
 		<table id="gameshistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive">
 			<thead>
-				<tr class="sectiontableheader">
-					<th class="td_l" colspan="6"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
+				<tr class="">
+					<th class="" colspan="6"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
 					<?php
 					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 					{
 						?>
-					<th class="td_c"><?php
+					<th class=""><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = $picture_path_sport_type_name.'/startroster.png';
                    
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
-					<th class="td_c"><?php
+					<th class=""><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = $picture_path_sport_type_name.'/in.png';
                     
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
-					<th class="td_c"><?php
+					<th class=""><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = $picture_path_sport_type_name.'/out.png';
                    
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
                     
-                    <th class="td_c"><?php
+                    <th class=""><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
                 
@@ -65,7 +65,7 @@ if (count($this->games))
 							foreach($this->AllEvents as $eventtype)
 							{
 								?>
-					<th class="td_c"><?php
+					<th class=""><?php
 					$iconPath = $eventtype->icon;
 					if ( !strpos(" ".$iconPath,"/") )
 					{
@@ -92,7 +92,7 @@ if (count($this->games))
 							if (!empty($stat)) {
 							    if ($stat->showInPlayer()) {
 							?>
-					<th class="td_c"><?php echo $stat->getImage(); ?></th>
+					<th class=""><?php echo $stat->getImage(); ?></th>
 					<?php
 							    }
 							}
@@ -117,9 +117,7 @@ if (count($this->games))
 			$total['out'] = 0;
             $total['playedtime'] = 0;
 			$total_event_stats = array();
-            
-            //echo ' games<br><pre>'.print_r($this->games,true).'</pre><br>';
-			
+		
             foreach ($this->games as $game)
 			{
 			 $routeparameter = array();
@@ -145,43 +143,66 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
                     $this->overallconfig['person_events'] = NULL;
                 }
                 $timePlayed = $model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']);
-                
-//echo __FILE__.' '.__LINE__.' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
-                
                 ?>
 				<tr class="">
-					<td class="td_l"><?php
+					<td class=""><?php
 					echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 					?></td>
-					<td class="td_r<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
+					<td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
 						<?php 
 						if ( $this->config['show_gameshistory_teamlink'] ) 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,$game->home_logo,$game->home_name,'20');							
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,
+$game->home_logo,
+$game->home_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);							
                             echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
 						} 
                         else 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,$game->home_logo,$game->home_name,'20');							
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,
+$game->home_logo,
+$game->home_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);							
                             echo $this->teams[$game->projectteam1_id]->name;
 						}
 						?>
 					</td>
-					<td class="td_r"><?php echo $game->team1_result; ?></td>
-					<td class="td_c"><?php echo $this->overallconfig['seperator']; ?></td>
-					<td class="td_l"><?php echo $game->team2_result; ?></td>
-					<td class="td_l<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
+					<td class=""><?php echo $game->team1_result; ?></td>
+					<td class=""><?php echo $this->overallconfig['seperator']; ?></td>
+					<td class=""><?php echo $game->team2_result; ?></td>
+					<td class="<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
 						<?php 
 						if ( $this->config['show_gameshistory_teamlink'] ) 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,$game->away_logo,$game->away_name,'20');                            
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,
+$game->away_logo,
+$game->away_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                            
 							echo JHtml::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
 						} 
                         else 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,$game->away_logo,$game->away_name,'20');                            
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,
+$game->away_logo,
+$game->away_name,
+'20',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                            
 							echo $this->teams[$game->projectteam2_id]->name;
 						}
 						?>
@@ -190,23 +211,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution']==1)
 					{
 						?>
-					<td class="td_c"><?php
+					<td class=""><?php
 					$total['startRoster'] += $game->started;
-					//echo ($game->started) ;
                     echo ($game->started > 0 ? $game->started : $this->overallconfig['zero_events_value']);
 					?></td>
-					<td class="td_c"><?php
+					<td class=""><?php
 					$total['in'] += $game->sub_in;
-					//echo ($game->sub_in) ;
                     echo ($game->sub_in > 0 ? $game->sub_in : $this->overallconfig['zero_events_value']);
 					?></td>
-					<td class="td_c"><?php
+					<td class=""><?php
 					$total['out'] += $game->sub_out;
-					//echo ($game->sub_out) ;
                     echo ($game->sub_out > 0 ? $game->sub_out : $this->overallconfig['zero_events_value']);
 					?></td>
-                    
-                    <td class="td_c"><?php
+                    <td class=""><?php
 					$total['playedtime'] += $timePlayed;
 					echo ($timePlayed) ;
 					?></td>
@@ -218,7 +235,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 						foreach($this->AllEvents as $eventtype)
 						{
 							?>
-					<td class="td_c"><?php
+					<td class=""><?php
 					if(!isset($total_event_stats[$eventtype->id]))
 					{
 						$total_event_stats[$eventtype->id]=0;
@@ -246,7 +263,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 							if (!empty($stat)) { 
 							    if ($stat->showInPlayer()) {
 							?>
-					<td class="td_c hasTip" title="<?php echo $stat->name; ?>"><?php
+					<td class="hasTip" title="<?php echo $stat->name; ?>"><?php
 								if (isset($stat->gamesstats[$game->id]))
 								{
 									echo $stat->gamesstats[$game->id]->value;
@@ -266,7 +283,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
                     if ($this->config['show_player_market_value'] )
                     {
                     ?>
-					<td class="td_r hasTip" title="<?php echo number_format($game->market_value,0, ",", "."); ?>">
+					<td class=" hasTip" title="<?php echo number_format($game->market_value,0, ",", "."); ?>">
                     <?php    
                     }
 					?>
@@ -276,15 +293,15 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 			}
 			?>
 				<tr class="career_stats_total">
-					<td class="td_r" colspan="6"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_TOTAL'); ?></b></td>
+					<td class="" colspan="6"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_TOTAL'); ?></b></td>
 					<?php
 					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution']==1)
 					{
 					?>
-					<td class="td_c"><?php echo ($total['startRoster'] > 0 ? $total['startRoster'] : $this->overallconfig['zero_events_value']); ?></td>
-					<td class="td_c"><?php echo ($total['in'] > 0 ? $total['in'] : $this->overallconfig['zero_events_value']); ?></td>
-					<td class="td_c"><?php echo ($total['out'] > 0 ? $total['out'] : $this->overallconfig['zero_events_value']); ?></td>
-                    <td class="td_c"><?php echo ($total['playedtime'] ) ; ?></td>
+					<td class=""><?php echo ($total['startRoster'] > 0 ? $total['startRoster'] : $this->overallconfig['zero_events_value']); ?></td>
+					<td class=""><?php echo ($total['in'] > 0 ? $total['in'] : $this->overallconfig['zero_events_value']); ?></td>
+					<td class=""><?php echo ($total['out'] > 0 ? $total['out'] : $this->overallconfig['zero_events_value']); ?></td>
+                    <td class=""><?php echo ($total['playedtime'] ) ; ?></td>
 					<?php
 					}
 					if ($this->config['show_career_events_stats'])
@@ -294,7 +311,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 							foreach($this->AllEvents as $eventtype)
 							{
 								?>
-					<td class="td_c"><?php echo $total_event_stats[$eventtype->id]; ?></td>
+					<td class=""><?php echo $total_event_stats[$eventtype->id]; ?></td>
 					<?php
 							}
 						}
@@ -308,9 +325,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 							    if ( $stat->showInPlayer() && isset($stat->gamesstats['totals']) ) {
 							?>
 							    
-					<td class="td_c hasTip" title="<?php echo $stat->name; ?>">
+					<td class="hasTip" title="<?php echo $stat->name; ?>">
 					<?php 
-                    //echo $stat->gamesstats['totals']->value;
                     echo ($stat->gamesstats['totals']->value > 0 ? $stat->gamesstats['totals']->value : $this->overallconfig['zero_events_value']); 
                     ?>
 					</td>

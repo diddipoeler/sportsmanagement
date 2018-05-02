@@ -52,7 +52,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         
         // Must fix this code up one day.
         //Notice: Undefined index: code 
-        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' code <br><pre>' . print_r($_GET['code'], true) . '</pre><br>', 'Notice');
+        //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' code <br><pre>' . print_r($_GET['code'], true) . '</pre><br>', 'Notice');
 
         //$this->state = $this->get('State'); 
         //$this->sortDirection = $this->state->get('list.direction');

@@ -20,6 +20,14 @@
             readonly="true"
         />
         
+		<field
+            name="new_club_id"
+            type="text"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
+            class="inputbox"
+        />    
+		
         <field
             name="name"
             size="100"
@@ -291,15 +299,7 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID_DESC"
             class="inputbox"
         />
-        
-        <field
-            name="new_club_id"
-            type="text"
-            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID"
-            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
-            class="inputbox"
-        />        
-                              	
+                      	
     </fieldset>			
   
     <fieldset 

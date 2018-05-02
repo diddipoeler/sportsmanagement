@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage nextmatch
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -50,24 +22,18 @@ jimport( 'joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewNextMatch extends JViewLegacy
+class sportsmanagementViewNextMatch extends sportsmanagementView
 {
+	
+    
 	/**
-	 * sportsmanagementViewNextMatch::display()
+	 * sportsmanagementViewNextMatch::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-		// Get a reference of the page instance in joomla
-		$document= JFactory::getDocument();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-    //$version = urlencode(sportsmanagementHelper::getVersion());
-//		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-//		$document->addStyleSheet($css);
-		
+	
 		$model = $this->getModel();
 		$match = $model->getMatch();
 
@@ -133,10 +99,6 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 			$this->allteams = $teams;
             $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
             
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeranked <br><pre>'.print_r($this->homeranked,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayranked <br><pre>'.print_r($this->awayranked,true).'</pre>'),'');
-            
 		}
 
 		// Set page title
@@ -146,13 +108,13 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 			$pageTitle .= ": ".$this->teams[0]->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->teams[1]->name;
 		}
         
-		$document->setTitle( $pageTitle );
+		$this->document->setTitle( $pageTitle );
         
 /**
  *         wir benutzen bootstrap
  *         $view = JFactory::getApplication()->input->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $this->document->addCustomTag($stylelink);
  */
         
         if ( !isset($this->config['table_class']) )
@@ -160,7 +122,6 @@ class sportsmanagementViewNextMatch extends JViewLegacy
             $this->config['table_class'] = 'table';
         }
 
-		parent::display( $tpl );
 	}
 }
 ?>

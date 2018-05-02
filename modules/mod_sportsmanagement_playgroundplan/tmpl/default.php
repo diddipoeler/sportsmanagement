@@ -1,45 +1,15 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_playgroundplan
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
 
 $teamformat = $params->get('teamformat', 'name');
 $dateformat = $params->get('dateformat');
@@ -48,10 +18,10 @@ $mode = $params->get('mode',0);
 $textdiv = "";
 
 $n = 1;
-//if ($mode == 0)
-echo '<div class="row" id="modjlplaygroundplan'.$mode.'">';
-//else if ($mode == 1)
-#modjlplaygroundplan1
+?>
+<div class="row-fluid" id="modjlplaygroundplan<?php echo $mode; ?>">
+
+<?php
 foreach ($list as $match)
  	{
 
@@ -134,7 +104,9 @@ $textdiv.= '</div>';
 $textdiv .= '<div class="jlplplanedate">';
 $textdiv .= JHtml::date( $match->match_date,$dateformat );
 $textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
-$textdiv .= JHtml::date( $match->match_date,$timeformat );
+list($date,$time) = explode(" ",$match->match_date);
+$time = strftime("%H:%M",strtotime($time));
+$textdiv .= $time;
 $textdiv.= '</div>';
 
 if ($params->get ('show_project_name',0)) 
@@ -199,6 +171,6 @@ $textdiv.= '</div>';
 
 }
 
- echo $textdiv;
-
-echo '</div>';
+echo $textdiv;
+?>
+</div>

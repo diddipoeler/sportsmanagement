@@ -11,10 +11,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';    
-}
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
@@ -35,7 +31,14 @@ if ($this->config['show_player_icon'])
 			<div class="jl_rosterperson_picture_column">
 				<div class="jl_rosterperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,$picture,$personName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,
+$picture,
+$personName,
+$this->config['player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
      
       	
     
@@ -55,7 +58,7 @@ if ($this->config['show_player_numbers'])
 ?>
 				<span class="jl_rosterperson_position_number">
 				<?php
-				$playerNumber = ( $this->config['player_numbers_pictures'] AND function_exists( 'imagecreatefrompng' ) ) ? 
+				$playerNumber = ( $this->config['player_numbers_pictures'] && function_exists( 'imagecreatefrompng' ) ) ? 
 					JHtml::image( JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
 					: $pnr;
 					echo $playerNumber;
@@ -82,7 +85,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			</h3>
 			<div class="jl_roster_persondetails">
 <?php 
-			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) OR ( $this->row->suspension > 0 && $this->row->suspension_end > $joomleague->current_round ) )
+			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->row->suspension > 0 && $this->row->suspension_end > $joomleague->current_round ) )
 			{
 ?>
 					<div>
@@ -118,7 +121,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			}// if ((isset($this->row->is_injured) && $this->row->is_injured ends
 ?>
 <?php 
-	if ( $this->config['show_birthday'] > 0 AND $this->row->birthday !="0000-00-00" )
+	if ( $this->config['show_birthday'] > 0 && $this->row->birthday !="0000-00-00" )
 	{
 		switch ( $this->config['show_birthday'] )
 		{
@@ -213,7 +216,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				</div><!-- /.jl_roster_persondetails -->
 			</div><!-- /.jl_rosterperson_detail_column -->
 <?php
-	if ( $this->overallconfig['use_jl_substitution'] OR $this->config['show_events_stats'] )
+	if ( $this->overallconfig['use_jl_substitution'] || $this->config['show_events_stats'] )
 	{
 ?>
 		<div class="jl_rosterstats">
@@ -221,13 +224,13 @@ $routeparameter['pid'] = $this->row->person_slug;
 		if ( $this->overallconfig['use_jl_substitution'] )
 		{
 			// Events of substitutions are shown
-            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->season_team_id,$this->row->season_team_person_id,$this->project->game_regular_time);
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->projectteam_id,$this->row->season_team_person_id,$this->project->game_regular_time);
             
             //echo ' project_id<br><pre>'.print_r($this->row->project_id,true).'</pre>';
             //echo ' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>';
             
 			$cnt=0;
-				if ( $this->config['show_games_played'] AND isset( $this->InOutStat->played ) )
+				if ( $this->config['show_games_played'] && isset( $this->InOutStat->played ) )
 				{
 					$cnt++;
 					echo '<div title="'.$this->InOutStat->played.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
@@ -260,7 +263,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				}
 			}
 			// Events statistics:
-			if ( $this->config['show_events_stats'] AND count( $this->playereventstats ) > 0 AND isset( $this->playereventstats[$this->row->pid] ) )
+			if ( $this->config['show_events_stats'] && count( $this->playereventstats ) > 0 && isset( $this->playereventstats[$this->row->pid] ) )
 			{
 				foreach ($this->playereventstats[$this->row->pid] AS $eventId => $stat)
 				{

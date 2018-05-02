@@ -90,14 +90,6 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-if ( $this->overallconfig['use_squeezebox_modal'] ) 
-{
-?>
-<a href="<?php echo $url; ?>" width="660" class="popdown btn">External Site Test</a>		
-<?php		
-}
-else
-{		
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
@@ -106,7 +98,6 @@ $url,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);  
-}		
 ?>
 
     </td>
@@ -197,16 +188,14 @@ else
 ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-if ( $this->overallconfig['use_jquery_modal'] )
-{
-?>	
-<a href="<?php echo $url;?>" rel="modaljsm:open">Login</a>
-<?php		
-}
-else
-{
-echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);        
-}
+echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>			
 
 		<!-- Edit home team -->
@@ -238,7 +227,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>
 
 	
@@ -352,7 +348,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/events.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>
 	</td>
 	<?php
@@ -367,7 +370,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 		?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/calc16.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>        
 	</td>
 	<?php
@@ -382,7 +392,14 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
         ?>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),'20',$url);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
 ?>         
 
 	</td>
