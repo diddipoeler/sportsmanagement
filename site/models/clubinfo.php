@@ -379,7 +379,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $subquery2 = $db->getQuery(true);
 
         $teams = array(0);
-        if (self::$clubid > 0) {
+        if ( self::$clubid && self::$projectid ) {
 
             $query->select('t.id,t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
             $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
