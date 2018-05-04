@@ -65,8 +65,8 @@ $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', ar
 $this->genfamilytree = $mdlClubInfo::generateTree($tree_club_id,$this->config['show_bootstrap_tree']);
 $this->familytree = $mdlClubInfo::$historyhtmltree;
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
-$this->familyteamstree[$rowclub->club_id] = $this->familytree;  
-$this->familyclub[$rowclub->club_id] = $rowclub;
+$this->familyteamstree[$tree_club_id] = $this->familytree;  
+$this->familyclub[$tree_club_id] = $rowclub;
 }
 
 	if ( $this->config['show_bootstrap_tree'] )
