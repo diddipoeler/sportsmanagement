@@ -329,7 +329,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @param integer $inserthits
      * @return
      */
-    static function getClub($inserthits = 0) {
+    static function getClub($inserthits = 0,$club_id = 0) {
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
@@ -340,8 +340,16 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         $query = $db->getQuery(true);
 
         self::$projectid = $jinput->getInt("p", 0);
+	    
+	    if ( $club_id )
+	    {
+		    self::$clubid = $club_id;
+	    }
+	    else
+	    {
         self::$clubid = $jinput->getInt("cid", 0);
-
+	    }
+	    
         self::updateHits(self::$clubid, $inserthits);
 
         if (is_null(self::$club)) {
