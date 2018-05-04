@@ -69,9 +69,10 @@ $this->familyteamstree[$tree_club_id] = $this->familytree;
 	
 if ( $tree_club_id )
 {
-//$firstrowclub = $mdlClubInfo::getFirstClub($tree_club_id);	
-//$this->familyclub[$tree_club_id] = $firstrowclub;	
-$this->familyclub[$tree_club_id] = $rowclub;		
+$firstrowclub = $mdlClubInfo::getFirstClub($tree_club_id);	
+$firstrowclub->club_name = $firstrowclub->name;	
+$this->familyclub[$tree_club_id] = $firstrowclub;	
+//$this->familyclub[$tree_club_id] = $rowclub;		
 }	
 else
 {	
