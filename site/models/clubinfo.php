@@ -299,6 +299,31 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
         return $result;
     }
 
+static function getFirstClub($club_id = 0) {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
+        $query = $db->getQuery(true);
+        // Select some fields
+                $query->select('c.*');
+                // From 
+                $query->from('#__sportsmanagement_club AS c');
+                // Where
+                $query->where('c.id = ' . $db->Quote($club_id));
+
+                $db->setQuery($query);
+	
+	$firstclub = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+                return $firstclub;
+        
+        
+        }
+	
     /**
      * sportsmanagementModelClubInfo::updateHits()
      * 
