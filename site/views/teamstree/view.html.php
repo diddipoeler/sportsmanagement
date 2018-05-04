@@ -66,7 +66,16 @@ $this->genfamilytree = $mdlClubInfo::generateTree($tree_club_id,$this->config['s
 $this->familytree = $mdlClubInfo::$historyhtmltree;
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
 $this->familyteamstree[$tree_club_id] = $this->familytree;  
+	
+if ( $tree_club_id )
+{
+$this->familyclub[$tree_club_id] = $rowclub;	
+}	
+else
+{	
 $this->familyclub[$tree_club_id] = $rowclub;
+}
+	
 }
 
 	if ( $this->config['show_bootstrap_tree'] )
