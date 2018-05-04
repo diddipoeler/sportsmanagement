@@ -291,7 +291,7 @@ if (!isset($this->club)) {
                                 <?php
                                 if (!$this->config['show_bootstrap_tree']) {
                                     ?>
-                                    <span><i class="icon-folder-open"></i> Parent</span>	
+                                    <span><i class="icon-folder-open"></i> aktueller Verein</span>	
                                     <?php
                                 }
                                 ?>	
