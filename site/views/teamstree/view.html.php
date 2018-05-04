@@ -33,7 +33,7 @@ class sportsmanagementViewTeamsTree extends sportsmanagementView
 	{
 
 $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
-//$this->config['show_bootstrap_tree'] = 0;
+
 foreach( $this->teams as $rowclub )
 {
     
@@ -56,10 +56,12 @@ $firstclubid = $mdlClubInfo::$first_club_id;
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($firstclubid,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($rowclub->new_club_id,true).'</pre>'),'');
 }
-$this->clubhistory = $mdlClubInfo::getClubHistory($rowclub->club_id);
-$this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($rowclub->club_id);
-$this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($rowclub->club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
-$this->genfamilytree = $mdlClubInfo::generateTree($rowclub->club_id,$this->config['show_bootstrap_tree']);
+
+$tree_club_id = $rowclub->club_id;
+$this->clubhistory = $mdlClubInfo::getClubHistory($tree_club_id);
+$this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($tree_club_id);
+$this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
+$this->genfamilytree = $mdlClubInfo::generateTree($tree_club_id,$this->config['show_bootstrap_tree']);
 $this->familytree = $mdlClubInfo::$historyhtmltree;
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
 $this->familyteamstree[$rowclub->club_id] = $this->familytree;  
