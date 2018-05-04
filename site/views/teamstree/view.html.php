@@ -44,6 +44,7 @@ $mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
 $mdlClubInfo::$historyhtmltree = '';
 $mdlClubInfo::$first_club_id = 0;
+$tree_club_id = $rowclub->club_id;	
 /**
  * ist das die erste club_id in der kette des stammbaumes ?
  */
@@ -52,12 +53,12 @@ if ( $rowclub->new_club_id )
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($rowclub->club_name,true).'</pre>'),'');    
 $this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id,$rowclub->new_club_id);
 $firstclubid = $mdlClubInfo::$first_club_id; 
+$tree_club_id = $firstclubid;
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($this->firstclubid,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($firstclubid,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($rowclub->new_club_id,true).'</pre>'),'');
 }
 
-$tree_club_id = $rowclub->club_id;
 $this->clubhistory = $mdlClubInfo::getClubHistory($tree_club_id);
 $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($tree_club_id);
 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
