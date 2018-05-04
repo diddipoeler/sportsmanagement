@@ -310,6 +310,7 @@ static function getFirstClub($club_id = 0) {
         $query = $db->getQuery(true);
         // Select some fields
                 $query->select('c.*');
+	$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
                 // From 
                 $query->from('#__sportsmanagement_club AS c');
                 // Where
@@ -318,6 +319,7 @@ static function getFirstClub($club_id = 0) {
                 $db->setQuery($query);
 	
 	$firstclub = $db->loadObject();
+	$firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute(-1, $firstclub->club_slug, null, self::$cfg_which_database);
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 return $firstclub;
         
