@@ -44,7 +44,9 @@ $mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
 $mdlClubInfo::$historyhtmltree = '';
 $mdlClubInfo::$first_club_id = 0;
-$tree_club_id = $rowclub->club_id;	
+$tree_club_id = $rowclub->club_id;
+
+$this->findclub[$rowclub->club_id] = $rowclub->club_id;	
 /**
  * ist das die erste club_id in der kette des stammbaumes ?
  */
