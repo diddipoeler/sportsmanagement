@@ -35,7 +35,7 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
                                     <span><i class="icon-folder-open"></i> aktueller Verein</span>	
                                     <?php
                                 }
- $color = 'lawngreen';
+  $color = array_key_exists($rowclub, $this->findclub) ? 'lawngreen' : '';
                                 ?>	
                               <span style="background-color:<?php echo $color;?>;">
                                 <a href="<?php echo $this->familyclub[$rowclub]->clublink;?>"><?PHP echo JHTML::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->club_name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->club_name; ?></a>
