@@ -311,15 +311,20 @@ static function getFirstClub($club_id = 0) {
         // Select some fields
                 $query->select('c.*');
 	$query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
+	$query->select('CONCAT_WS(\':\',p.id,p.alias) as pro_slug');
                 // From 
                 $query->from('#__sportsmanagement_club AS c');
+	$query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
+            $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+            $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = pt.project_id ');
                 // Where
                 $query->where('c.id = ' . $db->Quote($club_id));
-
+$query->group('c.name');
                 $db->setQuery($query);
 	
 	$firstclub = $db->loadObject();
-	$firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute(-1, $firstclub->club_slug, null, self::$cfg_which_database);
+	$firstclub->clublink = sportsmanagementHelperRoute::getClubInfoRoute($firstclub->pro_slug, $firstclub->club_slug, null, self::$cfg_which_database);
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
                 return $firstclub;
         
