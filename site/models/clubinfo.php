@@ -125,7 +125,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 } else {
                     $treespan = '';
                 }
-                self::$historyhtmltree .= '<li>' . $treespan . '<a href="' . $arrC['clublink'] . '">' . JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a>';
+                self::$historyhtmltree .= '<li>' . $treespan . '<span style="background-color:' . $arrC['color'] . '"><a href="' . $arrC['clublink'] . '">' . JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a></span>';
                 self::generateTree($arrC['id'], $tree);
 
                 self::$historyhtmltree .= '</li>';
