@@ -181,7 +181,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
         $this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
         $view = $this->jinput->getVar("view");
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
         $this->document->addCustomTag($stylelink);
 
         if (!isset($this->config['table_class'])) {
