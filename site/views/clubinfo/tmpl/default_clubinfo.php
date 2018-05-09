@@ -272,7 +272,10 @@ if (!isset($this->club)) {
                     <?PHP
                 }
 
-                if ($this->familytree) {
+                
+            if ( $this->config['show_fusion'] )
+            {
+            if ($this->familytree) {
                     $class_collapse = 'collapse in';
                 } else {
                     $class_collapse = 'collapse';
@@ -303,6 +306,9 @@ if (!isset($this->club)) {
                         </ul>
                     </div>
                 </div>
+                <?php
+        }
+            ?>
             </div>
         <?php }
         ?>
