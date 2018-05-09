@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_playerstaffcareer.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage player
@@ -30,7 +30,15 @@ if (count($this->historyPlayerStaff) > 0)
 					$k=0;
 					foreach ($this->historyPlayerStaff AS $station)
 					{
-						$link1=sportsmanagementHelperRoute::getPlayerRoute($station->project_slug,$station->team_slug,$this->person->slug);
+
+ $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['p'] = $station->project_slug;
+       $routeparameter['tid'] = $station->team_slug;
+       $routeparameter['pid'] = $station->person_slug;
+            
+                    $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 						
 						$routeparameter = array();
        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
