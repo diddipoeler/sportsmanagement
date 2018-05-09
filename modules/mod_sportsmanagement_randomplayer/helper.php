@@ -81,6 +81,7 @@ class modJSMRandomplayerHelper
 
 	$query->select('stp1.person_id');
         $query->select('pt.project_id');
+	$query->select('stp1.id');
         $query->from('#__sportsmanagement_season_team_person_id as stp1 ');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
         $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
@@ -125,7 +126,7 @@ if ( $params['debug_modus'] )
 
 		$person 	= sportsmanagementModelPerson::getPerson();
 		$project	= sportsmanagementModelProject::getProject();
-		$info		= sportsmanagementModelPlayer::getTeamPlayer();
+		$info		= sportsmanagementModelPlayer::getTeamPlayer($res[1],$res[0],$res[2]);
 		$infoteam	= sportsmanagementModelProject::getTeaminfo($projectteamid);
 
 		return array('project' => $project,
