@@ -660,10 +660,19 @@ $query->group('c.name');
                 $row->pid = 0;
             }
 // store parent and its children into the $arrPCat Array
+if ( $row->id == self::$clubid )
+{
+$color = 'lawngreen';
+}
+else
+{
+$color = '';
+}		
             self::$arrPCat[$pt][] = Array('id' => $row->id,
                 'name' => $row->name,
                 'pid' => $row->pid,
                 'slug' => $row->slug,
+		'color' => $color, 
                 'logo_big' => $row->logo_big,
                 'clublink' => sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug)
             );
