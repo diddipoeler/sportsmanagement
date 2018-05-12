@@ -66,12 +66,12 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 	}
 
      
-	if ( $this->config['show_history_leagues'] )
-	{
+//	if ( $this->config['show_history_leagues'] )
+//	{
 		$this->seasons = sportsmanagementModelTeamInfo::getSeasons( $this->config,1 );
 		$this->leaguerankoverview = sportsmanagementModelTeamInfo::getLeagueRankOverview( $this->seasons );
 		$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail( $this->seasons );
-	}
+//	}
 
 		}
     	
