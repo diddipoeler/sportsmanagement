@@ -94,7 +94,7 @@ class sportsmanagementView extends JViewLegacy
  */
         
         $this->document	= JFactory::getDocument();
-        $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/flex.css', 'text/css');
+        $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');

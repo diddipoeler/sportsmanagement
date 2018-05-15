@@ -24,15 +24,15 @@ $addfontawesome	= $params_com->get( 'add_fontawesome' );
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
 //JHtml::_('jquery.framework');
     if($cssflags){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($jsmflex){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($jsmgrid){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($usefontawesome){
@@ -40,7 +40,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
     $document->addCustomTag($stylelink);
     }
     if($addfontawesome){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
