@@ -107,6 +107,10 @@
 <clubnames><clubname country="DEU" name="WSV" >Winter Sportverein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="ZSG" >Zentrale Sportgemeinschaft </clubname></clubnames>
 
+<clubnames><clubname country="DDR" name="KVP" >Kasernierte Volkspolizei</clubname></clubnames>  
+<clubnames><clubname country="DDR" name="BSG" >Betriebssportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DDR" name="HSG" >Hochschulsportgemeinschaft</clubname></clubnames>
+  
 <clubnames><clubname country="ITA" name="AS" >Associazione Sportiva</clubname></clubnames>  
 <clubnames><clubname country="ITA" name="ASD" >Associazione Sportiva Dilettantistica</clubname></clubnames> 
 <clubnames><clubname country="ITA" name="US" >Unione Sportiva</clubname></clubnames>  
