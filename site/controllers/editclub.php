@@ -171,7 +171,7 @@ class sportsmanagementControllerEditClub extends JControllerForm {
             $createTeam = JFactory::getApplication()->input->getVar('createTeam');
             if ($createTeam) {
                 $team_name = JFactory::getApplication()->input->getVar('name');
-                $team_short_name = strtoupper(substr(ereg_replace("[^a-zA-Z]", "", $team_name), 0, 3));
+                $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
                 $teammodel = $this->getModel('team');
                 $tpost['id'] = "0";
                 $tpost['name'] = $team_name;
