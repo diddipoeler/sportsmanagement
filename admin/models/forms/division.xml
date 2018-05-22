@@ -21,10 +21,15 @@
         />
         
         <field
-            name="project_id"
-            type="hidden"
-            default="0"			
-        />
+			name="project_id"
+			type="number"
+		       label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+readonly="true"
+/>
         
         <field
             name="name"
