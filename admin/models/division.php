@@ -57,7 +57,7 @@ foreach ( $results as $key => $value )
 {
 $division_teams[$key] = $key;
 }
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
+
 try {
 $this->jsmquery->clear();
 $this->jsmquery->select('m.projectteam2_id');
@@ -77,10 +77,25 @@ foreach ( $results as $key => $value )
 {
 $division_teams[$key] = $key;
 }
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
 
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($division_teams, true).'</pre><br>','Notice');
+try {
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+$this->jsmquery->from('#__sportsmanagement_project_team');
+$this->jsmquery->where('division_id = '.$division_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$results = $this->jsmdb->loadObjectList('id');
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 
+foreach ( $results as $key => $value )
+{
+$division_teams[$key] = $key;
+}
+	
 return count($division_teams);
 
 }
