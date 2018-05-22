@@ -76,6 +76,15 @@ readonly="true"
             <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DPARENT_ID</option>
         </field>
         
+	    <field
+            name="ordering" 
+            type="number" 
+            label="JGRID_HEADING_ORDERING"
+            description="JGRID_HEADING_ORDERING" 
+            size="11" 
+            default="0"
+        />
+	    
     </fieldset>		
 	
     <fieldset 
