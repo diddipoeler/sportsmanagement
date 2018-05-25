@@ -958,7 +958,7 @@ multiple="true"
 	
 <field name="show_option_federation" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION_DESC">
@@ -968,7 +968,7 @@ multiple="true"
 		
 <field name="show_option_association" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION_DESC">
@@ -978,7 +978,7 @@ multiple="true"
 		
 <field name="show_option_position" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION_DESC">
@@ -988,7 +988,7 @@ multiple="true"
 		
 <field name="show_option_eventtypes" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES_DESC">
@@ -998,7 +998,7 @@ multiple="true"
 		
 <field name="show_option_agegroup" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP_DESC">
@@ -1008,7 +1008,7 @@ multiple="true"
 
 <field name="show_option_person" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON_DESC">
@@ -1018,7 +1018,7 @@ multiple="true"
 		
 <field name="show_option_playground" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND_DESC">
@@ -1028,7 +1028,7 @@ multiple="true"
 		
 <field name="show_option_rosterposition" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION_DESC">
@@ -1038,7 +1038,7 @@ multiple="true"
 
 <field name="show_option_extrafields" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS_DESC">
@@ -1048,7 +1048,7 @@ multiple="true"
 		
 <field name="show_option_statistics" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS_DESC">
@@ -1058,7 +1058,7 @@ multiple="true"
 		
 <field name="show_option_clubnames" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES_DESC">
@@ -1068,7 +1068,7 @@ multiple="true"
 		
 <field name="show_option_github" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB_DESC">
@@ -1078,7 +1078,7 @@ multiple="true"
 
 <field name="show_option_smquotes" 
     type="extensionradiobutton" 
-    default="0"
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES_DESC">
