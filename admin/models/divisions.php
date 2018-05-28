@@ -1,12 +1,12 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      divisions.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage models
+ * @subpackage divisions
  */
 
 // Check to ensure this file is included in Joomla!
@@ -131,6 +131,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
 		return $this->jsmquery;
 	}
+
+
+
+
 	
 	/**
 	* Method to return a divisions array (id, name)
