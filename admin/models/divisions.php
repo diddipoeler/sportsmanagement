@@ -131,10 +131,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
 		return $this->jsmquery;
 	}
-
-
-
-
 	
 	/**
 	* Method to return a divisions array (id, name)
