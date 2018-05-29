@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -53,16 +52,6 @@ function _initData()
   */
 	}
 
-/*
-function getProject()
-{
-  $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-  //echo 'getProject projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
-  $result =  $app->getUserState( $option . 'project', 0 );
-  return $result;
-}
-*/
 
 function getCountry($projectid)
 {
@@ -90,27 +79,25 @@ return $country;
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 
-		//$project_id = $app->getUserState( $option . 'project' );
+		$this->jsmquery->clear();
+    $this->jsmquery->select('pt.id AS value');
+            $this->jsmquery->select('t.name AS text');
+            $this->jsmquery->from('#__sportsmanagement_team AS t');
+            $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $this->jsmquery->where('pt.project_id = ' . $project_id);
 
-		$query = '	SELECT	pt.id AS value,
-							t.name As text,
-							t.notes
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
-					WHERE pt.project_id = ' . $project_id . '
-					ORDER BY name ASC ';
-
-		$this->_db->setQuery( $query );
-		if ( !$result = $this->_db->loadObjectList() )
+		$this->jsmdb->setQuery( $this->jsmquery );
+		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
 			//$this->setError( $this->_db->getErrorMsg() );
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
 		else
 		{
-		$this->_db->execute();
-		$number = $this->_db->getNumRows();	
+		//$this->_db->execute();
+		$number = $this->jsmdb->getNumRows();		
 		
 		if ( $number > 0 )
 		{
