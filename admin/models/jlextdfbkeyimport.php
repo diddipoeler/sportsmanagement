@@ -30,7 +30,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextDfbkeyimport extends JModelLegacy
+class sportsmanagementModeljlextDfbkeyimport extends JSMModelAdmin
 {
 
 function _loadData()
@@ -375,33 +375,7 @@ $this->savedfb = $result ;
             
         }
         
-/*
-  $result = $db->getTableList();
-//   print_r( $result );
 
-if (in_array("jos_joomleague_dfbkey", $result)) 
-{
-// tabelle vorhanden
-}
-else
-{
-// echo "jos_joomleague_extensions nicht enthalten";
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE'),'Error');
-
-$db_table = JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'sql' . DS . 'table.sql';
-// echo $db_table.'<br>';
-$result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
-// print_r( $result );
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE_SUCCESS'),'');
-
-$db_table = JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'sql' . DS . 'data.sql';
-// echo $db_table.'<br>';
-$result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
-// print_r( $result );
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_INSERT_KEYS_SUCCESS'),'');
-
-}
-*/
 
   }
   
