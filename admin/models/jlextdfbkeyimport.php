@@ -81,7 +81,7 @@ return $country;
 
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
-            $this->jsmquery->select('t.name AS text');
+            $this->jsmquery->select('t.name AS text,t.notes');
             $this->jsmquery->from('#__sportsmanagement_team AS t');
             $this->jsmquery->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
             $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
