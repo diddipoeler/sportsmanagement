@@ -55,15 +55,14 @@ function _initData()
 
 function getCountry($projectid)
 {
-$query = "SELECT l.country
-from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
-inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
-on p.league_id = l.id
-where p.id = '$projectid'
-";
+$this->jsmquery->clear();
+$this->jsmquery->select('l.country');	
+$this->jsmquery->from('#__sportsmanagement_league as l');
+$this->jsmquery->join('LEFT', '#__sportsmanagement_project as p on p.league_id = l.id');
+$this->jsmquery->where('p.id = ' . $projectid);	
 
-$this->_db->setQuery( $query );
-$country = $this->_db->loadResult();
+$this->jsmdb->setQuery( $query );
+$country = $this->jsmdb->loadResult();
 return $country;
 }
 
