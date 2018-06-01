@@ -194,6 +194,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case 'extensions';
             case 'jlxmlexports';
             case 'treeto';
+            case 'jlextdfbkeyimport';
             break;
             default:
             $this->items = $this->get('Items');
