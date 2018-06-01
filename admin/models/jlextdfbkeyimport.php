@@ -32,27 +32,33 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
 class sportsmanagementModeljlextDfbkeyimport extends JSMModelAdmin
 {
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport::_loadData()
+ * 
+ * @return void
+ */
 function _loadData()
 	{
-  /*
-  global $app, $option;
-  echo '_loadData projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
-  $this->_data =  $app->getUserState( $option . 'project', 0 );
-  return $this->_data;
-  */
+  
 	}
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport::_initData()
+ * 
+ * @return void
+ */
 function _initData()
 	{
-	/*
-	global $app, $option;
-  echo '_initData projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
-  $this->_data =  $app->getUserState( $option . 'project', 0 );
-  return $this->_data;
-  */
+
 	}
 
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport::getCountry()
+ * 
+ * @param mixed $projectid
+ * @return
+ */
 function getCountry($projectid)
 {
 $this->jsmquery->clear();
@@ -60,10 +66,17 @@ $this->jsmquery->select('l.country');
 $this->jsmquery->from('#__sportsmanagement_league as l');
 $this->jsmquery->join('LEFT', '#__sportsmanagement_project as p on p.league_id = l.id');
 $this->jsmquery->where('p.id = ' . $projectid);	
-
+try {
 $this->jsmdb->setQuery( $query );
 $country = $this->jsmdb->loadResult();
 return $country;
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
+}
+//return $country;
 }
 
 /**
@@ -117,25 +130,34 @@ echo "Die Zahl $zahl ist gerade";
 		}
 	}
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport::getDFBKey()
+ * 
+ * @param mixed $number
+ * @param mixed $matchdays
+ * @return
+ */
 function getDFBKey($number,$matchdays)
 	{
 	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 	$document	= JFactory::getDocument();
   
-$project_id	= $app->getUserState( "$option.pid", '0' );
+$projectid	= $app->getUserState( "$option.pid", '0' );
 	//$project_id = $app->getUserState( $option . 'project' );
 	
 	// gibt es zum land der liga schlüssel ?
-$query = "SELECT l.country
-from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
-inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
-on p.league_id = l.id
-where p.id = '$project_id'
-";
-
-$this->_db->setQuery( $query );
-$country = $this->_db->loadResult();
+    $country = $this->getCountry($projectid);
+    $this->jsmquery->clear();
+//$query = "SELECT l.country
+//from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
+//inner join #__".COM_SPORTSMANAGEMENT_TABLE."_project as p
+//on p.league_id = l.id
+//where p.id = '$project_id'
+//";
+//
+//$this->_db->setQuery( $query );
+//$country = $this->_db->loadResult();
 
 	if ( $number % 2 == 0 )
 	{
@@ -144,36 +166,50 @@ $country = $this->_db->loadResult();
   {
   $number = $number + 1;
   }
+
+$this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_dfbkey');
+$this->jsmquery->where('schluessel = ' . (int) $number );
+$this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	
 	if ( $matchdays == 'ALL' )
 	{
-  $query = "select *
-  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
-  where schluessel = " . (int) $number . " 
-  and country like '".$country."' group by spieltag ";
+//  $query = "select *
+//  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
+//  where schluessel = " . (int) $number . " 
+//  and country like '".$country."' group by spieltag ";
+  $this->jsmquery->group('spieltag');
   }
   elseif ( $matchdays == 'FIRST' )
   {
-  $query = "select *
-  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
-  where schluessel = " . (int) $number . "
-  and country like '".$country."' 
-  and spieltag = 1 ";
+  $this->jsmquery->where('spieltag = 1');
+//  $query = "select *
+//  from #__".COM_SPORTSMANAGEMENT_TABLE."_dfbkey
+//  where schluessel = " . (int) $number . "
+//  and country like '".$country."' 
+//  and spieltag = 1 ";
   }
 	
-	
-	$this->_db->setQuery( $query );
-	
-		if ( !$result = $this->_db->loadObjectList() )
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-	  else
-	  {
+	try{
+	$this->jsmdb->setQuery( $this->jsmquery );
+    $result = $this->jsmdb->loadObjectList();
     return $result;
-
-    }
+	} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
+}
+//		if ( !$result = $this->_db->loadObjectList() )
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//	  else
+//	  {
+//    return $result;
+//
+//    }
 	
 	}
 
