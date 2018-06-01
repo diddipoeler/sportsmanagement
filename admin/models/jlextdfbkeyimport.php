@@ -66,7 +66,7 @@ $this->jsmquery->from('#__sportsmanagement_league as l');
 $this->jsmquery->join('LEFT', '#__sportsmanagement_project as p on p.league_id = l.id');
 $this->jsmquery->where('p.id = ' . $projectid);	
 try {
-$this->jsmdb->setQuery( $query );
+$this->jsmdb->setQuery( $this->jsmquery );
 $country = $this->jsmdb->loadResult();
 return $country;
 } catch (Exception $e) {
@@ -213,26 +213,46 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	}
 
 
+  /**
+   * sportsmanagementModeljlextDfbkeyimport::getMatchdays()
+   * 
+   * @param mixed $projectid
+   * @return
+   */
   function getMatchdays($projectid)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
+	//$option = JFactory::getApplication()->input->getCmd('option');
+//		$app = JFactory::getApplication ();
 	
-	$query = 'select *
-  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-  where project_id = ' . (int) $projectid . '';
-	
-	$this->_db->setQuery( $query );
-		if ( !$result = $this->_db->loadObjectList() )
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-	  else
-	  {
-    return $result;
+    $this->jsmquery->clear();
+    $this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_round');
+$this->jsmquery->where('project_id = ' . $project_id);
 
-    }
+//	$query = 'select *
+//  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+//  where project_id = ' . (int) $projectid . '';
+	
+    try{
+	$this->jsmdb->setQuery( $this->jsmquery );
+    $result = $this->jsmdb->loadObjectList();
+    return $result;
+    } catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
+}
+		//if ( !$result = $this->_db->loadObjectList() )
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//	  else
+//	  {
+//    return $result;
+//
+//    }
 
 	}
 	
