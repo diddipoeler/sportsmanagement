@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.model' );
-
+//jimport( 'joomla.application.component.model' );
 //require_once( JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'helpers' . DS . 'helper.php' );
 
 $maxImportTime=480;
@@ -29,7 +28,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextDfbkeyimport extends JSMModelAdmin
+class sportsmanagementModeljlextDfbkeyimport extends JSMModelLegacy
 {
 
 /**

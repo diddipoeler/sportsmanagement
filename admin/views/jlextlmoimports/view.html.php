@@ -45,9 +45,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = JHtml::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries	= $lists['countries'];
-    
-
-    
+   
 	}
     
     /**
@@ -57,20 +55,8 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
      */
     protected function addToolbar() 
     {
-        // Get a refrence of the page instance in joomla
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		
-        
-//        // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
         JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         parent::addToolbar();
-
 	}
     
 
