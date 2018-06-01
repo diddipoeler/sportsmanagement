@@ -77,7 +77,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 
-        $db = sportsmanagementHelper::getDBConnection();
+//        $db = sportsmanagementHelper::getDBConnection();
 //		$uri 	= JFactory::getURI();
 //		$user 	= JFactory::getUser();
 //		$model	= $this->getModel();
@@ -85,7 +85,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
 //		$projectid = $model->getProject();
 //		$this->assignRef( 'projectid',		$projectid );
 
+if (empty($this->project_id)) {
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+}
 
         $istable = $this->model->checkTable();
 

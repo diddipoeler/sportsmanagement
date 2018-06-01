@@ -78,17 +78,17 @@ return $country;
 //return $country;
 }
 
-/**
-	* Method to return the project teams array (id, name)
-	*
-	* @access  public
-	* @return  array
-	* @since 0.1
-	*/
+
+	/**
+	 * sportsmanagementModeljlextDfbkeyimport::getProjectteams()
+	 * 
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getProjectteams($project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
+//		$option = JFactory::getApplication()->input->getCmd('option');
+//		$app = JFactory::getApplication ();
 
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
@@ -107,7 +107,7 @@ return $country;
 		}
 		else
 		{
-		//$this->_db->execute();
+		$this->jsmdb->execute();
 		$number = $this->jsmdb->getNumRows();		
 		
 		if ( $number > 0 )
