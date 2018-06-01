@@ -17,6 +17,6 @@ JHtml::_( 'behavior.tooltip' );
 JToolbarHelper::title( JText::_( JText::_( 'DFB-Keys Mass-Add' ) ) );
 
 
-echo 'projekt ->'.$this->projectid.'<br>';
+echo 'projekt ->'.$this->project_id.'<br>';
 													
 ?>

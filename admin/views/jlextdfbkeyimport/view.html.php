@@ -45,22 +45,26 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
          */
 
         if ($this->getLayout() == 'default' || $this->getLayout() == 'default_3') {
+            $this->setLayout('default');
             $this->_displayDefault($tpl);
             return;
         }
 
         if ($this->getLayout() == 'default_createdays') {
+            $this->setLayout('default_createdays');
             $this->_displayDefaultCreatedays($tpl);
             return;
         }
 
 
         if ($this->getLayout() == 'default_firstmatchday') {
+            $this->setLayout('default_firstmatchday');
             $this->_displayDefaultFirstMatchday($tpl);
             return;
         }
 
         if ($this->getLayout() == 'default_savematchdays') {
+            $this->setLayout('default_savematchdays');
             $this->_displayDefaultSaveMatchdays($tpl);
             return;
         }
