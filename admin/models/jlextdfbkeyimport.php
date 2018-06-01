@@ -227,7 +227,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
     $this->jsmquery->clear();
     $this->jsmquery->select('*');
 $this->jsmquery->from('#__sportsmanagement_round');
-$this->jsmquery->where('project_id = ' . $project_id);
+$this->jsmquery->where('project_id = ' . (int)$project_id);
 
 //	$query = 'select *
 //  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
@@ -256,31 +256,62 @@ $this->jsmquery->where('project_id = ' . $project_id);
 
 	}
 	
+	/**
+	 * sportsmanagementModeljlextDfbkeyimport::getMatches()
+	 * 
+	 * @param mixed $projectid
+	 * @return
+	 */
 	function getMatches($projectid)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-    $db = sportsmanagementHelper::getDBConnection();
+//	   $option = JFactory::getApplication()->input->getCmd('option');
+//		$app = JFactory::getApplication ();
+//    $db = sportsmanagementHelper::getDBConnection();
+
+$this->jsmquery->clear();
+$this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_round');
+$this->jsmquery->where('project_id = ' . (int)$project_id);
     
-  $query = 'select *
-  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-  where project_id = ' . (int) $projectid . '';
-	
-	$this->_db->setQuery( $query );
+// $query = 'select *
+//  from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
+//  where project_id = ' . (int) $projectid . '';
+
+try{	
+	$this->jsmdb->setQuery( $this->jsmquery );
   
    if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-		$result = $db->loadColumn();
+		$result = $this->jsmdb->loadColumn();
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-		$result = $db->loadResultArray();
+		$result = $this->jsmdb->loadResultArray();
+}
+$rounds = implode(",",$result);
+$this->jsmquery->clear();
+$this->jsmquery->select('count(*)');
+$this->jsmquery->from('#__sportsmanagement_match');
+$this->jsmquery->where('round_id in (' . $rounds . ')' );
+$this->jsmdb->setQuery( $this->jsmquery );
+$count = $this->jsmdb->loadResult();
+return $count;
+
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
 }
 
+
+
 	//$result = $this->_db->loadResultArray();
-	
+
+
+/*	
 	$rounds = implode(",",$result);
 	$query = 'select count(*)
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_match
@@ -290,8 +321,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	
 	$count = $this->_db->loadResult();
 return $count;
+*/
+
+
   }
 	
+    
+    
 	function getSchedule( $post, $projectid )
 	{
 	$option = JFactory::getApplication()->input->getCmd('option');
