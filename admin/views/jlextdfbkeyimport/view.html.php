@@ -197,8 +197,8 @@ if (empty($this->project_id)) {
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects'); 
         JToolbarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($this->option);
+//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolbarHelper::preferences($this->option);
     }
 
     /**
@@ -250,8 +250,8 @@ if (empty($this->project_id)) {
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
         JToolbarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
         JToolbarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($this->option);
+//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolbarHelper::preferences($this->option);
     }
 
     /**
@@ -287,8 +287,8 @@ if (empty($this->project_id)) {
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
         JToolbarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($this->option);
+//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolbarHelper::preferences($this->option);
     }
 
 }
