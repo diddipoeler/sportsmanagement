@@ -30,40 +30,27 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
      */
     public function init() {
         $tpl = '';
-        //global $app;
-
-        /*
-          echo '<pre>';
-          print_r($this->getTask());
-          echo '</pre>';
-         */
-
-        /*
-          echo '<pre>';
-          print_r($this->getLayout());
-          echo '</pre>';
-         */
-
-        if ($this->getLayout() == 'default' || $this->getLayout() == 'default_3') {
+        
+        if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' ) {
             $this->setLayout('default');
             $this->_displayDefault($tpl);
             return;
         }
 
-        if ($this->getLayout() == 'default_createdays') {
+        if ( $this->getLayout() == 'default_createdays' || $this->getLayout() == 'default_createdays_3' ) {
             $this->setLayout('default_createdays');
             $this->_displayDefaultCreatedays($tpl);
             return;
         }
 
 
-        if ($this->getLayout() == 'default_firstmatchday') {
+        if ( $this->getLayout() == 'default_firstmatchday' || $this->getLayout() == 'default_firstmatchday_3' ) {
             $this->setLayout('default_firstmatchday');
             $this->_displayDefaultFirstMatchday($tpl);
             return;
         }
 
-        if ($this->getLayout() == 'default_savematchdays') {
+        if ( $this->getLayout() == 'default_savematchdays' || $this->getLayout() == 'default_savematchdays_3' ) {
             $this->setLayout('default_savematchdays');
             $this->_displayDefaultSaveMatchdays($tpl);
             return;
@@ -160,7 +147,7 @@ if (empty($this->project_id)) {
     function _displayDefaultCreatedays($tpl) {
         $app = JFactory::getApplication();
         $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$option = $jinput->getCmd('option');
 
         $db = sportsmanagementHelper::getDBConnection();
 
@@ -175,7 +162,7 @@ if (empty($this->project_id)) {
         //get the project
         //echo '_displayDefaultCreatedays project -> '.$projectid.'<br>';
 
-        $projectid = $app->getUserState("$option.pid", '0');
+        $projectid = $app->getUserState("$this->option.pid", '0');
         ;
         $this->projectid = $projectid;
 
@@ -202,7 +189,7 @@ if (empty($this->project_id)) {
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
@@ -210,7 +197,7 @@ if (empty($this->project_id)) {
         JToolbarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($option);
+        JToolbarHelper::preferences($this->option);
     }
 
     /**
@@ -222,14 +209,14 @@ if (empty($this->project_id)) {
     function _displayDefaultFirstMatchday($tpl) {
         $app = JFactory::getApplication();
         $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$option = $jinput->getCmd('option');
 
         $db = sportsmanagementHelper::getDBConnection();
         $uri = JFactory::getURI();
         $user = JFactory::getUser();
         $model = $this->getModel();
 
-        $projectid = $app->getUserState("$option.pid", '0');
+        $projectid = $app->getUserState("$this->option.pid", '0');
         ;
 
         if ($res = $model->getProjectteams($projectid)) {
@@ -254,7 +241,7 @@ if (empty($this->project_id)) {
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
@@ -262,7 +249,7 @@ if (empty($this->project_id)) {
         JToolbarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($option);
+        JToolbarHelper::preferences($this->option);
     }
 
     /**
@@ -274,14 +261,14 @@ if (empty($this->project_id)) {
     function _displayDefaultSaveMatchdays($tpl) {
         $app = JFactory::getApplication();
         $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$option = $jinput->getCmd('option');
 
         $db = sportsmanagementHelper::getDBConnection();
         $uri = JFactory::getURI();
         $user = JFactory::getUser();
         $model = $this->getModel();
 
-        $projectid = $app->getUserState("$option.pid", '0');
+        $projectid = $app->getUserState("$this->option.pid", '0');
         $this->projectid = $projectid;
         $post = $input->post;
         $this->import = $model->getSchedule($post, $projectid);
@@ -290,7 +277,7 @@ if (empty($this->project_id)) {
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
@@ -298,7 +285,7 @@ if (empty($this->project_id)) {
         JToolbarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences($option);
+        JToolbarHelper::preferences($this->option);
     }
 
 }

@@ -328,6 +328,13 @@ return $count;
 	
     
     
+	/**
+	 * sportsmanagementModeljlextDfbkeyimport::getSchedule()
+	 * 
+	 * @param mixed $post
+	 * @param mixed $projectid
+	 * @return
+	 */
 	function getSchedule( $post, $projectid )
 	{
 	$option = JFactory::getApplication()->input->getCmd('option');
@@ -349,14 +356,21 @@ if (substr($key,0,10)=="chooseteam")
 $tempteams=explode ("_",$key);
 $chooseteam[$tempteams[1]][projectteamid] = $element;
 
+$this->jsmquery->clear();
+$this->jsmquery->select('team.name');
+$this->jsmquery->from('#__sportsmanagement_team as team');
+$this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = team.id');
+$this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+$this->jsmquery->where('pt.id = ' . (int)$element);
+/*
 $query = 'select team.name
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as team
   inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pteam
   on team.id = pteam.team_id
   where pteam.id = ' . (int) $element . ' ';
-
-  $this->_db->setQuery( $query );
-  $chooseteam[$tempteams[1]][teamname] = $this->_db->loadResult();
+*/
+  $this->jsmdb->setQuery( $this->jsmquery );
+  $chooseteam[$tempteams[1]][teamname] = $this->jsmdb->loadResult();
   
 //$lfdnummer++;
 }
@@ -381,15 +395,23 @@ if ( $number % 2 == 0 )
   $number = $number + 1;
   }
 
+$this->jsmquery->clear();
+$this->jsmquery->select('dfb.*,jr.id, jr.round_date_first');
+$this->jsmquery->from('#__sportsmanagement_dfbkey as dfb');
+$this->jsmquery->join('INNER', '#__sportsmanagement_round as jr on dfb.spieltag = jr.roundcode');
+$this->jsmquery->where('dfb.schluessel = ' . (int)$number);
+$this->jsmquery->where('jr.project_id = ' . (int)$projectid);
+$this->jsmquery->order('dfb.spielnummer');
+/*
 $query = 'select dfb.*,jr.id, jr.round_date_first
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_dfbkey as dfb
   inner join #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as jr
   on dfb.spieltag = jr.roundcode
   where dfb.schluessel = ' . (int) $number . 
   ' and jr.project_id = '. $projectid .' order by dfb.spielnummer ';
-
-  $this->_db->setQuery( $query );
-  $dfbresult = $this->_db->loadObjectList();
+*/
+  $this->jsmdb->setQuery( $this->jsmquery );
+  $dfbresult = $this->jsmdb->loadObjectList();
 
 /*  
 echo '<pre>';
