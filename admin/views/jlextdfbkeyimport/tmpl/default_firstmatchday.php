@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JHtml::_( 'behavior.tooltip' );
 
-$url = 'components/com_joomleague/extensions/jlextdfbkey/admin/assets/images/dfb-key.jpg';
+$url = 'administrator/components/com_sportsmanagement/assets/images/dfb-key.jpg';
 $alt = 'Lmo Logo';
 // $attribs['width'] = '170px';
 // $attribs['height'] = '26px';

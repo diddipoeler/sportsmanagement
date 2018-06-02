@@ -194,6 +194,7 @@ if (empty($this->project_id)) {
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
+        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects'); 
         JToolbarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
@@ -246,6 +247,7 @@ if (empty($this->project_id)) {
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
+        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
         JToolbarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
@@ -282,6 +284,7 @@ if (empty($this->project_id)) {
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');
+        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
         JToolbarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
         JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();

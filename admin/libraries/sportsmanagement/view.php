@@ -649,6 +649,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 		case 'cpanel':	    
 	case 'jlxmlimports':	
 		    case 'projectpositions':
+            case 'jlextdfbkeyimport':
             break;    
             default:    
 /**
