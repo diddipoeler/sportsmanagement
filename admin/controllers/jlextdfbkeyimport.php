@@ -99,7 +99,7 @@ $document	=& JFactory::getDocument();
     
   function apply()
 	{
-	   
+	   $option = JFactory::getApplication()->input->getCmd('option');
      $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';
 		$this->setRedirect( $link, $msg );  
