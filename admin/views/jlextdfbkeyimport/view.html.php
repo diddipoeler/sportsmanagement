@@ -268,7 +268,7 @@ if (empty($this->project_id)) {
 
 
         $post = $this->jinput->post->getArray(array());
-        //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$post, 'error');
+        //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.print_r($post,true), 'error');
         
         $projectid = $this->app->getUserState("$this->option.pid", '0');
         $this->projectid = $projectid;
