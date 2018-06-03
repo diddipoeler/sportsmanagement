@@ -100,8 +100,9 @@ $document	=& JFactory::getDocument();
   function apply()
 	{
 	   $option = JFactory::getApplication()->input->getCmd('option');
-       $post = JFactory::getApplication()->input->get( 'post' );
-       //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.print_r($post,true), 'error');
+       //$post = JFactory::getApplication()->input->get( 'post' );
+       $post = JFactory::getApplication()->input->post->getArray(array());
+       //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.print_r($post,true). 'error');
        
      $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';

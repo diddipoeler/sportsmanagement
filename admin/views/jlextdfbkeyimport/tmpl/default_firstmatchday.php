@@ -128,8 +128,7 @@ echo "<td>".$rowdfb->spielnummer."</td></tr>";
 						</fieldset>
 
 <input type="hidden" name="sent"			value="1" />
-<input type="hidden" name="option"			value="com_sportsmanagement" />
-<input type="hidden" name="task"			value="apply" />
+<input type="hidden" name="task"			value="" />
                 			
 </form>
 <?php
