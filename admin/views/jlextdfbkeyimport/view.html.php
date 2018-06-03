@@ -257,18 +257,22 @@ if (empty($this->project_id)) {
      * @return void
      */
     function _displayDefaultSaveMatchdays($tpl) {
-        $app = JFactory::getApplication();
-        $jinput = $app->input;
+        //$app = JFactory::getApplication();
+        //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
 
-        $db = sportsmanagementHelper::getDBConnection();
+        //$db = sportsmanagementHelper::getDBConnection();
         $uri = JFactory::getURI();
         $user = JFactory::getUser();
         $model = $this->getModel();
 
-        $projectid = $app->getUserState("$this->option.pid", '0');
+
+        $post = $this->jinput->post->getArray(array());
+        //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$post, 'error');
+        
+        $projectid = $this->app->getUserState("$this->option.pid", '0');
         $this->projectid = $projectid;
-        $post = $input->post;
+        //$post = $input->post;
         $this->import = $model->getSchedule($post, $projectid);
         $this->request_url = $uri->toString();
 
