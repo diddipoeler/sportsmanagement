@@ -186,11 +186,9 @@ if (empty($this->project_id)) {
 
         $this->request_url = $uri->toString();
 
-        // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
@@ -239,11 +237,9 @@ if (empty($this->project_id)) {
         $this->dfbteams = $dfbteams;
         $this->request_url = $uri->toString();
 
-        // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
@@ -276,11 +272,9 @@ if (empty($this->project_id)) {
         $this->import = $model->getSchedule($post, $projectid);
         $this->request_url = $uri->toString();
 
-        // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-        $document->addCustomTag($stylelink);
+        $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');

@@ -37,7 +37,6 @@ function __construct()
         $this->registerTask( 'save' , 'Save' );
         $this->registerTask( 'apply' , 'Apply' );
         $this->registerTask( 'insert' , 'insert' );
-        
     }
     
 /**
@@ -77,6 +76,7 @@ $document	=& JFactory::getDocument();
     $msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The division' ), $projectid );
 		$this->setRedirect( 'index.php?option=' . $option., $msg );
 */
+/*    
     switch( $this->getTask() )
 		{
     
@@ -87,30 +87,26 @@ $document	=& JFactory::getDocument();
 				JFactory::getApplication()->input->setVar( 'view', 'jlextdfbkeyimport' );
 				//JFactory::getApplication()->input->setVar( 'edit', false );
 				
-				/*
- 				$model = $this->getModel ( 'round' );
-				$viewType = $document->getType();
-				$view = $this->getView( 'round', $viewType );
-				$view->setModel( $model, true );	// true is for the default model;
-
- 				$projectws = $this->getModel( 'project' );
-				$projectws->_name = 'projectws';
-				$projectws->setId( $app->getUserState( $option . 'project', 0 ) );
-				$view->setModel( $projectws );
-
-				$model = $this->getModel( 'round' );
-				$model->checkout();
-				*/
+				
 			} break;
     
     }
-    
+    */
         
     parent::display();
     
     }    
     
-  
+  function apply()
+	{
+	   
+     $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
+    $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';
+		$this->setRedirect( $link, $msg );  
+       
+       }
+       
+       
   /**
    * sportsmanagementControllerjlextdfbkeyimport::save()
    * 
