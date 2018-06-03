@@ -33,7 +33,7 @@ echo '</pre>';
 
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
 			<legend>
@@ -126,9 +126,6 @@ $i++;
 </fieldset>
 <input type="hidden" name="sent"			value="3" />
 <input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
-<input type="hidden" name="controller"	value="" />
 <input type="hidden" name="task"			value="" />
-<input type="hidden" name="option"			value="com_sportsmanagement" />
-              			
 </form>
 		   

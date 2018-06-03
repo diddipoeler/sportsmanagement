@@ -149,14 +149,14 @@ if (empty($this->project_id)) {
         $jinput = $app->input;
         //$option = $jinput->getCmd('option');
 
-        $db = sportsmanagementHelper::getDBConnection();
+        //$db = sportsmanagementHelper::getDBConnection();
 
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $user = JFactory::getUser();
+//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
+//            $uri = JUri::getInstance();
+//        } else {
+//            $uri = JFactory::getURI();
+//        }
+        //$user = JFactory::getUser();
         $model = $this->getModel();
         //$projectid =& $this->projectid;
         //get the project
@@ -184,7 +184,7 @@ if (empty($this->project_id)) {
             unset($projectteams);
         }
 
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
@@ -210,13 +210,13 @@ if (empty($this->project_id)) {
         $jinput = $app->input;
         //$option = $jinput->getCmd('option');
 
-        $db = sportsmanagementHelper::getDBConnection();
-        $uri = JFactory::getURI();
+        //$db = sportsmanagementHelper::getDBConnection();
+        //$uri = JFactory::getURI();
         $user = JFactory::getUser();
         $model = $this->getModel();
 
         $projectid = $app->getUserState("$this->option.pid", '0');
-        ;
+        
 
         if ($res = $model->getProjectteams($projectid)) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
@@ -235,7 +235,7 @@ if (empty($this->project_id)) {
 
         $this->lists = $lists;
         $this->dfbteams = $dfbteams;
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
@@ -262,19 +262,33 @@ if (empty($this->project_id)) {
         //$option = $jinput->getCmd('option');
 
         //$db = sportsmanagementHelper::getDBConnection();
-        $uri = JFactory::getURI();
+        //$uri = JFactory::getURI();
         $user = JFactory::getUser();
         $model = $this->getModel();
 
 
         $post = $this->jinput->post->getArray(array());
-        //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.print_r($post,true). 'error');
+        //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+
+// retrieve the value of the state variable. First see if the variable has been passed
+// in the request. Otherwise retrieve the stored value. If none of these are specified,
+// the specified default value will be returned
+// function syntax is getUserStateFromRequest( $key, $request, $default );
+$post = $this->app->getUserStateFromRequest( "$this->option.first_post", 'first_post', '' );
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+
+// retrieve the value of the state variable. If no value is specified,
+// the specified default value will be returned.
+// function syntax is getUserState( $key, $default );
+$post = $this->app->getUserState( "$this->option.first_post", '' );
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+
         
-        $projectid = $this->app->getUserState("$this->option.pid", '0');
-        $this->projectid = $projectid;
+        $this->projectid = $this->app->getUserState("$this->option.pid", '0');
+        //$this->projectid = $projectid;
         //$post = $input->post;
         $this->import = $model->getSchedule($post, $projectid);
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/'.$this->option.'/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";

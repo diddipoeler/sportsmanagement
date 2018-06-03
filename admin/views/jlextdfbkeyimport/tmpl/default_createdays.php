@@ -119,7 +119,7 @@ $i++;
 <input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
 <input type="hidden" name="task"			value="" />
 
-<input type="hidden" name="option"			value="com_sportsmanagement" />
+
                			
 </form>
 

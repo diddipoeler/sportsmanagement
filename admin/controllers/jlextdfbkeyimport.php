@@ -50,10 +50,10 @@ function display()
 
 //global $app,$option;
 
-$document	=& JFactory::getDocument();
-		$app	=& JFactory::getApplication();
-    $model = $this->getModel('jlextdfbkeyimport');
-    $post = JFactory::getApplication()->input->get( 'post' );
+//$document	=& JFactory::getDocument();
+//		$app	=& JFactory::getApplication();
+//    $model = $this->getModel('jlextdfbkeyimport');
+//    $post = JFactory::getApplication()->input->get( 'post' );
     
     /*
     echo '<pre>';
@@ -102,7 +102,11 @@ $document	=& JFactory::getDocument();
 	   $option = JFactory::getApplication()->input->getCmd('option');
        //$post = JFactory::getApplication()->input->get( 'post' );
        $post = JFactory::getApplication()->input->post->getArray(array());
-       //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.print_r($post,true). 'error');
+       //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+
+// store the variable that we would like to keep for next time
+// function syntax is setUserState( $key, $value );
+JFactory::getApplication()->setUserState( "$option.first_post", $post );
        
      $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';
