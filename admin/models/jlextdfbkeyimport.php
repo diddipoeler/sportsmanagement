@@ -374,7 +374,7 @@ $query = 'select team.name
   where pteam.id = ' . (int) $element . ' ';
 */
   $this->jsmdb->setQuery( $this->jsmquery );
-  $chooseteam[$tempteams[1]][teamname] = $this->jsmdb->loadResult();
+  $chooseteam[$tempteams[1]]['teamname'] = $this->jsmdb->loadResult();
   
 //$lfdnummer++;
 }
@@ -434,17 +434,17 @@ foreach($dfbresult as $row)
 
 $teile = explode(",", $row->paarung);
 
-if ( $chooseteam[$teile[0]][projectteamid] != 0 && $chooseteam[$teile[1]][projectteamid] != 0 )
+if ( $chooseteam[$teile[0]]['projectteamid'] != 0 && $chooseteam[$teile[1]]['projectteamid'] != 0 )
 {
 $temp = new stdClass();
 $temp->spieltag = $row->spieltag;
 $temp->round_id = $row->id;
 $temp->spielnummer = $row->spielnummer;
 $temp->match_date = $row->round_date_first;
-$temp->projectteam1_id = $chooseteam[$teile[0]][projectteamid];
-$temp->projectteam2_id = $chooseteam[$teile[1]][projectteamid];
-$temp->projectteam1_name = $chooseteam[$teile[0]][teamname];
-$temp->projectteam2_name = $chooseteam[$teile[1]][teamname];
+$temp->projectteam1_id = $chooseteam[$teile[0]]['projectteamid'];
+$temp->projectteam2_id = $chooseteam[$teile[1]]['projectteamid'];
+$temp->projectteam1_name = $chooseteam[$teile[0]]['teamname'];
+$temp->projectteam2_name = $chooseteam[$teile[1]]['teamname'];
 
 $result[] = $temp;
 $result = array_merge($result);
