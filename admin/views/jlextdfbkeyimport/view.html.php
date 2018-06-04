@@ -287,7 +287,7 @@ $post = $this->app->getUserState( "$this->option.first_post", '' );
         $this->projectid = $this->app->getUserState("$this->option.pid", '0');
         //$this->projectid = $projectid;
         //$post = $input->post;
-        $this->import = $model->getSchedule($post, $projectid);
+        $this->import = $model->getSchedule($post, $this->projectid);
         //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
