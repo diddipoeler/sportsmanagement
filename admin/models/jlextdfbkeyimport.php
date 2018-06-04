@@ -58,13 +58,13 @@ function _initData()
  * @param mixed $projectid
  * @return
  */
-function getCountry($projectid)
+function getCountry($project_id)
 {
 $this->jsmquery->clear();
 $this->jsmquery->select('l.country');	
 $this->jsmquery->from('#__sportsmanagement_league as l');
 $this->jsmquery->join('LEFT', '#__sportsmanagement_project as p on p.league_id = l.id');
-$this->jsmquery->where('p.id = ' . $projectid);	
+$this->jsmquery->where('p.id = ' . $project_id);	
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $country = $this->jsmdb->loadResult();
@@ -143,11 +143,11 @@ function getDFBKey($number,$matchdays)
 		$app = JFactory::getApplication ();
 	$document	= JFactory::getDocument();
   
-$projectid	= $app->getUserState( "$option.pid", '0' );
+$project_id = $app->getUserState( "$option.pid", '0' );
 	//$project_id = $app->getUserState( $option . 'project' );
 	
 	// gibt es zum land der liga schlüssel ?
-    $country = $this->getCountry($projectid);
+    $country = $this->getCountry($project_id);
     $this->jsmquery->clear();
 //$query = "SELECT l.country
 //from #__".COM_SPORTSMANAGEMENT_TABLE."_league as l
@@ -265,7 +265,7 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
 	 * @param mixed $projectid
 	 * @return
 	 */
-	function getMatches($projectid)
+	function getMatches($project_id)
 	{
 //	   $option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
@@ -339,7 +339,7 @@ return $count;
 	 * @param mixed $projectid
 	 * @return
 	 */
-	function getSchedule( $post, $projectid )
+	function getSchedule( $post, $project_id )
 	{
 	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
@@ -406,7 +406,7 @@ $this->jsmquery->select('dfb.*,jr.id, jr.round_date_first');
 $this->jsmquery->from('#__sportsmanagement_dfbkey as dfb');
 $this->jsmquery->join('INNER', '#__sportsmanagement_round as jr on dfb.spieltag = jr.roundcode');
 $this->jsmquery->where('dfb.schluessel = ' . (int)$number);
-$this->jsmquery->where('jr.project_id = ' . (int)$projectid);
+$this->jsmquery->where('jr.project_id = ' . (int)$project_id);
 $this->jsmquery->order('dfb.spielnummer');
 /*
 $query = 'select dfb.*,jr.id, jr.round_date_first
