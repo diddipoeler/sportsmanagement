@@ -68,6 +68,7 @@ $this->jsmquery->where('p.id = ' . $projectid);
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $country = $this->jsmdb->loadResult();
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
 return $country;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -192,6 +193,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');		
     return $result;
 	} catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -236,6 +238,7 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
     try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');			    
     return $result;
     } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -297,6 +300,7 @@ $this->jsmquery->from('#__sportsmanagement_match');
 $this->jsmquery->where('round_id in (' . $rounds . ')' );
 $this->jsmdb->setQuery( $this->jsmquery );
 $count = $this->jsmdb->loadResult();
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' count <pre>'.print_r($count ,true).'</pre>', 'warning');			
 return $count;
 
 } catch (Exception $e) {
@@ -377,6 +381,8 @@ $query = 'select team.name
 
 }
 
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' chooseteam <pre>'.print_r($chooseteam ,true).'</pre>', 'warning');		
+		
 /*
 echo '<pre>';
 print_r($chooseteam);
@@ -419,7 +425,7 @@ print_r($dfbresult);
 echo '</pre>';
 */
 
-
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' dfbresult <pre>'.print_r($dfbresult ,true).'</pre>', 'warning');		
 
 $result = array();
 
