@@ -74,12 +74,12 @@ foreach($this->newmatchdays as $rowdays)
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHtml::calendar(	$date1,
-														'round_date_first['.$i.']',
-														'round_date_first['.$i.']',
-														'%d-%m-%Y',
-														'size="10" ' . $append .
-														'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
+echo JHtml::calendar($date1,
+		'round_date_first['.$i.']',
+		'round_date_first['.$i.']',
+		'%d-%m-%Y',
+		'size="10" ' . $append .
+		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
 
 ?>
 </td>
@@ -88,12 +88,12 @@ echo JHtml::calendar(	$date1,
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHtml::calendar(	$date1,
-														'round_date_last['.$i.']',
-														'round_date_last['.$i.']',
-														'%d-%m-%Y',
-														'size="10" ' . $append .
-														'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
+echo JHtml::calendar($date1,
+		'round_date_last['.$i.']',
+		'round_date_last['.$i.']',
+		'%d-%m-%Y',
+		'size="10" ' . $append .
+		'onchange="document.getElementById(\'cb' . $i . '\').checked=true"' );
 
 ?>
 
@@ -115,9 +115,9 @@ $i++;
 						
 							
 </fieldset>
-<input type="hidden" name="sent"			value="1" />
-<input type="hidden" name="projectid"			value="<?php echo $this->projectid;?> " />
-<input type="hidden" name="task"			value="" />
+<input type="hidden" name="sent" value="1" />
+<input type="hidden" name="projectid" value="<?php echo $this->projectid;?> " />
+<input type="hidden" name="task" value="" />
 
 
                			
