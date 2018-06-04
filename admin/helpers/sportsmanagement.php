@@ -1704,6 +1704,7 @@ abstract class sportsmanagementHelper {
      *
      */
     static function convertDate($DummyDate, $direction = 1) {
+	    $result = '';
         if (!strpos($DummyDate, "-") !== false) {
             // for example 31122011 is used for 31 december 2011
             if (strlen($DummyDate) == 8) {
