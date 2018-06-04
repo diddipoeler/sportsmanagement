@@ -32,7 +32,7 @@ echo '</pre>';
 */
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
 		<fieldset class="adminform">
 			<legend>
