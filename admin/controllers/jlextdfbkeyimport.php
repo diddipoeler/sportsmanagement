@@ -207,8 +207,10 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
-        $post = JFactory::getApplication()->input->get( 'post' );
-      
+//        $post = JFactory::getApplication()->input->get( 'post' );
+$post = JFactory::getApplication()->input->post->getArray(array());
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+	  
     /*    
     echo '<pre>';
     print_r($post);
