@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      jlextdfbkeyimport.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage controllers
@@ -124,14 +124,15 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
-        $post = JFactory::getApplication()->input->get( 'post' );
-
+        //$post = JFactory::getApplication()->input->get( 'post' );
+	$post = JFactory::getApplication()->input->post->getArray(array());
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');	
     /*
     echo '<pre>';
     print_r($post);
     echo '</pre>';
 		*/
-		//echo 'einträge -> '.count($post[roundcode]).'<br>';
+		//echo 'eintrÃ¤ge -> '.count($post[roundcode]).'<br>';
 		
     	
 		for ($i=0; $i < count($post[roundcode])  ; $i++)
@@ -244,11 +245,11 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
 		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
         //$this->setError( $this->_db->getErrorMsg() );
 		//return false;
-		//echo 'nicht eingefügt <br>';
+		//echo 'nicht eingefÃ¼gt <br>';
 		}
 		else
 		{
-    //echo 'eingefügt <br>';
+    //echo 'eingefÃ¼gt <br>';
     }
 		
 		}
