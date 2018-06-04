@@ -88,7 +88,7 @@ foreach($this->import as $rowdays)
 
 <td> 
 <?php
-$date1 =  JFactory::getDate( $rowdays->match_date)->toFormat( '%d-%m-%Y' );
+$date1 =  JFactory::getDate( $rowdays->match_date)->format( '%d-%m-%Y' );
 $append = ' style="background-color:#bbffff;" ';
 
 echo JHtml::calendar(	$date1,
