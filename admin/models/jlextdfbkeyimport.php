@@ -221,7 +221,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
    * @param mixed $projectid
    * @return
    */
-  function getMatchdays($projectid)
+  function getMatchdays($project_id)
 	{
 	//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
