@@ -73,7 +73,7 @@ foreach($this->newmatchdays as $rowdays)
 <td> 
 <?php
 $append = ' style="background-color:#bbffff;" ';
-
+$date1 = '';
 echo JHtml::calendar($date1,
 		'round_date_first['.$i.']',
 		'round_date_first['.$i.']',
