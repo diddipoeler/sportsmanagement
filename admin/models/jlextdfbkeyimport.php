@@ -358,7 +358,7 @@ foreach($post as $key => $element)
 if (substr($key,0,10)=="chooseteam")
 {
 $tempteams=explode ("_",$key);
-$chooseteam[$tempteams[1]][projectteamid] = $element;
+$chooseteam[$tempteams[1]]['projectteamid'] = $element;
 
 $this->jsmquery->clear();
 $this->jsmquery->select('team.name');
