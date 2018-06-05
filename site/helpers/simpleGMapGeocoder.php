@@ -95,7 +95,7 @@ function getGeoCoordsMapQuest($address_string)
 
 $geoCodeURL = "http://open.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2g6r20%2Crl%3Do5-9uaxu4&location=".
                   urlencode($address_string)."&callback=renderGeocode&outFormat=json";    
-
+if (function_exists('curl_init')) {
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -103,7 +103,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
-    
+}
 //echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
         
 }
@@ -361,6 +361,7 @@ function getGeoCoords($address)
                   urlencode($address)."&sensor=false";
     
 //    $result = json_decode(file_get_contents($geoCodeURL), true);
+	if (function_exists('curl_init')) {
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -368,7 +369,8 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-    
+	}
+	
     /*
     echo 'getGeoCoords result<br><pre>';
     print_r($result);
@@ -401,7 +403,7 @@ function reverseGeoCode($lat,$lng)
     
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=$lat,$lng&sensor=false";
-    
+ if (function_exists('curl_init')) {   
     $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -409,7 +411,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-
+}
 //    $result = json_decode(file_get_contents($geoCodeURL), true);
                 
     $address['status'] = $result["status"];
@@ -437,7 +439,7 @@ function getOSMGeoCoords($address)
     // output in JSON
     $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=0&q=".
                   urlencode($address);
-    
+ if (function_exists('curl_init')) {   
     $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -445,7 +447,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);
-
+}
 //    $result = json_decode(file_get_contents($geoCodeURL), true);
 //    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
     
