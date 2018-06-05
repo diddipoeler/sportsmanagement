@@ -51,7 +51,26 @@ function _initData()
 
 	}
 
-
+function getProjectType($project_id = 0)
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('project_type');	
+$this->jsmquery->from('#__sportsmanagement_project');
+$this->jsmquery->where('id = ' . $project_id);	
+try {
+$this->jsmdb->setQuery( $this->jsmquery );
+$project_type = $this->jsmdb->loadResult();
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
+return $project_type;
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
+}
+//return $country;
+}
+	
 /**
  * sportsmanagementModeljlextDfbkeyimport::getCountry()
  * 
