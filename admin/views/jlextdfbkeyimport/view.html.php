@@ -64,9 +64,17 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
      
     }
 
+ /**
+  * sportsmanagementViewjlextdfbkeyimport::_displayDefaultGetDivision()
+  * 
+  * @param mixed $tpl
+  * @return void
+  */
  function _displayDefaultGetDivision($tpl) {
   
-  
+$division_options = sportsmanagementModelDivisions::getDivisions($this->project_id);  
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_options <pre>'.print_r($division_options,true).'</pre>', 'warning');
+
   
  }
  
@@ -287,14 +295,14 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         $model = $this->getModel();
 
 
-        $post = $this->jinput->post->getArray(array());
+        //$post = $this->jinput->post->getArray(array());
         //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 
 // retrieve the value of the state variable. First see if the variable has been passed
 // in the request. Otherwise retrieve the stored value. If none of these are specified,
 // the specified default value will be returned
 // function syntax is getUserStateFromRequest( $key, $request, $default );
-$post = $this->app->getUserStateFromRequest( "$this->option.first_post", 'first_post', '' );
+//$post = $this->app->getUserStateFromRequest( "$this->option.first_post", 'first_post', '' );
 //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 
 // retrieve the value of the state variable. If no value is specified,

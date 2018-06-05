@@ -51,6 +51,12 @@ function _initData()
 
 	}
 
+/**
+ * sportsmanagementModeljlextDfbkeyimport::getProjectType()
+ * 
+ * @param integer $project_id
+ * @return
+ */
 function getProjectType($project_id = 0)
 {
 $this->jsmquery->clear();
@@ -71,10 +77,11 @@ return $project_type;
 //return $country;
 }
 	
+
 /**
  * sportsmanagementModeljlextDfbkeyimport::getCountry()
  * 
- * @param mixed $projectid
+ * @param integer $project_id
  * @return
  */
 function getCountry($project_id = 0)
@@ -99,10 +106,12 @@ return $country;
 }
 
 
+
 	/**
 	 * sportsmanagementModeljlextDfbkeyimport::getProjectteams()
 	 * 
-	 * @param mixed $project_id
+	 * @param integer $project_id
+	 * @param integer $division_id
 	 * @return
 	 */
 	function getProjectteams($project_id = 0, $division_id = 0)
@@ -238,10 +247,11 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	}
 
 
+  
   /**
    * sportsmanagementModeljlextDfbkeyimport::getMatchdays()
    * 
-   * @param mixed $projectid
+   * @param integer $project_id
    * @return
    */
   function getMatchdays($project_id = 0)
@@ -282,10 +292,12 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
 
 	}
 	
+	
 	/**
 	 * sportsmanagementModeljlextDfbkeyimport::getMatches()
 	 * 
-	 * @param mixed $projectid
+	 * @param integer $project_id
+	 * @param integer $division_id
 	 * @return
 	 */
 	function getMatches($project_id = 0, $division_id = 0)
@@ -355,11 +367,13 @@ return $count;
 	
     
     
+	
 	/**
 	 * sportsmanagementModeljlextDfbkeyimport::getSchedule()
 	 * 
 	 * @param mixed $post
-	 * @param mixed $projectid
+	 * @param integer $project_id
+	 * @param integer $division_id
 	 * @return
 	 */
 	function getSchedule($post = array(), $project_id = 0, $division_id = 0 )
@@ -489,22 +503,29 @@ $this->savedfb = $result ;
 	
     
     
+	/**
+	 * sportsmanagementModeljlextDfbkeyimport::checkTable()
+	 * 
+	 * @return void
+	 */
 	function checkTable()
   {
-  $app = JFactory::getApplication();
+  //$app = JFactory::getApplication();
     $option = JFactory::getApplication()->input->getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
-    $db = sportsmanagementHelper::getDBConnection();
+    //$db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/dfbkeys.sql';
-    
-  $query='SELECT count(*) AS count
-		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_dfbkey';
-		$this->_db->setQuery($query);
-		$result = $this->_db->loadResult();
+
+$this->jsmquery->clear();
+$this->jsmquery->select('count(*) AS count');
+$this->jsmquery->from('#__sportsmanagement_dfbkey');
+
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadResult();
         
         if ( !$result )
         {
-        $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);    
+        $result = JInstallationHelper::populateDatabase($this->jsmdb, $db_table, $errors);    
             
         }
         
