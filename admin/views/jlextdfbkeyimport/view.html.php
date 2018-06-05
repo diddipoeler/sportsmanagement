@@ -118,7 +118,10 @@ $project_type = $this->model->getProjectType($this->project_id);
 $this->app->enqueueMessage($project_type, 'notice');
 if ( $project_type == 'DIVISIONS_LEAGUE' )
 {
+if ( !$this->jinput->get('division') )
+{
 $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_getdivision'); 
+}
 }
         $istable = $this->model->checkTable();
 
