@@ -71,8 +71,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
   * @return void
   */
  function _displayDefaultGetDivision($tpl) {
-  
-$division_options = sportsmanagementModelDivisions::getDivisions($this->project_id);  
+
+$mdl_divisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");  
+$division_options = $mdl_divisions->getDivisions($this->project_id);  
 //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_options <pre>'.print_r($division_options,true).'</pre>', 'warning');
 
   
