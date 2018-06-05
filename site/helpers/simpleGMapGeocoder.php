@@ -50,7 +50,7 @@ class JSMsimpleGMapGeocoder {
 function JLgetGeoCoords($address)
 {
     $coords = array();
-   
+   $result = '';
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=".
                   urlencode($address)."&sensor=false";
@@ -60,6 +60,7 @@ function JLgetGeoCoords($address)
     print_r($result);
     echo '</pre><br>';
 */
+if (function_exists('curl_init')) {	
 $initial = curl_init();
 curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
 curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
@@ -67,7 +68,7 @@ curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
 $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
-    
+}
 //    echo 'JLgetGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
     
     /*
