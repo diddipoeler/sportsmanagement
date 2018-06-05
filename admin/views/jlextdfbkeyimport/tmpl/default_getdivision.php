@@ -12,3 +12,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_( 'behavior.tooltip' );
 
 ?>
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
+<?php
+echo '<br>'.JHtml::_('select.genericlist',
+					$this->lists['divisions'],
+					'division',
+					'class="inputbox" size="1" onchange=""',
+					'value','text', $this->division);
+
+?>
+<input type="hidden" name="sent"			value="1" />
+<input type="hidden" name="task"			value="" />
+                			
+</form>

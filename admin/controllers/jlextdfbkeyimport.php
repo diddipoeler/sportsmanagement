@@ -39,9 +39,12 @@ function __construct()
         $this->registerTask( 'insert' , 'insert' );
     }
     
+
 /**
  * sportsmanagementControllerjlextdfbkeyimport::display()
  * 
+ * @param bool $cachable
+ * @param bool $urlparams
  * @return void
  */
 function display($cachable = false, $urlparams = false)  
@@ -97,6 +100,25 @@ function display($cachable = false, $urlparams = false)
     
     }    
     
+    /**
+     * sportsmanagementControllerjlextdfbkeyimport::getdivisionfirst()
+     * 
+     * @return void
+     */
+    function getdivisionfirst()
+    {
+    $post = JFactory::getApplication()->input->post->getArray(array());    
+    $option = JFactory::getApplication()->input->getCmd('option');    
+     $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20' );
+    $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default&division'.$post['division'];
+		$this->setRedirect( $link, $msg );     
+    }
+    
+  /**
+   * sportsmanagementControllerjlextdfbkeyimport::apply()
+   * 
+   * @return void
+   */
   function apply()
 	{
 	   $option = JFactory::getApplication()->input->getCmd('option');

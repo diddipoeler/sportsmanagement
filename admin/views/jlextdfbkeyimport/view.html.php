@@ -73,10 +73,21 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
  function _displayDefaultGetDivision($tpl) {
 
 $mdl_divisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");  
-$division_options = $mdl_divisions->getDivisions($this->project_id);  
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_options <pre>'.print_r($division_options,true).'</pre>', 'warning');
+$projectdivisions = $mdl_divisions->getDivisions($this->project_id);  
+$this->division = 0;
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' projectdivisions <pre>'.print_r($projectdivisions,true).'</pre>', 'warning');
+$divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		
+		if ($projectdivisions)
+		{ 
+			$projectdivisions = array_merge($divisionsList,$projectdivisions);
+		}
+		
+		$lists['divisions'] = $projectdivisions;
+        $this->lists = $lists;
+JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');  
+JToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'JTOOLBAR_SAVE');
 
-  
  }
  
     /**
