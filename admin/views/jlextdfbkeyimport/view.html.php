@@ -80,6 +80,9 @@ if (empty($this->project_id)) {
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
 }
 
+$project_type = $this->model->getProjectType($this->project_id);    
+JError::raiseWarning(500, JText::_($project_type));
+     
         $istable = $this->model->checkTable();
 
         if (empty($this->project_id)) {
