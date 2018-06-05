@@ -82,7 +82,11 @@ if (empty($this->project_id)) {
 
 $project_type = $this->model->getProjectType($this->project_id);    
 JError::raiseWarning(500, JText::_($project_type));
-     
+
+if ( $project_type == 'DIVISIONS_LEAGUE' )
+{
+$this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_getdivision'); 
+}
         $istable = $this->model->checkTable();
 
         if (empty($this->project_id)) {
