@@ -55,8 +55,21 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
             $this->_displayDefaultSaveMatchdays($tpl);
             return;
         }
+     
+     if ( $this->getLayout() == 'default_getdivision' || $this->getLayout() == 'default_getdivision_3' ) {
+            $this->setLayout('default_getdivision');
+            $this->_displayDefaultGetDivision($tpl);
+            return;
+        }
+     
     }
 
+ function _displayDefaultGetDivision($tpl) {
+  
+  
+  
+ }
+ 
     /**
      * sportsmanagementViewjlextdfbkeyimport::_displayDefault()
      * 
@@ -81,8 +94,8 @@ if (empty($this->project_id)) {
 }
 
 $project_type = $this->model->getProjectType($this->project_id);    
-JError::raiseWarning(500, JText::_($project_type));
-
+//JError::raiseWarning(500, JText::_($project_type));
+$this->app->enqueueMessage($project_type, 'notice');
 if ( $project_type == 'DIVISIONS_LEAGUE' )
 {
 $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_getdivision'); 
