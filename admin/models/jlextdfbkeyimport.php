@@ -58,7 +58,7 @@ function _initData()
  * @param mixed $projectid
  * @return
  */
-function getCountry($project_id)
+function getCountry($project_id = 0)
 {
 $this->jsmquery->clear();
 $this->jsmquery->select('l.country');	
@@ -86,7 +86,7 @@ return $country;
 	 * @param mixed $project_id
 	 * @return
 	 */
-	function getProjectteams($project_id)
+	function getProjectteams($project_id = 0, $division_id = 0)
 	{
 //		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
@@ -99,6 +99,10 @@ return $country;
             $this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $this->jsmquery->where('pt.project_id = ' . $project_id);
 
+		if ( $division_id )
+		{
+		$this->jsmquery->where('pt.division_id = ' . $division_id);	
+		}
 		$this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
@@ -221,7 +225,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
    * @param mixed $projectid
    * @return
    */
-  function getMatchdays($project_id)
+  function getMatchdays($project_id = 0)
 	{
 	//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
@@ -265,7 +269,7 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
 	 * @param mixed $projectid
 	 * @return
 	 */
-	function getMatches($project_id)
+	function getMatches($project_id = 0, $division_id = 0)
 	{
 //	   $option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
@@ -339,7 +343,7 @@ return $count;
 	 * @param mixed $projectid
 	 * @return
 	 */
-	function getSchedule( $post, $project_id )
+	function getSchedule($post = array(), $project_id = 0, $division_id = 0 )
 	{
 	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
@@ -366,6 +370,10 @@ $this->jsmquery->from('#__sportsmanagement_team as team');
 $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = team.id');
 $this->jsmquery->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 $this->jsmquery->where('pt.id = ' . (int)$element);
+if ( $division_id )
+{
+$this->jsmquery->where('pt.division_id = ' . $division_id);	
+}
 /*
 $query = 'select team.name
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as team
