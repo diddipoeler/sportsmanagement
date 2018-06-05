@@ -449,6 +449,7 @@ $temp->spieltag = $row->spieltag;
 $temp->round_id = $row->id;
 $temp->spielnummer = $row->spielnummer;
 $temp->match_date = $row->round_date_first;
+$temp->division_id = $division_id;	
 $temp->projectteam1_id = $chooseteam[$teile[0]]['projectteamid'];
 $temp->projectteam2_id = $chooseteam[$teile[1]]['projectteamid'];
 $temp->projectteam1_name = $chooseteam[$teile[0]]['teamname'];
