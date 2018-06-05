@@ -16,7 +16,7 @@ JHtml::_( 'behavior.tooltip' );
 <?php
 echo '<br>'.JHtml::_('select.genericlist',
 					$this->lists['divisions'],
-					'division',
+					'divisionid',
 					'class="inputbox" size="1" onchange=""',
 					'value','text', $this->division);
 

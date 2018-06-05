@@ -110,7 +110,7 @@ function display($cachable = false, $urlparams = false)
     $post = JFactory::getApplication()->input->post->getArray(array());    
     $option = JFactory::getApplication()->input->getCmd('option');    
      $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20' );
-    $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default&division='.$post['division'];
+    $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default&divisionid='.$post['divisionid'];
 		$this->setRedirect( $link, $msg );     
     }
     

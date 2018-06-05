@@ -30,7 +30,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
      */
     public function init() {
         $tpl = '';
-        
+        $this->division_id = $this->jinput->get('divisionid');
         if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' ) {
             $this->setLayout('default');
             $this->_displayDefault($tpl);
@@ -118,7 +118,7 @@ $project_type = $this->model->getProjectType($this->project_id);
 $this->app->enqueueMessage($project_type, 'notice');
 if ( $project_type == 'DIVISIONS_LEAGUE' )
 {
-if ( !$this->jinput->get('division') )
+if ( !$this->jinput->get('divisionid') )
 {
 $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_getdivision'); 
 }
@@ -206,10 +206,10 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         //echo '_displayDefaultCreatedays project -> '.$projectid.'<br>';
 
         $projectid = $app->getUserState("$this->option.pid", '0');
-        ;
+        
         $this->projectid = $projectid;
 
-        if ($res = $model->getProjectteams($projectid)) {
+        if ( $res = $model->getProjectteams($projectid,$this->division_id) ) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             //$lists['projectteams'] = $projectteams;
