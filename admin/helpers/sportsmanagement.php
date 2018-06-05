@@ -222,49 +222,6 @@ abstract class sportsmanagementHelper {
             return true;
         }
 
-
-        /*
-          $file_headers = @get_headers($picture);
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' picture_server <pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER, true).'</pre><br>','');
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' picture <pre>'.print_r($picture, true).'</pre><br>','');
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' file_headers <pre>'.print_r($file_headers, true).'</pre><br>','');
-
-          // check if files exists
-          $fileExists = true;
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' fileExists <pre>'.print_r($fileExists, true).'</pre><br>','');
-          $fileExists = JFile::exists($picture);
-
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' fileExists <pre>'.print_r($fileExists, true).'</pre><br>','');
-
-          $ch = curl_init($picture);
-          curl_setopt($ch, CURLOPT_NOBODY, true);
-          curl_exec($ch);
-          $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-          $app->enqueueMessage(__METHOD__.' '.__LINE__.' retcode <pre>'.print_r($retcode, true).'</pre><br>','');
-          // $retcode >= 400 -> not found, $retcode = 200, found.
-          curl_close($ch);
-         */
-
-        //$imageArray = getimagesize($picture);
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' imageArray <pre>'.print_r($imageArray, true).'</pre><br>','');
-//    if ( is_array ($imageArray) )
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return true;
-//    }
-//    if($file_headers[0] == 'HTTP/1.1 404 Not Found') 
-//    {
-//    return false;
-//    }
-//    else 
-//    {
-//    return true;
-//    }
     }
 
     /**
