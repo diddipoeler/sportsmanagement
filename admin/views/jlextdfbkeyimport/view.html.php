@@ -158,12 +158,12 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
                         } else {
 //        JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3' ) );
 //        JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4' ) );
-                            $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_firstmatchday');
+                            $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_firstmatchday&divisionid='.$this->division_id);
                         }
                     } else {
                         JError::raiseWarning(500, JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3'));
                         JError::raiseNotice(500, JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4'));
-                        $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_createdays');
+                        $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_createdays&divisionid='.$this->division_id);
                     }
                 } else {
                     $procountry = $this->model->getCountry($this->project_id);
@@ -208,6 +208,8 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         $projectid = $app->getUserState("$this->option.pid", '0');
         
         $this->projectid = $projectid;
+        
+        $this->division_id = $this->jinput->get('divisionid');
 
         if ( $res = $model->getProjectteams($projectid,$this->division_id) ) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
@@ -260,8 +262,9 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
 
         $projectid = $app->getUserState("$this->option.pid", '0');
         
+        $this->division_id = $this->jinput->get('divisionid');
 
-        if ($res = $model->getProjectteams($projectid)) {
+        if ($res = $model->getProjectteams($projectid,$this->division_id)) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             $lists['projectteams'] = $projectteams;
@@ -330,7 +333,8 @@ $post = $this->app->getUserState( "$this->option.first_post", '' );
         $this->projectid = $this->app->getUserState("$this->option.pid", '0');
         //$this->projectid = $projectid;
         //$post = $input->post;
-        $this->import = $model->getSchedule($post, $this->projectid);
+        $this->division_id = $this->jinput->get('divisionid');
+        $this->import = $model->getSchedule($post, $this->projectid,$this->division_id);
         //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
