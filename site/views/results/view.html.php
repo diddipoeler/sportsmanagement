@@ -389,7 +389,7 @@ $use_jquery_modal);
 			}
 		}
         
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && curl_init($team->logo_big) )
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big)  )
 		{
 
 			if (empty($image))
@@ -407,7 +407,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !curl_init($team->logo_big) )
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) )
 		{
 			if (empty($image))
 			{
@@ -423,7 +423,7 @@ $use_jquery_modal);
 			}
 		}
         
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
+        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -438,7 +438,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
+        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -453,7 +453,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
+    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -468,7 +468,7 @@ $modalheight,
 $use_jquery_modal);
 			}
 		}
-        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
+        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
