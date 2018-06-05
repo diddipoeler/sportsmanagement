@@ -44,7 +44,7 @@ function __construct()
  * 
  * @return void
  */
-function display()  
+function display($cachable = false, $urlparams = false)  
 {
 
 
