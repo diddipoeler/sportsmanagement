@@ -156,8 +156,13 @@ $list_html .=  "<table class=\"".$table_class."\">";
 $list_html .=  "<thead>" ;
 $list_html .=  "<tr>" ;
 $list_html .= "<td colspan=\"\" align=\"middle\" >" . "aktuelle Zeit" . "</td>";
+	
+$date = new DateTime();
+$config = JFactory::getConfig();
+$date->setTimezone(new DateTimeZone($config->get('offset')));	
+$list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";	
 //$list_html .= "<td colspan=\"8\" align=\"left\" >" . date("H:i:s",time()). "</td>";
-$list_html .= "<td colspan=\"8\" align=\"left\" >" . JFactory::getDate()->format('%H:%M'). "</td>";	
+//$list_html .= "<td colspan=\"8\" align=\"left\" >" . JFactory::getDate()->format('%H:%M'). "</td>";	
 $list_html .= "</tr>" ;
 $list_html .=  "<tr>" ;
 
