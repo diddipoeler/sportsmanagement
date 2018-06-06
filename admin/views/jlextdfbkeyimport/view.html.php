@@ -86,7 +86,7 @@ $divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_G
 		$lists['divisions'] = $projectdivisions;
         $this->lists = $lists;
 JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');  
-JToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'JTOOLBAR_SAVE');
+JToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
 
  }
  
@@ -152,7 +152,7 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
                     if ( $resmatchdays = $this->model->getMatchdays($this->project_id) ) {
 
                         // matches available
-                        if ( $resmatches = $this->model->getMatches($this->project_id,,$this->division_id) ) {
+                        if ( $resmatches = $this->model->getMatches($this->project_id,$this->division_id) ) {
                             JError::raiseNotice(500, JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_2'));
                             JError::raiseWarning(500, JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_7', $resmatches));
                             $this->app->redirect('index.php?option=' . $this->option . '&view=rounds');
