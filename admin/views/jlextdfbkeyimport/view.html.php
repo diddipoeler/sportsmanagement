@@ -240,7 +240,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects'); 
-        JToolbarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
+        JToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
         JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolbarHelper::preferences($this->option);
