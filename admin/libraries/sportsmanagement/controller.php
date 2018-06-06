@@ -157,6 +157,7 @@ class JSMControllerForm extends JControllerForm
                     }
                     break;
                 case 'rounds':
+                case 'projectteam':
                     $setRedirect = '&pid=' . $post['pid'];
                     break;
             }
