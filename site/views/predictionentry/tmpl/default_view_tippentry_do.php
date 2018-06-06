@@ -345,7 +345,8 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
                 //echo $result->match_date;
 //Versus
 $jdate = JFactory::getDate($result->match_date);
-$jdate->setTimezone("Europa/Berlin");
+//$jdate->setTimezone("Europa/Berlin");
+$jdate->setTimezone($predictionProjectSettings->timezone);
 echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
 //echo $jdate->format('d.m.Y H:i',true); //outputs 04:00:00 (correct)
 //echo JHtml::date($result->match_date, 'd.m.Y H:i', true);
