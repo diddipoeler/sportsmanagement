@@ -37,7 +37,7 @@ fieldset button {
 <!--	<fieldset class="adminform"> -->
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 
-		
+	<?php echo $this->loadTemplate('teamselect'); ?>	
 	<?php echo $this->loadTemplate('roundselect'); ?>
         	 
 		<!-- Start games list -->
