@@ -749,7 +749,7 @@ $query->where('st.id NOT IN (' . implode(",",$teamresult) .')' );
 		if (!$result = $db->loadObjectList())
 		{
 //			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS'),'Error');			
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS'),'Notice');			
 			return false;
 		}
 		foreach ($result as $teams)
