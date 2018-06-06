@@ -114,9 +114,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			}
 
 			$lists['project_teams'] = JHtmlSelect::genericlist($project_teamslist, 'project_teamslist[]', 
-																' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30, count($ress)).'"', 
-																'value', 
-																'text');
+					' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30, count($ress)).'"', 
+					'value', 
+					'text');
 		}
 		else
 		{
