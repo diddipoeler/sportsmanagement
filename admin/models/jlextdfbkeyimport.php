@@ -119,6 +119,9 @@ return $country;
 //		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
 
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
+		
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
             $this->jsmquery->select('t.name AS text,t.notes');
@@ -142,7 +145,10 @@ return $country;
 		{
 		$this->jsmdb->execute();
 		$number = $this->jsmdb->getNumRows();		
-		
+
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
+			
 		if ( $number > 0 )
 		{
 /*	
