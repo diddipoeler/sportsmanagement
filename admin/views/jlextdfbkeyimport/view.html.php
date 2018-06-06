@@ -205,14 +205,14 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         //get the project
         //echo '_displayDefaultCreatedays project -> '.$projectid.'<br>';
 
-        $projectid = $app->getUserState("$this->option.pid", '0');
-        
-        $this->projectid = $projectid;
+//        $projectid = $app->getUserState("$this->option.pid", '0');
+//        $this->projectid = $projectid;
         
         $this->division_id = $this->jinput->get('divisionid');
 JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($this->division_id,true).'</pre>', 'warning');
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($this->project_id,true).'</pre>', 'warning');
 	    
-        if ( $res = $model->getProjectteams($projectid,$this->division_id) ) {
+        if ( $res = $model->getProjectteams($this->project_id,$this->division_id) ) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             //$lists['projectteams'] = $projectteams;
