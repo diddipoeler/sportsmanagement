@@ -259,14 +259,14 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id 
 
         //$db = sportsmanagementHelper::getDBConnection();
         //$uri = JFactory::getURI();
-        $user = JFactory::getUser();
+        //$user = JFactory::getUser();
         $model = $this->getModel();
 
-        $projectid = $app->getUserState("$this->option.pid", '0');
+        //$projectid = $app->getUserState("$this->option.pid", '0');
         
         $this->division_id = $this->jinput->get('divisionid');
 
-        if ($res = $model->getProjectteams($projectid,$this->division_id)) {
+        if ($res = $model->getProjectteams($this->project_id,$this->division_id)) {
             $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             $lists['projectteams'] = $projectteams;
@@ -292,7 +292,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id 
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
-        JToolbarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
+        JToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
         JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolbarHelper::preferences($this->option);
@@ -311,7 +311,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id 
 
         //$db = sportsmanagementHelper::getDBConnection();
         //$uri = JFactory::getURI();
-        $user = JFactory::getUser();
+        //$user = JFactory::getUser();
         $model = $this->getModel();
 
 
@@ -332,11 +332,11 @@ $post = $this->app->getUserState( "$this->option.first_post", '' );
 //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 
         
-        $this->projectid = $this->app->getUserState("$this->option.pid", '0');
+        //$this->projectid = $this->app->getUserState("$this->option.pid", '0');
         //$this->projectid = $projectid;
         //$post = $input->post;
         $this->division_id = $this->jinput->get('divisionid');
-        $this->import = $model->getSchedule($post, $this->projectid,$this->division_id);
+        $this->import = $model->getSchedule($post, $this->project_id,$this->division_id);
         //$this->request_url = $uri->toString();
 
         // Set toolbar items for the page
@@ -346,7 +346,7 @@ $post = $this->app->getUserState( "$this->option.first_post", '' );
         // Set toolbar items for the page
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');
         JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
-        JToolbarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
+        JToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
         JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolbarHelper::preferences($this->option);
