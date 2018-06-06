@@ -108,17 +108,18 @@ JToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'JTOOLBAR_SAVE');
         //get the project
 //		$projectid = $model->getProject();
 //		$this->assignRef( 'projectid',		$projectid );
-
+/*
 if (empty($this->project_id)) {
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
 }
-
+*/	    
+$this->division_id = $this->jinput->get('divisionid');
 $project_type = $this->model->getProjectType($this->project_id);    
 //JError::raiseWarning(500, JText::_($project_type));
 $this->app->enqueueMessage($project_type, 'notice');
 if ( $project_type == 'DIVISIONS_LEAGUE' )
 {
-if ( !$this->jinput->get('divisionid') )
+if ( !$this->division_id )
 {
 $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimport&layout=default_getdivision'); 
 }
@@ -131,7 +132,7 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         } else {
             // project selected. projectteams available ?
             //build the html options for projectteams
-            if ($res = $this->model->getProjectteams($this->project_id)) {
+            if ( $res = $this->model->getProjectteams($this->project_id,$this->division_id) ) {
                 $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
                 $projectteams = array_merge($projectteams, $res);
                 $lists['projectteams'] = $projectteams;
