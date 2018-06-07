@@ -115,8 +115,8 @@ class sportsmanagementModelMatches extends JModelList
         //$search_division	= $this->getState('filter.division');
         
         $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
-        
-//        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+        $this->_projectteam = JFactory::getApplication()->input->getvar('projectteam', 0);
+        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {
