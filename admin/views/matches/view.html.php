@@ -45,6 +45,8 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         $table_info = $_db->getTableFields('#__sportsmanagement_match');
+     
+     $this->projectteamsel = JFactory::getApplication()->input->getvar('projectteam', 0);
 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
 
