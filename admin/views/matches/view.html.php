@@ -151,6 +151,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             }
 
             $lists['teams_' . $divhomeid] = $teams;
+         $lists['projectteams'] = $teams;
             unset($teams);
 
             // sind die verzeichnisse vorhanden ?
