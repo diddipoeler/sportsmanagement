@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <form name="projectteamForm" id="projectteamForm" method="post">
   
 <?php
-echo $this->lists['projectteams'];  
+//echo $this->lists['projectteams'];  
+echo "".JHtml::_('select.genericlist', $this->lists['projectteams'], 'projectteams' , 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel )."";  
 ?>  
 </form>  
