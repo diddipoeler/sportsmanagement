@@ -123,9 +123,14 @@ class sportsmanagementModelMatches extends JModelList
             $this->_rid	= $app->getUserState( "$option.rid", '0' );
         }
         
+	if ( $this->_projectteam )
+	{
+	$this->_rid = '';
+	}
+		
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	$db = sportsmanagementHelper::getDBConnection();
+	$query = $db->getQuery(true);
         $subQueryPlayerHome= $db->getQuery(true);
         $subQueryStaffHome= $db->getQuery(true);
         $subQueryPlayerAway= $db->getQuery(true);
@@ -135,10 +140,10 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery3= $db->getQuery(true);
         $subQuery4= $db->getQuery(true);
         $subQuery5= $db->getQuery(true);
-		// Select some fields
-		$query->select('mc.*');
-		// From the match table
-		$query->from('#__sportsmanagement_match AS mc');
+	// Select some fields
+	$query->select('mc.*');
+	// From the match table
+	$query->from('#__sportsmanagement_match AS mc');
         // join player home
         $subQueryPlayerHome->select('tp.id');
         $subQueryPlayerHome->from('#__sportsmanagement_season_team_person_id AS tp ');
@@ -193,10 +198,7 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery4->from('#__sportsmanagement_match_staff AS ms  ');
         $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
         $query->select('('.$subQuery4.') AS awaystaff_count');
-        
-           
 
-        
         // count match referee
         $subQuery5->select('count(mr.id)');
         $subQuery5->from('#__sportsmanagement_match_referee AS mr ');
@@ -204,8 +206,8 @@ class sportsmanagementModelMatches extends JModelList
         $query->select('('.$subQuery5.') AS referees_count');
         
         // Join over the users for the checked out user.
-		$query->select('u.name AS editor');
-		$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
+	$query->select('u.name AS editor');
+	$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.id = mc.projectteam1_id');
         $query->join('LEFT','#__sportsmanagement_project_team AS ptaway ON ptaway.id = mc.projectteam2_id');
         $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = pthome.id');
@@ -216,8 +218,15 @@ class sportsmanagementModelMatches extends JModelList
         $query->select('divhome.id as divhomeid'); 
         $query->join('LEFT','#__sportsmanagement_division AS divhome ON divhome.id = pthome.division_id');
         
+	if ( $this->_rid )
+	{
         $query->where(' mc.round_id = ' . $this->_rid);
-        
+	}
+	if ( $this->_projectteam )
+	{
+	$query->where('( mc.projectteam1_id = ' . $this->_projectteam .' OR mc.projectteam2_id = '.$this->_projectteam.' )' );
+	}
+		
         if ($this->getState('filter.division'))
 		{
         $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
