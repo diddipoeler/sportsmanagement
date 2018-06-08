@@ -67,6 +67,7 @@ if (!class_exists('sportsmanagementHelper')) {
     JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
+$view = $input->getVar("view");
 
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
