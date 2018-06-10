@@ -57,7 +57,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 			
 			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
 			$this->model = $model;
-			$this->oundID = $this->model->roundID;
+			$this->roundID = sportsmanagementModelPrediction::$roundID;
 			$this->config = array_merge($overallConfig,$tipprankingconfig,$config);
 			$model::$config = $this->config;
             
