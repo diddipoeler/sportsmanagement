@@ -123,9 +123,7 @@ break;
 case 'predictionrules':
 case 'predictionranking':
 case 'predictionusers':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php');
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
-break;
+case 'predictionuser':
 case 'predictionentry':
 case 'predictionresults':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
