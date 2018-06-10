@@ -338,19 +338,12 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 						<tr class='<?php echo $class; ?>'>
 							<td class="td_c">
 								<?php
-                // das datum des spiels
-// 								echo JHTML::date($result->match_date,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
-// 								echo ' - ';
-// 								echo JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$this->config['time_format']); 
-                //echo $result->match_date;
-//Versus
+/**
+ * das datum des spiels
+ */
 $jdate = JFactory::getDate($result->match_date);
-//$jdate->setTimezone("Europa/Berlin");
-echo $predictionProjectSettings->timezone.'<br>';
-$jdate->setTimezone($predictionProjectSettings->timezone);
+$jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
 echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
-//echo $jdate->format('d.m.Y H:i',true); //outputs 04:00:00 (correct)
-//echo JHtml::date($result->match_date, 'd.m.Y H:i', true);
 								?>
 							</td>
 								<?php
