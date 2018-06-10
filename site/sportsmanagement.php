@@ -67,8 +67,70 @@ if (!class_exists('sportsmanagementHelper')) {
     JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$view = $input->getVar("view");
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
 
+$view = $input->getVar("view");
+switch ($view)
+{
+case 'ranking': 
+case 'curve':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');	
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');	  
+break;    
+case 'results':    
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');	
+break;	
+case 'teams':
+case 'teamstats':
+case 'teamplan':
+case 'roster':
+case 'teamstree':    
+case 'matrix':
+case 'rankingalltime':
+case 'clubinfo':
+case 'clubplan':
+case 'eventsranking':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+break;	
+case 'teaminfo':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );	
+break;	
+case 'playground':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'teams.php');	
+break;
+case 'nextmatch':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
+break;
+
+
+case 'predictionrules':
+case 'predictionranking':
+case 'predictionusers':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
+break;
+case 'predictionentry':
+case 'predictionresults':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php');
+break;
+}
+
+/*
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
@@ -97,12 +159,7 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.p
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'databasetool.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'eventtypes.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'clubnames.php');
-
-/**
- * sprachdatei aus dem backend laden
- */
-$langtag = JFactory::getLanguage();
-
+*/
 $paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
 
 if (!defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS')) {
@@ -142,10 +199,13 @@ if ($paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICT
     }
 }
 
+/**
+ * sprachdatei aus dem backend laden
+ */
 $lang = JFactory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
-$language_tag = $langtag->getTag();
+$language_tag = $lang->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
@@ -196,6 +256,8 @@ $document->setMetaData('robots', 'index,follow');
 $document->setMetaData('keywords', implode(",", $meta_keys));
 $document->setMetaData('generator', "JSM - Joomla Sports Management");
 
+unset($meta_keys);
+
 $task = $input->getCmd('task');
 $option = $input->getCmd('option');
 $view = $input->getVar("view");
@@ -223,4 +285,7 @@ $task = $input->getCmd('task');
 $controller->execute($task);
 //$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();
+
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' speicher <pre>'.print_r(memory_get_usage(),true).'</pre>', 'warning');
+
 ?>
