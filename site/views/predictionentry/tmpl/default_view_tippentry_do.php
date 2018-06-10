@@ -80,7 +80,7 @@ else
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
 			if ( (int)sportsmanagementModelPrediction::$roundID > sportsmanagementModelPrediction::getProjectRounds(sportsmanagementModelPrediction::$pjID)) 
             {
-                sportsmanagementModelPrediction::$roundID = $this->model->_projectRoundsCount;
+                sportsmanagementModelPrediction::$roundID = sportsmanagementModelPrediction::$_projectRoundsCount;
                 }
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
 			$memberProjectJokersCount = sportsmanagementModelPrediction::getMemberPredictionJokerCount($this->predictionMember->user_id,
