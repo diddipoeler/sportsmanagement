@@ -67,6 +67,9 @@ if (!class_exists('sportsmanagementHelper')) {
     JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
+/**
+ * was wird benöigt ?
+ */
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
@@ -120,6 +123,7 @@ break;
 case 'predictionrules':
 case 'predictionranking':
 case 'predictionusers':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php');
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
 break;
 case 'predictionentry':
@@ -130,36 +134,6 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php')
 break;
 }
 
-/*
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'results.php');
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php');
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php');
-
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'divisions.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'leagues.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'seasons.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'teams.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'team.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'club.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteam.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'databasetool.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'eventtypes.php');
-require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'clubnames.php');
-*/
 $paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
 
 if (!defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS')) {
