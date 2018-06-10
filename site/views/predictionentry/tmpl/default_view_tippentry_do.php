@@ -383,19 +383,16 @@ echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
 									}
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
 									//echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
-                                    ?>                                    
                                     
-<a href="<?php echo JURI::root().$logo_home;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam1_id;?>">
-<img src="<?php echo JURI::root().$logo_home;?>" alt="<?php echo $imgTitle;?>" width="20" />
-</a>        
-<div class="modal fade" id="modal<?php echo $result->projectteam1_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(JURI::root().$logo_home, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div>
+echo sportsmanagementHelperHtml::getBootstrapModalImage('tippteaminfohome' . $result->projectteam1_id,
+$logo_home,
+$imgTitle,
+20,
+'',							
+$this->modalwidth,
+$this->modalheight,
+2);                                    
+?>                                    
                                     
                                     <?PHP 
                                     
@@ -483,37 +480,37 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 							</td>
 							<td class="td_c">
 								<?php
-								echo '<input	type="hidden" name="cids[' . $predictionProject->project_id . '][]"
+								echo '<input type="hidden" name="cids[' . $predictionProject->project_id . '][]"
 													value="' . $result->id . '" />';
-								echo '<input	type="hidden"
+								echo '<input type="hidden"
 													name="prids[' . $predictionProject->project_id . '][' . $result->id . ']"
 													value="' . $result->prid . '" />';
 
                 // welcher tippmodus
-								if ($predictionProject->mode=='0')	// Tipp in normal mode
+								if ( $predictionProject->mode == 0 )	// Tipp in normal mode
 								{
-									echo $this->createStandardTippSelect(	$result->tipp_home,
+									echo $this->createStandardTippSelect($result->tipp_home,
                                     $result->tipp_away,
                                     $result->tipp,
-																					$predictionProject->project_id,
-                                                                                    $result->id,
-																					$this->config['seperator'],
-                                                                                    $tippAllowed);
+									$predictionProject->project_id,
+                                    $result->id,
+									$this->config['seperator'],
+                                    $tippAllowed);
 								}
 								else	// Tipp in toto mode
 								{
-									echo $this->createTotoTippSelect(	$result->tipp_home,
+									echo $this->createTotoTippSelect($result->tipp_home,
                                     $result->tipp_away,
                                     $result->tipp,
-																				$predictionProject->project_id,
-                                                                                $result->id,
-                                                                                $tippAllowed);
+									$predictionProject->project_id,
+                                    $result->id,
+                                    $tippAllowed);
 								}
 								
 								?>
 							</td>
 							<?php
-							if (($predictionProject->joker) && ($predictionProject->mode==0))
+							if ( ($predictionProject->joker) && ( $predictionProject->mode == 0 ) )
 							{
 							?>
 								<td class="td_c">
