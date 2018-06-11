@@ -113,6 +113,9 @@ class sportsmanagementView extends JViewLegacy {
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+        
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/jcemediabox.css');
+		$this->document->addScript(JURI::root(true) . '/components/'.$this->option.'/assets/js/jcemediabox.js');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
 
         /**
