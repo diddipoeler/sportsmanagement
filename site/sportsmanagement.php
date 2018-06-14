@@ -183,8 +183,6 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
 $document->addScript(JURI::root(true) . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 
-//$document->addScriptDeclaration('jQuery.noConflict();');
-
 /**
  * meta daten der komponente setzen
  */
@@ -260,4 +258,6 @@ $controller->redirect();
 
 //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' speicher <pre>'.print_r(memory_get_usage(),true).'</pre>', 'warning');
 
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__." not real: ".(memory_get_peak_usage(false)/1024/1024)." MiB", 'warning');
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__." real: ".(memory_get_peak_usage(true)/1024/1024)." MiB", 'warning');
 ?>
