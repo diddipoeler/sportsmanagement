@@ -255,34 +255,34 @@ When viewing on anything larger than 768px wide, you will not see any difference
 
 					if (empty(sportsmanagementModelPrediction::$_predictionMember->fav_team))
                     {
-                        sportsmanagementModelPrediction::$_predictionMember->fav_team = '0,0';
-                        }
+                    sportsmanagementModelPrediction::$_predictionMember->fav_team = '0,0';
+                    }
                         
 					$sFavTeamsList = explode(';',sportsmanagementModelPrediction::$_predictionMember->fav_team);
 					foreach ($sFavTeamsList AS $key => $value)
                     {
-                        $dFavTeamsList[]=explode(',',$value);
-                        }
+                    $dFavTeamsList[] = explode(',',$value);
+                    }
                         
 					foreach ($dFavTeamsList AS $key => $value)
                     {
-                        $favTeamsList[$value[0]]=$value[1];
-                        }
+                    $favTeamsList[$value[0]] = $value[1];
+                    }
 
 					if (empty(sportsmanagementModelPrediction::$_predictionMember->champ_tipp))
                     {
-                        sportsmanagementModelPrediction::$_predictionMember->champ_tipp = '0,0';
-                        }
+                    sportsmanagementModelPrediction::$_predictionMember->champ_tipp = '0,0';
+                    }
                         
 					$sChampTeamsList = explode(';',sportsmanagementModelPrediction::$_predictionMember->champ_tipp);
 					foreach ($sChampTeamsList AS $key => $value)
                     {
-                        $dChampTeamsList[]=explode(',',$value);
-                        }
+                    $dChampTeamsList[] = explode(',',$value);
+                    }
 					foreach ($dChampTeamsList AS $key => $value)
                     {
-                        $champTeamsList[$value[0]] = $value[1];
-                        }
+                    $champTeamsList[$value[0]] = $value[1];
+                    }
 
 					$showSaveButton=false;
 					if (count($roundResults) > 0)
