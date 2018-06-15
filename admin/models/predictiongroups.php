@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      predictiongroups.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage models
@@ -58,9 +58,16 @@ class sportsmanagementModelpredictiongroups extends JSMModelList
 		$this->setState('filter.search', $search);
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
+		if ( $this->jsmjinput->getInt('prediction_id') )
+		{
+		$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id') );
+        $this->jsmapp->setUserState( "com_sportsmanagement.prediction_id", $temp_user_request );	
+		}
+		else
+		{
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
         $this->setState('filter.prediction_id', $temp_user_request);
-        
+		}
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);       
