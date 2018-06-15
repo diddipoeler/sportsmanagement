@@ -155,8 +155,20 @@ JHtml::_('behavior.modal');
 					<td style='text-align:center; ' colspan='2'><?php echo count( $pred_admins ); ?></td>
 					<td style='text-align:center; '><?php echo $published; ?></td>
 					
-					<td style='text-align:center; '><?php echo ''; ?></td>
-					<td style='text-align:center; '><?php echo ''; ?></td>
+					<td style='text-align:center; '>
+						<?php 
+				$image = 'players.png';
+                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
+				echo ''; 
+						?>
+					</td>
+					<td style='text-align:center; '>
+						<?php 
+				$image = 'templates.png';
+                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
+				echo ''; 
+						?>
+					</td>
 					
 					<td style='text-align:center; '><?php echo $row->id; ?></td>
                     <td><?php echo $row->modified; ?></td>
