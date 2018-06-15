@@ -65,10 +65,16 @@ class sportsmanagementModelPredictionMembers extends JSMModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
+        if ( $this->jsmjinput->getInt('prediction_id') )
+		{
+		$this->setState('filter.prediction_id', $this->jsmjinput->getInt('prediction_id') );
+        $this->jsmapp->setUserState( "com_sportsmanagement.prediction_id", $temp_user_request );	
+		}
+		else
+		{
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
         $this->setState('filter.prediction_id', $temp_user_request);
-        
+		}
         // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);       
