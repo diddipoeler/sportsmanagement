@@ -1599,7 +1599,12 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
   }
   
 	$mailer->setBody($body);
-  
+
+if ( $configprediction['admin_debug'] )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r($mailer,true).'</pre>'),'');        
+}        
+
   //Sending the mail
 	$send =  $mailer->Send();
 	if ($send !== true)
@@ -1613,7 +1618,7 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
 	{
 	//echo 'Mail sent';
 	$emailadresses = implode(",",$predictionGameMemberMail);
-	$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK',$emailadresses),'');
+	$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK',$emailadresses),'notice');
 	}
                           				
   }

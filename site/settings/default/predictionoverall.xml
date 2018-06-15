@@ -25,7 +25,16 @@ default="1"
 			<option value="1">JYES</option>
 		</field>
 
-
+<field name="admin_debug" 
+type="extensionradiobutton" 
+default="0"
+		class="radio btn-group btn-group-yesno"
+			label="DEBUG"
+			description="DEBUG">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
 			
 </fieldset>
 
