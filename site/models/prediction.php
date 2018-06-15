@@ -1328,12 +1328,12 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
       $round_ids = $configprediction['predictionroundid'];
       }    
       
-  $roundResults = sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry((int)$predictionGameID,
-																			(int)$ProjectID,
-																			(int)$RoundID,
-																			$joomlaUserID,
-                                                                            $match_ids,
-                                                                            $round_ids);
+$roundResults = sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry((int)$predictionGameID,
+(int)$ProjectID,
+(int)$RoundID,
+$joomlaUserID,
+$match_ids,
+$round_ids);
                                           
   $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
@@ -1363,6 +1363,8 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
 /**
  * zur sicherheit die tipeingaben auch dem admin zusenden
+ * template: overall
+ * parameter: send_admin_user_tipentry
  */
 if ( $configprediction['send_admin_user_tipentry'] )
 {  
@@ -1371,7 +1373,7 @@ if ( $configprediction['send_admin_user_tipentry'] )
   //$mailer->addRecipient($predictionGameMemberMail);				
   $mailer->addRecipient($recipient);
 
-//$mailer->addRecipient($recipient);
+
 
 	//Create the mail
 	$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_TITLE'));
