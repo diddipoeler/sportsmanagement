@@ -159,15 +159,29 @@ JHtml::_('behavior.modal');
 						<?php 
 				$image = 'players.png';
                         $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
-				echo ''; 
+			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictionmembers&prediction_id='.$row->id);
 						?>
+<a href="<?php echo $link2; ?>">
+<?php
+$attribs['title'] = $title;
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+	$title, $attribs);
+?>
+</a>						
 					</td>
 					<td style='text-align:center; '>
 						<?php 
 				$image = 'templates.png';
                         $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
-				echo ''; 
+			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id='.$row->id);	
 						?>
+<a href="<?php echo $link2; ?>">
+<?php
+$attribs['title'] = $title;
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+	$title, $attribs);
+?>
+</a>						
 					</td>
 					
 					<td style='text-align:center; '><?php echo $row->id; ?></td>
