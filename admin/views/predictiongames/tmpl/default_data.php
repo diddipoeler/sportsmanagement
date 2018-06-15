@@ -61,6 +61,11 @@ JHtml::_('behavior.modal');
 					</th>
 					<th width="" class="title">
 						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
+						?>
+					</th>
+					<th width="" class="title">
+						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
 						?>
 					</th>
@@ -90,9 +95,9 @@ JHtml::_('behavior.modal');
 				?>
                 <tfoot>
                 <tr>
-                <td colspan='9'><?php echo $this->pagination->getListFooter(); ?>
+                <td colspan='10'><?php echo $this->pagination->getListFooter(); ?>
                 </td>
-                <td colspan="7"><?php echo $this->pagination->getResultsCounter(); ?>
+                <td colspan="8"><?php echo $this->pagination->getResultsCounter(); ?>
             </td>
                 </tr>
                 </tfoot>
@@ -169,6 +174,22 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 ?>
 </a>						
 					</td>
+					
+<td style='text-align:center; '>
+						<?php 
+				$image = 'division.png';
+                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
+			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictiongroups&prediction_id='.$row->id);
+						?>
+<a href="<?php echo $link2; ?>">
+<?php
+$attribs['title'] = $title;
+echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+	$title, $attribs);
+?>
+</a>						
+					</td>
+					
 					<td style='text-align:center; '>
 						<?php 
 				$image = 'templates.png';
