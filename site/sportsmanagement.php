@@ -91,6 +91,19 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php'
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');	
 break;	
+case 'matchreport':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
+break;
+case 'resultsranking':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');
+break;
 case 'teams':
 case 'teamstats':
 case 'teamplan':
@@ -101,9 +114,12 @@ case 'rankingalltime':
 case 'clubinfo':
 case 'clubplan':
 case 'eventsranking':
-case 'player':
-case 'matchreport':
+case 'stats':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
+break;	
+case 'player':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
 break;	
 case 'teaminfo':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
