@@ -1373,9 +1373,9 @@ if ( $configprediction['send_admin_user_tipentry'] )
   //$mailer->addRecipient($predictionGameMemberMail);				
   $mailer->addRecipient($recipient);
 
-
-
-	//Create the mail
+/**
+ * Create the mail
+ */
 	$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_TITLE'));
   
   
@@ -1385,8 +1385,8 @@ if ( $configprediction['send_admin_user_tipentry'] )
   $body = '';
   $totalPoints = 0;
 /**
-  * jetzt die ergebnisse
-  */  
+ * jetzt die ergebnisse
+ */  
   $body .= "<html>"; 
 
 $body .= "<table class='blog' cellpadding='0' cellspacing='0' width='100%'>";
@@ -1412,7 +1412,6 @@ $body .= "</table>";
  */	
 	foreach ($roundResults AS $result)
 	{
-  //$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
   $class = '';
 
 	$resultHome = (isset($result->team1_result)) ? $result->team1_result : '-';
@@ -1492,7 +1491,9 @@ $body .= "<td nowrap='nowrap' class='td_l'>";
 $body .= $awayName;
 $body .= "</td>";	
 
-// spielergebnisse
+/**
+ * spielergebnisse
+ */
 $body .= "<td class='td_c'>";
 $body .= $resultHome . $configprediction['seperator'] . $resultAway;
 $body .= "</td>";
@@ -1543,13 +1544,6 @@ $totalCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $re
 $homeCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 1);
 $awayCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 2);
 $drawCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 0);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result->id<br><pre>'.print_r($result->id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalCount<br><pre>'.print_r($totalCount,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeCount<br><pre>'.print_r($homeCount,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayCount<br><pre>'.print_r($awayCount,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' drawCount<br><pre>'.print_r($drawCount,true).'</pre>'),'');
 
 if ($totalCount > 0)
 {
@@ -1605,7 +1599,9 @@ if ( $configprediction['admin_debug'] )
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r($mailer,true).'</pre>'),'');        
 }        
 
-  //Sending the mail
+/**
+ * Sending the mail
+ */
 	$send =  $mailer->Send();
 	if ($send !== true)
 	{

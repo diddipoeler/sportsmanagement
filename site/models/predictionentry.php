@@ -641,15 +641,11 @@ catch (Exception $e) {
 
 		}
 
-    // email mit tippergebnissen senden
-    if ( $predictionMemberInfo->reminder )
+/**
+ * email mit tippergebnissen senden
+ */
+    if ( $predictionMemberInfo->receipt )
     {
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mID<br><pre>'.print_r($mID,true).'</pre>'),'Error');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'Error');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' RoundID<br><pre>'.print_r($RoundID,true).'</pre>'),'Error');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ProjectID<br><pre>'.print_r($ProjectID,true).'</pre>'),'Error');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomlaUserID<br><pre>'.print_r($joomlaUserID,true).'</pre>'),'Error');
-        
     sportsmanagementModelPrediction::sendMemberTipResults($mID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID);
     }
     
