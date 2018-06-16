@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      sportsmanagement.php
@@ -9,6 +8,7 @@
  * @package   sportsmanagement
  * @subpackage
  */
+ 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
@@ -101,6 +101,8 @@ case 'rankingalltime':
 case 'clubinfo':
 case 'clubplan':
 case 'eventsranking':
+case 'player':
+case 'matchreport':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 break;	
 case 'teaminfo':
