@@ -12,7 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 /**
  * sportsmanagementViewPredictionMembers
  * 
@@ -24,7 +23,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class sportsmanagementViewPredictionMembers extends sportsmanagementView
 {
-
   
   /**
    * sportsmanagementViewPredictionMembers::init()
@@ -34,12 +32,12 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
   public function init ()
 	{
 	   
-       // Reference global application object
-		$app = JFactory::getApplication();
-        // JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$this->state = $this->get('State');
+//       // Reference global application object
+//		$app = JFactory::getApplication();
+//        // JInput object
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$this->state = $this->get('State');
 		$tpl = '';
        
 		$this->prediction_id = $this->state->get('filter.prediction_id');
@@ -135,25 +133,25 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
      */
 	function _display( $tpl = null )
 	{
-// Reference global application object
-		$app = JFactory::getApplication();
-        // JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
-		$model	= $this->getModel();
-    	$uri = JFactory::getURI();
+//// Reference global application object
+//		$app = JFactory::getApplication();
+//        // JInput object
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$document = JFactory::getDocument();
+//		$model	= $this->getModel();
+//    	$uri = JFactory::getURI();
         
-		$this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//		$this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
 
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+//		$items = $this->get('Items');
+//		$total = $this->get('Total');
+//		$pagination = $this->get('Pagination');
         
 		$table = JTable::getInstance('predictionmember', 'sportsmanagementTable');
-		$this->table	= $table;
+		$this->table = $table;
 
         //build the html select list for prediction games
         $mdlPredGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
@@ -161,27 +159,24 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
 			{ 
 				$predictions = array_merge( $predictions, $res ); 
-				$this->prediction_ids	= $res;
+				$this->prediction_ids = $res;
 			}
 			
-		$lists['predictions'] = JHtml::_(	'select.genericlist', 
-											$predictions, 
-											'filter_prediction_id', 
-											'class="inputbox" onChange="this.form.submit();" ', 
-											'value', 
-											'text', 
-											$this->state->get('filter.prediction_id')
-										);
+		$lists['predictions'] = JHtml::_('select.genericlist', 
+								$predictions, 
+								'filter_prediction_id', 
+								'class="inputbox" onChange="this.form.submit();" ', 
+								'value', 
+								'text', 
+								$this->state->get('filter.prediction_id')
+								);
 		unset( $res );
-       
-       //$this->prediction_id = $this->state->get('filter.prediction_id');
-
-        
-		$this->user	= JFactory::getUser();
+      
+		//$this->user	= JFactory::getUser();
 		$this->lists	= $lists;
-		$this->pagination	= $pagination;
-		$this->items	= $items;
-		$this->request_url	= $uri->toString();
+//		$this->pagination	= $pagination;
+//		$this->items	= $items;
+//		$this->request_url	= $uri->toString();
         
         
 	}
