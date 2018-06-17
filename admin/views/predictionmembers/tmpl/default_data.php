@@ -11,9 +11,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-$ordering = ( $this->sortColumn == 'pre.ordering' );
-
 JHtml::_( 'behavior.tooltip' );
 ?>
 
@@ -27,8 +24,7 @@ JHtml::_( 'behavior.tooltip' );
 						?>
 					</th>
 					<th width="20">
-						<input  type="checkbox" name="toggle" value=""
-								onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
 					<th class="title" nowrap="nowrap">
 						<?php
