@@ -106,10 +106,7 @@ if ( !$result )
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
-    //$app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
         $config = JFactory::getConfig();
-  //$mailer = JFactory::getMailer();
   
 $language = JFactory::getLanguage();
 $language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
@@ -118,22 +115,12 @@ sportsmanagementModelPrediction::$predictionGameID = $prediction_id;
 $configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
 $overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $configprediction = array_merge($overallConfig,$configprediction);
-    
-//  // als html
-//  $mailer->isHTML(TRUE);
-  
+ 
   $pred_reminder_mail_text = JComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
-  
-  
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' language->getTag() <br><pre>'.print_r($language->getTag(),true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configprediction <br><pre>'.print_r($configprediction,true).'</pre>'),'');
-//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_reminder_mail_text <br><pre>'.print_r($pred_reminder_mail_text,true).'</pre>'),'');
-  
-//  $meta_keys[] = $config->getValue( 'config.MetaKeys' );
-//$your_name = $config->getValue( 'config.sitename' );
 
-//add the sender Information.
+/**
+ * add the sender Information.
+ */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
@@ -148,9 +135,6 @@ $sender = array(
     $config->getValue( 'config.mailfrom' ),
     $config->getValue( 'config.fromname' ) );
 }
-
-
-//$mailer->setSender($sender); 
 
 $mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
 $mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
@@ -388,17 +372,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 $message = str_replace('[PREDICTIONADMIN]', $config->getValue( 'sitename' ), $message);
 }
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($message,true).'</pre>'),'Error');
-
 $mailer->setBody($message);
 $send = $mailer->Send();
 
 if ( $send !== true ) {
-    //echo 'Error sending email: ' . $send->message;
 //    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
 } else {
-    //echo 'Mail sent';
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $member_email->email),'notice');
 }
 
     }
