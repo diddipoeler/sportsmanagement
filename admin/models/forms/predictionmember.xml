@@ -14,6 +14,26 @@
 			default="0"
 			readonly="true"
 		/>
+		<field
+			name="prediction_id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
+		<field
+			name="user_id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+		/>
 	<field
 			name="group_id"
 			type="sql"
