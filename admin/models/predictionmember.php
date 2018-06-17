@@ -378,7 +378,7 @@ $send = $mailer->Send();
 if ( $send !== true ) {
 //    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
 } else {
-    $this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $member_email->email),'notice');
+    $this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email),'notice');
 }
 
     }
