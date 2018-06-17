@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
- 
 
 /**
  * sportsmanagementControllerpredictionmembers
@@ -87,29 +86,12 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 */
 	function reminder()
 	{
-//	   // Reference global application object
-//        $this->jsmapp = JFactory::getApplication();
-//        // JInput object
-//        $this->jsmjinput = $this->jsmapp->input;
-        
-//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
-//		JToolbarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
-
-//		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
-		//$post = JFactory::getApplication()->input->get( 'post' );
+/**
+ * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
+ */
         $post = $this->jsmjinput->post->getArray();
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-        
-		//$cid = JFactory::getApplication()->input->getVar( 'cid', array(0), 'post', 'array' );
         $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
-        
 		$pgmid = JFactory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pgmid<br><pre>'.print_r($pgmid,true).'</pre>'),'Notice');
-//		$post['id'] = (int) $cid[0];
-//		$post['predgameid'] = (int) $pgmid[0];
-//		echo '<pre>'; print_r($post); echo '</pre>';
-
 
 		if ( $pgmid == 0 )
 		{
