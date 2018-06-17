@@ -109,7 +109,7 @@ if ( !$result )
     //$app = JFactory::getApplication();
 //        $option = JFactory::getApplication()->input->getCmd('option');
         $config = JFactory::getConfig();
-  $mailer = JFactory::getMailer();
+  //$mailer = JFactory::getMailer();
   
 $language = JFactory::getLanguage();
 $language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
@@ -119,8 +119,8 @@ $configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig
 $overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $configprediction = array_merge($overallConfig,$configprediction);
     
-  // als html
-  $mailer->isHTML(TRUE);
+//  // als html
+//  $mailer->isHTML(TRUE);
   
   $pred_reminder_mail_text = JComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
   
@@ -150,7 +150,7 @@ $sender = array(
 }
 
 
-$mailer->setSender($sender); 
+//$mailer->setSender($sender); 
 
 $mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
 $mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
@@ -158,14 +158,18 @@ $mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanage
 $predictiongame = $mdlPredictionGame->getPredictionGame($prediction_id);
 $predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sender<br><pre>'.print_r($sender,true).'</pre>'),'');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongame<br><pre>'.print_r($predictiongame,true).'</pre>'),'');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionproject<br><pre>'.print_r($predictionproject,true).'</pre>'),'');
-
- 
-
+/**
+ * schleife über die tippspieler anfang
+ */
   foreach ( $cid as $key => $value )
     {
+$mailer = JFactory::getMailer();
+/**
+ * als html
+ */
+$mailer->isHTML(TRUE);
+$mailer->setSender($sender); 
+          
 $body = '';
 /**
   * jetzt die ergebnisse
@@ -178,12 +182,8 @@ $body .= "<html>";
     foreach ( $predictionproject as $project_key => $project_value )
     {
     $predictiongamematches = $mdlPredictionGames->getPredictionGamesMatches($prediction_id,$project_value,$member_email->user_id);
-    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_value<br><pre>'.print_r($project_value,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongamematches<br><pre>'.print_r($predictiongamematches,true).'</pre>'),'');
-    
+   
     $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
-  
 	$body .= "<tr>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
@@ -191,7 +191,7 @@ $body .= "<html>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 	$body .= "</tr>";
-    /**
+/**
  * schleife über die ergebnisse in der runde
  */	
 	foreach ($predictiongamematches AS $result)
@@ -218,7 +218,7 @@ $body .= "<html>";
 	$body .= " - ";
 	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
 	$body .= "</td>";
- /**
+/**
  * clublogo oder vereinsflagge hometeam	
  */
 $body .= "<td nowrap='nowrap' class='td_r'>";
@@ -352,19 +352,22 @@ $body .= "<table>";
  $projectcount++;
     }
 $body .= "</html><br>";
-    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' member_email<br><pre>'.print_r($member_email,true).'</pre>'),'');
-    
-    //add the recipient. $recipient = $user_email;
+   
+/**
+ * add the recipient. $recipient = $user_email;
+ */
     $mailer->addRecipient($member_email->email); 
-    //add the subject
+/**
+ * add the subject
+ */
      $subject = addslashes(
 				sprintf(
 				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				$predictiongame->name ) );
     $mailer->setSubject($subject);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' subject<br><pre>'.print_r($subject,true).'</pre>'),'');
-//add body
+/**
+ * add body
+ */
 $message = $pred_reminder_mail_text;
 
 $message = str_replace('[PREDICTIONMEMBER]', $member_email->username, $message);
@@ -399,7 +402,10 @@ if ( $send !== true ) {
 }
 
     }
-  
+/**
+ * schleife über die tippspieler ende
+ */
+   
   }
 
 
