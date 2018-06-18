@@ -184,7 +184,6 @@ function getData()
  * 
  * @return
  */
-	/*
 function getTotal()
   {
  	// Load the content if it doesn't already exist
@@ -196,13 +195,12 @@ function getTotal()
  	}
  	return $this->_total;
   }
-*/
+
 /**
  * sportsmanagementModelPredictionRanking::getPagination()
  * 
  * @return
  */
-	/*
 function getPagination()
   {
  	// Load the content if it doesn't already exist
@@ -213,7 +211,7 @@ function getPagination()
  	}
  	return $this->_pagination;
   }    
-*/ 
+ 
 	
     /**
      * sportsmanagementModelPredictionRanking::getChampLogo()

@@ -138,6 +138,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 <div class="pred_ranking">
 <?php 
 //echo $this->pagination->getListFooter(); 
+echo $this->pagination->getLimitBox();
 ?>
 </div>
 	
