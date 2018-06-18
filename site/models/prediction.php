@@ -423,38 +423,35 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         case 'com_cbe':
         case 'com_cbe25':
         case 'prediction':
-        if ( $db->setQuery($query) )
-        {
-		$results = $db->loadResult();
-        if ( $results )
-        {
-        $picture = $results;
-        }
-        }
-        else
-       {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-       }
+	try {
+            $db->setQuery($query);
+            $picture = $db->loadResult();
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        } catch (Exception $e) {
+            $msg = $e->getMessage(); // Returns "Normally you would have other code...
+            $code = $e->getCode(); // Returns
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            return false;
+        }	    
         break;  
         case 'com_kunena':
-        if ( $db->setQuery($query) )
-        {
-		$results = $db->loadResult();
-        if ( $results )
-        {
-        $picture = 'media/kunena/avatars/'.$results;
-        }
-        }
-        else
-       {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-       }
+	try {
+            $db->setQuery($query);
+            $results = $db->loadResult();
+	$picture = 'media/kunena/avatars/'.$results;
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        } catch (Exception $e) {
+            $msg = $e->getMessage(); // Returns "Normally you would have other code...
+            $code = $e->getCode(); // Returns
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            return false;
+        }	    
         break;
         }  
  
- 
+ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
   return $picture;
   
   } 
