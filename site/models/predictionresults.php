@@ -41,7 +41,8 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
     var $config = array();
     var $configavatar = array();
     static $roundID = 0;
-
+static $limitstart = 0;
+static $limit = 0;
     /**
      * sportsmanagementModelPredictionResults::__construct()
      * 
@@ -124,21 +125,30 @@ class sportsmanagementModelPredictionResults extends JModelLegacy {
         //$this->predictionGameID	= $jinput->getInt('prediction_id',0);
 
         if (JFactory::getApplication()->input->getVar("view") == 'predictionresults') {
-            // Get pagination request variables
-            $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-            $limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-
-            // In case limit has been changed, adjust it
-            $limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
-
-            $this->setState('limit', $limit);
-            $this->setState('limitstart', $limitstart);
+            self::$limit = $jinput->getInt('limit',$app->getCfg('list_limit'));
+	self::$limitstart = $jinput->getInt('start',0);
+	// In case limit has been changed, adjust it
+	//$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+ 
+	$this->setState('limit', self::$limit);
+	$this->setState('limitstart', self::$limitstart);
         }
 
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
 
+ 
+function getLimit()
+	{
+		return self::$limit;
+	}
+	
+	function getLimitStart()
+	{
+		return self::$limitstart;
+	}
+ 
     /**
      * sportsmanagementModelPredictionResults::getPagination()
      * 
