@@ -39,6 +39,7 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
 	// push data into the template
+	$this->state = $this->get('State');	
 	$this->items = $this->get('Data');	
 	$this->pagination =$this->get('Pagination');
     
