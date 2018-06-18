@@ -35,7 +35,7 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<!-- <a name='jl_top' id='jl_top'></a> -->
+
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
@@ -137,9 +137,18 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 <tfoot>
 <div class="pred_ranking">
 <?php 
-echo $this->pagination->getListFooter(); 
+//echo $this->pagination->getListFooter(); 
 ?>
 </div>
+	
+<div class="pageslinks">
+	<?php echo $this->pagination->getPagesLinks(); ?>
+</div>
+
+<p class="pagescounter">
+	<?php echo $this->pagination->getPagesCounter(); ?>
+</p>
+	
 </tfoot>  
                 
 			</table>
