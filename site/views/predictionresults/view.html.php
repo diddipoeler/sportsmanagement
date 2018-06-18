@@ -35,6 +35,12 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
+$this->limit = $this->model->getLimit();
+$this->limitstart = $this->model->getLimitStart();
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limit <br><pre>'.print_r($this->limit,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart <br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+		
 		if (isset($this->predictionGame))
 		{
 			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
