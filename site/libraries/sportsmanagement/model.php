@@ -29,6 +29,27 @@ var $limitstart = 0;
 var $limit = 0;
 var $_total = null;
 var $_pagination = null;    
+
+    
+protected function populateState($ordering = 'obj.name', $direction = 'asc')
+	{
+	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
+		// Load the filter state.
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
+    $this->limit = $value;	
+		// List state information.
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
+    $this->limitstart = $value;	
+	}    
+    
+    
     
 }
 
