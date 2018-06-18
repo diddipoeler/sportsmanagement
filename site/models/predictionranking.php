@@ -35,18 +35,20 @@ class sportsmanagementModelPredictionRanking extends JSMModelList
 {
 	var $_roundNames = null;
     var $predictionGameID = 0;
-    
+static $limitstart = 0;
+static $limit = 0;
+	
    /**
    * Items total
    * @var integer
    */
-  //var $_total = null;
+  var $_total = null;
  
   /**
    * Pagination object
    * @var object
    */
-  //var $_pagination = null;
+  var $_pagination = null;
   
   
 	/**
@@ -95,14 +97,16 @@ class sportsmanagementModelPredictionRanking extends JSMModelList
 if ( $jinput->getVar( "view") == 'predictionranking' )
 {
 	// Get pagination request variables
-	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-	$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
+	//$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+	//$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 
+	self::$limit = $jinput->getInt('limit',$app->getCfg('list_limit'));
+	self::$limitstart = $jinput->getInt('start',0);
 	// In case limit has been changed, adjust it
-	$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
+	//$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
  
-	$this->setState('limit', $limit);
-	$this->setState('limitstart', $limitstart);
+	$this->setState('limit', self::$limit);
+	$this->setState('limitstart', self::$limitstart);
 }
 
   
