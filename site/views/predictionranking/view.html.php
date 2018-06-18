@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // pagination
-require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
+//require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
 /**
  * sportsmanagementViewPredictionRanking
