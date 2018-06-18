@@ -1846,7 +1846,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
         $query->where('user_id = '.(int)$user_id);
 
 		$db->setQuery($query);
-		$results=$db->loadResult();
+		$results = $db->loadResult();
 		return $results;
 	}
 
@@ -2660,6 +2660,13 @@ $query->where('pm.group_id = '.(int)self::$pggroup);
 }
 
         $query->order('pm.id ASC');
+		
+        if ( $total )
+        {
+        return $query;
+        }
+        else
+        {
         try {
             $db->setQuery($query);
             $results = $db->loadObjectList();
@@ -2670,19 +2677,7 @@ $query->where('pm.group_id = '.(int)self::$pggroup);
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
-        }	
-		
-        
-		
-        if ( $total )
-        {
-        
-        return $query;
-            
         }
-        else
-        {
-        
 		foreach ( $results as $row )
 		{
     $picture = self::getPredictionMemberAvatar($row->user_id, $configavatar['show_image_from']  );

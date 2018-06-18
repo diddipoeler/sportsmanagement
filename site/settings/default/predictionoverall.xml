@@ -68,36 +68,6 @@ default="0"
 			<option value="1">JYES</option>
 		</field>
 		
-		<!--
-		<param	name="show_predictionproject_dropdown" type="extensionradiobutton" default="1"
-				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_PROJECT_SELECTOR"
-				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_PROJECT_SELECTOR">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</param>
-		
-
-		<param name="show_print_button" type="extensionradiobutton" default="0"
-			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PRINT_BUTTON"
-			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PRINT_BUTTON">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</param>
-
-		<param name="show_pdf_button" type="extensionradiobutton" default="0"
-			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PDF_BUTTON"
-			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PDF_BUTTON">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</param>
-
-		<param name="show_email_button" type="extensionradiobutton" default="0"
-			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_EMAIL_BUTTON"
-			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_EMAIL_BUTTON">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</param>
--->
 		<field name="show_back_button" type="list" default="0"
 			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_BACK_BUTTON"
 			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_BACK_BUTTON">
