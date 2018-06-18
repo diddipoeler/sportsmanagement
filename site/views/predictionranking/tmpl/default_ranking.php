@@ -34,7 +34,6 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
@@ -171,7 +170,6 @@ echo $this->pagination->getListFooter();
 ?>
 </div>
 <div class="display-limit">
-<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
 </div>	
 </tfoot>                    
