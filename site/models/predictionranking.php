@@ -111,6 +111,15 @@ if ( $jinput->getVar( "view") == 'predictionranking' )
     
 	}
 
+	function getLimit()
+	{
+		return self::$limit;
+	}
+	
+	function getLimitStart()
+	{
+		return self::$limitstart;
+	}
 /**
  * sportsmanagementModelPredictionRanking::_buildQuery()
  * 
