@@ -25,8 +25,8 @@ $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
 $this->jsmview = $this->jsmjinput->getCmd('view');    
 var $_identifier = $this->jsmview;
-var $limitstart = 0;
-var $limit = 0;
+static $limitstart = 0;
+static $limit = 0;
 var $_total = null;
 var $_pagination = null;    
 
@@ -41,12 +41,12 @@ protected function populateState($ordering = 'obj.name', $direction = 'asc')
 		// Load the filter state.
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-    $this->limit = $value;	
+    self::$limit = $value;	
 		// List state information.
 		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
-    $this->limitstart = $value;	
+    self::$limitstart = $value;	
 	}    
     
     
