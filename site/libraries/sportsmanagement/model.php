@@ -24,13 +24,14 @@ $this->jsmapp = JFactory::getApplication();
 $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
 $this->jsmview = $this->jsmjinput->getCmd('view');    
+/*
 var $_identifier = $this->jsmview;
 static $limitstart = 0;
 static $limit = 0;
 var $_total = null;
 var $_pagination = null;    
-
-    
+*/
+/*    
 protected function populateState($ordering = 'obj.name', $direction = 'asc')
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
@@ -48,7 +49,7 @@ protected function populateState($ordering = 'obj.name', $direction = 'asc')
 		$this->setState('list.start', $value);
     self::$limitstart = $value;	
 	}    
-    
+    */
     
     
 }
