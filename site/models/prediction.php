@@ -2660,18 +2660,19 @@ $query->where('pm.group_id = '.(int)self::$pggroup);
 }
 
         $query->order('pm.id ASC');
+        try {
+            $db->setQuery($query);
+            $results = $db->loadObjectList();
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        } catch (Exception $e) {
+            $msg = $e->getMessage(); // Returns "Normally you would have other code...
+            $code = $e->getCode(); // Returns
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            return false;
+        }	
+		
         
-        if ( $db->setQuery($query) )
-        {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-		$results = $db->loadObjectList();
-        }
-        else
-       {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
-       }
 		
         if ( $total )
         {
