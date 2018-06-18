@@ -10,7 +10,7 @@
  * @subpackage libraries
  */
 defined('_JEXEC') or die();
-
+jimport( 'joomla.application.component.view');
 $document = JFactory::getDocument();
 
 $params_com = JComponentHelper::getParams( 'com_sportsmanagement' );
