@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //jimport( 'joomla.application.component.model' );
-jimport('joomla.application.component.modelitem');
+//jimport('joomla.application.component.modelitem');
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -31,7 +31,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionRanking extends JModelLegacy
+class sportsmanagementModelPredictionRanking extends JSMModelList
 {
 	var $_roundNames = null;
     var $predictionGameID = 0;
@@ -40,13 +40,13 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
    * Items total
    * @var integer
    */
-  var $_total = null;
+  //var $_total = null;
  
   /**
    * Pagination object
    * @var object
    */
-  var $_pagination = null;
+  //var $_pagination = null;
   
   
 	/**
@@ -160,7 +160,8 @@ function getData()
      {
  	    $query = self::_buildQuery();
         //$query = $this->getPredictionMember();
- 	    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));	
+ 	    //$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));	
+	$this->_data = $this->_getList($query);		
  	}
  	return $this->_data;
   }
@@ -170,6 +171,7 @@ function getData()
  * 
  * @return
  */
+	/*
 function getTotal()
   {
  	// Load the content if it doesn't already exist
@@ -181,12 +183,13 @@ function getTotal()
  	}
  	return $this->_total;
   }
-
+*/
 /**
  * sportsmanagementModelPredictionRanking::getPagination()
  * 
  * @return
  */
+	/*
 function getPagination()
   {
  	// Load the content if it doesn't already exist
@@ -197,7 +200,7 @@ function getPagination()
  	}
  	return $this->_pagination;
   }    
- 
+*/ 
 	
     /**
      * sportsmanagementModelPredictionRanking::getChampLogo()
