@@ -257,10 +257,10 @@ catch (Exception $e)
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         // Select some fields
-		$query->select('pos.id, pos.name');
-		$query->select('ppos.position_id AS position_id, ppos.id as pposid');
+	$query->select('pos.id, pos.name');
+	$query->select('ppos.position_id AS position_id, ppos.id as pposid');
         // From table
-		$query->from('#__sportsmanagement_position AS pos');
+	$query->from('#__sportsmanagement_position AS pos');
         $query->join('INNER','#__sportsmanagement_project_position AS ppos ON pos.id = ppos.position_id');
         
         switch($which)
@@ -290,7 +290,7 @@ catch (Exception $e)
     $result = false;
 }
        
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
         
     }    
@@ -365,7 +365,7 @@ catch (Exception $e)
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
    }    
     
@@ -407,6 +407,7 @@ catch (Exception $e)
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;	
 	}
 
@@ -442,7 +443,8 @@ catch (Exception $e)
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
-		
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	return $result;	
 	}
 
     
@@ -496,6 +498,7 @@ catch (Exception $e)
     
        $db->setQuery($query); 
         $result = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
         
     }
@@ -530,13 +533,14 @@ catch (Exception $e)
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		$stats = array(	$match->projectteam1_id => array(),
-						$match->projectteam2_id => array());
+		$match->projectteam2_id => array());
 		if(count($stats)>0 && count($res)>0) {
 			foreach ($res as $stat)
 			{
 				@$stats[$stat->projectteam_id][$stat->teamplayer_id][$stat->statistic_id]=$stat->value;
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $stats;
 	}
 
@@ -582,7 +586,7 @@ catch (Exception $e)
 			}
 			$this->_playersbasicstats=$stats;
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_playersbasicstats;
 	}
 
@@ -631,7 +635,7 @@ catch (Exception $e)
 			}
 			$this->_playersevents = $events;
 		}
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_playersevents;
 	}
 
@@ -680,6 +684,7 @@ catch (Exception $e)
 			}
 			$this->_staffsbasicstats=$stats;
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_staffsbasicstats;
 	}
    
@@ -707,7 +712,7 @@ catch (Exception $e)
   // Select some fields
         $query->select('extended');
         // From 
-		$query->from('#__sportsmanagement_rosterposition');
+	$query->from('#__sportsmanagement_rosterposition');
         // Where
         $query->where('name LIKE '.  $db->Quote( '' . $schema . '' ) );
   
@@ -748,11 +753,12 @@ catch (Exception $e)
     $bildpositionen[$schema][$a][$which]['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
     $position++;
     }
-		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $bildpositionen;
   }
   else
   {
+	  $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     return false;
   }
   
