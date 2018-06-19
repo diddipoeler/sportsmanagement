@@ -85,12 +85,7 @@ echo $this->loadTemplate('debug');
     
     if ( !empty( $this->matchevents ) )
 	{
-	    /*
-    if ( !$this->config['show_timeline_under_results'] )
-	{
-		echo $this->loadTemplate('timeline');
-	}
-	*/    
+	      
     }
     
   // ################################################################
@@ -123,14 +118,14 @@ echo $this->loadTemplate('debug');
 			switch ($this->config['use_tabs_events'])
 			{
 				case 0:
-					/** No tabs */
+					// No tabs 
 					if ( !empty( $this->eventtypes ) ) 
                     {
 						$output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events';
 					}
 					break;
 				case 1:
-					/** Tabs */
+					// Tabs
 					if ( !empty( $this->eventtypes ) ) 
                     {
 						//echo $this->loadTemplate('events_tabs');
@@ -138,8 +133,7 @@ echo $this->loadTemplate('debug');
 					}
 					break;
 				case 2:
-					/** Table/Ticker layout */
-					//echo $this->loadTemplate('events_ticker');
+					// Table/Ticker layout 
                     $output['COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'] = 'events_ticker';
 					break;
 			}
