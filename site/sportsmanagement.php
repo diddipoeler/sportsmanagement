@@ -117,6 +117,7 @@ case 'clubplan':
 case 'eventsranking':
 case 'stats':
 case 'about':  
+case 'editmatch':   
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 break;	
 case 'player':
