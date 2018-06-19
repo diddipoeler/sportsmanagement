@@ -1414,7 +1414,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	   $app = JFactory::getApplication();
        $option = JFactory::getApplication()->input->getCmd('option');
        
-       $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database, FALSE ) );
+       $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database, FALSE ) ;
 	   $query = $db->getQuery(true);
        
        // Select some fields
