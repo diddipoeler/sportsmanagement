@@ -94,7 +94,7 @@ static $limit = 0;
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
 
-	self::$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
+	//self::$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 		
 /*
 if ( $jinput->getVar( "view") == 'predictionranking' )
