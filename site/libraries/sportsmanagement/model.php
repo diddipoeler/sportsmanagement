@@ -19,7 +19,7 @@ jimport('joomla.application.component.model');
 class JSMModelList extends JModelList
 {
 // Reference global application object
-$this->jsmapp = JFactory::getApplication();
+$this->jsmapp = JFactory::getApplication('site');
 // JInput object
 $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
