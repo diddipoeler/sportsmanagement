@@ -237,7 +237,7 @@ function getLimit()
         if (empty($this->_data)) {
             //$query = $this->_buildQuery();
             $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
-            $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+            $this->_data = $this->_getList($query);
         }
         return $this->_data;
     }
