@@ -174,7 +174,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
     <?php echo $this->pagination->getPagesLinks(); ?>
 </div>
 <?php
-echo $this->pagination->getLimitBox();
+//echo $this->pagination->getLimitBox();
 ?>
 </tfoot>                    
                     
