@@ -154,18 +154,20 @@ public function getStart()
 
 protected function populateState($ordering = null, $direction = null)
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('site');
-        
-        // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
-        $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
-		$this->setState('list.limit', $value);
+$app = JFactory::getApplication();
+$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+self::$limit = $value;
+$this->setState('list.limit', self::$limit);
+$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+$this->setState('list.start', self::$limitstart);
+
+
+
+//$app->enqueueMessage(JText::_(__METHOD__.' limit <br><pre>'.print_r(self::$limit,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' limitstart <br><pre>'.print_r(self::$limitstart,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' limit cfg<br><pre>'.print_r($app->getCfg('list_limit', 0),true).'</pre>'),'');
+		
 	
 }
 	
@@ -256,6 +258,7 @@ function getTotal()
  * 
  * @return
  */
+	/*
 function getPagination()
   {
  	// Load the content if it doesn't already exist
@@ -266,7 +269,7 @@ function getPagination()
  	}
  	return $this->_pagination;
   }    
- 
+ */
 	
     /**
      * sportsmanagementModelPredictionRanking::getChampLogo()
