@@ -547,9 +547,10 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 ?>
 <tbody>
 <?PHP
+$durchlauf = 1; 
 			foreach ($computedMembersRanking AS $key => $value)
 			{
-				if (in_array($i, range($this->ausgabestart, $this->ausgabeende)))
+				if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende)))
 					{
 				//$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
                 // änderung bluesunny62
@@ -624,6 +625,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 					$i++;
 					//if ($i > $skipMemberCount+$this->config['limit']){break;}
 				}
+				$durchlauf++;
 			}
 			?>
             </tbody>
