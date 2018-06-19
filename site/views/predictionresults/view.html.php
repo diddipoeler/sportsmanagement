@@ -37,9 +37,13 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 
 $this->limit = $this->model->getLimit();
 $this->limitstart = $this->model->getLimitStart();
-
+$this->ausgabestart = $this->limitstart + 1;
+$this->ausgabeende = $this->limitstart + $this->limit;
+		
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limit <br><pre>'.print_r($this->limit,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart <br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ausgabestart <br><pre>'.print_r($this->ausgabestart,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ausgabeende <br><pre>'.print_r($this->ausgabeende,true).'</pre>'),'');
 		
 		if (isset($this->predictionGame))
 		{
