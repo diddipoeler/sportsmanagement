@@ -41,7 +41,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->document->addStyleSheet($css);
         $this->document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
-        $this->model->checkMatchPlayerProjectPositionID();
+        //$this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
         $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
