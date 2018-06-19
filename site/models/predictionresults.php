@@ -23,7 +23,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionResults extends JModelLegacy {
+class sportsmanagementModelPredictionResults extends JSMModelList {
 
     var $predictionGameID = 0;
 
