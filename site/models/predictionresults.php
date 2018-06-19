@@ -123,7 +123,7 @@ static $limit = 0;
 
         //$this->pggrouprank			= JFactory::getApplication()->input->getInt('pggrouprank',		0);
         //$this->predictionGameID	= $jinput->getInt('prediction_id',0);
-
+/*
         if (JFactory::getApplication()->input->getVar("view") == 'predictionresults') {
             self::$limit = $jinput->getInt('limit',$app->getCfg('list_limit'));
 	self::$limitstart = $jinput->getInt('start',0);
@@ -133,20 +133,68 @@ static $limit = 0;
 	$this->setState('limit', self::$limit);
 	$this->setState('limitstart', self::$limitstart);
         }
-
+*/
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
 
- 
+public function getStart()
+{
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', self::$limitstart );
+    
+    $store = $this->getStoreId('getstart');
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+    return $this->cache[$store];
+}	
+	
+protected function populateState($ordering = null, $direction = null)
+	{
+$app = JFactory::getApplication();
+$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+self::$limit = $value;
+$this->setState('list.limit', self::$limit);
+$value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+$this->setState('list.start', self::$limitstart);
+//$app->enqueueMessage(JText::_(__METHOD__.' limit <br><pre>'.print_r(self::$limit,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' limitstart <br><pre>'.print_r(self::$limitstart,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' limit cfg<br><pre>'.print_r($app->getCfg('list_limit', 0),true).'</pre>'),'');
+		
+	
+}
+	
 function getLimit()
 	{
-		return self::$limit;
+		return $this->getState('list.limit');
 	}
 	
 	function getLimitStart()
 	{
-		return self::$limitstart;
+		return $this->getState('list.start');
 	}
  
     /**
@@ -154,6 +202,7 @@ function getLimit()
      * 
      * @return
      */
+	/*
     function getPagination() {
         // Load the content if it doesn't already exist
         if (empty($this->_pagination)) {
@@ -162,7 +211,7 @@ function getLimit()
         }
         return $this->_pagination;
     }
-
+*/
     /**
      * sportsmanagementModelPredictionResults::getTotal()
      * 
