@@ -285,15 +285,17 @@ function getPagination()
     {
     $sChampTeamsList = explode(';',$champ_tipp);
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList'.'<pre>'.print_r($sChampTeamsList,true).'</pre>' ),'');
-	foreach ($sChampTeamsList AS $key => $value)
+foreach ($sChampTeamsList AS $key => $value)
     {
     $dChampTeamsList[] = explode(',',$value);
     }
-	foreach ($dChampTeamsList AS $key => $value)
+foreach ($dChampTeamsList AS $key => $value)
     {
     $champTeamsList[$value[0]] = $value[1];
     }    
     
+if ( isset($champTeamsList[(int)$ProjectID]) )
+{
     $projectteamid = $champTeamsList[(int)$ProjectID];  
     if ( $projectteamid )
     {
@@ -302,6 +304,8 @@ function getPagination()
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teaminfo'.'<pre>'.print_r($teaminfo,true).'</pre>' ),'');
     return $teaminfo;
     }
+    }
+	    
     }
     else
     {
