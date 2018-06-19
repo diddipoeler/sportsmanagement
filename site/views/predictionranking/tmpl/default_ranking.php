@@ -164,20 +164,16 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					</tr>
 
 <tfoot>
-<div class="pred_ranking">
-<?php 
-//echo $this->pagination->getListFooter(); 
-echo $this->pagination->getLimitBox();			
-?>
+<div class="pagination">
+    <p class="counter">
+        <?php echo $this->pagination->getPagesCounter(); ?>
+    </p>
+    <p class="counter">
+        <?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
+    <?php echo $this->pagination->getPagesLinks(); ?>
 </div>
 
-<div class="pageslinks">
-	<?php echo $this->pagination->getPagesLinks(); ?>
-</div>
-
-<p class="pagescounter">
-	<?php echo $this->pagination->getPagesCounter(); ?>
-</p>
 	
 </tfoot>                    
                     
