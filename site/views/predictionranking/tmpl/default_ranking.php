@@ -589,9 +589,11 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 ?>
 <tbody>
 <?PHP
-				// schleife über die sortierte tabelle anfang
-                foreach ($computedMembersRanking AS $key => $value)
-				{
+/**
+ * schleife über die sortierte tabelle anfang
+ */		
+foreach ($computedMembersRanking AS $key => $value)
+{
 				
 				foreach ( $this->items as $items )
 				{
@@ -753,7 +755,9 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
           }
           
 				}
-                // schleife über die sortierte tabelle ende
+/**
+ * schleife über die sortierte tabelle ende
+ */
 			?>
             </tbody>
 		</table>
