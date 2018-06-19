@@ -174,12 +174,12 @@ $this->setState('list.start', self::$limitstart);
 	
 	function getLimit()
 	{
-		return self::$limit;
+		return $this->getState('list.limit');
 	}
 	
 	function getLimitStart()
 	{
-		return self::$limitstart;
+		return $this->getState('list.start');
 	}
 /**
  * sportsmanagementModelPredictionRanking::_buildQuery()
