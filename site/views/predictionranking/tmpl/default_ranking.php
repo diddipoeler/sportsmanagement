@@ -173,8 +173,9 @@ When viewing on anything larger than 768px wide, you will not see any difference
     </p>
     <?php echo $this->pagination->getPagesLinks(); ?>
 </div>
-
-	
+<?php
+echo $this->pagination->getLimitBox();
+?>
 </tfoot>                    
                     
 				</table>
@@ -592,9 +593,11 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 /**
  * schleife über die sortierte tabelle anfang
  */		
+$durchlauf = 1; 
 foreach ($computedMembersRanking AS $key => $value)
 {
-				
+			if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende)))	
+				{				
 				foreach ( $this->items as $items )
 				{
 				//if ( $key == $items->pmID )
@@ -753,7 +756,8 @@ foreach ($computedMembersRanking AS $key => $value)
 						$i++;
 					  }
           }
-          
+	}
+$durchlauf++;          
 				}
 /**
  * schleife über die sortierte tabelle ende
