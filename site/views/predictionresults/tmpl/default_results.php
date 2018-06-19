@@ -549,8 +549,8 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 <?PHP
 			foreach ($computedMembersRanking AS $key => $value)
 			{
-				if ($i <= $skipMemberCount) { $i++; continue; }
-
+				if (in_array($i, range($this->ausgabestart, $this->ausgabeende)))
+					{
 				//$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
                 // änderung bluesunny62
 				//$styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:yellow; color:black; " ' : '';
@@ -623,7 +623,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 					$k = (1-$k);
 					$i++;
 					//if ($i > $skipMemberCount+$this->config['limit']){break;}
-				//}
+				}
 			}
 			?>
             </tbody>
