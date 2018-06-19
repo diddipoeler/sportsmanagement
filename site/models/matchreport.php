@@ -62,12 +62,12 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         
-		$this->matchid = $jinput->getInt('mid',0);
+	$this->matchid = $jinput->getInt('mid',0);
         $this->projectid = $jinput->getInt( 'p', 0 );
         sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
-		sportsmanagementModelProject::$projectid = $this->projectid;
+	sportsmanagementModelProject::$projectid = $this->projectid;
         sportsmanagementModelProject::$matchid = $this->matchid;
-		parent::__construct();
+	parent::__construct();
 	}
 
 	
