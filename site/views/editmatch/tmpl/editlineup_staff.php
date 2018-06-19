@@ -31,7 +31,14 @@ defined('_JEXEC') or die('Restricted access');
 					<td style="text-align:center; vertical-align:middle; ">
 						<?php
 						// echo select list of non assigned players from team roster
+						if ( isset($this->lists['team_staffs']) )
+						{
 						echo $this->lists['team_staffs'];
+						}
+						else
+						{
+						echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+						}
 						?>
 					</td>
 					<td style="text-align:center; vertical-align:top; ">
