@@ -93,7 +93,18 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 					<tr id="row-new">
 						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
 						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
-						<td><?php echo $this->lists['projectpositions']; ?></td>
+						<td>
+						<?php 
+						if ( isset($this->lists['projectpositions']) )
+						{
+						echo $this->lists['projectpositions'];
+						}
+						else
+						{
+						echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+						}
+						?>
+						</td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
                         
                         
