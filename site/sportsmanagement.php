@@ -90,6 +90,7 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'pagination.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');	
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
 break;	
 case 'matchreport':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
