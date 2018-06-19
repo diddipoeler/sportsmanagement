@@ -1409,41 +1409,38 @@ $tournement_round = $this->jsmdb->loadResult();
      * @param mixed $match_id
      * @return
      */
-    public static function getMatchText($match_id)
+    public static function getMatchText($match_id=0,$cfg_which_database=0)
 	{
 	   $app = JFactory::getApplication();
        $option = JFactory::getApplication()->input->getCmd('option');
        
-       $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+       $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database, FALSE ) );
 	   $query = $db->getQuery(true);
        
        // Select some fields
 		$query->select('m.*');
         $query->select('t1.name as t1name,t2.name as t2name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         $query->where('m.id = ' . $match_id );
         $query->where('m.published = 1');
         $query->order('m.match_date, t1.short_name');
-                    
+          try{          
 		$db->setQuery($query);
-        
-        if ( !$db->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        
-        $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-	    }
-        
-		return $db->loadObject();
+        $result = $db->loadObject();
+         }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$result = false;
+}
+ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect        
+		return $result;
 	}
     
     /**
