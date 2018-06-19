@@ -758,11 +758,11 @@ foreach ($computedMembersRanking AS $key => $value)
 /**
  * schleife über die sortierte tabelle ende
  */
-			?>
-            </tbody>
-		</table>
-        </div>
-		<?php
-	}
+?>
+</tbody>
+</table>
+</div>
+<?php
+}
 }
 ?>
