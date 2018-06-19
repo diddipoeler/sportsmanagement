@@ -94,6 +94,9 @@ static $limit = 0;
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
 
+	self::$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
+		
+/*
 if ( $jinput->getVar( "view") == 'predictionranking' )
 {
 	// Get pagination request variables
@@ -108,13 +111,65 @@ if ( $jinput->getVar( "view") == 'predictionranking' )
 	$this->setState('limit', self::$limit);
 	$this->setState('limitstart', self::$limitstart);
 }
-
+*/
   
     $getDBConnection = sportsmanagementHelper::getDBConnection();
     parent::setDbo($getDBConnection);
     
 	}
 
+	
+public function getStart()
+{
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', self::$limitstart );
+    
+    $store = $this->getStoreId('getstart');
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+    return $this->cache[$store];
+}	
+
+protected function populateState($ordering = null, $direction = null)
+	{
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Initialise variables.
+		$app = JFactory::getApplication('site');
+        
+        // List state information
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
+        $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
+		$this->setState('list.limit', $value);
+	
+}
+	
+	
 	function getLimit()
 	{
 		return self::$limit;
