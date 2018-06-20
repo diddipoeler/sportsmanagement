@@ -385,7 +385,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param mixed $match_id
 	 * @return
 	 */
-	public static function getMatchReferees($match_id,$cfg_which_database = 0)
+	public static function getMatchReferees($match_id = 0,$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
 	$option = $app->input->getCmd('option');
@@ -420,7 +420,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param mixed $match_id
 	 * @return
 	 */
-	function getMatchRefereeTeams($match_id,$cfg_which_database = 0)
+	function getMatchRefereeTeams($match_id = 0,$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -442,20 +442,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
           $query->order('pos.name,mr.ordering ASC');
 
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
         $result = $db->loadObjectList('value');
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 
 	}
@@ -466,7 +459,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param mixed $userid
 	 * @return
 	 */
-	function isTeamEditor($userid,$cfg_which_database = 0)
+	function isTeamEditor($userid = 0,$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -504,7 +497,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param mixed $userid
 	 * @return
 	 */
-	function isMatchAdmin($matchid,$userid,$cfg_which_database = 0)
+	function isMatchAdmin($matchid = 0,$userid = 0,$cfg_which_database = 0)
 	{
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
@@ -521,14 +514,9 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
           $query->where('(pt1.admin = '.(int)$userid.' OR pt2.admin = '.(int)$userid.')');
 
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		return $db->loadResult();
+        $result = $db->loadResult();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $result;
 	}
 
 	
@@ -540,7 +528,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 * @param integer $editorgroup
 	 * @return
 	 */
-	function isAllowed($cfg_which_database = 0,$editorgroup=0)
+	function isAllowed($cfg_which_database = 0,$editorgroup = 0)
 	{
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
