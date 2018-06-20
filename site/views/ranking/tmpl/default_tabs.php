@@ -14,6 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 echo JHtml::_('bootstrap.startTabSet', 'defaulttabs', array('active' => 'start')); //start tab set
 echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'start', JText::_('COM_EXAMPLE_NAME'));
 echo $this->loadTemplate('ranking');
+if ($this->config['show_colorlegend']) {
+                    echo $this->loadTemplate('colorlegend');
+                }
 echo JHtml::_('bootstrap.endTab');
 
 
