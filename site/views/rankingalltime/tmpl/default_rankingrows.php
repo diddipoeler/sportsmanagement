@@ -180,7 +180,7 @@ foreach( $current as $ptid => $team )
 	$isFavTeam = in_array( $team->team->id, explode(",",$this->project->fav_team) );
 	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
-	echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
+	echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam, NULL, $this->cfg_which_database );
 	echo ' ('.$team->team->unique_id.')';
 	echo '</td>';
 	echo "\n";
