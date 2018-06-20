@@ -10,7 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewRankingAllTime
@@ -21,7 +21,7 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewRankingAllTime extends JViewLegacy {
+class sportsmanagementViewRankingAllTime extends sportsmanagementView {
 
     /**
      * sportsmanagementViewRankingAllTime::display()
@@ -29,7 +29,8 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy {
      * @param mixed $tpl
      * @return void
      */
-    function display($tpl = null) {
+    function init() {
+/*     
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
 
@@ -45,37 +46,36 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy {
         } else {
             $uri = JFactory::getURI();
         }
+*/
+        $this->document->addScript(JUri::root(true) . '/components/' . $option . '/assets/js/smsportsmanagement.js');
 
-        $document->addScript(JUri::root(true) . '/components/' . $option . '/assets/js/smsportsmanagement.js');
+        //$model = $this->getModel();
 
-        $model = $this->getModel();
-
-        $this->projectids = $model->getAllProject();
+        $this->projectids = $this->model->getAllProject();
         $project_ids = implode(",", $this->projectids);
 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
 
         $this->project_ids = $project_ids;
-        $this->teams = $model->getAllTeamsIndexedByPtid($project_ids);
+        $this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
 
-        $this->matches = $model->getAllMatches($project_ids);
-        $this->ranking = $model->getAllTimeRanking();
-        $this->tableconfig = $model->getAllTimeParams();
-        $this->config = $model->getAllTimeParams();
+        $this->matches = $this->model->getAllMatches($project_ids);
+        $this->ranking = $this->model->getAllTimeRanking();
+        $this->tableconfig = $this->model->getAllTimeParams();
+        $this->config = $this->model->getAllTimeParams();
 
-        $this->currentRanking = $model->getCurrentRanking();
+        $this->currentRanking = $this->model->getCurrentRanking();
 
-        $this->action = $uri->toString();
-        $this->colors = $model->getColors($this->config['colors']);
+        $this->action = $this->uri->toString();
+        $this->colors = $this->model->getColors($this->config['colors']);
 
 
 
         // Set page title
         $pageTitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+        $this->document->setTitle($pageTitle);
 
-        $document->setTitle($pageTitle);
-
-        parent::display($tpl);
+        //parent::display($tpl);
     }
 
 }
