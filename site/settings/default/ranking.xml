@@ -19,7 +19,14 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 					<option value="btn btn-warning">Warning</option>
 					<option value="btn btn-danger">Danger</option>
 				</field>
-				
+<field name="show_result_tabs" type="extensionradiobutton" default="no_tabs"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_RESULT_TABS"
+			description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_RESULT_TABS">
+			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_NO_TABS</option>
+			<option value="show_tabs">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TABS</option>
+</field>
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
