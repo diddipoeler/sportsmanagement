@@ -54,8 +54,6 @@
   ?>
   <script>
 
-
-
   </script>
 
   <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
@@ -229,10 +227,6 @@ if ($this->config['show_table_1'] ||
                 }
 
                 if ($this->overallconfig['show_project_rss_feed']) {
-                    //if ( !empty($this->rssfeedoutput) )
-//       {
-//       echo $this->loadTemplate('rssfeed-table'); 
-//       }
                     if ($this->rssfeeditems) {
                         echo $this->loadTemplate('rssfeed');
                     }
