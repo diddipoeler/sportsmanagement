@@ -15,15 +15,17 @@ echo JHtml::_('bootstrap.startTabSet', 'defaulttabs', array('active' => 'ranking
 echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'ranking', JText::_('ranking'));
 echo $this->loadTemplate('ranking');
 if ($this->config['show_colorlegend']) {
-                    echo $this->loadTemplate('colorlegend');
-                }
+echo $this->loadTemplate('colorlegend');
+}
+if ($this->config['show_explanation']) {
+echo $this->loadTemplate('explanation');
+}
+if ($this->config['show_help']) {
+echo $this->loadTemplate('hint');
+}
 echo JHtml::_('bootstrap.endTab');
 
-                if ($this->config['show_explanation']) {
-                  echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'explanation', JText::_('explanation'));
-                    echo $this->loadTemplate('explanation');
-                  echo JHtml::_('bootstrap.endTab');
-                }
+                
 
                 if ($this->config['show_projectinfo']) {
                   echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'projectinfo', JText::_('projectinfo'));
@@ -40,11 +42,7 @@ echo JHtml::_('bootstrap.endTab');
                     echo $this->loadTemplate('googlemap');
                   echo JHtml::_('bootstrap.endTab');
                 }
-                if ($this->config['show_help']) {
-                  echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'hint', JText::_('hint'));
-                    echo $this->loadTemplate('hint');
-                  echo JHtml::_('bootstrap.endTab');
-                }
+                
                 if ($this->overallconfig['show_project_rss_feed']) {
                     if ($this->rssfeeditems) {
                       echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'ranking', JText::_('COM_EXAMPLE_NAME'));
