@@ -166,10 +166,8 @@ $this->overallconfig['use_jquery_modal']);
     }
     echo ">";
     $isFavTeam = in_array($team->team->id, explode(",", $this->project->fav_team));
-    // TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
     $config['highlight_fav'] = $isFavTeam;
-    //echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
-    echo sportsmanagementHelper::formatTeamName($team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL, JFactory::getApplication()->input->getInt('cfg_which_database', 0));
+    echo sportsmanagementHelper::formatTeamName($team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL, $this->cfg_which_database);
 
     if ($config['show_unique_id']) {
         if ($team->team->unique_id) {
