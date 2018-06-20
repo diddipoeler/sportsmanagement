@@ -253,6 +253,9 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         if (!isset($this->config['table_class'])) {
             $this->config['table_class'] = 'table';
         }
+        if (!isset($this->config['show_result_tabs'])) {
+            $this->config['show_result_tabs'] = 'no_tabs';
+        }
     }
 
 }
