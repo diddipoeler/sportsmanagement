@@ -1429,8 +1429,12 @@ $body .= "</table>";
 						
   $body .= "<tr class='" . $class ."'>";
 	$body .= "<td class='td_c'>";
-	$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
-	$body .= " - ";
+	$jdate = JFactory::getDate($result->match_date);
+	$jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
+	$body .= $jdate->format('d.m.Y H:i'); 
+
+	//$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
+	//$body .= " - ";
 	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
 	$body .= "</td>";
 
