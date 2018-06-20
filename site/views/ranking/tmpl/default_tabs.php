@@ -8,8 +8,14 @@
  * @package   sportsmanagement
  * @subpackage ranking
  */
-  defined('_JEXEC') or die('Restricted access');
+
+defined('_JEXEC') or die('Restricted access');
   
-  
-  
-  ?>
+echo JHtml::_('bootstrap.startTabSet', 'defaulttabs', array('active' => 'start')); //start tab set
+echo JHtml::_('bootstrap.addTab', 'defaulttabs', 'start', JText::_('COM_EXAMPLE_NAME'));
+echo $this->loadTemplate('ranking');
+echo JHtml::_('bootstrap.endTab');
+
+
+echo JHtml::_('bootstrap.endTabSet'); //end tab set  
+?>
