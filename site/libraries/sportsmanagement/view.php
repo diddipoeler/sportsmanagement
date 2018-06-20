@@ -106,7 +106,7 @@ class sportsmanagementView extends JViewLegacy {
         $this->option = $this->jinput->getCmd('option');
         $this->user = JFactory::getUser();
         $this->view = $this->jinput->getVar("view");
-        
+        $this->cfg_which_database = $this->jinput->getVar('cfg_which_database','0');
         $this->backbuttonreferer = $_SERVER['HTTP_REFERER'];
 
         $this->model = $this->getModel();
