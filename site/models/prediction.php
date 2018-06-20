@@ -228,13 +228,13 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   static function getChampionPoints($champ_tipp)
   {
     // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+    $app = JFactory::getApplication();
+    // JInput object
+    $jinput = $app->input;
+    $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	$db = sportsmanagementHelper::getDBConnection();
+	$query = $db->getQuery(true);
         
   $ChampPoints = 0;
   
@@ -292,7 +292,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
   }
 				
-				
+ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect				
   return $ChampPoints;
   }
   
@@ -339,7 +339,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
                 
 			}
 		}
-        
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect        
 		return self::$_predictionGame;
 	}
 
@@ -551,7 +551,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
     {
 		self::$_predictionMember->picture = self::getPredictionMemberAvatar(self::$_predictionMember->user_id, $configavatar['show_image_from'] );
 		}
-    
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
     return self::$_predictionMember;
 	}
 
@@ -603,7 +603,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
           $row->start_date = $db->loadResult();
           } 
         }
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$_predictionProjectS;
 	}
 
@@ -703,6 +703,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 							break;
 						}
 		}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
 		return $configvalues;
 	}
 
