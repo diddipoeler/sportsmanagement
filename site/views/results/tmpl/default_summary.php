@@ -1,43 +1,16 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_summary.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @subpackage results
+ */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\Registry\Registry;
+?>
 <!-- START of match summary -->
 <?php
 
@@ -84,33 +57,44 @@ if (!empty($this->match->summary))
 // Comments integration
 if (!$commentsDisabled) {
 
-	JPluginHelper::importPlugin( 'joomleague' );
-	$dispatcher =& JDispatcher::getInstance();
-	$comments = '';
+$dispatcher = JDispatcher::getInstance();
+$comments = '';
+if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
+		{
+			require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+		}
 
-	// get joomleague comments plugin params
-	$plugin				= & JPluginHelper::getPlugin('joomleague', 'comments');
+		// load joomleague comments plugin files
+		JPluginHelper::importPlugin('content','sportsmanagement_comments');
+
+		// get joomleague comments plugin params
+		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
+
+//$plugin = JoomleagueFrontHelper::getCommentsIntegrationPlugin();
 	if (is_object($plugin)) {
-		$pluginParams = new JParameter($plugin->params);
+		$pluginParams = new Registry($plugin->params);
 	}
 	else {
-		$pluginParams = new JParameter('');
+		$pluginParams = new Registry('');
 	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 
 	if ($separate_comments) {
-
-	// Comments integration trigger when separate_comments in plugin is set to yes/1
-		if ($dispatcher->trigger( 'onMatchReportComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		// Comments integration trigger when separate_comments in plugin is set to yes/1
+		if ($dispatcher->trigger( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
 	else {
 		// Comments integration trigger when separate_comments in plugin is set to no/0
-		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
+	
+	
 }
 
 ?>
