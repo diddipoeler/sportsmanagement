@@ -592,7 +592,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				else
 				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				}
 				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
@@ -621,7 +626,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				else
 				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				}
 				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
@@ -653,7 +663,6 @@ $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);					
-//					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)).'#comments';
 				}
 				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
