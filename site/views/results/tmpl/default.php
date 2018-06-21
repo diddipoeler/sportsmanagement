@@ -50,11 +50,12 @@ echo $this->loadTemplate('debug');
         echo $this->loadTemplate('rssfeed');    
         }
 	}
+/*
 if ( $this->config['show_summary'] )
 {
 	echo $this->loadTemplate('summary');	
 }
-    
+*/    
 ?>
 <div>
 <?PHP
