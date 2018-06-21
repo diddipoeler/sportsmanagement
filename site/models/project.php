@@ -521,13 +521,15 @@ $s = $configcolors;
 		return $colors;
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getDivisionsId()
 	 * 
 	 * @param integer $divLevel
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	function getDivisionsId($divLevel=0,$cfg_which_database = 0)
+	public static function getDivisionsId($divLevel=0,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
