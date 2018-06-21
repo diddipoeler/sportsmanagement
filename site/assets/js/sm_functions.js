@@ -87,6 +87,8 @@ return documentHeight - 100 ;
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
+console.log("move_list_items sourceid : "+sourceid);
+console.log("move_list_items destinationid : "+destinationid);
 
 //alert(sourceid);
 //alert(destinationid);
