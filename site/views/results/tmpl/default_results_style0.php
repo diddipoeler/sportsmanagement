@@ -550,20 +550,20 @@ $this->overallconfig['use_jquery_modal']); ?>
 				// Comments integration trigger when separate_comments in plugin is set to yes/1
 				if (isset($game->team1_result))
 				{
-					$joomleage_comments_object_group = 'com_sportsmanagement_matchreport';
+					$sportsmanagement_comments_object_group = 'com_sportsmanagement_matchreport';
 				}
 				else {
-					$joomleage_comments_object_group = 'com_sportsmanagement_nextmatch';
+					$sportsmanagement_comments_object_group = 'com_sportsmanagement_nextmatch';
 				}
 			}
 			else {
 				// Comments integration trigger when separate_comments in plugin is set to no/0
-				$joomleage_comments_object_group = 'com_sportsmanagement';
+				$sportsmanagement_comments_object_group = 'com_sportsmanagement';
 			}
 
 			$options 					= array();
 			$options['object_id']		= (int) $game->id;
-			$options['object_group']	= $joomleage_comments_object_group;
+			$options['object_group']	= $sportsmanagement_comments_object_group;
 			$options['published']		= 1;
 
 			$count = JCommentsModel::getCommentsCount($options);
