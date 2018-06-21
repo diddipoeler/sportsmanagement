@@ -31,7 +31,7 @@ function example_alertBox( boxText )
 </script>
 
 <?php
-$nbcols	= 7;
+$nbcols	= 6;
 $nbcols_header = 0;
 $dates = sportsmanagementViewResults::sortByDate($this->matches);
 
@@ -45,12 +45,11 @@ if($this->config['show_referee']){$nbcols++;}
 if($this->config['result_style']==2){$nbcols++;}
 if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
 
-if ($this->config['show_comments_count'] > 0)
+if ( $this->config['show_comments_count'] )
 {
 
 if(!JComponentHelper::isEnabled('com_jcomments', true))
 {
-    //JError::raiseError('Komponentenfehler', JText::_('Die Komponente JComments ist nicht installiert'));
     $comJcomments = false;
     JError::raiseWarning('Komponentenfehler', JText::_('Die Komponente JComments ist nicht installiert'));
 }
@@ -69,13 +68,16 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
 		}
 
-		// load joomleague comments plugin files
+/**
+ * load sportsmanagement comments plugin files
+ */
 		JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
-		// get joomleague comments plugin params
+/**
+ * get sportsmanagement comments plugin params
+ */
 		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
-//$plugin = JoomleagueFrontHelper::getCommentsIntegrationPlugin();
 	if (is_object($plugin)) {
 		$pluginParams = new Registry($plugin->params);
 	}
@@ -106,7 +108,6 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 			?>
 			<th colspan="<?php echo $nbcols-$nbcols_header; ?>">
             <?php 
-            //echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_MONTH'));
             if ( !$timestamp )
     {
         echo '';
@@ -163,9 +164,6 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 
 	foreach( $games as $game )
 	{
-		
-        //echo 'game <pre>'.print_r($game, true).'</pre><br>';
-        
         $this->game = $game;
 		if ($game->published)
 		{
@@ -237,7 +235,6 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 			}
 			?>
 
-	<!--<tr class="result<?php // echo ($k == 0) ? '' : ' alt'; ?><?php //echo ($hasEvents ? ' hasevents':''); ?>">-->
 	<tr	class=""<?php echo $favStyle; ?>>
 		<?php
 		if ($this->config['show_match_number'])
