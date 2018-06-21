@@ -334,7 +334,6 @@ $this->overallconfig['use_jquery_modal']);
 		<?php
 		}
 //--------------------------------------------------------------------------------------------------------------
-		//$this->config['result_style']=2;
 		if ($this->config['result_style']==0)
 		{
 	
