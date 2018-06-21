@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\Registry\Registry;
 ?>
 <style>
 #sbox-window {
@@ -59,22 +60,31 @@ else
     $nbcols++;
 	$nbcols_header++;
 
-	require_once (JPATH_ROOT . '/components/com_jcomments/jcomments.class.php');
-    require_once (JPATH_ROOT . '/components/com_jcomments/jcomments.config.php');
-	require_once (JPATH_ROOT . '/components/com_jcomments/models/jcomments.php');
+$dispatcher = JDispatcher::getInstance();
+$comments = '';
+if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
+		{
+			require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+		}
 
-	// get joomleague comments plugin params
-	JPluginHelper::importPlugin( 'joomleague' );
+		// load joomleague comments plugin files
+		JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
-	$plugin	= & JPluginHelper::getPlugin('joomleague', 'comments');
+		// get joomleague comments plugin params
+		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
+//$plugin = JoomleagueFrontHelper::getCommentsIntegrationPlugin();
 	if (is_object($plugin)) {
-		$pluginParams = new JParameter($plugin->params);
+		$pluginParams = new Registry($plugin->params);
 	}
 	else {
-		$pluginParams = new JParameter('');
+		$pluginParams = new Registry('');
 	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
+
+	
     }
 }
 ?>
