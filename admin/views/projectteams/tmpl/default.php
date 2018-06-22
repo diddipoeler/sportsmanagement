@@ -82,9 +82,11 @@ $opt = ' allowClear: true,
 ';
 
 JHtml::_('formbehavior2.select2', '.test1', $opt);
+    if ( isset($this->lists['country_teams']) )
+    {
 echo JHtml::_('select.genericlist',$this->lists['country_teams'],'team_id',
 'style="width:225px;" class="test1" size="6"'.$append,'value','text',0);
-
+    }
 ?>
 <input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
 </div>
