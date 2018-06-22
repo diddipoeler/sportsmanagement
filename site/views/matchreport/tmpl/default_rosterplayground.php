@@ -278,7 +278,15 @@ echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
 
 
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);     
 ?>
  
 
@@ -336,7 +344,15 @@ $picture = ($player->ppic != $picture2) ? $player->ppic : $player->picture ;
 
 <?PHP
 //echo JHtml::image($picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);    
 ?>
 
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
