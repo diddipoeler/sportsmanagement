@@ -185,7 +185,15 @@ if ( $schemahome )
 
 <?PHP
 //echo JHtml::image($this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',$this->team1_club->logo_big,$this->team1_club->name,'50');     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',
+$this->team1_club->logo_big,
+$this->team1_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);     
 ?>
 
 
@@ -202,7 +210,15 @@ if ( $schemaguest )
 
 <?PHP
 //echo JHtml::image($this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',$this->team2_club->logo_big,$this->team2_club->name,'50');  
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',
+$this->team2_club->logo_big,
+$this->team2_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);  
 ?>
 
 
