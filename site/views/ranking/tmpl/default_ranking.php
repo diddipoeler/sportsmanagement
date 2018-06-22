@@ -25,9 +25,12 @@ foreach ($this->currentRanking as $division => $cu_rk) {
         }
         $configvalues = $jRegistry->toArray();
         $colors = array();
+        if ( isset($configvalues[rankingparams]) )
+        {
         for ($a = 1; $a <= sizeof($configvalues[rankingparams]); $a++) {
             $colors[] = implode(",", $configvalues[rankingparams][$a]);
         }
+    }
         $configvalues = implode(";", $colors);
 
         $this->colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
