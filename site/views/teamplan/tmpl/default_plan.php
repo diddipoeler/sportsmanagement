@@ -483,10 +483,10 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         if ( $this->config['show_date_image'] )
         {
         ?>
-<div class="calendar">
-<div class="calendar-month">Monat</div>
-<div class="calendar-day">tag</div>
-<div class="calendar-dayname">tagname</div>
+<div class="jsmcalendar">
+<div class="jsmcalendar-month">Monat</div>
+<div class="jsmcalendar-day">tag</div>
+<div class="jsmcalendar-dayname">tagname</div>
 </div>
 
         <?php    
