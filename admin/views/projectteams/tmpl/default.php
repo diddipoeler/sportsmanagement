@@ -80,7 +80,7 @@ $opt = ' allowClear: true,
    
    escapeMarkup: function(m) { return m; }
 ';
-
+$append = '';
 JHtml::_('formbehavior2.select2', '.test1', $opt);
     if ( isset($this->lists['country_teams']) )
     {
