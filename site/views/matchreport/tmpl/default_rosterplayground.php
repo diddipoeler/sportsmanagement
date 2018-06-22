@@ -258,7 +258,7 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-$picture = ($player->ppic != $picture2) ? $player->ppic : $player->picture ;
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -336,7 +336,7 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
-$picture = ($player->ppic != $picture2) ? $player->ppic : $player->picture ;
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 ?>
 
