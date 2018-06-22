@@ -10,10 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+JHtml::_('behavior.framework'); 
 $params = $this->form->getFieldsets('params');
-//$document = JFactory::getDocument();
-//$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 ?>
 <script type="text/javascript">
 
