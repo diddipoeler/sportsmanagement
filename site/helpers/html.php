@@ -447,7 +447,7 @@ $modaltext .= '</a>';
                 // select some fields
                 $query->select('*');
                 // from table
-                $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_club');
+                $query->from('#__sportsmanagement_club');
                 // where
                 $query->where('id = ' . self::$teams[$game->projectteam1_id]->club_id);
                 $db->setQuery($query);
@@ -484,7 +484,7 @@ $modaltext .= '</a>';
             // select some fields
             $query->select('*');
             // from table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_playground');
+            $query->from('#__sportsmanagement_playground');
             // where
             $query->where('id = ' . $game->playground_id);
             $db->setQuery($query);
