@@ -2023,9 +2023,12 @@ abstract class sportsmanagementHelper {
             }
             $configvalues = $jRegistry->toArray();
             $colors = array();
-            for ($a = 1; $a <= sizeof($configvalues[rankingparams]); $a++) {
-                $colors[] = implode(",", $configvalues[rankingparams][$a]);
+         if ( isset($configvalues['rankingparams']) )
+	 {
+	for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++) {
+                $colors[] = implode(",", $configvalues['rankingparams'][$a]);
             }
+	}
             $configvalues = implode(";", $colors);
             $colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
             foreach ($colors as $color) {
