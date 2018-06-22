@@ -41,7 +41,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		
 		sportsmanagementHelperHtml::$project = $this->project;
 		
-        if ( !isset($this->config['show_date_image']) )
+        if ( $this->config['show_date_image'] )
         {
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/calendar.css');
         }    

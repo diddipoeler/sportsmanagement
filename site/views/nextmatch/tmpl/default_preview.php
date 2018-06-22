@@ -58,10 +58,14 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
 		}
 
-		// load joomleague comments plugin files
+/**
+ * load sportsmanagement comments plugin files
+ */
 		JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
-		// get joomleague comments plugin params
+/**
+ * get sportsmanagement comments plugin params
+ */
 		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
 	if (is_object($plugin)) {
@@ -73,13 +77,17 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 
 	if ($separate_comments) {
-		// Comments integration trigger when separate_comments in plugin is set to yes/1
+/**
+ * Comments integration trigger when separate_comments in plugin is set to yes/1
+ */
 		if ($dispatcher->trigger( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
 	else {
-		// Comments integration trigger when separate_comments in plugin is set to no/0
+/**
+ * Comments integration trigger when separate_comments in plugin is set to no/0
+ */
 		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}

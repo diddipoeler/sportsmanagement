@@ -13,20 +13,35 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 {
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/jcomments.class.php');
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/jcomments.config.php');
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/models/jcomments.php');
+$dispatcher = JDispatcher::getInstance();
+$comments = '';
+if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
+		{
+			require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
+			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+		}
 
-	// get joomleague comments plugin params
-	JPluginHelper::importPlugin( 'joomleague' );
+/**
+ * load sportsmanagement comments plugin files
+ */
+		JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
-	$plugin				= & JPluginHelper::getPlugin('joomleague', 'comments');
+/**
+ * get sportsmanagement comments plugin params
+ */
+		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
-	$pluginParams = is_object($plugin) ? new JParameter($plugin->params) : new JParameter('');
+	if (is_object($plugin)) {
+		$pluginParams = new Registry($plugin->params);
+	}
+	else {
+		$pluginParams = new Registry('');
+	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }
 ?>
-<!-- <a name="jl_top" id="jl_top"></a> -->
+
 <?php
 if (!empty($this->matches))
 {
@@ -394,7 +409,9 @@ $nbcols = 0;
 		{
 			$hasEvents = false;
 		}
-		// end events
+/**
+ * end events
+ */
 		?>
 
 		<?php
@@ -462,6 +479,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			{
 				echo "&nbsp;";
 			}
+            
+        if ( $this->config['show_date_image'] )
+        {
+        ?>
+<div class="calendar">
+<div class="calendar-month">Monat</div>
+<div class="calendar-day">tag</div>
+<div class="calendar-dayname">tagname</div>
+</div>
+
+        <?php    
+        }    
+            
+            
 			?>
 			</td>
 		<?php
