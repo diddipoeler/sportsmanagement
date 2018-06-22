@@ -25,10 +25,10 @@ foreach ($this->currentRanking as $division => $cu_rk) {
         }
         $configvalues = $jRegistry->toArray();
         $colors = array();
-        if ( isset($configvalues[rankingparams]) )
+        if ( isset($configvalues['rankingparams']) )
         {
-        for ($a = 1; $a <= sizeof($configvalues[rankingparams]); $a++) {
-            $colors[] = implode(",", $configvalues[rankingparams][$a]);
+        for ($a = 1; $a <= sizeof($configvalues['rankingparams']); $a++) {
+            $colors[] = implode(",", $configvalues['rankingparams'][$a]);
         }
     }
         $configvalues = implode(";", $colors);
