@@ -74,7 +74,7 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'html.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'simpleGMapGeocoder.php' );
-
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 $view = $input->getVar("view");
 switch ($view)
 {
