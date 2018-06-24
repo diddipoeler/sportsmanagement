@@ -44,11 +44,12 @@ class sportsmanagementModelical extends JModelLegacy
         $jinput = $app->input;
 		parent::__construct( );
         
-self::$projectid = $jinput->request->get('p', 0, 'INT');
+        self::$projectid = $jinput->request->get('p', 0, 'INT');
 		self::$divisionid = $jinput->request->get('division', 0, 'INT');
         self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
-        sportsmanagementModelProject::$projectid = self::$projectid; 
-
+        sportsmanagementModelProject::$projectid = self::$projectid;
+        sportsmanagementModelResults::$projectid = self::$projectid;  
+        sportsmanagementModelNextMatch::$projectid = self::$projectid; 
 
 	}
 
