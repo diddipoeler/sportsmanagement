@@ -11,34 +11,34 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
+if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
 $dispatcher = JDispatcher::getInstance();
 $comments = '';
 if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
-		{
-			require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
-			require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
-			require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
-		}
+{
+require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
+require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
+require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+}
 
 /**
  * load sportsmanagement comments plugin files
  */
-		JPluginHelper::importPlugin('content','sportsmanagement_comments');
+JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
 /**
  * get sportsmanagement comments plugin params
  */
-		$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
+$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
-	if (is_object($plugin)) {
-		$pluginParams = new Registry($plugin->params);
-	}
-	else {
-		$pluginParams = new Registry('');
-	}
-	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
+if (is_object($plugin)) {
+	$pluginParams = new Registry($plugin->params);
+}
+else {
+	$pluginParams = new Registry('');
+}
+$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }
 ?>
 
@@ -471,27 +471,35 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		{
 			?>
 			<td width="10%"><?php
-			if (!strstr($match->match_date,"0000-00-00"))
+			
+            
+        if ( $this->config['show_date_image'] )
+        {
+$jdate = JFactory::getDate($match->match_date);
+$jdate->setTimezone(new DateTimeZone($this->project->timezone));    
+//$jdate->format('d.m.Y H:i');  
+$temp1 = $jdate->format('M');
+$temp2 = $jdate->format('d');
+$temp3 = $jdate->format('D');      
+        ?>
+<div class="jsmcalendar">
+<div class="jsmcalendar-month"><?php echo $temp1; ?></div>
+<div class="jsmcalendar-day"><?php echo $temp2; ?></div>
+<div class="jsmcalendar-dayname"><?php echo $temp3; ?></div>
+</div>
+        <?php    
+        }    
+        else
+        {
+        if ( !strstr($match->match_date,"0000-00-00") )
 			{
 				echo JHtml::date($match->match_date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 			}
 			else
 			{
 				echo "&nbsp;";
-			}
-            
-        if ( $this->config['show_date_image'] )
-        {
-        ?>
-<div class="jsmcalendar">
-<div class="jsmcalendar-month">Monat</div>
-<div class="jsmcalendar-day">tag</div>
-<div class="jsmcalendar-dayname">tagname</div>
-</div>
-
-        <?php    
+			}    
         }    
-            
             
 			?>
 			</td>
@@ -503,7 +511,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime(	$match,
+		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime($match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>

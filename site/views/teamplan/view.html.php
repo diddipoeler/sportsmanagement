@@ -100,8 +100,8 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	 */
 	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config)
 	{
-		$output='';
-		$result='';
+		$output = '';
+		$result = '';
 
 		if ($this->config['use_tabs_events'])
 		{
