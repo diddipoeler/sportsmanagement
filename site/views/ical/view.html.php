@@ -32,12 +32,14 @@ class sportsmanagementViewical extends sportsmanagementView
 	 */
 	function init()
 	{
-    // add the results model
-	$resultsmodel = new sportsmanagementModelResults();
-	$this->matches = $resultsmodel->getMatches($this->jinput->getInt('cfg_which_database',0)); 
-
+	$mdlJSMResults = JModelLegacy::getInstance("results", "sportsmanagementModel");
+	$this->matches = $mdlJSMResults->getMatches($this->jinput->getInt('cfg_which_database',0)); 
     $mdlJSMNextMatch = JModelLegacy::getInstance("nextmatch", "sportsmanagementModel");
     $this->teams = $mdlJSMNextMatch->getTeamsFromMatches( $this->matches );;
+
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
     // create a new calendar instance
 	$v = new vcalendar();

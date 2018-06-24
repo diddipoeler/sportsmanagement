@@ -632,20 +632,22 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         }
         
         $query->where('pt.id IN ('.$listTeamId.')' );
-                 
+        try{         
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
-        
-        if ( !$result )
-	    {
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-
 		foreach ( $result as $r )
 		{
 			$teams[$r->ptid] = $r;
 		}
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $teams = false;
+}
+        
+        
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teams;
 	}
