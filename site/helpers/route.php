@@ -814,31 +814,31 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //        return sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$params);
 //    }
 
-    /**
-     * sportsmanagementHelperRoute::getIcalRoute()
-     *
-     * @param mixed $projectid
-     * @param mixed $teamid
-     * @param mixed $pgid
-     * @param int   $cfg_which_database
-     * @param int   $s
-     *
-     * @return string
-     */
-	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null ,$cfg_which_database = 0,$s = 0)
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "ical",
-					"p" => $projectid );
-
-		if ( !is_null( $pgid ) ) { $params["pgid"] = $pgid; }
-		if ( !is_null( $teamid ) ) { $params["teamid"] = $teamid; }
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( "index.php?" . $query, false );
-
-		return $link;
-	}
+//    /**
+//     * sportsmanagementHelperRoute::getIcalRoute()
+//     *
+//     * @param mixed $projectid
+//     * @param mixed $teamid
+//     * @param mixed $pgid
+//     * @param int   $cfg_which_database
+//     * @param int   $s
+//     *
+//     * @return string
+//     */
+//	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null ,$cfg_which_database = 0,$s = 0)
+//	{
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "ical",
+//					"p" => $projectid );
+//
+//		if ( !is_null( $pgid ) ) { $params["pgid"] = $pgid; }
+//		if ( !is_null( $teamid ) ) { $params["teamid"] = $teamid; }
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( "index.php?" . $query, false );
+//
+//		return $link;
+//	}
 
     /**
      * sportsmanagementHelperRoute::buildQuery()

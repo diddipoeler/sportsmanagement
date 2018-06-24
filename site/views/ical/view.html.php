@@ -40,7 +40,8 @@ class sportsmanagementViewical extends sportsmanagementView
 
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-    
+
+/*    
     // create a new calendar instance
 	$v = new vcalendar();
     
@@ -94,7 +95,7 @@ class sportsmanagementViewical extends sportsmanagementView
 		$xprops = array( "X-LIC-LOCATION" => $timezone );
 		iCalUtilityFunctions::createTimezone( $v, $timezone, $xprops );
 		$v->returnCalendar();
-    
+*/    
            
     }   
 
