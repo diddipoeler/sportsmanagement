@@ -360,8 +360,8 @@ else
 		  $query->where('(d1.id = '.(int)$division.' OR d1.parent_id = '.(int)$division.' OR d2.id = '.(int)$division.' OR d2.parent_id = '.(int)$division.')');
 		}
 
-		if ( !is_null($round) ) 
-        {
+//		if ( !is_null($round) ) 
+//        {
 try{
 			$db->setQuery($query);
             //$result = $db->loadObjectList();
@@ -370,8 +370,9 @@ try{
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
 }
-		}
+		//}
         
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
