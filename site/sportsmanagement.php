@@ -142,8 +142,9 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'playground.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');
 break;
-
-
+case 'ical':
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'iCalcreator.php' );
+break;
 case 'predictionrules':
 case 'predictionranking':
 case 'predictionusers':
