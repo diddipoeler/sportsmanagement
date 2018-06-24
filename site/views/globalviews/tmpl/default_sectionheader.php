@@ -256,7 +256,10 @@ $routeparameter = array();
 $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
-$routeparameter['teamid'] = $this->teams[$this->ptid]->team_id;
+$routeparameter['tid'] = $this->teams[$this->ptid]->team_id;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = $this->ptid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparameter);
 				    
 				//$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);

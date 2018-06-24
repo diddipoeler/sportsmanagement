@@ -514,6 +514,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'teamplan':
+            case 'ical':
                 if (isset($query['tid'])) {
                     $segments[] = $query['tid'];
                     unset($query['tid']);
@@ -981,6 +982,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'teamplan':
+            case 'ical':
                 if (isset($segments[4])) {
                     $vars['tid'] = $segments[4];
                 }

@@ -27,7 +27,8 @@ class sportsmanagementModelical extends JModelLegacy
 	static $projectid = 0;
 	static $divisionid = 0;
     static $cfg_which_database = 0;
-	var $teamid = 0;
+	static $teamid = 0;
+    static $projectteamid = 0;
 	var $team = null;
 	var $club = null;
 
@@ -43,6 +44,9 @@ class sportsmanagementModelical extends JModelLegacy
         $app = JFactory::getApplication();
         $jinput = $app->input;
 		parent::__construct( );
+        
+        self::$teamid = (int) $jinput->get('tid',0, '');
+        self::$projectteamid = (int) $jinput->get('ptid',0, '');
         
         self::$projectid = $jinput->request->get('p', 0, 'INT');
 		self::$divisionid = $jinput->request->get('division', 0, 'INT');
