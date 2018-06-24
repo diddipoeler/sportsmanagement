@@ -783,21 +783,20 @@ catch (Exception $e)
         $query->where('(m.projectteam1_id = '.$ptid.' OR m.projectteam2_id = '.$ptid.')');
         $query->where('m.published = 1');
         $query->order('r.roundcode DESC');
-        //$query->setLimit('0,'.$nblast);
-              
+
+        try{      
 		$db->setQuery($query,0,$nblast);
 		$res = $db->loadObjectList();
-        
-        if ( !$res && $db->getErrorNum() )
-	    {
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');   
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');   
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
 		if ($res) {
 			$res = array_reverse($res);
 		}
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $res = false;
+}
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
 		return $res;
 	}
