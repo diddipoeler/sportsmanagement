@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'nextmatch.php');
 
 /**
  * sportsmanagementViewical
@@ -33,10 +34,10 @@ class sportsmanagementViewical extends sportsmanagementView
 	{
     // add the results model
 	$resultsmodel = new sportsmanagementModelResults();
-        
 	$this->matches = $resultsmodel->getMatches($this->jinput->getInt('cfg_which_database',0)); 
-    $mdlJSMTeams = JModelLegacy::getInstance("teams", "sportsmanagementModel");
-    $this->teams = $mdlJSMTeams->getTeamsFromMatches( $this->matches );;
+
+    $mdlJSMNextMatch = JModelLegacy::getInstance("nextmatch", "sportsmanagementModel");
+    $this->teams = $mdlJSMNextMatch->getTeamsFromMatches( $this->matches );;
     
     // create a new calendar instance
 	$v = new vcalendar();
