@@ -57,7 +57,7 @@ class sportsmanagementModelical extends JModelLegacy
 
 	}
 
-	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC') 
+	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0) 
  	{ 
 
 	}	
