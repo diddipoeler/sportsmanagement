@@ -77,7 +77,8 @@ class sportsmanagementModelical extends JModelLegacy
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');	
 
-		
+	$query->select('t1.id AS team1, t2.id AS team2');
+	$query->select('p.name AS project_name');
 		
 	// from 
 	$query->from('#__sportsmanagement_match AS m');
