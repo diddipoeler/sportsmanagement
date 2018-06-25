@@ -119,44 +119,5 @@
 		>
 		
 		</fieldset>
-
-		
-<!--  
-	<fieldset	name="picture"
-  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
-  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
-				
-		<field 	name="icon" 
-				type="media" 
-				directory=""
-				preview="show"				
-				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
-				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
-		</field>
-	</fieldset>
--->
-
-<!--
-  <fields name="params">
-		<fieldset
-			name="params"
-			label="COM_SPORTSMANAGEMENT_TABS_PARAMS"
-			description="COM_SPORTSMANAGEMENT_TABS_PARAMS_DESC"
-		>
-		
-		</fieldset>
-	</fields>	
--->
-	
-<!--  
-  <fields name="extended">
-		<fieldset
-			name="extended"
-			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
-		>
-		
-		</fieldset>
-	</fields>	
--->
-  			
+ 			
 </form>

@@ -1037,7 +1037,7 @@ abstract class sportsmanagementHelper {
     static function getExtended($data = '', $file, $format = 'ini') {
         $app = JFactory::getApplication();
         $xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DS . 'assets' . DS . 'extended' . DS . $file . '.xml';
-        /*
+        /**
          * extended data
          */
         if (JFile::exists($xmlfile)) {
