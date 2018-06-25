@@ -68,6 +68,7 @@ class sportsmanagementModelical extends JModelLegacy
         // select some fields
         $query->select('m.id,m.projectteam1_id, m.projectteam2_id, m.match_date,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
+	$query->select('playground.address AS playground_address,playground.zipcode AS playground_zipcode,playground.city AS playground_city');
         $query->select('pt1.project_id');
         $query->select('d1.name as divhome');
         $query->select('d2.name as divaway');
