@@ -10,8 +10,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-//echo '<pre>',print_r($this->playground,true),'</pre><br>';
-
 ?>
 
 <?php
@@ -35,10 +33,19 @@ $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . sportsmanagementHelper::getDefa
                 
                 }
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$this->playground->id,$picture,$this->playground->name,$this->config['playground_picture_width'])                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$this->playground->id,
+$picture,
+$this->playground->name,
+$this->config['playground_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+)                
+
 ?>
 
-		</div>
-    <?php
+</div>
+<?php
 }
 ?>
