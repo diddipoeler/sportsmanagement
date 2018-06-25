@@ -59,7 +59,14 @@ class sportsmanagementModelical extends JModelLegacy
 
 	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0) 
  	{ 
-
+	$app = JFactory::getApplication();
+	$option = $app->input->getCmd('option');
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+        $query = $db->getQuery(true);
+		
+		
+		
 	}	
 	
 	
