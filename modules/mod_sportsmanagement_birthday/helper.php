@@ -100,7 +100,7 @@ $birthdaytext = '';
 // get player info, we have to make a function for this
 $dateformat = "DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth";
 
-if ($params->get('use_which') <= 1) {
+if ( $params->get('use_which') <= 1 ) {
     $query = $database->getQuery(true);
     $query->clear();
     $subquery1 = $database->getQuery(true);
@@ -128,8 +128,14 @@ if ($params->get('use_which') <= 1) {
     $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
     $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
+ if ( $params->get('use_which') == 1 )
+ {
     $query->where('stp.persontype = 1');
-    
+ }
+ elseif ( $params->get('use_which') == 0 )
+ {
+    $query->where(' ( stp.persontype = 1 OR stp.persontype = 2 ) ');
+ }
     $subquery1->select('pos.name');
     $subquery1->from('#__sportsmanagement_position AS pos ');
     $subquery1->join('INNER', '#__sportsmanagement_project_position as ppos ON ppos.position_id = pos.id ');
@@ -174,7 +180,7 @@ if ($params->get('use_which') <= 1) {
 }
 
 //get staff info, we have to make a function for this
-if ($params->get('use_which') == 2 || $params->get('use_which') == 0) {
+if ( $params->get('use_which') == 2 ) {
     $query = $database->getQuery(true);
     $query->clear();
 
