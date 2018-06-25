@@ -49,9 +49,9 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.pr
     
     foreach($this->matches as $match)
 		{
-			$hometeam = $this->teams[$match->team1];
+			$hometeam = $this->teams[$match->projectteam1_id];
 			$home = sprintf('%s', $hometeam->name);
-			$guestteam = $this->teams[$match->team2];
+			$guestteam = $this->teams[$match->projectteam2_id];
 			$guest = sprintf('%s', $guestteam->name);
 			$summary =  $match->project_name.': '.$home.' - '.$guest;
 			//  check if match gots a date, if not it will not be included in ical
