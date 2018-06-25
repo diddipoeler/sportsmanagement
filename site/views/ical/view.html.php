@@ -57,7 +57,7 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.pr
 			//  check if match gots a date, if not it will not be included in ical
 			if ($match->match_date)
 			{
-				$totalMatchTime = isset( $project ) ? ($project->halftime * ($project->game_parts - 1)) + $project->game_regular_time : 90;
+				$totalMatchTime = isset( $this->project ) ? ($project->halftime * ($this->project->game_parts - 1)) + $this->project->game_regular_time : 90;
 				$start = sportsmanagementHelper::getMatchStartTimestamp($match, 'Y-m-d H:i:s');
 				$end = sportsmanagementHelper::getMatchEndTimestamp($match, $totalMatchTime, 'Y-m-d H:i:s');
 				// check if exist a playground in match or team or club
