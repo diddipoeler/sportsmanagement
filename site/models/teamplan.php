@@ -478,7 +478,7 @@ try{
 	 * @param mixed $projekt
 	 * @return
 	 */
-	function _getRefereesByMatch($matches,$projekt)
+	public static function _getRefereesByMatch($matches,$projekt)
 	{
 	   	$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
