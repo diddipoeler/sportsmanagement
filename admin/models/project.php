@@ -1,48 +1,19 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/ 
+ * @version   1.0.05
+ * @file      project.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModelProject
@@ -91,9 +62,9 @@ class sportsmanagementModelProject extends JSMModelAdmin
        $query = $db->getQuery(true);
        
        $query->select('t.*');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-       $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-       $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+       $query->from('#__sportsmanagement_team AS t');
+       $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+       $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
        $query->where('pt.id = ' . $projectteam_id);
        
 		$db->setQuery($query);
@@ -116,7 +87,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 		$db = sportsmanagementHelper::getDBConnection(); 
         $query	= $db->getQuery(true);
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->from('#__sportsmanagement_project');
         $query->where('id = ' . $project_id);
 		
         $db->setQuery($query);
@@ -145,20 +116,20 @@ class sportsmanagementModelProject extends JSMModelAdmin
         if ( $this->project_art_id == 3 )
         {
             // Select some fields
-		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text");
+		    $query->select("pt.id AS value,concat(t.lastname,' - ',t.firstname,'' ) AS text,t.notes");
             // From table
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t');
-            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS st on st.person_id = t.id');
-            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+		    $query->from('#__sportsmanagement_person AS t');
+            $query->join('LEFT', '#__sportsmanagement_season_person_id AS st on st.person_id = t.id');
+            $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         }
         else
         {
             // Select some fields
 		    $query->select('pt.id AS value');
             $query->select('t.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+            $query->from('#__sportsmanagement_team AS t');
+            $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         }
 		
         $query->where('pt.project_id = ' . $project_id);
@@ -231,7 +202,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             // rounds 
             $query->clear();
             $query->select('r.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
+            $query->from('#__sportsmanagement_round as r');
             $query->where('r.project_id IN ('.implode(",",$pk).')');
             JFactory::getDBO()->setQuery($query);
             $rounds = JFactory::getDbo()->loadColumn();
@@ -241,7 +212,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             {
             $query->clear();
             $query->select('m.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+            $query->from('#__sportsmanagement_match as m');
             $query->where('m.round_id IN ('.implode(",",$rounds).')');
             JFactory::getDBO()->setQuery($query);
             $matches = JFactory::getDbo()->loadColumn();
@@ -250,7 +221,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             // project_teams 
             $query->clear();
             $query->select('p.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as p');
+            $query->from('#__sportsmanagement_project_team as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
             JFactory::getDBO()->setQuery($query);
             $project_teams = JFactory::getDbo()->loadColumn();
@@ -258,7 +229,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             // project_referee 
             $query->clear();
             $query->select('p.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as p');
+            $query->from('#__sportsmanagement_project_referee as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
             JFactory::getDBO()->setQuery($query);
             $project_referee = JFactory::getDbo()->loadColumn();
@@ -266,7 +237,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             // project_position 
             $query->clear();
             $query->select('p.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as p');
+            $query->from('#__sportsmanagement_project_position as p');
             $query->where('p.project_id IN ('.implode(",",$pk).')');
             JFactory::getDBO()->setQuery($query);
             $project_position = JFactory::getDbo()->loadColumn();
@@ -405,12 +376,12 @@ class sportsmanagementModelProject extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -458,90 +429,6 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}
-       
-   /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function savenichtmehr($data)
-	{
-	   $app = JFactory::getApplication();
-       $address_parts = array();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       $date = time();    // aktuelles Datum
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-       
-       //$data['modified'] = date('Y-m-d H:i:s', $date);
-       //$post['modified'] = $date->toSql();
-       
-       $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
-       
-       $data['sports_type_id'] = $data['request']['sports_type_id'];
-       $data['agegroup_id'] = $data['request']['agegroup_id'];
-       
-       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
-       
-       $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extendeduser']);
-			$data['extendeduser'] = (string)$parameter;
-		}
-        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask -> '.JRequest::getVar('task').''),'');
-       
-       // for save as copy
-		if (JRequest::getVar('task') == 'save2copy')
-		{
-			$data['current_round'] = 0;
-		}
-        
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
-       //-------extra fields-----------//
-        sportsmanagementHelper::saveExtraFields($post,$data['id']); 
-       
-        return true;  
-       
-        
-       
-    }    
-    
+
 	
 }

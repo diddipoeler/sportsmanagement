@@ -12,7 +12,7 @@
 					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
 					>
    <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -74,7 +74,7 @@
         			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
               description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC">
 
-			<field	name="what_to_show_first" type="radio" default="0"
+			<field	name="what_to_show_first" type="extensionradiobutton" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_DESCR">
 			    <option value="0">Results</option>

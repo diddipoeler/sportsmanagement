@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -53,7 +53,7 @@ $updateFileDate		= '2017-01-15';
 $updateFileTime		= '00:05';
 $updateDescription	='<span style="color:orange">Update all tables using the current install sql-file.</span>';
 $excludeFile		='false';
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
 $maxImportTime = JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -76,7 +76,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit'
  */
 function getUpdatePart()
 {
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$update_part = $app->getUserState($option.'update_part');
 	return $update_part;
@@ -90,7 +90,7 @@ function getUpdatePart()
  */
 function setUpdatePart($val=1)
 {
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$update_part=$app->getUserState($option.'update_part');
 	if ($val!=0)
@@ -119,7 +119,7 @@ function setUpdatePart($val=1)
 function ImportTables()
 {
 	$db = sportsmanagementHelper::getDBConnection();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');
 
@@ -178,7 +178,7 @@ $slide_id = 1;
                 	
 				echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 				echo "Checking existence of table [$DummyStr] - <span style='color:";
-				if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
+				if ($db->execute()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
 				echo '</span>';
 				echo '</h3></td></tr></thead><tbody>';
 				$DummyStr=$import;
@@ -314,7 +314,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($queryDelete);
-                        $db->query();
+                        $db->execute();
                         echo "$queryDelete - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$queryDelete - <span style='color:red'".JText::_('Failed').'</span>';
@@ -363,7 +363,7 @@ $slide_id = 1;
                        {
 						try {    
 						$db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                         echo "$query - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
@@ -377,7 +377,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                         echo "$query - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
@@ -432,7 +432,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($queryAdd);
-                        $db->query();
+                        $db->execute();
                         echo "$queryAdd - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$queryAdd - <span style='color:red'".JText::_('Failed').'</span>';
@@ -470,7 +470,7 @@ $slide_id = 1;
 	$mtime=$mtime[1] + $mtime[0];
 	$starttime=$mtime;
 
-	JToolBarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
+	JToolbarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
 	echo '<h2>'.JText::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 								$version,$updateDescription,$updateFileDate,$updateFileTime).'</h2>';
 	$totalUpdateParts = 2;

@@ -53,13 +53,13 @@ class GCalendarView extends JViewLegacy {
 		if (empty($this->icon)) {
 			$this->icon = strtolower($this->getName());
 		}
-		JToolBarHelper::title(JText::_($this->title), $this->icon);
+		JToolbarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
 		$document->addStyleDeclaration('.icon-48-'.$this->icon.' {background-image: url(../media/com_gcalendar/images/admin/48-'.$this->icon.'.png);background-repeat: no-repeat;}');
 
 		if ($canDo->get('core.admin')) {
-			JToolBarHelper::preferences($this->extension, 550);
-			JToolBarHelper::divider();
+			JToolbarHelper::preferences($this->extension, 550);
+			JToolbarHelper::divider();
 		}
 	}
 

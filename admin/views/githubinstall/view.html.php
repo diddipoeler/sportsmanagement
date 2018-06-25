@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -63,20 +63,20 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $model = $this->getModel();
-        $uri = JFactory::getURI();
+		//$app = JFactory::getApplication();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+        //$model = $this->getModel();
+        //$uri = JFactory::getURI();
         
-        $github_link = JComponentHelper::getParams($option)->get('cfg_update_server_file','');
+        $github_link = JComponentHelper::getParams($this->option)->get('cfg_update_server_file','');
         $this->github_link	= $github_link;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github_link<br><pre>'.print_r($github_link,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github_link<br><pre>'.print_r($github_link,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
-        $this->_success_text = $model->CopyGithubLink($github_link);
-        $this->request_url	= $uri->toString();
+        $this->_success_text = $this->model->CopyGithubLink($github_link);
+        //$this->request_url	= $uri->toString();
         
  
 //		// Display the template

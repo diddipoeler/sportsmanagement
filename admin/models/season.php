@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -91,7 +91,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
        $modified = $date->toSql();
 	   $modified_by = $user->get('id');
        
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->post->getArray(array());
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $teams = $jinput->getVar('team_id', null, 'post', 'array');
@@ -116,7 +116,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		} 
@@ -136,7 +136,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}
@@ -160,7 +160,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->post->getArray(array());
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $season_id = $jinput->getVar('season_id', 0, 'post', 'array');
@@ -185,7 +185,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}  

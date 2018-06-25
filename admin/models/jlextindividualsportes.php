@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -74,11 +74,11 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
     protected function getListQuery()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $project_id			= $app->getUserState( "$option.pid", '0' );
-		$match_id		= JRequest::getvar('id', 0);;
-		$projectteam1_id		= JRequest::getvar('team1', 0);;
-		$projectteam2_id		= JRequest::getvar('team2', 0);;
+		$match_id		= JFactory::getApplication()->input->getvar('id', 0);;
+		$projectteam1_id		= JFactory::getApplication()->input->getvar('team1', 0);;
+		$projectteam2_id		= JFactory::getApplication()->input->getvar('team2', 0);;
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
@@ -105,7 +105,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 	function checkGames($project,$match_id,$rid,$projectteam1_id,$projectteam2_id)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -197,14 +197,14 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	 */
 	function getProjectTeams($project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 
 		$app	= JFactory::getApplication();
 		//$project_id = $app->getUserState($option . 'project');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-//$projectteam1_id		= JRequest::getvar('team1', 0);
+//$projectteam1_id		= JFactory::getApplication()->input->getvar('team1', 0);
 
 // Select some fields
 		$query->select('pt.id AS value');
@@ -248,7 +248,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	 */
 	function getProjectTeamsOptions($iDivisionId=0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 
 		$app	=& JFactory::getApplication();
 		$project_id = $app->getUserState($option . 'project');
@@ -293,7 +293,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	
 	function getPlayer($teamid,$project_id)
 	{
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -330,7 +330,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
  
   function getSportType($id)
   {
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$app	=& JFactory::getApplication();
   $query='SELECT name
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
@@ -354,7 +354,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   
   function _getSinglefile()
   {
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$app	=& JFactory::getApplication();
 	
 	$match_id		= $app->getUserState( $option . 'match_id' );

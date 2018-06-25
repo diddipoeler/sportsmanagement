@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      teampersons.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teampersons
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -69,8 +41,8 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         {   
                 $config['filter_fields'] = array(
                         'ppl.lastname',
-                        'ppl.person_id',
-                        'ppl.project_position_id',
+                        'tp.person_id',
+                        'ppl.position_id',
                         'ppl.published',
                         'ppl.ordering',
                         'ppl.picture',
@@ -82,8 +54,6 @@ class sportsmanagementModelTeamPersons extends JSMModelList
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
         }
-    
-    
 
 	/**
 	 * Method to auto-populate the model state.
@@ -107,27 +77,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         
-        if ( JRequest::getVar('team_id') )
+        if ( JFactory::getApplication()->input->getVar('team_id') )
         {
-        $this->setState('filter.team_id', JRequest::getVar('team_id') );    
+        $this->setState('filter.team_id', JFactory::getApplication()->input->getVar('team_id') );    
         }
         else
         {
 		$this->setState('filter.team_id', $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' ) );
         }
         
-        if ( JRequest::getVar('persontype') )
+        if ( JFactory::getApplication()->input->getVar('persontype') )
         {
-        $this->setState('filter.persontype', JRequest::getVar('persontype') );    
+        $this->setState('filter.persontype', JFactory::getApplication()->input->getVar('persontype') );    
         }
         else
         {
         $this->setState('filter.persontype', $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' ) );
         }
         
-        if ( JRequest::getVar('project_team_id') )
+        if ( JFactory::getApplication()->input->getVar('project_team_id') )
         {
-        $this->setState('filter.project_team_id', JRequest::getVar('project_team_id') );    
+        $this->setState('filter.project_team_id', JFactory::getApplication()->input->getVar('project_team_id') );    
         }
         else
         {
@@ -143,6 +113,24 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'ppl.lastname';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+		
+		
+		
+		
 	}
     
     
@@ -163,13 +151,13 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
 		$this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
-        $this->jsmquery->select('ppos.id as project_position_id');
+        //$this->jsmquery->select('ppos.id as project_position_id');
 
         $this->jsmquery->from('#__sportsmanagement_person AS ppl');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+        //$this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
+        //$this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         $this->jsmquery->join('LEFT','#__users AS u ON u.id = tp.checked_out');
 
         $this->jsmquery->where('ppl.published = 1');
@@ -177,9 +165,20 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.persontype = '.$this->getState('filter.persontype') );
-        $this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
-        $this->jsmquery->where('ppp.project_id = '.$this->_project_id );
+        //$this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
+        //$this->jsmquery->where('ppp.project_id = '.$this->_project_id );
         
+	$this->jsmsubquery1->clear();
+        $this->jsmsubquery1->select('ppos.id');
+        $this->jsmsubquery1->from('#__sportsmanagement_project_position AS ppos');
+        $this->jsmsubquery1->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.project_position_id = ppos.id');
+        $this->jsmsubquery1->where('ppp.person_id = ppl.id');
+        $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id );
+        $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype') );
+	$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+
+		
+		
         if (is_numeric($this->getState('filter.state')) )
 		{
 		$this->jsmquery->where('tp.published = '.$this->getState('filter.state') );
@@ -351,9 +350,9 @@ catch (Exception $e) {
                 {
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
                 {
-                    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
-                    $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-                    $app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
+                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
                 }
                 else
                 {

@@ -1,41 +1,13 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default_eventsrank.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage eventsranking
+ */
 
 defined('_JEXEC') or die('Restricted access');
 $colspan	= 4;
@@ -44,6 +16,9 @@ if ($this->config['show_picture_thumb'] == 1) $colspan++;
 if ($this->config['show_nation'] == 1) $colspan++;
 if ($this->config['show_icons'] == 1) $show_icons = 1;
 ?>
+
+<div class="row-fluid">
+
 
 <?php foreach ($this->eventtypes AS $rows): ?>
 <?php if ($this->multiple_events == 1) :?>
@@ -146,8 +121,8 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			if ( $this->config['link_to_player'] )
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $row->team_slug;
 $routeparameter['pid'] = $row->person_slug;
@@ -171,8 +146,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			if (( $this->config['link_to_team'] ) &&
 				($this->project->id > 0) && ($row->tid > 0)) {
 				    $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $row->team_slug;
 $routeparameter['ptid'] = $row->projectteam_slug;
@@ -202,8 +177,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 <div class="fulltablelink">
 <?php 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['division'] = (isset($this->division->id) ? $this->division->id : 0);
 $routeparameter['tid'] = $this->teamid;
@@ -223,3 +198,4 @@ echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 <?php endif;?>
 
 <?php endforeach; ?>
+</div>

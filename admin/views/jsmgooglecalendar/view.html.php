@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -60,12 +60,12 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	public function init ()
     {
-//		JToolBarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
+//		JToolbarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
 //
 //		$canDo = jsmGCalendarUtil::getActions();
 //		if ($canDo->get('core.admin')) {
-//			JToolBarHelper::preferences('com_gcalendar', 550);
-//			JToolBarHelper::divider();
+//			JToolbarHelper::preferences('com_gcalendar', 550);
+//			JToolbarHelper::divider();
 //		}
 //$this->addToolbar();
 //		parent::display($tpl);   
@@ -79,7 +79,7 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //        // Get a refrence of the page instance in joomla  
 //		$document	= JFactory::getDocument();  
 //        // Set toolbar items for the page
@@ -87,12 +87,12 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 //        $document->addCustomTag($stylelink);  
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_GCALENDAR_TITLE' ),'gcalendar' );
+//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_GCALENDAR_TITLE' ),'gcalendar' );
 //        
 //
-//		JToolBarHelper::divider();
+//		JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences($option);
+//		JToolbarHelper::preferences($option);
 
 parent::addToolbar();  	
 

@@ -7,8 +7,14 @@
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 	
 		<field
@@ -63,6 +69,14 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 		</field>          
 
+	  <field
+			name="second_country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+		</field> 
 
 <field name="geocomplete" type="geocomplete" class="inputbox"
 			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
@@ -108,7 +122,7 @@
       		
 	<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -127,24 +141,22 @@
 <field
 			name="birthday"
 			type="calendar"
-			size="10"
-			default=""
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>
+			/>
 
 
 			
 		<field
 			name="deathday"
 			type="calendar"
-			size="10"
-			default=""
+			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
 			class="inputbox"
-			format="%d-%m-%Y"/>
+			/>
 			
 
 			
@@ -194,22 +206,7 @@ landesverband
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-<!--
-    <field
-			name="associations"
-			type="countryassociation" 
-      size="10"
-			default="0"
-      varname="cid"
-      targettable="person"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="inputbox">
-      <option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
-		</field>	
-		        -->
+
 	<field
 			name="phone"
 			type="text"
@@ -377,65 +374,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 		</field>	
 </fieldset>
 
-<!--
-<fieldset name="request2"
-label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
-  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">  
-
-
-<field
-			name="address_country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>	
-	
-<field
-			name="address"
-			type="textarea"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
-			class="inputbox"/>		
-		<field
-			name="zipcode"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
-			class="inputbox"/>	
-		<field
-			name="location"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
-			class="inputbox"/>	
-		<field
-			name="state"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE_DESC"
-			class="inputbox"/>				
-		
-
-</fieldset>
--->
 
 </fields>		
-
-
-
-
-
-
-
-
-<!--
-<fieldset name="maps"
-  label="COM_SPORTSMANAGEMENT_TABS_MAP"
-  description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
-  </fieldset>
--->
   
 	<fieldset name="description"
   label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
@@ -446,7 +386,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
   
   <fieldset name="seasons" 
@@ -487,7 +427,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
   <field
 			name="injury"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
@@ -523,7 +463,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
   <field
 			name="suspension"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
@@ -560,7 +500,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
   <field
 			name="away"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
@@ -634,7 +574,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_pic"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE_DESC">
@@ -644,7 +584,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_persdata"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA_DESC">
@@ -654,7 +594,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_teamdata"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA_DESC">
@@ -664,7 +604,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_on_frontend"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE_DESC">

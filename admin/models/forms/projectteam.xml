@@ -6,16 +6,34 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="project_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PROJECTID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="team_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN"
+			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAMID_ADMIN_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="admin"
@@ -38,7 +56,7 @@
 		</field>			
 		<field
 			name="is_in_score"
-			type="radio"
+			type="extensionradiobutton"
 			default="1"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
@@ -60,7 +78,7 @@
 			class="inputbox"/>	
 		<field
 			name="use_finally"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"

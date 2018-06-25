@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -181,7 +181,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		}
 
 		$this->_db->setQuery( $query );
-		if( !$this->_db->query() )
+		if( !$this->_db->execute() )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
@@ -191,7 +191,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		{
 			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype SET ordering='$x' WHERE position_id = '" . $position_id . "' AND eventtype_id = '" . $peid[$x] . "'";
  			$this->_db->setQuery( $query );
-			if( !$this->_db->query() )
+			if( !$this->_db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
@@ -201,7 +201,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		{
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype (position_id, eventtype_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;

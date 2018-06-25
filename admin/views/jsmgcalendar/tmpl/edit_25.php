@@ -52,5 +52,5 @@ JHtml::_('behavior.tooltip');
 </form>
 
 <div align="center" style="clear: both">
-	<?php echo sprintf(JText::_('COM_GCALENDAR_FOOTER'), JRequest::getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(JText::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

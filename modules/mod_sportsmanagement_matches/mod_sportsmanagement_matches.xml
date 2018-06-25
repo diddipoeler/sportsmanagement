@@ -33,6 +33,7 @@
 	</languages>
 
 	<config>
+	
 		<fields name="params"
     addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
@@ -40,8 +41,19 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MODULE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						 >
+						 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Matches" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+						 
       <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -110,7 +122,7 @@
 
 -->
 
-				<field 	name="order_by_project" type="radio" default="0" 
+				<field 	name="order_by_project" type="extensionradiobutton" default="0" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ORDER_BY_PROJECT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ORDER_BY_PROJECT_DESCR">
@@ -118,7 +130,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="nextlast_from_same_project" type="radio" default="1" 
+				<field 	name="nextlast_from_same_project" type="extensionradiobutton" default="1" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_DESCR">
@@ -127,7 +139,7 @@
 				</field>
 
 				<field 	name="use_fav" 
-        type="radio" 
+        type="extensionradiobutton" 
         default="0" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_FAVORITE_TEAM_TITLE"
@@ -162,7 +174,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_DESCR" />
 -->
-				<field 	name="show_no_matches_notice" type="radio" default="0"
+				<field 	name="show_no_matches_notice" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_DESCR">
@@ -184,7 +196,7 @@
 						description="MOD_SPORTSMANAGEMENT_LASTRESULTS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-				<field 	name="show_played" type="radio" default="0"
+				<field 	name="show_played" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PLAYED_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PLAYED_DESCR">
@@ -209,7 +221,7 @@
 -->          
 				</field>
 
-				<field 	name="upcoming_first" type="radio" default="1"
+				<field 	name="upcoming_first" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_UPCOMING_MATCH_FIRST_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_UPCOMING_MATCH_FIRST_DESCR">
@@ -217,7 +229,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="lastsortorder" type="radio" default="asc"
+				<field 	name="lastsortorder" type="extensionradiobutton" default="asc"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ORDERING_OF_LAST_MATCHES_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ORDERING_OF_LAST_MATCHES_DESCR">
@@ -225,7 +237,7 @@
 					<option value="desc">MOD_SPORTSMANAGEMENT_MATCHES_DESC</option>
 				</field>
 
-				<field 	name="show_text_overtime" type="radio" default="1"
+				<field 	name="show_text_overtime" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_OVERTIME" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_OVERTIME_DESCR">
@@ -233,7 +245,7 @@
 					<option value="1">JYES</option>
 				</field>				
 				
-				<field 	name="show_text_penalty" type="radio" default="1"
+				<field 	name="show_text_penalty" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_PENALTY" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_PENALTY_DESCR">
@@ -250,7 +262,7 @@
 						description="MOD_SPORTSMANAGEMENT_NEXTMATCHES_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-        <field 	name="show_nextmatches" type="radio" default="0"
+        <field 	name="show_nextmatches" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NEXTMATCHES_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NEXTMATCHES_DESCR">
@@ -286,7 +298,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SETTINGS_FOR_HEADINGS_TITLE"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-				<field 	name="show_status_notice" type="radio" default="0"
+				<field 	name="show_status_notice" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_HEADING_ALREADY_PLAYED_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_HEADING_ALREADY_PLAYED_TITLE">
@@ -326,7 +338,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SECOND_MATCHES_CLASS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SECOND_MATCHES_CLASS_DESCR" />
 
-				<field 	name="show_project_title" type="radio" default="0"
+				<field 	name="show_project_title" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PROJECT_NAME_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PROJECT_NAME_DESCR">
@@ -334,7 +346,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="link_project_title" type="radio" default="0"
+				<field 	name="link_project_title" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_PROJECT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_PROJECT_DESCR">
@@ -350,7 +362,7 @@
 					<option value="resultsrank">MOD_SPORTSMANAGEMENT_MATCHES_LINK_VIEW_RANKING_AND_RESULTS</option>
 				</field>
 
-				<field 	name="show_matchday_title" type="radio" default="0"
+				<field 	name="show_matchday_title" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCHDAY_NAME_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCHDAY_NAME_DESCR">
@@ -358,7 +370,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="link_matchday_title" type="radio" default="0"
+				<field 	name="link_matchday_title" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCHDAY_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCHDAY_DESCR">
@@ -382,7 +394,7 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_DESCR"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-				<field 	name="show_picture" type="radio" default="1"
+				<field 	name="show_picture" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_CLUB_LOGO_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_CLUB_LOGO_DESCR">
@@ -408,7 +420,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_DESCR" />
 
-				<field 	name="new_line_after_logo" type="radio" default="1"
+				<field 	name="new_line_after_logo" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_DESCR">
@@ -420,7 +432,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR" />
 
-				<field 	name="show_names" type="radio" default="1" 
+				<field 	name="show_names" type="extensionradiobutton" default="1" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_NAMES_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_NAMES_DESCR">
@@ -444,7 +456,7 @@
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
 
-				<field 	name="team_link_status" type="radio" default="none"
+				<field 	name="team_link_status" type="extensionradiobutton" default="none"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINKS_TITLE" 
 						description="">
@@ -452,7 +464,7 @@
 					<option value="block">MOD_SPORTSMANAGEMENT_MATCHES_SHOW_LINKS</option>
 				</field>
 
-				<field 	name="link_team_plan" type="radio" default="0"
+				<field 	name="link_team_plan" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_SCHEDULE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_SCHEDULE_DESCR">
@@ -464,7 +476,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_SCHEDULE_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_SCHEDULE_LINK_TEXT_DESCR" />
 
-				<field 	name="link_team_curve" type="radio" default="0"
+				<field 	name="link_team_curve" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_FEVER_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_FEVER_DESCR">
@@ -476,7 +488,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_FEVER_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_FEVER_LINK_TEXT_DESCR" />
 
-				<field 	name="link_team_teaminfo" type="radio" default="0"
+				<field 	name="link_team_teaminfo" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_INFO_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_INFO_DESCR">
@@ -488,7 +500,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_INFO_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_INFO_LINK_TEXT_DESCR" />
 
-				<field 	name="link_team_roster" type="radio" default="0"
+				<field 	name="link_team_roster" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_PLAYERS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_PLAYERS_DESCR">
@@ -500,7 +512,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_PLAYERS_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_PLAYERS_LINK_TEXT_DESCR" />
 
-				<field 	name="link_team_club" type="radio" default="0"
+				<field 	name="link_team_club" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_DESCR">
@@ -512,7 +524,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_CLUB_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_CLUB_LINK_TEXT_DESCR" />
 
-				<field 	name="link_team_www" type="radio" default="0"
+				<field 	name="link_team_www" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_WEBSITE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_WEBSITE_DESCR">
@@ -532,7 +544,7 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_DESCR"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-				<field 	name="use_offset_matches" type="radio" default="0"
+				<field 	name="use_offset_matches" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TIME_OFFSET_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TIME_OFFSET_DESCR">
@@ -555,7 +567,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TIME_FORMAT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TIME_FORMAT_DESCR" />
 
-				<field 	name="part_result" type="radio" default="0"
+				<field 	name="part_result" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PARTS_RESULTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PARTS_RESULTS_DESCR">
@@ -563,7 +575,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="part_result_count" type="radio" default="0"
+				<field 	name="part_result_count" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NUMBER_OF_PARTS_RESULTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NUMBER_OF_PARTS_RESULTS_DESCR">
@@ -575,7 +587,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_PARTS_RESULTS_SEPARATOR_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_PARTS_RESULTS_SEPARATOR_DESCR" />
 
-				<field	 name="show_venue" type="radio" default="0" 
+				<field	 name="show_venue" type="extensionradiobutton" default="0" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_VENUE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_VENUE_DESCR">
@@ -583,7 +595,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="link_venue" type="radio" default="0"
+				<field 	name="link_venue" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_VENUE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_VENUE_DESCR">
@@ -602,7 +614,7 @@
 					<option value="name">Names</option>
 				</field>
 				
-				<field	 name="show_spectators" type="radio" default="0" 
+				<field	 name="show_spectators" type="extensionradiobutton" default="0" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_DESCR">
@@ -610,7 +622,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="show_act_report_link" type="radio" default="0"
+				<field 	name="show_act_report_link" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCH_REPORT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCH_REPORT_DESCR">
@@ -622,7 +634,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_REPORT_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_REPORT_LINK_TEXT_DESCR" />
 
-				<field 	name="show_statistic_link" type="radio" default="0"
+				<field 	name="show_statistic_link" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_SEASON_STATS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_SEASON_STATS_DESCR">
@@ -634,7 +646,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SEASON_STATS_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SEASON_STATS_LINK_TEXT_DESCR" />
 
-				<field 	name="show_match_notice" type="radio" default="1"
+				<field 	name="show_match_notice" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_NOTICE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_NOTICE_DESCR">
@@ -642,7 +654,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="show_nextmatch_link" type="radio" default="0"
+				<field 	name="show_nextmatch_link" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_NEXT_MATCH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_NEXT_MATCH_DESCR">
@@ -661,7 +673,7 @@
 						description="MOD_SPORTSMANAGEMENT_AJAXSETTINGS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
-				<field 	name="next_last" type="radio" default="0"
+				<field 	name="next_last" type="extensionradiobutton" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ENABLE_ARROWS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ENABLE_ARROWS_DESCR">
 					<option value="0">JNO</option>
@@ -669,7 +681,7 @@
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
 
-				<field 	name="icons_for_ajax" type="radio" default="0"
+				<field 	name="icons_for_ajax" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_AJAX_NAVIGATION_ICONS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_AJAX_NAVIGATION_ICONS_DESCR">
@@ -689,7 +701,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" />
 
-				<field 	name="reset_start_match" type="radio" default="0"
+				<field 	name="reset_start_match" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_RESET_TO_FIRST_MATCH_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_RESET_TO_FIRST_MATCH_DESCR">
@@ -708,7 +720,7 @@
       <field 	name="spacer4" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SPACER3"
 						description="" />
-     <field 	name="ishd_update" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+     <field 	name="ishd_update" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_DESCR">
 					<option value="0">JNO</option>

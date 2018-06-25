@@ -5,13 +5,19 @@
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 	
 	<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -27,7 +33,7 @@
     
  <field
 			name="mode"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -43,7 +49,7 @@
 
     <field
 			name="overview"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -62,7 +68,7 @@
 <!-- alles für die joker -->
 <field 
 			name="joker" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			onclick="change_joker();"
 			class="radio btn-group btn-group-yesno"
@@ -119,7 +125,7 @@
 <!-- alles für den meister -->    
 <field 
 			name="champ" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 

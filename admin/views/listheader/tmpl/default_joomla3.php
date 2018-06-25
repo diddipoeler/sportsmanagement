@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -38,12 +38,11 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-$view = JRequest::getCmd('view', 'cpanel');
 $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
+$view = $jinput->getCmd('view', 'cpanel');
 $document = JFactory::getDocument();
-//$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 // retrieve the value of the state variable. If no value is specified,
 // the specified default value will be returned.
 // function syntax is getUserState( $key, $default );
@@ -264,8 +263,8 @@ else
 			           
             </div>
             	<?php
-                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+                $startRange = JComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
    
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{

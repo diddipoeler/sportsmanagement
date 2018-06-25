@@ -7,8 +7,14 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="name"
@@ -19,7 +25,7 @@
 			required="true"/>
   <field
 				name="sportsart"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"
         class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART"

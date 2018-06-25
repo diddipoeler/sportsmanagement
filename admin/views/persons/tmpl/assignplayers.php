@@ -1,48 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      assignplayers.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage persons
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.tooltip');
 jimport('joomla.filesystem.file');
-
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 
@@ -87,8 +58,8 @@ $userId		= $user->get('id');
             
 			<td align="center" colspan="4">
 				<?php
-				$startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+				$startRange = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
@@ -222,23 +193,13 @@ $userId		= $user->get('id');
 							</td>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								else
-								{
-									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-								}
+								$picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png'; 
+                                $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+                                
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id,JURI::root().$row->picture,$playerName,'20',JURI::root().$row->picture);
 								?>
 							</td>
 							<td class="nowrap" class="center">

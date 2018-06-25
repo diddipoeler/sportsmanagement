@@ -107,6 +107,20 @@
 <clubnames><clubname country="DEU" name="WSV" >Winter Sportverein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="ZSG" >Zentrale Sportgemeinschaft </clubname></clubnames>
 
+<clubnames><clubname country="DDR" name="KVP" >Kasernierte Volkspolizei</clubname></clubnames>  
+<clubnames><clubname country="DDR" name="BSG" >Betriebssportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DDR" name="HSG" >Hochschulsportgemeinschaft</clubname></clubnames>
+  
+<clubnames><clubname country="ITA" name="AS" >Associazione Sportiva</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="ASD" >Associazione Sportiva Dilettantistica</clubname></clubnames> 
+<clubnames><clubname country="ITA" name="US" >Unione Sportiva</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="USD" >Unione Sportiva Dilettantistica</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="GSD" >Gruppo Sportivo Dilettantistico</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="GS" >Gruppo Sportivo</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="SSD" >Società Sportiva Dilettantistica</clubname></clubnames>  
+<clubnames><clubname country="ITA" name="SS" >Società Sportiva</clubname></clubnames>  
+
+
 <clubnames><clubname country="POL" name="AF" >Akademia Futbolu</clubname></clubnames>  
 
 <clubnames><clubname country="ESP" name="CDC" >Club Deportivo y Cultural</clubname></clubnames> 

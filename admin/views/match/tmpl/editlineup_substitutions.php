@@ -1,31 +1,24 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editlineup_substitutions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
-// &tmpl=component&view=match&layout=editlineup
-/*
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement&<?php echo JUtility::getToken() ?>=1';
-var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sportsmanagement';
-*/
-
 ?>
 <script type="text/javascript">
-<!--
-// url for ajax
-//var baseajaxurl='<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement';
-//var teamid=<?php echo $this->tid; ?>;
-//var matchid=<?php echo $this->item->id; ?>;
 
-//var projecttime=<?php echo $this->eventsprojecttime; ?>;
-// We need to setup some text variables for translation
-//var str_delete="<?php echo JText::_('JACTION_DELETE'); ?>";
-//-->
 </script>
 <!-- SUBSTITUTIONS START -->
 <div id="io">
 	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
-	<div id="ajaxresponse" >ajax</div>
+	<div id="ajaxresponse" >&nbsp;</div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">
@@ -50,10 +43,10 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 				</thead>
 				<tbody>
 					<?php
-					$k=0;
-					for ($i=0; $i < count($this->substitutions); $i++)
+					$k = 0;
+					for ($i = 0; $i < count($this->substitutions); $i++)
 					{
-						$substitution=$this->substitutions[$i];
+						$substitution = $this->substitutions[$i];
 						?>
 						<tr id="sub-<?php echo $substitution->id; ?>" class="<?php echo "row$k"; ?>">
 							<td>
@@ -67,7 +60,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 							</td>
 							<td>
 								<?php 
-								if($substitution->came_in==1) {
+								if($substitution->came_in == 1) {
 									echo sportsmanagementHelper::formatName(null, $substitution->firstname, $substitution->nickname, $substitution->lastname, 0);
 								} 
 								?>
@@ -77,7 +70,7 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 							</td>
 							<td>
 								<?php
-								$time=(!is_null($substitution->in_out_time) && $substitution->in_out_time > 0) ? $substitution->in_out_time : '--';
+								$time = (!is_null($substitution->in_out_time) && $substitution->in_out_time > 0) ? $substitution->in_out_time : '--';
 								echo $time;
 								?>
 							</td>
@@ -95,12 +88,8 @@ var baseajaxurl='<?php echo JUri::root();?>administrator/index.php?option=com_sp
 						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
 						<td><?php echo $this->lists['projectpositions']; ?></td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
-                        
-                        
-                        
 						<td>
-							<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
-                            
+						<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
 				</tbody>

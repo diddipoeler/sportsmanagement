@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -47,32 +47,14 @@ JHtml::_('behavior.modal');
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 
 <?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->positiontool )
-{
-echo $this->loadTemplate('data');
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+echo $this->loadTemplate('joomla_version');
 
 ?>	
 	
     <input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP

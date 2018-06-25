@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field name="show_sectionheader" type="radio" default="1"
+		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -12,7 +12,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_clubs" type="radio" default="1"
+		<field name="show_clubs" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUBS" description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUBS">
 			<option value="0">JNO</option>
@@ -26,7 +26,7 @@
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 
-		<field name="show_small_logo" type="radio" default="1"
+		<field name="show_small_logo" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_SMALL_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_SMALL_LOGO">
@@ -34,7 +34,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_medium_logo" type="radio" default="0"
+		<field name="show_medium_logo" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_MEDIUM_LOGO">
@@ -42,7 +42,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_big_logo" type="radio" default="0"
+		<field name="show_big_logo" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_BIG_LOGO">
@@ -50,7 +50,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_address" type="radio" default="1"
+		<field name="show_address" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_ADDRESS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_ADDRESS">
@@ -58,7 +58,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_club_teams" type="radio" default="1"
+		<field name="show_club_teams" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_CLUB_TEAMS"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_DESCR_SHOW_CLUB_TEAMS">
@@ -79,7 +79,7 @@
 
 
     <field name="show_club_internetadress_picture" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
@@ -89,7 +89,7 @@
 		</field>
 		
     <field name="which_internetadress_picture_provider" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="thumbsniper"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PROVIDER"
@@ -99,7 +99,7 @@
 		</field>
     
     <field name="internetadress_picture_thumbsniper_preview" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="2"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_THUMBSNIPER_PREVIEW"

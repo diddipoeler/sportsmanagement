@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -79,8 +79,8 @@ class sportsmanagementModelEditClub extends JModelForm
 	   $app = JFactory::getApplication();
 		parent::__construct();
 
-		$this->projectid = JRequest::getInt( 'p', 0 );
-		$this->clubid = JRequest::getInt( 'cid', 0 );
+		$this->projectid = JFactory::getApplication()->input->getInt( 'p', 0 );
+		$this->clubid = JFactory::getApplication()->input->getInt( 'cid', 0 );
         $this->name = 'club';
         
 	}
@@ -108,7 +108,7 @@ class sportsmanagementModelEditClub extends JModelForm
         public function getForm($data = array(), $loadData = true)
         {
             $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
  

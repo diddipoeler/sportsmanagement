@@ -1,44 +1,15 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      person.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage player
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -82,7 +53,7 @@ class sportsmanagementModelPerson extends JModelLegacy
  	 */
  	function __construct()
   	{
-  	    $option = JRequest::getCmd('option');
+  	    $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // JInput object
        $jinput = $app->input;
@@ -92,8 +63,6 @@ class sportsmanagementModelPerson extends JModelLegacy
  		$this->teamplayerid	= (int) $jinput->get( 'pt', 0 );
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
  	}
 
 
@@ -107,7 +76,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	  */
 	 public static function updateHits($personid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -135,39 +104,26 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	public static function getPerson($personid = 0, $cfg_which_database = 0,$inserthits=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        self::$personid	= JRequest::getInt( 'pid', 0 );
+        $option = JFactory::getApplication()->input->getCmd('option');
+        self::$personid	= JFactory::getApplication()->input->getInt( 'pid', 0 );
         $starttime = microtime(); 
         
         self::updateHits(self::$personid,$inserthits); 
         
-        //$app->enqueueMessage(JText::_('getPerson personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
-        
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
-        
-        //if ( is_null( $this->person ) )
-		//{
+
 		// Select some fields
 		$query->select('p.*');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
         $query->from('#__sportsmanagement_person AS p ');
         $query->where('p.id = '.$db->Quote(self::$personid));
-        
 
-        
 		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
                 
 		self::$person = $db->loadObject();
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		//}
 		return self::$person;
 	}
 
@@ -179,7 +135,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function getReferee()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 	   // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -257,7 +213,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getContactID( $catid )
 	{
 		$app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -283,7 +239,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getAllEvents()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -328,7 +284,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -336,25 +292,32 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
        $query->select('SUM(me.event_sum) as total');
        $query->from('#__sportsmanagement_match_event AS me'); 
        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-       $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
-       $query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
+       //$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+       //$query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
 
         $query->where('me.event_type_id = ' . (int) $eventid);
         $query->where('tp1.person_id = ' . (int) self::$personid);
                         
 				if ($projectteamid)
 				{
-                    $query->where('pt.id = '.(int) $projectteamid);
+                    $query->where('me.projectteam_id = '.(int) $projectteamid);
 				}
-				if ($projectid)
-				{
-                    $query->where('pt.project_id =' . (int) $projectid);
-				}
+//				if ($projectid)
+//				{
+//                    $query->where('pt.project_id =' . (int) $projectid);
+//				}
                 $query->group('tp1.person_id');
 
 				$db->setQuery($query);
 				$result = $db->loadResult();
-                
+             
+if ( empty($result) )
+        {
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result <br><pre>'.print_r($result ,true).'</pre>'),'Error');
+        return 0;
+        } 
+		
                 if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
@@ -386,7 +349,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getPlayerChangedRecipients()
 	{
 	    $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	  $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -465,7 +428,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	   // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$allowed = false;
 		if ($user->id > 0)
 		{
@@ -547,7 +510,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function _getProjectTeamIds4UserId($userId)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

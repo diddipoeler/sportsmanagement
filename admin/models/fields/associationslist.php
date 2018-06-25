@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -71,7 +71,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 	protected function getOptions()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $selected = 0;
         //$app->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
         // Initialize variables.
@@ -79,7 +79,7 @@ class JFormFieldAssociationsList extends JFormFieldList
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		//$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar('id');
+		$select_id = JFactory::getApplication()->input->getVar('id');
 //echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
  			$select_id = $select_id[0];

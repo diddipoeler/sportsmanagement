@@ -1,41 +1,13 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      defaul_matches.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matches
+ */
 
 defined('_JEXEC') or die('Restricted access');
 //// welche joomla version
@@ -65,7 +37,7 @@ fieldset button {
 <!--	<fieldset class="adminform"> -->
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 
-		
+	<?php echo $this->loadTemplate('teamselect'); ?>	
 	<?php echo $this->loadTemplate('roundselect'); ?>
         	 
 		<!-- Start games list -->
@@ -170,6 +142,10 @@ fieldset button {
 
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
+						if ( $date == '0000-00-00' )
+						{
+						$date = '';
+						}
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 						<?php if(($row->cancel)>0)
@@ -376,7 +352,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam1_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
@@ -388,7 +364,7 @@ fieldset button {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam2_id'.$row->id,
+								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
@@ -590,56 +566,25 @@ fieldset button {
                             </td>
                             
 							<td class="center">
-                            
-                            <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=<?php echo $row->id; ?>"
-									 class="modal open-pressebericht"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'); ?>">
-									 <?php
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT').'"');
-									 ?>
-								</a>
-                                
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=<?php echo $row->id; ?>"
-									 class="modal open-editevents"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'); ?>">
-									 <?php
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/events.png',
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS').'"');
-									 ?>
-								</a>
+								
 								<?php
-								//end statistics
-								//start add several events in one operation:
+echo sportsmanagementHelper::getBootstrapModalImage('pressebericht'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id='.$row->id,$modalwidth,$modalheight);
+echo sportsmanagementHelper::getBootstrapModalImage('editevents'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id='.$row->id,$modalwidth,$modalheight);																				
+echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/teams.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id='.$row->id,$modalwidth,$modalheight);								
+
 								?>
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=<?php echo $row->id; ?>"
-                                     class="modal open-editeventsbb"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'); ?>">
-									 <?php
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/teams.png',
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS').'"');
-								?>
-								</a>
+
 								<?php
+
 								//end several events
 								?>
 							</td>
 							<td class="center">
 								<?php
+echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id='.$row->id,$modalwidth,$modalheight);                                
 								//start statistics:
 								?>
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=<?php echo $row->id; ?>"
-									 class="modal open-editstats"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'); ?>">
-									 <?php
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/calc16.png',
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'),'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS').'"');
-								?>
-								</a>								
+
 							</td>
 							<td class="center">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
@@ -712,7 +657,7 @@ fieldset button {
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
 			<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>' />
-			<input type='hidden' name='filter_order_Dir' value='' />
+			<input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>' />
 			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type='hidden' name='act' value='' />

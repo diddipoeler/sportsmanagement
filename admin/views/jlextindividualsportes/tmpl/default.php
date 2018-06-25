@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -43,32 +43,32 @@ defined('_JEXEC') or die('Restricted access');
 //JHTML::script('JL_matcheventsediting.js','administrator/components/com_joomleague/assets/js/');
 
 /*
-$massadd=JRequest::getVar('massadd');
+$massadd=JFactory::getApplication()->input->getVar('massadd');
 
 // Set toolbar items for the page
-JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'));
+JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'));
 
 if (!$massadd)
 {
-	JToolBarHelper::publishList();
-	JToolBarHelper::unpublishList();
-	JToolBarHelper::divider();
+	JToolbarHelper::publishList();
+	JToolbarHelper::unpublishList();
+	JToolbarHelper::divider();
 
-	JToolBarHelper::apply('saveshort');
-	JToolBarHelper::divider();
+	JToolbarHelper::apply('saveshort');
+	JToolbarHelper::divider();
 
-	//JToolBarHelper::custom('massadd','new.png','new_f2.png',JText::_('JL_ADMIN_MATCHES_MASSADD_MATCHES'),false);
-	JToolBarHelper::addNewX('addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
-	JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'));
-	JToolBarHelper::divider();
+	//JToolbarHelper::custom('massadd','new.png','new_f2.png',JText::_('JL_ADMIN_MATCHES_MASSADD_MATCHES'),false);
+	JToolbarHelper::addNewX('addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
+	JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'));
+	JToolbarHelper::divider();
 
-	JToolBarHelper::back('Back','index.php?option=com_joomleague&controller=match&view=matches');
+	JToolbarHelper::back('Back','index.php?option=com_joomleague&controller=match&view=matches');
 }
 else
 {
-	JToolBarHelper::custom('cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'),false);
+	JToolbarHelper::custom('cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'),false);
 }
-JToolBarHelper::help('screen.joomleague',true);
+JToolbarHelper::help('screen.joomleague',true);
 */
 
 JHtml::_('behavior.tooltip');

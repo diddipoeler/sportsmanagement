@@ -1,48 +1,16 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_person_player.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage roster
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';    
-}
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
@@ -63,7 +31,14 @@ if ($this->config['show_player_icon'])
 			<div class="jl_rosterperson_picture_column">
 				<div class="jl_rosterperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,$picture,$personName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,
+$picture,
+$personName,
+$this->config['player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
      
       	
     
@@ -83,7 +58,7 @@ if ($this->config['show_player_numbers'])
 ?>
 				<span class="jl_rosterperson_position_number">
 				<?php
-				$playerNumber = ( $this->config['player_numbers_pictures'] AND function_exists( 'imagecreatefrompng' ) ) ? 
+				$playerNumber = ( $this->config['player_numbers_pictures'] && function_exists( 'imagecreatefrompng' ) ) ? 
 					JHtml::image( JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
 					: $pnr;
 					echo $playerNumber;
@@ -96,8 +71,8 @@ if ($this->config['show_player_numbers'])
 				<span class="jl_rosterperson_name">
 				<?php
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $this->team->slug;
 $routeparameter['pid'] = $this->row->person_slug;
@@ -110,7 +85,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			</h3>
 			<div class="jl_roster_persondetails">
 <?php 
-			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) OR ( $this->row->suspension > 0 && $this->row->suspension_end > $joomleague->current_round ) )
+			if ( ( isset($this->row->is_injured) && $this->row->is_injured > 0 ) || ( $this->row->suspension > 0 && $this->row->suspension_end > $joomleague->current_round ) )
 			{
 ?>
 					<div>
@@ -146,7 +121,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			}// if ((isset($this->row->is_injured) && $this->row->is_injured ends
 ?>
 <?php 
-	if ( $this->config['show_birthday'] > 0 AND $this->row->birthday !="0000-00-00" )
+	if ( $this->config['show_birthday'] > 0 && $this->row->birthday !="0000-00-00" )
 	{
 		switch ( $this->config['show_birthday'] )
 		{
@@ -241,7 +216,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				</div><!-- /.jl_roster_persondetails -->
 			</div><!-- /.jl_rosterperson_detail_column -->
 <?php
-	if ( $this->overallconfig['use_jl_substitution'] OR $this->config['show_events_stats'] )
+	if ( $this->overallconfig['use_jl_substitution'] || $this->config['show_events_stats'] )
 	{
 ?>
 		<div class="jl_rosterstats">
@@ -249,13 +224,13 @@ $routeparameter['pid'] = $this->row->person_slug;
 		if ( $this->overallconfig['use_jl_substitution'] )
 		{
 			// Events of substitutions are shown
-            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->season_team_id,$this->row->season_team_person_id,$this->project->game_regular_time);
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($this->row->project_id,$this->row->projectteam_id,$this->row->season_team_person_id,$this->project->game_regular_time);
             
             //echo ' project_id<br><pre>'.print_r($this->row->project_id,true).'</pre>';
             //echo ' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>';
             
 			$cnt=0;
-				if ( $this->config['show_games_played'] AND isset( $this->InOutStat->played ) )
+				if ( $this->config['show_games_played'] && isset( $this->InOutStat->played ) )
 				{
 					$cnt++;
 					echo '<div title="'.$this->InOutStat->played.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
@@ -288,7 +263,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				}
 			}
 			// Events statistics:
-			if ( $this->config['show_events_stats'] AND count( $this->playereventstats ) > 0 AND isset( $this->playereventstats[$this->row->pid] ) )
+			if ( $this->config['show_events_stats'] && count( $this->playereventstats ) > 0 && isset( $this->playereventstats[$this->row->pid] ) )
 			{
 				foreach ($this->playereventstats[$this->row->pid] AS $eventId => $stat)
 				{

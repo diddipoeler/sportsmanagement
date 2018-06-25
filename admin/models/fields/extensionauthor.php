@@ -3,7 +3,7 @@
 * @version 1.0.58
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
-* @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright Copyright: 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of SportsManagement.
  */
 

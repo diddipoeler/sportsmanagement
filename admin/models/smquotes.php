@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -67,8 +67,7 @@ class sportsmanagementModelsmquotes extends JSMModelList
                         'obj.ordering'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
     
     /**
@@ -78,12 +77,14 @@ class sportsmanagementModelsmquotes extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'obj.quote', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmmessage .= '<br>'.JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context);
+        $this->jsmmessage .= '<br>'.JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.'');
         }
 
 		// Load the filter state.
@@ -100,9 +101,21 @@ class sportsmanagementModelsmquotes extends JSMModelList
 		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
 		$this->setState('list.direction', $value);
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'obj.quote';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
     
     
@@ -126,12 +139,9 @@ class sportsmanagementModelsmquotes extends JSMModelList
         // Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        
         // Join over the categories.
 		$this->jsmquery->select('c.title AS category_title');
 		$this->jsmquery->join('LEFT', '#__categories AS c ON c.id = obj.catid');
-        
-        
 
         if ( $this->getState('filter.search')  )
 		{
@@ -145,9 +155,7 @@ class sportsmanagementModelsmquotes extends JSMModelList
 		{
         $this->jsmquery->where('obj.catid = '.$this->getState('filter.category_id'));
         }
-        
 
-        
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.quote')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  

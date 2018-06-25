@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -62,7 +62,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
 //    function apply($data)
 //    {
 //        $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->apply($data);
 //    
@@ -72,7 +72,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
 //    function save($data)
 //    {
 //        $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->save($data);
 //    
@@ -88,12 +88,12 @@ class sportsmanagementControllerjlextindividualsport extends JController
 	 */
 	function addmatch()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         
         //option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         //$post['match_id'] = $post['id'];
@@ -131,9 +131,9 @@ class sportsmanagementControllerjlextindividualsport extends JController
         
         
         /*
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
 		
 		$post['match_id']		= $app->getUserState( $option . 'match_id',0 );
 		$post['project_id']=$app->getUserState($option.'project',0);

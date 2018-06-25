@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file components/sportsmanagement/views/allpersons/tmpl/default_items.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
@@ -81,8 +81,8 @@ switch ($value)
     if ( $item->projectslug )
     {
     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $item->projectslug;
 $routeparameter['tid'] = $item->teamslug;
 $routeparameter['pid'] = $item->slug;

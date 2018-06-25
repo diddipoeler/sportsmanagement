@@ -6,8 +6,14 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="name"
@@ -58,10 +64,19 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
+	<field
+			name="league_level"
+			type="leaguelevel"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
+			class="form-control form-control-inline"
+      required="">
+		<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUE_LEVEL</option>
+	</field>
 
 <field
 			name="published_act_season"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -77,7 +92,7 @@
 
 <field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"

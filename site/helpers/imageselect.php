@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      imageselect.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -61,7 +33,7 @@ static $_foldertype = '';
 	 */
 	function __construct()
 	{
-  $type	= JRequest::getVar( 'type' );
+  $type	= JFactory::getApplication()->input->getVar( 'type' );
   self::$_foldertype = $type;
 	}
 
@@ -291,94 +263,95 @@ $app = JFactory::getApplication();
 	{
 		switch( $type )
 		{
-			case	"clubs_small":
+			case "clubs_small":
 				return "clubs/small";
 				break;
-			case	"clubs_medium":
+			case "clubs_medium":
 				return "clubs/medium";
 				break;
-			case	"clubs_large":
+			case "clubs_large":
 				return "clubs/large";
 				break;
 				
-			case	"clubs_trikot_home":
-				//return "clubs/trikot_home";
+			case "clubs_trikot_home":
                 return "clubs/trikot";
 				break;
-			case	"clubs_trikot_away":
-				//return "clubs/trikot_away";
+			case "clubs_trikot_away":
                 return "clubs/trikot";
 				break;
-        	case	"flags":
+        	case "flags":
 				return "flags";
 				break;	
-        case	"flags_associations":
+        case "flags_associations":
 				return "flags_associations";
 				break;
-			case	"associations":
+			case "associations":
 				return "associations";
 				break;	
         
-			case	"events":
+			case "events":
 				return "events";
 				break;	
-			case	"leagues":
+			case "leagues":
 				return "leagues";
 				break;
-				case	"divisions":
+				case "divisions":
 				return "divisions";
 				break;
-      case	"persons":
+      case "persons":
 				return "persons";
 				break;
-      case	"playgrounds":
+case "projectreferee":
+				return "persons";
+				break;				
+      case "playgrounds":
 				return "playgrounds";
 				break;
                 
-                case	"positions":
+                case "positions":
 				return "positions";
 				break;
                 
-      case	"projects":
+      case "projects":
 				return "projects";
 				break;	
-      case	"projectteams":
+      case "projectteams":
 				return "projectteams";
 				break;
 			
-      case	"projectteams_trikot_home":
+      case "projectteams_trikot_home":
 				return "projectteams/trikot_home";
 				break;
-      case	"projectteams_trikot_away":
+      case "projectteams_trikot_away":
 				return "projectteams/trikot_away";
 				break;
           	
-		  case	"seasons":
+		  case "seasons":
 				return "seasons";
 				break;
-			case	"sport_types":
+			case "sport_types":
 				return "sport_types";
 				break;
-			case	"statistics":
+			case "statistics":
 				return "statistics";
 				break;
-			case	"teamplayers":
+			case "teamplayers":
 				return "teamplayers";
 				break;
-			case	"teams":
+			case "teams":
 				return "teams";
 				break;
-			case	"teamstaffs":
+			case "teamstaffs":
 				return "teamstaffs";
 				break;
-			case	"venues":
+			case "venues":
 				return "venues";
 				break;
-                case	"rounds":
+                case "rounds":
 				return "rounds";
 				break;
                 
-            case	"agegroups":
+            case "agegroups":
 				return "agegroups";
 				break;    
 				

@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file		components/sportsmanagement/views/ranking/tmpl/default.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
@@ -66,15 +66,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	foreach ($this->teams as $team)
 	{
 	   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
 $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 
-		//$teaminfo_link	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->slug, $team->team_slug,0,JRequest::getInt('cfg_which_database',0) );
-		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,JRequest::getInt('cfg_which_database',0) );
+		//$teaminfo_link	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->slug, $team->team_slug,0,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
+		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
 		$teamTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
 		$clubTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
 

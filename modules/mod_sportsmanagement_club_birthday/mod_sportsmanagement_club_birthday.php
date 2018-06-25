@@ -1,44 +1,34 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      mod_sportsmanagement_club_birthday.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_club_birthday
+ */
 
 defined('_JEXEC') or die('Restricted access');
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
+{
+// Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+}
+if(version_compare($baseVersion,'2.5','ge')) 
+{
+// Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+} 
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -48,7 +38,7 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
@@ -102,10 +92,9 @@ $width  = $params->def("width");
 $season_ids = $params->def("s");
 
 $futuremessage = htmlentities(trim(JText::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
-// Prevent that result is null when either $players or $crew is null by casting each to an array.
-//$persons = array_merge((array)$players, (array)$crew);
+
 $clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit,$season_ids);
-if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jl_birthday_sort($clubs,$params->def("sort_order"));
+if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jsm_birthday_sort($clubs,$params->def("sort_order"));
 
 if ( $show_debug_info )
 {
@@ -118,8 +107,8 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,$module->module
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 
-$k=0;
-$counter=0;
+$k = 0;
+$counter = 0;
 
 //echo 'mode -> '.$mode.'<br>';
 //echo 'refresh -> '.$refresh.'<br>';
@@ -138,27 +127,6 @@ $results=count($clubs);
 $tickerpause = $params->def("tickerpause");
 $scrollspeed = $params->def("scrollspeed");
 $scrollpause = $params->def("scrollpause");
-
-/*
-$javascript = "\n";
-$javascript .= "	window.addEvent('domready', function() {"."\n";
-$javascript .= "	var opt".$params->get( 'moduleclass_sfx' )." = {"."\n";
-$javascript .= "	  duration: 3000,"."\n";
-$javascript .= "	  delay:".$tickerpause."000,"."\n";
-$javascript .= "	  auto:true,"."\n";
-$javascript .= "	  direction: 'v',"."\n";
-$javascript .= "	  onMouseEnter: function(){this.stop();},"."\n";
-$javascript .= "	  onMouseLeave: function(){this.play();}"."\n";
-$javascript .= "	};"."\n";
-$javascript .= "	var scroller".$params->get( 'moduleclass_sfx' )." = new QScroller('qscroller".$params->get( 'moduleclass_sfx' )."',opt".$params->get( 'moduleclass_sfx' ).");"."\n";
-$javascript .= "	scroller".$params->get( 'moduleclass_sfx' ).".load();"."\n";
-$javascript .= "	});"."\n";
-$javascript .= "\n";
-$document->addScriptDeclaration( $javascript );
-*/    
-
-//$attribs = array('layout'=>'default');;
-//$layout = isset($attribs['layout'])?$attribs['layout']:'default';
     
 	switch ($mode)
 	{
@@ -253,42 +221,6 @@ $html_li = '';
             
             //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
             //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/'.$wowslider_style.'.js');
-            
-            
-//$javascript = '
-//// init main object
-//// jQuery(document).ready - conflicted with some scripts
-//// Transition time = 2.4s = 20/10
-//// SlideShow delay = 6.5s = 23/10
-//jQuery(\'#wowslider-container\').wowSlider({
-//	effect:"carousel_basic", 
-//	prev:"", 
-//	next:"", 
-//	duration: 23*100, 
-//	delay:20*100, 
-//	width:830,
-//	height:360,
-//	autoPlay:true,
-//	autoPlayVideo:false,
-//	playPause:false,
-//	stopOnHover:false,
-//	loop:false,
-//	bullets:1,
-//	caption: true, 
-//	captionEffect:"fade",
-//	controls:true,
-//	responsive:1,
-//	fullScreen:false,
-//	gestures: 2,
-//	onBeforeStep:0,
-//	images:0
-//});
-//';
-//$javascript .= "\n";
-//$document->addScriptDeclaration( $javascript );
-
-
-
 
 			break;
 		case 'L':
@@ -363,18 +295,12 @@ $html_li = '';
             $text .= '<br> '.$birthdaytext2;
             
 $html_li .= '<div><a href="'.$club_link.'"><img u="image" src="'.$thispic.'" /></a>';
-//$html_li .= '<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">';
-//$html_li .= $text;
 
 $html_li .= '<div u="caption" t="'.$params->get('jssor_captiontransitions').'" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">'.$club->name.'</div>';
 $html_li .= '<div u="caption" t="'.$params->get('jssor_captiontransitions').'" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">'.$text.'</div>';
-//$html_li .= '<div u="caption" t="B-T" style="position:absolute;left:380px;top:80px;width:130px;height:40px;font-size:36px;color:#000;line-height:40px;">Please!</div>';
 
-//$html_li .= '</div>';
 $html_li .= '</div>';
-            
-    //$html_li .= '<li><a href="'.$club_link.'"><img src="'.$thispic.'" alt="'.$text.'" title="'.$text.'" id="wows1_'.$id.'" /></a></li>';    
-    //$html_li .= '<li><img src="'.$thispic.'" alt="" title="" id="wows1_'.$id.'" /></li>';
+
     $id++;      
     $html_ahref .= '<a href="#" title=""><img src="'.$thispic.'" alt=""    />'.$id.'</a>';    
         
@@ -388,7 +314,7 @@ $html_li .= '</div>';
     
 }
 ?>           
-<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module,$layout));
 ?>

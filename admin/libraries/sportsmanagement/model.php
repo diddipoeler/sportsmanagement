@@ -1,46 +1,20 @@
 <?PHP        
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      model.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage libraries
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// import Joomla library
 jimport('joomla.application.component.modeladmin');
+// import Joomla library
 jimport('joomla.application.component.modellist');
 
 /**
@@ -83,6 +57,8 @@ public function __construct($config = array())
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
         $this->jsmdate = JFactory::getDate();
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
 
 $this->project_id = $this->jsmjinput->getint('pid');
 if ( !$this->project_id )
@@ -135,12 +111,45 @@ if( $this->jsmapp->isSite() )
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
+$input_options = JFilterInput::getInstance(
+        array(
+            'img','p','a','u','i','b','strong','span','div','ul','li','ol','h1','h2','h3','h4','h5',
+            'table','tr','td','th','tbody','theader','tfooter','br'
+        ),
+        array(
+            'src','width','height','alt','style','href','rel','target','align','valign','border','cellpading',
+            'cellspacing','title','id','class'
+        )
+    );
+
+    $postData = new JInput($this->jsmjinput->get('jform', '', 'array'), array('filter' => $input_options));		
+		
+if (array_key_exists('notes', $data)) 
+{    
+$html = $postData->get('notes','','raw');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+$data['notes'] = $html;
+//$html = $postData->get('notes','','raw');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+}
+		
+		
+		
+		
 if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
 {
 $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 }
 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');    
+}
+
+    
 ///**
 // * differenzierung zwischen den views
 // */       
@@ -307,7 +316,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             
         }
         
-       // hat der user die bildfelder geleert, werden die standards gesichert.
+/**
+ * hat der user die bildfelder geleert, werden die standards gesichert.
+ */
        if ( empty($data['picture']) )
        {
        $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
@@ -342,7 +353,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  * verein 
  */       
        case 'club':
-       // gibt es vereinsnamen zum ändern ?
+/**
+ * gibt es vereinsnamen zum ändern ?
+ */
        if (isset($post['team_id']) && is_array($post['team_id'])) 
        {
         foreach ( $post['team_id'] as $key => $value )
@@ -356,12 +369,14 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         $object->name = $team_name;
         $object->alias = JFilterOutput::stringURLSafe( $team_name );
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', $object, 'id');
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
         }
         
        }
        
-       // hat der user die bildfelder geleert, werden die standards gesichert.
+/**
+ * hat der user die bildfelder geleert, werden die standards gesichert.
+ */
        if ( empty($data['logo_big']) )
        {
        $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
@@ -375,44 +390,41 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
        }
  
-       // wurden jahre mitgegeben ?
-       //$timestamp = strtotime($data['founded']);
+/**
+ * wurden jahre mitgegeben ?
+ */
        if ( $data['founded'] != '0000-00-00' && $data['founded'] != '' )
        {
        $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
        }
-       //$timestamp = strtotime($data['dissolved']);
        if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != ''  )
        {
        $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
        
-       //$timestamp = strtotime($data['founded']); 
        if ( $data['founded'] == '0000-00-00' || $data['founded'] == '' )
         {
         $data['founded'] = '0000-00-00';   
-        //$data['founded_year'] = ''; 
         }
        if ( $data['founded'] != '0000-00-00' && $data['founded'] != ''  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
+        $data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
         }
         else
         {
         $data['founded_year'] = $data['founded_year'];
         }
         
-        
-        //$timestamp = strtotime($data['dissolved']); 
         if ( $data['dissolved'] == '0000-00-00' || $data['dissolved'] == '' )
         {
         $data['dissolved'] = '0000-00-00';   
-        //$data['dissolved_year'] = ''; 
         }
         
         if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != '' )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
+        $data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
         }
         else
         {
@@ -516,11 +528,13 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */         
        if ( parent::save($data) )
        {
-			$id =  (int) $this->getState($this->getName().'.id');
+	$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
+	    $this->jsmapp->setUserState( "$this->jsmoption.person_id", $id );   
             $this->jsmjinput->set('insert_id', $id);
+	    $this->jsmjinput->set('person_id', $id);   
             if ( $isNew )
             {
 /**
@@ -635,21 +649,33 @@ catch (Exception $e) {
  * position 
  */        
         case 'position':
+        /**
+         * ereignisse der positionen speichern
+         */
 		if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
 		{
 		if ( $data['id'] )
 		{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {  
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+        }
 		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
 
-		if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
+		/**
+		 * statistiken der positionen speichern
+		 */
+        if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
 		{
 		if ( $data['id'] )
 		{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {  
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+        }
 		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
@@ -941,6 +967,7 @@ catch (Exception $e) {
            } 
         break;  
 		case 'round':
+	/*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -952,6 +979,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
         $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
         }
+	*/
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -990,7 +1018,7 @@ catch (Exception $e) {
 
         break;
         }
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1000,7 +1028,7 @@ catch (Exception $e) {
         {
         $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
         }
-        
+        */
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -1057,7 +1085,7 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1069,7 +1097,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('founded', 'type', 'customcalendar');  
         $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
         }
-        
+        */
         $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
@@ -1235,7 +1263,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+        /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1249,7 +1277,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('birthday', 'type', 'customcalendar');
         $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
         }
-        
+        */
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 			$this->jsmquery->from('information_schema.columns');
@@ -1361,11 +1389,11 @@ catch (Exception $e) {
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
+					return JText::_('JGLOBAL_SAVE_SORT_NO');
 				}
 			}
 		}
-		return true;
+		return JText::_('JGLOBAL_SAVE_SORT_YES');
 	}
                 
 }
@@ -1407,6 +1435,10 @@ public function __construct($config = array())
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
+	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
+        $this->jsmpost = $this->jsmjinput->post->getArray(array());  
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
 
 /**
  * abfrage nach backend und frontend  
@@ -1461,18 +1493,22 @@ public function __construct($config = array())
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
+	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
+        $this->jsmpost = $this->jsmjinput->post->getArray(array()); 
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
         
 /**
  * abfrage nach backend und frontend  
  */        
-if ( $this->jsmapp->isAdmin() )
-{
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
-}  
-if( $this->jsmapp->isSite() )
-{
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
-} 
+        if ( $this->jsmapp->isAdmin() )
+        {
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+        }  
+        if( $this->jsmapp->isSite() )
+        {
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+        } 
         
         }    
     

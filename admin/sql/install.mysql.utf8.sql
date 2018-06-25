@@ -1,5 +1,5 @@
 -- -----------------------------------------------------
--- Tabellenstruktur für Tabelle `#__sportsmanagement_associations`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_associations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
 -- -----------------------------------------------------
--- Tabellenstruktur für Tabelle `#__sportsmanagement_federations`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_federations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -123,7 +123,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_club_names`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_club_names`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_countries`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_countries`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_dfbkey`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_dfbkey`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_dfbkey` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -213,7 +213,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_error_log`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_error_log`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_error_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -358,6 +358,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `content_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `overtime` INT( 11 ) NOT NULL DEFAULT  '0',
   `match_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `next_match_id` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`),
   KEY `round_id` (`round_id`),
   KEY `projectteam1_id` (`projectteam1_id`),
@@ -371,7 +372,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_match_commentary`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_match_commentary`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_match_commentary` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -626,6 +627,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `birthday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `deathday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `second_country` VARCHAR(3) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -932,7 +934,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `jos_sportsmanagement_rosterposition`
+-- Tabellenstruktur fï¿½r Tabelle `jos_sportsmanagement_rosterposition`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rosterposition` (
@@ -1189,6 +1191,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `team_number` INT(11) NOT NULL DEFAULT '0' ,
   `team_stars` INT(11) NOT NULL DEFAULT '0' ,
+  `email` VARCHAR(250) NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1479,7 +1482,7 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_version_history`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_version_history`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_version_history` (
@@ -1491,7 +1494,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_version_history` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
--- Tabellenstruktur für Tabelle `#__sportsmanagement_agegroup`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_agegroup`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_agegroup` (
   `id` INT(11) NOT NULL AUTO_INCREMENT ,
@@ -1783,7 +1786,7 @@ DEFAULT CHARSET = utf8;
 
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_position_ringen`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_position_ringen`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_position_ringen` (
@@ -1806,7 +1809,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_position_ringen` (
 
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_rquote`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_rquote`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1830,7 +1833,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_pictures`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_pictures`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_pictures` (
@@ -1850,7 +1853,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_pictures` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_jl_tables`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_jl_tables`
 --
 
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_jl_tables` (
@@ -1868,7 +1871,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_jl_tables` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur für google kalender api Tabellen
+-- Tabellenstruktur fï¿½r google kalender api Tabellen
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_gcalendar` (
   `id` int(11) NOT NULL auto_increment,
@@ -1928,7 +1931,7 @@ PRIMARY KEY (  `id` ),
 
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_countries_gazetteer`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_countries_gazetteer`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_gazetteer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1956,7 +1959,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_gazetteer` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_countries_plz`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_countries_plz`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1979,7 +1982,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- Tabellenstruktur für Tabelle `#__sportsmanagement_person_project_position`
+-- Tabellenstruktur fï¿½r Tabelle `#__sportsmanagement_person_project_position`
 --
 CREATE TABLE IF NOT EXISTS `#__sportsmanagement_person_project_position` (
   `person_id` INT(11) NOT NULL DEFAULT '0' ,

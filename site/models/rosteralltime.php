@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -87,7 +87,7 @@ var $_identifier = "rosteralltime";
 	function __construct()
 	{
 		parent::__construct();
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // JInput object
        $jinput = $app->input;
@@ -160,7 +160,7 @@ public function getStart()
 		$app = JFactory::getApplication('site');
         
         // List state information
-		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
@@ -219,7 +219,7 @@ public function getStart()
      */
     function getPlayerPosition()
     {
-         $option = JRequest::getCmd('option');
+         $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -243,7 +243,7 @@ return $db->loadObjectList();
      */
     function getPositionEventTypes($positionId=0)
 	{
-	    $option = JRequest::getCmd('option');
+	    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -285,7 +285,7 @@ return $db->loadObjectList();
      */
     function getTeam()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -329,7 +329,7 @@ return $db->loadObjectList();
 	 */
 	function getTeamPlayers($persontype = 1,$positioneventtypes = array(),$items = array() )
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -409,7 +409,7 @@ return $db->loadObjectList();
             $this->_all_time_players[$player->pid]->out = 0;
         }
         
-        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,JRequest::getInt('cfg_which_database',0),self::$teamid,$player->pid);
+        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>'),'');
 $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;

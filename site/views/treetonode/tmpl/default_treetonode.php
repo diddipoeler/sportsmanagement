@@ -1,4 +1,13 @@
 <?php 
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default_treetonode.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treetonode
+ */
 
 defined('_JEXEC') or die;
 
@@ -49,22 +58,25 @@ $r = 2*(pow(2,$i)); 			//rows
 $c = 2*$i+1;        			//columns
 $col_hide = $c-2*$hide;			//hiden col
 ?>
-<div class="table-responsive">
-<table class="">
+
+<table class="table table-responsive">
 <?php
 //headerline
 if( $this->config['show_treeheader'] == 1 )
 {
 ?>    
 <tr style="text-align: center;">
+<td align="middle">
+</td>
 <?PHP    
 		for($h=0;$h<=$c;$h++)
         {
-?>            
-<td align="middle">
-<?PHP  
+ 
 				if( ( $h%2 != 0 ) && ( $h > 2 ) )
 				{
+				 ?>            
+<td align="middle" colspan="2">
+<?PHP    
 					$hed = (($h-1)/2)-1;
 					//roundname
 					if( $this->config['show_name_from'] == 0 )
@@ -93,10 +105,11 @@ if( $this->config['show_treeheader'] == 1 )
 						}
 					}
 					//date end
-				}
 ?>	
 </td>
-<?PHP  
+<?PHP                     
+				}
+ 
 		}
 ?>
 </tr>
@@ -231,7 +244,7 @@ if( $this->config['show_treeheader'] == 1 )
 ?>
 
 </table>
-</div>
+
 <?php
 }
 ?>

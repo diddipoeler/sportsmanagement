@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -118,7 +118,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
@@ -137,8 +137,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 //    function apply($data)
 //    {
 //        $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        $post = JRequest::get('post');
+//        $option = JFactory::getApplication()->input->getCmd('option');
+//        $post = JFactory::getApplication()->input->post->getArray(array());
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //        
 //    }
@@ -146,14 +146,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     function saveshort()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->clear();
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $match_id = $post['match_id'];
         
         $result_tie_break = 0;
@@ -577,10 +577,10 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 $query->clear();
                 $query->delete()->from('#__sportsmanagement_match_event')->where('match_id = '.$match_id.' AND teamplayer_id = '.$teamplayer1_id.' AND event_type_id = '.$event_id  );
                 $db->setQuery($query);
-                $resultdel = $db->query();
+                $resultdel = $db->execute();
                 if(!$resultdel) 
                 {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
     		     }
     
     
@@ -732,7 +732,7 @@ $temp = implode( "\n", $defaultvalues );
 
 $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".$cid;
 $this->_db->setQuery($query);
-if (!$this->_db->query())
+if (!$this->_db->execute())
 		{
 $app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}
@@ -817,7 +817,7 @@ $temp = implode( "\n", $defaultvalues );
 
 $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".$cid;
 $this->_db->setQuery($query);
-if (!$this->_db->query())
+if (!$this->_db->execute())
 		{
 $app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}
@@ -952,8 +952,8 @@ break;
 	{
   $option='com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post=JRequest::get('post');
-  $cid=JRequest::getVar('cid',array(),'post','array');
+	$post=JFactory::getApplication()->input->post->getArray(array());
+  $cid=JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );
@@ -1015,8 +1015,8 @@ $temp = implode( "\n", $defaultvalues );
 	{
   $option = 'com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post = JRequest::get('post');
-  $cid = JRequest::getVar('cid',array(),'post','array');
+	$post = JFactory::getApplication()->input->post->getArray(array());
+  $cid = JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );

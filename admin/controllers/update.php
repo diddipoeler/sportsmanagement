@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -94,9 +94,9 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	 */
 	function save()
 	{
-		//JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
-		$post = JRequest::get('post');
-		$file_name = JRequest::getVar('file_name');
+		//JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
+		$post = JFactory::getApplication()->input->post->getArray(array());
+		$file_name = JFactory::getApplication()->input->getVar('file_name');
 		$path = explode('/',$file_name);
 		if (count($path) > 1)
 		{

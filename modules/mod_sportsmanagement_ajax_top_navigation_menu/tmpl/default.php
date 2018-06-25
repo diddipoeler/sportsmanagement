@@ -1,79 +1,15 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.00
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
+ */ 
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
-
-//echo 'startoffset=> <pre>'.print_r($startoffset, true).'</pre><br>';
-//echo 'country_federation=> <pre>'.print_r($country_federation, true).'</pre><br>';
-//echo 'queryvalues => <pre>'.print_r($queryvalues, true).'</pre><br>';
-
-//echo 'jlamtopcountry => '.$country_id.'<br>';
-//echo 'jlamtopassocid => '.$assoc_id.'<br>';
-//echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
-//echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
-
-
-//echo 'jlamtopseason => '.$season_id.'<br>';
-//echo 'jlamtopleague => '.$league_id.'<br>';
-//echo 'jlamtopproject => '.$project_id.'<br>';
-//echo 'jlamtopteam => '.$team_id.'<br>';
-//echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
-
-//echo 'federationselect => <pre>'.print_r($federationselect[$value], true).'</pre><br>';
-//echo 'countryassocselect => <pre>'.print_r($countryassocselect[$fed_array]['assocs'], true).'</pre><br>';
-//echo 'countrysubassocselect => <pre>'.print_r($countrysubassocselect[$fed_array]['assocs'], true).'</pre><br>';
-//echo 'countrysubsubassocselect => <pre>'.print_r($countrysubsubassocselect[$fed_array]['subassocs'], true).'</pre><br>';
-//echo 'countrysubsubsubassocselect => <pre>'.print_r($countrysubsubsubassocselect[$fed_array]['subsubassocs'], true).'</pre><br>';
-//echo 'leagueselect => <pre>'.print_r($leagueselect[$fed_array]['leagues'], true).'</pre><br>';
-//echo 'projectselect => <pre>'.print_r($projectselect[$fed_array]['projects'], true).'</pre><br>';
-
-//echo 'getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
-//echo 'getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
-//echo 'getCountryAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryAssocSelect, true).'</pre><br>';
-//echo 'getCountryFederation => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryFederation, true).'</pre><br>';
-//echo 'getCountrySubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubAssocSelect, true).'</pre><br>';
-//echo 'getCountrySubSubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubSubAssocSelect, true).'</pre><br>';
-//echo 'getLeagueAssocId => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueAssocId, true).'</pre><br>';
-//echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueSelect, true).'</pre><br>';
-
 
 JHtml::_('behavior.tooltip');
 
@@ -268,7 +204,8 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 <div style="margin: 0 auto;">
 <fieldset class="">
 
-<ul class="nav-list">
+<!-- <ul class="nav-list"> -->
+<ul class="pagination">
 <?php if ($params->get('show_nav_links')): ?>
 	
 		<?php for ($i = 1; $i < 18; $i++): ?>
@@ -342,7 +279,8 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 <div style="margin: 0 auto;">
 <fieldset class="">
 
-<ul class="nav-list">
+<!-- <ul class="nav-list"> -->
+<ul class="pagination">
 <?php if ($params->get('show_nav_links')): ?>
 	
 		<?php for ($i = 17; $i < 23; $i++): ?>
@@ -369,15 +307,10 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 
 </tr>
 
-
-
-
-
 </table>
 </td>
 </tr>
 </table>
-
 
 </div>
 
@@ -390,7 +323,6 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 </div>
 
 </div>
-
 
 
 <?PHP

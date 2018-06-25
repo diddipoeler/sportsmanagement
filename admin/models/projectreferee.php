@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -60,8 +60,8 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	{
 		$app =& JFactory::getApplication();
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -110,8 +110,8 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
             ON mre.project_referee_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            $db->execute();
+            if (!$db->execute()) 
             {
                 $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 

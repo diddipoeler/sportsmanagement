@@ -1,10 +1,18 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treeto
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+//jimport( 'joomla.application.component.view' );
 //jimport('joomla.filesystem.file');
 
 
@@ -29,12 +37,12 @@ class sportsmanagementViewTreeto extends sportsmanagementView
     //function display( $tpl = null )
 	{
 		//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
-		if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
+		if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4' )
 		{
 			$this->_displayForm(  );
 			return;
 		}
-		elseif ($this->getLayout() == 'gennode' || $this->getLayout() == 'gennode_3' )
+		elseif ($this->getLayout() == 'gennode' || $this->getLayout() == 'gennode_3' || $this->getLayout() == 'gennode_4' )
 		{
 			$this->_displayGennode();
 			return;
@@ -42,9 +50,14 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	//	parent::display( $tpl );
 	}
 
+	/**
+	 * sportsmanagementViewTreeto::_displayForm()
+	 * 
+	 * @return void
+	 */
 	function _displayForm()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();
@@ -75,9 +88,14 @@ class sportsmanagementViewTreeto extends sportsmanagementView
         //$this->setLayout('edit');  
 	}
 
+	/**
+	 * sportsmanagementViewTreeto::_displayGennode()
+	 * 
+	 * @return void
+	 */
 	function _displayGennode()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();
@@ -95,7 +113,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $this->projectws = $mdlProject->getProject($this->project_id);
 		//$this->assignRef('projectws',$projectws);
-		$this->assignRef('lists',$lists);
+		$this->lists = $lists;
 		//$this->assignRef('treeto',$treeto);
 
 		$this->addToolBar_Gennode();
@@ -103,22 +121,37 @@ class sportsmanagementViewTreeto extends sportsmanagementView
         $this->setLayout('gennode');  
 	}
 
+	/**
+	 * sportsmanagementViewTreeto::addToolBar_Gennode()
+	 * 
+	 * @return void
+	 */
 	protected function addToolBar_Gennode()
 	{
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
-		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolBarHelper::help('screen.joomleague', true);
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
+		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolbarHelper::help('screen.joomleague', true);
 	}
 
+	/**
+	 * sportsmanagementViewTreeto::addToolBar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
-		JToolBarHelper::save('treeto.save');
-		JToolBarHelper::apply('treeto.apply');
-		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolBarHelper::help('screen.joomleague', true);
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
+		JToolbarHelper::save('treeto.save');
+		JToolbarHelper::apply('treeto.apply');
+		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolbarHelper::help('screen.joomleague', true);
 	}
 
+	/**
+	 * sportsmanagementViewTreeto::setDocument()
+	 * 
+	 * @return void
+	 */
 	protected function setDocument()
 	{
 		//$document = JFactory::getDocument();

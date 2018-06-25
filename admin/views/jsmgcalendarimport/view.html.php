@@ -88,20 +88,20 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 		if (strpos($this->getLayout(), 'login') === false) {
 			$canDo = jsmGCalendarUtil::getActions();
 			if ($canDo->get('core.create')){
-				JToolBarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
+				JToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
 			}
-			JToolBarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		}
         else
         {
-            JToolBarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+            JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
         }
         
-//        JToolBarHelper::divider();
+//        JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences($option);
+//		JToolbarHelper::preferences($option);
 
-//		JRequest::setVar('hidemainmenu', 0);
+//		JFactory::getApplication()->input->setVar('hidemainmenu', 0);
 
 		parent::addToolbar();
 	}

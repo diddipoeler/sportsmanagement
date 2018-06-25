@@ -1,49 +1,17 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teampersons
+ */
+
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//Ordering allowed ?
-//$ordering = ( $this->sortColumn == 'ppl.ordering' );
-$ordering = ( $this->sortColumn == 'ppl.ordering' );
-
-//$this->addTemplatePath( JPATH_COMPONENT . DS . 'views' . DS . 'adminmenu' );
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -80,7 +48,7 @@ JHtml::_('behavior.modal');
 						</th>
 						<th>
 							<?php
-							echo JHtml::_( 'grid.sort', 'PID', 'ppl.person_id', $this->sortDirection, $this->sortColumn );
+							echo JHtml::_( 'grid.sort', 'PID', 'tp.person_id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
@@ -107,7 +75,7 @@ JHtml::_('behavior.modal');
                         ?>
 						<th width="">
 							<?php
-							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->sortDirection, $this->sortColumn );
+							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.position_id', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
 						<th>
@@ -219,19 +187,17 @@ JHtml::_('behavior.modal');
 								if ( $row->season_picture == '' )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
-									echo JHtml::_(	'image',
-													'administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 
 								}
 								elseif ( $row->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
-										echo JHtml::_(	'image',
-														'administrator/components/com_sportsmanagement/assets/images/information.png',
-														$imageTitle,
-														'title= "' . $imageTitle . '"' );
+									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 ?>
 <a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
 <img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
@@ -291,12 +257,29 @@ JHtml::_('behavior.modal');
 								if ( $row->project_position_id == 0 )
 								{
 									$append=' style="background-color:#FFCCCC"';
+								
+// einen vorschlag generieren
+$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+$project_person = $mdlPerson->getPerson($row->person_id);
+$position_id = $project_person->position_id;
+//echo '<pre>'.print_r($position_id,true).'</pre>';
+
+//build the html options for position
+$position_ids = array();        
+$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
+if ($project_ref_positions) {
+            $position_ids = array_merge($position_ids, $project_ref_positions);
+        }
+foreach($position_ids as $items => $item) {
+    if($item->position_id == $position_id) {
+        $selectedvalue = $item->value;
+    }
+}
+								
 								}
 								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
-								
-//                                echo '<br>project_position_id -> '.$row->project_position_id.'';
-//                                echo '<br>position_id -> '.$row->position_id.'';
-//                                echo '<br>person_position_id -> '.$row->person_position_id.'';
+
                                 ?>
                                 <input type="hidden" name="position_id<?php echo $row->id; ?>"	value="<?php echo $row->position_id; ?>" />
                                 <input type="hidden" name="person_id<?php echo $row->id; ?>"	value="<?php echo $row->tpid; ?>" />
@@ -311,24 +294,33 @@ JHtml::_('behavior.modal');
 								if ( $row->injury > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/injured.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/injured.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/suspension.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/suspension.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
-									echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/away.gif',
-													$imageTitle,
-													'title= "' . $imageTitle . '"' );
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/away.gif',
+										$imageTitle,
+										'title= "' . $imageTitle . '"' );
 								}
+						if ( !$row->injury &&
+						   !$row->suspension &&
+						   !$row->away )
+						{
+						$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS' );
+						echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/players.png',
+							$imageTitle,
+							'title= "' . $imageTitle . '"' );	
+						}
 								?>
 								&nbsp;
 							</td>

@@ -1,42 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
- */
 
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      ajax.json.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage 
+ */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -51,15 +23,14 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JControllerLegacy
-{
+class sportsmanagementControllerAjax extends JControllerLegacy {
+
     /**
      * sportsmanagementControllerAjax::__construct()
      * 
      * @return
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Get the document object.
         $document = JFactory::getDocument();
         // Set the MIME type for JSON output.
@@ -72,8 +43,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
      * 
      * @return
      */
-    public function getprojectsoptions()
-    {
+    public function getprojectsoptions() {
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
@@ -95,46 +65,45 @@ class sportsmanagementControllerAjax extends JControllerLegacy
      * 
      * @return
      */
-    public function getroute()
-    {
-        $view = Jrequest::getCmd('view');
+    public function getroute() {
+        $view = JFactory::getApplication()->input->getCmd('view');
 
         switch ($view) {
             case "matrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['division'] = JRequest::getVar('division');
-                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
+                $routeparameter['r'] = JFactory::getApplication()->input->getVar('r');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix', $routeparameter);
                 break;
 
             case "teaminfo":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['tid'] = JFactory::getApplication()->input->getVar('tid');
                 $routeparameter['ptid'] = 0;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
                 break;
 
             case "referees":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referees', $routeparameter);
                 break;
 
             case "results":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['r'] = JRequest::getVar('r');
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['r'] = JFactory::getApplication()->input->getVar('r');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $routeparameter['mode'] = 0;
                 $routeparameter['order'] = '';
                 $routeparameter['layout'] = '';
@@ -143,9 +112,9 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 
             case "resultsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
                 $routeparameter['r'] = 0;
                 $routeparameter['division'] = 0;
                 $routeparameter['mode'] = 0;
@@ -156,35 +125,34 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 
             case "rankingmatrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
                 $routeparameter['type'] = 0;
-                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['r'] = JFactory::getApplication()->input->getVar('r');
                 $routeparameter['from'] = 0;
                 $routeparameter['to'] = 0;
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('rankingmatrix', $routeparameter);
                 break;
 
             case "resultsrankingmatrix":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['r'] = JRequest::getVar('r');
-                $routeparameter['division'] = JRequest::getVar('division');
-                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix',
-                    $routeparameter);
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['r'] = JFactory::getApplication()->input->getVar('r');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix', $routeparameter);
                 break;
 
             case "teamplan":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['tid'] = JRequest::getVar('tid');
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['tid'] = JFactory::getApplication()->input->getVar('tid');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $routeparameter['mode'] = 0;
                 $routeparameter['ptid'] = 0;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
@@ -192,22 +160,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 
             case "roster":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['tid'] = JFactory::getApplication()->input->getVar('tid');
                 $routeparameter['ptid'] = 0;
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
                 break;
 
             case "eventsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['division'] = JRequest::getVar('division');
-                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
+                $routeparameter['tid'] = JFactory::getApplication()->input->getVar('tid');
                 $routeparameter['evid'] = 0;
                 $routeparameter['mid'] = 0;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $routeparameter);
@@ -215,21 +183,21 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 
             case "curve":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['tid1'] = JRequest::getVar('tid');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['tid1'] = JFactory::getApplication()->input->getVar('tid');
                 $routeparameter['tid2'] = 0;
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
                 break;
 
             case "statsranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $routeparameter['tid'] = 0;
                 $routeparameter['sid'] = 0;
                 $routeparameter['order'] = '';
@@ -239,18 +207,19 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             default:
             case "ranking":
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JRequest::getInt('s', 0);
-                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['p'] = JFactory::getApplication()->input->getVar('p');
                 $routeparameter['type'] = 0;
-                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['r'] = JFactory::getApplication()->input->getVar('r');
                 $routeparameter['from'] = 0;
                 $routeparameter['to'] = 0;
-                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['division'] = JFactory::getApplication()->input->getVar('division');
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
                 break;
         }
 
         echo json_encode($link);
     }
+
 }

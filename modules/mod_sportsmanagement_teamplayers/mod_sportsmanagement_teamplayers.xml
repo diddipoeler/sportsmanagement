@@ -46,7 +46,7 @@
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	  
 
 <field name="debug_modus" 
-type="radio" 
+type="extensionradiobutton" 
 default="0"
 class="radio btn-group btn-group-yesno"
 label="Debug Modus" 
@@ -54,10 +54,9 @@ description="Debug Modus">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
-
 	  
 				<field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -95,25 +94,25 @@ description="Debug Modus">
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL_DESC" />
 					
-				<field name="show_project_name" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="show_project_name" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="show_team_name" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="show_team_name" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_TEAM_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_TEAM_NAME_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="show_player_link" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field name="show_player_link" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_LINK_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="show_player_flag" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field name="show_player_flag" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PLAYER_FLAG_DESC">
 					<option value="0">JNO</option>

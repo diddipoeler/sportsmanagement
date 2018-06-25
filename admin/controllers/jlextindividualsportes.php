@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -65,9 +65,9 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 	 */
     function saveshort()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -90,9 +90,9 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 	 */
     function applyshort()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -112,10 +112,10 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
      */
     function publish() 
     {
-           $option = JRequest::getCmd('option');
+           $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $pks = JRequest::getVar('cid', array(), 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -134,10 +134,10 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
      */
     function delete()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $pks = JRequest::getVar('cid', array(), 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         

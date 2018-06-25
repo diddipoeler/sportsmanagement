@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      deafult_history.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teaminfo
+ */
 
 defined('_JEXEC') or die('Restricted access'); 
 ?>
@@ -91,8 +63,8 @@ defined('_JEXEC') or die('Restricted access');
 	foreach ($this->seasons as $season)
 	{
 	   $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-        $routeparameter['s'] = JRequest::getInt('s',0); 
+        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
         $routeparameter['p'] = $season->project_slug;
         $routeparameter['division'] = $season->division_slug;
         $routeparameter['type'] = 0; 
@@ -102,8 +74,8 @@ defined('_JEXEC') or die('Restricted access');
 		$ranking_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 		
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-        $routeparameter['s'] = JRequest::getInt('s',0); 
+        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
         $routeparameter["p"] = $season->project_slug;
         $routeparameter['r'] = $season->round_slug;
         $routeparameter['division'] = $season->division_slug;
@@ -113,8 +85,8 @@ defined('_JEXEC') or die('Restricted access');
         $results_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['division'] = $season->division_slug;
@@ -123,15 +95,15 @@ defined('_JEXEC') or die('Restricted access');
         $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
         $teamstats_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
         
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $season->team_slug;
        $routeparameter['ptid'] = $season->ptid;
@@ -142,11 +114,16 @@ defined('_JEXEC') or die('Restricted access');
 		<td><?php echo $season->league; ?></td>
         <td><?php 
      
-        if ( !sportsmanagementHelper::existPicture($season->season_picture) )
-    {
-    $season->season_picture = sportsmanagementHelper::getDefaultPlaceholder('team');    
-    }
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$season->season_picture,$this->team->name,'50');
+$picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
+		
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,
+$picture,
+$this->team->name,
+'50',
+'',							
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
         ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
 		<td><?php echo $season->division_name; ?></td>

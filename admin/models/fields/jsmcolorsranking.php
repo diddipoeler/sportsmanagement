@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -76,8 +76,8 @@ class JFormFieldjsmcolorsranking extends JFormField
 	public function getInput()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $select_id = JRequest::getVar('id');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $select_id = JFactory::getApplication()->input->getVar('id');
         //$this->value = explode(",", $this->value);
         $rankingteams = $this->element['rankingteams'];
         $templatename = $this->element['templatename'];
@@ -104,47 +104,7 @@ class JFormFieldjsmcolorsranking extends JFormField
                 $select_text[] = JHtmlSelect::option($row->value,$row->text); 
             }
         }
-        
-// We need and instance of the pane class to create the sliders.
-      //$pane = JPane::getInstance('sliders');
-        
-	
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatename<br><pre>'.print_r($templatename,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatefield<br><pre>'.print_r($templatefield,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_Options<br><pre>'.print_r($select_Options,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_text<br><pre>'.print_r($select_text,true).'</pre>'),'');
-    
-   // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
 
-   
-
-
-/*
-           
-            $html[] = '<fieldset id="' . $this->id . '"' .  '>';
-            for($a=1; $a <= $rankingteams ; $a++)
-                {
-                    
-                if ( !is_array($this->value) )
-                {
-                $this->value[$a]['von'] = '';
-                }
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
-													$this->name . '['. $a .'][von]"','class="inputbox" size="1"','value','text',
-													$this->value[$a]['von']);
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
-													$this->name . '['. $a .'][bis]"','class="inputbox" size="1"','value','text',
-													$this->value[$a]['bis']);
-                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
-                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="10"' . '/>';
-                $html[] = "<br />"; 
-                }    
-                $html[] = '</fieldset>'; 
- */           
-            
-            
-            
-            //$html[] = '<fieldset id="' . $this->id . '"' .  '>';
             $html[] = '<table>';
             $html[] = '<tr>';
             $html[] = '<th>';
@@ -164,9 +124,12 @@ class JFormFieldjsmcolorsranking extends JFormField
                 for($a=1; $a <= $rankingteams ; $a++)
                 {
                     
-                if ( !is_array($this->value) )
+                if ( !isset($this->value[$a]) )
                 {
                 $this->value[$a]['von'] = '';
+		$this->value[$a]['bis'] = '';
+		$this->value[$a]['text'] = '';
+		$this->value[$a]['color'] = '';
                 }
  
                $html[] = '<tr>';
@@ -182,7 +145,7 @@ class JFormFieldjsmcolorsranking extends JFormField
                 
                 $html[] = '</td>';  
                 $html[] = '<td>';    
-                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
+                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
                 $html[] = '</td>';  
                 $html[] = '<td>'; 
                 if ( $select_Options )
@@ -193,7 +156,7 @@ class JFormFieldjsmcolorsranking extends JFormField
             }
             else
             {
-                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
+                $html[] = '<input type="text" class="inputbox" id="' . $this->id . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
             }
                 
                 $html[] = '</td>';               
@@ -201,14 +164,9 @@ class JFormFieldjsmcolorsranking extends JFormField
 
                 }    
             $html[] = '</table>';
-           //$html[] = '</fieldset>';
                     
-    
-            //return $html;
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html<br><pre>'.print_r($html,true).'</pre>'),'');
-            
-            //return implode("\n", $html);
+        
+
             return implode($html);     
     
     }

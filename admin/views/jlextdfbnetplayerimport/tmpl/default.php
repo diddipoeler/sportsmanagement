@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                jlextdfbnetplayerimport.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
 JHtml::_( 'behavior.tooltip' );
 JHtml::_( 'behavior.modal' );
@@ -60,12 +60,12 @@ $attribs['align'] = 'left';
 //$style = " .icon-48-fb {components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif); no-repeat; }";
 //$doc->addStyleDeclaration( $style );
 
-//JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ), 'generic.png' );
+//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ), 'generic.png' );
 
-//JToolBarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ), $url16 );
+//JToolbarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ), $url16 );
 
-//JToolBarHelper::save();
-//JToolBarHelper::apply();
+//JToolbarHelper::save();
+//JToolbarHelper::apply();
 
 
 /*
@@ -85,7 +85,7 @@ echo '</pre>';
 ?>
 
 <div id="editcell">
-	<form enctype='multipart/form-data' method='post' name="adminForm">
+	<form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' name="adminForm" id="adminForm">
 		<table class='table'>
 			<thead>
 			  <tr>
@@ -203,7 +203,6 @@ echo '</pre>';
 		</table>
 		<input type="hidden" name='sent' value='1' />
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
-		<input type="hidden" name="option" value="com_sportsmanagement" /> 
 		<input type="hidden" name='task' value='jlextdfbnetplayerimport.save' />
 		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>

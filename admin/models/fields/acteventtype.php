@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -61,7 +61,7 @@ class JFormFieldacteventtype extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar('id');
+		$select_id = JFactory::getApplication()->input->getVar('id');
         
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);

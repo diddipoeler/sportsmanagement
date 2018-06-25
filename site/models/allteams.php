@@ -1,46 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      allteams.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage allteams
+ */
 
 defined('_JEXEC') or die;
 jimport('joomla.application.component.modellist');
-
 
 /**
  * sportsmanagementModelallteams
@@ -148,16 +118,16 @@ public function getStart()
         
         
         // List state information
-		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
-//		$value = JRequest::getVar('limitstart', 0, '', 'int');
-//		$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
+//		$value = JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int');
+//		$this->setState('list.start', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
         
         //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
         
-//        $this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+//        $this->setState('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
 //        // In case limit has been changed, adjust limitstart accordingly
 //        $this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 
@@ -170,14 +140,14 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-        //$filter_order = JRequest::getCmd('filter_order');
+        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.name';
 		}
         
-        //$filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {
@@ -196,7 +166,7 @@ public function getStart()
 
 //		// Load the parameters.
 //		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
+		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('v.name', 'ASC');

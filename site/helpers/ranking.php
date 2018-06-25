@@ -1,41 +1,14 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      ranking.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
+ 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
@@ -168,9 +141,8 @@ class JSMRanking
 	 */
 	function setProjectId($id,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+$option = $app->input->getCmd('option');    
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
 		$this->_projectid = (int) $id;
@@ -212,9 +184,8 @@ class JSMRanking
 	 */
 	function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -246,9 +217,8 @@ class JSMRanking
 	 */
 	function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -276,9 +246,8 @@ class JSMRanking
 	 */
 	function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -303,17 +272,23 @@ class JSMRanking
 	 */
 	function _initData($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
-       
+       $option = $app->input->getCmd('option');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
        
 		if (!$this->_projectid) {
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'));
 			return false;
 		}
-			
-		// Get a reference to the global cache object.
+
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{		
+$data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_database );
+}
+
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{		
+	// Get a reference to the global cache object.
 		$cache = JFactory::getCache('sportsmanagement.project'.$this->_projectid);
 		 
 		// Enable caching regardless of global setting
@@ -323,7 +298,7 @@ class JSMRanking
 		}
 
 		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division,$cfg_which_database );
-			
+}			
 		return $data;
 	}
 
@@ -349,9 +324,8 @@ class JSMRanking
 	 */
 	function _collect($ptids = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
-       
+       $option = $app->input->getCmd('option');    
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
 		$mode     	= $this->_mode;
@@ -764,7 +738,7 @@ class JSMRanking
 	public static function _initTeams($pid,$division,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $app->input->getCmd('option');    
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -911,13 +885,13 @@ $res = $db->loadObjectList();
 	 */
 	public static function _getMatches($pid,$division,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+$option = $app->input->getCmd('option');    		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
     
-    $viewName = JRequest::getVar( "view");
+    $viewName = $app->input->getVar( "view");
 
 //		$query = 
         $query->select('m.id');
@@ -999,8 +973,8 @@ $res = $db->loadObjectList();
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             
@@ -1053,9 +1027,8 @@ $res = $db->loadObjectList();
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+    $option = $app->input->getCmd('option');  
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'game -><pre>'.print_r($game,true).'</pre>';
@@ -1114,8 +1087,8 @@ $res = $db->loadObjectList();
 	 */
 	function _getRoundcode($round_id,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
@@ -1214,9 +1187,8 @@ $res = $db->loadObjectList();
 	 */
 	function _buildRanking($teams,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         // division filtering

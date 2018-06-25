@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -95,17 +95,6 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		//$stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
 		
 		$this->model->check_database();
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
-        
-        //$post = JRequest::get('post');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' _success <br><pre>'.print_r(sportsmanagementModeljoomleagueimports::$_success,true).'</pre>'),'');
-        
-        
-        
-        //$this->state = $this->get('State'); 
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
         //build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
@@ -197,25 +186,25 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
 		if ( $this->cfg_jl_import )
 		{
-		//JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
+		//JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 		}
         if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
-		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
+		JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
         }
          if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
 		{
-		JToolBarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
+		JToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
         }
-JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
+JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 
-//        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+//        JToolbarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        
-//        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-//        JToolBarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
-		JToolBarHelper::divider();
+//        JToolbarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+//        JToolbarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
+		JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 		parent::addToolbar();
 	}
 

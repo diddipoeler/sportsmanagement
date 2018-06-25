@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -72,8 +72,8 @@ class JFormFieldseasonteamperson extends JFormField
 	protected function getInput()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $select_id = JRequest::getVar('id');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $select_id = JFactory::getApplication()->input->getVar('id');
         $this->value = explode(",", $this->value);
         $targettable = $this->element['targettable'];
         $targetid = $this->element['targetid'];

@@ -11,10 +11,10 @@ $uri	= JFactory::getUri();
 //$link = $uri->toString();
 //$link = $uri->current();
 
-$table = JRequest::getVar('table');
+$table = JFactory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
-//$request = JRequest::get();
+//$request = JFactory::getApplication()->input->get();
 
 //echo '<br>table<pre>',print_r($table,true),'</pre>';
 

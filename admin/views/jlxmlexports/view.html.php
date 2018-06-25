@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -76,9 +76,9 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
-        //JToolBarHelper::archiveList('jlxmlexports.export',JText::_('JTOOLBAR_EXPORT'));
-        JToolBarHelper::custom('jlxmlexports.export', 'upload', 'upload', JText::_('JTOOLBAR_EXPORT'), false);
+        JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
+        //JToolbarHelper::archiveList('jlxmlexports.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::custom('jlxmlexports.export', 'upload', 'upload', JText::_('JTOOLBAR_EXPORT'), false);
         parent::addToolbar();
         
         }

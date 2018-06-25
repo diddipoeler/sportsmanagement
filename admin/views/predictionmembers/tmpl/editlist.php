@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_( 'behavior.tooltip' );
 
 //save and close 
-$close = JRequest::getInt('close',0);
+$close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -54,15 +54,15 @@ if($close == 1) {
 
 
 // Set toolbar items for the page
-//$edit = JRequest::getVar('edit',true);
+//$edit = JFactory::getApplication()->input->getVar('edit',true);
 
 //$component_text = 'COM_SPORTSMANAGEMENT_';
-//JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
-#JToolBarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
-//JToolBarHelper::save( 'predictionmember.save_memberlist' );
+//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
+#JToolbarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
+//JToolbarHelper::save( 'predictionmember.save_memberlist' );
 
 // for existing items the button is renamed `close` and the apply button is showed
-//JToolBarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
+//JToolbarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
 
 //JLToolBarHelper::onlinehelp();
 
@@ -81,7 +81,7 @@ if($close == 1) {
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('predictionmembers.save_memberlist', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		

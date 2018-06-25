@@ -1,49 +1,24 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      view.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage libraries
+ */
 
 defined('_JEXEC') or die();
+
+// welche joomla version ?
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 JHtml::_('jquery.framework');
 JHtml::_('behavior.framework', true);
+
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
@@ -104,18 +79,46 @@ class sportsmanagementView extends JViewLegacy
         
         $this->layout = $this->getLayout();
         
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+    {
+    $this->uri = JUri::getInstance();
+    $this->toolbarhelper = 'JToolbarHelper';
+    }
+    else
+    {
+    $this->uri = JFactory::getURI();
+    $this->toolbarhelper = 'JToolbarHelper';    
+    }
 /**
  * alles aufrufen was für die views benötigt wird
  */
         
-        $this->document	= JFactory::getDocument();   
+        $this->document	= JFactory::getDocument();
+        $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->format = $this->jinput->getCmd('format');
         $this->view = $this->jinput->getCmd('view', 'cpanel');
         $this->tmpl = $this->jinput->getCmd('tmpl', '');
-		$this->uri = JFactory::getURI();
+	$this->project_id = $this->jinput->get('pid');
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
+        $this->state = $this->get('State');
+        if(isset($this->state)) {
+            $this->sortDirection = $this->state->get('list.direction');
+            $this->sortColumn = $this->state->get('list.ordering');
+        }
+
+if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
+{
+$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
+}
+		
+	if ( !$this->project_id )	
+	{
+	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );	
+	}	
         $this->user = JFactory::getUser();
         $this->request_url	= $this->uri->toString();
         
@@ -131,12 +134,24 @@ class sportsmanagementView extends JViewLegacy
             }  
         
 
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
+
 /**
  * bei der einzelverarbeitung
 */        
-        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4')
         {
-        // get the Data
+
+switch ( $this->view )
+            {
+            case 'match';
+            case 'predictionproject';
+            break;
+            default:
+$this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
+		// get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->script = $this->get('Script');    
@@ -151,6 +166,9 @@ class sportsmanagementView extends JViewLegacy
 	};
 
 ");
+
+break;
+}
         }
 /**
  * in der listansicht
@@ -176,11 +194,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case 'extensions';
             case 'jlxmlexports';
             case 'treeto';
+            case 'jlextdfbkeyimport';
             break;
             default:
-            $this->state = $this->get('State'); 
-            $this->sortDirection = $this->state->get('list.direction');
-            $this->sortColumn = $this->state->get('list.ordering');
             $this->items = $this->get('Items');
             $this->total = $this->get('Total');
 		    $this->pagination = $this->get('Pagination');    
@@ -194,29 +210,48 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+        if(isset($this->sortDirection)) {
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
+        }
+        if(isset($this->sortColumn)) {
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+        }
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         }
         
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
+        if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+            
+            //if ( $this->layout == 'edit' )
+            //{
+            //$this->setLayout($this->getLayout() . '_3');
+            //}
+            //else
+            //{
+            $this->setLayout($this->getLayout() . '_4');    
+            //}
+            
+            $this->table_data_class = 'table table-striped';
+            $this->table_data_div = '</div>';
+}
+elseif( version_compare(JSM_JVERSION,'3','eq') ) 
+{
             $this->setLayout($this->getLayout() . '_3');
             $this->table_data_class = 'table table-striped';
             $this->table_data_div = '</div>';
-        }
-        else
-        {
-            // wir lassen das layout so wie es ist, dann müssen
+}
+else
+{
+// wir lassen das layout so wie es ist, dann müssen
             // nicht so viele dateien umbenannt werden
-            //$this->setLayout($this->getLayout() . '_25');
             $this->setLayout($this->getLayout() );
             $this->table_data_class = 'adminlist';
-            $this->table_data_div = '';
-        }
+            $this->table_data_div = '';   
+}
+
         
         
-        $this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 		$this->init();
 
@@ -253,7 +288,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
                 break;
             }
             
-        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {}
         else
         {    
@@ -272,9 +309,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 	 */
 	protected function addToolbar ()
 	{
-	   //$option = JRequest::getCmd('option');
+	   //$option = JFactory::getApplication()->input->getCmd('option');
 		//$app = JFactory::getApplication();
-        //$view = JRequest::getCmd('view', 'cpanel');
+        //$view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
@@ -317,7 +354,6 @@ case 'teampersons':
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
 
-//$myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN' ) );
 $myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JNO' ) );
 $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) ); 
 
@@ -421,15 +457,26 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			JHtml::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
 		);
         }
+
+        if ( isset($this->search_agegroup) ) {
+            JHtmlSidebar::addFilter(
+                JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
+                'filter_search_agegroup',
+                JHtml::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
+            );
+        }
          
         }    
         
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
         
-        if ( $this->layout == 'edit'  || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
-        //$view = JRequest::getCmd('view', 'edit');
+        //$view = JFactory::getApplication()->input->getCmd('view', 'edit');
             if (empty($this->title))
 		    {
             if ( $isNew )
@@ -447,32 +494,74 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			if( version_compare(JSM_JVERSION,'3','eq') ) 
+			{
+				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
+			elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+			{
+			$toolbarButtons[] = ['apply', $this->view.'.apply'];
+			$toolbarButtons[] = ['save', $this->view.'.save'];
+			$toolbarButtons[] = ['save2new', $this->view.'.save2new'];	
+			}
+				
+			}
+			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ( $canDo->get('core.edit') )
 			{
+				if( version_compare(JSM_JVERSION,'3','eq') ) 
+				{
 				// We can save the new record
-				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
- 
+				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				}
+				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+				{
+				$toolbarButtons[] = ['apply', $this->view.'.apply'];
+				$toolbarButtons[] = ['save', $this->view.'.save'];		
+				}
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ( $canDo->get('core.create') && $this->view != 'treetonode' ) 
 				{
-					JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					if( version_compare(JSM_JVERSION,'3','eq') ) 
+					{
+					JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					}
+					elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+					{
+					$toolbarButtons[] = ['save2new', $this->view.'.save2new'];	
+					}
 				}
 			}
 			if ( $canDo->get('core.create')  && $this->view != 'treetonode' ) 
 			{
-				JToolBarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				if( version_compare(JSM_JVERSION,'3','eq') ) 
+				{
+				JToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				}
+				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+				{
+				$toolbarButtons[] = ['save2copy', $this->view.'.save2copy'];		
+				}
+				
+				
 			}
-			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
-		}    
+			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
+		}
+		
+		if( version_compare(JSM_JVERSION,'4','eq') ) 
+		{
+		JToolbarHelper::saveGroup(
+			$toolbarButtons,
+			'btn-success'
+		);
+		}
+		
             
         }
         else
@@ -494,14 +583,23 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
-        //JToolBarHelper::title(JText::_($this->title), $this->icon);
+        //JToolbarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
         $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-        if(version_compare(JVERSION,'3.0.0','ge')) 
+        if(version_compare(JVERSION,'4.0.0-dev','ge')) 
+        {
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        }
+        elseif (version_compare(JVERSION,'3.0.0','ge')) 
         {
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
         $document->addCustomTag($stylelink);
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         }
         else
@@ -515,26 +613,28 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 //				'.icon-48-' . $this->icon . ' {background-image: url('.JURI::root().'administrator/components/com_sportsmanagement/assets/images/' . $this->icon .
 //						 '.png);background-repeat: no-repeat;}');
 
-		if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+		if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {
         if ($isNew) 
 		{
-        JToolBarHelper::title(JText::_($this->title), $this->icon);
+        JToolbarHelper::title(JText::_($this->title), $this->icon);
         }
         else
         {
-        JToolBarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
+        JToolbarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
         }
         }
         else
         {
             if(version_compare(JVERSION,'3.0.0','ge')) 
             {
-            JToolBarHelper::title(JText::_($this->title) );    
+            JToolbarHelper::title(JText::_($this->title) );    
             }
             else
             {
-            JToolBarHelper::title(JText::_($this->title), $this->icon);
+            JToolbarHelper::title(JText::_($this->title), $this->icon);
             }
 
 /**
@@ -545,9 +645,13 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
             case '':
             case 'githubinstall':
             case 'extensions':
+	case 'projectteams':
 		case 'cpanel':	    
 	case 'jlxmlimports':	
 		    case 'projectpositions':
+            case 'predictionmembers':
+            case 'predictiongroups':
+            case 'jlextdfbkeyimport':
             break;    
             default:    
 /**
@@ -557,7 +661,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
  */
         if ($canDo->get('core.delete')) 
 		{
-        JToolBarHelper::deleteList('', $this->view.'.delete');
+        JToolbarHelper::deleteList('', $this->view.'.delete');
         JToolbarHelper::trash($this->view.'.trash');
         }
         JToolbarHelper::checkin($this->view.'.checkin');  
@@ -570,8 +674,8 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_sportsmanagement');
-			JToolBarHelper::divider();
+			JToolbarHelper::preferences('com_sportsmanagement');
+			JToolbarHelper::divider();
 		}
         
         

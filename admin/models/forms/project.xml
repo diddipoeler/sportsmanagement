@@ -7,8 +7,14 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		<field
 			name="name"
@@ -40,7 +46,7 @@
 			
 		<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -141,7 +147,7 @@ JARCHIVED</option>
 		
 		<field 
 			name="project_live_update" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"   
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE" 
@@ -196,7 +202,7 @@ JARCHIVED</option>
 		
     <field 
 			name="enable_sb" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"  
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM" 
@@ -240,7 +246,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 
 <field 
 			name="approved_gcalendar" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_DESC">
@@ -250,7 +256,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 
 <field 
 			name="gcalendar_use_fav_teams" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_CALENDAR_FAV_TEAMS_DESC">
@@ -269,7 +275,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
 	
 <fields name="request">
@@ -433,7 +439,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			
 		<field 
 			name="use_legs" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
@@ -444,7 +450,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 		
 		<field 
 			name="use_tie_break" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
@@ -476,7 +482,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
       	
 		<field 
 			name="allow_add_time" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_OT_OR_PENALTY" 
@@ -529,7 +535,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 	
 		<field 
 			name="fav_team_highlight_type" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TYPE" 
@@ -554,7 +560,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 	
 		<field 
 			name="fav_team_text_bold" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TEXT_BOLD" 

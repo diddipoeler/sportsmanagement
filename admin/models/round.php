@@ -1,41 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      round.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
@@ -78,7 +51,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         //// Get the input
-//        $pks = JRequest::getVar('cid', null, 'post', 'array');
+//        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         $pks = $jinput->get('cid',array(),'array');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
@@ -90,7 +63,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$post = $jinput->post;
         $post = $jinput->post->getArray();
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        $post = JRequest::get('post');
+//        $post = JFactory::getApplication()->input->post->getArray(array());
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -141,12 +114,12 @@ class sportsmanagementModelround extends JSMModelAdmin
      */
     function massadd()
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     
-    $post = JRequest::get('post');
+    $post = JFactory::getApplication()->input->post->getArray(array());
     $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     
@@ -365,7 +338,7 @@ class sportsmanagementModelround extends JSMModelAdmin
             $this->_tables_to_delete = array_merge($export);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
             
-            // jetzt starten wir das löschen
+            // jetzt starten wir das lÃ¶schen
             foreach( $this->_tables_to_delete as $row_to_delete )
             {
             $query->clear();

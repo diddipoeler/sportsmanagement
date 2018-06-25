@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage persons
+ */
 
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
@@ -137,7 +109,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                         </td>
 							<?php
-							
 								$inputappend='';
 								?>
 								<td class="center">
@@ -150,17 +121,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else : ?>
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?>
 					<?php endif; ?>
-                        
-                        
-                        
-                        <?php //echo $checked; ?>
-                        
-                        <?php //echo $row->name; ?>
-                        
-								
-								<?php
-							
-							?>
 							
 								<input	<?php echo $inputappend; ?> type="text" size="15"
 										class="form-control form-control-inline" name="firstname<?php echo $row->id; ?>"
@@ -181,33 +141,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							</td>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
-								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
-</a>
-<?PHP                                                    
-								}
-								else
-								{
-									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
-?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" />
-</a>
-<?PHP
-								}
+                                $picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png'; 
+                                $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+                                
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id,JURI::root().$row->picture,$playerName,'20',JURI::root().$row->picture); 
 								?>
 							</td>
 							<td class="nowrap" class="center">
@@ -215,31 +155,32 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$append='';
                                 $date1 = sportsmanagementHelper::convertDate($row->birthday, 1); 
                                 if (($date1 == '00-00-0000') || ($date1 == ''))
-								{
-									$append=' style="background-color:#FFCCCC;" ';
-								}
+				{
+				$append=' style="background-color:#FFCCCC;" ';
+				$date1 = '';
+				}
 /**
  * das wurde beim kalender geändert
-  $attribs = array(
-			'onChange' => "alert('it works')",
-			"showTime" => 'false',
-			"todayBtn" => 'true',
-			"weekNumbers" => 'false',
-			"fillTable" => 'true',
-			"singleHeader" => 'false',
-		);
-	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+ * $attribs = array(
+ *			'onChange' => "alert('it works')",
+ *			"showTime" => 'false',
+ *			"todayBtn" => 'true',
+ *			"weekNumbers" => 'false',
+ *			"fillTable" => 'true',
+ *			"singleHeader" => 'false',
+ *		);
+ *	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 
                                 $attribs = array(
 			'onChange' => "document.getElementById('cb".$i."').checked=true",
 		);                          
-                                   echo JHtml::calendar($date1,
-														'birthday'.$row->id,
-														'birthday'.$row->id,
-														'%d-%m-%Y',
-														$attribs);                         
+                echo JHtml::calendar($date1,
+				'birthday'.$row->id,
+				'birthday'.$row->id,
+				'%d-%m-%Y',
+				$attribs);                         
 //								}
 								?>
 							</td>
@@ -293,7 +234,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								{
 									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'persons');
 									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'persons');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
 								}
 								?>
             </div>	

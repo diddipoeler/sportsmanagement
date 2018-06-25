@@ -1,48 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      playgrounds.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-
-jimport('joomla.application.component.modellist');
-
 
 /**
  * sportsmanagementModelPlaygrounds
@@ -53,10 +21,16 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlaygrounds extends JModelList
+class sportsmanagementModelPlaygrounds extends JSMModelList 
 {
 	var $_identifier = "playgrounds";
 	
+    /**
+     * sportsmanagementModelPlaygrounds::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -71,8 +45,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
                         'v.ordering'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -84,37 +57,30 @@ class sportsmanagementModelPlaygrounds extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+        // List state information.
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);       
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'v.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('v.name', 'asc');
 	}
     
 	/**
@@ -124,57 +90,38 @@ class sportsmanagementModelPlaygrounds extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-        // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
-		
         // Select some fields
-		$query->select('v.*');
+		$this->jsmquery->select('v.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as v');
+		$this->jsmquery->from('#__sportsmanagement_playground as v');
         // Join over the clubs
-		$query->select('c.name As club');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
+		$this->jsmquery->select('c.name As club');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_club AS c ON c.id = v.club_id');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
-        
-        
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
+                
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(v.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ($this->getState('filter.search_nation'))
 		{
-        $query->where("v.country LIKE '".$this->getState('filter.search_nation')."'");
+        $this->jsmquery->where("v.country LIKE '".$this->getState('filter.search_nation')."'");
         }
-
         
-        $query->order($db->escape($this->getState('list.ordering', 'v.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
-        
-        
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'v.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
+                
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-        
-        
-		return $query;
-        
-        
+                
+		return $this->jsmquery;
         
 	}
-
-
-
-
-    
     
     /**
 	 * Method to return a playground/venue array (id,text)
@@ -185,21 +132,23 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		*/
 	function getPlaygrounds()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         $results = array();
-        
-		$query='SELECT id AS value, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY text ASC ';
-		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id AS value, name AS text');
+        // From table
+		$this->jsmquery->from('#__sportsmanagement_playground');
+        $this->jsmquery->order('text ASC');
+		try{
+        $this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadObjectList();
 		return $result;
+         }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
     
     /**
@@ -209,27 +158,25 @@ class sportsmanagementModelPlaygrounds extends JModelList
      */
     public function getPlaygroundListSelect()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         $results = array();
         
-         // Select some fields
-		$query->select('id,name,id AS value,name AS text,short_name,club_id');
+        // Select some fields
+        $this->jsmquery->clear();
+		$this->jsmquery->select('id,name,id AS value,name AS text,short_name,club_id');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
-        $query->order('name');
-        
-		//$query='SELECT id,name,id AS value,name AS text,short_name,club_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ORDER BY name';
-		$db->setQuery($query);
-		if ($results=$db->loadObjectList())
-		{
-			return $results;
-		}
-		//return false;
+		$this->jsmquery->from('#__sportsmanagement_playground');
+        $this->jsmquery->order('name');
+        try{
+		$this->jsmdb->setQuery($this->jsmquery);
+		$results = $this->jsmdb->loadObjectList();
         return $results;
+         }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 	}
     
     

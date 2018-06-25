@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -63,13 +63,13 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     $date = JFactory::getDate();
 	   $user = JFactory::getUser();
     // Get a db connection.
         $db = JFactory::getDbo();
-       $post=JRequest::get('post');
+       $post=JFactory::getApplication()->input->post->getArray(array());
     
     
     if (isset($post['extended']) && is_array($post['extended'])) 

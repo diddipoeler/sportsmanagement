@@ -3,24 +3,24 @@
 JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-JToolBarHelper::title( JText::_( JText::_( 'DFB-Keys Mass-Add' ) ) );
+JToolbarHelper::title( JText::_( JText::_( 'DFB-Keys Mass-Add' ) ) );
 
-$edit        = JRequest::getVar('edit',true);
+$edit        = JFactory::getApplication()->input->getVar('edit',true);
 $text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
-//    JToolBarHelper::title(   JText::_( 'Division' ).': <small><small>[ ' . $text.' ]</small></small>' );
-JToolBarHelper::save();
+//    JToolbarHelper::title(   JText::_( 'Division' ).': <small><small>[ ' . $text.' ]</small></small>' );
+JToolbarHelper::save();
 
 if (!$edit)
 {
-    JToolBarHelper::cancel();
+    JToolbarHelper::cancel();
 }
 else
 {
     // for existing items the button is renamed `close` and the apply button is showed
-    JToolBarHelper::apply();
-    JToolBarHelper::cancel( 'cancel', 'Close' );
+    JToolbarHelper::apply();
+    JToolbarHelper::cancel( 'cancel', 'Close' );
 }
-JToolBarHelper::help( 'screen.joomleague', true );
+JToolbarHelper::help( 'screen.joomleague', true );
 
 $uri     =& JFactory::getURI();
 

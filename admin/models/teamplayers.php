@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroups.php
-* @author                diddipoeler, stony und svdoldie (diddipoeler@arcor.de)
+* @author                diddipoeler, stony und svdoldie (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -62,7 +62,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function getListQuery()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -70,8 +70,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		        
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_team_id = JRequest::getVar('team_id');
-        $this->_project_team_id = JRequest::getVar('project_team_id');
+        $this->_team_id = JFactory::getApplication()->input->getVar('team_id');
+        $this->_project_team_id = JFactory::getApplication()->input->getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
@@ -139,7 +139,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function _buildContentOrderBy()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order','filter_order','tp.ordering','cmd');
 		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
@@ -156,7 +156,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function _buildContentWhere()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		
         //$project_id=$app->getUserState($option.'project');
@@ -216,7 +216,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function getProjectTeamplayers($project_team_id = 0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();

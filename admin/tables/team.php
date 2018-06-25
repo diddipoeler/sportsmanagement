@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -118,8 +118,8 @@ class sportsmanagementTableTeam extends JTable
      */
     public function bind($array, $ignore = '')
    {
-      $app = JFactory::getApplication();
-      $option = JRequest::getCmd('option');
+      //$app = JFactory::getApplication();
+      //$option = JFactory::getApplication()->input->getCmd('option');
       //$app->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array,true).'</pre>'   ),'');
       //$app->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array['season_ids'],true).'</pre>'   ),'');
         

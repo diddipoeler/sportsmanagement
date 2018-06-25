@@ -1,7 +1,19 @@
 --
--- Daten für Tabelle `#__sportsmanagement_dfbkey`
+-- Daten fÃ¼r Tabelle `#__sportsmanagement_dfbkey`
 --
 INSERT INTO `#__sportsmanagement_dfbkey` (`id`, `schluessel`, `spieltag`, `paarung`, `spielnummer`, `country`) VALUES
+(NULL,4,1,'1,3','001','DEU'),
+(NULL,4,1,'4,2','002','DEU'),
+(NULL,4,2,'1,2','003','DEU'),
+(NULL,4,2,'3,4','004','DEU'),
+(NULL,4,3,'2,3','005','DEU'),
+(NULL,4,3,'4,1','006','DEU'),
+(NULL,4,4,'3,1','007','DEU'),
+(NULL,4,4,'2,4','008','DEU'),
+(NULL,4,5,'2,1','009','DEU'),
+(NULL,4,5,'4,3','010','DEU'),
+(NULL,4,6,'3,2','011','DEU'),
+(NULL,4,6,'1,4','012','DEU'),
 (NULL,6,1,'1,5','001','DEU'),
 (NULL,6,1,'3,2','002','DEU'),
 (NULL,6,1,'6,4','003','DEU'),

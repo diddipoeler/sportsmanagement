@@ -1,49 +1,40 @@
 <?xml version="1.0"?>
 <form>
 <!-- reiter 1 -->
-	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
+	<fieldset name= "details" 
 	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
       label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" >
 			
-		<field 	name="show_projectheader" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_projectheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_PROJECTHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_PROJECTHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_sectionheader" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_sectionheader" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_description" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_description" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_DESCRIPTION" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_DESCRIPTION">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-<!--
-    <field 	name="show_highslide" type="radio" default="0"  class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_HIGHSLIDE" 
-				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_HIGHSLIDE">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
--->
 		
-		<field 	name="show_players" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_players" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYERS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYERS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_players_layout" type="radio" default="player_standard" 
+		<field 	name="show_players_layout" type="extensionradiobutton" default="player_standard" 
     class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">
@@ -52,14 +43,14 @@
 			<option value="player_johncage">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD</option>
 		</field>
 		
-		<field 	name="show_staff" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_staff" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STAFF" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STAFF">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_staff_layout" type="radio" default="staff_standard" 
+		<field 	name="show_staff_layout" type="extensionradiobutton" default="staff_standard" 
     class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STAFF_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STAFF_LAYOUT">
@@ -68,42 +59,42 @@
 			<option value="staff_johncage">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD</option>
 		</field>
 
-    <field 	name="show_drop_down_menue" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    <field 	name="show_drop_down_menue" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_DROP_DOWN" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_DROP_DOWN">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_team_shortform" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_team_shortform" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_TEAM_SHORTFORM" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_TEAM_SHORTFORM">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_events_stats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_average_age" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+				  label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_AVERAGE_AGE"
+				  description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_AVERAGE_AGE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field 	name="show_events_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_EVENTS_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_EVENTS_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-<!--		
-		<field 	name="show_events_stats_totals" type="radio" default="1" 
-				label="Show event totals stats?" 
-				description="If this option is activated, the players event stats totals row is shown.">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
--->
-		<field 	name="show_stats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+
+		<field 	name="show_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_totals" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_totals" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_TOTALS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_TOTALS">
 			<option value="0">JNO</option>
@@ -133,21 +124,21 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION4_SHOW_BIRTHDAY</option>
 		</field>
 		
-    <field 	name="show_deathday" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    <field 	name="show_deathday" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_DEATHDAY" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_DEATHDAY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
     
-		<field 	name="show_player_icon" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_player_icon" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYER_ICON" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYER_ICON">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_player_market_value" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_player_market_value" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYER_MARKET_VALUE" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYER_MARKET_VALUE">
 			<option value="0">JNO</option>
@@ -168,34 +159,28 @@
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
-<!-- wird automatisch berechnet			
-		<field 	name="player_picture_height" type="text" default="40"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
-		</field>
--->				
-		<field 	name="link_player" type="radio" default="1"   class="radio btn-group btn-group-yesno"
+		<field 	name="link_player" type="extensionradiobutton" default="1"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_LINK_PLAYER" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_LINK_PLAYER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_player_numbers" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_player_numbers" type="extensionradiobutton" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYER_NUMBERS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYER_NUMBERS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="player_numbers_pictures" type="radio" default="0" class="radio btn-group btn-group-yesno"
+		<field 	name="player_numbers_pictures" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_PLAYER_NUMBERS_PICTURES" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_PLAYER_NUMBERS_PICTURES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_country_flag" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_country_flag" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_COUNTRY_FLAG" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_COUNTRY_FLAG">
 			<option value="0">JNO</option>
@@ -203,14 +188,14 @@
 		</field>
 		
 
-		<field 	name="show_games_played" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_games_played" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_GAMES_PLAYED" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_GAMES_PLAYED">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_substitution_stats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_substitution_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_SUBS_STATS" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_SUBS_STATS">
 			<option value="0">JNO</option>
@@ -218,7 +203,7 @@
 		</field>
 		
 	</fieldset>	
-	
+<!-- reiter 3 -->	
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS"
   label= "COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_GROUP_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_ROSTER_STAFF_PARAMS_DESCR_OPTIONS"
@@ -239,7 +224,7 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION4_SHOW_BIRTHDAY</option>
 		</field>
 		
-		<field 	name="show_staff_icon" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_staff_icon" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_STAFF_ICON" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_STAFF_ICON">
 			<option value="0">JNO</option>
@@ -260,20 +245,14 @@
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
-<!-- wird automatisch berechnet			
-		<field 	name="staff_picture_height" type="text" default="40"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_HEIGHT">
-		</field>
--->
-		<field 	name="link_staff" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="link_staff" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_LINK_PLAYER" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_LINK_PLAYER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_country_flag_staff" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_country_flag_staff" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_COUNTRY_FLAG" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_COUNTRY_FLAG">
 			<option value="0">JNO</option>
@@ -291,12 +270,12 @@
 		</field>
 		
 	</fieldset>
-	
+<!-- reiter 4 -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS">	
 
-		<field 	name="show_team_logo" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_team_logo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_TEAM_LOGO" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_TEAM_LOGO">
 			<option value="0">JNO</option>
@@ -308,6 +287,13 @@
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 		
+		<field name="team_picture_which" type="list" default="project_team"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_WHICH_PICTURE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_WHICH_PICTURE">
+      <option value="pt">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PROJECTTEAM_PICTURE</option>
+      <option value="t">COM_SPORTSMANAGEMENT_FES_MATCHREPORT_TEAM_PICTURE</option>
+		</field>
+		
 		<field name="team_picture_style" type="list" default=""
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
@@ -317,7 +303,7 @@
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
-		<field 	name="show_team_logo_highslide" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field 	name="show_team_logo_highslide" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HIGHSLIDE" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HIGHSLIDE">
 			<option value="0">JNO</option>

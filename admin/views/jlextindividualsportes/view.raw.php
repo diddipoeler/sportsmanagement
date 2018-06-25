@@ -26,7 +26,7 @@ class JoomleagueViewMatches extends JLGView
 							FROM #__joomleague_match m
 							JOIN #__joomleague_team AS t1 ON m.team1=t1.id
 							JOIN #__joomleague_team AS t2 ON m.team2=t2.id
-							WHERE m.project_id='".JRequest::getVar('p')."'
+							WHERE m.project_id='".JFactory::getApplication()->input->getVar('p')."'
 							ORDER BY t1.short_name");
 
 		$dropdrowlistoptions=JHTML::_('select.options',$db->loadObjectList(),'value','mid');

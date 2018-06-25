@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -117,7 +117,7 @@ public function __construct($config = array())
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_position_id', 'filter_project_position_id', '');
 		$this->setState('filter.project_position_id', $temp_user_request);
         
-        $value = JRequest::getUInt('limitstart', 0);
+        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
@@ -142,15 +142,15 @@ public function __construct($config = array())
 	protected function getListQuery()
 	{
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $this->getState('filter.search');
         //$search_nation	= $this->getState('filter.search_nation');
         //$search_project_position_id	= $this->getState('filter.project_position_id');
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_team_id = JRequest::getVar('team_id');
-        $this->_project_team_id = JRequest::getVar('project_team_id');
+        $this->_team_id = JFactory::getApplication()->input->getVar('team_id');
+        $this->_project_team_id = JFactory::getApplication()->input->getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
@@ -298,7 +298,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		{
 			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee WHERE id='.$cid[$x];
 			JFactory::getDbo()->setQuery($query);
-			if(!JFactory::getDbo()->query())
+			if(!JFactory::getDbo()->execute())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				continue;
@@ -316,7 +316,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getProjectRefereesCount($project_id)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         

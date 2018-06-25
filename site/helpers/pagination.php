@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      pagination.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage helpers
+ */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -64,8 +36,8 @@ class sportsmanagementModelPagination extends JModelLegacy
      */
     function getnextlink()
     {
-        $option = JRequest::getCmd('option');
        $app = JFactory::getApplication();
+$option = $app->input->getCmd('option');	    
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
         $my_text = 'nextink -> '.$this->nextlink.'<br>'; 
@@ -86,20 +58,20 @@ class sportsmanagementModelPagination extends JModelLegacy
 	 */
 	public static function pagenav($project,$cfg_which_database = 0,$s=0)
 	{
-	   $option = JRequest::getCmd('option');
        $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');	    
        // JInput object
         $jinput = $app->input;
         
 		$pageNav = '';
 		$spacer2 = '&nbsp;&nbsp;';
 		$spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
-		$roundid = JRequest::getInt( "r", $project->current_round);
-		$mytask = JRequest::getVar('task','','request','word');
-		$view = JRequest::getVar('view','','request','word');
-		$layout = JRequest::getVar('layout','','request','word');
-		$controller = JRequest::getVar('controller');
-		$divLevel = JRequest::getInt('divLevel',0);
+		$roundid = $app->input->getInt( "r", $project->current_round);
+		$mytask = $app->input->getVar('task','','request','word');
+		$view = $app->input->getVar('view','','request','word');
+		$layout = $app->input->getVar('layout','','request','word');
+		$controller = $app->input->getVar('controller');
+		$divLevel = $app->input->getInt('divLevel',0);
 		$division = $jinput->request->get('division','0', 'STR');
 		$firstlink = '';
 		$lastlink = '';
@@ -134,7 +106,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 		if ($mytask){$params['task'] = $mytask;}
 		if ($division > 0){$params['division'] = $division;}
 		if ($divLevel > 0){$params['divLevel'] = $divLevel;}
-		$prediction_id = JRequest::getInt("prediction_id",0);
+		$prediction_id = JFactory::getApplication()->input->getInt("prediction_id",0);
 		if($prediction_id >0) 
         {
 			$params['prediction_id']= $prediction_id;
@@ -278,10 +250,11 @@ class sportsmanagementModelPagination extends JModelLegacy
 	 */
 	function pagenav2($jl_task,$rlimit,$currentRoundcode=0,$user='',$mode='')
 	{
-	   $option = JRequest::getCmd('option');
-		$mytask = JRequest::getVar('task',false);
-		$divLevel = JRequest::getInt('divLevel',0);
-		$division = JRequest::getInt('division',0);
+	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');	    
+		$mytask = $app->input->getVar('task',false);
+		$divLevel = $app->input->getInt('divLevel',0);
+		$division = $app->input->getInt('division',0);
 
 		$pageNav2 = '<form action="" method="get" style="display:inline;">';
 		$pageNav2 .= '<select class="inputbox" onchange="joomleague_changedoc(this)">';

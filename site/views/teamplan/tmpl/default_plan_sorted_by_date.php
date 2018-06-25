@@ -1,50 +1,25 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_plan_sorted_by_date.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teamplan
+ */
 
 defined('_JEXEC') or die('Restricted access');
-if (!isset($this->config['show_matchreport_column'])){$this->config['show_matchreport_column']=0;}
+if ( !isset($this->config['show_matchreport_column']) ) 
+{
+    $this->config['show_matchreport_column'] = 0;
+}
 ?>
-<a name="jl_top" id="jl_top"></a>
+
 <?php
 if (!empty($this->matches))
 {
-$teamid=JRequest::getInt('tid');
+$teamid=JFactory::getApplication()->input->getInt('tid');
 ?>
 <!--	<thead> -->
 	<?php
@@ -55,6 +30,10 @@ $teamid=JRequest::getInt('tid');
 		$counter	= 1;
 		$round_date	= '';		
 		$k=0;
+
+usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_timestamp; });
+//echo 'gamesByDate nachher <pre>'.print_r($this->matches,true).'</pre><br>';		
+
 		foreach ( $this->matches as $match )
 		{
 			$gamesByDate[substr( $match->match_date, 0, 10 )][] = $match;
@@ -205,7 +184,7 @@ $teamid=JRequest::getInt('tid');
 		{
 		?>
 		    <td>
-			<?php echo JoomleagueHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config); ?>
+			<?php echo sportsmanagementHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config); ?>
 		    </td>
 		<?php
 		}
@@ -213,25 +192,17 @@ $teamid=JRequest::getInt('tid');
 		{
 		?>
 		    <td>
-			<?php JoomleagueHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
 		    </td>
 		<?php
 		}
-		/*
-		 echo JoomleagueModelTeamPlan::showPlayground(	$hometeam,
-		 $guestteam,
-		 $match,
-		 $this->config['show_playground_alert'],
-		 $this->config['show_playground'],
-		 $match->project_id);
-		 */
 		?>
 
 		<?php
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"><?php echo JoomleagueHelperHtml::showMatchTime(	$match,
+		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime(	$match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>
@@ -263,16 +234,32 @@ $teamid=JRequest::getInt('tid');
 			$class2	= 'left';
 		}
 		if ($this->config['show_teamplan_link']) {
-			$homelink=JoomleagueHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug);
-			$awaylink=JoomleagueHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug);
+			
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $hometeam->team_slug;
+$routeparameter['division'] = $match->division_slug;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$homelink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+$routeparameter['tid'] = $guestteam->team_slug;
+$routeparameter['division'] = $match->division_slug;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+			
+			
+
 		} else {
 			$homelink = null;
 			$awaylink = null;
 		}
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
-		$home = JoomleagueHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
+		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
 
-		$teamA .= '<td class="'.$class1.'">'.$home.'</td>';
+		$teamA .= '<td width="30%" class="'.$class1.'">'.$home.'</td>';
 
 		// Check if the user wants to show the club logo or country flag
 		switch ($this->config['show_logo_small'])
@@ -280,11 +267,25 @@ $teamid=JRequest::getInt('tid');
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
 				break;
@@ -304,7 +305,7 @@ $teamid=JRequest::getInt('tid');
 			case 3:
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= JoomleagueHelper::getPictureThumb($hometeam->picture, 
+					$teamA .= sportsmanagementHelper::getPictureThumb($hometeam->picture, 
 										$hometeam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
@@ -312,7 +313,7 @@ $teamid=JRequest::getInt('tid');
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= JoomleagueHelper::getPictureThumb($guestteam->picture, 
+					$teamB .= sportsmanagementHelper::getPictureThumb($guestteam->picture, 
 										$guestteam->name,
 										$this->config['team_picture_width'],
 										$this->config['team_picture_height'],1);
@@ -324,9 +325,9 @@ $teamid=JRequest::getInt('tid');
 		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
-		$away = JoomleagueHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
+		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
 		
-		$teamB .= '<td class="'.$class2.'">'.$away.'</td>';
+		$teamB .= '<td width="30%" class="'.$class2.'">'.$away.'</td>';
 		
 		if (!$match->cancel)
 		{
@@ -418,11 +419,16 @@ $teamid=JRequest::getInt('tid');
             }
             
             //Link
+            $routeparameter = array();                    
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->match_slug; 
             if (isset($match->team1_result))
                 {
-                    $link=JoomleagueHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
             } else {
-                    $link=JoomleagueHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
                 }
             
             $ResultsTooltipTitle = $result;
@@ -567,7 +573,7 @@ $teamid=JRequest::getInt('tid');
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
 						{
-							$link=JoomleagueHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
+							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
 							$ref=JHtml::link($link,$ref);
 						}
 						$output .= $ref;
@@ -608,7 +614,7 @@ $teamid=JRequest::getInt('tid');
 		?>
 
 		<?php if (($this->config['show_thumbs_picture']) & ($teamid>0)): ?>
-		<td><?php echo JoomleagueHelperHtml::getThumbUpDownImg($match, $this->ptid); ?></td>
+		<td><?php echo sportsmanagementHelperHtml::getThumbUpDownImg($match, $this->ptid); ?></td>
 		<?php endif; ?>
 		
 		<?php
@@ -617,6 +623,11 @@ $teamid=JRequest::getInt('tid');
 			?>
 		<td><?php
 		if (!$match->cancel) {
+$routeparameter = array();                    
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->match_slug;   			
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
@@ -625,7 +636,7 @@ $teamid=JRequest::getInt('tid');
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
-				$link=JoomleagueHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 				$viewReport=JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
@@ -636,7 +647,7 @@ $teamid=JRequest::getInt('tid');
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
-				$link=JoomleagueHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				$viewPreview=JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}

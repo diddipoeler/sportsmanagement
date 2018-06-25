@@ -1,41 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagement.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_matches
+ */
+
 defined('_JEXEC') or die('Restricted access');
 
 /**
@@ -131,10 +104,19 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	$query->where('m.team1_result IS NULL ');
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
-    $matchestoupdate = $db->loadResult();
-	    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
+
+	    try{
+	    $matchestoupdate = $db->loadResult();
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     return $matchestoupdate;
+	 }
+catch (Exception $e){
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	return false;
+}
             
     }
     
@@ -187,7 +169,6 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
             $zeit = $this->params->get('result_add_time',0) * $stunden * $minuten * $sekunden;
             break;
         }
-        // $enddatum = $enddatum + ($stunden * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
         $startdatum_played_matches = $enddatum_played_matches - ($zeit);  
         }
 /**
@@ -214,15 +195,9 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
             $zeit = $this->params->get('period_int',0) * $stunden * $minuten * $sekunden;
             break;
         }
-        // $enddatum = $enddatum + ($stunden * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
         $enddatum_next_matches = $startdatum_next_matches + ($zeit);      
             
         }
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' show_played<br><pre>'.print_r($this->params->get('show_played',0),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result_add_unit<br><pre>'.print_r($this->params->get('result_add_unit','HOUR'),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result_add_time<br><pre>'.print_r($this->params->get('result_add_time',0),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' startdatum<br><pre>'.print_r($startdatum,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' enddatum<br><pre>'.print_r($enddatum,true).'</pre>'),'Notice');
         
         $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
         
@@ -264,7 +239,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
             
         }
  
-		$query->clear();
+	$query->clear();
         $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
         $query->select('m.team1_result_ot,m.team2_result_ot,m.team1_result_so,m.team2_result_so');
@@ -336,8 +311,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
                     
         if ($this->id > 0) 
         {
-		$query->where('m.id = ' . $this->id );
-		}
+	$query->where('m.id = ' . $this->id );
+	}
         
         $query->where('p.id IN ( '.$projectstring.' )');  
         
@@ -358,39 +333,35 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
         if ( $this->params->get('order_by_project') == 0 ) 
         {
-		  if ( $this->params->get('lastsortorder') == 'desc' ) 
-          {
-		    $query->order('match_date DESC');
-		  }
-		  else 
-          {
-            $query->order('match_date');
-		  }
-		}
-		else 
+	if ( $this->params->get('lastsortorder') == 'desc' ) 
         {
-            $query->order('match_date, p.ordering ASC');
-		}
+	$query->order('match_date DESC');
+	}
+	else 
+        {
+        $query->order('match_date');
+	}
+	}
+	else 
+        {
+        $query->order('match_date, p.ordering ASC');
+	}
         
         try {
         $db->setQuery($query,0,$limit);
-        
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' modul id<br><pre>'.print_r($module->id,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' query dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
         $matches = $db->loadObjectList();
-        
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($matches,true).'</pre>'),'');
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $this->formatMatches($matches);
 }
 catch (Exception $e) {
-    // catch any database errors.
- //   $db->transactionRollback();
-    JErrorPage::render($e);
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	return false;
 }
         
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
-		return $this->formatMatches($matches);
 	}
 
 	/**
@@ -494,6 +465,7 @@ catch (Exception $e) {
         $query->where('(' . implode(' OR ', $cond) . ')');  
         //$tempteams = $this->getFromDB($query, 'ptid');
         $db->setQuery($query);
+	try {	
         $tempteams = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
@@ -502,6 +474,15 @@ catch (Exception $e) {
 			$teams[$t->ptid] = $t;
 		}
 		return $teams;
+}
+catch (Exception $e){
+$msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+return false;	
+}		
+		
 	}
 
 	/**

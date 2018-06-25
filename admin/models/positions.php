@@ -1,46 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      positions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage positions
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-//jimport('joomla.application.component.modellist');
 
 /**
  * sportsmanagementModelPositions
@@ -55,6 +25,12 @@ class sportsmanagementModelPositions extends JSMModelList
 {
 	var $_identifier = "positions";
 	
+	/**
+	 * sportsmanagementModelPositions::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -97,9 +73,21 @@ class sportsmanagementModelPositions extends JSMModelList
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		parent::populateState('po.name', 'asc');
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'po.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
 	
 	/**
@@ -164,38 +152,31 @@ class sportsmanagementModelPositions extends JSMModelList
 	function getParentsPositions()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $query = JFactory::getDbo()->getQuery(true);
-        $results = array();
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        //$query = JFactory::getDbo()->getQuery(true);
+        //$results = array();
 		//$project_id=$app->getUserState($option.'project');
         
 		//get positions already in project for parents list
 		//support only 2 sublevel, so parent must not have parents themselves
         
         // Select some fields
-        $query->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
+	$this->jsmquery->clear();
+        $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->where('pos.parent_id = 0');  
-        $query->order('pos.ordering ASC ');  
-        
-//		$query='	SELECT pos.id, pos.name,	
-//        pos.id AS value,
-//							pos.name AS text,
-//                            pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					WHERE pos.parent_id=0
-//					ORDER BY pos.ordering ASC 
-//					';
-		JFactory::getDbo()->setQuery($query);
-		if (!$result = JFactory::getDbo()->loadObjectList())
+		$this->jsmquery->from('#__sportsmanagement_position AS pos');
+        $this->jsmquery->where('pos.parent_id = 0');  
+        $this->jsmquery->order('pos.ordering ASC ');  
+
+		$this->jsmdb->setQuery($this->jsmquery);
+		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			//return false;
-            return $result;
+            return false;
 		}
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -216,26 +197,19 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     function getProjectPositions($project_id,$persontype=1)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
-		//$project_id=$app->getUserState($option.'project');
-        
         // Select some fields
-        $query->select('ppos.id AS value, pos.name AS text');
+        $query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id');
+	$query->from('#__sportsmanagement_position AS pos');
+        $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id');
         $query->where('ppos.project_id = '.(int)$project_id);  
         $query->where('pos.persontype = '.(int)$persontype);  
         $query->order('pos.ordering');  
-        
-		//$query="	SELECT ppos.id AS value, pos.name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
-//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
-//					WHERE ppos.project_id=$project_id AND pos.persontype=2
-//					ORDER BY ordering ";
+        		
 		JFactory::getDbo()->setQuery($query);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -252,62 +226,8 @@ class sportsmanagementModelPositions extends JSMModelList
 		return $result;
 	}
     
-//    /**
-//	 * Method to return a positions array (id,position)
-//		*
-//		* @access  public
-//		* @return  array
-//		* @since 0.1
-//		*/
-//	function getStaffPositions($project_id)
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//		$query="	SELECT ppos.id AS value, pos.name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
-//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
-//					WHERE ppos.project_id=$project_id AND pos.persontype=2
-//					ORDER BY ordering ";
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		foreach ($result as $position){
-//			$position->text=JText::_($position->text);
-//		}
-//		return $result;
-//	}
-    
-//    /**
-//	 * Method to return a positions array (id,position)
-//		*
-//		* @access  public
-//		* @return  array
-//		* @since 0.1
-//		*/
-//	function getPlayerPositions($project_id)
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//
-//		$query="	SELECT pp.id AS value,name AS text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
-//					LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS pp ON pp.position_id=p.id
-//					WHERE pp.project_id=$project_id AND p.persontype=1
-//					ORDER BY ordering ";
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		foreach ($result as $position){$position->text=JText::_($position->text);}
-//		return $result;
-//	}
+
+
 
 
     /**
@@ -319,7 +239,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		*/
 	function getPositions($project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -363,29 +283,21 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getAllPositions()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+	   
+        $this->jsmquery->clear();
         
         // Select some fields
-        $query->select('pos.id AS value, pos.name AS posName,s.name AS sName');
+        $this->jsmquery->select('pos.id AS value, pos.name AS posName,s.name AS sName');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id = pos.sports_type_id');
-        $query->where('pos.published = 1');  
-        $query->order('pos.ordering,pos.name');  
-        
-		//$query='	SELECT	pos.id AS value,
-//							pos.name AS posName,
-//							s.name AS sName
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id=pos.sports_type_id
-//					WHERE pos.published=1
-//					ORDER BY pos.ordering,pos.name';
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadObjectList())
+		$this->jsmquery->from('#__sportsmanagement_position AS pos');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+        $this->jsmquery->where('pos.published = 1');  
+        $this->jsmquery->order('pos.ordering,pos.name');  
+	
+		$this->jsmdb->setQuery($this->jsmquery);
+		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -397,40 +309,7 @@ class sportsmanagementModelPositions extends JSMModelList
 			return $result;
 		}
 	}
-    
 
-///**
-//	 * Method to return a positions array of referees (id,position)
-//	 *
-//	 * @access	public
-//	 * @return	array
-//	 *
-//	 */
-//
-//	function getRefereePositions($project_id)
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//		$query='SELECT	ppos.id AS value,
-//				pos.name AS text
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-//				WHERE ppos.project_id='. JFactory::getDbo()->Quote($project_id).' AND pos.persontype=3';
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		else
-//		{
-//			foreach ($result as $position) {
-//				$position->text=JText::_($position->text);
-//			}
-//			return $result;
-//		}
-//	}
     
     /**
      * sportsmanagementModelPositions::getPositionListSelect()
@@ -439,7 +318,7 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     public function getPositionListSelect()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields

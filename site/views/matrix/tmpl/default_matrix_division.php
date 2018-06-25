@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -175,8 +175,8 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $trow->team_slug;
        $routeparameter['ptid'] = 0;
@@ -252,8 +252,8 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						$title = "";
 						$arrayString = array ();
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $result->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -473,8 +473,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $trow->team_slug;
        $routeparameter['ptid'] = 0;
@@ -550,8 +550,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$title = "";
 						$arrayString = array ();
 						$routeparameter = array();
-$routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $result->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);

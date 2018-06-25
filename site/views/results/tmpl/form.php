@@ -1,67 +1,43 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      form.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage results
+ */
 
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-?>
-<script>
-function openLink(url)
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
+
+if ( $this->overallconfig['use_jquery_modal'] )
 {
-var width = get_windowPopUpWidth();
-var heigth = get_windowPopUpHeight(); 
+?>
+<!--
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
+-->
+<?php 
+}
 
-SqueezeBox.open(url, {
-       handler: 'iframe', 
-       size: { x: width, y: heigth }
-   });
-       
-} 
-
-</script>		
-<?PHP
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+	
+}	
 
 //echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
+	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), JText::_('ALERTNOTAUTH') );
 }
 
 // load javascripts
@@ -81,19 +57,22 @@ else
   
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
+//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
 ?>
-<div style="overflow:auto;">
-<!--	<a name="jl_top" id="jl_top"></a> -->
-	<!-- section header e.g. ranking, results etc. -->
-	<table class="table">
+<script>
+//var str_delete = '<?php echo JText::_('JACTION_DELETE'); ?>';
+//var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
+</script>
+<div class="row-fluid" style="overflow:auto;">
+	<!-- edit results start -->
+	<table class="table table-responsive">
 		<tr>
 			<td class="contentheading">
 				<?php
 				if ( $this->roundid > 0 )
 				{
 					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
-					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
+					if ( $this->showediticon ) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
 $routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
@@ -121,8 +100,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
             </td>
 		</tr>
 	</table>
-	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
-		<table class="<?php echo $this->config['table_class']; ?>" >
+	<form name="adminForm" id="adminForm" method="post" action="<?php echo $uri->toString(); ?>">
+		<table class="<?php echo $this->config['table_class']; ?>  table-responsive" >
 			<!-- Main START -->
 			<?php
 			if ( count( $this->matches ) > 0 )
@@ -130,7 +109,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$colspan=($this->project->allow_add_time) ? 15 : 14;
 			?>
 			<thead>
-				<tr class="sectiontableheader">
+				<tr class="">
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
@@ -145,10 +124,33 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					<?php 
 						}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_number'] )
+				{
+					?>
 					<th width="20" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_MATCHNR'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_date'] )
+				{	
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_DATE'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_TIME'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_time_present'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PRESENT'); ?></th>
+					<?php
+				}
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th>
 					<th style="text-align: center; vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_RESULT'); ?></th>
@@ -160,14 +162,32 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 						<?php
 					}
 					?>
+					
+					<?php
+				if ( $this->config['show_edit_match_events'] )
+				{
+				?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS'); ?></th>
+				<?php
+				}
+				if ( $this->config['show_edit_match_statistic'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS'); ?></th>
+					<?php
+				}
+				if ( $this->config['show_edit_match_referees'] )
+				{
+					?>
 					<th class="title" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE'); ?></th>
+					<?php
+				}
+					?>
 					<th width="1%" class="nowrap" style="vertical-align: top; "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_PUBLISHED'); ?></th>
 				</tr>
 			</thead>
 			<!-- Start of the matches for the selected round -->
-			<tbody>
+		<!--	<tbody> -->
 			<?php
 				$k = 0;
 				$i = 0;
@@ -178,80 +198,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					{
 						$this->game = $match;
 						$this->i = $i;
-
 /**
-* 
-*/                        
-//$allreferees = sportsmanagementModelMatch::getRefereeRoster(0,$match->id);
-//		if (isset($allreferees))
-//		{
-//			foreach ($allreferees AS $referee) 
-//            {
-//				$inroster[] = $referee->value;
-//			}
-//		} 
-/*
-$projectreferees = sportsmanagementModelMatch::getProjectReferees($inroster,$this->project->id);        
-		if (count($projectreferees) > 0)
-		{
-			foreach ($projectreferees AS $referee)
-			{
-				$projectreferees2[]=JHtml::_('select.option',$referee->value,
-				  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
-				  ' - ('.strtolower(JText::_($referee->positionname)).')');
-			}
-		}
-		$this->lists['team_referees'] = JHtml::_(	'select.genericlist',$projectreferees2,'roster[]',
-											'style="font-size:12px;height:auto;min-width:15em;" ' .
-											'class="inputbox" multiple="true" size="'.max(10,count($projectreferees2)).'"',
-											'value','text');        
-        
-//		if (!$projectpositions)
-//		{
-//			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS').'<br /><br />');
-//			return;
-//		}
-
-		// generate selection list for each position
-        $squad = array();
-		foreach ($this->lists['projectpositions'] AS $key => $pos)
-		{
-			// get referees assigned to this position
-			$squad[$key] = sportsmanagementModelMatch::getRefereeRoster($pos->value,$match->id);
-		}
-		if (count($squad) > 0)
-		{
-			foreach ($squad AS $key => $referees)
-			{
-				$temp[$key] = array();
-				if (isset($referees))
-				{
-					foreach ($referees AS $referee)
-					{
-						$temp[$key][]=JHtml::_('select.option',$referee->value,
-						  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
-					}
-				}
-                
-				$lists['team_referees'.$key]=JHtml::_(	'select.genericlist',$temp[$key],'position'.$key.'[]',
-														' style="font-size:12px;height:auto;min-width:15em;" '.
-														'class="position-starters" multiple="true" ',
-														'value','text');
-                                     
-                                                        
-			}
-		}  
-         */                      
-						echo $this->loadTemplate('row');
+ * eingabe laden
+ */                        
+					echo $this->loadTemplate('row');
 					}
 					$k = 1 - $k;
 					$i++;
 				}
 			}
-            
-// view=results&cfg_which_database=0&s=0&p=1:1-bundesliga-2015-16&r=14:14-spieltag&division=0&mode=0&order=&layout=form            
 			?>
-			</tbody>
+		<!--	</tbody> -->
 		</table>
 		<br/>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
@@ -266,7 +223,7 @@ $projectreferees = sportsmanagementModelMatch::getProjectReferees($inroster,$thi
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveshort' />
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

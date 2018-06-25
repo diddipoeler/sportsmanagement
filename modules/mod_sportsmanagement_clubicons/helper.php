@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -58,7 +58,8 @@ class modJSMClubiconsHelper
 	var $placeholders = array (
 			'logo_small' => 'images/com_sportsmanagement/database/placeholders/placeholder_small.png',
 			'logo_middle' => 'images/com_sportsmanagement/database/placeholders/placeholder_50.png',
-			'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png'
+			'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
+            'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png'
 		);
 	/**
 	 * modJSMClubiconsHelper::__construct()
@@ -83,33 +84,32 @@ class modJSMClubiconsHelper
 		$app = JFactory::getApplication();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
 
-		$project_id = (JRequest::getVar('option','') == 'com_sportsmanagement' AND 
-									JRequest::getInt('p',0) > 0 AND 
+		$project_id = ($app->input->getVar('option','') == 'com_sportsmanagement' AND 
+									$app->input->getInt('p',0) > 0 AND 
 									$this->params->get('usepfromcomponent',0) == 1 ) ? 
-									JRequest::getInt('p') : $this->params->get('project_ids');
+									$app->input->getInt('p') : $this->params->get('project_ids');
 		if (is_array($project_id)) { $project_id = $project_id[0];}
 		
         if ( $project_id )
         {
-        //$model = JModel::getInstance('project', 'sportsmanagementModel');
-		sportsmanagementModelProject::setProjectId($project_id);
+		//sportsmanagementModelProject::setProjectId($project_id);
+        sportsmanagementModelProject::$projectid = $project_id;
+        sportsmanagementModelProject::$cfg_which_database = $this->params->get('cfg_which_database');
+		$this->project = sportsmanagementModelProject::getProject($this->params->get('cfg_which_database'));
 
-		$this->project = sportsmanagementModelProject::getProject();
-
-		$ranking = JSMRanking::getInstance($this->project);
-		//$ranking->setProjectId($project_id);
+		$ranking = JSMRanking::getInstance($this->project,$this->params->get('cfg_which_database'));
         sportsmanagementModelRanking::$projectid = $project_id;
 		$divisionid = explode(':', $this->params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$this->ranking   = $ranking->getRanking(null, null, $divisionid);
+		$this->ranking = $ranking->getRanking(null, null, $divisionid,$this->params->get('cfg_which_database'));
 
 		if ($this->params->get( 'logotype' ) == 'logo_small')
 		{
-			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
+			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid($divisionid,'name',$this->params->get('cfg_which_database'));
 		}
 		else //get the teams cause we don't have logo_middle and big in ranking model's getTeams:
 		{
-			$teams = sportsmanagementModelProject::getTeams($divisionid);
+			$teams = sportsmanagementModelProject::getTeams($divisionid,'name',$this->params->get('cfg_which_database'));
 		}
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
@@ -138,7 +138,7 @@ class modJSMClubiconsHelper
 			{
 				$this->teams[$r->projectteamid] = array();
 				$this->teams[$r->projectteamid]['link'] = self::getLink( $r );
-				$class = (!empty($this->teams[$r->projectteamid]['link'])) ? 'smstarticon' : 'smstarticon nolink';
+				$class = (!empty($this->teams[$r->projectteamid]['link'])) ? 'img-zoom' : 'img-zoom';
 				$this->teams[$r->projectteamid]['logo'] = self::getLogo( $r, $class );
 			}
 		}
@@ -158,23 +158,13 @@ class modJSMClubiconsHelper
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
 		$logourl = $item->$imgtype;
-
-		if ( !sportsmanagementHelper::existPicture($logourl) )
+$cfg_which_database = $this->params->get('cfg_which_database');
+		
+if ( $cfg_which_database )
 {
-$logourl = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );	
+$logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 }
-
-//        if ( JFile::exists($logourl) )
-//        {
-//        $logourl = $logourl;   
-//        }
-//        else
-//        {
-//        $logourl = $this->placeholders[$imgtype];    
-//        }
-        
-//		$logourl = (!empty($item->$imgtype) AND file_exists($this->module->picture_server.DS.$item->$imgtype))
-//			? $item->$imgtype : $this->placeholders[$imgtype];
 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
         

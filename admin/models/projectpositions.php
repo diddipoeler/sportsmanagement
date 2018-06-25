@@ -1,41 +1,13 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      projectpositions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -88,7 +60,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
                 $pid = $this->jsmjinput->get('pid');
@@ -125,7 +97,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 //        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
@@ -159,9 +131,6 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         $query->select('('.$subQuery2.') AS countStats');
         
         $query->where('pt.project_id = '.$this->getState('filter.pid') );
-
-//        $query->where(self::_buildContentWhere());
-//		$query->order(self::_buildContentOrderBy());
         
         $query->order($db->escape($this->getState('list.ordering', 'po.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
@@ -177,7 +146,76 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
     
     
    
-    /**
+   /**
+    * sportsmanagementModelProjectpositions::updateprojectpositions()
+    * 
+    * @param mixed $items
+    * @param integer $project_id
+    * @return
+    */
+   function updateprojectpositions($items=NULL,$project_id=0)
+   {
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');	   	   
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'');	   
+
+
+$this->jsmquery->clear();
+$this->jsmquery->select('mp.match_id');
+$this->jsmquery->from('#__sportsmanagement_match_player as mp');
+$this->jsmquery->join('INNER','#__sportsmanagement_match as m ON m.id = mp.match_id');
+$this->jsmquery->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
+$this->jsmquery->where('r.project_id = '.$project_id);
+$this->jsmquery->where('mp.project_position_id != 0');
+try{
+$this->jsmdb->setQuery($this->jsmquery);
+$position = $this->jsmdb->loadColumn();
+ }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+
+
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position <br><pre>'.print_r($position ,true).'</pre>'),'');	   
+$result = array_unique($position );
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result ,true).'</pre>'),'');	   
+
+$match_ids = implode(",",$result);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');	   
+
+
+
+foreach( $items as $item )
+{
+$this->jsmquery->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = ' . $item->position_id
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('project_position_id') . ' = '. $item->positiontoolid, 
+    $this->jsmdb->quoteName('match_id') . ' IN (' . $match_ids . ')'
+);
+try{
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
+
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+	
+}	   
+   }
+	
+   /**
      * sportsmanagementModelProjectpositions::insertStandardProjectPositions()
      * 
      * @param integer $project_id
@@ -227,57 +265,31 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         
     }
 
-//	function _buildContentOrderBy()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		$filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.name','cmd');
-//		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
-//
-//		if ($filter_order=='po.name')
-//		{
-//			$orderby=' po.parent_id,po.name '.$filter_order_Dir;
-//		}
-//		else
-//		{
-//			$orderby=' '.$filter_order.' '.$filter_order_Dir.',po.name ';
-//		}
-//		return $orderby;
-//	}
-
-//	function _buildContentWhere()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		$where =' pt.project_id='.$this->_project_id;
-//		return $where;
-//	}
-
 	
-
 	/**
-	 * Method to return the positions which are subpositions and are equal to a sportstype array (id,name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
+	 * sportsmanagementModelProjectpositions::getSubPositions()
+	 * 
+	 * @param integer $sports_type_id
+	 * @return
 	 */
 	function getSubPositions($sports_type_id=1)
 	{
-		$query='	SELECT	id AS value,
-							name AS text,
-							sports_type_id AS type,
-							parent_id AS parentID
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position
-					WHERE published=1 AND sports_type_id='.$sports_type_id.'
-					ORDER BY parent_id ASC,name ASC ';
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		//echo '<br /><pre>2~'.print_r($result,true).'~</pre><br />';
+$this->jsmquery->clear();
+$this->jsmquery->select('id AS value,name AS text,sports_type_id AS type,parent_id AS parentID');
+$this->jsmquery->from('#__sportsmanagement_position');
+$this->jsmquery->where('sports_type_id = '.$sports_type_id);
+$this->jsmquery->where('published = 1');
+$this->jsmquery->order('parent_id ASC,name ASC');
+try{
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadObjectList();
+ }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+        
 		return $result;
 	}
 
@@ -341,7 +353,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 							"SET project_position_id = " . $newid .
 							" WHERE project_position_id = " . $result['id'];
 				$this->_db->setQuery($query);
-				if(!$this->_db->query())
+				if(!$this->_db->execute())
 				{
 					$this->setError($this->_db->getErrorMsg());
 					$result=false;

@@ -10,8 +10,19 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
 					addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-      <field name="cfg_which_database" 
-    type="radio" 
+      
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Events_Ranking" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+			
+			<field name="cfg_which_database" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -53,19 +64,7 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false" >
 			</field>
-
-<!--			
-			<field	name="tid" 
-      type="dependsql" 
-      depends="p" 
-      key_field="project_id"
-			value_field="p"
-      task="projectteamsbydivisionoptions"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
-					required="false" >
-			</field>
--->			
+		
 
 			<field	name="tid" 
       type="dependsql" 
@@ -81,6 +80,8 @@
 			<field	name="evid" 
       type="dependsql" 
       depends="p" 
+size="10"
+      multiple="multiple"			       
       key_field="project_id"
 			value_field="p"
       task="projecteventsoptions"

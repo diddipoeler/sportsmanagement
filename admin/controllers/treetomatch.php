@@ -1,11 +1,35 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treetomatch.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage controllers
+ */
+ 
 defined('_JEXEC') or die;
 
 
+/**
+ * sportsmanagementControllerTreetomatch
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerTreetomatch extends JControllerForm
 {
 
+	/**
+	 * sportsmanagementControllerTreetomatch::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
 	{
 	//	$app = JFactory::getApplication();
@@ -24,6 +48,11 @@ class sportsmanagementControllerTreetomatch extends JControllerForm
 
     
     
+    /**
+     * sportsmanagementControllerTreetomatch::save_matcheslist()
+     * 
+     * @return void
+     */
     function save_matcheslist()
     {
         $msg = '';

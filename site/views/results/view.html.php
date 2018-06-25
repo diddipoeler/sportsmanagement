@@ -1,54 +1,18 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage results
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
-
-//// welche joomla version ?
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//jimport('joomla.html.html.bootstrap');
-//}
-
-//JHTML::_('behavior.modal');
 
 /**
  * sportsmanagementViewResults
@@ -59,17 +23,14 @@ jimport( 'joomla.filesystem.file' );
  * @version 2014
  * @access public
  */
-//class sportsmanagementViewResults extends JViewLegacy
 class sportsmanagementViewResults extends sportsmanagementView
 {
 
 	/**
-	 * sportsmanagementViewResults::display()
+	 * sportsmanagementViewResults::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	//public function display($tpl = null)
 	function init()
 	{
 		// Get a refrence of the page instance in joomla
@@ -82,41 +43,30 @@ class sportsmanagementViewResults extends sportsmanagementView
         $this->layout = $jinput->getCmd('layout');
         $roundcode = 0;
         $default_name_format = '';
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($layout,true).'</pre>' ),'');
-        
-//		$version = urlencode(sportsmanagementHelper::getVersion());
-//		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-//		$document->addStyleSheet($css);
 
-//		$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
-        
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-        
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
+		
+
+        //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
+        /*
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
+        */
+        //$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 
 		$model	= $this->getModel();
-				
 		
 		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
-        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup);
+        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
         
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
-        
-		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
         $roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid,$model::$cfg_which_database);
 		
-        //$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
         
 		$this->roundsoption = $rounds;
@@ -144,6 +94,12 @@ class sportsmanagementViewResults extends sportsmanagementView
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
             $this->extended = $extended;
 
+if ( $this->overallconfig['use_squeezebox_modal'] ) 
+{
+$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+}	
+			
+			
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
 	  $mod_name = "mod_jw_srfr";
@@ -209,13 +165,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
 
+	$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 		
         switch ($this->layout)
         {
             case 'form':
-            //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
-            
-        
         // projekt positionen                                                    
   		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
 		if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$this->project->id))
@@ -224,7 +178,16 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
-        $this->positions = $projectpositions;            
+        $this->positions = $projectpositions;   
+if ( $this->overallconfig['use_table_or_bootstrap'] )
+{
+$this->setLayout('form');
+}
+else
+{
+$this->setLayout('form_bootstrap');
+}
+			
             break;
         }
         
@@ -293,13 +256,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	}
 	
 	/**
+	 * sportsmanagementViewResults::getTeamClubIcon()
 	 * returns html <img> for club assigned to team
-	 * @param object team
-	 * @param int type=1 for club small image,or 2 for club country
-	 * @param boolean $with_space
-	 * @return unknown_type
+	 * @param mixed $team
+	 * @param integer $type
+	 * @param mixed $attribs
+	 * @param string $modalwidth
+	 * @param string $modalheight
+	 * @param integer $use_jquery_modal
+	 * @return
 	 */
-	public static function getTeamClubIcon($team, $type=1, $attribs=array() )
+	public static function getTeamClubIcon($team, $type=1, $attribs=array(),$modalwidth = '100',$modalheight = '200',$use_jquery_modal = 0 )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -331,11 +298,25 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
             if ( !empty($team->logo_small) )
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_small,$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_small,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         elseif ($type==5)
@@ -344,11 +325,25 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
           
             if ( !empty($team->logo_middle) )
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_middle,$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_middle,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         elseif ($type==6)
@@ -357,11 +352,25 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
             if ( !empty($team->logo_big) )
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_big,$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+			$team->logo_big,
+			$title,
+			$attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 			else
 			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
 		elseif ($type==2 && !empty($team->country))
@@ -369,60 +378,109 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs['width']);
+				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("icon"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
         
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && curl_init($team->logo_big) )
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big)  )
 		{
 
 			if (empty($image))
 			{
 				$attribs = array_merge(array('width' => '20',$attribs));
                 
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_big,$title,$attribs['width']);
+                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_big,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !curl_init($team->logo_big) )
+        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) )
 		{
 			if (empty($image))
 			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_big,$title,$attribs['width']);
+				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_big,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
         
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
+        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_small,$title,$attribs['width']);
+				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_small,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
+        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs['width']);
+				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("icon"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && curl_init($team->logo_small) )
+    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
 				$image = JSMCountries::getCountryFlag($team->country).' ';
-                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,$team->logo_small,$title,$attribs['width']);
+                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                $team->logo_small,
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
-        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) && !curl_init($team->logo_small) )
+        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
 				$image = JSMCountries::getCountryFlag($team->country).' ';
-                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,sportsmanagementHelper::getDefaultPlaceholder("icon"),$title,$attribs['width']);
+                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+                sportsmanagementHelper::getDefaultPlaceholder("icon"),
+                $title,
+                $attribs['width'],
+                '',
+$modalwidth,
+$modalheight,
+$use_jquery_modal);
 			}
 		}
 		else
@@ -779,8 +837,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 		$output = '';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_id;
 $routeparameter['mid'] = $game->id;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 		
@@ -827,7 +885,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	public static function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array(),$project=array() )
 	{
 	   $app = JFactory::getApplication();
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchInfo'.'<pre>'.print_r($matchInfo,true).'</pre>' ),'');
        
 		$output = '';
 		$result = '';
@@ -837,12 +895,23 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            // Define tabs options for version of Joomla! 3.0
+            
+	$start = 1;	    
+	foreach ($projectevents AS $event)
+			{	    
+		 if ( $start == 1 )
+		{
+		// Define tabs options for version of Joomla! 3.0
         $tabsOptions = array(
-            "active" => "tab0_id" // It is the ID of the active tab.
-        );  
+            "active" => 'tab'.$event->id.'_id'.$matchInfo->id // It is the ID of the active tab.
+	);
+		}
+		$start++;
+		}	
+		
+          
         
-        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group', $tabsOptions);
+        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group'.$matchInfo->id, $tabsOptions);
         
             }
             else
@@ -872,7 +941,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				}
 				if($cnt==0){continue;}
 				
-				if ($config['show_events_with_icons'] == 1)
+				if ( $config['show_events_with_icons'] )
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_($event->name);
@@ -885,8 +954,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',JText::_($event->name) ); 
-            //$output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',$tab_content);
+            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group'.$matchInfo->id, 'tab'.$event->id.'_id'.$matchInfo->id,$tab_content ); 
             }
             else
             {

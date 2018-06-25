@@ -1,41 +1,13 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      rankingalltime.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage rankingalltime
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -256,7 +228,7 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
      */
     function getAllTeams($project_ids)
     {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -322,7 +294,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllMatches($projects)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $res = '';
         // Get a db connection.
@@ -389,7 +361,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllTimeRanking()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     $arr = explode(",",$this->alltimepoints);
@@ -767,20 +739,20 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     function getAllProject()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $jinput = $app->input;
         $league = $jinput->request->get('l', 0, 'INT');
         
         //$search	= $this->getState('filter.search');
         
-        //$this->_project_id	= JRequest::getVar('pid');
+        //$this->_project_id	= JFactory::getApplication()->input->getVar('pid');
         //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = JFactory::getDbo()->getQuery(true);
 
-        //$league = JRequest::getInt("l", 0);
+        //$league = JFactory::getApplication()->input->getInt("l", 0);
 
         if (!$league) 
         {
@@ -860,7 +832,7 @@ $query->clear();
      */
     function getCurrentRanking()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
@@ -948,8 +920,8 @@ $query->clear();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order_dir<br><pre>'.print_r($order_dir,true).'</pre>'),'Notice');
         
-        //$order = JRequest::getVar('order', '');
-        //$order_dir = JRequest::getVar('dir', 'DESC');
+        //$order = JFactory::getApplication()->input->getVar('order', '');
+        //$order_dir = JFactory::getApplication()->input->getVar('dir', 'DESC');
 
         if (!$order) 
         {
@@ -976,17 +948,10 @@ $query->clear();
                         $sortarray['cnt_matches'] = SORT_ASC;
                         break;
                 }
-                //uasort( $ranking, array("JoomleagueModelRankingalltime",$c ));
 
             }
 
-//            foreach ($ranking as $row) {
-//                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
-//            }
-            
-            //$arr2 = $this->array_msort($arr2, array('sum_points'=>SORT_DESC,  'diff_team_results'=>SORT_DESC ) );
-            //$sortarray2 = implode (",", $sortarray);
-            //$arr2 = $this->array_msort($arr2, array($sortarray2) );
+
             $arr2 = $this->array_msort($arr2, $sortarray);
 
             unset($ranking);

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -42,11 +42,20 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+jimport('joomla.filesystem.archive'); 	
+}	
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+//use Joomla\Archive\Archive;
+jimport('vendor.joomla.archive.src.archive'); 
+}	
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.archive'); 
+
 
 /**
  * sportsmanagementModelgithubinstall
@@ -57,7 +66,7 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelgithubinstall extends JModelLegacy
+class sportsmanagementModelgithubinstall extends JSMModelLegacy
 {
 
     var $storeFailedColor = 'red';
@@ -65,10 +74,16 @@ class sportsmanagementModelgithubinstall extends JModelLegacy
 	var $existingInDbColor = 'orange';
     var $_success_text = '';
     
+/**
+ * sportsmanagementModelgithubinstall::CopyGithubLink()
+ * 
+ * @param mixed $link
+ * @return
+ */
 function CopyGithubLink($link)
 {
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+    //$app = JFactory::getApplication();
+        //$option = JFactory::getApplication()->input->getCmd('option');
         
         $gitinstall = '';
         //$gitinstall = $app->getUserState( "$option.install");
@@ -109,8 +124,17 @@ $this->_success_text['Komponente:'] = $my_text;
 
 $extractdir = JPATH_SITE.DS.'tmp';
 $dest = JPATH_SITE.DS.'tmp'.DS.$file['name'];
-$result = JArchive::extract($dest,$extractdir);
 
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+$result = JArchive::extract($dest,$extractdir);
+}
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{	
+$archive = new Archive;
+$result = $archive->extract($dest, $extractdir);
+}	
+	
 // Get an installer instance
 $installer = JInstaller::getInstance();
 // Get the path to the package to install

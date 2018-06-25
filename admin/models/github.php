@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file		components/sportsmanagement/models/cpanel.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
@@ -53,8 +53,16 @@ jimport('joomla.application.component.model');
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'github.php');
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'package' . DS . 'issues.php');
 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+    
+}
+else
+{    
 //use Joomla\Github\Github;
 JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
+}
+
 
 /**
  * sportsmanagementModelgithub
@@ -206,7 +214,7 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
      */
     function getGithubList()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         
         //$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));

@@ -1,18 +1,40 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treetonode
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
+//jimport( 'joomla.application.component.view' );
 
 
+/**
+ * sportsmanagementViewTreetonode
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2017
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewTreetonode extends sportsmanagementView
 {
 	
+    /**
+     * sportsmanagementViewTreetonode::init()
+     * 
+     * @return
+     */
     function init(  )
 	{
-		if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
+		if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' || $this->getLayout() == 'edit_4' )
 		{
 			$this->_displayForm(  );
 			return;
@@ -21,9 +43,14 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		//parent::display( $tpl );
 	}
 
+	/**
+	 * sportsmanagementViewTreetonode::_displayForm()
+	 * 
+	 * @return void
+	 */
 	function _displayForm(  )
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 
 		//$app	= JFactory::getApplication();
 		//$project_id = $this->jinput->get('pid');

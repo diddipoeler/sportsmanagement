@@ -38,8 +38,19 @@
 			<fieldset	name="basic" 
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
+	  
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Birthday" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+	  
       <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -49,30 +60,30 @@
 		</field>
 
 	
-    <field	name="s" 
+    <field name="s" 
     task="seasons" 
-      type="dependsql"
-      depends="cfg_which_database"
-      value_field="cfg_which_database"
-      key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
-			</field>
+    type="dependsql"
+    depends="cfg_which_database"
+    value_field="cfg_which_database"
+    key_field="season_id"
+	label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+	description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+	required="">
+	</field>
 		
-		  <field 	name="projects"
-      size="5" 
-			task="projects" 
-      type="dependsql"
-      depends="s"
-      key_field="season_id"
-			value_field="s"
-			required=""
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
+	<field name="projects"
+    size="5" 
+	task="projects" 
+    type="dependsql"
+    depends="s"
+    key_field="season_id"
+	value_field="s"
+	required=""
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
 
 				<field 	name="use_fav" 
-        type="radio" 
+        type="extensionradiobutton" 
         default="1"  
         class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_LABEL"
@@ -124,25 +135,26 @@
 
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
 			
-       <field name="mode" type="list" default="L" 
-					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
-					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
-<!--					<option value="T">TICKER</option> -->
-					<option value="L">LIST</option>
-					<option value="B">BOOTSTRAP</option> -->
-					<option value="J">Jssor Slider</option>
-				</field>
-      
-      	<!--
-        <field 	name="@spacer" type="spacer" default="" 
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
-						description="" />
-				-->
+    <field name="mode" type="list" default="L" 
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
+	<option value="L">LIST</option>
+	<option value="B">BOOTSTRAP</option>
+	<option value="J">Jssor Slider</option>
+	</field>
+     
+	<field name="show_player_card" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
+	label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_LABEL" 
+	description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_CARD_DESCR">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+	</field>
+	 
 				<field name="name_format" type="nameformat"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_DESCR" />
 
-				<field 	name="show_player_flag" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+				<field 	name="show_player_flag" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_FLAG_DESCR">
 					<option value="0">JNO</option>
@@ -153,7 +165,7 @@
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_HEADING_STYLE_DESCR" />
 
-				<field 	name="show_picture" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field 	name="show_picture" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SHOW_PLAYER_PICTURE_DESCR">
 					<option value="0">JNO</option>
@@ -207,7 +219,7 @@
 
       <fieldset name="advanced_front" label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_LABEL" description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_DESC">
 			
-      <field name="jssor_transition_use" type="radio" default="1" class="radio btn-group btn-group-yesno"
+      <field name="jssor_transition_use" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR">
 					<option value="0">JNO</option>
@@ -223,7 +235,7 @@
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_DESCR" />
 			
-			<field name="jssor_playorientation" type="radio" default="1" 
+			<field name="jssor_playorientation" type="extensionradiobutton" default="1" 
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
 					<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL</option>
@@ -232,7 +244,7 @@
 					<option value="6">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL_REVERSE</option>
 				</field>
 				
-			<field name="jssor_captiontransitions" type="radio" default="L-R" 
+			<field name="jssor_captiontransitions" type="extensionradiobutton" default="L-R" 
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
 					<option value="L-R">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_LEFT_TO_RIGHT</option>

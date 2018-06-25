@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -115,16 +115,16 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
 
-		JToolBarHelper::apply('treeto.saveshort');
-		JToolBarHelper::publishList('treetos.publish');
-		JToolBarHelper::unpublishList('treetos.unpublish');
-		JToolBarHelper::divider();
+		JToolbarHelper::apply('treeto.saveshort');
+		JToolbarHelper::publishList('treetos.publish');
+		JToolbarHelper::unpublishList('treetos.unpublish');
+		JToolbarHelper::divider();
 
-		JToolBarHelper::addNew('treetos.save');
-		JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
-		JToolBarHelper::divider();
+		JToolbarHelper::addNew('treetos.save');
+		JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
+		JToolbarHelper::divider();
         
         parent::addToolbar();
 

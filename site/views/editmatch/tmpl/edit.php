@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -48,6 +48,11 @@ $fieldsets = $this->form->getFieldsets();
 
 //echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
 ?>
 <script type="text/javascript">
 //	Joomla.submitbutton = function(task)
@@ -95,7 +100,7 @@ function toggle_altdecision()
 //-->
 </script>
 
-<form name="editmatch" id="editmatch" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
+<form name="editmatch" id="editmatch" method="post" action="<?php echo $uri->toString(); ?>">
 <?php
 
 		?>
@@ -185,7 +190,7 @@ echo $this->loadTemplate('matchextended');
         <input type='hidden' name='matchid' value='<?php echo $this->match->id; ?> ' />	
 		
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelEditMatch::$roundid; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

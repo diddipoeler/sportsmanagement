@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -96,7 +96,7 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 			if ($this->_item === false) {
 
                 // Menu parameters
-                $menuitemid = JRequest::getInt( 'Itemid' );  // this returns the menu id number so you can reference parameters
+                $menuitemid = JFactory::getApplication()->input->getInt( 'Itemid' );  // this returns the menu id number so you can reference parameters
                 $menu = JSite::getMenu();
                 if ($menuitemid) {
                    $menuparams = $menu->getParams( $menuitemid );

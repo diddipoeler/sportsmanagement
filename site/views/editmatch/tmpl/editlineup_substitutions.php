@@ -1,14 +1,28 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editlineup_substitutions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage editmatch
+ */
 
 defined('_JEXEC') or die('Restricted access');
+$savenewsubst = array();
+$savenewsubst[] = $this->match->id;
+$savenewsubst[] = $this->tid;
+$savenewsubst[] = $this->eventsprojecttime;
+$savenewsubst[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 
+$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 ?>
 
 <!-- SUBSTITUTIONS START -->
 <div id="io">
-	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
-	<div id="ajaxresponse" >ajax</div>
+	<!-- nicht löschen -->
+	<div id="ajaxresponse" ></div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">
@@ -67,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 								?>
 							</td>
 							<td>
-								<input	id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
+		<input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)" id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
 										value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 							</td>
 						</tr>
@@ -79,13 +93,24 @@ defined('_JEXEC') or die('Restricted access');
 					<tr id="row-new">
 						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
 						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
-						<td><?php echo $this->lists['projectpositions']; ?></td>
+						<td>
+						<?php 
+						if ( isset($this->lists['projectpositions']) )
+						{
+						echo $this->lists['projectpositions'];
+						}
+						else
+						{
+						echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+						}
+						?>
+						</td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
                         
                         
                         
 						<td>
-							<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JSAVE'); ?>" />
+<input id="save-new-subst" onclick="save_new_subst(<?php echo implode(",",$savenewsubst); ?>)" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JSAVE'); ?>" />
                             
 						</td>
 					</tr>

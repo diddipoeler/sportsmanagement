@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -137,7 +137,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	function getData()
 	{
-	   $this->_id = JRequest::getInt('id',0);
+	   $this->_id = JFactory::getApplication()->input->getInt('id',0);
 //		// Lets load the content if it doesn't already exist
 //		if (empty($this->_data))
 //		{
@@ -174,7 +174,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_which_media_tool',0);
+		$cfg_which_media_tool = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
         $app = JFactory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
@@ -183,7 +183,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 			return false;
 		}
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JRequest::getCmd('option'))->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         

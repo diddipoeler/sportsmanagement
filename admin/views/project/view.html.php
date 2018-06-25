@@ -1,41 +1,11 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -71,13 +41,13 @@ class sportsmanagementViewProject extends sportsmanagementView
 		$starttime = microtime(); 
         $lists = array();
         
-		if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' )
+		if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' || $this->getLayout() == 'panel_4' )
 		{
 			$this->_displayPanel($tpl);
 			return;
 		}
         
-        JRequest::setVar('hidemainmenu', true);
+        JFactory::getApplication()->input->setVar('hidemainmenu', true);
 
 		
         
@@ -145,18 +115,13 @@ class sportsmanagementViewProject extends sportsmanagementView
 	 */
 	function _displayPanel($tpl)
 	{
-	$app = JFactory::getApplication();
-	$jinput = $app->input;
-	$option = $jinput->getCmd('option');
-	$uri = JFactory::getURI();
-	$user = JFactory::getUser();
     $starttime = microtime();
            
 	$this->item = $this->get('Item');
     
 	if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
     
 	$iProjectDivisionsCount = 0;
@@ -204,33 +169,11 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $app->setUserState( "$option.pid", $this->item->id);
-    $app->setUserState( "$option.season_id", $this->item->season_id);
-    $app->setUserState( "$option.project_art_id", $this->item->project_art_id);
-    $app->setUserState( "$option.sports_type_id", $this->item->sports_type_id);
-    
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
-    
-    //$bar = JToolBar::getInstance('toolbar');
-//    
-//    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
-//    {
-//        case 'com_content':
-//        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
-//        break;
-//        case 'com_k2':
-//        $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_k2&view=categories');
-//        break;
-//    }
-    
-    //parent::addToolbar();    
-    
-//    JToolBarHelper::divider();
-//	sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//	JToolBarHelper::preferences(JRequest::getCmd('option'));
-//           
-//    parent::display($tpl);   
+    $this->app->setUserState( "$this->option.pid", $this->item->id);
+    $this->app->setUserState( "$this->option.season_id", $this->item->season_id);
+    $this->app->setUserState( "$this->option.project_art_id", $this->item->project_art_id);
+    $this->app->setUserState( "$this->option.sports_type_id", $this->item->sports_type_id);
+
     }
        
     /**
@@ -240,21 +183,14 @@ class sportsmanagementViewProject extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
     
     $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
-    
-    //JRequest::setVar('hidemainmenu', true);
-    
+   
         $bar = JToolBar::getInstance('toolbar');
-        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+        switch ( JComponentHelper::getParams($this->option)->get('which_article_component') )
     {
         case 'com_content':
-        //$bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_content');
         $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');
         break;
         case 'com_k2':

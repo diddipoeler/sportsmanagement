@@ -1,41 +1,13 @@
 <?php
-/** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.26
-* @file		administrator/components/sportsmanagement/models/divisions.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of Joomla Sports Management.
-*
-* Joomla Sports Management is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Joomla Sports Management is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with Joomla Sports Management. If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von Joomla Sports Management.
-*
-* Joomla Sports Management ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* Joomla Sports Management wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      divisions.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage divisions
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -72,15 +44,12 @@ class sportsmanagementModelDivisions extends JSMModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-                $app = JFactory::getApplication();
-                $this->jinput = $app->input;
-                $option = JRequest::getCmd('option');
-                self::$_project_id	= JRequest::getInt('pid',0);
+                self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 if ( !self::$_project_id )
                 {
-                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                self::$_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );    
                 }
-                $app->setUserState( "$option.pid", self::$_project_id ); 
+                $this->jsmapp->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
                 
         }
         
@@ -91,7 +60,7 @@ class sportsmanagementModelDivisions extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'dv.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -105,10 +74,24 @@ class sportsmanagementModelDivisions extends JSMModelList
 		$this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-		// List state information.
-		parent::populateState($ordering, $direction);
+		
+        // List state information.
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'dv.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
 	}
     
 	/**
@@ -163,28 +146,28 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   //$app = JFactory::getApplication();
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('id AS value,name AS text');
-        $query->from('#__sportsmanagement_division');
-        $query->where('project_id = ' . $project_id);
-        $query->order('name ASC');
+	//	$db = sportsmanagementHelper::getDBConnection();
+	//	$query = $db->getQuery(true);
+        $this->jsmquery->select('id AS value,name AS text');
+        $this->jsmquery->from('#__sportsmanagement_division');
+        $this->jsmquery->where('project_id = ' . $project_id);
+        $this->jsmquery->order('name ASC');
         
-		$db->setQuery( $query );
+		$this->jsmdb->setQuery( $this->jsmquery );
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		if ( !$result = $db->loadObjectList("value") )
+		if ( !$result = $this->jsmdb->loadObjectList("value") )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -202,8 +185,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   //$app = JFactory::getApplication();
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -218,7 +201,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -76,8 +76,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
                         'objassoc.checked_out_time'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -87,7 +86,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'objassoc.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
@@ -102,9 +101,22 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'objassoc.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+        
 	}
     
   /**
@@ -142,21 +154,14 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
         $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+
         return $this->jsmquery;
 	}
-	
-  
-
-
-
-
-
 	
 }
 ?>

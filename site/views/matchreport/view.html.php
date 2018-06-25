@@ -1,46 +1,17 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matchreport
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
@@ -53,30 +24,16 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
  * @version 2014
  * @access public
  */
-//class sportsmanagementViewMatchReport extends JViewLegacy
 class sportsmanagementViewMatchReport extends sportsmanagementView
 {
 
-	/**
-	 * sportsmanagementViewMatchReport::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	//function display($tpl=null)
+    /**
+     * sportsmanagementViewMatchReport::init()
+     * 
+     * @return void
+     */
     public function init ()
 	{
-		//// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        // Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//        $option = $jinput->getCmd('option');
-//		$version = urlencode(sportsmanagementHelper::getVersion());
-//		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-//		$document->addStyleSheet($css);
-        
         // diddipoeler
         $css = 'components/com_sportsmanagement/assets/css/tooltipstyle.css';
         $this->document->addStyleSheet($css);
@@ -84,41 +41,27 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->document->addStyleSheet($css);
         $this->document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
-		//$model = $this->getModel();
-        $this->model->checkMatchPlayerProjectPositionID();
+        //$this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
-        //$model::$cfg_which_database = $this->jinput->getInt('cfg_which_database',0);
-        
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);
-//		$project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
+        $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
         $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'project<pre>'.print_r($project,true).'</pre>'; 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
-        }
-
-		//$this->project = $project;
-//		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-//		$this->config = $config;
 		$this->match = $match;
         
         $this->matchsingle = $matchsingle;
         
-		if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id) )
+		if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
 		$this->newmatchtext = $ret->text;
         }
-		if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id) )
+		if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id,sportsmanagementModelProject::$cfg_which_database) )
         {
 		$this->oldmatchtext = $ret->text;
         }
         
-        $this->match_article = $this->model->getMatchArticle($this->match->content_id);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
+        $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid,$project->category_id);
 
 		$this->round = $this->model->getRound();
 		$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);
@@ -140,28 +83,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->stats = sportsmanagementModelProject::getProjectStats(0,0,sportsmanagementModelProject::$cfg_which_database);
 		$this->playerstats = $this->model->getMatchStats();
 		$this->staffstats = $this->model->getMatchStaffStats();
-		//$this->model = $model;
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchevents<br><pre>'.print_r($this->matchevents,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' substitutes<br><pre>'.print_r($this->substitutes,true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text .= 'matchplayerpositions<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-            $my_text .= 'matchplayers<pre>'.print_r($this->matchplayers,true).'</pre>';
-            $my_text .= 'matchstaffpositions<pre>'.print_r($this->matchstaffpositions,true).'</pre>';
-            $my_text .= 'matchstaffs<pre>'.print_r($this->matchstaffs,true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
-        }
-
-
-
-
 $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
 		$jRegistry = new JRegistry;
 		$jRegistry->loadString($match->extended, 'ini');
@@ -170,10 +92,7 @@ $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
 		
 		$this->extended = $extended;
 
-
-//$extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
     $this->extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
-		//$rssfeedlink = $this->extended2->getValue('formation1');
     $this->formation1 = $this->extended2->getValue('formation1');
     $this->formation2 = $this->extended2->getValue('formation2');
     
@@ -191,7 +110,9 @@ $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
     
 if ( $this->config['show_pictures'] )
 	  {
-		// die bilder zum spiel
+/**
+ * die bilder zum spiel
+ */
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$this->match->id;
 		$folder = 'matchreport/'.$this->match->id;
 		$images = $this->model->getMatchPictures($folder);
@@ -202,7 +123,9 @@ if ( $this->config['show_pictures'] )
 		
 	  }    
 
-		// Set page title
+/**
+ * Set page title
+ */
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE' );
 		if (( isset( $this->team1 ) ) AND (isset( $this->team1 )))
 		{
@@ -212,29 +135,6 @@ if ( $this->config['show_pictures'] )
         $view = $this->jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
-
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
-
-    
-/*    
-    $startfade = 1000;
-    
-    $js = "jQuery(document).ready(function() {\n ";
-    foreach ($this->matchplayers as $player)
-    {
-    $js .= ' jQuery("#'.$player->person_id.'").slideToggle("'.$startfade.'");\n';
-    $startfade += 1000;
-    }
-    $js .= "});\n";
-    $document->addScriptDeclaration( $js );    
-*/
-		
-        
-        //parent::display($tpl);
 
 	}
 
@@ -270,14 +170,7 @@ if ( $this->config['show_pictures'] )
 					$string = $legresult[0].")";
 				}
                 }
-                /*
-                foreach ($legresult as $temp)
-                {
-                    $string .= $temp.' : ';
-                }
-				$string = substr_replace($string,'',-2);
-				$string .= ') ';
-                */
+
 				return $string;
 			}
 			else
@@ -367,9 +260,6 @@ if ( $this->config['show_pictures'] )
 		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 
-		//$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE');
-		//$imgTitle2=array(' title' => $imgTitle);
-		//$result=JHtml::image($pic_time,$imgTitle,$imgTitle2).'&nbsp;'.$sub->in_out_time;
 		$result='<b>'.$sub->in_out_time.'. '. JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
 		$result .= '<br />';
 		$outName = sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
@@ -383,8 +273,8 @@ if ( $this->config['show_pictures'] )
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $sub->team_id;
 $routeparameter['pid'] = $sub->out_person_id;
@@ -412,8 +302,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $sub->team_id;
 $routeparameter['pid'] = $sub->person_id;
@@ -494,9 +384,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			}
 		return $result;
 	}
-
-	
-
 
 	/**
 	 * sportsmanagementViewMatchReport::getTimelineMatchTime()
@@ -611,14 +498,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	function _formatTimelineSubstitution($sub,$firstname,$nickname,$lastname,$out_firstname,$out_nickname,$out_lastname,$two_substitutions_per_minute=0)
 	{
 
-		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-		$pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/change.png';
+		$pic_out = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		$pic_in = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		$pic_time = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/change.png';
 
-		$time=$sub->in_out_time;
-                $matchtime=$this->getTimelineMatchTime();
-                $time2=($time / $matchtime) *100;
-		$tiptext=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
+		$time = $sub->in_out_time;
+        $matchtime = $this->getTimelineMatchTime();
+        $time2 = ($time / $matchtime) *100;
+		$tiptext = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
 		$tiptext .= $time;
 		$tiptext .= ' ::';
 		$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($pic_in);
@@ -670,11 +557,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			{
 				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
 				{
-					
-                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tppicture1'.'<pre>'.print_r($me,true).'</pre>' ),'');
                     
                     $placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
-					// set teamplayer picture
+/**
+ * set teamplayer picture
+ */
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
@@ -684,7 +571,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
                         
 					}
-					// when teamplayer picture is empty or a placeholder icon look for the general player picture
+/**
+ * when teamplayer picture is empty or a placeholder icon look for the general player picture
+ */
 					elseif
 					(	( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) &&
 						( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
@@ -697,7 +586,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
 					}
 					else {
-						//$picture = '';
                         $picture = $placeholder;
 					}
 
@@ -733,7 +621,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam2_id )
 				{
 					$placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
-					// set teamplayer picture
+/**
+ * set teamplayer picture
+ */
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
@@ -743,7 +633,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
                         
 					}
-					// when teamplayer picture is empty or a placeholder icon look for the general player picture
+/**
+ * when teamplayer picture is empty or a placeholder icon look for the general player picture
+ */
 					elseif
 					(	( ($me->tppicture1 == $placeholder) || (empty($me->tppicture1)) ) &&
 						( ($me->picture1 != $placeholder) && (!empty($me->picture1)) )
@@ -756,7 +648,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
                         }
 					}
 					else {
-						//$picture = '';
                         $picture = $placeholder;
 					}
 
@@ -832,8 +723,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	 */
 	function getHtmlImageForTips($picture,$width=0,$height=0)
 	{
-		// diddipoeler
-    //$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
 		$picture = JURI::root().$picture;
 		if($width > 0 && $height==0) {
 			return '&lt;img src=&quot;'.$picture.'&quot; width=&quot;'.$width.'&quot; /&gt;';

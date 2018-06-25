@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      default_ranking.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage predictionranking
+ */
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
 JHTML::_('behavior.tooltip');
@@ -62,7 +34,6 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
@@ -127,8 +98,8 @@ When viewing on anything larger than 768px wide, you will not see any difference
           <?php
 							echo '&nbsp;&nbsp;';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $predictionProject->project_slug;
 $routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;
@@ -193,11 +164,18 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					</tr>
 
 <tfoot>
-<div class="pred_ranking">
-<?php 
-echo $this->pagination->getListFooter(); 
-?>
+<div class="pagination">
+    <p class="counter">
+        <?php echo $this->pagination->getPagesCounter(); ?>
+    </p>
+    <p class="counter">
+        <?php echo $this->pagination->getResultsCounter(); ?>
+    </p>
+    <?php echo $this->pagination->getPagesLinks(); ?>
 </div>
+<?php
+//echo $this->pagination->getLimitBox();
+?>
 </tfoot>                    
                     
 				</table>
@@ -366,7 +344,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                                 {
                                     case 0:
                                     // normale spielzeit wird benutzt 
-                                    // wenn aber die verlängerung oder das elfmeterergebnis eingetragen wurde,
+                                    // wenn aber die verlÃ¤ngerung oder das elfmeterergebnis eingetragen wurde,
                                     // dann den endstand der regulaeren spielzeit nehmen.
                                     if ( !is_null($memberPredictionPoint->homeResultOT) || !is_null($memberPredictionPoint->awayResultOT) || 
                                     !is_null($memberPredictionPoint->homeResultSO) || !is_null($memberPredictionPoint->awayResultSO)
@@ -480,7 +458,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                         {
                             $groupmembersResultsArray[$member->pg_group_id]['totalJoker'] = 0;
                         }
-                    // für die gruppentabelle
+                    // fÃ¼r die gruppentabelle
                     $groupmembersResultsArray[$member->pg_group_id]['pg_group_id'] = $member->pg_group_id;
                     $groupmembersResultsArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
                     $groupmembersResultsArray[$member->pg_group_id]['rank'] = 0;
@@ -612,10 +590,14 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 ?>
 <tbody>
 <?PHP
-				// schleife über die sortierte tabelle anfang
-                foreach ($computedMembersRanking AS $key => $value)
-				{
-				
+/**
+ * schleife Ã¼ber die sortierte tabelle anfang
+ */		
+$durchlauf = 1; 
+foreach ($computedMembersRanking AS $key => $value)
+{
+			if (in_array($durchlauf, range($this->ausgabestart, $this->ausgabeende)))	
+				{				
 				foreach ( $this->items as $items )
 				{
 				//if ( $key == $items->pmID )
@@ -774,14 +756,17 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 						$i++;
 					  }
           }
-          
-				}
-                // schleife über die sortierte tabelle ende
-			?>
-            </tbody>
-		</table>
-        </div>
-		<?php
 	}
+$durchlauf++;          
+				}
+/**
+ * schleife Ã¼ber die sortierte tabelle ende
+ */
+?>
+</tbody>
+</table>
+</div>
+<?php
+}
 }
 ?>

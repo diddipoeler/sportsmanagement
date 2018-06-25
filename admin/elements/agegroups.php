@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -64,11 +64,11 @@ class JFormFieldagegroups extends JFormField
 		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( $option );
         $database_table	= $params->get( 'cfg_which_database_table' );
-        $select_id = JRequest::getVar('id');
+        $select_id = JFactory::getApplication()->input->getVar('id');
         
         if ($select_id)
 		{

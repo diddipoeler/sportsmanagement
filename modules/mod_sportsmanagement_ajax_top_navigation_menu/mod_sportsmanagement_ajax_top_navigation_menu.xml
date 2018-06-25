@@ -39,6 +39,16 @@
 			<fieldset name="basic"
 					description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Ajax_Top_Navigation" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+					
 				<field name="project_ordering"
 					type="list"
 					default="0"
@@ -77,7 +87,7 @@
 
 				<field name="show_project_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -94,7 +104,7 @@
 				<field type="spacer" hr="true" />
 				<field name="show_season_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -111,7 +121,7 @@
 
 				<field name="show_league_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
 					<option value="0">JNO</option>
@@ -128,7 +138,7 @@
 
 				<field name="show_division_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
@@ -145,7 +155,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="show_teams_dropdown" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_TEAM_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_TEAM_DROPDOWN_LABEL_DESC">
@@ -197,7 +207,7 @@
 
 				<field name="show_only_subdivisions"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0"
+					type="extensionradiobutton" default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
 					<option value="0">JNO</option>
@@ -208,7 +218,7 @@
 
 				<field name="show_favteams_nav_links"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="1"
+					type="extensionradiobutton" default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
@@ -222,7 +232,7 @@
 					text="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_LINKS" />
 				
 				<field name="show_tournament_nav_links" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
@@ -246,7 +256,7 @@
 
 				<field name="show_alltimetable_nav_links"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0"
+					type="extensionradiobutton" default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
@@ -264,18 +274,6 @@
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_ALLTIMETABLE_POINTS_DESCR" size="10"/>
 
-<!-- 
-<field 	name="show_logo_alltimetable" type="list" default="logo_small" 
-				label="MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO" 
-				description="MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
-			<option value="no_logo">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
-			<option value="logo_small">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
-      <option value="country_flag">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
-      <option value="logo_small_country_flag">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
-      <option value="country_flag_logo_small">MOD_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
-		</field>
--->
-
 				<field type="spacer" hr="true" />
 
 				<field type="jsmmessage"
@@ -283,7 +281,7 @@
 					text="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
 
 				<field name="show_nav_links" class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="1"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">

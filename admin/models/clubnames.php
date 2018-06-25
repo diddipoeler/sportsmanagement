@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroups.php
-* @author                diddipoeler, stony und svdoldie (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-*        SportsManagement is free software: you can redistribute it and/or modify
-*        it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  SportsManagement is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-*  Diese Datei ist Teil von SportsManagement.
-*
-*  SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-*  der GNU General Public License, wie von der Free Software Foundation,
-*  Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-*  veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-*  SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-*  OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-*  Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-*  Siehe die GNU General Public License für weitere Details.
-*
-*  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-*  Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      clubnames.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -75,8 +47,7 @@ class sportsmanagementModelclubnames extends JSMModelList
                         'obj.checked_out_time'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                parent::setDbo($this->jsmdb);
         
         }
         
@@ -87,7 +58,7 @@ class sportsmanagementModelclubnames extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 'obj.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
@@ -106,9 +77,21 @@ class sportsmanagementModelclubnames extends JSMModelList
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+        // Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'obj.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
 	
 	/**
@@ -153,6 +136,42 @@ class sportsmanagementModelclubnames extends JSMModelList
         
 	}
     
+    
+    /**
+     * sportsmanagementModelclubnames::getClubNames()
+     * 
+     * @param string $country
+     * @return void
+     */
+    function getClubNames($country = '')
+    {
+    // Create a new query object.		
+	$this->jsmquery->clear();
+    
+    // Select some fields
+	$this->jsmquery->select('name,name_long');
+    // From table
+	$this->jsmquery->from('#__sportsmanagement_club_names');
+    
+    /**
+     * wenn das land mitegegeben wurde
+     */
+    if ( $country )
+	{
+    $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote('%'.$country.'%') );
+    }
+    
+    try{
+    $this->jsmdb->setQuery($this->jsmquery);
+    return $this->jsmdb->loadObjectList();
+	}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
+                
+    }
 
 
 }

@@ -113,13 +113,13 @@ table.playerstats td.playername,table.playerstats th.playername {
 	margin: 0;
 	color: #9FD4FF;
 	padding: 8px 8px 4px;
-	background: url(/media/com_sportsmanagement/jl_images/bubble.png) top left;
+	background: url(/media/com_joomleague/jl_images/bubble.png) top left;
 }
 
 .tool-text {
 	font-size: 11px;
 	padding: 4px 8px 8px;
-	background: url(/media/com_sportsmanagement/jl_images/bubble.png) bottom right;
+	background: url(/media/com_joomleague/jl_images/bubble.png) bottom right;
 }
 
 #timelinetop {
@@ -138,15 +138,24 @@ table.playerstats td.playername,table.playerstats th.playername {
 	clear: both;
 	font-size: 80%;
 	width: 100%;
-	margin: 5px 0 18px;
+	margin: 5px 0 20px;
 }
 
 #timeline-top {
-	border-bottom: 3px solid #000;
+    background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_top.png");
+    background-repeat: no-repeat;
+    background-size: 100% 46px;
+    height: 47px;
+	
 }
 
 #timeline-bottom {
-	vertical-align: top;
+    background-image: url("/images/com_sportsmanagement/database/matchreport/spielfeld_bottom.png");
+    background-repeat: no-repeat;
+    background-size: 100% 46px;
+    height: 47px; 
+	vertical-align: baseline;
+
 }
 
 .label {
@@ -185,4 +194,7 @@ li.events {
 
 .tickerStyle2 {
      font-style: italic;
+}
+.playerstats {
+    width: 100%;
 }

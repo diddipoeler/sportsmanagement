@@ -1,46 +1,16 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      referee.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage referee
+ */
 
 defined('_JEXEC') or die('Restricted access');
-
 jimport('joomla.application.component.model');
-//require_once('person.php');
 
 /**
  * sportsmanagementModelReferee
@@ -77,15 +47,15 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         
 		parent::__construct();
-		self::$projectid = JRequest::getInt('p',0);
-		self::$personid = JRequest::getInt('pid',0);
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
-        sportsmanagementModelPerson::$projectid = JRequest::getInt('p',0);
-		sportsmanagementModelPerson::$personid = JRequest::getInt('pid',0);
+		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
+		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
+        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+        sportsmanagementModelPerson::$projectid = JFactory::getApplication()->input->getInt('p',0);
+		sportsmanagementModelPerson::$personid = JFactory::getApplication()->input->getInt('pid',0);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
@@ -102,7 +72,7 @@ class sportsmanagementModelReferee extends JModelLegacy
 	function getHistory($order='ASC')
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
        
@@ -150,7 +120,7 @@ class sportsmanagementModelReferee extends JModelLegacy
 	function getPresenceStats($project_id,$person_id)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
 //       // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -175,7 +145,7 @@ class sportsmanagementModelReferee extends JModelLegacy
 	function getGames()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

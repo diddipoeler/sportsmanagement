@@ -1,18 +1,39 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      treetomatchs.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
+ 
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
-//require_once JPATH_COMPONENT.'/models/list.php';
 
 
-
+/**
+ * sportsmanagementModelTreetomatchs
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelTreetomatchs extends JSMModelList
 {
 	var $_identifier = "treetomatchs";
 
 
 
+/**
+ * sportsmanagementModelTreetomatchs::getListQuery()
+ * 
+ * @return
+ */
 protected function getListQuery()
 	{
 	// Select the required fields from the table.
@@ -41,52 +62,14 @@ protected function getListQuery()
 		return $this->jsmquery;
     }   
     
-//	function _buildQuery()
-//	{
-//		//// Get the WHERE and ORDER BY clauses for the query
-////		$where		= $this->_buildContentWhere();
-////		$orderby	= $this->_buildContentOrderBy();
-//		
-//		$query = ' SELECT mc.id AS mid ';
-//		$query .=	' ,mc.match_number AS match_number';
-//		$query .=	' ,t1.name AS projectteam1';
-//		$query .=	' ,mc.team1_result AS projectteam1result';
-//		$query .=	' ,mc.team2_result AS projectteam2result';
-//		$query .=	' ,t2.name AS projectteam2';
-//		$query .=	' ,mc.round_id AS rid ';
-//		$query .=	' ,mc.published AS published ';
-//		$query .=	' ,ttm.node_id AS node_id ';
-//		$query .=	' ,r.roundcode AS roundcode, mc.checked_out ';
-//		$query .=	' FROM #__joomleague_match AS mc ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt1 ON pt1.id = mc.projectteam1_id ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt2 ON pt2.id = mc.projectteam2_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t1 ON t1.id = pt1.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t2 ON t2.id = pt2.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_round AS r ON r.id = mc.round_id ';
-//		$query .=	' LEFT JOIN #__joomleague_treeto_match AS ttm ON mc.id = ttm.match_id ';
-//		$query .=	$where ;
-//		$query .=	$orderby ;
-//		return $query;
-//	}
 
-	//function _buildContentOrderBy()
-//	{
-//		$orderby = ' ORDER BY r.roundcode ';
-//		
-//		return $orderby;
-//	}
 
-	//function _buildContentWhere()
-//	{
-//		$option = $this->input->getCmd('option');
-//		
-//		$app	= JFactory::getApplication();
-//		$node_id = $app->getUserState($option . 'node_id');
-//		$where = ' WHERE  ttm.node_id = ' . $node_id ;
-//		
-//		return $where;
-//	}
-
+	/**
+	 * sportsmanagementModelTreetomatchs::store()
+	 * 
+	 * @param mixed $data
+	 * @return
+	 */
 	function store( $data )
 	{
 		$result = true;
@@ -94,9 +77,6 @@ protected function getListQuery()
         $this->jsmquery->clear();
 		if ( $peid == null )
 		{
-//			$query = "	DELETE
-//						FROM #__joomleague_treeto_match
-//						WHERE node_id = '" . $data['id'] . "'";
 $conditions = array(
     $this->jsmdb->quoteName('node_id') . ' = ' . $this->jsmdb->quote($data['id'])
 );
@@ -105,9 +85,6 @@ $conditions = array(
 		{
 			JArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
-//			$query = "	DELETE
-//						FROM #__joomleague_treeto_match
-//						WHERE node_id = '" . $data['id'] . "' AND match_id NOT IN  (" . $peids . ")";
 $conditions = array(
     $this->jsmdb->quoteName('node_id') . ' = ' . $this->jsmdb->quote($data['id']),
     $this->jsmdb->quoteName('match_id') . ' NOT IN  ( ' . $this->jsmdb->quote($peids) .')'
@@ -133,12 +110,6 @@ $profile->match_id = $data['node_matcheslist'][$x];
 // Insert the object into the user profile table.
 $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $profile);
 			
-//            $query = "	INSERT IGNORE
-//						INTO #__joomleague_treeto_match
-//						(node_id, match_id)
-//						VALUES ( '" . $data['id'] . "', '".$data['node_matcheslist'][$x] . "')";
-//
-//			$this->_db->setQuery( $query );
 			if ( !$result )
 			{
 				$this->setError( $this->jsmdb->getErrorMsg() );
@@ -150,6 +121,11 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $profil
 
 	
 
+	/**
+	 * sportsmanagementModelTreetomatchs::getMatches()
+	 * 
+	 * @return
+	 */
 	function getMatches()
 	{
 	//	$option = $this->input->getCmd('option');
@@ -190,36 +166,7 @@ $this->jsmquery->where('NOT mc.projectteam2_id IN ( ' . $this->jsmsubquery1 .' )
        
        		//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
             
-//		$query = ' SELECT mc.id AS value ';
-//		$query .=	' ,CONCAT(t1.name, \'_vs_\', t2.name, \' [round:\',r.roundcode,\']\') AS text ';
-//		$query .=	' ,mc.id AS info ';
-//		$query .=	' FROM #__joomleague_match AS mc ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt1 ON pt1.id = mc.projectteam1_id ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt2 ON pt2.id = mc.projectteam2_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t1 ON t1.id = pt1.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t2 ON t2.id = pt2.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_round AS r ON r.id = mc.round_id ';
-//		$query .=	' WHERE  r.project_id = ' . $project_id ;
-//		$query .=	' AND NOT mc.projectteam1_id IN ';
-//		$query .=	' ( ';
-//		$query .=		' SELECT ttn.team_id ';
-//		$query .=		' FROM #__joomleague_treeto_node AS ttn' ;
-//		$query .=		' LEFT JOIN #__joomleague_treeto_node AS ttn2 ';
-//		$query .=		' ON (ttn.node = 2*ttn2.node OR ttn.node = 2*ttn2.node + 1) ' ;
-//		$query .=		' WHERE  ttn2.id = ' . $node_id ;
-//		$query .=		' AND  ttn.treeto_id = ' . $treeto_id ;
-//		$query .=	' ) ';
-//		$query .=	' AND NOT mc.projectteam2_id IN ';
-//		$query .=	' ( ';
-//		$query .=		' SELECT ttn.team_id ';
-//		$query .=		' FROM #__joomleague_treeto_node AS ttn' ;
-//		$query .=		' LEFT JOIN #__joomleague_treeto_node AS ttn2 ';
-//		$query .=		' ON (ttn.node = 2*ttn2.node OR ttn.node = 2*ttn2.node + 1) ' ;
-//		$query .=		' WHERE  ttn2.id = ' . $node_id ;
-//		$query .=		' AND  ttn.treeto_id = ' . $treeto_id ;
-//		$query .=	' ) ';
-	//	$query .=	' ORDER BY r.id ';
-//		$query .=	';';
+
 		
 		$this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
@@ -233,34 +180,16 @@ $this->jsmquery->where('NOT mc.projectteam2_id IN ( ' . $this->jsmsubquery1 .' )
 		}
 	}
 
-	//function getMatchInNode()
+
+	/**
+	 * sportsmanagementModelTreetomatchs::getNodeMatches()
+	 * 
+	 * @param integer $node_id
+	 * @return
+	 */
 	function getNodeMatches($node_id=0)
 	{
-	//	$query = ' SELECT mc.id AS value ';
-//		$query .=	' ,CONCAT(t1.name, \'_vs_\', t2.name, \' [round:\',r.roundcode,\']\') AS text ';
-//		$query .=	' ,mc.id AS notes ';
-//		$query .=	' ,mc.id AS info ';
-//		$query .=	' FROM #__joomleague_match AS mc ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt1 ON pt1.id = mc.projectteam1_id ';
-//		$query .=	' LEFT JOIN #__joomleague_project_team AS pt2 ON pt2.id = mc.projectteam2_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t1 ON t1.id = pt1.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_team AS t2 ON t2.id = pt2.team_id ';
-//		$query .=	' LEFT JOIN #__joomleague_round AS r ON r.id = mc.round_id ';
-//		$query .=	' LEFT JOIN #__joomleague_treeto_match AS ttm ON mc.id = ttm.match_id ';
-//		$query .=	' WHERE  ttm.node_id = ' . $node_id ;
-//		$query .=	' ORDER BY mc.id ';
-//		$query .=	';';
-//		$this->_db->setQuery( $query );
-//		if ( !$result = $this->_db->loadObjectList() )
-//		{
-//			$this->setError( $this->_db->getErrorMsg() );
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
-        
+	        
         
 $this->jsmquery->clear();
 		$this->jsmquery->select('mc.id AS value,CONCAT(t1.name, \'_vs_\', t2.name, \' [round:\',r.roundcode,\']\') AS text');

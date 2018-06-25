@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                jlextdfbnetplayerimport.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -100,7 +100,7 @@ var $_project_id = 0;
  */
 function __construct( )
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
@@ -247,7 +247,7 @@ function property_value_in_array($array, $property, $value)
  */
 function getUpdateData()
 	{
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
   $app = JFactory::getApplication();
   $document	= JFactory::getDocument();
 
@@ -479,7 +479,7 @@ $exportmatch[] = $tempmatch;
 function getData()
 	{
   //global $app, $option;
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
   $app = JFactory::getApplication();
   $document	= JFactory::getDocument();
 
@@ -512,7 +512,7 @@ echo $this->pane->startPane('pane');
   $app->enqueueMessage(JText::_('Welche Art von Datei? '.$whichfile),'');
   
   //$delimiter=$app->getUserState($option.'delimiter');
-  $post = JRequest::get('post');
+  $post = JFactory::getApplication()->input->post->getArray(array());
   
   $this->_league_new_country = $country;
   

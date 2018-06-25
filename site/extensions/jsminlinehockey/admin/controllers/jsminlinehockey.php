@@ -41,18 +41,18 @@ $this->setRedirect ( $link, $msg );
     }
 
     function save() {
-	   //$option = JRequest::getCmd('option');
+	   //$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
-		//JRequest::checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		//JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 		//JToolBarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jsminlinehockey' );
-        //$post = JRequest::get ( 'post' );
+        //$post = JFactory::getApplication()->input->get ( 'post' );
         $post = $jinput->post->getArray(array());
         
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -60,7 +60,7 @@ $this->setRedirect ( $link, $msg );
         // first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) 
         {
-			$upload = JRequest::getVar ( 'import_package', null, 'files', 'array' );
+			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
             $tempFilePath = $upload ['tmp_name'];
             $dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
 			$extractdir = JPATH_SITE . DS . 'tmp';

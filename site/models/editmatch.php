@@ -1,58 +1,39 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      editmatch.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage editmatch
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//jimport('joomla.application.component.model');
-//jimport('joomla.application.component.modelitem');
-//jimport('joomla.application.component.modelform');
-
 jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' ); 
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php');  
 
-
-
+/**
+ * sportsmanagementModelEditMatch
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEditMatch extends JModelAdmin
 {
-  
+
+const MATCH_ROSTER_STARTER		= 0;
+const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
+const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
+const MATCH_ROSTER_RESERVE		= 3;	
   /* interfaces */
 	var $latitude	= null;
 	var $longitude	= null;
@@ -67,6 +48,11 @@ class sportsmanagementModelEditMatch extends JModelAdmin
     static $oldlayout = '';
 	
 	
+    /**
+     * sportsmanagementModelEditMatch::__construct()
+     * 
+     * @return void
+     */
     function __construct()
 	{
 		 // Reference global application object
@@ -86,7 +72,78 @@ class sportsmanagementModelEditMatch extends JModelAdmin
         self::$seasonid = $jinput->getVar('s','0');
         
     }    
+    
+
+
+/**
+ * sportsmanagementModelEditMatch::updateReferees()
+ * 
+ * @param mixed $data
+ * @return void
+ */
+function updateReferees($data)
+	{
+		$app = JFactory::getApplication();
+        $config = JFactory::getConfig();
+        $option = JFactory::getApplication()->input->getCmd('option');
+        // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
         
+        $sender = array( 
+    $config->get( 'mailfrom' ),
+    $config->get( 'fromname' ) 
+);
+
+        $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$data['project_id']);
+        $data['positions'] = $positions;
+        
+        $result = sportsmanagementModelMatch::updateReferees($data);
+return $result;
+        }
+        
+	/**
+	 * sportsmanagementModelEditMatch::updateStaff()
+	 * 
+	 * @param mixed $data
+	 * @return void
+	 */
+	function updateStaff($data)
+	{
+$app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+$data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
+$result = sportsmanagementModelMatch::updateStaff($data);
+return $result;
+}
+
+
+
+
+
+	
+/**
+ * sportsmanagementModelEditMatch::updateRoster()
+ * 
+ * @param mixed $data
+ * @return void
+ */
+function updateRoster($data)
+    {
+$app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
+$data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
+$result = sportsmanagementModelMatch::updateRoster($data);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
+return $result;	
+}
+	
+    /**
+     * sportsmanagementModelEditMatch::updItem()
+     * 
+     * @param mixed $data
+     * @return void
+     */
     function updItem($data)
     {
         $app = JFactory::getApplication();
@@ -199,7 +256,7 @@ class sportsmanagementModelEditMatch extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_which_media_tool',0);
+		$cfg_which_media_tool = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
         $app = JFactory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
@@ -208,7 +265,7 @@ class sportsmanagementModelEditMatch extends JModelAdmin
 			return false;
 		}
         
-//        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JRequest::getCmd('option'))->get('ph_player',''));
+//        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('ph_player',''));
 //        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
 //        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         

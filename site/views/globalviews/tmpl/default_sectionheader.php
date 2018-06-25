@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_sectionheader.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage globalviews
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
@@ -95,34 +67,20 @@ switch ( $view )
     // $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
     
     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $this->teamPlayer->team_id;
 $routeparameter['pid'] = $this->person->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter,'person.edit');
-
-    /*
-		$desc = JHtml::image(
-			"media/com_sportsmanagement/jl_images/edit.png",
-			JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EDIT' ),
-			array( "title" => JText::_( "COM_SPORTSMANAGEMENT_PERSON_EDIT" ) )
-		);
-	    echo " ";
-	    echo JHtml::_('link', $link, $desc );
-	    */
-	
-	?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $link; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
-									?>
-								</a>
-                <?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);  	
                 
   }
 
@@ -168,28 +126,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			
 			if ( $this->showediticon )
 	{
-		/*
-    $link = JoomleagueHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
-		$desc = JHtml::image(
-			"media/com_sportsmanagement/jl_images/edit.png",
-			JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EDIT' ),
-			array( "title" => JText::_( "COM_SPORTSMANAGEMENT_PERSON_EDIT" ) )
-		);
-	    echo " ";
-	    echo JHtml::_('link', $link, $desc );
-	    */
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 		
 	
-	?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
-									?>
-								</a>
-                <?PHP
+	
                 
   }
   ?>
@@ -202,8 +149,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
     case 'results':
     ?>
     <!-- section header e.g. ranking, results etc. -->
-<a id="jl_top"></a>
-
 <table class="table">
 	<tr>
 		<td class="contentheading">
@@ -220,8 +165,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			if ( $this->showediticon )
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = sportsmanagementModelProject::$projectslug;
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = sportsmanagementModelResults::$divisionid;
@@ -258,7 +203,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		?>
 		</td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
-			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,JRequest::getInt('cfg_which_database',0)); ?>
+			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,JFactory::getApplication()->input->getInt('cfg_which_database',0)); ?>
 				</td>
                 <td>
         <?php
@@ -307,7 +252,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				<?php
 				if (!is_null($this->ptid))
 				{
-				$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $this->teams[$this->ptid]->team_id;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = $this->ptid;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparameter);
+				    
+				//$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
 				$text = JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				$attribs = array('title' => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				echo JHtml::_('link',$link,$text,$attribs);
@@ -325,7 +280,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     ?>
     	<table class="table">
 		<tr>
-			<td class="contentheading"><a name="division<?php echo $this->divisions;?>"></a>
+			<td class=""><a name="division<?php echo $this->divisions;?>"></a>
 			
 			<?php 
 				echo JText::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');
@@ -343,7 +298,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     ?>
     	<table class="table" >
 		<tr>
-			<td class="contentheading">
+			<td class="">
 				<?php
 				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATRIX' );
 				if ( $this->divisionid )
@@ -365,7 +320,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     ?>
     <table class="table">
 	<tr>
-		<td class="contentheading">
+		<td class="">
 		<?php
 		if ( $this->config['show_team_shortform'] == 1 && !empty($this->team->short_name))
 		{
@@ -377,16 +332,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		}
 		?>
 		</td>
-        
-        
-        
+
 		<form name='resultsRoundSelector' method='post'>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
         <?php
         if ( $this->config['show_drop_down_menue'] )
         {
+        if ( $this->config['show_players'] )
+        {
         echo "<td>".JHtml::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->type )."</td>";
+        }
+        if ( $this->config['show_staff'] )
+        {
         echo "<td>".JHtml::_('select.genericlist', $this->lists['typestaff'], 'typestaff' , 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->typestaff )."</td>";
+        }
         }
         ?>
         </form>
@@ -410,23 +369,21 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     case 'teaminfo':
     ?>
 <!-- START: Contentheading -->
-<div class="contentpaneopen">
+<div class="">
 	<h4>
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
-			
-        ?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=<?php echo $this->projectteamid; ?>&tid=<?php echo $this->teamid; ?>&p=<?php echo $this->project->id; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS').'"');
-									?>
-								</a>
-                <?PHP    
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 			
+            
 		} else {
 			//echo "no permission";
 		}
@@ -439,7 +396,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     case 'clubinfo':
 ?>
 
-<!--	<div class="contentpaneopen"> -->
+
 		<h4>
 			<?php
 				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
@@ -448,26 +405,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 	            {
 	                
                     $link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->id, $this->club->id, "club.edit" );
-//	                $desc = JHtml::image(
-//	                                      "media/COM_SPORTSMANAGEMENT/jl_images/edit.png",
-//	                                      JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EDIT' ),
-//	                                      array( "title" => JText::_( "COM_SPORTSMANAGEMENT_CLUBINFO_EDIT" ) )
-//	                                   );
-//	                echo " ";
-//	                echo JHtml::_('link', $link, $desc );
                     
-                    
-                 ?>   
-	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $link; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS').'"');
-									?>
-								</a>
-                <?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);                  
                 
                 
                 }

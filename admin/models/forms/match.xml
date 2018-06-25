@@ -5,9 +5,11 @@
 	<field
 			name="id"
 			type="hidden"
+			default="0"
 		/>
 		
-	<fieldset name="matchpreview">
+	<fieldset name="matchpreview"
+	label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP">
 		<field
 				name="preview"
 				type="editor"
@@ -17,10 +19,11 @@
 				filter="safehtml"/>		
 	</fieldset>
 	
-	<fieldset name="matchdetails">
+	<fieldset name="matchdetails"
+	label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MED">
 		<field
 				name="cancel"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"		
         class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
@@ -55,10 +58,11 @@
 				
 	</fieldset>	
   		
-	<fieldset name="matchreport">
+	<fieldset name="matchreport"
+	label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR">
 		<field
 				name="show_report"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"		
         class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"

@@ -1,43 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage jsminlinehockey
+ */
+ 
 /**
-  60  header icons 
+  60  header icons
   61  .icon-48-generic         { background-image: url(../images/header/icon-48-generic.png); }
   62  .icon-48-checkin         { background-image: url(../images/header/icon-48-checkin.png); }
   63  .icon-48-cpanel         { background-image: url(../images/header/icon-48-cpanel.png); }
@@ -69,98 +42,85 @@
   89  .icon-48-dbquery         { background-image: url(../images/header/icon-48-query.png); }
   90  .icon-48-systeminfo     { background-image: url(../images/header/icon-48-info.png); }
   91  .icon-48-massemail     { background-image: url(../images/header/icon-48-massmail.png); }
-  
+
  */
-
 // Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.view' );
-jimport( 'joomla.html.html.select' );
-
-
+jimport('joomla.application.component.view');
+jimport('joomla.html.html.select');
 
 /**
  * sportsmanagementViewjsminlinehockey
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter Plï¿½ger
  * @copyright 2017
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewjsminlinehockey extends sportsmanagementView
-{
+class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
+
+    /**
+     * sportsmanagementViewjsminlinehockey::init()
+     * 
+     * @return void
+     */
+    function init() {
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $mainframe = JFactory::getApplication();
+
+        $db = JFactory::getDBO();
+        if (version_compare(JSM_JVERSION, '4', 'eq')) {
+            $uri = JUri::getInstance();
+        } else {
+            $uri = JFactory::getURI();
+        }
+        $user = JFactory::getUser();
+
+        //$model = $this->getModel();
 
 
-	
-	
-	/**
-	 * sportsmanagementViewjsminlinehockey::init()
-	 * 
-	 * @return void
-	 */
-	function init()
-	{
-		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+        $this->projectid = $this->jinput->get("pid", '0');
+        if (!$this->projectid) {
+            $this->projectid = $mainframe->getUserState("$option.pid", '0');
+        }
 
-		$db	= JFactory::getDBO();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		
-		//$model = $this->getModel();
-
-    
-    $this->projectid = $this->jinput->get("pid", '0' );
-    if ( !$this->projectid )
-    {
-    $this->projectid = $mainframe->getUserState( "$option.pid", '0' );    
-    }
-    
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$this->projectid.''),'');
-    $this->matchlink = $this->model->getMatchLink($this->projectid);
-    //$project = sportsmanagementModelProject::getProject($projectid);
-    
-	
-
-    
-   // if ( empty($projectid) )
+        $mainframe->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
+        $this->matchlink = $this->model->getMatchLink($this->projectid);
+        //$project = sportsmanagementModelProject::getProject($projectid);
+        // if ( empty($projectid) )
 //    {
 //    JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_NO_PROJECT' ) );
 //    $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
 //    }
 //    else
 //    {
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'),'');
+        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
 //    }
-   
-   JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'),'install');
-		
+
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+
         $this->request_url = $uri->toString();
-		
-	}
-    
+    }
+
     /**
-	* Add the page title and toolbar.
-	*
-	* @since	1.7
-	*/
-	protected function addToolbar()
-	{
-	// Get a refrence of the page instance in joomla
+     * Add the page title and toolbar.
+     *
+     * @since	1.7
+     */
+    protected function addToolbar() {
+        // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // Set toolbar items for the page
         JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+        JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
 
-if ( $this->projectid )
-{
-JToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
-}
-
-    }    
-
+        if ($this->projectid) {
+            JToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
+        }
+    }
 
 }
+
 ?>

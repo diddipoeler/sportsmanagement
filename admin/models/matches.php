@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      matches.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -108,7 +80,7 @@ class sportsmanagementModelMatches extends JModelList
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
-//        $value = JRequest::getUInt('limitstart', 0);
+//        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 //		$this->setState('list.start', $value);
 //        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 //		$this->setState('list.start', $value);
@@ -142,18 +114,23 @@ class sportsmanagementModelMatches extends JModelList
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         //$search_division	= $this->getState('filter.division');
         
-        $this->_rid = JRequest::getvar('rid', 0);
-        
-//        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+        $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
+        $this->_projectteam = JFactory::getApplication()->input->getvar('projectteam', 0);
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {
             $this->_rid	= $app->getUserState( "$option.rid", '0' );
         }
         
+	if ( $this->_projectteam )
+	{
+	$this->_rid = '';
+	}
+		
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	$db = sportsmanagementHelper::getDBConnection();
+	$query = $db->getQuery(true);
         $subQueryPlayerHome= $db->getQuery(true);
         $subQueryStaffHome= $db->getQuery(true);
         $subQueryPlayerAway= $db->getQuery(true);
@@ -163,10 +140,10 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery3= $db->getQuery(true);
         $subQuery4= $db->getQuery(true);
         $subQuery5= $db->getQuery(true);
-		// Select some fields
-		$query->select('mc.*');
-		// From the match table
-		$query->from('#__sportsmanagement_match AS mc');
+	// Select some fields
+	$query->select('mc.*');
+	// From the match table
+	$query->from('#__sportsmanagement_match AS mc');
         // join player home
         $subQueryPlayerHome->select('tp.id');
         $subQueryPlayerHome->from('#__sportsmanagement_season_team_person_id AS tp ');
@@ -221,10 +198,7 @@ class sportsmanagementModelMatches extends JModelList
         $subQuery4->from('#__sportsmanagement_match_staff AS ms  ');
         $subQuery4->where('ms.match_id = mc.id AND ms.team_staff_id in ('.$subQueryStaffAway.')');
         $query->select('('.$subQuery4.') AS awaystaff_count');
-        
-           
 
-        
         // count match referee
         $subQuery5->select('count(mr.id)');
         $subQuery5->from('#__sportsmanagement_match_referee AS mr ');
@@ -232,8 +206,8 @@ class sportsmanagementModelMatches extends JModelList
         $query->select('('.$subQuery5.') AS referees_count');
         
         // Join over the users for the checked out user.
-		$query->select('u.name AS editor');
-		$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
+	$query->select('u.name AS editor');
+	$query->join('LEFT', '#__users AS u on mc.checked_out = u.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS pthome ON pthome.id = mc.projectteam1_id');
         $query->join('LEFT','#__sportsmanagement_project_team AS ptaway ON ptaway.id = mc.projectteam2_id');
         $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = pthome.id');
@@ -244,8 +218,15 @@ class sportsmanagementModelMatches extends JModelList
         $query->select('divhome.id as divhomeid'); 
         $query->join('LEFT','#__sportsmanagement_division AS divhome ON divhome.id = pthome.division_id');
         
+	if ( $this->_rid )
+	{
         $query->where(' mc.round_id = ' . $this->_rid);
-        
+	}
+	if ( $this->_projectteam )
+	{
+	$query->where('( mc.projectteam1_id = ' . $this->_projectteam .' OR mc.projectteam2_id = '.$this->_projectteam.' )' );
+	}
+		
         if ($this->getState('filter.division'))
 		{
         $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
@@ -319,7 +300,7 @@ $db->setQuery($query);
 	function getMatchesByRound($roundId)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');    
+        $option = JFactory::getApplication()->input->getCmd('option');    
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

@@ -6,16 +6,34 @@
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 		  <field
 			name="projectteam_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECTTEAM_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PROJECTTEAM_ID" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true" 
 		/>
 		<field
 			name="person_id"
-			type="hidden"
+			type="number"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PERSON_ID"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_DESCR_PERSON_ID" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true" 
 		/>
 		
 		<field
@@ -68,7 +86,7 @@
   			
 		<field
 			name="injury"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
@@ -101,7 +119,7 @@
 			filter="safehtml"/>				
 		<field
 			name="suspension"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED_DESC">
@@ -134,7 +152,7 @@
 			class="inputbox"/>				
 		<field
 			name="away"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DESC">

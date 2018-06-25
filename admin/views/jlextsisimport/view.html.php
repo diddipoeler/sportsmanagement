@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
 * @version         1.0.05
 * @file                jlextdfbnetplayerimport.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -92,14 +92,14 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		*/
         
 		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
-		//JToolBarHelper::help ( 'screen.joomleague', true );
+		//JToolbarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
+		//JToolbarHelper::help ( 'screen.joomleague', true );
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = $jinput->get('post');
+		$post = $jinput->post->getArray(array());
 		$files = $jinput->get('files');
 		
 		$this->request_url	= $uri->toString ();
@@ -211,10 +211,10 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
-//        JToolBarHelper::divider();
+//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
+//        JToolbarHelper::divider();
 //            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//			JToolBarHelper::preferences($option);
+//			JToolbarHelper::preferences($option);
             
 parent::addToolbar();            
 

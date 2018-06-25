@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -70,7 +70,7 @@ class JFormFieldprojectpositionreferee extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();
@@ -78,7 +78,7 @@ class JFormFieldprojectpositionreferee extends JFormFieldList
 		$varname = (string) $this->element['varname'];
         $project_id = $app->getUserState( "$option.pid", '0' );;
         /*
-		$project_id = JRequest::getVar($varname);
+		$project_id = JFactory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}

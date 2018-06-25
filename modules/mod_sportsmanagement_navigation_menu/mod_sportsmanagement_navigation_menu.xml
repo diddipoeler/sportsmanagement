@@ -37,8 +37,18 @@
 
 			<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Navigation_Menu" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+			
 				<field name="cfg_which_database"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					class="radio btn-group btn-group-yesno"
 					label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
@@ -83,7 +93,7 @@
 				
 				<field name="project_include_sports_type_name"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SPORTS_TYPE_NAME_LABEL"
+					type="extensionradiobutton" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SPORTS_TYPE_NAME_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_INCLUDE_SPORTS_TYPE_NAME_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -145,7 +155,7 @@
 
 				<field name="show_teams_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL"
+					type="extensionradiobutton" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
@@ -177,7 +187,7 @@
 
 				<field name="show_division_dropdown"
 					class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
@@ -187,7 +197,7 @@
 				
 				<field name="show_only_subdivisions"
 					class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
@@ -203,7 +213,7 @@
         
 				<field name="show_nav_links" 
 					class="radio btn-group btn-group-yesno"
-					type="radio"
+					type="extensionradiobutton"
 					default="0"
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL"
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">

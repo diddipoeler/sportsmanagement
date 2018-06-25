@@ -2,7 +2,7 @@ f<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -37,12 +37,8 @@ f<?php
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.modellist' );
-
 
 /**
  * sportsmanagementModelPredictionGames
@@ -75,6 +71,7 @@ class sportsmanagementModelPredictionGames extends JSMModelList
                         'pre.modified_by'
                         );
                 parent::__construct($config);
+                parent::setDbo($this->jsmdb);
         }
         
     /**
@@ -86,46 +83,38 @@ class sportsmanagementModelPredictionGames extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $prediction_id = $jinput->getInt('prediction_id',0);
-        // Initialise variables.
+        $prediction_id = $this->jsmjinput->getInt('prediction_id',0);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
-        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter_prediction_id -> '.$temp_user_request.''),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$prediction_id.''),'');
-        
+       
         if ( $temp_user_request == '' )
         {
             $temp_user_request = $prediction_id;
         }
 		$this->setState('filter.prediction_id', $temp_user_request);
 
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
-		// List state information.
-		parent::populateState('pre.name', 'asc');
+	    // List state information.
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);       
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'pre.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
     
 	/**
@@ -135,47 +124,37 @@ class sportsmanagementModelPredictionGames extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        
-        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
-        
-        
+        $prediction_id = $this->jsmapp->getUserState( "$this->jsmoption.prediction_id", '0' );
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select(array('pre.*', 'u.name AS editor,u1.username'))
+		$this->jsmquery->clear();
+        $this->jsmquery->select(array('pre.*', 'u.name AS editor,u1.username'))
         ->from('#__sportsmanagement_prediction_game AS pre')
         ->join('LEFT', '#__users AS u ON u.id = pre.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = pre.modified_by');
 
         if ( $prediction_id > 0 )
 		{
-			$query->where('pre.id = ' . $prediction_id);
+			$this->jsmquery->where('pre.id = ' . $prediction_id);
 		}
         if ( $this->getState('filter.search') )
 		{
-			$query->where("LOWER(pre.name) LIKE " . $db->Quote('%'.$this->getState('filter.search').'%'));
+			$this->jsmquery->where("LOWER(pre.name) LIKE " . $this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
 		}
         if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('pre.published = '.$this->getState('filter.state'));
+        $this->jsmquery->where('pre.published = '.$this->getState('filter.state'));
         }
         
-        $query->order($db->escape($this->getState('list.ordering', 'pre.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'pre.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-
 		
-		return $query;
+		return $this->jsmquery;
 	}
 
 
@@ -340,26 +319,24 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         $this->jsmquery->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
         $this->jsmquery->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
-        
         $this->jsmquery->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         $this->jsmquery->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
-        
-        
-
 		$this->jsmquery->where('r.project_id = ' . $predictionProjectID . '' );
-        //$this->jsmquery->where('r.id = '.(int)$projectRoundID);
        
         $this->jsmquery->where('m.published = 1');
         $this->jsmquery->where('m.match_date <> \'0000-00-00 00:00:00\'');
         $this->jsmquery->where('(m.cancel IS NULL OR m.cancel = 0)');      
        $this->jsmquery->order('m.match_date ASC');
-    				
+    	try{			
 		$this->jsmdb->setQuery($this->jsmquery);
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
 		$results = $this->jsmdb->loadObjectList();
        return $results;
+       }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
     }   
 
 	/**
@@ -371,31 +348,23 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	*/
 	function getPredictionGames()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
+	   $this->jsmquery->clear();
         // Select some fields
-        $query->select('id AS value, name AS text');
-        $query->from('#__sportsmanagement_prediction_game ');
-        $query->order('name');
+        $this->jsmquery->select('id AS value, name AS text');
+        $this->jsmquery->from('#__sportsmanagement_prediction_game ');
+        $this->jsmquery->order('name');
 
-		$db->setQuery( $query );
+		try{
+        $this->jsmdb->setQuery( $this->jsmquery );
+		$result = $this->jsmdb->loadObjectList();
+		return $result;
+        }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        return false;
+        }
 
-		if ( !$result = $db->loadObjectList() )
-		{
-			$this->setError( $db->getErrorMsg() );
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
 	}
 
 }

@@ -1,41 +1,14 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ *
+ * boostrap tree
+ * http://jsfiddle.net/jhfrench/GpdgF/
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
@@ -62,7 +35,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 	{
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelClubInfo::$cfg_which_database);
                         
-        //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
         if ( $this->checkextrafields )
         {
@@ -71,7 +43,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         
 		$lat ='';
 		$lng ='';
-
 		
 		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
 		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
@@ -87,7 +58,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
     $rssfeeditems = '';
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
     
-    //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     if ( $rssfeedlink )
     {
     $this->rssfeeditems = sportsmanagementModelClubInfo::getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
@@ -101,7 +71,9 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
     
         if ( $this->config['show_maps'] )
 	  {
-            // diddipoeler
+/**
+ * diddipoeler
+ */
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->club->id,$this->address_string,'club',$this->club->logo_big,$this->club->name,$this->club->latitude,$this->club->longitude);  
 }
@@ -115,15 +87,19 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		}
 		
         $this->modid = $this->club->id;
-		// clubhistory
+/**
+ * clubhistory
+ */
         $this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
 $this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
-$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id);
+$this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id,$this->config['show_bootstrap_tree']);
 $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
        
-    // clubhistorytree
+/**
+ * clubhistorytree
+ */
 		$this->clubhistorytree = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id,$this->club->new_club_id);
 		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name);
         
@@ -134,10 +110,37 @@ $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
         $this->clubhistorysorttree = '';    
         }
 
+	if ( $this->config['show_bootstrap_tree'] )
+	{	
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
-        
+	}
+	else
+	{
+$javascript = "\n";	
+$javascript .= "
+jQuery(function ($) {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(\":visible\")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+
+
+";	
+	
+$this->document->addScriptDeclaration( $javascript );
+		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+	}
         $this->document->setTitle( $pageTitle );
-        
+//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 /**
  *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
  *         $view = $jinput->getVar( "view") ;

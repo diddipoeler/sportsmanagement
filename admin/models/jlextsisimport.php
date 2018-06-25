@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                jlextsisimport.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -104,10 +104,10 @@ var $_sis_datei = '';
 function getData()
 	{
   //global $app, $option;
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
   $app = JFactory::getApplication();
   $document	= JFactory::getDocument();
-  $post = JRequest::get ( 'post' );
+  $post = JFactory::getApplication()->input->get ( 'post' );
 
 $country = '';
 $exportpositioneventtype = array();  
@@ -811,7 +811,7 @@ JFile::write($file, $xmlfile);
 	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
   $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';

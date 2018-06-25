@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      eventsranking.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage eventsranking
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -79,12 +51,17 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		self::$projectid = $jinput->get('p',0,'INT');
 		self::$divisionid = $jinput->get( 'division', 0,'INT' );
 		self::$teamid = $jinput->get( 'tid', 0 ,'INT');
-		self::setEventid($jinput->get('evid', '0','INT'));
+		//self::setEventid($jinput->get('evid'));
 		self::$matchid = $jinput->get('mid',0,'INT');
+		
+		self::$eventid = (is_array($jinput->get('evid'))) ? implode(",", array_map('intval', $jinput->get('evid')) ) : (int)$jinput->get('evid');
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$eventid,true).'</pre>'),'');
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($jinput->get('evid'),true).'</pre>'),'');
+		
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
 		self::$limit = $jinput->getInt('limit',$defaultLimit);
-		self::$limitstart = $jinput->getInt('limitstart',0);
+		self::$limitstart = $jinput->getInt('start',0);
 		self::setOrder($jinput->getVar('order','desc'));
         
         self::$cfg_which_database = $jinput->getInt( 'cfg_which_database', 0 );
@@ -139,29 +116,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $this->_pagination;
 	}
 
-	/**
-	 * sportsmanagementModelEventsRanking::setEventid()
-	 * 
-	 * @param mixed $evid
-	 * @return void
-	 */
-	function setEventid($evid)
-	{
-		// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
-		// with "|" as separator
-		$sidarr = explode("|", $evid);
-		self::$eventid = array();
-		foreach ($sidarr as $sid)
-		{
-			self::$eventid[] = (int)$sid;	// The cast gets rid of the slug
-		}
-		// In case 0 was (part of) the evid string, make sure all eventtypes are loaded)
-		if (in_array(0, self::$eventid))
-		{
-			self::$eventid = 0;
-		}
-	}
-
+	
 	/**
 	 * set order (asc or desc)
 	 * @param string $order
@@ -184,7 +139,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	function getEventTypes()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
          //Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -202,7 +157,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         }
 		if (self::$eventid != 0)
 		{
-            $query->where("me.event_type_id IN (".implode(",", self::$eventid).")");
+            $query->where("me.event_type_id IN (".self::$eventid.")");
 		}
 
 		$query->order('et.ordering');
@@ -213,9 +168,15 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
             {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
-        
+        try{
 		$result = $db->loadObjectList('etid');
 		return $result;
+		 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
 	}
 
 	/**
@@ -226,14 +187,14 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	function getTotal()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		if (empty($this->_total))
 		{
-			$eventids = is_array(self::$eventid) ? self::$eventid : array(self::$eventid); 
+//			$eventids = is_array(self::$eventid) ? self::$eventid : array(self::$eventid); 
 
 			// Make sure the same restrictions are used here as in statistics/basic.php in getPlayersRanking()
             $query->select('COUNT(DISTINCT(teamplayer_id)) as count_player');
@@ -244,7 +205,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
             $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
             $query->join('INNER','#__sportsmanagement_person AS pl ON tp.person_id = pl.id');
             
-			$query->where('me.event_type_id IN('.implode("," ,$eventids).')' );
+			$query->where('me.event_type_id IN('.self::$eventid.')' );
             $query->where('pl.published = 1');
             
             if (self::$projectid > 0)
@@ -270,8 +231,17 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
             {
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
-            
+            try{
 			$this->_total = $db->loadResult();
+		
+		
+		}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        return false;
+        }
+		
 		}
 		return $this->_total;
 	}
@@ -288,7 +258,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -325,7 +295,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			}
             
 		$query->group('me.teamplayer_id');
-        $query->order('me.match_id,p '.$order);
+        $query->order('p '.$order);
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
 		
@@ -356,7 +326,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	 * @param mixed $order
 	 * @return
 	 */
-	function getEventRankings($limit, $limitstart=0, $order=null)
+	function getEventRankings($limit=0, $limitstart=0, $order=null)
 	{
 		$order = ($order ? $order : $this->order);
 		$eventtypes = self::getEventTypes();

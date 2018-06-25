@@ -14,11 +14,15 @@ JHTML::_('behavior.tooltip');
 
 //echo '<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
 //echo 'predictionMember <br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+    $uri = JUri::getInstance();   
+} else {
+    $uri = JFactory::getURI();
+}
 
 if (!$this->showediticon)
 {
-	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',JFactory::getURI()->toString()),JText::_('ALERTNOTAUTH'));
+	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),JText::_('ALERTNOTAUTH'));
 }
 $document =& JFactory::getDocument();
 

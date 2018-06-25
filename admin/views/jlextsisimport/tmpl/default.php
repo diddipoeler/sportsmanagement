@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                jlextdfbnetplayerimport.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -38,7 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
@@ -59,12 +59,12 @@ $attribs['align'] = 'left';
 //$style = " .icon-48-fb {components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif); no-repeat; }";
 //$doc->addStyleDeclaration( $style );
 
-//JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), 'generic.png' );
+//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), 'generic.png' );
 
-//JToolBarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), $url16 );
+//JToolbarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), $url16 );
 
-//JToolBarHelper::save();
-//JToolBarHelper::apply();
+//JToolbarHelper::save();
+//JToolbarHelper::apply();
 
 
 /*

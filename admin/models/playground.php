@@ -1,49 +1,17 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      playground.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage playground
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
-
 /**
  * sportsmanagementModelPlayground
  * 
@@ -97,16 +65,20 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
 	}
     
     
+    
     /**
      * sportsmanagementModelPlayground::getNextGames()
      * 
      * @param integer $project
+     * @param integer $pgid
+     * @param integer $played
+     * @param integer $allproject
      * @return
      */
-    function getNextGames( $project = 0, $pgid = 0 )
+    function getNextGames( $project = 0, $pgid = 0, $played = 0, $allproject = 0 )
     {
-        $option = JRequest::getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = JFactory::getApplication()->input->getCmd('option');
+	$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -117,7 +89,8 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
         $playground = self::getPlayground($pgid);
         if ( $playground->id > 0 )
         {
-            $query->select('m.*, DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
+            $query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
+            $query->select('DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
             $query->select('p.name AS project_name');
             $query->select('st1.team_id AS team1');
             $query->select('st2.team_id AS team2');
@@ -127,15 +100,19 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = tj.project_id ');
             $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tj.team_id ');
             $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
-            //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
-            //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id ');
-            
             $query->where('m.playground_id = '. (int)$playground->id);
+		if ( $played )
+		{
+		$query->where('m.match_date < NOW()');
+		}
+		else
+		{
             $query->where('m.match_date > NOW()');
+		}
             $query->where('m.published = 1');
             $query->where('p.published = 1');
 
-            if ( $project )
+            if ( $project && !$allproject )
             {
                 $query->where('p.id = '. (int)$project);
             }
@@ -144,12 +121,18 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
             $query->order('match_date ASC');
             
             $db->setQuery( $query );
+		try{
             $result = $db->loadObjectList();
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
+		 }
+catch (Exception $e){
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	$result = false;
+}
+		
         }
         
         return $result;
@@ -165,7 +148,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
      */
     public static function updateHits($pgid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -191,7 +174,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      */
     public static function getPlayground( $pgid = 0,$inserthits=0 )
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
@@ -214,7 +197,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         {
             if ( $pgid < 1 )
             {
-            $pgid = JRequest::getInt( "pgid", 0 );
+            $pgid = JFactory::getApplication()->input->getInt( "pgid", 0 );
             }    
             
             if ( $pgid > 0 )

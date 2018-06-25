@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -454,7 +454,7 @@ $jinput->set('filter_sports_type', $sports_type_id);
 $db = JFactory::getDbo(); 
 $query = $db->getQuery(true);
 
-//$post = JRequest::get('post');
+//$post = JFactory::getApplication()->input->post->getArray(array());
 $exportfields1 = array();
 $exportfields2 = array();           
 $table_copy = array();        

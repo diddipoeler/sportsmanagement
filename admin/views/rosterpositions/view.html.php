@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -79,20 +79,20 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	
 // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
-        JToolBarHelper::custom('rosterpositions.addhome', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
-		JToolBarHelper::custom('rosterpositions.addaway', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
-		JToolBarHelper::editList('rosterposition.edit');
-		//JToolBarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		//JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
+        JToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
+		JToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
+		JToolbarHelper::editList('rosterposition.edit');
+		//JToolbarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_CSV_IMPORT'),false);
+		//JToolbarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
 		
-		//JToolBarHelper::deleteList('', 'rosterpositions.delete');
+		//JToolbarHelper::deleteList('', 'rosterpositions.delete');
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
 		{
 			JToolbarHelper::trash('rosterpositions.trash');
 		}
 		else
 		{
-			JToolBarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
+			JToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
 		}
 		
 		JToolbarHelper::checkin('rosterpositions.checkin');

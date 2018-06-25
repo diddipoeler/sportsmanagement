@@ -1,44 +1,15 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      ranking.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage ranking
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -91,18 +62,18 @@ class sportsmanagementModelRanking extends JModelLegacy
        $to = 0;
 		self::$projectid = (int) $jinput->get('p', 0, '');
         self::$paramconfig['p'] = self::$projectid;
-		//$this->round = JRequest::getInt("r", $this->current_round);
+		//$this->round = JFactory::getApplication()->input->getInt("r", $this->current_round);
         self::$round = $jinput->get('r', self::$current_round, '');
-		self::$part  = JRequest::getInt("part", 0);
-		//$this->from  = JRequest::getInt('from', 0 );
-		//$this->to	 = JRequest::getInt('to', $this->round);
+		self::$part  = $jinput->getInt("part", 0);
+		//$this->from  = JFactory::getApplication()->input->getInt('from', 0 );
+		//$this->to	 = JFactory::getApplication()->input->getInt('to', $this->round);
         self::$from = $jinput->post->get('from', 0, '');
         self::$to = $jinput->post->get('to', self::$round, '');
         
 		self::$type  = $jinput->post->get('type', 0, '');
-		self::$last  = JRequest::getInt('last', 0 );
+		self::$last  = $jinput->getInt('last', 0 );
         self::$viewName = $jinput->get('view','','STR');
-    	self::$selDivision = JRequest::getInt('division', 0 );
+    	self::$selDivision = $jinput->getInt('division', 0 );
         
         sportsmanagementModelProject::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
         self::$season = $jinput->get('s', 0 ,'');
@@ -277,7 +248,7 @@ else
 	public static function getPreviousGames($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -439,7 +410,7 @@ catch (Exception $e){
 	public static function computeRanking($cfg_which_database = 0,$s=0)
 	{
 		$app	= JFactory::getApplication();
-        
+        $input = $app->input;
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -487,8 +458,8 @@ catch (Exception $e){
 		}
 		else
 		{
-			self::$from = JRequest::getInt( 'from', $firstRound['id'] );
-			self::$to   = JRequest::getInt( 'to', self::$round, $lastRound['id'] );
+			self::$from = $input->getInt( 'from', $firstRound['id'] );
+			self::$to   = $input->getInt( 'to', self::$round, $lastRound['id'] );
 		}
 		if( self::$part > 0 )
 		{
@@ -498,7 +469,7 @@ catch (Exception $e){
 		{
 			$url.='&amp;from='.self::$from.'&amp;to='.self::$to;
 		}
-		self::$type = JRequest::getInt( 'type', 0 );
+		self::$type = $input->getInt( 'type', 0 );
 		if ( self::$type > 0 )
 		{
 			$url.='&amp;type='.self::$type;
@@ -518,8 +489,8 @@ catch (Exception $e){
 		//for sub division ranking tables
 		if ( $project->project_type=='DIVISIONS_LEAGUE' )
 		{
-			$selDivision = JRequest::getInt( 'division', 0 );
-			self::$divLevel = JRequest::getInt( 'divLevel', $tableconfig['default_division_view'] );
+			$selDivision = $input->getInt( 'division', 0 );
+			self::$divLevel = $input->getInt( 'divLevel', $tableconfig['default_division_view'] );
 
 			if ( $selDivision > 0 )
 			{
@@ -553,12 +524,12 @@ catch (Exception $e){
 		}
 		$selectedvalue = 0;
 
-		$last = JRequest::getInt( 'last', 0 );
+		$last = $input->getInt( 'last', 0 );
 		if ($last > 0)
 		{
 			$url .= '&amp;last='.$last;
 		}
-		if ( JRequest::getInt( 'sef', 0) == 1 )
+		if ( $input->getInt( 'sef', 0) == 1 )
 		{
 			$app->redirect( JRoute::_( $url ) );
 		}
@@ -591,7 +562,7 @@ catch (Exception $e){
 
 			
 			//previous rank
-			if( $tableconfig['last_ranking']==1 )
+			if( $tableconfig['last_ranking'] )
 			{
 				if ( self::$to == 1 || ( self::$to == self::$from ) )
 				{
@@ -629,7 +600,7 @@ catch (Exception $e){
 	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $app->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
@@ -688,8 +659,8 @@ catch (Exception $e){
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'ASC', 'STR');
-//		$order     = JRequest::getVar( 'order', '' );
-//		$order_dir = JRequest::getVar( 'dir', 'ASC' );
+//		$order     = JFactory::getApplication()->input->getVar( 'order', '' );
+//		$order_dir = JFactory::getApplication()->input->getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <form>
-	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	<fieldset name= "details"
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field 	name="show_sectionheader" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
@@ -15,7 +15,7 @@
 		</field>
 
 		<field 	name="show_curve" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_CURVE" 
@@ -25,7 +25,7 @@
 		</field>
 		
 		<field 	name="show_colorlegend" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_COLOR" 

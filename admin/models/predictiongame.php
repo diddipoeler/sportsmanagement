@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -67,13 +67,13 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Get a db connection.
         $db = JFactory::getDbo();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -111,7 +111,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
     function import()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         $app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
         
@@ -129,7 +129,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	function getPredictionGame($id=0)
 	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -169,7 +169,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	function getPredictionProjectIDs($prediction_id=0)
 	{
 	   //$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -212,7 +212,7 @@ else
 	 */
 	function storePredictionAdmins($data)
 	{
- 		$option = JRequest::getCmd('option');
+ 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -227,7 +227,7 @@ else
 		if ( count( $peid ) ) { $query .= ' AND user_id NOT IN (' . $peids . ')'; }
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		if( !$this->_db->query() )
+		if( !$this->_db->execute() )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
@@ -239,7 +239,7 @@ else
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
 //echo $query . '<br />';
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
@@ -263,7 +263,7 @@ else
 	 */
 	function storePredictionProjects($data)
 	{
- 		$option = JRequest::getCmd('option');
+ 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -277,7 +277,7 @@ else
 		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project WHERE prediction_id = ' . $data['id'];
 		if (count($peid)){$query .= ' AND project_id NOT IN (' . $peids . ')';}
 		$this->_db->setQuery($query);
-		if(!$this->_db->query())
+		if(!$this->_db->execute())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
@@ -287,7 +287,7 @@ else
 		{
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
 			$this->_db->setQuery($query);
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
@@ -318,7 +318,7 @@ else
 	function deletePredictionAdmins($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -328,7 +328,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -349,7 +349,7 @@ else
 	function deletePredictionProjects($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -360,7 +360,7 @@ else
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project')->where('prediction_id IN ('.$cids.')' );
 
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -381,7 +381,7 @@ else
 	function deletePredictionMembers($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -391,7 +391,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -412,7 +412,7 @@ else
 	function deletePredictionResults($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -422,7 +422,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -442,7 +442,7 @@ else
 	function savePredictionProjectSettings($data)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -537,7 +537,7 @@ else
 	function rebuildPredictionProjectSPoints($cid)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         

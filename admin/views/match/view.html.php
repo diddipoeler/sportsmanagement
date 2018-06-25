@@ -1,41 +1,13 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -66,8 +38,6 @@ JHtml::_( 'behavior.mootools' );
 class sportsmanagementViewMatch extends sportsmanagementView
 {
 
-
-	
 	/**
 	 * sportsmanagementViewMatch::init()
 	 * 
@@ -97,7 +67,7 @@ $this->request_url	= $uri->toString();
         $this->projectws	= $projectws;
         $this->eventsprojecttime	= $projectws->game_regular_time;
         
-        //JRequest::setVar('hidemainmenu', true);
+        //JFactory::getApplication()->input->setVar('hidemainmenu', true);
         
         // get the Data
 		$form = $this->get('Form');
@@ -125,60 +95,66 @@ $this->request_url	= $uri->toString();
         $this->match	= $match;
 		$this->cfg_which_media_tool	= JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         
-        // layout pressebericht
-        if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
-		{
-		$this->setLayout('pressebericht');
-        }  
-        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
-		{
-		$this->initPressebericht();  
-        } 
-        
-        // layout editreferees
-        if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
-		{
-		  $this->setLayout('editreferees');
+        switch ( $this->getLayout() )
+        {
+        case 'pressebericht';
+        case 'pressebericht_3';
+        case 'pressebericht_4';
+        $this->setLayout('pressebericht');
+        break;
+	case 'savepressebericht';
+	case 'savepressebericht_3';		
+	case 'savepressebericht_4';		
+	$this->setLayout('savepressebericht');	
+	$this->_displaySavePressebericht();		
+	break;
+        case 'readpressebericht';
+        case 'readpressebericht_3';
+        case 'readpressebericht_4';
+	$this->setLayout('readpressebericht');
+        $this->initPressebericht(); 
+        break;
+        case 'editreferees';
+        case 'editreferees_3';
+        case 'editreferees_4';
+        $this->setLayout('editreferees');
         $this->initEditReferees();
-        }
-        
-        // layout editevents
-        if ( $this->getLayout() == 'editevents' || $this->getLayout() == 'editevents_3')
-		{
-		$this->setLayout('editevents');
+        break;
+        case 'editevents';
+        case 'editevents_3';
+        case 'editevents_4';
+        $this->setLayout('editevents');
         $this->initEditEevents();
-        }
-        
-        // layout editeventsbb
-        if ( $this->getLayout() == 'editeventsbb' || $this->getLayout() == 'editeventsbb_3')
-		{
+        break;
+        case 'editeventsbb';
+        case 'editeventsbb_3';
+        case 'editeventsbb_4';
+	$this->setLayout('editeventsbb');
         $this->initEditEeventsBB();
-        }
-        
-        // layout editstats
-        if ( $this->getLayout() == 'editstats' || $this->getLayout() == 'editstats_3')
-		{
-		$this->setLayout('editstats');  
-		$this->initEditStats();
-        }
-        
-        // layout editlineup
-        if ( $this->getLayout() == 'editlineup' || $this->getLayout() == 'editlineup_3' )
-		{
-		  $this->setLayout('editlineup');
-		$this->initEditLineup();  
-        }
-        
-        // layout edit
-        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
-		{
-		$this->initEdit();  
-        }
-        
-        // layout picture
-        if ( $this->getLayout() == 'picture' || $this->getLayout() == 'picture_3' )
-		{
-		$this->initPicture();  
+        break;
+        case 'editstats';
+        case 'editstats_3';
+        case 'editstats_4';
+        $this->setLayout('editstats');  
+	$this->initEditStats();
+        break;
+        case 'editlineup';
+        case 'editlineup_3';
+        case 'editlineup_4';
+        $this->setLayout('editlineup');
+	$this->initEditLineup(); 
+        break;
+        case 'edit';
+        case 'edit_3';
+        case 'edit_4';
+        $this->initEdit(); 
+        break;
+        case 'picture';
+        case 'picture_3';
+        case 'picture_4';
+	$this->setLayout('picture');
+        $this->initPicture();   
+        break;
         }
 
 	}
@@ -333,7 +309,7 @@ $this->request_url	= $uri->toString();
 		if ( $matchnumber )
 			{
 				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-				$this->asscsvplayers	= $model->csv_player;   
+				$this->csvplayers = $model->csv_player;   
 				$this->csvinout	= $model->csv_in_out;
 				$this->csvcards	= $model->csv_cards;
 				$this->csvstaff	= $model->csv_staff;
@@ -343,6 +319,12 @@ $this->request_url	= $uri->toString();
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,1,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			$pos->value = $pos->posid;
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_position_id'] = $position_id;
@@ -352,13 +334,19 @@ $this->request_url	= $uri->toString();
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
 		{
+			foreach( $res as $pos )
+			{
+			$pos->text = JText::_( $pos->text );
+			$pos->value = $pos->posid;
+			}
+
 			$position_id = array_merge( $position_id, $res );
 		}
 		$lists['project_staff_position_id'] = $position_id;
 		unset( $position_id );
         
         // events
-		$events = $model->getEventsOptions($this->project_id);
+		$events = $model->getEventsOptions($this->project_id, $matchnumber);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
@@ -370,10 +358,14 @@ $this->request_url	= $uri->toString();
 		
         $lists['events'] = $eventlist;
         unset( $eventlist );
-        
-        $this->lists	= $lists;
-    
-		$this->setLayout('readpressebericht');
+        // build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
+    	$this->setLayout('readpressebericht');
     
     }
     
@@ -474,7 +466,8 @@ $this->request_url	= $uri->toString();
         $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JSession::getFormToken()."=1';" . "\n";
+        //$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JSession::getFormToken()."=1';" . "\n";
+$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement';". "\n";	    
         $javascript .= "var matchid = ".$this->item->id.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
@@ -485,37 +478,7 @@ $this->request_url	= $uri->toString();
         $javascript .= '  });' . "\n";
         $javascript .= "\n";
         
-        
-        $javascript .= "function updatePlayerSelect() {". "\n";
-        //$javascript .= " alert('value -> ' + matchid);";
-        
-        $javascript .= "if(jQuery('#cell-player'))". "\n";
-	    $javascript .= "jQuery('#cell-player').empty().append(". "\n";
-		$javascript .= "getPlayerSelect(jQuery('#team_id')[0].selectedIndex));". "\n";
-            
-        $javascript .= "}". "\n";
-
-
-$javascript .= "function getPlayerSelect(index) {". "\n";
-	$javascript .= "// homeroster and awayroster must be defined globally (in the view calling". "\n";
-	$javascript .= "// the script)". "\n";
-	$javascript .= "var roster = rosters[index];". "\n";
-	$javascript .= "// build select". "\n";
-	$javascript .= "
-    	var select = jQuery(\"<select>\").attr({id: 'teamplayer_id',class:'span3'});
-    
-    
-    ". "\n";
-	$javascript .= "
-    for (var i = 0, n = roster.length; i < n; i++) {
-		select.append(jQuery(\"<option>\").attr({value : roster[i].value}).text(roster[i].text));
-	}
-    
-    
-    ". "\n";
-	$javascript .= "return select;". "\n";
-$javascript .= "}". "\n";
-        
+       
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         
         // mannschaften der paarung
@@ -591,7 +554,7 @@ $javascript .= "}". "\n";
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');  
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editlineup.js');
-        $tid = JRequest::getVar('team','0');
+        $tid = JFactory::getApplication()->input->getVar('team','0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         
@@ -638,7 +601,7 @@ $javascript .= "}". "\n";
 		// build position select
 		$selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
 		$selectpositions = array_merge($selectpositions,$model->getProjectPositionsOptions(0, 1, $this->project_id));
-		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text', NULL, false, true);
+		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', NULL, false, true);
 		
         // build player select
 		//$allplayers = $model->getTeamPlayers($tid);
@@ -766,8 +729,9 @@ $javascript .= "}". "\n";
         
         
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JHtml::_('form.token')."=1';" . "\n";
-        $javascript .= "var matchid = ".$this->item->id.";" . "\n";
+        //$javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement&".JHtml::_('form.token')."=1';" . "\n";
+        $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?option=com_sportsmanagement';". "\n";	   
+	$javascript .= "var matchid = ".$this->item->id.";" . "\n";
         $javascript .= "var teamid = ".$this->tid.";" . "\n";
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
@@ -884,19 +848,21 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return void
      */
-    function _displaySavePressebericht($tpl)
+    function _displaySavePressebericht()
     {
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+	$app = JFactory::getApplication();
+	$jinput = $app->input;
+	$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
+$post = $app->input->post->getArray(array());
+// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
     $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
-    $csv_file_save = $model->savePressebericht();
+    $csv_file_save = $model->savePressebericht($post);
     
     $this->importData	= $model->_success_text;
         
-    parent::display($tpl);    
+   // parent::display($tpl);    
     }
     
     /**
@@ -905,7 +871,7 @@ $javascript .= "}". "\n";
      * @param mixed $tpl
      * @return
      */
-    function _displayPressebericht($tpl)
+    function _displayPressebericht()
     {
         $app = JFactory::getApplication();
 		$jinput = $app->input;
@@ -926,7 +892,7 @@ $this->matchnumber	= $matchnumber;
 if ( $matchnumber )
 {
 $readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-$this->csvplayers	= $model->csv_player;   
+$this->csvplayers = $model->csv_player;   
 $this->csvinout	= $model->csv_in_out;
 $this->csvcards	= $model->csv_cards;
 $this->csvstaff	= $model->csv_staff;
@@ -964,7 +930,13 @@ $this->csvstaff	= $model->csv_staff;
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->lists	= $lists;
+	// build the html select booleanlist
+        $myoptions = array();
+	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['startaufstellung'] = $myoptions;
+	    
+        $this->lists = $lists;
  
         parent::display($tpl);
     }
@@ -982,10 +954,10 @@ $this->csvstaff	= $model->csv_staff;
 	protected function addToolbar_Editeventsbb()
 	{	
 		//set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE' ),'events' );
-		JToolBarHelper::apply( 'match.saveeventbb' );
-		JToolBarHelper::divider();
-		JToolBarHelper::back( 'back', 'index.php?option=com_joomleague&view=matches&task=match.display' );
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE' ),'events' );
+		JToolbarHelper::apply( 'match.saveeventbb' );
+		JToolbarHelper::divider();
+		JToolbarHelper::back( 'back', 'index.php?option=com_joomleague&view=matches&task=match.display' );
 		//JLToolBarHelper::onlinehelp();	
 	}
 	
@@ -1021,45 +993,45 @@ $this->csvstaff	= $model->csv_staff;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-		//JRequest::setVar('hidemainmenu', true);
+		//JFactory::getApplication()->input->setVar('hidemainmenu', true);
 		$jinput = JFactory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : JText::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
+		JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : JText::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('match.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				JToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel('match.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record
-				JToolBarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('match.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) 
 				{
-					JToolBarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					JToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::custom('match.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				JToolbarHelper::custom('match.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolBarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 

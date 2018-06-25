@@ -1,100 +1,126 @@
-<?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
-
-defined('_JEXEC') or die('Restricted access'); 
+<?php
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      deafult_history_leagues.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teaminfo
+ */
+defined('_JEXEC') or die('Restricted access');
+$this->columns = 4;
+$this->divclass = '';
 ?>
-
-
-
 
 <h4>
 
-<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
+    <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_OVERVIEW_SUMMARY'); ?>
 
 </h4>
-
-
-<table class="<?PHP echo $this->config['table_class']; ?>">
-
-<thead>
-<tr class="sectiontableheader">
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?>
-</th>
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?>
-</th>
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?>
-</th>
-
-<th class="" nowrap="" style="background:#BDBDBD;">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?>
-</th>
-
-</tr>
-</thead>
-
 <?php
-	$k=0;
-	foreach ($this->leaguerankoverviewdetail as $league => $summary)
-	{
-	?>
-	<tr
-  class="<?php echo ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2'; ?>">
-	<td><?php echo $league; ?></td>
-	<td><?php echo $summary->match; ?></td>
-	
-	<td><?php echo $summary->won; echo ' / '; ?>
-	<?php echo $summary->draw; echo ' / '; ?>
-	<?php echo $summary->loss; ?></td>
-	
-	<td><?php echo $summary->goalsfor; echo ' : '; ?>
-	<?php echo $summary->goalsagain; ?></td>
-	
-	</tr>
-	<?php
-	$k = 1 - $k;
-	}
-	?>
+/**
+ * tabelle oder bootstrap ansicht
+ */
+if ($this->overallconfig['use_table_or_bootstrap']) {
+    ?>
+    <table class="<?PHP echo $this->config['table_class']; ?>">
 
-</table>
+        <thead>
+            <tr class="sectiontableheader">
+                <th class="" nowrap="" style="background:#BDBDBD;">
+                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?>
+                </th>
+                <th class="" nowrap="" style="background:#BDBDBD;">
+                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?>
+                </th>
+                <th class="" nowrap="" style="background:#BDBDBD;">
+                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?>
+                </th>
 
+                <th class="" nowrap="" style="background:#BDBDBD;">
+                    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?>
+                </th>
 
+            </tr>
+        </thead>
 
+        <?php
+        foreach ($this->leaguerankoverviewdetail as $league => $summary) {
+            ?>
+            <tr
+                class="<?php echo ($k == 0) ? 'sectiontableentry1' : 'sectiontableentry2'; ?>">
+                <td><?php echo $league; ?></td>
+                <td><?php echo $summary->match; ?></td>
+
+                <td><?php echo $summary->won;
+        echo ' / ';
+            ?>
+                    <?php echo $summary->draw;
+                    echo ' / ';
+                    ?>
+                    <?php echo $summary->loss; ?></td>
+
+                <td><?php echo $summary->goalsfor;
+                    echo ' : ';
+                    ?>
+            <?php echo $summary->goalsagain; ?></td>
+
+            </tr>
+        <?php
+    }
+    ?>
+
+    </table>
+    <?php
+} else {
+    /**
+     * welche bootstrap version
+     */
+    $params = JComponentHelper::getParams('com_sportsmanagement');
+
+    if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
+        $this->divclass = 'col p-2';
+    } elseif ($this->overallconfig['use_bootstrap_version'] && !$params->get('use_jsmgrid')) {
+        //$this->divclass = 'col p-2';
+        $this->divclass .= "col-xs-" . round((12 / $this->columns));
+        $this->divclass .= " col-sm-" . round((12 / $this->columns));
+        $this->divclass .= " col-md-" . round((12 / $this->columns));
+        $this->divclass .= " col-lg-" . round((12 / $this->columns));
+    } else {
+        $this->divclass = "span" . round((12 / $this->columns));
+    }
+    ?>
+<!--    <div class="container-fluid no-gutters">-->
+        <div class="row no-gutters">
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL'); ?></div>    
+            <div class=" <?php echo $this->divclass; ?>" style="background:#BDBDBD;"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS'); ?></div>
+        </div>
+        <?php
+        foreach ($this->leaguerankoverviewdetail as $league => $summary) {
+            ?>
+            <div class="row no-gutters">
+                <div class="<?php echo $this->divclass; ?>"><?php echo $league; ?></div>
+                <div class="<?php echo $this->divclass; ?>"><?php echo $summary->match; ?></div>
+                <div class="<?php echo $this->divclass; ?>"><?php echo $summary->won;
+        echo ' / ';
+            ?>
+                    <?php echo $summary->draw;
+                    echo ' / ';
+                    ?>
+                    <?php echo $summary->loss; ?></div>
+                <div class="<?php echo $this->divclass; ?>"><?php echo $summary->goalsfor;
+            echo ' : ';
+            ?>
+            <?php echo $summary->goalsagain; ?></div>
+            </div>	
+        <?php
+    }
+    ?>
+
+    <!--</div>-->
+    <?php
+}
+?> 

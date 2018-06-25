@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -105,10 +105,10 @@ defined('_JEXEC') or die('Restricted access');
   bottom: 30px; /* 40 cos(45) = 28 with an additional 2px margin*/
   left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
   display: inline-block;
-  // width: 100%;
+  /* width: 100%;
   width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
   text-align: left;
-  // white-space: nowrap; /*whether to display in one line or not*/
+  /* white-space: nowrap; /*whether to display in one line or not*/
 }
  
 .rotate_text
@@ -139,7 +139,7 @@ defined('_JEXEC') or die('Restricted access');
          white-space:nowrap; 
          vertical-align:bottom;
          position: relative;
-         //position: absolute; 
+         /*position: absolute; */
       }
    </style>
 <!--<![endif]--> 
@@ -177,7 +177,7 @@ defined('_JEXEC') or die('Restricted access');
             {
                 
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug,NULL,JRequest::getInt('cfg_which_database',0));
+				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 				//$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $teamnumber .', ' . $team_row_header->$name;
@@ -216,8 +216,8 @@ defined('_JEXEC') or die('Restricted access');
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $trow->team_slug;
 $routeparameter['ptid'] = 0;
@@ -258,7 +258,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routepar
 			// find the corresponding game
 			$Allresults = '';
 			foreach ($this->results as $result) {
-				if($team_row->division_id != $division_id) continue;
+                                if($team_row->division_id != $division_id) {continue;}
 				if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
                 {
 					$ResultType = '';
@@ -310,16 +310,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routepar
 					if ($result->show_report == 1 || $this->config['force_link_report'] == 1) {
 						$showMatchReportLink = true;
 					}
-					if ($result->show_report == 0 && $e1 == "" && $e2 == "")
+					if ($result->show_report == 0 && $e1 == "" && $e2 == ""){
 						$showMatchReportLink = true;
+                                        }
 					if ($showMatchReportLink) {
 						//if ((($this->config['force_link_report'] == 1) && ($result->show_report == 1) && ($e1 != "") && ($e2 != ""))) {
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
 						$routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $result->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -352,7 +353,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id,JRequest::getInt('cfg_which_database',0));
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -376,7 +377,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$match_result = JHTML::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id,JRequest::getInt('cfg_which_database',0));
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = JHTML::link($link, $desc);
@@ -404,7 +405,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid,0,0,0,NULL,JRequest::getInt('cfg_which_database',0));
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid,0,0,0,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);

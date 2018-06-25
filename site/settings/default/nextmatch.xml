@@ -3,18 +3,18 @@
 	<name><![CDATA[COM_SPORTSMANAGEMENT_FES_NEXTMATCH_NAME]]></name>
 	<description><![CDATA[COM_SPORTSMANAGEMENT_FES_NEXTMATCH_DESCR]]></description>
 
-	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
    description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field name="show_sectionheader" type="radio" default="1"
+		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_SECTIONHEADER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="show_nextmatch_tabs" type="radio" default="no_tabs"
+    <field name="show_nextmatch_tabs" type="extensionradiobutton" default="no_tabs"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_RESULT_TABS">
@@ -23,21 +23,21 @@
 			<option value="show_slider">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_SLIDER</option>
 		</field>
 		
-		<field name="show_nextmatch" type="radio" default="1"
+		<field name="show_nextmatch" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_NEXTMATCH" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_NEXTMATCH">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_details" type="radio" default="1"
+		<field name="show_details" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_DETAILS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_DETAILS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-    <field 	name="show_commentary" type="radio" default="1" 
+    <field 	name="show_commentary" type="extensionradiobutton" default="1" 
     class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_COMMENTARY"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_COMMENTARY">
@@ -45,28 +45,28 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_preview" type="radio" default="1"
+		<field name="show_preview" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_PREVIEW" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_PREVIEW">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_stats" type="radio" default="1"
+		<field name="show_stats" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_STATS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_history" type="radio" default="1"
+		<field name="show_history" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_HISTORY" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_HISTORY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_previousx" type="radio" default="1"
+		<field name="show_previousx" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_PREVIOUSX" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_PREVIOUSX">
 			<option value="0">JNO</option>
@@ -77,7 +77,7 @@
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_NB_PREVIOUSX" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_NB_PREVIOUSX">
 		</field>		
 
-		<field name="show_thumbs_picture" type="radio" default="1"
+		<field name="show_thumbs_picture" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_THUMBS_PICTURE" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_THUMBS_PICTURE">
 			<option value="0">JNO</option>
@@ -94,42 +94,42 @@
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_NAME_FORMAT" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_NAME_FORMAT">
 		</field>
 
-        <field 	name="show_match_number" type="radio" default="0" class="radio btn-group btn-group-yesno"
+        <field 	name="show_match_number" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCH_NUMBER"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCH_NUMBER">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field 	name="show_match_date" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+        <field 	name="show_match_date" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCH_DATE"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCH_DATE">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field 	name="show_match_time" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+        <field 	name="show_match_time" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCH_TIME"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCH_TIME">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field 	name="show_time_present" type="radio" default="1" class="radio btn-group btn-group-yesno"
+        <field 	name="show_time_present" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_TIME_PRESENT"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_TIME_PRESENT">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field 	name="show_match_playground" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+        <field 	name="show_match_playground" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCH_PLAYGROUND"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCH_PLAYGROUND">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field 	name="show_match_referees" type="radio" default="1" class="radio btn-group btn-group-yesno"
+        <field 	name="show_match_referees" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
                    label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCH_REFEREES"
                    description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCH_REFEREES">
             <option value="0">JNO</option>
@@ -139,91 +139,91 @@
         <field type="spacer">
         </field>
 
-		<field name="show_chances" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_chances" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_CHANCES" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_CHANCES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_current_rank" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_current_rank" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_CURRENTRANK" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_CURRENTRANK">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_count" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_count" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHCOUNT" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHCOUNT">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_total" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_total" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHTOTAL" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHTOTAL">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_total_home" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_total_home" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHTOTAL_HOME" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHTOTAL_HOME">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_total_away" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_total_away" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHTOTAL_AWAY" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHTOTAL_AWAY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_points" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_points" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHPOINTS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHPOINTS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_goals" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_goals" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_MATCHGOALS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_MATCHGOALS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_diff" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_diff" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_DIFFERENCE" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_DIFFERENCE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_highest_stats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field name="show_match_highest_stats" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_RECORDS" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_RECORDS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_highest_won" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_highest_won" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_HIGH_WIN_HOME" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_HIGH_WIN_HOME">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_highest_loss" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_highest_loss" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_HIGH_LOSS_HOME" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_HIGH_LOSS_HOME">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_highest_won_away" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_highest_won_away" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_HIGH_WIN_AWAY" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_HIGH_WIN_AWAY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_match_highest_loss_away" type="radio" default="1" class="radio btn-group btn-group-yesno"
+		<field name="show_match_highest_loss_away" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_HIGH_LOSS_AWAY" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_HIGH_LOSS_AWAY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_time_suffix" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_time_suffix" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_TIME_SUFFIX" 
 				description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_TIME_SUFFIX">
 			<option value="0">JNO</option>
@@ -236,7 +236,7 @@
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS2">	
 			
-		<field 	name="show_logo" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_logo" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_CLUBLOGO" 
 				description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_CLUBLOGO">
 			<option value="0">JNO</option>
@@ -261,7 +261,7 @@
 		</field>
 		
 		
-		<field 	name="show_team_picture" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+		<field 	name="show_team_picture" type="extensionradiobutton" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_TEAM_PICTURE" 
 				description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_TEAM_PICTURE">
 			<option value="0">JNO</option>

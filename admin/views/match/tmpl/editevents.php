@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      editevents.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
@@ -50,10 +22,9 @@ JHtml::_('behavior.formvalidation');
 
 #echo '#<pre>'; print_r($this->rosters); echo '</pre>#';
 
-
 ?>
 <script type="text/javascript">
-<!--
+
 var homeroster = new Array;
 <?php
 $i = 0;
@@ -104,12 +75,22 @@ foreach ($this->rosters['away'] as $player)
 ?>
 var rosters = Array(homeroster, awayroster);
 
-
-//-->
 </script>
 
+<?php
+//save and close 
+$close = JFactory::getApplication()->input->getInt('close',0);
+if($close == 1) {
+	?><script>
+	window.addEvent('domready', function() {
+		$('cancel').onclick();	
+	});
+	</script>
+	<?php 
+}
+?>
 
-
+	
 <form   id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
@@ -119,7 +100,7 @@ var rosters = Array(homeroster, awayroster);
 <div id="ajaxresponse" ></div>
 	<fieldset>
 		<div class="fltrt">
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >
@@ -129,7 +110,7 @@ var rosters = Array(homeroster, awayroster);
 	
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_DESCR'); ?></legend>
-			<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
+			<!-- Dont remove this as it is neede for ajax changings -->
 			<div id="ajaxresponse"></div>
 			<table id="table-event" class='adminlist'>
 				<thead>
@@ -157,7 +138,7 @@ var rosters = Array(homeroster, awayroster);
 						{
 							if ($event->event_type_id != 0) {
 							?>
-							<tr id="row-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
+							<tr id="rowevent-<?php echo $event->id; ?>" class="<?php echo "row$k"; ?>">
 								<td><?php echo $event->team; ?></td>
 								<td>
 								<?php

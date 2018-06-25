@@ -31,7 +31,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function getListQuery()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -39,8 +39,8 @@ class sportsmanagementModelTeamStaffs extends JModelList
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_team_id        = JRequest::getVar('team_id');
-        $this->_project_team_id        = JRequest::getVar('project_team_id');
+        $this->_team_id        = JFactory::getApplication()->input->getVar('team_id');
+        $this->_project_team_id        = JFactory::getApplication()->input->getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
@@ -96,7 +96,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function _buildContentOrderBy()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		//$filter_order		= $app->getUserStateFromRequest($option.'ts_filter_order',		'filter_order',		'ppl.ordering',	'cmd');
         $filter_order		= $app->getUserStateFromRequest($option.'ts_filter_order','filter_order','ts.ordering','cmd');
@@ -114,7 +114,7 @@ class sportsmanagementModelTeamStaffs extends JModelList
 
 	function _buildContentWhere()
 	{
-		$option 		= $option = JRequest::getCmd('option');
+		$option 		= $option = JFactory::getApplication()->input->getCmd('option');
 		$app		= JFactory::getApplication();
 		//$project_id		= $app->getUserState($option.'project');
 		//$team_id		= $app->getUserState($option.'project_team_id');

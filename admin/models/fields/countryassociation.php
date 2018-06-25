@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -75,7 +75,7 @@ class JFormFieldcountryassociation extends JFormFieldList
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar($varname);
+		$select_id = JFactory::getApplication()->input->getVar($varname);
  		if (is_array($select_id)) {
  			$select_id = $select_id[0];
  		}

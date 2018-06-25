@@ -31,8 +31,8 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document	=& JFactory::getDocument();
 		$model		=& $this->getModel();
-    $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
+    $option = JFactory::getApplication()->input->getCmd('option');
+    $optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
     $this->optiontext = $optiontext;
     
 		$app = JFactory::getApplication();

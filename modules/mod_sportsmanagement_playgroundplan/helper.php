@@ -1,46 +1,16 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_playgroundplan
+ */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
-
 
 /**
  * modSportsmanagementPlaygroundplanHelper
@@ -65,8 +35,8 @@ class modSportsmanagementPlaygroundplanHelper
 	   $app = JFactory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
-		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
-		$playgroundstring = (is_array($usedpid)) ? implode(",", $usedpid) : $usedpid;
+		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : (int)$usedp;
+		$playgroundstring = (is_array($usedpid)) ? implode(",", array_map('intval',$usedpid) ) : (int)$usedpid;
 
 		$numberofmatches = $params->get('maxmatches','5');
 
@@ -131,21 +101,22 @@ class modSportsmanagementPlaygroundplanHelper
 		}
         
         $query->order('m.match_date ASC');
-        //$query->setLimit($numberofmatches);
 
 			
 		$db->setQuery($query,0,$numberofmatches);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-        //echo ' <br><pre>'.print_r($query->dump(),true).'</pre>';
-        
+        try{ 
 		$info = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-        if ( !$info )
-        {
-            //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
+}
+catch (Exception $e){
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
+	$info = false;
+}
 
 		return $info;
 	}
@@ -166,14 +137,23 @@ class modSportsmanagementPlaygroundplanHelper
        $query->select($teamformat);
        $query->from('#__sportsmanagement_team AS t ');
        $query->where('t.id ='.(int)$team1_id);
-
 		
 		$db->setQuery( $query );
         
-        //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+try{        
 		$team_name = $db->loadResult();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+}
+catch (Exception $e){
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
+	$team_name = false;
+}
+
+
 
 		return $team_name;
 	}
@@ -194,12 +174,10 @@ class modSportsmanagementPlaygroundplanHelper
        $query->from('#__sportsmanagement_team AS t ');
        $query->join('LEFT',' #__sportsmanagement_club as c ON c.id = t.club_id ');
        $query->where('t.id ='.$team_id);
-       
-	
+       	
 		$db->setQuery( $query );
         
-        //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       try{
 		$club_logo = $db->loadResult();
 
 		if ($club_logo == '') 
@@ -220,6 +198,16 @@ class modSportsmanagementPlaygroundplanHelper
 
 		}
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        }
+catch (Exception $e){
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
+	$club_logo = false;
+}
+        
 		return $club_logo;
 	}
 }

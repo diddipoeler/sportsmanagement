@@ -1,48 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      team.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
- 
 
 /**
  * sportsmanagementModelteam
@@ -85,24 +56,33 @@ class sportsmanagementModelteam extends JSMModelAdmin
      * @param mixed $team_id
      * @return
      */
-    public static function getTeamLogo($team_id)
+    public static function getTeamLogo($team_id, $club_logo = 'small')
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+        $option = JFactory::getApplication()->input->getCmd('option');
+	$db = JFactory::getDbo();
+	$query = $db->getQuery(true);
         
         // Select some fields
-		$query->select('c.logo_small,c.country,t.name,t.id as team_id');
+	$query->select('c.logo_'.$club_logo.' as logo_small,c.country,t.name,t.id as team_id');
         // From table
-		$query->from('#__sportsmanagement_team t');
+	$query->from('#__sportsmanagement_team as t');
         $query->join('LEFT', '#__sportsmanagement_club c ON c.id = t.club_id');
         $query->where('t.id = '.$team_id);
         
 
         $db->setQuery( $query );
+	try{    
         $result = $db->loadObjectList();
-
+ }
+catch (Exception $e){
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+$app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');	
+	$result = false;
+}	
+	    
         return $result;
     }
     
@@ -115,7 +95,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	function getTeam($team_id=0,$pro_team_id=0)
 	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //		$db		= JFactory::getDbo();
 //		$query	= $db->getQuery(true);
         $this->jsmquery->clear();
@@ -137,7 +117,20 @@ class sportsmanagementModelteam extends JSMModelAdmin
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		return $this->jsmdb->loadObject();
+		//return $this->jsmdb->loadObject();
+try{
+            $result = $this->jsmdb->loadObject();
+		 }
+catch (Exception $e){
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+$code = $e->getCode(); // Returns '500';
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+	$result = false;
+}	
+	
+	return $result;
+	
+	
 	}
  
     /**
@@ -149,7 +142,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	*/
     function DeleteTrainigData($id)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
     $db = JFactory::getDbo();
@@ -165,7 +158,7 @@ $query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingda
 $query->where($conditions);
  
 $db->setQuery($query);    
-if (!$db->query())
+if (!$db->execute())
 		{
 			
             $app->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -189,7 +182,7 @@ if (!$db->query())
 	*/
     function UpdateTrainigData($post)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -243,7 +236,7 @@ if (!$db->query())
 	*/
 	function getTrainigData($team_id=0,$pro_team_id=0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         //$db		= $this->getDbo();
 		$query	= JFactory::getDbo()->getQuery(true);
@@ -285,7 +278,7 @@ if (!$db->query())
 	*/
     function addNewTrainigData($team_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
         // Get a db connection.
@@ -304,7 +297,7 @@ if (!$db->query())
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 			
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -329,17 +322,17 @@ if (!$db->query())
     public function saveshort()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

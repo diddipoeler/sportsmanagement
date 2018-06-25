@@ -148,19 +148,6 @@ if (selected == 2)
 	
 }
 
-function registerhome(homepage,notes,homepagename,isadmin)
-	{
-var url='http://sportsmanagement.fussballineuropa.de/jsmpaket.php';		
-var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var url2='http://sportsmanagement.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
-                        		
-		}
-
 
 function registerproject(homepage,project,homepagename,isadmin)
 	{

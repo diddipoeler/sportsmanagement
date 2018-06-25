@@ -40,10 +40,19 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						 >
-    <field name="spacer0" type="spacer" class="text" label=""/>       
-
-    <field name="cfg_which_database" 
-    type="radio" 
+						 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Matchesslider" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+						 
+    <field name="cfg_which_database"
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -52,10 +61,7 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="spacer1" type="spacer" class="text" label=""/>
-    <field name="spacer2" type="spacer" class="text" label=""/>
- 
- <field	name="s" 
+ <field	name="s"
     task="seasons" 
       type="dependsql"
       depends="cfg_which_database"
@@ -66,12 +72,7 @@
 					required="">
 			</field>
       
-      <field name="spacer3" type="spacer" class="text" label=""/>
-      <field name="spacer4" type="spacer" class="text" label=""/> 
-			
-			<field type="jsmsubtitle" title="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FIELD_THEMES_LABEL" />
-			
-			<field 	name="project" 
+			<field 	name="project"
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -87,13 +88,21 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
 -->
-				<field 	name="project_season" type="radio" default="1"
+				<field 	name="project_season" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>		
+				</field>
+
+				<field name="slide_direction" type="list" default="backwards"
+					   class="radio btn-group btn-group-yesno"
+					   label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION"
+					   description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_DESCR">
+					<option value="backwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_LEFT_TO_RIGHT</option>
+					<option value="forwards">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_SLIDE_DIRECTION_RIGHT_TO_LEFT</option>
+				</field>
 
 			</fieldset>
 
@@ -129,7 +138,7 @@
             -->
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
-				<field 	name="show_picture" type="radio" default="1"
+				<field 	name="show_picture" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
@@ -200,7 +209,7 @@
             
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
             
-            <field 	name="use_fav" type="radio" default="0" 
+            <field 	name="use_fav" type="extensionradiobutton" default="0" 
             class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">

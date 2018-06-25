@@ -1,5 +1,13 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      view.html.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage treetonodes
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -7,9 +15,23 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewTreetonodes
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewTreetonodes extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewTreetonodes::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		//$app = JFactory::getApplication();
@@ -24,9 +46,14 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	//	parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewTreetonodes::_displayDefault()
+	 * 
+	 * @return void
+	 */
 	function _displayDefault()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();
@@ -111,6 +138,11 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	}
     
     
+    	/**
+    	 * sportsmanagementViewTreetonodes::addToolBar()
+    	 * 
+    	 * @return void
+    	 */
     	protected function addToolBar()
 	{
 	  // $istree = $this->treetows->tree_i;
@@ -119,33 +151,33 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
        switch ($this->treetows->leafed)
        {
        case 1:
-       JToolBarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
-	   JToolBarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
+       JToolbarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
+	   JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
        break;
        case 2:
-       JToolBarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
-       JToolBarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       JToolbarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
+       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break; 
        case 3:
-       JToolBarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
-       JToolBarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       JToolbarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
+       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break;  
         
        }
        parent::addToolbar();
    // if( $this->treetows->leafed == 1 )
 //	{
-//	JToolBarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
-//	JToolBarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
+//	JToolbarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
+//	JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
 //	}
 //	elseif( $this->treetows->leafed )
 //	{
-//	JToolBarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
+//	JToolbarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
 //	if( $this->treetows->leafed == 3 )
 //	{
-//	JToolBarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
+//	JToolbarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
 //	}
-//	JToolBarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+//	JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
 //	}
        
       } 

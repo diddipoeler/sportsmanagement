@@ -5,6 +5,11 @@ var windowHeight = jQuery(window).height(); //retrieve current window height
 //var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
 //var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
+var windowObjectReference = null; // global variable
+var PreviousUrl; /* global variable which will store the
+                    url currently in the secondary window */
+
+
 jQuery(document).ready(function(){
 console.log("document.URL : "+document.URL);
 console.log("document.location.href : "+document.location.href);
@@ -13,9 +18,45 @@ console.log("document.location.hostname : "+document.location.hostname);
 console.log("document.location.host : "+document.location.host);
 console.log("document.location.pathname : "+document.location.pathname);
 console.log("title : "+jQuery("title").text());
-registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
+
+console.log("current window width : "+windowWidth );
+console.log("current window height : "+windowHeight );
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+
 //    alert("Embedded block of JS here");
 });
+
+function openRequestedSinglePopup(strUrl,Width,Height) {
+
+Width = (screen.width/2);
+Height = (screen.height/2);	
+var left = (screen.width/2)-(Width/2);
+var top = (screen.height/2)-(Height/2);
+
+  if(windowObjectReference == null || windowObjectReference.closed) {
+    windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
+         "resizable,scrollbars,status,width=" + Width  + ",height=" + Height + ",top="+top+", left="+left);
+  } else if(PreviousUrl != strUrl) {
+    windowObjectReference = window.open(strUrl, "SingleSecondaryWindowName",
+      "resizable=yes,scrollbars=yes,status=yes,width=" + Width  + ",height=" + Height + ",top="+top+", left="+left);
+    /* if the resource to load is different,
+       then we load it in the already opened secondary window and then
+       we bring such window back on top/in front of its parent window. */
+    windowObjectReference.focus();
+  } else {
+    windowObjectReference.focus();
+  };
+
+  PreviousUrl = strUrl;
+  /* explanation: we store the current url in order to compare url
+     in the event of another call of this function. */
+}
+
+
+
+
+
 
 function get_documentWidth()
 {
@@ -46,6 +87,8 @@ return documentHeight - 100 ;
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
+console.log("move_list_items sourceid : "+sourceid);
+console.log("move_list_items destinationid : "+destinationid);
 
 //alert(sourceid);
 //alert(destinationid);
@@ -158,24 +201,6 @@ if (selected == 2)
 }
 	
 }
-
-function registerhome(homepage,notes,homepagename,isadmin)
-	{
-var url='http://www.fussballineuropa.de/jsmpaket.php';		
-var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-jQuery.ajax({
-						  type: 'POST',
-						  url: url,
-						  //url: "index.php?option=com_content&id=6",
-	  					  //dataType: "json"
-						  //dataType: "html",
-						  data: data
-						  //success: function(msg, response){alert( "Data Saved: " + msg );}
-						});                    		
-		
-		}
-
 
 function registerproject(homepage,project,homepagename,isadmin)
 	{

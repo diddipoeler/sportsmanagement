@@ -1,48 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      predictionmembers.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage controllers
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
- 
 
 /**
  * sportsmanagementControllerpredictionmembers
@@ -85,7 +56,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     {
     	
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->save_memberlist();
@@ -115,29 +86,12 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 */
 	function reminder()
 	{
-//	   // Reference global application object
-//        $this->jsmapp = JFactory::getApplication();
-//        // JInput object
-//        $this->jsmjinput = $this->jsmapp->input;
-        
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
-//		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
-
-//		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
-		//$post = JRequest::get( 'post' );
+/**
+ * This will send an email to all members of the prediction game with reminder option enabled. Are you sure?
+ */
         $post = $this->jsmjinput->post->getArray();
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-        
-		//$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
         $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
-        
-		$pgmid = JRequest::getVar( 'prediction_id', 0, 'post', 'INT' );
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pgmid<br><pre>'.print_r($pgmid,true).'</pre>'),'Notice');
-//		$post['id'] = (int) $cid[0];
-//		$post['predgameid'] = (int) $pgmid[0];
-//		echo '<pre>'; print_r($post); echo '</pre>';
-
+		$pgmid = JFactory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
 
 		if ( $pgmid == 0 )
 		{
@@ -163,9 +117,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function publish()
 	{
-		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -189,9 +143,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function unpublish()
 	{
-		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -223,9 +177,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     
 		$d		= ' - ';
 		$msg	= '';
-		$cid	= JRequest::getVar('cid',array(),'post','array');
+		$cid	= JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 		JArrayHelper::toInteger($cid);
-		$prediction_id	= JRequest::getInt('prediction_id',(-1),'post');
+		$prediction_id	= JFactory::getApplication()->input->getInt('prediction_id',(-1),'post');
 		//echo '<pre>'; print_r($cid); echo '</pre>';
 
 		if (count($cid) < 1)

@@ -1,44 +1,15 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      nextmatch.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage nextmatch
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.application.component.model');
 
 /**
@@ -85,7 +56,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT' );
         self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database',0, 'INT');
         
-        sportsmanagementModelProject::$projectid = self::$projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid;
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;  
         
         if ( self::$projectteamid )
         {
@@ -105,7 +77,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function getSpecifiedMatch($projectId, $projectTeamId, $matchId)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -165,6 +137,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 				self::$matchid = $this->_match->id;
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_match;
 	}
 
@@ -175,7 +148,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function getMatch()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -192,16 +165,18 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id ');
         $query->join('LEFT','#__sportsmanagement_playground AS pl ON pl.id = m.playground_id ');
         $query->where('m.id = '. self::$matchid );
-            
-			$db->setQuery($query, 0, 1);
-            
-        if ( !$db->loadObject() )
-	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
         
-			$this->_match = $db->loadObject();
+        try{    
+		$db->setQuery($query, 0, 1);
+        $this->_match = $db->loadObject();    
+        }
+	    catch (Exception $e)
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        }
+        			
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $this->_match;
 	}
 	
@@ -251,7 +226,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
     function getReferees()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -259,7 +234,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		$match = self::getMatch();
         
         // Select some fields
-		$query->select('p.firstname, p.nickname, p.lastname, p.country, p.id as person_id');
+	$query->select('p.firstname, p.nickname, p.lastname, p.country, p.id as person_id');
         $query->select('pos.name AS position_name');
         $query->from('#__sportsmanagement_match_referee AS mr  ');
         $query->join('INNER','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id = pref.id  ');
@@ -341,13 +316,13 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function _getHighestMatches($teamid,$whichteam,$gameart)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
         // Select some fields
-		$query->select('m.id AS mid,m.team1_result AS homegoals,m.team2_result AS awaygoals');
+	$query->select('m.id AS mid,m.team1_result AS homegoals,m.team2_result AS awaygoals');
         $query->select('t1.name AS hometeam');
         $query->select('t2.name AS awayteam');
         $query->select('pt1.project_id AS pid');
@@ -543,7 +518,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function getGames( )
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -590,12 +565,12 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->where('p.published = 1');
         $query->where('m.published = 1');
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
-        $query->group('m.id');
+        //$query->group('m.id');
         $query->order('s.name DESC, m.match_date ASC');
   
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
-
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -610,7 +585,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function getTeamsFromMatches( & $games, $config=array() )
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -657,21 +632,23 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         }
         
         $query->where('pt.id IN ('.$listTeamId.')' );
-                 
+        try{         
 		$db->setQuery( $query );
 		$result = $db->loadObjectList();
-        
-        if ( !$result )
-	    {
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-
 		foreach ( $result as $r )
 		{
 			$teams[$r->ptid] = $r;
 		}
-
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $teams = false;
+}
+        
+        
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teams;
 	}
 
@@ -748,7 +725,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function _getTeamPreviousX($current_roundcode, $ptid, $config=array())
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -806,21 +783,21 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->where('(m.projectteam1_id = '.$ptid.' OR m.projectteam2_id = '.$ptid.')');
         $query->where('m.published = 1');
         $query->order('r.roundcode DESC');
-        //$query->setLimit('0,'.$nblast);
-              
+
+        try{      
 		$db->setQuery($query,0,$nblast);
 		$res = $db->loadObjectList();
-        
-        if ( !$res && $db->getErrorNum() )
-	    {
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');   
-	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');   
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
 		if ($res) {
 			$res = array_reverse($res);
 		}
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $res = false;
+}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect		
 		return $res;
 	}
 }

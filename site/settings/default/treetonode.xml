@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<form>
+	<fieldset name="details"
+	label="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS"
+		group="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_PAGE_ELEMENTS" 
+		description="COM_SPORTSMANAGEMENT_FES_FIELDS_DESCR_PAGE_ELEMENTS">
+
+		<field name="show_sectionheader" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_FIELD_LABEL_SHOW_SECTIONHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_FIELD_DESCR_SHOW_SECTIONHEADER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_treeoverlib" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB" description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_treeheader" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_TREEHEADER"
+			description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_TREEHEADER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+
+	<fieldset name="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_OPTIONS"
+	label="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_OPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_FIELDS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_FIELDS_DESCR_OPTIONS"
+		addfieldpath ="/administrator/components/com_sportsmanagement/elements">
+
+		<field name="tree_bracket_type" type="list" default="0"
+			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_BRACKET_TYPE" description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_BRACKET_TYPE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_BRACKET_TYPE_OW
+			</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_BRACKET_TYPE_OB
+			</option>
+		</field>
+
+		<field name="tree_bg_colour" type="colorpicker" default="#c0c0c0"
+			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FIELDCOLOR" description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FIELDCOLOR">
+		</field>
+
+		<field name="tree_field_fontsize" type="text" default="8"
+			label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FONTSIZE" description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FONTSIZE">
+		</field>
+
+		<field 	name="tree_border_colour" type="colorpicker" default="#c0c0c0"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FIELDBORDERCOLOR"
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FIELDBORDERCOLOR">
+		</field>
+
+	
+
+		<field 	name="tree_field_width" type="text" default="75"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FIELDWIDTH" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FIELDWIDTH">
+		</field>
+
+		<field 	name="name_team_type" type="list" default="2" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_LENGTHNAME" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_LENGTHNAME">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_SHORT</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_MIDDLE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_LONG</option>
+		</field>
+
+		<field 	name="show_teamname_link" type="list" default="0" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_TEAMNAME_LINK" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_TEAMNAME_LINK">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMPLAN</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMINFO</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMSTATS</option>
+		</field>
+
+		<field	name="highlight_fav" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_HIGHLIGHT_FAV"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_HIGHLIGHT_FAV">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_logo_small_flag" type="list" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_SHOW_LOGO_SMALL"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_SHOW_LOGO_SMALL">
+			<option value="0">JNO</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION1_LOGO_SMALL</option>
+			<option value="3">COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO</option>
+			<option value="4">COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION2_LOGO_SMALL</option>
+		</field>
+
+		<field type="spacer">
+		</field>
+
+		<field 	name="tree_field_width_leaf" type="text" default="75"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FIELDWIDTH_LEAF" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FIELDWIDTH">
+		</field>
+
+		<field 	name="name_team_type_leaf" type="list" default="2" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_LENGTHNAME_LEAF" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_LENGTHNAME">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_SHORT</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_MIDDLE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_LONG</option>
+		</field>
+
+		<field 	name="show_teamname_link_leaf" type="list" default="0" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_TEAMNAME_LINK_LEAF" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_TEAMNAME_LINK">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMPLAN</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMINFO</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_TEAMNAME_LINK_TEAMSTATS</option>
+		</field>
+
+		<field	name="show_logo_small_flag_leaf" type="list" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_LOGO_SMALL_LEAF"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_SHOW_LOGO_SMALL">
+			<option value="0">JNO</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION1_LOGO_SMALL</option>
+			<option value="3">COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_MEDIUM_LOGO</option>
+			<option value="4">COM_SPORTSMANAGEMENT_FES_CLUBS_PARAM_LABEL_SHOW_BIG_LOGO</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION2_LOGO_SMALL</option>
+		</field>
+	</fieldset>
+	
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_OVERLIB_OPTIONS" 
+	label= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_OVERLIB_OPTIONS" 
+		description="COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_DESCR_OVERLIB_OPTIONS">
+
+		<field 	name="show_overlib_left_right" type="extensionradiobutton" default="1" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_LR" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_LR">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_LR_LEFT</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_LR_RIGHT</option>
+		</field>
+
+		<field 	name="show_overlib_below_above" type="extensionradiobutton" default="1" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_BA" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_BA">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_BA_BELOW</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_OVERLIB_BA_ABOVE</option>
+		</field>
+
+		<field 	name="show_overlib_seed" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_OVERLIB_SEED" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_OVERLIB_SEED">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="overlib_result_style" type="list" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_RESULT_STYLE"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_RESULT_STYLE">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION0_RESULT_STYLE</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION1_RESULT_STYLE</option>
+		</field>
+
+		<field 	name="overlib_name_team_type" type="list" default="2" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_LENGTHNAME" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_LENGTHNAME">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_SHORT</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_MIDDLE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_LENGTHNAME_LONG</option>
+		</field>
+
+		<field	name="show_playground" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_SHOW_PLAYGROUND"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_SHOW_PLAYGROUND">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field	name="show_playground_name" type="list" default="shortname"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_LABEL_SHOW_PLAYGROUND_NAME"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_DESCR_SHOW_PLAYGROUND_NAME">
+			<option value="name">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION0_SHOW_PLAYGROUND_NAME</option>
+			<option value="shortname">COM_SPORTSMANAGEMENT_FES_RESULTS_FIELD_OPTION1_SHOW_PLAYGROUND_NAME</option>
+		</field>
+	</fieldset>
+
+	<fieldset name= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_TREEHEADER_OPTIONS" 
+	label= "COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_GROUP_TREEHEADER_OPTIONS" 
+		description="COM_SPORTSMANAGEMENT_FES_TREE_FIELDS_DESCR_TREEHEADER_OPTIONS">
+
+		<field 	name="show_round_date" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_ROUND_DATE" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_ROUND_DATE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field 	name="show_name_from" type="extensionradiobutton" default="0" 
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_SHOW_NAME_FROM" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_SHOW_NAME_FROM">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_FROM_MATCHDAY</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TREE_FIELD_OPTION_SHOW_FROM_HERE</option>
+		</field>
+
+		<field 	name="tree_name_0" type="text" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_0" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+		<field 	name="tree_name_1" type="text" default="2"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_1" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+		<field 	name="tree_name_2" type="text" default="3"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_2" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+		<field 	name="tree_name_3" type="text" default="4"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_3" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+		<field 	name="tree_name_4" type="text" default="5"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_4" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+		<field 	name="tree_name_5" type="text" default="6"
+				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_NAME_5" 
+				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_NAME">
+		</field>
+
+	</fieldset>
+
+</form>

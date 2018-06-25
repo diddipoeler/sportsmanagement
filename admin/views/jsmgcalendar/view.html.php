@@ -2,7 +2,7 @@
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
 * @version 1.0.26
 * @file		administrator/components/sportsmanagement/models/divisions.php
-* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
@@ -83,8 +83,8 @@ function init( $tpl = null )
         // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
         if ($this->gcalendar->id < 1) 
         {
-            $this->form->setValue('username', null, JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account',''));
-            $this->form->setValue('password', null, JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password',''));
+            $this->form->setValue('username', null, JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
+            $this->form->setValue('password', null, JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
         }
             
         //$this->addToolbar();
@@ -102,54 +102,54 @@ function init( $tpl = null )
 	*/
     protected function addToolbar() 
     {
-		//JRequest::setVar('hidemainmenu', true);
+		//JFactory::getApplication()->input->setVar('hidemainmenu', true);
         $app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
 		if ($this->gcalendar->id < 1) 
         {
-            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_NEW_GOOGLE'),'gcalendar');
+            JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_NEW_GOOGLE'),'gcalendar');
             
 			if ($canDo->get('core.create')) 
             {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
                 
-                $this->gcalendar->username = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account','');
-                $this->gcalendar->password = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password','');
+                $this->gcalendar->username = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+                $this->gcalendar->password = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
             
-				JToolBarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				JToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		} 
         else 
         {
-            JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EDIT_NEW_GOOGLE'),'gcalendar');
+            JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EDIT_NEW_GOOGLE'),'gcalendar');
             
 			if ($canDo->get('core.edit')) 
             {
-				JToolBarHelper::publish('jsmgcalendar.insertgooglecalendar', 'JLIB_HTML_CALENDAR');
+				JToolbarHelper::publish('jsmgcalendar.insertgooglecalendar', 'JLIB_HTML_CALENDAR');
                 
-                JToolBarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
+                JToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
 
 				if ($canDo->get('core.create')) 
                 {
-					JToolBarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					JToolbarHelper::custom('jsmgcalendar.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ($canDo->get('core.create')) 
             {
-				JToolBarHelper::custom('jsmgcalendar.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				JToolbarHelper::custom('jsmgcalendar.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolBarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CLOSE');
 		}
         
-        JToolBarHelper::divider();
+        JToolbarHelper::divider();
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+		JToolbarHelper::preferences($option);
 
 		parent::addToolbar();
 	}

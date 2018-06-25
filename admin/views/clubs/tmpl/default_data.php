@@ -1,49 +1,25 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      default_data.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage clubs
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'a.ordering');
-
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+}
+else
+{	
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
+}
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -218,113 +194,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         </td>
 						<td class="center">
 							<?php
-							if ($row->logo_big == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-
-							}
-							elseif ($row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_big)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_big;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_big;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                    
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
+$picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,JURI::root().$row->logo_big,$imageTitle,'20',JURI::root().$row->logo_big);                            
 							?>
 						</td>
 						<td class="center">
 							<?php
-							if ($row->logo_middle == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-							}
-							elseif ($row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_middle)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                    
-                                                    
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
+$picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                            
 							?>
 						</td>
 						<td class="center">
 							<?php
-							if ($row->logo_small == '')
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-												$imageTitle,'title= "'.$imageTitle.'"');
-							}
-							elseif ($row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"))
-							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
-								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
-				  								$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                 
-							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->logo_small)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-?>
-<a href="<?php echo JURI::root().$row->logo_small;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_small;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                     
-								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-								}
-							}
-						
+$picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
+$imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
+$imageTitle,'title= "'.$imageTitle.'"');
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,JURI::root().$row->logo_small,$imageTitle,'20',JURI::root().$row->logo_small);
 /*
 <td class=""><?php echo $row->zipcode; ?></td>
 <td class=""><?php echo $row->location; ?></td>

@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -76,18 +76,22 @@ class SportsManagementController extends JControllerLegacy
 	 */
 	function display($cachable = false, $urlparams = false) 
 	{
-		// set default view if not set
-		//JRequest::setVar('view', JRequest::getCmd('view', 'SportsManagements'));
-		//JRequest::setVar('view', JRequest::getCmd('view', 'cpanel'));
-        $view = JRequest::setVar('view', JRequest::getCmd('view', 'cpanel'));
+		$jinput = JFactory::getApplication()->input;
         
-        $layout = JRequest::getCmd('layout', 'default');
- 
-		// call parent behavior
+/**
+ * set default view if not set
+ */
+        $view = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
+        $layout = $jinput->getCmd('layout', 'default');
+/**
+ * call parent behavior
+ */
 		parent::display($cachable);
         if ($layout != 'edit' )
 		{
-		// Set the submenu
+/**
+ * Set the submenu
+ */
 		sportsmanagementHelper::addSubmenu('messages');
         }
         

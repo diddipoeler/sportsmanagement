@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -158,7 +158,7 @@ $document->addScriptDeclaration( $javascript );
         
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        JToolBarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
+        JToolbarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		//parent::display($tpl);
 	}
@@ -178,7 +178,7 @@ $document->addScriptDeclaration( $javascript );
         $uri = JFactory::getURI();
         
         $inputappend = '';
-        $which_table = JRequest::getVar('filter_which_table','');
+        $which_table = JFactory::getApplication()->input->getVar('filter_which_table','');
         
         $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
         $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');
@@ -203,9 +203,9 @@ $document->addScriptDeclaration( $javascript );
         
         $this->lists	= $lists;
         
-        JToolBarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
-        JToolBarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
-        JToolBarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
         
     }
     
@@ -223,13 +223,13 @@ $document->addScriptDeclaration( $javascript );
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'),'joomleague-import');
-//        //JToolBarHelper::custom('joomleagueimports.newstructur','upload','upload',JText::_('JMODIFY'),false);
-//        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JMODIFY'),false);
-//        JToolBarHelper::custom('joomleagueimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-//        JToolBarHelper::divider();
+//        JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'),'joomleague-import');
+//        //JToolbarHelper::custom('joomleagueimports.newstructur','upload','upload',JText::_('JMODIFY'),false);
+//        JToolbarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JMODIFY'),false);
+//        JToolbarHelper::custom('joomleagueimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+//        JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 //        
 //    }    
     

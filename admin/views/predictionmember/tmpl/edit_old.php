@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -44,22 +44,22 @@ JHtml::_( 'behavior.tooltip' );
 //echo 'predictionuser<pre>',print_r($this->predictionuser, true),'</pre>';
 
 // Set toolbar items for the page
-$edit = JRequest::getVar( 'edit', true );
+$edit = JFactory::getApplication()->input->getVar( 'edit', true );
 $text = !$edit ? JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEW' ) : JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_EDIT' );
-JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_PGAME' ) . ': <small><small>[ ' . $text . ' ]</small></small>' );
-JToolBarHelper::save('predictionmember.save');
+JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_PGAME' ) . ': <small><small>[ ' . $text . ' ]</small></small>' );
+JToolbarHelper::save('predictionmember.save');
 
 if ( !$edit )
 {
-	JToolBarHelper::divider();
-	JToolBarHelper::cancel('predictionmember.cancel');
+	JToolbarHelper::divider();
+	JToolbarHelper::cancel('predictionmember.cancel');
 }
 else
 {
 	// for existing items the button is renamed `close` and the apply button is showed
-	JToolBarHelper::apply('predictionmember.apply');
-	JToolBarHelper::divider();
-	JToolBarHelper::cancel( 'predictionmember.cancel');
+	JToolbarHelper::apply('predictionmember.apply');
+	JToolbarHelper::divider();
+	JToolbarHelper::cancel( 'predictionmember.cancel');
 }
 JLToolBarHelper::onlinehelp();
 

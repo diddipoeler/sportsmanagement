@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -107,7 +107,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 function importjoomleaguenew()
 {
         //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         
         //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);

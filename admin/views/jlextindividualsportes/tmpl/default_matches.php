@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //save and close 
-$close = JRequest::getInt('close',0);
+$close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -70,7 +70,7 @@ if($close == 1) {
             <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
 						<?php echo JText::_('JACTION_DELETE');?></button>
             
-            <button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+            <button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		
         
@@ -361,7 +361,7 @@ if($close == 1) {
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
 			<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>' />
-			<input type='hidden' name='filter_order_Dir' value='' />
+			<input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>' />
 			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type="hidden" name="close" id="close" value="0" />

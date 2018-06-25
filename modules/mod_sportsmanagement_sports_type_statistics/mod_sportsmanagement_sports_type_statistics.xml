@@ -38,8 +38,18 @@
             <fieldset name="basic"
                       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Sports_type_Statistics" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+					  
                 <field name="cfg_which_database"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="0"
                        class="radio btn-group btn-group-yesno"
                        label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
@@ -55,7 +65,7 @@
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_DESC"/>
 
                 <field name="show_icon"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL"
@@ -65,7 +75,7 @@
                 </field>
 
                 <field name="show_project"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS"
@@ -82,7 +92,7 @@
                 </field>
 
                 <field name="show_leagues"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES"
@@ -99,7 +109,7 @@
                 </field>
 
                 <field name="show_seasons"
-                       type="radio" default="1"
+                       type="extensionradiobutton" default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC">
@@ -114,7 +124,7 @@
                 </field>
 
                 <field name="show_playgrounds"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS"
@@ -129,7 +139,7 @@
                 </field>
 
                 <field name="show_clubs"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS"
@@ -145,7 +155,7 @@
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC_TEXT">
                 </field>
 
-                <field name="show_teams" type="radio" default="1"
+                <field name="show_teams" type="extensionradiobutton" default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC">
@@ -158,7 +168,7 @@
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC_TEXT">
                 </field>
 
-                <field name="show_players" type="radio" default="1"
+                <field name="show_players" type="extensionradiobutton" default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC">
@@ -174,7 +184,7 @@
                 </field>
 
                 <field name="show_divisions"
-                       type="radio" default="1"
+                       type="extensionradiobutton" default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS"
                        description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_DESC">
@@ -190,7 +200,7 @@
                 </field>
 
                 <field name="show_rounds"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS"
@@ -207,7 +217,7 @@
                 </field>
 
                 <field name="show_matches"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES"
@@ -224,7 +234,7 @@
                 </field>
 
                 <field name="show_player_events"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS"
@@ -241,7 +251,7 @@
                 </field>
 
                 <field name="show_player_stats"
-                       type="radio"
+                       type="extensionradiobutton"
                        default="1"
                        class="radio btn-group btn-group-yesno"
                        label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS"

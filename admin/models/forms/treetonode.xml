@@ -3,37 +3,52 @@
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
-<field name="id" type="hidden" />
+
 
 <fieldset name="details"
 label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
-<!--  
-		<field
-			name="name"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_NAME"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_NAME_DESC"
-			size="60"
-			maxlength="100"
-			class="text_area"
-			required="true"/>
-			
-		<field
-			name="hide"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TREETO_HIDE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TREETO_HIDE_DESC"
-			size="5" 
-      maxlength="10"
-			class="inputbox"/>
-      -->
+  
+<field name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
+ />  
+
+		
+      
 	</fieldset>
   
  <fieldset name="description"
 label="COM_SPORTSMANAGEMENT_TABS_description"
   description="COM_SPORTSMANAGEMENT_TABS_description_DESC">
 
+ <field
+			name="title"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_TITLE_NODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_TITLE_NODE_DESC"
+			size="60"
+			maxlength="100"
+			class="text_area"
+			required="true"/>
+			
+		<field
+			name="content"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CONTENT_NODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TREETONODE_CONTENT_NODE_DESC"
+			size="60" 
+      maxlength="250"
+			class="text_area"/> 
+  
+  
+  
+  
 </fieldset>
   		
 </form>

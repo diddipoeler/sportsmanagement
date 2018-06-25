@@ -1,119 +1,23 @@
 <?php 
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+ * @version   1.0.05
+ * @file      form_row.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @subpackage results
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
 
-//JHTML::_('behavior.modal', 'a.user-modal');
-
+if ( $this->overallconfig['use_jquery_modal'] )
+{
 ?>
-<style>
-/*  #myModal1 .modal-dialog {
-    width: 80%;
-  }
-*/  
 
-/*
-.modaljsm {
-    width: 80%;
-    height: 60%;
-  }  
-  */
-.modal-dialog {
-    width: 80%;
-  }  
-.modal-dialog,
-.modal-content {
-    /* 95% of window height */
-    height: 95%;
-}  
-.modal-body {
-    /* 90% of window height */
-    height: 90%;
-}  
-
-</style>
-
-
-<script type="text/javascript" language="javascript" >
-
-
-
-      
-function fillContainer(site)
-      { 
-        var string = "echo $this->loadTemplate('edit');";
-        // Speichert den Inhalt des Attributes in der Variablen site.
-        //var site = $(this).data('site'); 
-        alert(site);
-        document.getElementById('bigcontent').innerHTML = string;
-        // Seite laden und in .content einsetzen.
-        //jQuery("#bigcontent").load('edit');
-        //jQuery('#bigcontent').load("http://www.google.de");
-        jQuery('#content').load(site); 
-      }      
-      
-      function fillContainer2()
-      { var string = '<div class="container"><div class="header"><img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" /></div><div class="content"><h1>Titel</h1><div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.</div></div><div class="footer">&copy; Copyright 2001</div></div>';
-        document.getElementById('bigcontent').innerHTML = string;
-      }
- 
-      function fillContainer3()
-      { var string = '<div class="container">'+
-                     '  <div class="header">'+
-                     '    <img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" />'+
-                     '  </div>'+
-                     '  <div class="content">'+
-                     '    <h1>Titel</h1>'+
-                     '    <div class="text">'+
-                     '      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.'+
-                     '    </div>'+
-                     '  </div>'+
-                     '  <div class="footer">'+
-                     '    &copy; Copyright 2001'+
-                     '  </div>'+
-                     '</div>';
-        document.getElementById('bigcontent').innerHTML = string;
-      }
-    </script>
 
 <?php 
+}	
 		$match = $this->game;
 		$i = $this->i;
 		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
@@ -182,47 +86,20 @@ function fillContainer(site)
 	<!-- Edit match details -->
 	<td valign="">
 		<?php
-        
-        // über das backend/administrator bearbeiten
-		//JHtml::_('behavior.modal','a.mymodal');
-		//$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'edit',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');				
-		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND');
-		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'width' => 20,'title' => $imgTitle));
-        
-        ?>
+?>
 <!-- Button HTML (to Trigger Modal) -->
-<!--
-		<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/edit.png'; ?>" > </a>
--->
-<a data-target="#match_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/edit.png'; ?>" ></a>		
-<div class="modal fade" 
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);  
+?>
 
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="match_lineup" 
-aria-hidden="true"  
-id="match_lineup<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>   
     </td>
     
     <?PHP
@@ -231,7 +108,6 @@ id="match_lineup<?php echo $thismatch->id; ?>">
     <td style="text-align:center; " >
     <?PHP
     echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
-    //echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_slug);
     ?>
     </td>
 		<?php 
@@ -243,25 +119,25 @@ id="match_lineup<?php echo $thismatch->id; ?>">
 	</td>
 		<?php 
 		} 
+		if ( $this->config['show_edit_match_number'] )
+		{
 		?>
+	<!-- Edit number -->
 	<td align='center' valign='top'>
     <input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
 		value="<?php echo $thismatch->match_number;?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+		}		
+if ( $this->config['show_edit_match_date'] )
+	{	
+	?>
 	<!-- Edit date -->
 	<td nowrap='nowrap' align='center' valign='top'>
 	<?php
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 ?> 
-<!--   
-<div class="well form-inline">
-			  <div class="input-append date" id="<?php echo 'match_date'.$thismatch->id;?>" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-				<input class="span2" size="16" type="text" value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" readonly >
-				<span class="add-on"><i class="icon-th"></i></span>
-			  </div>
-          </div>
--->
 <div class="well">
 <input type="text" class="span2" name='match_date<?php echo $thismatch->id; ?>' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" data-date-format="dd-mm-yyyy" id="<?php echo 'match_date'.$thismatch->id;?>" >
 </div>
@@ -270,13 +146,6 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 jQuery('#<?php echo 'match_date'.$thismatch->id;?>').datepicker();
 </script>        
 <?PHP            
-/*
-echo JHtml::calendar(sportsmanagementHelper::convertDate($datum,1),
-					'match_date'.$thismatch->id,
-					'match_date'.$thismatch->id,
-					'%d-%m-%Y',
-					'size="9"  style="font-size:9px;" onchange="document.getElementById(\'cb'.$i.'\').checked=true; "');
-*/
 }
 else
 {     
@@ -288,81 +157,46 @@ else
 }                    
                     ?>
 	</td>
+	<?php
+}
+	if ( $this->config['show_edit_match_time'] )
+	{	
+	?>
 	<!-- Edit start time -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='match_time<?php echo $thismatch->id; ?>' value='<?php echo substr($uhrzeit,0,5); ?>'
 			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_time_present'] )
+	{
+	?>
 	<!-- Edit time present -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='time_present<?php echo $thismatch->id; ?>' value='<?php echo substr($thismatch->time_present,0,5); ?>'
 			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
+	<?php
+	}	
+	?>
 	<!-- Edit home team -->
 	<td align="center" nowrap="nowrap" valign="top">
 		<!-- Edit home line-up -->
 		<?php
-        
-        // über das backend/administrator bearbeiten
-//$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');        
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
-		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
-		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-		$desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,$desc,$imgTitle,'20',$url);
 ?>
-			
-				<?php
-                        
-        ?>
-<!--
- <a href="#" data-toggle="modal" data-target-color="lightblue" data-target="#bannerformmodal<?php echo $team1->projectteamid; ?>">Load me <?php echo $team1->projectteamid; ?></a>
--->
-<!--		
-<a href="<?php echo $url; ?>" rel="modaljsm:open">
-<img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >
-</a>
--->		
-<!--		
-<a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
--->
-
-<!-- bootstrap -->
-<a data-target="#home_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="home_lineup" 
-aria-hidden="true"  
-id="home_lineup<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
-
 <!-- Button HTML (to Trigger Modal) -->
-<!--
-<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
--->
-
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+?>			
 
 		<!-- Edit home team -->
 			<?php
@@ -389,52 +223,19 @@ id="home_lineup<?php echo $thismatch->id; ?>">
 		?>
 		<!-- Edit away line-up -->
 		<?php
-        
-        // über das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
-		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
-		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-        $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        
-//        echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,$desc,$imgTitle,'20',$url);
 		?>
-
 <!-- Button HTML (to Trigger Modal) -->
-<!--
-<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
--->
-
-<!-- bootstrap -->
-<a data-target="#away_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="away_lineup" 
-aria-hidden="true"  
-id="away_lineup<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                                 
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
-
-
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+?>
 
 	
     </td>
@@ -537,159 +338,74 @@ id="away_lineup<?php echo $thismatch->id; ?>">
 	</td>
 		<?php
 		}
+		if ( $this->config['show_edit_match_events'] )
+		{	
 		?>
 	<!-- Edit match events -->
 	<td valign="top">
 		<?php
-        
-//        // über das backend/administrator bearbeiten
-//		$url = sportsmanagementHelperRoute::getEditEventsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,null,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
-//		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND');
-//		//$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-//        $desc = JURI::root().'media/com_sportsmanagement/jl_images/events.png';
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editevents',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,$desc,$imgTitle,'20',$url);
-        
 		?>
-        
 <!-- Button HTML (to Trigger Modal) -->
-<!--
-<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" > </a>
--->
-
-<!-- bootstrap -->
-<a data-target="#match_events<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="match_events" 
-aria-hidden="true"  
-id="match_events<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
-
-
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/events.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+?>
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_statistic'] )
+	{
+	?>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
-        
-//        // über das backend/administrator bearbeiten
-//		$url = sportsmanagementHelperRoute::getEditStatisticsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
-//		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND');
-//		//$desc = JHtml::image(JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-//        $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png';
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editstats',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
-        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,$desc,$imgTitle,'20',$url);
 		?>
-        
 <!-- Button HTML (to Trigger Modal) -->
-<!--
-<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" > </a>
--->
-
-<!-- bootstrap -->
-<a data-target="#match_statistics<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/images/calc16.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="match_statistics" 
-aria-hidden="true"  
-id="match_statistics<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
-
-
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/calc16.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+?>        
 	</td>
+	<?php
+	}
+	if ( $this->config['show_edit_match_referees'] )
+	{		
+	?>
 	<!-- Edit referee -->
 	<td valign="top">
 		<?php
-        
-        // über das backend/administrator bearbeiten
-		//$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
-		//$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
-		//$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-        //$desc = JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        //echo $url; 
-         
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editreferees',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');		
-        
         ?>
-        
 <!-- Button HTML (to Trigger Modal) -->
-<!-- 
-<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" ></a>
--->
-
-<!-- bootstrap -->
-<a data-target="#match_referees<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/images/players_add.png'; ?>" ></a>		
-<div class="modal fade" 
-
-tabindex="-1" 
-role="dialog" 
-aria-labelledby="match_referees" 
-aria-hidden="true"  
-id="match_referees<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     <!-- <div class="modal-content"> -->
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
-        </div>
-        <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
-          
-          
-        </div>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-        </div>        
-     <!-- </div> -->
-    </div>
-  </div>
-</div>
+<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,
+'administrator/components/com_sportsmanagement/assets/images/players_add.png',
+JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),
+'20',
+$url,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);        
+?>         
 
 	</td>
+	<?php
+	}
+	?>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>
 		<input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'

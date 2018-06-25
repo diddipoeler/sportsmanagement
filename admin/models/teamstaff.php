@@ -51,7 +51,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -107,8 +107,8 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	{
 		$app =& JFactory::getApplication();
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         $app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -168,7 +168,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	{
 	$app =& JFactory::getApplication();
     $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
-    //$pks = JRequest::getVar('cid', array(), 'post', 'array');
+    //$pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -190,8 +190,8 @@ class sportsmanagementModelteamstaff extends JModelAdmin
             ON ms.team_staff_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            $db->execute();
+            if (!$db->execute()) 
             {
                 $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
@@ -218,7 +218,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	public function save($data)
 	{
 	   $app = JFactory::getApplication();
-       $post=JRequest::get('post');
+       $post=JFactory::getApplication()->input->post->getArray(array());
        
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

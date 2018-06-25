@@ -15,24 +15,24 @@ JHtml::_('behavior.tooltip');
 
 /*
 // Set toolbar items for the page
-$edit=JRequest::getVar('edit',true);
+$edit=JFactory::getApplication()->input->getVar('edit',true);
 $text=!$edit ? 'Add new settings' : 'Change settings of Prediction-Project';
-JToolBarHelper::title(JText::_($text));
+JToolbarHelper::title(JText::_($text));
 
-//JToolBarHelper::save('save_project_settings');
+//JToolbarHelper::save('save_project_settings');
 
 if (!$edit)
 {
-	JToolBarHelper::divider();
-	JToolBarHelper::cancel();
+	JToolbarHelper::divider();
+	JToolbarHelper::cancel();
 }
 else
 {
 	// for existing items the button is renamed `close` and the apply button is showed
-	JToolBarHelper::save('predictiongame.save_project_settings',JText::_('Save'));
-	JToolBarHelper::apply('predictiongame.apply_project_settings',JText::_('JL_GLOBAL_APPLY'));
-	JToolBarHelper::divider();
-	JToolBarHelper::cancel('predictiongame.cancel',JText::_('JL_GLOBAL_CLOSE'));
+	JToolbarHelper::save('predictiongame.save_project_settings',JText::_('Save'));
+	JToolbarHelper::apply('predictiongame.apply_project_settings',JText::_('JL_GLOBAL_APPLY'));
+	JToolbarHelper::divider();
+	JToolbarHelper::cancel('predictiongame.cancel',JText::_('JL_GLOBAL_CLOSE'));
 }
 JLToolBarHelper::onlinehelp();
 */

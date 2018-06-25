@@ -5,8 +5,14 @@
     label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
 	<field
-			name="id"
-			type="hidden"
+			name="id" 
+			type="number" 
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC" 
+			class="readonly" 
+			size="11" 
+			default="0"
+			readonly="true"
 		/>
 	
 		<field
@@ -26,7 +32,7 @@
 			
 <field
 			name="auto_approve"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_AUTO_APPROVE"
@@ -36,7 +42,7 @@
 		</field>
 <field
 			name="only_favteams"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ONLY_FAVTEAMS"
@@ -46,7 +52,7 @@
 		</field>
 <field
 			name="admin_tipp"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ADMIN_TIPP"

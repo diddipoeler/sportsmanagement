@@ -26,8 +26,9 @@
     
     <field
 			name="reminder"
-			type="radio"
-			default="0"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
+			default="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER">
 		<option value="0">JNO</option>
@@ -35,8 +36,9 @@
 		</field>	
 		<field
 			name="receipt"
-			type="radio"
-			default="0"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
+			default="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_RECEIPT">
 		<option value="0">JNO</option>
@@ -44,7 +46,8 @@
 		</field>	
 		<field
 			name="show_profile"
-			type="radio"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_PROFILE">
@@ -53,7 +56,8 @@
 		</field>	
 		<field
 			name="admintipp"
-			type="radio"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_ADMIN_TIP">
@@ -62,7 +66,8 @@
 		</field>	
 		<field
 			name="approved"
-			type="radio"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED">

@@ -15,32 +15,32 @@
 				<option value="3">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_CALENDARS_EXPAND</option>
 				<option value="0">JNO</option>
 			</field>
-			<field name="title" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TITLE_LABEL"
+			<field name="title" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TITLE_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TITLE_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field name="navigation" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_NAVIGATION_LABEL"
+			<field name="navigation" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_NAVIGATION_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_NAVIGATION_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field name="date" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DATE_LABEL"
+			<field name="date" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DATE_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DATE_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field name="print" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_PRINT_LABEL"
+			<field name="print" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_PRINT_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_PRINT_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field name="tabs" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TABS_LABEL"
+			<field name="tabs" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TABS_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TABS_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
-			<field name="tz" type="radio" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TIMEZONE_LABEL"
+			<field name="tz" type="extensionradiobutton" default="1" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TIMEZONE_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_TIMEZONE_DESC">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
@@ -49,7 +49,7 @@
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_WIDTH_DESC" />
 			<field name="height" type="text" size="5" default="500" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_HEIGHT_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_HEIGHT_DESC" />
-			<field name="view" type="radio" default="MONTH" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DEFAULT_VIEW_LABEL"
+			<field name="view" type="extensionradiobutton" default="MONTH" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DEFAULT_VIEW_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DEFAULT_VIEW_DESC">
 				<option value="WEEK">COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DEFAULT_VIEW_WEEK</option>
 				<option value="MONTH">COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_DEFAULT_VIEW_MONTH</option>
@@ -73,7 +73,7 @@
 				rows="5" cols="50" filter="raw"/>
 		</fieldset>
 		<fieldset name="advanced">
-			<field name="use_custom_css" type="radio" default="0"
+			<field name="use_custom_css" type="extensionradiobutton" default="0"
 				label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_CUSTOM_CSS_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GOOGLE_FIELD_CUSTOM_CSS_DESC">
 				<option value="0">JNO</option>

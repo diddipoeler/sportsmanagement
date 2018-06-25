@@ -1,44 +1,19 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_rosterplayground.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matchreport
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $startfade = $this->config['roster_playground_player_fade'];
+
+//echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
+//echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
 
 if ( $this->config['roster_playground_player_jquery_fade'] )
 {
@@ -210,7 +185,15 @@ if ( $schemahome )
 
 <?PHP
 //echo JHtml::image($this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',$this->team1_club->logo_big,$this->team1_club->name,'50');     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',
+$this->team1_club->logo_big,
+$this->team1_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);     
 ?>
 
 
@@ -227,7 +210,15 @@ if ( $schemaguest )
 
 <?PHP
 //echo JHtml::image($this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',$this->team2_club->logo_big,$this->team2_club->name,'50');  
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',
+$this->team2_club->logo_big,
+$this->team2_club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);  
 ?>
 
 
@@ -266,15 +257,8 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 {
 // player->ppic = person picture
 // player->picture = teamplay picture
-$picture = $player->picture;
-if ( !curl_init( $picture ) )
-{
-$picture = $player->ppic;    
-if ( !curl_init( $picture ) )
-{
-$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-}
-}
+$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -294,7 +278,15 @@ echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
 
 
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);     
 ?>
  
 
@@ -343,15 +335,8 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 {
 // player->ppic = person picture
 // player->picture = teamplay picture
-$picture = $player->picture;
-if ( !curl_init( $picture ) )
-{
-$picture = $player->ppic;    
-if ( !curl_init( $picture ) )
-{    
-$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-}
-}
+$picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
+$picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
 ?>
 
@@ -359,7 +344,15 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 
 <?PHP
 //echo JHtml::image($picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
+$picture,
+$player->lastname,
+$this->config['roster_playground_player_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']						       
+);    
 ?>
 
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>

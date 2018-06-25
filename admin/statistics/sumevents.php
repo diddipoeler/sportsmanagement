@@ -1,47 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      sumevents.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage statistics
+ */
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
-
 
 /**
  * SMStatisticSumevents
@@ -54,11 +25,12 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
  */
 class SMStatisticSumevents extends SMStatistic 
 {
-//also the name of the associated xml file	
+/**
+ * also the name of the associated xml file
+ */	
 	var $_name = 'sumevents';
 	
 	var $_calculated = 1;
-	
 	var $_showinsinglematchreports = 1;
 	var $_ids = 'stat_ids';
     
@@ -105,7 +77,7 @@ class SMStatisticSumevents extends SMStatistic
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $sids = SMStatistic::getQuotedSids($this->_ids);
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -117,7 +89,7 @@ class SMStatisticSumevents extends SMStatistic
 		}
         
         $query->select('SUM(ms.event_sum) AS value, ms.match_id');       
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS ms ');
+        $query->from('#__sportsmanagement_match_event AS ms ');
         $query->where('ms.teamplayer_id IN ('. implode(',', $quoted_tpids) .')');
         $query->where('ms.event_type_id IN ('. implode(',', $sids) .')');
         $query->group('ms.match_id');
@@ -125,11 +97,6 @@ class SMStatisticSumevents extends SMStatistic
 		$db->setQuery($query);
 		$res = $db->loadObjectList('match_id');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
-}
-
 		// Determine total for the whole project
 		$totals = new stdclass;
 		$totals->statistic_id = $this->id;
@@ -160,21 +127,11 @@ class SMStatisticSumevents extends SMStatistic
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		$sids = SMStatistic::getSids($this->_ids);
 		$res = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'Notice');
-        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
-        }
-        
+       
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 	
@@ -218,7 +175,6 @@ class SMStatisticSumevents extends SMStatistic
 		$query_core = JFactory::getDbo()->getQuery(true);
         
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
-		
         $query_select_details = 'SUM(ms.event_sum) AS total,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
@@ -230,16 +186,15 @@ class SMStatisticSumevents extends SMStatistic
         $res = new stdclass;
 		$db->setQuery($query_core);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
         
         $query_core->clear('select');
         $query_core->select($query_select_details);
-        //$query_core->group('tp.id');
 		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'); 
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
 
 		$db->setQuery($query_core, $limitstart, $limit);
 		$res->ranking = $db->loadObjectList();
@@ -268,32 +223,36 @@ class SMStatisticSumevents extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticSumevents::getTeamsRanking()
+	 * 
+	 * @param mixed $project_id
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		
-		$query = ' SELECT SUM(ms.event_sum) AS total, '
-		       . ' pt.team_id ' 
-		       . ' FROM #__joomleague_team_player AS tp '
-		       . ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id '
-		       . ' INNER JOIN #__joomleague_match_event AS ms ON ms.teamplayer_id = tp.id '
-		       . '   AND ms.event_type_id IN ('. implode(',', $sids) .')'
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
-		       . '   AND p.published = 1 '
-		       . '   AND tp.published = 1 '
-		       . ' GROUP BY pt.id '
-		       . ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'
-		       ;
-		$db->setQuery($query, $limitstart, $limit);
+		$query_num = $db->getQuery(true);
+        $query_num->select('SUM(es.event_sum) AS num, pt.team_id');
+        $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
+        $query_num->join('INNER','#__sportsmanagement_match_event AS es ON es.teamplayer_id = tp.id AND es.event_type_id IN ('. implode(',', $sids) .')' );
+        $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = es.match_id AND m.published = 1 ');
+        $query_num->where('pt.project_id = '. $projectid);
+        $query_num->where('tp.published = 1');
+        $query_num->group('pt.id');
+        $query_num->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id');
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+		$db->setQuery($query_num, $limitstart, $limit);
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
         
 		$res = $db->loadObjectList();
 

@@ -135,7 +135,7 @@ class jsmGCalendarUtil
 			$variables = array();
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid', null));
-			if (!empty($itemID) && JRequest::getVar('tmpl', null) != 'component' && $event != null) {
+			if (!empty($itemID) && JFactory::getApplication()->input->getVar('tmpl', null) != 'component' && $event != null) {
 				$component = JComponentHelper::getComponent('com_sportsmanagement');
 				$menu = JFactory::getApplication()->getMenu();
 				$item = $menu->getItem($itemID);
@@ -517,7 +517,7 @@ class jsmGCalendarUtil
 
 	public static function getDateFromString($date, $time, $allDay, $timezone, $dateFormat = null, $timeFormat = null) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         
 		$string = $date;

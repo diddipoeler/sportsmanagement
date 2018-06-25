@@ -9,6 +9,7 @@
 	<field
 			name="id"
 			type="hidden"
+			default="0"
 		/>
 	
 		<field
@@ -396,7 +397,7 @@ default="0"
   description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
   <field
 			name="injury"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED_DESC">
@@ -431,7 +432,7 @@ default="0"
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
   <field
 			name="suspension"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED_DESC">
@@ -467,7 +468,7 @@ default="0"
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
   <field
 			name="away"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY_DESC">
@@ -531,7 +532,7 @@ default="0"
   description="COM_SPORTSMANAGEMENT_TABS_FRONTEND_DESC">		
 			<field
 				name="show_pic"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE_DESC">
@@ -540,7 +541,7 @@ default="0"
 			</field>
 			<field
 				name="show_persdata"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA_DESC">
@@ -549,7 +550,7 @@ default="0"
 			</field>
 			<field
 				name="show_teamdata"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA_DESC">
@@ -558,7 +559,7 @@ default="0"
 			</field>
 			<field
 				name="show_on_frontend"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE_DESC">

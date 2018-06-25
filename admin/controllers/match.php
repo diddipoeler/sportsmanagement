@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      match.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage match
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -79,13 +51,13 @@ class sportsmanagementControllermatch extends JControllerForm
     public function copyfrom()
 	{
 		$app = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();
 		$msg = '';
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
-		$round_id = JRequest::getInt('rid');
+		$round_id = JFactory::getApplication()->input->getInt('rid');
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
 		$post['round_id'] = $round_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -111,7 +83,7 @@ class sportsmanagementControllermatch extends JControllerForm
 					$post['published'] = 1;
 				}
 
-				$matchNumber = JRequest::getInt('firstMatchNumber',1);
+				$matchNumber = JFactory::getApplication()->input->getInt('firstMatchNumber',1);
 				$roundFound = false;
 				
 				if ($projectRounds = $model->getProjectRoundCodes($post['project_id']))
@@ -223,7 +195,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		}
 		//echo $msg;
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
-		//$link .= '&hidemainmenu='.JRequest::getVar('hidemainmenu',0);
+		//$link .= '&hidemainmenu='.JFactory::getApplication()->input->getVar('hidemainmenu',0);
 		$this->setRedirect($link,$msg);
 	}
     
@@ -234,7 +206,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
 	function insertgooglecalendar()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $model = $this->getModel('match');
         $result = $model->insertgooglecalendar();
@@ -284,9 +256,9 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
     function addmatch()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         $post['count_result'] = 1;
@@ -340,11 +312,11 @@ class sportsmanagementControllermatch extends JControllerForm
 		// Initialise variables.
 		$app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $id	= JRequest::getInt('id');
-//        $tmpl = JRequest::getVar('tmpl');
+        $id	= JFactory::getApplication()->input->getInt('id');
+//        $tmpl = JFactory::getApplication()->input->getVar('tmpl');
 		$model = $this->getModel('match');
-        $data = JRequest::getVar('jform', array(), 'post', 'array');
-//        $createTeam = JRequest::getVar('createTeam');
+        $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+//        $createTeam = JFactory::getApplication()->input->getVar('createTeam');
         $return = $model->save($data);   
        
        // Set the redirect based on the task.
@@ -375,7 +347,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	function remove()
 	{
 	$app = JFactory::getApplication();
-    $pks = JRequest::getVar('cid', array(), 'post', 'array');
+    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
 	
@@ -391,8 +363,8 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
 	function picture()
   {
-  //$cid = JRequest::getVar('cid',array(0),'','array');
-	$match_id = JRequest::getInt('id',0);
+  //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
+	$match_id = JFactory::getApplication()->input->getInt('id',0);
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   //$this->setState('folder', $folder);
@@ -409,23 +381,19 @@ class sportsmanagementControllermatch extends JControllerForm
   
   }
   
-  /**
-   * sportsmanagementControllermatch::readpressebericht()
-   * 
-   * @return void
-   */
-  function readpressebericht()
-    {
-    JRequest::setVar('hidemainmenu',1);
-		JRequest::setVar('layout','readpressebericht');
-		JRequest::setVar('view','match');
-		JRequest::setVar('edit',true);
-
-		
-		parent::display();    
-        
-        
-    }
+//  /**
+//   * sportsmanagementControllermatch::readpressebericht()
+//   * 
+//   * @return void
+//   */
+//  function readpressebericht()
+//    {
+//    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+//		JFactory::getApplication()->input->setVar('layout','readpressebericht');
+//		JFactory::getApplication()->input->setVar('view','match');
+//		JFactory::getApplication()->input->setVar('edit',true);
+//		parent::display();    
+//    }
     
     /**
      * sportsmanagementControllermatch::savepressebericht()
@@ -435,19 +403,20 @@ class sportsmanagementControllermatch extends JControllerForm
     function savepressebericht()
     {
     	// Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg='';
-		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JRequest::get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');
 
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload = JRequest::getVar('import_package',null,'files','array');
-            //$cid = JRequest::getVar('cid',array(0),'','array');
-            $match_id = JRequest::getInt('id',0);
+			//$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+            $upload = $app->input->files->get('import_package');
+            //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
+            $match_id = JFactory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
@@ -529,26 +498,33 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 			}
 		}
         //$csv_file = $model->getPressebericht();  
-		$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
-		$this->setRedirect($link,$msg);    
+		//$link='index.php?option=com_sportsmanagement&tmpl=component&task=match.readpressebericht&match_id='.$match_id;
+		$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=readpressebericht&match_id='.$match_id;	
+	    $this->setRedirect($link,$msg);    
         
         
     }
     
-  /**
-   * sportsmanagementControllermatch::savecsvpressebericht()
-   * 
-   * @return void
-   */
-  function savecsvpressebericht()
-    {
-    JRequest::setVar('hidemainmenu',1);
-	JRequest::setVar('layout','savepressebericht');
-	JRequest::setVar('view','match');
-	JRequest::setVar('edit',true);
-	
-	parent::display();
-    }
+//  /**
+//   * sportsmanagementControllermatch::savecsvpressebericht()
+//   * 
+//   * @return void
+//   */
+//  function savecsvpressebericht()
+//    {
+//// Reference global application object
+//$app = JFactory::getApplication();
+//$post = $app->input->post->getArray(array());
+//$app->input->post->set('post', $post);	  
+//	  
+////$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//	  
+//$match_id = JFactory::getApplication()->input->getInt('id',0);	  
+//$msg = '';
+//$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=savepressebericht&match_id='.$match_id;
+//$this->setRedirect($link,$msg); 	  
+//	  
+//    }
         
     /**
      * sportsmanagementControllermatch::pressebericht()
@@ -557,10 +533,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
      */
     function pressebericht()
     {
-    JRequest::setVar('hidemainmenu',1);
-	JRequest::setVar('layout','pressebericht');
-	JRequest::setVar('view','match');
-	JRequest::setVar('edit',true);
+    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+	JFactory::getApplication()->input->setVar('layout','pressebericht');
+	JFactory::getApplication()->input->setVar('view','match');
+	JFactory::getApplication()->input->setVar('edit',true);
 	
 	parent::display();    
         

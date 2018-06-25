@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -78,7 +78,7 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 //	{ 
 ////  		// Get a refrence of the page instance in joomla
 ////	$document	= JFactory::getDocument();
-////    $option = JRequest::getCmd('option');
+////    $option = JFactory::getApplication()->input->getCmd('option');
 ////        // Set toolbar items for the page
 ////        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 ////        $document->addCustomTag($stylelink);

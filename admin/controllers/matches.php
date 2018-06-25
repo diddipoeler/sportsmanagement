@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      matches.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matches
+ */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -94,13 +66,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function removeEvent()
     {
-        // Check for request forgeries
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-
-		$event_id=JRequest::getInt('event_id');
-		$model=$this->getModel();
+		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		$model = $this->getModel();
 		if (!$result=$model->deleteevent($event_id))
 		{
 			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
@@ -121,33 +88,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     public function removeCommentary()
     {
-        
-        //$response = self::getAjaxResponse();
-        //$result = $response;
-        
-        // Check for request forgeries
-        //JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-        
-        //JRequest::checkToken('request') or jexit('JINVALID_TOKEN');
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        
-        // Check for request forgeries
-        //JRequest::checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
-        
- //       if (!JSession::checkToken('post')) 
-//        {
-			//$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.JText::_('JINVALID_TOKEN');
-		//echo json_encode($result);
-        //}
-//else
-//{
-		
-        //if (JSession::checkToken('post')) 
-        //{
-        
-        $event_id = JRequest::getInt('event_id');
+        $event_id = JFactory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -158,13 +99,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
 		}
 		echo json_encode($result);
- //}       
-        // Close the application
 		JFactory::getApplication()->close();
-        //}
-        
-        //jexit();
-		//JFactory::getApplication()->close();
     }
     
     
@@ -175,11 +110,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function removeSubst()
 	{
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-        
-		$substid = JRequest::getInt('substid',0);
+		$substid = JFactory::getApplication()->input->getInt('substid',0);
 		$model = $this->getModel();
 		if (!$result = $model->removeSubstitution($substid))
 		{
@@ -200,33 +131,26 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveevent()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 
-		// Check for request forgeries
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-
-		//$app = JFactory::getApplication();
 		$data = array();
-		$data['teamplayer_id']	= JRequest::getInt('teamplayer_id');
-		$data['projectteam_id']	= JRequest::getInt('projectteam_id');
-		$data['event_type_id']	= JRequest::getInt('event_type_id');
-		$data['event_time']		= JRequest::getVar('event_time','');
-		$data['match_id']		= JRequest::getInt('matchid');
-		$data['event_sum']		= JRequest::getVar('event_sum', '');
-		$data['notice']			= JRequest::getVar('notice', '');
-		$data['notes']			= JRequest::getVar('notes', '');
+		$data['teamplayer_id']	= JFactory::getApplication()->input->getInt('teamplayer_id');
+		$data['projectteam_id']	= JFactory::getApplication()->input->getInt('projectteam_id');
+		$data['event_type_id']	= JFactory::getApplication()->input->getInt('event_type_id');
+		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('match_id');
+		$data['event_sum']		= JFactory::getApplication()->input->getVar('event_sum', '');
+		$data['notice']			= JFactory::getApplication()->input->getVar('notice', '');
+		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
-		//$project_id = $app->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->saveevent($data)) {
 			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
         } else {
-			$result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+			$result = $result."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
 		}    
  
 		echo json_encode($result);
@@ -240,41 +164,23 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function savecomment()
     {
-        //$option = JRequest::getCmd('option');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-        //$app = JFactory::getApplication();
-        
-        //$response = self::getAjaxResponse();
-        //$result = $response;
-
-		// Check for request forgeries
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken() or $result = '0&'.JText::_('JINVALID_TOKEN');
-
-		
 		$data = array();
-		$data['event_time']		= JRequest::getVar('event_time','');
-		$data['match_id']		= JRequest::getInt('matchid');
-		$data['type']		= JRequest::getVar('type', '');
-		$data['notes']			= JRequest::getVar('notes', '');
+		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('matchid');
+		$data['type']		= JFactory::getApplication()->input->getVar('type', '');
+		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
-		//$project_id = $app->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->savecomment($data)) {
             $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
         } else {
-            //$result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
             $result = $result.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
- 
 		echo json_encode($result);
 		JFactory::getApplication()->close();
-        //$app->close();
     }
     
     /**
@@ -284,28 +190,20 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function savesubst()
 	{
-		// Check for request forgeries
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-        
 		$data = array();
-		$data['in'] 					= JRequest::getInt('in');
-		$data['out'] 					= JRequest::getInt('out');
-		$data['matchid'] 				= JRequest::getInt('matchid');
-		$data['in_out_time'] 			= JRequest::getVar('in_out_time','');
-		$data['project_position_id'] 	= JRequest::getInt('project_position_id');
-        
+		$data['in'] 					= JFactory::getApplication()->input->getInt('in');
+		$data['out'] 					= JFactory::getApplication()->input->getInt('out');
+		$data['matchid'] 				= JFactory::getApplication()->input->getInt('matchid');
+		$data['in_out_time'] 			= JFactory::getApplication()->input->getVar('in_out_time','');
+		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
-		
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         $model = $this->getModel();
 		if (!$result = $model->savesubstitution($data)){
 			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
 		} else {
             $result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
 		}
-        
 		echo json_encode($result);
 		JFactory::getApplication()->close();
 	}
@@ -318,8 +216,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function savestats()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         if ($model->savestats($post))
 		{
@@ -330,19 +228,15 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
 		}
         
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
         }
-        
-		//echo $link.'<br />';
 		$this->setRedirect($link,$msg);
-        
-        
     }
         
     /**
@@ -352,8 +246,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveroster()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         
         $positions = $model->getProjectPositionsOptions(0, 1,$post['project_id']);
@@ -381,25 +275,14 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_STAFF').'<br />';
 		}
         
-//        if ($model->updateTrikotNumber($post))
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_PLAYER_TRIKOT').'<br />';
-//		}
-//		else
-//		{
-//			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER_TRIKOT').'<br />';
-//		}
-        
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
         }
-        
-		//echo $link.'<br />';
 		$this->setRedirect($link,$msg);
     }    
     
@@ -411,8 +294,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveReferees()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         $positions = $model->getProjectPositionsOptions(0, 3,$post['project_id']);
         $post['positions'] = $positions;
@@ -425,21 +308,16 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		{
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
 		}
-        
-        //$link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
 
-        
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
         }
 
-        
-		//echo $link.'<br />';
 		$this->setRedirect($link,$msg);
     }
     

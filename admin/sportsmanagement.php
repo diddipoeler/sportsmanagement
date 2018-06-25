@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -70,22 +70,32 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+        
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
 {
 // Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
 }
-elseif(version_compare(JVERSION,'2.5.0','ge')) 
+if(version_compare($baseVersion,'2.5','ge')) 
 {
 // Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 //JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
 //JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
 //JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 } 
-elseif(version_compare(JVERSION,'1.7.0','ge')) 
+elseif(version_compare($baseVersion,'1.7.0','ge')) 
 {
 // Joomla! 1.7 code here
 } 
-elseif(version_compare(JVERSION,'1.6.0','ge')) 
+elseif(version_compare($baseVersion,'1.6','ge')) 
 {
 // Joomla! 1.6 code here
 } 
@@ -96,12 +106,11 @@ else
 
 
 // welche joomla version ?
-sportsmanagementHelper::isJoomlaVersion('2.5');
+//sportsmanagementHelper::isJoomlaVersion('2.5');
 
-//$command = JRequest::getVar('task');
-$command = JRequest::getVar('task', 'display');
-
-$view = JRequest::getVar('view');
+$jinput = JFactory::getApplication()->input;
+$command = $jinput->get('task', 'display');
+$view = $jinput->get('view');
 $lang = JFactory::getLanguage();
 $app = JFactory::getApplication();
 
@@ -116,18 +125,6 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'
              
 }
 
-
-//$database_table	= $params->get( 'cfg_which_database_table' ); 
-//$show_debug_info = $params->get( 'show_debug_info' );  
-//$show_query_debug_info = $params->get( 'show_query_debug_info' );  
-
-//$cfg_help_server = $params->get( 'cfg_help_server' );
-//$modal_popup_width = $params->get( 'modal_popup_width' );
-//$modal_popup_height = $params->get( 'modal_popup_height' );
-
-//$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
-
-//$cfg_which_database_server = $params->get( 'cfg_which_database_server' );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$params->get( 'cfg_which_database' ) );
 DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$params->get( 'cfg_help_server' ) );
@@ -177,9 +174,6 @@ else
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
 }
 
-
-
-
 $controller = '';
 $type = '';
 $task = '';
@@ -190,7 +184,7 @@ $template_pathes[]	= array();
 
 //JFactory::$database = sportsmanagementHelper::getDBConnection();
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r(JFactory::$database,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm joomlaversion<br><pre>'.print_r(JSM_JVERSION,true).'</pre>'),'notice');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'');
 
 
@@ -347,7 +341,6 @@ foreach ($template_pathes as $path)
 
  
 // Perform the Request task
-//$controller->execute(JRequest::getCmd('task'));
 $controller->execute($task);
  
 // Redirect if set by the controller

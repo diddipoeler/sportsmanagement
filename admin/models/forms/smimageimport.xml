@@ -6,6 +6,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	<field
 			name="id"
 			type="hidden"
+			default="0"
 		/>
 		
     

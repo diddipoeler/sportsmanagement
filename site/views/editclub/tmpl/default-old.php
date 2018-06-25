@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 		//save and close 
-		$close = JRequest::getInt('close',0);
+		$close = JFactory::getApplication()->input->getInt('close',0);
 		if($close == 1) {
 			?><script>
 			window.addEvent('domready', function() {
@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JText::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('editclub.save');">
 						<?php echo JText::_('JSAVE');?></button>
-					<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 						<?php echo JText::_('JCANCEL');?></button>
 				</div>
 			<legend>

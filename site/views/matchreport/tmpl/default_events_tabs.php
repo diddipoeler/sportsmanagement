@@ -1,49 +1,28 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_events_tabs.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage matchreport
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <!-- START of match events -->
 
 <h2>
 <?php 
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
-
+echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 	
+?>
+</h2>	
+<?php
+if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
+{
+echo $this->loadTemplate('timeline');
+}
+	
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
@@ -60,10 +39,11 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 $idxTab = 0; 
 
 ?>
-<!-- This is a list with tabs names. --> 
+<!-- This is a list with tabs names. anfang --> 
 <div class="panel with-nav-tabs panel-default"> 
+<!-- Tabs-heading anfang --> 
 <div class="panel-heading"> 
-<!-- Tabs-Navs --> 
+<!-- Tabs-Navs anfang --> 
 <ul class="nav nav-tabs" role="tablist"> 
 <?PHP
 foreach ($this->eventtypes AS $event)
@@ -86,19 +66,22 @@ $text = JText::_($event->name);
 
 
 ?>
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
+<li role="presentation" class="<?PHP echo $active; ?>"><a href="#event<?PHP echo $event->id; ?>" role="tab" data-toggle="tab"><?PHP echo $text_bild.$text; ?></a>
 </li>
 
 <?PHP
 $idxTab++;
 }
 ?>
+<!-- Tabs-Navs ende --> 
 </ul> 
+<!-- Tabs-heading ende --> 
 </div> 
 
 
-<!-- Tab-Inhalte -->
+<!-- Tab-Inhalte anfang-->
 <div class="panel-body">
+<!-- Tab-content anfang-->
 <div class="tab-content">
 <?PHP	
 $idxTab = 0;
@@ -108,18 +91,16 @@ $active = ($idxTab==0) ? 'in active' : '';
 $text = JText::_($event->name);
 
 ?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $text; ?>">
-<?PHP   
-
-?>
-</div>
+<!-- Tab-event anfang-->
+<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="event<?PHP echo $event->id; ?>">
 <?PHP
 $idxTab++;
 foreach ($this->matchevents AS $me)
 				{
-					if ($me->event_type_id==$event->id && $me->ptid==$this->match->projectteam1_id)
+					if ( $me->event_type_id == $event->id && 
+					   ( $me->ptid == $this->match->projectteam1_id or $me->ptid == $this->match->projectteam2_id )
+					   )
 					{
-						//echo '<li class="list">';
 						
 						if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
 						{
@@ -133,8 +114,8 @@ foreach ($this->matchevents AS $me)
                         {
 
 $routeparameter = array(); 
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0); 
-$routeparameter['s'] = JRequest::getInt('s',0); 
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
 $routeparameter['p'] = $this->project->slug; 
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
@@ -172,14 +153,19 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 						echo '<br>';
 					}
 				}
+?>
+<!-- Tab-event ende-->
+</div>	
 
-
-
-
+<?php
 }
 ?>
+
+<!-- Tab-content ende-->
 </div>
+<!-- Tab-Inhalte ende-->
 </div>
+<!-- This is a list with tabs names. ende --> 
 </div> 
 
 <?PHP
@@ -187,7 +173,6 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 else
 {
 ?>
-</h2>		
 
 <table class="table" border="0">
     <tr>

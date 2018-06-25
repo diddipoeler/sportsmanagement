@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      default_stats.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage nextmatch
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
@@ -280,8 +252,8 @@ if ( $this->config['show_match_diff'] == 1 )
 }
 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 
 if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	
@@ -298,16 +270,17 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      <?php endif; ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME');?></td>
-      <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_home_win): ?>
-	        	<?php 
-                $routeparameter['p'] = $this->away_highest_home_win->project_slug;
-                $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
+       <td class="valueright">
+	    	<?php if ($stat = $this->away_highest_away_win): ?>
+	        	<?php  
+                $routeparameter['p'] = $this->away_highest_away_win->project_slug;
+                $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
       </td>
+
     </tr>
 	<?php endif; ?>
 
@@ -325,15 +298,16 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_home_def): ?>
+	    	<?php if ($stat = $this->away_highest_away_def): ?>
 	        	<?php 
-                $routeparameter['p'] = $this->away_highest_home_def->project_slug;
-                $routeparameter['mid'] = $this->away_highest_home_def->match_slug;
+                $routeparameter['p'] = $this->away_highest_away_def->project_slug;
+                $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
       </td>
+ 
     </tr>
 	<?php endif; ?>
 
@@ -351,10 +325,10 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_away_win): ?>
-	        	<?php  
-                $routeparameter['p'] = $this->away_highest_away_win->project_slug;
-                $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
+	    	<?php if ($stat = $this->away_highest_home_win): ?>
+	        	<?php 
+                $routeparameter['p'] = $this->away_highest_home_win->project_slug;
+                $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -377,15 +351,15 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
       </td>
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY');?></td>
       <td class="valueright">
-	    	<?php if ($stat = $this->away_highest_away_def): ?>
+	    	<?php if ($stat = $this->away_highest_home_def): ?>
 	        	<?php 
-                $routeparameter['p'] = $this->away_highest_away_def->project_slug;
-                $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
+                $routeparameter['p'] = $this->away_highest_home_def->project_slug;
+                $routeparameter['mid'] = $this->away_highest_home_def->match_slug;
                 echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
-      </td>
+      </td>            
     </tr>
 	<?php endif; ?>
 <?php endif; ?>

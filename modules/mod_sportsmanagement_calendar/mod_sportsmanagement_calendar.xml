@@ -39,9 +39,19 @@
 			<fieldset name="basic"
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 				>
+
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Calendar" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
 				
 				<field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -124,7 +134,7 @@
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIME_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIME_FORMAT_DESC" />
 									
-				<field name="cal_start_day" type="radio" default="1"
+				<field name="cal_start_day" type="extensionradiobutton" default="1"
           class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYDESC">
 					<option value="0">0</option>
@@ -136,7 +146,7 @@
 					<option value="6">6</option>
 				</field>
 
-				<field name="cal_length_days" type="radio" default="2"
+				<field name="cal_length_days" type="extensionradiobutton" default="2"
         class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSDESC">
 					<option value="1">1</option>
@@ -147,21 +157,21 @@
 				<field type="spacer">
 				</field>
 
-				<field name="jlbirthdays" type="radio" default="0"
+				<field name="jlbirthdays" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSDESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="jlbirthdaypix" type="radio" default="0"
+				<field name="jlbirthdaypix" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSPIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSPIXDESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="linkbirthday" type="radio" default="0"
+				<field name="linkbirthday" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LINKBIRTHDAYSLBL" description="">
 					<option value="0">JNO</option>
@@ -172,14 +182,14 @@
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_BIRTHDAYTEXT" description="MOD_SPORTSMANAGEMENT_CALENDAR_BIRTHDAYTEXTDESC">
 				</field>
 
-				<field name="jlmatches" type="radio" default="1"
+				<field name="jlmatches" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWMATCHESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWMATCHESDESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="show_teamslist" type="radio" default="1"
+				<field name="show_teamslist" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWTEAMSLISTLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWTEAMSLISTDESC">
 					<option value="0">JNO</option>
@@ -190,14 +200,14 @@
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMLISTDEFAULTLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMLISTDEFAULTDESC">
 				</field>
 
-				<field name="sportsmanagement_use_favteams" type="radio" default="0"
+				<field name="sportsmanagement_use_favteams" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_USEJLFAVLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_USEJLFAVDESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="team_names" type="radio" default="short_name"
+				<field name="team_names" type="extensionradiobutton" default="short_name"
         class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESDESC">
 					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
@@ -206,7 +216,7 @@
 					<option value="name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION3</option>
 				</field>
 
-				<field name="team_logos" type="radio" default="-" 
+				<field name="team_logos" type="extensionradiobutton" default="-" 
         class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSDESC">
@@ -224,7 +234,7 @@
 				<field type="spacer">
 				</field>
 
-				<field name="livescore" type="radio" default="" class="radio btn-group btn-group-yesno"
+				<field name="livescore" type="extensionradiobutton" default="" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCORELBL"
 									description="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCOREDESC">
 					<option value="">JNO</option>
@@ -240,7 +250,7 @@
 -->
 				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CALENDAR_SPACER_EVENTS" />
 				
-				<field name="jevents" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="jevents" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSDESC">
 					<option value="0">JNO</option>
@@ -254,7 +264,7 @@
 				<field type="spacer">
 				</field>
 
-				<field name="convert" type="radio" default="0" 
+				<field name="convert" type="extensionradiobutton" default="0" 
         class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_CONVUTFLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CONVUTFDESC">
@@ -263,7 +273,7 @@
 				</field>
 
 
-				<field name="lightbox" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="lightbox" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXDESC">
 					<option value="0">JNO</option>
@@ -271,20 +281,20 @@
 				</field>
 
 
-				<field name="lightbox_on_pageload" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="lightbox_on_pageload" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXLBL_ON_PAGELOAD"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOX_ON_PAGELOAD_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="update_module" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				<field name="update_module" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_BELOWCALLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_BELOWCALDESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field name="inject" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				<field name="inject" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_INJECTLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_INJECTDESC">
 					<option value="0">JNO</option>

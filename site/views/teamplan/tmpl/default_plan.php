@@ -1,64 +1,51 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      default_plan.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage teamplan
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
+if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/jcomments.class.php');
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/jcomments.config.php');
-	require_once (JPATH_ROOT . '/components/com_sportsmanagement/models/jcomments.php');
+$dispatcher = JDispatcher::getInstance();
+$comments = '';
+if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
+{
+require_once JPATH_ROOT.'/components/com_jcomments/classes/config.php';
+require_once JPATH_ROOT.'/components/com_jcomments/jcomments.class.php';
+require_once JPATH_ROOT.'/components/com_jcomments/models/jcomments.php';
+}
 
-	// get joomleague comments plugin params
-	JPluginHelper::importPlugin( 'joomleague' );
+/**
+ * load sportsmanagement comments plugin files
+ */
+JPluginHelper::importPlugin('content','sportsmanagement_comments');
 
-	$plugin				= & JPluginHelper::getPlugin('joomleague', 'comments');
+/**
+ * get sportsmanagement comments plugin params
+ */
+$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
-	$pluginParams = is_object($plugin) ? new JParameter($plugin->params) : new JParameter('');
-	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
+if (is_object($plugin)) {
+	$pluginParams = new Registry($plugin->params);
+}
+else {
+	$pluginParams = new Registry('');
+}
+$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }
 ?>
-<!-- <a name="jl_top" id="jl_top"></a> -->
+
 <?php
 if (!empty($this->matches))
 {
-$teamid = JRequest::getInt('tid');
+$teamid = JFactory::getApplication()->input->getInt('tid');
 $nbcols = 0;
 ?>
 <div class="table-responsive">   
@@ -393,8 +380,8 @@ $nbcols = 0;
 			?>
 		<td width='5' class='ko'>
 		<?php
- 			$events	= sportsmanagementModelProject::getMatchEvents($match->id,0,0,JRequest::getInt('cfg_which_database',0));
- 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($match->id,JRequest::getInt('cfg_which_database',0));
+ 			$events	= sportsmanagementModelProject::getMatchEvents($match->id,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+ 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($match->id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
@@ -422,7 +409,9 @@ $nbcols = 0;
 		{
 			$hasEvents = false;
 		}
-		// end events
+/**
+ * end events
+ */
 		?>
 
 		<?php
@@ -432,8 +421,8 @@ $nbcols = 0;
 			<td width='5%'>
 			<?php
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $match->round_slug;
 $routeparameter['division'] = $match->division_slug;
@@ -482,14 +471,36 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		{
 			?>
 			<td width="10%"><?php
-			if (!strstr($match->match_date,"0000-00-00"))
+			
+            
+        if ( $this->config['show_date_image'] )
+        {
+$jdate = JFactory::getDate($match->match_date);
+$jdate->setTimezone(new DateTimeZone($this->project->timezone));    
+//$jdate->format('d.m.Y H:i');  
+$temp1 = $jdate->format('M');
+$temp2 = $jdate->format('d');
+$temp3 = $jdate->format('D');      
+        ?>
+<div class="jsmcalendar">
+<div class="jsmcalendar-month"><?php echo $temp1; ?></div>
+<div class="jsmcalendar-day"><?php echo $temp2; ?></div>
+<div class="jsmcalendar-dayname"><?php echo $temp3; ?></div>
+</div>
+        <?php    
+        }    
+        else
+        {
+        if ( !strstr($match->match_date,"0000-00-00") )
 			{
 				echo JHtml::date($match->match_date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 			}
 			else
 			{
 				echo "&nbsp;";
-			}
+			}    
+        }    
+            
 			?>
 			</td>
 		<?php
@@ -500,7 +511,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if ($this->config['show_time'])
 		{
 			?>
-		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime(	$match,
+		<td width="10%"><?php echo sportsmanagementHelperHtml::showMatchTime($match,
 		$this->config,
 		$this->overallconfig,
 		$this->project); ?></td>
@@ -541,8 +552,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		if ($this->config['show_teamplan_link']) 
         {
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $hometeam->team_slug;
 $routeparameter['division'] = $match->division_slug;
@@ -573,11 +584,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->id );
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_small',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
 				break;
@@ -585,11 +612,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 5 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->id);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_middle',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_middle',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -597,11 +640,27 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 6 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->id);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,
+						1,
+						0,
+						'logo_big',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->id).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,
+						1,
+						0,
+						'logo_big',
+						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						$match->id,
+						$this->modalwidth,
+						$this->modalheight,
+						$this->overallconfig['use_jquery_modal']).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -739,8 +798,8 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 
             //Link
 $routeparameter = array();                    
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->match_slug;            
             if (isset($match->team1_result))
@@ -804,7 +863,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
             }
 
-			$score = "<td align='center'>".$result.'</td>';
+			$score = "<td class='center'>".$result.'</td>';
 		}
 		else
 		{
@@ -945,20 +1004,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			?>
 		<td><?php
 		if (!$match->cancel) {
-			if (isset($match->team1_result))
+            //$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+            if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
 					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-				
-				$viewReport=JHtml::link($link, $href_text);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);				
+				$viewReport = JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
@@ -968,8 +1027,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
-				$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
-				$viewPreview=JHtml::link($link, $href_text);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+				$viewPreview = JHtml::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}
@@ -1026,8 +1089,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				//Link
 	            if (isset($match->team1_result))
 	            {
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -1048,8 +1111,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				//Link
 	            if (isset($match->team1_result))
 	            {
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -1071,8 +1134,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	            if (isset($match->team1_result))
 	            {
 	            $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);

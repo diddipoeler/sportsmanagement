@@ -116,8 +116,8 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	{
 	   $app = JFactory::getApplication();
        $config = JFactory::getConfig();
-       $option = JRequest::getCmd('option');
-       $post = JRequest::get('post');
+       $option = JFactory::getApplication()->input->getCmd('option');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // Get a db connection.
         $db = JFactory::getDbo();
         
@@ -125,7 +125,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
        
-       $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
+       $timezone = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('timezone','');
        
        if ( empty($data['id']) )
        {
@@ -145,8 +145,8 @@ $output .= "</entry>". "\n";
         $xmlfile = $xmlfile.$output;
         JFile::write($file, $xmlfile);
 
-        $username = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account','');
-        $password = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password','');
+        $username = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+        $password = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
                 
          $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
     $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);

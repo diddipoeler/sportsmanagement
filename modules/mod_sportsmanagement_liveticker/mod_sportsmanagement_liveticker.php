@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
+ * @version   1.0.05
+ * @file      mod_sportsmanagement_liveticker.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_liveticker
+ */
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -49,7 +21,7 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
@@ -184,7 +156,13 @@ $list_html .=  "<table class=\"".$table_class."\">";
 $list_html .=  "<thead>" ;
 $list_html .=  "<tr>" ;
 $list_html .= "<td colspan=\"\" align=\"middle\" >" . "aktuelle Zeit" . "</td>";
-$list_html .= "<td colspan=\"8\" align=\"left\" >" . date("H:i:s",time()). "</td>";
+	
+$date = new DateTime();
+$config = JFactory::getConfig();
+$date->setTimezone(new DateTimeZone($config->get('offset')));	
+$list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";	
+//$list_html .= "<td colspan=\"8\" align=\"left\" >" . date("H:i:s",time()). "</td>";
+//$list_html .= "<td colspan=\"8\" align=\"left\" >" . JFactory::getDate()->format('%H:%M'). "</td>";	
 $list_html .= "</tr>" ;
 $list_html .=  "<tr>" ;
 
@@ -346,18 +324,11 @@ $list_html .= "</td>" ;
 $list_html .= "</tr>" ;
 }
 
-
-
-
-
-
 	}
         $list_html .= "</table>";
 		$list_html .= "</div>";
 		$list_html .= "</div>";
-		
 	$ajax_return = $list_html;
-
 }
 
 if ($is_ajaxed) {
@@ -365,10 +336,8 @@ if ($is_ajaxed) {
 	exit;
 }
 
-
-
 ?>
-<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 ?>

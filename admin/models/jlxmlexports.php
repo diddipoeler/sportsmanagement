@@ -2,7 +2,7 @@
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
 * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
@@ -305,7 +305,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 //		$user = JFactory::getUser();
 
 		//$this->_project_id = $app->getUserState($option.'project');
-        //$this->_project_id = JRequest::getInt('p');
+        //$this->_project_id = JFactory::getApplication()->input->getInt('p');
         $this->_project_id = $this->jinput->getVar('pid');
         $this->_update = $this->jinput->getVar('update');
 		//$this->_project_id = $app->getUserState('project');
@@ -322,7 +322,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		if(empty($filename)) 
     {
 			//$this->_project_id = $app->getUserState($option.'project');
-            //$this->_project_id = JRequest::getInt('p');
+            //$this->_project_id = JFactory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
 				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
@@ -648,7 +648,7 @@ $xmlfile = $xmlfile.$output;
 		$exportRoutine = '2010-09-23 15:00:00';
 //		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
 //		$this->_db->setQuery($query);
-//		$this->_db->query();
+//		$this->_db->execute();
         
         // Select some fields
         $query->select('manifest_cache');
@@ -705,7 +705,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -752,7 +752,7 @@ else
 
 		//$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -789,7 +789,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -826,7 +826,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($this->_db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -863,7 +863,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -900,7 +900,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -959,7 +959,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -973,7 +973,7 @@ else
       $query->from('#__sportsmanagement_season_team_id');
       $query->where('id = ' . (int)$row['team_id'] );
       $db->setQuery($query);
-	  $db->query();
+	  $db->execute();
       $teamresult = $db->loadResult();
       if( $teamresult )
       {
@@ -1015,7 +1015,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -1052,7 +1052,7 @@ else
         
 		//$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -1099,7 +1099,7 @@ else
 
 			//$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			if ($db->getNumRows() > 0)
 			{
 				$result = $db->loadAssocList();
@@ -1150,7 +1150,7 @@ else
 
 			//$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
 			$this->jsmdb->setQuery($this->query);
-			$this->jsmdb->query();
+			$this->jsmdb->execute();
 			if ($this->jsmdb->getNumRows() > 0)
 			{
 				$result = $this->jsmdb->loadAssocList();
@@ -1189,7 +1189,7 @@ else
             
 		//$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -1227,7 +1227,7 @@ else
         
 		//$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
@@ -1278,7 +1278,7 @@ else
             
 			//$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			if ($db->getNumRows() > 0)
 			{
 				$result = $db->loadAssocList();
@@ -1311,7 +1311,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_team_player WHERE projectteam_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1345,7 +1345,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_team_trainingdata WHERE project_team_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1378,7 +1378,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_team_staff WHERE projectteam_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1413,7 +1413,7 @@ else
 			$query = "SELECT * FROM #__sportsmanagement_match_player WHERE match_id IN ($ids)";
 
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1447,7 +1447,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_match_staff WHERE match_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1481,7 +1481,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_match_referee WHERE match_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1515,7 +1515,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1549,7 +1549,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_position WHERE id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1591,7 +1591,7 @@ else
 			$ids = implode(",",array_unique($pgIDs));
 			$query = "SELECT * FROM #__sportsmanagement_person WHERE id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1625,7 +1625,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_match_event WHERE	match_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1658,7 +1658,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_eventtype WHERE id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1693,7 +1693,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_position_eventtype WHERE eventtype_id IN ($event_ids) AND position_id IN ($position_ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1725,7 +1725,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_position_statistic WHERE position_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1758,7 +1758,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_match_statistic WHERE match_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1791,7 +1791,7 @@ else
 
 			$query = "SELECT * FROM #__sportsmanagement_match_staff_statistic WHERE match_id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
@@ -1832,7 +1832,7 @@ else
 			$ids = implode(",",array_unique($sIDs));
 			$query = "SELECT * FROM #__sportsmanagement_statistic WHERE id IN ($ids)";
 			$this->_db->setQuery($query);
-			$this->_db->query();
+			$this->_db->execute();
 			if ($this->_db->getNumRows() > 0)
 			{
 				$result = $this->_db->loadAssocList();
