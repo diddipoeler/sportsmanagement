@@ -130,6 +130,9 @@ class sportsmanagementView extends JViewLegacy {
         $this->document->setHeadData($headData);
 
         switch ($this->view) {
+	case 'ical':
+                $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		break;
             case 'resultsranking':
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
                 $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
