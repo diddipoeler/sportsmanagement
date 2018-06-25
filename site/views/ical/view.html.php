@@ -43,7 +43,7 @@ class sportsmanagementViewical extends sportsmanagementView
 $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
 $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
-/*    
+    
     // create a new calendar instance
 	$v = new vcalendar();
     
@@ -58,6 +58,7 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.pr
 			if ($match->match_date)
 			{
 				$totalMatchTime = isset( $this->project ) ? ($this->project->halftime * ($this->project->game_parts - 1)) + $this->project->game_regular_time : 90;
+				sportsmanagementHelper::convertMatchDateToTimezone($match);
 				$start = sportsmanagementHelper::getMatchStartTimestamp($match, 'Y-m-d H:i:s');
 				$end = sportsmanagementHelper::getMatchEndTimestamp($match, $totalMatchTime, 'Y-m-d H:i:s');
 				// check if exist a playground in match or team or club
@@ -97,7 +98,7 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.pr
 		$xprops = array( "X-LIC-LOCATION" => $timezone );
 		iCalUtilityFunctions::createTimezone( $v, $timezone, $xprops );
 		$v->returnCalendar();
-*/    
+  
            
     }   
 
