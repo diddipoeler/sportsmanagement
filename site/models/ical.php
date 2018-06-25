@@ -43,13 +43,13 @@ class sportsmanagementModelical extends JModelLegacy
 	   // Reference global application object
         $app = JFactory::getApplication();
         $jinput = $app->input;
-		parent::__construct( );
+	parent::__construct( );
         
         self::$teamid = (int) $jinput->get('tid',0, '');
         self::$projectteamid = (int) $jinput->get('ptid',0, '');
         
         self::$projectid = $jinput->request->get('p', 0, 'INT');
-		self::$divisionid = $jinput->request->get('division', 0, 'INT');
+	self::$divisionid = $jinput->request->get('division', 0, 'INT');
         self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
         sportsmanagementModelProject::$projectid = self::$projectid;
         sportsmanagementModelResults::$projectid = self::$projectid;  
@@ -64,6 +64,66 @@ class sportsmanagementModelical extends JModelLegacy
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
+	$result = array();
+        // select some fields
+        $query->select('m.projectteam1_id, m.projectteam2_id, m.match_date,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
+        $query->select('pt1.project_id');
+        $query->select('d1.name as divhome');
+        $query->select('d2.name as divaway');
+        $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+        $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');	
+
+		
+		
+	// from 
+	$query->from('#__sportsmanagement_match AS m');
+        // join
+        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+        $query->join('LEFT','#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
+        $query->join('LEFT','#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
+        $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
+		
+        // where
+        $query->where('m.published = 1');
+        $query->where('r.project_id = '.$projectid);	
+	if ( $teamid )	
+	{
+	$query->where('(t1.id = '.$teamid.' OR t2.id = '.$teamid.')');	
+	}
+	// order
+        $query->order('m.match_date ASC,m.match_number');  	
+		
+		
+		
+	try{
+	$db->setQuery($query);
+        $result = $db->loadObjectList('id');
+            }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $result = false;
+}
+		//}
+        
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
+		return $result;	
+		
+		
+		
 		
 		
 		
