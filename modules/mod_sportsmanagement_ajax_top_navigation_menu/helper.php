@@ -984,11 +984,10 @@ $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
-$routeparameter['tid'] = $team_id;
+$routeparameter['tid'] = $this->_team_id;
 $routeparameter['ptid'] = 0;
 $routeparameter['division'] = 0;			
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);				
-//$link = sportsmanagementHelperRoute::getTeamStatsRoute( self::$_project_id, $team_id );
 				break;
 				
 			
@@ -1146,11 +1145,10 @@ $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
-$routeparameter['tid'] = $this->_team_slug;
+$routeparameter['tid'] = $this->_team_id;
 $routeparameter['ptid'] = 0;
 $routeparameter['division'] = 0;			
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);					
-				//$link = sportsmanagementHelperRoute::getTeamStatsRoute( $this->_project_slug, $this->_team_slug );
 				break;
                 
             case "teams":
