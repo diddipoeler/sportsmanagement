@@ -110,23 +110,16 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
  		{
  			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
  		}
-//		echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
-//												$this->config['player_picture_width'],
-//												$this->config['player_picture_height']);
-		?>
 
-       
-<a href="<?php echo $picture;?>"  title="<?php echo $playerName;?>" data-toggle="modal" data-target="#r<?php echo $row->person_id;?>">
-<img src="<?php echo $picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="r<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image($picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
-?>
-</div>        
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('person' . $row->person_id,
+            $picture,
+            $playerName,
+            $this->config['player_picture_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);   			
+		?>
         
 		</td>
 		<?php endif; ?>
