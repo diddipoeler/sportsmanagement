@@ -241,12 +241,8 @@ class SMStatisticBasic extends SMStatistic
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
 	
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
-        
-        $db->setQuery($query, $limitstart, $limit);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 try{        
+        $db->setQuery($query, $limitstart, $limit);
 		$res = $db->loadObjectList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...

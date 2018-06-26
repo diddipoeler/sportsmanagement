@@ -796,6 +796,7 @@ class SMStatistic extends JObject
         {
             case 'basic':
             case 'complexsum':
+            case 'sumstats':
             $query_core->select($select);
             $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
             $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
