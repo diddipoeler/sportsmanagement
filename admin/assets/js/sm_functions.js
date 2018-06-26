@@ -31,13 +31,14 @@ var documentHeight = jQuery(window).height();
 return documentHeight - 100 ;
 }
 
+function selectallstatistic()
+{
+jQuery('select.position_statistic option').prop('selected', 'selected');	
+}	
 
 //this will move selected items from source list to destination list   
 function move_list_items(sourceid, destinationid)
 {
-
-//alert(sourceid);
-//alert(destinationid);
 jQuery("#"+sourceid+"  option:selected").appendTo("#"+destinationid);
 }
 
