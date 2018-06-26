@@ -980,8 +980,15 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
       
         	
 			case "teamstats":
-				
-				$link = sportsmanagementHelperRoute::getTeamStatsRoute( self::$_project_id, $team_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['tid'] = $team_id;
+$routeparameter['ptid'] = 0;
+$routeparameter['division'] = 0;			
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);				
+//$link = sportsmanagementHelperRoute::getTeamStatsRoute( self::$_project_id, $team_id );
 				break;
 				
 			
