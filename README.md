@@ -15,7 +15,7 @@ Das Team
 Übersetzungen
 ================
 Alle Übersetzungen in andere Sprachen werden nur hier https://www.transifex.com/opentranslators/sportsmanagement/
-vorgenommen und in die Kompoonente eingepflegt.
+vorgenommen und in die Komponente eingepflegt.
 
 Import functions ?
 ---------------------
