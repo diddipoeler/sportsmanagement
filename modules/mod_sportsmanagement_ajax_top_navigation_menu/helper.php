@@ -1150,7 +1150,7 @@ $routeparameter['tid'] = $this->_team_slug;
 $routeparameter['ptid'] = 0;
 $routeparameter['division'] = 0;			
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);					
-				$link = sportsmanagementHelperRoute::getTeamStatsRoute( $this->_project_slug, $this->_team_slug );
+				//$link = sportsmanagementHelperRoute::getTeamStatsRoute( $this->_project_slug, $this->_team_slug );
 				break;
                 
             case "teams":
