@@ -12,7 +12,10 @@ Das Team
 * Tester: svdoldie
 * Designer: donclumsy
 
-
+Übersetzungen
+================
+Alle Übersetzungen in andere Sprachen werden nur hier https://www.transifex.com/opentranslators/sportsmanagement/
+vorgenommen und in die Kompoonente eingepflegt.
 
 Import functions ?
 ---------------------
