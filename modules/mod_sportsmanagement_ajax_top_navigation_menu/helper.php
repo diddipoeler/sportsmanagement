@@ -1089,7 +1089,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 				break;
 				
 			case "statsranking":
-				$link = sportsmanagementHelperRoute::getStatsRankingRoute( $this->_project_slug, $this->_division_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['tid'] = $this->_team_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking',$routeparameter);				
+//$link = sportsmanagementHelperRoute::getStatsRankingRoute( $this->_project_slug, $this->_division_id );
 				break;
 				
 			case "teaminfo":
