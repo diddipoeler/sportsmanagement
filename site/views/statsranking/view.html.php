@@ -103,7 +103,7 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 			$titleInfo->divisionName = $this->division->name;
 		}
 		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-		$document->setTitle($this->pagetitle);
+		$this->document->setTitle($this->pagetitle);
 		
         $this->headertitle = $this->pagetitle;
         
