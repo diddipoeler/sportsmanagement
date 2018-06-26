@@ -328,6 +328,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
                 JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+		JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' <pre>' . print_r($query->dump(),true).'</pre>', 'error');
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                 return false;
             }
