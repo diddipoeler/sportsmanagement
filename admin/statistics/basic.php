@@ -147,9 +147,9 @@ class SMStatisticBasic extends SMStatistic
 		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = JFactory::getDbo()->getQuery(true);
 		
-		$query_select_count = ' SELECT COUNT(DISTINCT tp.id) as count';
+		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
-		$query_select_details	= ' SELECT SUM(ms.value) AS total,'
+		$query_select_details	= ' SUM(ms.value) AS total,'
 								. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 								. ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
 								. ' pt.team_id, pt.picture AS projectteam_picture,'
