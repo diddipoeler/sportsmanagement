@@ -134,8 +134,15 @@ echo JHtml::image($picture, $playerName, array('title' => $playerName,'class' =>
 		<td class="td_l playername">
 		<?php
 		if ( $this->config['link_to_player'] == 1 ) {
-			$link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $row->team_id, $row->person_id );
-			echo JHtml::link( $link, $playerName );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $row->team_id;
+$routeparameter['pid'] = $row->person_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			
+//$link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $row->team_id, $row->person_id );
+echo JHtml::link( $link, $playerName );
 		}
 		else {
 			echo $playerName;
