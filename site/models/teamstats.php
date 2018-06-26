@@ -303,34 +303,15 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->where('matches.published = 1');
         $query->where('t.id = '.self::$team->id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
-        
+        try{
         $db->setQuery($query, 0, 1);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-    	//$this->totalshome = $db->loadObject();
-    	
-        if ( !$db->loadObject() )
-        {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
         switch ($which)
         {
             case 'HOME':
             if ( is_null( self::$totalshome ) )
     	    {
     	       self::$totalshome = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                return self::$totalshome;
     	    }   
             break;
@@ -338,11 +319,18 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             if ( is_null( self::$totalsaway ) )
     	    {
     	       self::$totalsaway = $db->loadObject();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
                return self::$totalsaway;
     	    }
             break;
         }
-        
+        } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
+                return false;
+            }
     	
         
     }
