@@ -18,21 +18,21 @@ defined('_JEXEC') or die('Restricted access');
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_EXISTING_STATISTICS'); ?></b><br /><?php echo $this->lists['statistic']; ?></td>
 			<td style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="move_list_items('statistic','position_statistic');"
+						onclick="move_list_items('statistic','position_statistic');selectallstatistic();"
 						value="&gt;&gt;" />
 				<br /><br />
 				<input  type="button" class="inputbox"
-						onclick="move_list_items('position_statistic','statistic');"
+						onclick="move_list_items('position_statistic','statistic');selectallstatistic();"
 						value="&lt;&lt;" />
 			</td>
 			<td style="width:auto;"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_ASSIGNED_STATS_TO_POS'); ?></b><br /><?php echo $this->lists['position_statistic']; ?></td>
 			<td align='center' style="width:auto;">
 				<input  type="button" class="inputbox"
-						onclick="$('statschanges_check').value=1;moveOptionUp('position_statistic');"
+						onclick="move_up('position_statistic');selectallstatistic();"
 						value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" />
 				<br /><br />
 				<input type="button" class="inputbox"
-					   onclick="$('statschanges_check').value=1;moveOptionDown('position_statistic');"
+					   onclick="move_down('position_statistic');selectallstatistic();"
 					   value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 			</td>
 			<td style="width:auto;">
