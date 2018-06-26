@@ -160,7 +160,15 @@ echo JHtml::link( $link, $playerName );
 			$team = $this->teams[$row->team_id];
 			if ( ( $this->config['link_to_team'] == 1 ) && ( $this->project->id > 0 ) && ( $row->team_id > 0 ) )
 			{
-				$link = sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $row->team_id  );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $row->team_id;
+$routeparameter['ptid'] = 0;
+$routeparameter['division'] = 0;				
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);					
+//$link = sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $row->team_id  );
 			} else {
 				$link = null;
 			}
