@@ -149,6 +149,22 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 		return $results;
 	}
 
+	function getTeamsStats($order=null)
+	{
+		$stats = self::getProjectUniqueStats();
+		$order = ($order ? $order : $this->order);
+		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stats <pre>'.print_r($stats ,true).'</pre>', 'error');
+		$results = array();
+		$results2 = array();
+		foreach ($stats as $stat) 
+		{
+			//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stat <pre>'.print_r($stat ,true).'</pre>', 'error');
+			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
+			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
+		}
+		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($results2,true).'</pre>', 'error');
+		return $results2;
+	}
 
 }
 ?>
