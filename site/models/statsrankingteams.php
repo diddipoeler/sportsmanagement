@@ -173,7 +173,7 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	{
 	foreach ( $rows AS $row )
 	{
-	$teamstotal[$row->team_id] = $row->total;	
+	$teamstotal[$row->team_id] += $row->total;	
 	}
 	}
 		
