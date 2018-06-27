@@ -176,7 +176,7 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	$teamstotal[$row->team_id] += $row->total;	
 	}
 	}
-		
+	asort($teamstotal);	
 	return $teamstotal;	
 	}
 }
