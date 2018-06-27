@@ -1326,7 +1326,7 @@ catch (Exception $e)
 			$project = self::getProject($cfg_which_database,__METHOD__);
 			$project_id = $project->id;
             $query->select('ppos.id as pposid,ppos.position_id AS position_id');
-            $query->select('stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,stat.params, stat.baseparams');
+            $query->select('stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,stat.params,stat.baseparams,stat.ordering');
             $query->from('#__sportsmanagement_statistic AS stat');
             $query->join('INNER','#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = stat.id ');
             $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.position_id = ps.position_id
