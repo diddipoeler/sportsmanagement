@@ -28,7 +28,13 @@ function init()
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->cfg_which_database);
   
   $teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$this->cfg_which_database);
-  
+  $this->teams = $teams;
+$this->stats = $this->model->getProjectUniqueStats();
+$this->playersstats = $this->model->getPlayersStats();
+	
+	
+	
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersstats<br><pre>'.print_r($this->playersstats,true).'</pre>'),'');	
 }
   
 }
