@@ -31,9 +31,9 @@ function init()
   $this->teams = $teams;
 $this->stats = $this->model->getProjectUniqueStats();
 $this->playersstats = $this->model->getPlayersStats();
+$this->teamsstats = $this->model->getTeamsStats();	
 	
-	
-	
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamsstats<br><pre>'.print_r($this->teamsstats,true).'</pre>'),'');		
 $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersstats<br><pre>'.print_r($this->playersstats,true).'</pre>'),'');	
 }
   
