@@ -11,7 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 //jimport( 'joomla.application.component.view' );
 /**
- * sportsmanagementViewStatsRanking
+ * sportsmanagementViewStatsRankingTeams
  * 
  * @package 
  * @author diddi
