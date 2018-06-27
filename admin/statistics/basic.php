@@ -239,8 +239,8 @@ class SMStatisticBasic extends SMStatistic
         $select = 'SUM(ms.value) AS total, st.team_id ';
         $statistic_id = $this->id;
         $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
-	
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
+	$query->group('st.team_id');	
 try{        
         $db->setQuery($query, $limitstart, $limit);
 		$res = $db->loadObjectList();
