@@ -166,5 +166,18 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 		return $results2;
 	}
 
+	function getTeamsTotal($teamsstats = array() )
+	{
+	$teamstotal = array();	
+	foreach((array) $teamsstats as $rows )
+	{
+	foreach ( $rows AS $row )
+	{
+	$teamstotal[$row->team_id] = $row->total;	
+	}
+	}
+		
+	return $teamstotal;	
+	}
 }
 ?>
