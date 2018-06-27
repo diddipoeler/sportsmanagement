@@ -249,6 +249,9 @@ try{
     $code = $e->getCode(); // Returns '500';
     JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
+
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' query<pre>'.print_r($query->dump(),true).'</pre>', 'error');
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' res<pre>'.print_r($res,true).'</pre>', 'error');
 		
 		if ($res)
 		{
