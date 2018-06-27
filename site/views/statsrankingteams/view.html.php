@@ -19,7 +19,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewStatsRankingTeam extends sportsmanagementView
+class sportsmanagementViewStatsRankingTeams extends sportsmanagementView
 {
   
 function init()
