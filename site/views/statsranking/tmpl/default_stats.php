@@ -165,7 +165,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 			} else {
 				$link = null;
 			}
-			$teamName = sportsmanagementHelper::formatTeamName($team,"t".$row->team_id,$this->config, $isFavTeam, $link);
+			$teamName = sportsmanagementHelper::formatTeamName($team,'t'.$row->team_id.'st'.$rows->id.'p'.$row->person_id,$this->config, $isFavTeam, $link);
 			echo $teamName;
 			?>
 		</td>
