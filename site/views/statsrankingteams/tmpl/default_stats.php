@@ -19,11 +19,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php  
 foreach ( $this->stats AS $rows )
 {
+  if ( $rows->_name == 'basic' )
+  {  
 ?>  
 <th class="td_r" class="nowrap"><?php	echo JText::_($rows->name); ?></th>
 <?php  
 }
-  
+  }  
   
 ?>  
 </tr>
