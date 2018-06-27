@@ -42,47 +42,6 @@
 		
 	</fieldset>
 	
-	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"
-  label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS"  
-			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS">	
-
-		<field	name="name_format" type="nameformat" default="0"
-				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_NAME_FORMAT"
-				description="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_DESCR_NAME_FORMAT">
-		</field>
-			
-		<field 	name="show_picture_thumb" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_SHOW_THUMB_PLAYER" 
-				description="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_DESCR_SHOW_THUMB_PLAYER">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
-		<field 	name="player_picture_width" type="text" default="40"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
-		</field>
-<!--		
-		<field 	name="player_picture_height" type="text" default="0"
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_HEIGHT">
-		</field>
--->		
-		<field 	name="show_nation" type="extensionradiobutton" default="0" class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_SHOW_NAT_PLAYER"
-				description="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_DESCR_SHOW_NAT_PLAYER">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
-		<field 	name="link_to_player" type="extensionradiobutton" default="1" class="radio btn-group btn-group-yesno"
-				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_LINK_PLAYER"
-				description="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_DESCR_LINK_PLAYER">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-			
-	</fieldset>	
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
