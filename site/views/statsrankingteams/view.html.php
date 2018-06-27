@@ -32,7 +32,9 @@ function init()
 $this->stats = $this->model->getProjectUniqueStats();
 $this->playersstats = $this->model->getPlayersStats();
 $this->teamsstats = $this->model->getTeamsStats();	
+$this->teamstotal = $this->model->getTeamsTotal($this->teamsstats);
 	
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamstotal<br><pre>'.print_r($this->teamstotal,true).'</pre>'),'');			
 $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamsstats<br><pre>'.print_r($this->teamsstats,true).'</pre>'),'');		
 $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersstats<br><pre>'.print_r($this->playersstats,true).'</pre>'),'');	
 }
