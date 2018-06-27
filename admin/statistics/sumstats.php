@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      sumstats.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage statistics
@@ -286,7 +286,11 @@ try{
     $code = $e->getCode(); // Returns '500';
     JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-		if (!empty($res))
+		
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' query<pre>'.print_r($query->dump(),true).'</pre>', 'error');
+//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' res<pre>'.print_r($res,true).'</pre>', 'error');
+		
+		if ($res)
 		{
 			$precision = $this->getPrecision();
 			// get ranks
