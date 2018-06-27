@@ -169,12 +169,16 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	function getTeamsTotal($teamsstats = array() )
 	{
 	$teamstotal = array();	
-	foreach((array) $teamsstats as $rows )
+	foreach((array) $teamsstats as $rows => $value )
 	{
-	foreach ( $rows AS $row )
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' rows <pre>'.print_r($rows ,true).'</pre>', 'error');
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' value <pre>'.print_r($value ,true).'</pre>', 'error');
+	foreach ( $value AS $row )
 	{
-	$teamstotal[$row->team_id] += $row->total;	
+	$teamstotal[$row->team_id][total] += $row->total;	
+	$teamstotal[$row->team_id][$rows] = $row->total;
 	}
+	
 	}
 	asort($teamstotal);	
 	return $teamstotal;	
