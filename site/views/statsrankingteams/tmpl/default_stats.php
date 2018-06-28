@@ -28,7 +28,7 @@ foreach ( $this->stats AS $rows )
   }  
   
 ?>  
-<th class="td_r" class="nowrap"><?php	echo JText::_(gesamt); ?></th>
+<th class="td_r" class="nowrap"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'); ?></th>
 </tr>
 </thead>  
 
