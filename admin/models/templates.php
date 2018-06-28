@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      templates.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage models
@@ -153,19 +153,12 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
-//        $this->_project_id = JFactory::getApplication()->input->getVar('pid');
-//        if ( !$this->_project_id )
-//        {
-//        $this->_project_id = $app->getUserState( "$option.pid", '0' );
-//        }
-//                 
-//		$project_id = $this->_project_id;
 		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
         // Get the views for this component.
         $path = JPATH_SITE.'/components/'.$option.'/views';
 		$predictionTemplatePrefix = 'prediction';
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
 
 		if (!$project_id)
         {
@@ -176,14 +169,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         $query->select('master_template,extension');
         $query->from('#__sportsmanagement_project');
         $query->where('id = '.(int)$project_id);
-//		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
-
 		$db->setQuery($query);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-}
 
 		$params = $db->loadObject();
 
@@ -199,8 +185,6 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         $query->select('template');
         $query->from('#__sportsmanagement_template_config');
         $query->where('project_id = '.(int)$project_id);
-//		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
-
 		$db->setQuery($query);
 
     if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -214,7 +198,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$records = $db->loadResultArray();
 }
 
-		if (empty($records))
+	if (empty($records))
          { 
             $records=array(); 
          }
@@ -231,46 +215,9 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			}
 		}
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmldirs<br><pre>'.print_r($xmldirs,true).'</pre>'),'Notice');
-
 // now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
 		{
-			/*
-            $files = JFolder::files($xmldir, '.xml', false, false, array('predictionentry.xml','predictionflash.xml','predictionoverall.xml','predictionranking.xml','predictionresults.xml','predictionrules.xml','predictionusers.xml'), array());
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' files<br><pre>'.print_r($files,true).'</pre>'),'Notice');
-            
-            foreach ($files as $file)
-		{
-            $template = substr($file,0,(strlen($file)-4));
-            
-            
-            
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
-         
-                            $xmlfile = $xmldir.DS.$file;
-							$arrStandardSettings = array();
-							if(file_exists($xmlfile)) 
-                            {
-								$strXmlFile = $xmlfile;
-                                $form = JForm::getInstance($template, $strXmlFile,array('control'=> ''));
-                                $fieldsets = $form->getFieldsets();
-								foreach ($fieldsets as $fieldset) 
-                                {
-									foreach($form->getFieldset($fieldset->name) as $field) 
-                                    {
-										$arrStandardSettings[$field->name] = $field->value;
-									}
-								}
-                                
-							}
-							
-                            $defaultvalues = json_encode( $arrStandardSettings);
-         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'Notice');
-         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
-         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
-         }   
-         */
          
             if ($handle=opendir($xmldir))
 			{
@@ -289,36 +236,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						$template = substr($file,0,(strlen($file)-4));
                         
                         // Determine if a metadata file exists for the view.
-				        //$metafile = $path.'/'.$template.'/metadata.xml';
                         $metafile = $path.'/'.$template.'/tmpl/default.xml';
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' metafile -> '.$metafile.''),'Notice');
-                        
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
                         $xml = JFactory::getXML($metafile,true);
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($xml->layout,true).'</pre>'),'Notice');
-                        
                         $attributetitle = (string)$xml->layout->attributes()->title;
-                        
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($attributetitle,true).'</pre>'),'Notice');
-                            
-                        /*    
-                        // Attempt to load the xml file.
-					   if ($metaxml = simplexml_load_file($metafile)) 
-                        {
-                        //$app->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
-                        // This will save the value of the attribute, and not the objet
-                        //$attributetitle = (string)$metaxml->view->attributes()->title;
-                        $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        $app->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
-                        if ($menu = $metaxml->xpath('view[1]')) 
-                        {
-							$menu = $menu[0];
-                            //$app->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
-                            }
-                        }
-                        */
                         }
 
 						if ((empty($records)) || (!in_array($template,$records)))
@@ -340,22 +263,20 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							}
 							
                             $defaultvalues = json_encode( $arrStandardSettings);
-                            
-							//$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_template_config (template,title,params,project_id)
-//													VALUES ('$template','".$form->getName()."','$defaultvalues','$project_id')";
-//							JFactory::getDbo()->setQuery($query);
-                            
+                           
           $query->clear();
           // Select some fields
         $query->select('id');
-		// From the table
-		$query->from('#__sportsmanagement_template_config');
+	// From the table
+	$query->from('#__sportsmanagement_template_config');
         $query->where('template LIKE '.$db->Quote(''.$template.''));
         $query->where('project_id = '.(int)$project_id);
-			$db->setQuery($query);
-            if ( !JFactory::getDbo()->loadResult() )
+	$db->setQuery($query);
+	$resulttemplate = JFactory::getDbo()->loadResult();
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
+            if ( !$resulttemplate )
             {
-                // Create and populate an object.
+        // Create and populate an object.
         $object_template = new stdClass();
         $object_template->template = $template;
         $object_template->title = $attributetitle;
@@ -363,38 +284,16 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $object_template->project_id = $project_id;
         // Insert the object into the user profile table.
         $result = JFactory::getDbo()->insertObject('#__sportsmanagement_template_config', $object_template);
-        
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
-                            }
-                            
-                            //$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-//                            $my_text .= JText::sprintf('Created new template data for empty Projectdata: %1$s %2$s',"</span><strong>$template</strong>","<br><strong>".$defaultvalues."</strong>" );
-//			                $my_text .= '<br />';
-                            
-							////echo error,allows to check if there is a mistake in the template file
-//							if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-//							{
-//								$this->setError(JFactory::getDbo()->getErrorMsg());
-//								return false;
-//							}
+        }
+
 							array_push($records,$template);
 						}
 					}
 				}
-                
-                //$this->_success_text['Importing general template data:'] = $my_text;
                                 
 				closedir($handle);
 			}
 		}		
-        
-
-
-
-
-
-
         
 	}
 
