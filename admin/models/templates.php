@@ -288,6 +288,22 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'
 
 							array_push($records,$template);
 						}
+else
+						{
+						// Select some fields
+						$query->clear();
+        $query->select('id');
+	// From the table
+	$query->from('#__sportsmanagement_template_config');
+        $query->where('template LIKE '.$db->Quote(''.$template.''));
+        $query->where('project_id = '.(int)$project_id);
+	$db->setQuery($query);
+	$resulttemplate = JFactory::getDbo()->loadResult();
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
+						
+						
+						
+						}						
 					}
 				}
                                 
