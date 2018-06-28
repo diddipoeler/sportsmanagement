@@ -171,16 +171,21 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	$teamstotal = array();	
 	foreach((array) $teamsstats as $rows => $value )
 	{
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' rows <pre>'.print_r($rows ,true).'</pre>', 'error');
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' value <pre>'.print_r($value ,true).'</pre>', 'error');
+	//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' rows <pre>'.print_r($rows ,true).'</pre>', 'error');
+	//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' value <pre>'.print_r($value ,true).'</pre>', 'error');
 	foreach ( $value AS $row )
 	{
+	$teamstotal[$row->team_id][team_id] = $row->team_id;
 	$teamstotal[$row->team_id][total] += $row->total;	
 	$teamstotal[$row->team_id][$rows] = $row->total;
 	}
 	
 	}
-	asort($teamstotal);	
+	// Hole eine Liste von Spalten
+foreach ($teamstotal as $key => $row) {
+    $total[$key]    = $row['total'];
+}
+	array_multisort($total, SORT_DESC, $teamstotal);	
 	return $teamstotal;	
 	}
 }
