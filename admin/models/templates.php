@@ -273,7 +273,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query->where('project_id = '.(int)$project_id);
 	$db->setQuery($query);
 	$resulttemplate = JFactory::getDbo()->loadResult();
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
             if ( !$resulttemplate )
             {
         // Create and populate an object.
@@ -299,10 +299,13 @@ else
         $query->where('project_id = '.(int)$project_id);
 	$db->setQuery($query);
 	$resulttemplate = JFactory::getDbo()->loadResult();
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
 						
-						
-						
+// Create and populate an object.
+$object_template = new stdClass();
+$object_template->id = $resulttemplate;	
+$object_template->title = $attributetitle;	
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_template_config', $object_template, 'id', true);						
 						}						
 					}
 				}
