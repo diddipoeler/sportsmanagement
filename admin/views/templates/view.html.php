@@ -101,7 +101,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
             JToolbarHelper::editList('template.edit');
-            JToolbarHelper::save('template.save');
+            //JToolbarHelper::save('template.save');
 
             if ($this->projectws->master_template) {
 
