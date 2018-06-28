@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<table class="<?php	echo $this->config['table_class'];	?>">
+<table class="<?php echo $this->config['table_class'];?>">
 <thead>
 <tr class="">
 <th class="td_r rank"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_RANK' );	?></th>  
@@ -28,6 +28,60 @@ foreach ( $this->stats AS $rows )
   }  
   
 ?>  
+<th class="td_r" class="nowrap"><?php	echo JText::_(gesamt); ?></th>
 </tr>
 </thead>  
+
+
+<?php
+$rank = 1;
+foreach ( $this->teamstotal as $key => $value )
+{
+
+
+//echo '<pre>'.print_r($value,true).'</pre>';
+$team = $this->teams[$value[team_id]];
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $value[team_id];
+$routeparameter['ptid'] = 0;
+$routeparameter['division'] = 0;				
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);	
+$teamName = sportsmanagementHelper::formatTeamName($team,'t'.$value[team_id].'st'.$rank.'p',$this->config, $isFavTeam, $link);
+
+?>
+<tr>
+<td class="td_r rank"><?php echo $rank;?></td>
+<td class="td_r rank"><?php echo $teamName;?></td>
+<?php
+foreach ( $this->stats AS $rows => $rowvalue )
+{
+//echo 'rows <pre>'.print_r($rows ,true).'</pre>';
+if ( $rowvalue->_name == 'basic' )
+{  
+?>  
+<td class="td_r" class="nowrap"><?php echo $value[$rows]; ?></td>
+<?php  
+}
+
+}
+?>
+<td class="td_r" class="nowrap"><?php echo $value[total]; ?></td>
+</tr>
+<?php
+$rank++;
+}
+
+?>
+
+
+
+
+
+
+
+
+
 </table>  
