@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<form>
+<form
+addfieldpath="/administrator/components/com_sportsmanagement/models/fields">	
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
