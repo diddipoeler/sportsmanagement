@@ -104,8 +104,9 @@ class sportsmanagementModelTemplates extends JModelList
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
-        
+        $this->_project_id = $app->getUserState( "$option.pid", '0' );
+        $this->checklist($this->_project_id);
+		
         $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
         $query->select('u1.username');
         $query->from('#__sportsmanagement_template_config AS tmpl');
