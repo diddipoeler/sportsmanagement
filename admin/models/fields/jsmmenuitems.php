@@ -1,7 +1,7 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
- * @file      jlmenuitems.php
+ * @file      jsmmenuitems.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
@@ -17,7 +17,7 @@ JFormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldJLMenuItems
+ * JFormFieldJSMMenuItems
  * 
  * @package 
  * @author diddi
@@ -25,13 +25,13 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldJLMenuItems extends JFormFieldList
+class JFormFieldJSMMenuItems extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'JLMenuItems';
+	public $type = 'JSMMenuItems';
 
 	/**
 	 * Method to get the field options.
@@ -59,6 +59,7 @@ class JFormFieldJLMenuItems extends JFormFieldList
 				JHTML::_('select.option', 'rosteralltime', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_ROSTERALLTIME')),
 				JHTML::_('select.option', 'stats', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATS')),
 				JHTML::_('select.option', 'statsranking', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATSRANKING')),
+                JHTML::_('select.option', 'statsrankingteams', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_STATSRANKING_TEAMS')),
 				JHTML::_('select.option', 'clubinfo', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBINFO')),
 				JHTML::_('select.option', 'clubplan', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_CLUBPLAN')),
                 JHTML::_('select.option', 'teaminfo', JText::_('MOD_SPORTSMANAGEMENT_NAVIGATION_NAVSELECT_TEAMINFO')),
