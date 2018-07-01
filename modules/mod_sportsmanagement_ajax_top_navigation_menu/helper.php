@@ -1031,7 +1031,7 @@ $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['r'] = 0;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 				
 			case "referees":
@@ -1048,7 +1048,7 @@ $routeparameter['division'] = $this->_division_id;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 				
 			case "resultsmatrix":
@@ -1065,7 +1065,7 @@ $routeparameter['division'] = $this->_division_id;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 			
             case "rankingalltime":
@@ -1095,14 +1095,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 				break;
 				
 			case "statsranking":
+            case 'statsrankingteams':
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
-$routeparameter['tid'] = $this->_team_slug;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking',$routeparameter);				
-//$link = sportsmanagementHelperRoute::getStatsRankingRoute( $this->_project_slug, $this->_division_id );
+$routeparameter['tid'] = $this->_team_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);				
 				break;
 				
 			case "teaminfo":
@@ -1148,7 +1148,7 @@ $routeparameter['p'] = $this->_project_slug;
 $routeparameter['tid'] = $this->_team_id;
 $routeparameter['ptid'] = 0;
 $routeparameter['division'] = 0;			
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);					
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);					
 				break;
                 
             case "teams":
@@ -1187,7 +1187,7 @@ $routeparameter['r'] = $this->_round_slug;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $this->_division_id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 		}
 		return $link;
 	}

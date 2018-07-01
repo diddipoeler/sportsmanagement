@@ -224,7 +224,7 @@
 				<field type="jsmsubtitle" title="" />
 
 				<field name="navpoint1"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -239,7 +239,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint2"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -254,7 +254,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint3"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -269,7 +269,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint4"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -284,7 +284,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint5"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -299,7 +299,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint6"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -314,7 +314,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint7"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -329,7 +329,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint8"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -344,7 +344,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint9"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -359,7 +359,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint10"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -374,7 +374,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint11"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -389,7 +389,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint12"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -404,7 +404,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint13"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -419,7 +419,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint14"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -434,7 +434,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint15"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
@@ -449,7 +449,7 @@
 				<field type="spacer" hr="true" />
 
 				<field name="navpoint16"
-					type="JLMenuItems"
+					type="JSMMenuItems"
 					default=""
 					label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_ITEM_DESC">
