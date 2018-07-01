@@ -633,6 +633,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 }
                 break;
             case 'statsranking':
+            case 'statsrankingteams':
                 if (isset($query['division'])) {
                     $segments[] = $query['division'];
                     unset($query['division']);
@@ -1126,6 +1127,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                 break;
 
             case 'statsranking':
+            case 'statsrankingteams':
                 if (isset($segments[4])) {
                     $vars['division'] = $segments[4];
                 }
