@@ -311,7 +311,7 @@ $db->setQuery($query);
 	    }
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
 	    
-			$cids = implode(',',$pks);
+			$cids = implode(',',$delete_all);
                         
             // delete all 
 $conditions = array(
@@ -374,7 +374,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
     
     //if ( $result )
     //{        
-    return parent::delete($pks);
+    return parent::delete($delete_all);
     //}
      
    } 
