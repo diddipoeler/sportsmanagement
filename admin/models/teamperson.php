@@ -209,7 +209,8 @@ $db->setQuery($query);
                 $tblperson = JTable::getInstance("person", "sportsmanagementTable");
                 $tblperson->load((int) $pks[$x]);
                 $tblperson->position_id = $tblprojectposition->position_id;
-                
+                $tblperson->country = $post['country'.$pks[$x]];
+		    
                 if (!$tblperson->store())
 	            {
 		        $app->enqueueMessage(__FILE__.' '.__METHOD__.' '.__LINE__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
