@@ -47,6 +47,11 @@ JHtml::_('behavior.modal');
 							?>
 						</th>
 						<th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NATIONALITY','pl.country',$this->sortDirection,$this->sortColumn);
+						?>
+</th>
+						<th>
 							<?php
 							echo JHtml::_( 'grid.sort', 'PID', 'tp.person_id', $this->sortDirection, $this->sortColumn );
 							?>
