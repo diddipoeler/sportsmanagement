@@ -141,32 +141,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 	 */
 	function getListQuery()
 	{
-		// Create a new query object.		
-		$this->jsmquery->clear();
+	// Create a new query object.		
+	$this->jsmquery->clear();
 		        
-        $this->_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
             
         $this->jsmquery->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
-		$this->jsmquery->select('ppl.position_id as person_position_id');
+	$this->jsmquery->select('ppl.position_id as person_position_id');
         $this->jsmquery->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
-		$this->jsmquery->select('u.name AS editor');
+	$this->jsmquery->select('u.name AS editor');
         $this->jsmquery->select('st.season_id AS season_id,st.id as projectteam_id');
-        //$this->jsmquery->select('ppos.id as project_position_id');
+        $this->jsmquery->select('ppl.country');
 
         $this->jsmquery->from('#__sportsmanagement_person AS ppl');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        //$this->jsmquery->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
-        //$this->jsmquery->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         $this->jsmquery->join('LEFT','#__users AS u ON u.id = tp.checked_out');
-
         $this->jsmquery->where('ppl.published = 1');
         $this->jsmquery->where('st.team_id = '.$this->getState('filter.team_id') );
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.season_id = '.$this->getState('filter.season_id') );
         $this->jsmquery->where('tp.persontype = '.$this->getState('filter.persontype') );
-        //$this->jsmquery->where('ppp.persontype = '.$this->getState('filter.persontype') );
-        //$this->jsmquery->where('ppp.project_id = '.$this->_project_id );
         
 	$this->jsmsubquery1->clear();
         $this->jsmsubquery1->select('ppos.id');
@@ -176,8 +171,6 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id );
         $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype') );
 	$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
-
-		
 		
         if (is_numeric($this->getState('filter.state')) )
 		{
@@ -193,20 +186,6 @@ class sportsmanagementModelTeamPersons extends JSMModelList
             
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-                
-             
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-	    {
-        $my_text = 'dump<pre>'.print_r($this->jsmquery->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        }
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
        
         return $this->jsmquery;
 	}
