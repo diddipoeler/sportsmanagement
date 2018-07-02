@@ -280,15 +280,17 @@ $db->setQuery($query);
         
         $project_team_id = $post['project_team_id'];
         $team_id = $post['team_id'];
+	$season_id = $post['season_id'];
         $pid = $post['pid'];
+	$tpid = $post['tpid'];
         $persontype = $post['persontype'];
         
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-        
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' tpid<br><pre>'.print_r($tpid, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
     
     
@@ -303,6 +305,12 @@ $db->setQuery($query);
     if (count($pks))
 		{
 		//JArrayHelper::toInteger($cid);
+	    foreach( $pks as $key => $value )
+	    {
+		$delete_all[] = $tpid[$value];    
+	    }
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
+	    
 			$cids = implode(',',$pks);
                         
             // delete all 
