@@ -78,33 +78,6 @@ class sportsmanagementTableLeague extends JTable
 		}
 		return parent::bind($array, $ignore);
 	}
-    
-    ///**
-//	 * Overloaded load function
-//	 *
-//	 * @param       int $pk primary key
-//	 * @param       boolean $reset reset data
-//	 * @return      boolean
-//	 * @see JTable:load
-//	 */
-//	public function load($pk = null, $reset = true) 
-//	{
-//		if (parent::load($pk, $reset)) 
-//		{
-//			// Convert the params field to a registry.
-//			$params = new JRegistry;
-//			$params->loadJSON($this->extended);
-//			//$params->toArray($this->extended);
-//            $this->extended = $params->toArray($this->extended);
-//            
-//			return true;
-//			
-//		}
-//		else
-//		{
-//			return false;
-//		}
-//	}
 	
 }
 ?>
