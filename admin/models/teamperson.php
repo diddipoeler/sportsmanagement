@@ -285,13 +285,13 @@ $db->setQuery($query);
 	$tpid = $post['tpid'];
         $persontype = $post['persontype'];
         
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' tpid<br><pre>'.print_r($tpid, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' tpid<br><pre>'.print_r($tpid, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
     
     
     
@@ -309,7 +309,7 @@ $db->setQuery($query);
 	    {
 		$delete_all[] = $tpid[$value];    
 	    }
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
 	    
 			$cids = implode(',',$delete_all);
                         
@@ -341,6 +341,20 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
             
+	    // delete all 
+$conditions = array(
+    $db->quoteName('team_staff_id') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_staff'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_staff').'_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+	    
             // delete all 
 $conditions = array(
     $db->quoteName('teamplayer_id') . ' IN ('.$cids.')'
@@ -355,6 +369,20 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
             } 
             
+	    // delete all 
+$conditions = array(
+    $db->quoteName('team_staff_id') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_staff_statistic'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_staff_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+	    
             // delete all 
 $conditions = array(
     $db->quoteName('teamplayer_id') . ' IN ('.$cids.')'
