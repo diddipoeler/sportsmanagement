@@ -192,7 +192,7 @@ if (empty($row->country))
 $append=' background-color:#FFCCCC;';
 }
 echo JHtmlSelect::genericlist($this->lists['nation'],
-		'country'.$row->id,
+		'country'.$row->person_id,
 		$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
 		'value',
 		'text',
