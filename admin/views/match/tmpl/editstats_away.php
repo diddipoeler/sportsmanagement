@@ -19,7 +19,7 @@ $j = 0;
 <fieldset class="adminform">
 	<legend><?php echo JText::_( $this->teams->team2 );?></legend>
 	<?php foreach ($this->positions as $position): ?>
-	<h3><?php echo $position->text; ?></h3>
+	<h3><?php echo JText::_($position->text); ?></h3>
 	<table class='adminlist'>
 		<thead>
 			<tr>
