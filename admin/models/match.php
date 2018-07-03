@@ -2719,6 +2719,31 @@ $statsid = $stats_param->id;
 }
 }
 }	
+/**
+ * Überprüfen und anlegen
+ */
+if ( $statsvalue && $statsid )
+{
+$query->clear();
+$query->select('id');	
+$query->from('#__sportsmanagement_match_statistic');	
+$query->where('match_id = '.$data['match_id']);	
+$query->where('teamplayer_id = '.$data['teamplayer_id']);		
+$query->where('statistic_id = '.$statsid);		
+$db->setQuery($query);	
+$match_stats = $db->loadResult();		
+if ( !$match_stats )
+{
+$temp = new stdClass();//$object = new stdClass();
+$temp->match_id = $data['match_id'];	    
+$temp->projectteam_id = $data['projectteam_id'];
+$temp->teamplayer_id = $data['teamplayer_id'];	
+$temp->statistic_id = $statsid;	
+$temp->value = $statsvalue;		
+$resultinsert = $db->insertObject('#__sportsmanagement_match_statistic', $temp);	
+}
+	
+}
 	
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 return $result;
