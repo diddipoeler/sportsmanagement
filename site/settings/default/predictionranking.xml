@@ -19,7 +19,15 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-    
+    <field 	name="table_class_responsive" type="list" default="table-responsive" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_NO_RESPONSIVE</option>
+			<option value="table-responsive">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE</option>
+		
+		</field>
+		
     <field	name="show_debug_modus" type="extensionradiobutton" default="0"   class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_DEBUG_RANKINGNAV">
