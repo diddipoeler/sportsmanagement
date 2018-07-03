@@ -13,19 +13,26 @@
 			label="COM_SPORTSMANAGEMENT_STAT_PRECISION"
 				description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
-	
+
+			<field 	name="event_value" 
+      type="text" 
+      default="0"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD">
+			</field>
+			
 <field
 			name="event_id"
 			type="eventtypelist"
 			class="inputbox"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS_OUT"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS_OUT" >
+			label="COM_SPORTSMANAGEMENT_TABS_EVENTS"
+			description="COM_SPORTSMANAGEMENT_TABS_EVENTS_DESC" >
 			
 			<option
 				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+				COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS</option>
 		</field>			
 			
 			<field name="statistic_views" 
