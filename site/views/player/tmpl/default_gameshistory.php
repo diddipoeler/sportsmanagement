@@ -90,11 +90,17 @@ if (count($this->games))
 
 							//do not show statheader when there are no stats
 							if (!empty($stat)) {
+								try{  
 							    if ($stat->showInPlayer()) {
 							?>
 					<th class=""><?php echo $stat->getImage(); ?></th>
 					<?php
 							    }
+								}
+catch (Exception $e)
+{
+    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$stat), 'error');
+}
 							}
 						}
 					}
