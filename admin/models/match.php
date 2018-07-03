@@ -2715,6 +2715,7 @@ $event_param = json_decode($stats_param->params, true);
 if ( $event_param['event_id'] == $data['event_type_id'] )
 {
 $statsvalue = $event_param['event_value'];
+$statsid = $stats_param->id;	
 }
 }
 }	
