@@ -6,6 +6,15 @@
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
+<field	name="use_jquery_modal" type="extensionradiobutton" default="2"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
+			<option value="0">Bootstrap Modal</option>
+			<option value="1">Window open</option>
+			<option value="2">JCE Modal</option>
+</field>
+		
 		<field	name="show_matchday_pagenav" type="list" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_PAGE_NAV"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_PAGE_NAV">
