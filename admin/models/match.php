@@ -2706,7 +2706,18 @@ $query->where('matplay.match_id = '.$data['match_id']);
 $query->where('matplay.teamplayer_id = '.$data['teamplayer_id']);	
 $db->setQuery($query);	
 $stats_params = $db->loadObjectList();	
-	
+
+foreach( $stats_params as $stats_param )
+{
+if ( $stats_param->class == 'basic' )
+{
+$event_param = json_decode($stats_param->params, true);
+if ( $event_param['event_id'] == $data['event_type_id'] )
+{
+$statsvalue = $event_param['event_value'];
+}
+}
+}	
 	
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 return $result;
