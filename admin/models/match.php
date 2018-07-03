@@ -2739,7 +2739,9 @@ $temp->match_id = $data['match_id'];
 $temp->projectteam_id = $data['projectteam_id'];
 $temp->teamplayer_id = $data['teamplayer_id'];	
 $temp->statistic_id = $statsid;	
-$temp->value = $statsvalue;		
+$temp->value = $statsvalue;
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->get('id');	
 $resultinsert = $db->insertObject('#__sportsmanagement_match_statistic', $temp);	
 }
 	
