@@ -15,13 +15,13 @@
 			</field>
 	
 <field
-			name="position_id"
-			type="positionlist"
+			name="event_id"
+			type="eventtypelist"
 			class="inputbox"
 			default="0"
 			size="1"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS_DESC" >
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PERSON_EVENTS_OUT"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PERSON_EVENTS_OUT" >
 			
 			<option
 				value="0">
