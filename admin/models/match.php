@@ -2691,18 +2691,32 @@ $temp->modified_by = $user->get('id');
 /**
  * Insert the object into the table.
  */
-            try{
-            $resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-	$result = $db->insertid();
-	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
-	return $result;
-            }
-            catch (Exception $e)
-            {
-	$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+try{
+$resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
+$result = $db->insertid();
+/**
+ * jetzt schauen wir nach, ob es statistiken zu dem event in der position gibt
+ */	
+$query->clear();	
+$query->select('st.id,st.params');	
+$query->from('#__sportsmanagement_statistic as st');	
+$query->join('INNER','#__sportsmanagement_position_statistic AS possta ON st.id = possta.statistic_id');	
+$query->join('INNER','#__sportsmanagement_match_player AS matplay ON matplay.project_position_id = possta.position_id');	
+$query->where('matplay.match_id = '.$data['match_id']);	
+$query->where('matplay.teamplayer_id = '.$data['teamplayer_id']);	
+$db->setQuery($query);	
+$stats_params = $db->loadObjectList();	
+	
+	
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
-	return false;	    
-            }	
+return $result;
+}
+catch (Exception $e)
+{
+$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT');	    
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
+return false;	    
+}	
 	    
 	    return true;
 	    
