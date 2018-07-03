@@ -145,9 +145,14 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
                 $timePlayed = $model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']);
                 ?>
 				<tr class="">
-					<td class=""><?php
-					echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
-					?></td>
+					<td class="">
+					<?php
+$jdate = JFactory::getDate($game->match_date);
+$jdate->setTimezone(new DateTimeZone($this->project->timezone));
+$body = $jdate->format('l, d.F Y H:i'); 		    
+					echo JHtml::link($report_link,$body);
+					?>
+					</td>
 					<td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
 						<?php 
 						if ( $this->config['show_gameshistory_teamlink'] ) 
