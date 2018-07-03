@@ -193,7 +193,7 @@ Create responsive tables by adding .table-responsive to any .table to make them 
 When viewing on anything larger than 768px wide, you will not see any difference in these tables.
 -->   
         <div class="table-responsive">
-		<table class="<?PHP echo $this->config['table_class'];?> table-responsive" >
+		<table class="<?PHP echo $this->config['table_class'];?> <?PHP echo $this->config['table_class_responsive'];?>" >
         <thead>
 			<tr>
 				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
