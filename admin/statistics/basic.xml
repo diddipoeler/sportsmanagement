@@ -2,7 +2,10 @@
 <config>
 		<fieldset name="typefields_base" 
 		          label="COM_SPORTSMANAGEMENT_STAT_PARAMS_GROUP_SETTINGS" 
-		          description="COM_SPORTSMANAGEMENT_STAT_BASIC_DESC">
+		          description="COM_SPORTSMANAGEMENT_STAT_BASIC_DESC"
+			  addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			  >
 
 			<field 	name="precision" 
       type="text" 
@@ -11,6 +14,20 @@
 				description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
 	
+<field
+			name="position_id"
+			type="positionlist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_POS_DESC" >
+			
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+		</field>			
+			
 			<field name="statistic_views" 
       type="list" 
       default="roster,matchreport,player" 
