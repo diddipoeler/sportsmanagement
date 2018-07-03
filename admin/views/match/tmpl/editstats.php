@@ -46,14 +46,19 @@ if($close == 1) {
 <!--	</fieldset> -->
 	<div class="clear"></div>
 		<?php
-		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
-		echo JHtml::_('tabs.panel',JText::_($this->teams->team1), 'panel1');
-		echo $this->loadTemplate('home');
+// Define tabs options for version of Joomla! 3.1
+$tabsOptionsJ31 = array(
+            "active" => "panel1" // It is the ID of the active tab.
+        );
+echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_($this->teams->team1) );	
+echo $this->loadTemplate('home');	
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_($this->teams->team2) );	
+echo $this->loadTemplate('away');	
+echo JHtml::_('bootstrap.endTab');	
+echo JHtml::_('bootstrap.endTabSet'); 
 		
-		echo JHtml::_('tabs.panel',JText::_($this->teams->team2), 'panel2');
-		echo $this->loadTemplate('away');
-		
-		echo JHtml::_('tabs.end');
 		?>
 		
 		<input type="hidden" name="view" value="" />
