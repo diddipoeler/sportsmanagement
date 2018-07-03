@@ -312,6 +312,7 @@ $db->setQuery($query);
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_all<br><pre>'.print_r($delete_all, true).'</pre><br>','Notice');
 	    
 			$cids = implode(',',$delete_all);
+	    $perspropos = implode(',',$pks);
                         
             // delete all 
 $conditions = array(
@@ -397,6 +398,21 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_event').'_ITEMS_DELETED',self::$db_num_rows),'');
             }  
             
+	    // delete all 
+$conditions = array(
+    $db->quoteName('person_id') . ' IN ('.$perspropos.')',
+$db->quoteName('project_id') . ' IN ('.$pid.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',self::$db_num_rows),'');
+            } 
+	    
         }  
     
     
