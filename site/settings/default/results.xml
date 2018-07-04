@@ -551,6 +551,15 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-    		
+
+<field 	name="table_class_responsive" type="list" default="table-responsive" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE_RESPONSIVE">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_NO_RESPONSIVE</option>
+			<option value="table-responsive">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_RESPONSIVE</option>
+		
+</field>
+		
 	</fieldset>		
 </form>
