@@ -345,7 +345,7 @@ $this->overallconfig['use_jquery_modal']);
 				<td class="td_c hasTip" title="<?php echo JText::_($stat->name); ?>">
 				<?php
 							if(isset($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid])) {
-                                echo ($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] > 0 ? $this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] : $this->overallconfig['zero_events_value']);
+                                echo ($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] <> 0 ? $this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] : $this->overallconfig['zero_events_value']);
 							} else {
                                 echo $this->overallconfig['zero_events_value'];
 							}
@@ -418,7 +418,7 @@ $this->overallconfig['use_jquery_modal']);
 								if (isset($this->projectstats) &&
 								    array_key_exists($stat->id, $this->projectstats))
 								{
-                                    echo ($this->projectstats[$stat->id]['totals'] > 0 ? $this->projectstats[$stat->id]['totals'] : $this->overallconfig['zero_events_value']);
+                                    echo ($this->projectstats[$stat->id]['totals'] <> 0 ? $this->projectstats[$stat->id]['totals'] : $this->overallconfig['zero_events_value']);
 								}
 								else	// In case there are no stats for the player
 								{
