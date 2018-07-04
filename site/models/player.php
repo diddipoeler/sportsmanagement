@@ -667,17 +667,19 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             }
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
-                    foreach ($stat as $id => $value) {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
-                        if ($value->_showinsinglematchreports) {
-                            $value->set('gamesstats', $value->getPlayerStatsByGame($teamplayer_ids, $project_id));
-                            $displaystats[] = $stat;
-                        }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'');				
-                    }
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat<br><pre>'.print_r($stat,true).'</pre>'),'');                    
+if ($stat->_showinsinglematchreports) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat->_name<br><pre>'.print_r($stat->_name,true).'</pre>'),'');  
+//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.$stat->_name.'.php');     
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
+$mdlstats = JModelLegacy::getInstance($stat->_name, "SMStatistic");             
+$stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);
+$displaystats[] = $stat;
+}                    
                 }
             }
         }
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' displaystats<br><pre>'.print_r($displaystats,true).'</pre>'),'');          
         return $displaystats;
     }
 
