@@ -109,7 +109,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,'administrator/components/com_sportsmanagement/assets/images/players_add.png',JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),'20',$url);		
         ?>
-        
+        </td>
+	<td>
         <!-- Edit home team -->
 			<?php
 		$append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
@@ -133,6 +134,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 		if (!isset($team2->projectteamid)){$team2->projectteamid=0;}
 		echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam2_id'.$thismatch->id, $append, 'value', 'text', $team2->projectteamid);
 		?>
+		</td>
+	<td>
 		<!-- Edit away line-up -->
 		<?php
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
