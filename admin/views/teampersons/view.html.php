@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
@@ -159,17 +158,11 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
             $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE');
         }
 
-        //JToolbarHelper::publishList('teampersons.publish');
-        //JToolbarHelper::unpublishList('teampersons.unpublish');
         JToolbarHelper::apply('teampersons.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
         JToolbarHelper::divider();
 
-        //JToolbarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );
         sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
-        //JToolbarHelper::custom( 'teamplayer.remove', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
-        //JToolbarHelper::deleteList('', 'teampersons.delete');
-        //JToolbarHelper::deleteList('', 'teampersons.remove');
-        //JToolbarHelper::deleteList('', 'teamperson.delete');
+	JToolbarHelper::apply('teampersons.assignplayerscountry', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 
         JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams');
