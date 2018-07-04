@@ -718,23 +718,10 @@ $displaystats[] = $stat;
                 foreach ($stats as $stat) {
                     if (!empty($stat)) {
                         foreach ($history as $player) {
-
-                            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                                $my_text = 'person_id <pre>' . print_r($player->person_id, true) . '</pre>';
-                                $my_text .= 'ptid <pre>' . print_r($player->ptid, true) . '</pre>';
-                                $my_text .= 'project_id <pre>' . print_r($player->project_id, true) . '</pre>';
-                                $my_text .= 'sportstype <pre>' . print_r($sportstype, true) . '</pre>';
-                                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($player->person_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($player->ptid,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($player->project_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sportstype<br><pre>'.print_r($sportstype,true).'</pre>'),'');
-                            }
-
                             $result[$stat->id][$player->project_id][$player->ptid] = $stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
+                        $result[$stat->id]['totals'] += $result[$stat->id][$player->project_id][$player->ptid];
                         }
-                        $result[$stat->id]['totals'] = $stat->getPlayerStatsByProject($player->person_id, 0, 0, $sportstype);
+                        //$result[$stat->id]['totals'] = $stat->getPlayerStatsByProject($player->person_id, 0, 0, $sportstype);
                     }
                 }
             }
