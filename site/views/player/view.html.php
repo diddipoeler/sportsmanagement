@@ -30,7 +30,29 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
      * @return void
      */
     function init() {
+/*
+// Add the logger.
+JLog::addLogger(
+    array(
+        'logger' => 'database'
+    ),
+    JLog::ALL,
+    $this->option
+);
 
+$logarray['view'] = $this->view;
+$logarray['p'] = $this->jinput->getInt('p', 0);
+$logarray['pid'] = $this->jinput->getInt('pid', 0);
+$logarray['pt'] = $this->jinput->getInt('pt', 0);
+try{  
+// Add the message.
+JLog::add(json_encode($logarray), JLog::INFO, $this->option);
+ }
+catch (Exception $e)
+{
+    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}        
+*/        
         $model = $this->model;
 
         $model::$projectid = $this->jinput->getInt('p', 0);
