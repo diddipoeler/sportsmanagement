@@ -75,7 +75,7 @@ echo JHtml::_('bootstrap.endTabSet');
 		<input type="hidden" name="id"	value="<?php echo $this->item->id; ?>" />
         <input type="hidden" name="match_id"	value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
-		
+		<input type="hidden" name="component" value="com_sportsmanagement" />
 		<?php echo JHtml::_( 'form.token' ); ?>
 <!--	</div> -->
 </form>
