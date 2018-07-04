@@ -101,7 +101,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	 */
     function saveshort()
 	{
-	   $post = JFactory::getApplication()->input->get( 'post' );
+	   $post = JFactory::getApplication()->input->post->getArray(array());
 	   $model = $this->getModel();
        $model->saveshort();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
@@ -110,7 +110,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	
 	function assignplayerscountry()
 	{
-	$post = JFactory::getApplication()->input->get( 'post' );
+	$post = JFactory::getApplication()->input->post->getArray(array());
 	$model = $this->getModel();	
 		
 	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
