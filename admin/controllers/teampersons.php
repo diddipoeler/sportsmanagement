@@ -107,6 +107,15 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
     } 
   
+	
+	function assignplayerscountry()
+	{
+	$post = JFactory::getApplication()->input->get( 'post' );
+	$model = $this->getModel();	
+		
+	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
+	}
+	
   /**
    * sportsmanagementControllerteampersons::remove()
    * 
