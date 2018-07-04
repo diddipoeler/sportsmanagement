@@ -672,7 +672,8 @@ if ($stat->_showinsinglematchreports) {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat->_name<br><pre>'.print_r($stat->_name,true).'</pre>'),'');  
 //require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.$stat->_name.'.php');     
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
-$mdlstats = JModelLegacy::getInstance($stat->_name, "SMStatistic");             
+$mdlstats = JModelLegacy::getInstance($stat->_name, "SMStatistic");   
+$mdlstats->id = $stat->id;    
 $stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);
 $displaystats[] = $stat;
 }                    
