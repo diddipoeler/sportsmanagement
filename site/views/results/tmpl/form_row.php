@@ -197,7 +197,8 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);        
 ?>			
-
+</td>
+<td>	
 		<!-- Edit home team -->
 			<?php
 		$append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
@@ -225,6 +226,8 @@ $this->overallconfig['use_jquery_modal']);
 		<?php
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 		?>
+		</td>
+<td>
 <!-- Button HTML (to Trigger Modal) -->
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,
