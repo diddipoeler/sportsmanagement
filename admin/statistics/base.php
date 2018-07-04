@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      base.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage statistics
@@ -1009,6 +1009,8 @@ try{
 		if ($project_id)
 		{
             $query->where('p.id = ' . $project_id);
+            $query->where('pt.project_id = ' . $project_id);
+            $query->where('ppos.project_id = ' . $project_id);
 		}
 		if ($sports_type_id)
 		{
