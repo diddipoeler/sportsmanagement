@@ -274,9 +274,8 @@ if($close == 1) {
 		</fieldset>
 </div>
 <div style="clear: both"></div>
+<input type="hidden" name="close" id="close" value="0" />	
 <?php 
 echo JHtml::_('form.token'); ?>
-
-	
 </form>
 
