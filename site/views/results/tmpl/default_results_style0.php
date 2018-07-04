@@ -91,7 +91,7 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 }
 ?>
 <div class="row-fluid">   
-<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
+<table class="<?PHP echo $this->config['table_class']; ?> <?PHP echo $this->config['table_class_responsive']; ?>">
 	<?php
 	foreach( $dates as $date => $games )
 	{
