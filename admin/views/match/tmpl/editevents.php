@@ -98,7 +98,7 @@ if($close == 1) {
 ?>
 
 	
-<form   id='adminform' method='post' style='display:inline' name='adminform' >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
 <div id="UserError" ></div>
@@ -274,7 +274,11 @@ if($close == 1) {
 		</fieldset>
 </div>
 <div style="clear: both"></div>
-<input type="hidden" name="close" id="close" value="0" />	
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="view" value="" />
+<input type="hidden" name="close" id="close" value="0" />
+<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
+<input type="hidden" name="component" value="com_sportsmanagement" />	
 <?php 
 echo JHtml::_('form.token'); ?>
 </form>
