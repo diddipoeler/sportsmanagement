@@ -55,6 +55,15 @@ $this->jsmquery->where('persontype = '.$persontype );
 $this->jsmdb->setQuery($this->jsmquery);
 $this->person_list = $this->jsmdb->loadObjectList();
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' person_list <br><pre>'.print_r($this->person_list, true).'</pre><br>','Notice');			
+
+foreach ( $this->person_list as $row )
+{
+$rowInsert = new stdClass();
+$rowInsert->id = $row->person_id ;
+$rowInsert->country = $this->country;
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $rowInsert, 'id'); 	
+}
+	
 	
 }
 	
