@@ -38,7 +38,7 @@ class sportsmanagementViewRivals extends sportsmanagementView
 //		// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
         
-        $this->document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( JUri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js' );
 
 //		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		

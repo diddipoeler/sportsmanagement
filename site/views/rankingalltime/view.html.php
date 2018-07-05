@@ -47,7 +47,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView {
             $uri = JFactory::getURI();
         }
 */
-        $this->document->addScript(JUri::root(true) . '/components/' . $option . '/assets/js/smsportsmanagement.js');
+        $this->document->addScript(JUri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
 
         //$model = $this->getModel();
 
