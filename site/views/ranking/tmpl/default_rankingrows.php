@@ -141,7 +141,16 @@ foreach ($current as $ptid => $team) {
         } elseif ($config['show_logo_small_table'] == "country_flag_logo_small") {
             sportsmanagementHelper::showClubIcon($team->team, 2);
             echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_small, $team->team->name, $config['team_picture_width'], 'auto', 3);
-        } else {
+        } 
+        elseif ($config['show_logo_small_table'] == "logo_big_country_flag") {
+            echo sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3) . ' ';
+            sportsmanagementHelper::showClubIcon($team->team, 2);
+        }
+        elseif ($config['show_logo_small_table'] == "country_flag_logo_big") {
+            sportsmanagementHelper::showClubIcon($team->team, 2);
+            echo ' ' . sportsmanagementHelper::getPictureThumb($team->team->logo_big, $team->team->name, $config['team_picture_width'], 'auto', 3);
+        } 
+        else {
             $pic = $config['show_logo_small_table'];
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow . 'teamranking' . $team->team->id,
