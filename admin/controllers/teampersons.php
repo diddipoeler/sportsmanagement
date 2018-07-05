@@ -112,7 +112,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	{
 	$post = JFactory::getApplication()->input->post->getArray(array());
 	$model = $this->getModel();	
-		
+	$model->assignplayerscountry(1,$post['project_team_id'],$post['team_id'],$post['pid'],$post['season_id']);	
 	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
 	}
 	
