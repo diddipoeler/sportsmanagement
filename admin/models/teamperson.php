@@ -29,6 +29,16 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
     var $_project_team_id = 0;
     static $db_num_rows = 0;
 
+function assignplayerscountry($persontype=1,$project_team_id=0,$team_id=0,$pid=0,$season_id=0)
+{
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' persontype <br><pre>'.print_r($persontype, true).'</pre><br>','Notice');	
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' project_team_id <br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' team_id <br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' pid <br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' season_id <br><pre>'.print_r($season_id, true).'</pre><br>','Notice');	
+	
+}
+	
 	
 /**
  * sportsmanagementModelteamperson::set_state()
