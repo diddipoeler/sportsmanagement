@@ -1,6 +1,8 @@
 
 <?php
-
+$classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 // no direct access
 defined('_JEXEC') or die ;
@@ -11,39 +13,28 @@ class JFormFieldserialnumber extends JFormField {
 		
 	public $type = 'serialnumber';
 
-	/**
-	 * Method to get the field options.
-	 */
-	protected function getLabel() {
-		
-		$html = '';
-		
-		
-		
-		return $html;
-	}
-
-	/**
-	 * Method to get the field input markup.
-	 */
 	protected function getInput() {
-		
-		$title = trim($this->element['title']);
-		$image_src = $this->element['imagesrc'];
-		$text = trim($this->element['text']);
-		$link = $this->element['link'];
-		
-		$titleintext = false;
-		if ($this->element['titleintext']) {
-			$titleintext = ($this->element['titleintext'] === 'true');
-		}
-		
-		$html = '';
-		
-		
-
-		return $html;
+	$app = JFactory::getApplication();
+	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' element <pre>'.print_r($this->element, true).'</pre><br>','');
+	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' name<pre>'.print_r($this->name, true).'</pre><br>','');
+	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' id<pre>'.print_r($this->id, true).'</pre><br>','');
+	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' value<pre>'.print_r($this->value, true).'</pre><br>','');
+	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' value<pre>'.print_r($this->form, true).'</pre><br>','');
+	if ( !$this->value )
+	{
+	$this->value = sportsmanagementHelper::jsmsernum();
 	}
+/*
+	$html = '<div style="padding-top: 5px; overflow: inherit">';
+		$html .= '<span class="label">'.$version.'</span>';
+		$html .= '</div>';
+*/
+$html = '<input type="text" id="'.$this->id.'" name="'.$this->name.'" value="'.$this->value.'" />';		
+		return $html;
+	
+	}
+
+	
 
 }
 ?>
