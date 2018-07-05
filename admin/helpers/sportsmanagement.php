@@ -186,7 +186,7 @@ abstract class sportsmanagementHelper {
      * das template kann angepasst werden
      * @return
      */
-    function jsmsernum() {
+    public static function jsmsernum() {
         $template = 'XX99-XX99-99XX-99XX-XXXX-99XX';
         $k = strlen($template);
         $sernum = '';
