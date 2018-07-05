@@ -46,8 +46,15 @@ $this->jsmdb->setQuery($this->jsmquery);
 $this->country = $this->jsmdb->loadResult();	
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' country <br><pre>'.print_r($this->country, true).'</pre><br>','Notice');		
 	
-	
-	
+$this->jsmquery->clear();	
+$this->jsmquery->select('person_id');
+$this->jsmquery->from('#__sportsmanagement_season_team_person_id');
+$this->jsmquery->where('team_id = '.$team_id );
+$this->jsmquery->where('season_id = '.$season_id) ;
+$this->jsmquery->where('persontype = '.$persontype );	
+$this->jsmdb->setQuery($this->jsmquery);
+$this->person_list = $this->jsmdb->loadObjectList();
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' person_list <br><pre>'.print_r($this->person_list, true).'</pre><br>','Notice');			
 	
 }
 	
