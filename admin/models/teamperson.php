@@ -31,11 +31,11 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
 
 function assignplayerscountry($persontype=1,$project_team_id=0,$team_id=0,$pid=0,$season_id=0)
 {
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' persontype <br><pre>'.print_r($persontype, true).'</pre><br>','Notice');	
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' project_team_id <br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' team_id <br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' pid <br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' season_id <br><pre>'.print_r($season_id, true).'</pre><br>','Notice');	
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' persontype <br><pre>'.print_r($persontype, true).'</pre><br>','Notice');	
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' project_team_id <br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' team_id <br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' pid <br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' season_id <br><pre>'.print_r($season_id, true).'</pre><br>','Notice');	
 
 $this->jsmquery->clear();
 $this->jsmquery->select('c.country');
@@ -44,7 +44,7 @@ $this->jsmquery->join('INNER','#__sportsmanagement_team as t on t.club_id = c.id
 $this->jsmquery->where('t.id = '.$team_id);	
 $this->jsmdb->setQuery($this->jsmquery);
 $this->country = $this->jsmdb->loadResult();	
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' country <br><pre>'.print_r($this->country, true).'</pre><br>','Notice');		
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' country <br><pre>'.print_r($this->country, true).'</pre><br>','Notice');		
 	
 $this->jsmquery->clear();	
 $this->jsmquery->select('person_id');
@@ -54,7 +54,7 @@ $this->jsmquery->where('season_id = '.$season_id) ;
 $this->jsmquery->where('persontype = '.$persontype );	
 $this->jsmdb->setQuery($this->jsmquery);
 $this->person_list = $this->jsmdb->loadObjectList();
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' person_list <br><pre>'.print_r($this->person_list, true).'</pre><br>','Notice');			
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' person_list <br><pre>'.print_r($this->person_list, true).'</pre><br>','Notice');			
 
 foreach ( $this->person_list as $row )
 {
