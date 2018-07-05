@@ -146,6 +146,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
+	$app->setUserState("$option.pid",$this->project_id);
         $app->setUserState("$option.project_team_id", $this->project_team_id);
         $app->setUserState("$option.team_id", $this->team_id);
         $app->setUserState("$option.persontype", $this->_persontype);
@@ -165,7 +166,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 	JToolbarHelper::apply('teampersons.assignplayerscountry', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 
-        JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams');
+        JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
 
         parent::addToolbar();
     }
