@@ -628,6 +628,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `birthday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `deathday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `second_country` VARCHAR(3) NULL DEFAULT NULL,
+  `gender` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -1991,5 +1992,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_person_project_position` (
   `modified_by` INT NULL ,
   `modified` date NOT NULL DEFAULT '0000-00-00',
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   UNIQUE KEY `combi` (`person_id`,`project_id`,`project_position_id`,`persontype`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
