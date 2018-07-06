@@ -175,8 +175,8 @@ $resultupdate = $this->jsmdb->execute();
 }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
-        return false;
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+        //return false;
         }
 }
 // ###############################
