@@ -57,7 +57,8 @@
  * https://stackoverflow.com/questions/40330156/timestampdiff-how-to-use-it-in-php-mysql-to-calculate-difference-between-date
  * http://php.net/manual/de/datetime.diff.php
  * 
- * 
+ * protokollierung von fehlern
+ * http://eddify.me/posts/logging-in-joomla-with-jlog.html
  * 
  */
 
