@@ -137,23 +137,16 @@ $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1
 if ($project_ref_positions) {
             $position_ids = array_merge($position_ids, $project_ref_positions);
         }
-//$app->enqueueMessage(' position_ids<br><pre>'.print_r($position_ids, true).'</pre><br>','Notice');
+
 for ($x=0; $x < count($pks); $x++)
 {
-
-
 $team_player_id = $post['tpid'][$pks[$x]];
-//$app->enqueueMessage('player id<br><pre>'.print_r($team_player_id, true).'</pre><br>','Notice');
 $project_position_id = $post['project_position_id'.$pks[$x]];
-//$app->enqueueMessage(' project_position_id<br><pre>'.print_r($project_position_id, true).'</pre><br>','Notice');
 foreach($position_ids as $items => $item) {
     if($item->value == $project_position_id) {
        $results = $item->position_id;
     }
 } 	
-
-//$app->enqueueMessage(' results <br><pre>'.print_r($results , true).'</pre><br>','Notice');
-
 
 $this->jsmquery->clear();
 // Fields to update.
@@ -169,7 +162,6 @@ $conditions = array(
 
 try{
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();
 }
@@ -214,18 +206,6 @@ $conditions = array(
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
 $db->setQuery($query);
-//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-        
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            $my_text = 'id<br><pre>'.print_r($pks[$x], true).'</pre><br>';
-            $my_text .= 'project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>';
-            $my_text .= 'jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>';
-            $my_text .= 'market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>';
-            $my_text .= 'position_id<br><pre>'.print_r($post['position_id'.$pks[$x]], true).'</pre><br>';
-            $my_text .= 'person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            }
 
 			//if(!$tblPerson->store()) 
             if( !sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__) )
@@ -271,7 +251,7 @@ $db->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 if ( self::$db_num_rows )
                 {
-                $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
+                $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
                 } 
 
                                   
@@ -282,6 +262,7 @@ $db->setQuery($query);
                 $profile->project_id = $this->_project_id;
                 $profile->project_position_id = $post['project_position_id'.$pks[$x]];
                 $profile->persontype = $this->persontype;
+                $profile->published = 1;
                 // Insert the object into table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
                 
