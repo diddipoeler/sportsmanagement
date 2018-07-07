@@ -133,7 +133,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 								</td>
 								<td style='text-align:center; ' >
 									<input	id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
-											value="<?php echo JText::_('JACTION_DELETE'); ?>" />
+									onClick="deleteevent(<?php echo $event->id; ?>)" value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 								</td>
 							</tr>
 							<?php
