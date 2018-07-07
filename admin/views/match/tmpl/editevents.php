@@ -160,8 +160,8 @@ if($close == 1) {
 									<?php echo (strlen($event->notice) > 20) ? substr($event->notice, 0, 17).'...' : $event->notice; ?>
 								</td>
 								<td style='text-align:center; ' >
-									<input	id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
-											value="<?php echo JText::_('JACTION_DELETE'); ?>" />
+									<input id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
+									onClick="button-delete-event(<?php echo $event->id; ?>)" value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 								</td>
 							</tr>
 							<?php
@@ -177,11 +177,7 @@ if($close == 1) {
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_sum" name="event_sum" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="3" value="" id="event_time" name="event_time" class="inputbox" /></td>
 						<td style='text-align:center; ' ><input type="text" size="20" value="" id="notice" name="notice" class="inputbox" /></td>
-                        
-                        
-                        
 						<td style='text-align:center; ' >
-							
 							<input id="save-new-event" type="button" class="inputbox button-save-event" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
