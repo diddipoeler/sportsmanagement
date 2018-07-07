@@ -161,7 +161,7 @@ if($close == 1) {
 								</td>
 								<td style='text-align:center; ' >
 									<input id="deleteevent-<?php echo $event->id; ?>" type="button" class="inputbox button-delete-event"
-									onClick="button-delete-event(<?php echo $event->id; ?>)" value="<?php echo JText::_('JACTION_DELETE'); ?>" />
+									onClick="deleteevent(<?php echo $event->id; ?>)" value="<?php echo JText::_('JACTION_DELETE'); ?>" />
 								</td>
 							</tr>
 							<?php
