@@ -110,7 +110,9 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
 $this->jsmquery->clear();
 // Fields to update.
 $fields = array(
-    $this->jsmdb->quoteName('published') . ' = ' . $state
+    $this->jsmdb->quoteName('published') . ' = ' . $state,
+    $this->jsmdb->quoteName('modified') . ' = '.$this->jsmdb->Quote( '' . $this->jsmdate->toSql() . '' ) ,
+    $this->jsmdb->quoteName('modified_by') . ' = '.$this->jsmuser->get('id')
 );
 
 // Conditions for which records should be updated.
