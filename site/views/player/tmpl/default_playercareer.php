@@ -88,10 +88,12 @@ if (count($this->historyPlayer) > 0)
 							<?php
                             if ( $this->config['show_project_logo'] ) 
                             { 
-if ( !curl_init( $station->project_picture ) )
-				{
-					$station->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-				}                                
+//if ( !curl_init( $station->project_picture ) )
+//				{
+//					$station->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+//				}  
+$station->project_picture = ($station->project_picture != '') ? $station->project_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");                
+                                              
                             echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,
                             $station->project_picture,
                             $station->project_name,
@@ -117,10 +119,11 @@ if ( !curl_init( $station->project_picture ) )
                             <?php 
                             if ( $this->config['show_team_logo'] ) 
                             { 
-if ( !curl_init( $station->club_picture ) )
-				{
-					$station->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-				}                                  
+//if ( !curl_init( $station->club_picture ) )
+//				{
+//					$station->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+//				}               
+$station->club_picture = ($station->club_picture != '') ? $station->club_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");                                   
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,
 $station->club_picture,
 $station->team_name,
@@ -130,8 +133,10 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);
                             }
+                            
 			if ( $this->config['show_team_picture'] ) 
                             { 
+$station->team_picture = ($station->team_picture != '') ? $station->team_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");                                
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteampicture'.$station->project_id.'-'.$station->team_id,
 $station->team_picture,
 $station->team_name,
@@ -160,7 +165,7 @@ $this->overallconfig['use_jquery_modal']);
                             ?>
                             <td>
                 <?PHP
-
+$station->season_picture = ($station->season_picture != '') ? $station->season_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");  
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,
 $station->season_picture,
 $station->team_name,
