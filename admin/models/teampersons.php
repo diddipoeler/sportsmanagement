@@ -399,50 +399,50 @@ catch (Exception $e) {
 		return $result;
     }
 	
-	/**
-	 * remove specified players from team
-	 * @param $cids player ids
-	 * @return int count of removed
-	 */
-	function remove($cids)
-	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $post = $jinput->post->getArray(array());
-        $option = $jinput->getCmd('option');
-        
-        $project_team_id = $post['project_team_id'];
-        $team_id = $post['team_id'];
-        $pid = $post['pid'];
-        $persontype = $post['persontype'];
-        
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-        
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' cids<br><pre>'.print_r($cids, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        /*
-        $count = 0;
-		foreach($cids as $cid)
-		{
-			$object=&$this->getTable('teamplayer');
-			if ($object->canDelete($cid) && $object->delete($cid))
-			{
-				$count++;
-			}
-			else
-			{
-				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
-			}
-		}
-		return $count;
-        */
-	}
+//	/**
+//	 * remove specified players from team
+//	 * @param $cids player ids
+//	 * @return int count of removed
+//	 */
+//	function remove($cids)
+//	{
+//		// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $post = $jinput->post->getArray(array());
+//        $option = $jinput->getCmd('option');
+//        
+//        $project_team_id = $post['project_team_id'];
+//        $team_id = $post['team_id'];
+//        $pid = $post['pid'];
+//        $persontype = $post['persontype'];
+//        
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
+//        
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' cids<br><pre>'.print_r($cids, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+//        
+//        /*
+//        $count = 0;
+//		foreach($cids as $cid)
+//		{
+//			$object=&$this->getTable('teamplayer');
+//			if ($object->canDelete($cid) && $object->delete($cid))
+//			{
+//				$count++;
+//			}
+//			else
+//			{
+//				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
+//			}
+//		}
+//		return $count;
+//        */
+//	}
 
 }
 ?>

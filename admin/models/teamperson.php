@@ -29,6 +29,16 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
     var $_project_team_id = 0;
     static $db_num_rows = 0;
 
+/**
+ * sportsmanagementModelteamperson::assignplayerscountry()
+ * 
+ * @param integer $persontype
+ * @param integer $project_team_id
+ * @param integer $team_id
+ * @param integer $pid
+ * @param integer $season_id
+ * @return void
+ */
 function assignplayerscountry($persontype=1,$project_team_id=0,$team_id=0,$pid=0,$season_id=0)
 {
 //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__. ' persontype <br><pre>'.print_r($persontype, true).'</pre><br>','Notice');	
@@ -68,21 +78,23 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $rowIns
 }
 	
 	
+
 /**
  * sportsmanagementModelteamperson::set_state()
  * 
  * @param mixed $ids
  * @param mixed $tpids
  * @param mixed $state
+ * @param integer $pid
  * @return void
  */
-function set_state($ids,$tpids,$state)
+function set_state($ids,$tpids,$state,$pid=0)
 {	
 $this->jsmuser = JFactory::getUser(); 
 $this->jsmdate = JFactory::getDate();
 
 for ($x=0; $x < count($ids); $x++)
-		{
+{
 $person_id = $ids[$x];		  
 $season_team_person_id = $tpids[$person_id];          
 // Create an object for the record we are going to update.
@@ -94,8 +106,34 @@ $object->modified = $this->jsmdate->toSql();
 $object->modified_by = $this->jsmuser->get('id');
 // Update their details in the table using id as the primary key.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id'); 
-          
-        }  
+
+$this->jsmquery->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('published') . ' = ' . $state
+);
+
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('person_id') . ' = '.$person_id, 
+    $this->jsmdb->quoteName('project_id') . ' = ' . $pid 
+);
+
+try{
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person_project_position'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);
+$resultupdate = $this->jsmdb->execute();
+}
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+        //return false;
+        }
+
+
+
+} 
+         
 }
 	
     /**

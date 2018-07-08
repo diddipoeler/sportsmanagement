@@ -58,7 +58,7 @@ $this->registerTask('archive', 'set_season_team_state');
  */
 function set_season_team_state()
 {
-$post = JFactory::getApplication()->input->get( 'post' );
+$post = JFactory::getApplication()->input->post->getArray(array());
 $ids = $this->input->get('cid', array(), 'array');
 $tpids = $this->input->get('tpid', array(), 'array');
 $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2);
@@ -69,7 +69,7 @@ $value = ArrayHelper::getValue($values, $task, 0, 'int');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
 $model = $this->getModel();
-$model->set_state($ids,$tpids,$value);  
+$model->set_state($ids,$tpids,$value,$post['pid']);  
 
 switch ($value)
 {
@@ -108,6 +108,11 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
     } 
   
 	
+	/**
+	 * sportsmanagementControllerteampersons::assignplayerscountry()
+	 * 
+	 * @return void
+	 */
 	function assignplayerscountry()
 	{
 	$post = JFactory::getApplication()->input->post->getArray(array());
@@ -116,21 +121,21 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
 	}
 	
-  /**
-   * sportsmanagementControllerteampersons::remove()
-   * 
-   * @return void
-   */
-  function remove()
-	{
-	$app = JFactory::getApplication();
-    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-    $model = $this->getModel('teampersons');
-    $model->remove($pks);
-	
-    $this->setRedirect('index.php?option=com_sportsmanagement&view=teampersons');    
-        
-   }
+//  /**
+//   * sportsmanagementControllerteampersons::remove()
+//   * 
+//   * @return void
+//   */
+//  function remove()
+//	{
+//	$app = JFactory::getApplication();
+//    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+//    $model = $this->getModel('teampersons');
+//    $model->remove($pks);
+//	
+//    $this->setRedirect('index.php?option=com_sportsmanagement&view=teampersons');    
+//        
+//   }
    
   /**
 	 * Proxy for getModel.
