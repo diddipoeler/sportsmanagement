@@ -268,7 +268,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $myoptions[] = JHtml::_('select.option', '1', JText::_('JYES'));
         $lists['captain'] = $myoptions;
 
-	$document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
+	$document->addScript(JURI::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');
 	$javascript = "\n";
         $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsmanagement';". "\n";	   
 	$javascript .= "var matchid = ".$this->match->id.";" . "\n";
@@ -390,7 +390,7 @@ $lists['awayroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam
         $matchevents = sportsmanagementModelMatch::getMatchEvents($this->match->id);
         //$document->addScriptDeclaration( $javascript );
 
-$document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');	    
+$document->addScript(JURI::base().'administrator/components/'.$option.'/assets/js/diddioeler.js');	    
 
 $javascript = "\n";
 $javascript .= "var baseajaxurl = '".JUri::root()."index.php?option=com_sportsmanagement';". "\n";	    
