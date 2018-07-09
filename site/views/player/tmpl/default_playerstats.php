@@ -17,9 +17,7 @@ $colspan = 1;
 ?>
 <!-- Player stats History START -->
 <h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
-<table class="<?PHP echo $this->config['player_table_class']; ?> table-responsive " >
-	<tr>
-		<td>
+
 		<table class="<?PHP echo $this->config['player_table_class']; ?> table-responsive" >
 			<thead>
 			<tr class="sectiontableheader">
@@ -438,8 +436,6 @@ $this->overallconfig['use_jquery_modal']);
 			</tr>
 			</tbody>
 		</table>
-		</td>
-	</tr>
-</table>
+		
 
 <!-- Player stats History END -->
