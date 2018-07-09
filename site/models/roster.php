@@ -64,6 +64,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		self::$projectteamid = $app->input->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $app->input->get('cfg_which_database', 0, 'INT');
+		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         sportsmanagementModelProject::setProjectID(self::$projectid,self::$cfg_which_database);
 		self::getProjectTeam();
 	}
