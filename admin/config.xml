@@ -544,6 +544,15 @@ filter="safehtml"/>
 			preview="show">			
 		</field>
 		
+		<field name="ph_stadium" 
+    type="media"
+			default="images/com_sportsmanagement/database/placeholders/placeholder_stadium.png"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_STADIUM" 
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_STADIUM"
+			directory="images/com_sportsmanagement/database/placeholders/"
+			preview="show">			
+		</field>
+		
 		<field type="spacer" name="spacera" label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL" 
           description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_DESC" />
           
