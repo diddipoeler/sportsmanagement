@@ -242,7 +242,7 @@ if (!isset($this->club)) {
                             <?php
                             echo JHtml::link($link, $playground->name);
                             if (!sportsmanagementHelper::existPicture($playground->picture)) {
-                                $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('team');
+                                $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('stadium');
                             }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playground->id,
             $playground->picture,
