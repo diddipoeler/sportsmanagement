@@ -98,7 +98,7 @@ if (!empty($this->rows))
 	}
 	?>
     
-<table class="<?php echo $this->config['table_class'];?>">
+<table class="<?php echo $this->config['table_class'];?> table-responsive">
 	<?php
     // jetzt kommt die schleife über die positionen
 	foreach ($this->rows as $position_id => $players)
