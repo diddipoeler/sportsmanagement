@@ -72,7 +72,7 @@ if (count($this->stafflist) > 0)
 		</tr>
 	</table>
 	<br />
-	<table class="<?php echo $this->config['table_class'];?>">
+	<table class="<?php echo $this->config['table_class'];?> table-responsive">
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
