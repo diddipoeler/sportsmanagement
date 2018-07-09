@@ -624,10 +624,13 @@ $this->overallconfig['use_jquery_modal']
 				foreach ($this->positioneventtypes[$row->position_id] AS $eventtype)
 				{
 					$value = '0';
+					if ( isset($totalEvents[$row->pposid]) )
+					{
 					if ( array_key_exists($eventtype->eventtype_id,$totalEvents[$row->pposid]))
 					{
 						$value = $totalEvents[$row->pposid][$eventtype->eventtype_id];
 					}
+				}
 					?>
 		<td class="td_c">
         <?php 
