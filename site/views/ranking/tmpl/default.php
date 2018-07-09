@@ -69,7 +69,7 @@ if ($this->config['show_table_1'] ||
         $this->config['show_table_3'] ||
         $this->config['show_table_4'] ||
         $this->config['show_table_5']) {
-echo JHtml::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => JText::_($this->config['table_text_1']) )); //start tab set    
+echo JHtml::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'show_table_1' )); //start tab set    
 
 if ($this->config['show_table_1']) {
 echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_1', JText::_($this->config['table_text_1']));
@@ -106,7 +106,7 @@ echo JHtml::_('bootstrap.endTabSet'); //end tab set
                     <?PHP
                 } else {
 echo JHtml::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'ranking' )); //start tab set  					
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'ranking', JText::_('ranking'));					
+echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'ranking', JText::_('COM_SPORTSMANAGEMENT_XML_RANKING_LAYOUT_TITLE'));					
 echo $this->loadTemplate('ranking');
 echo JHtml::_('bootstrap.endTab');  					
 echo JHtml::_('bootstrap.endTabSet'); //end tab set 					
