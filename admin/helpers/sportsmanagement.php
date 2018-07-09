@@ -1410,12 +1410,35 @@ abstract class sportsmanagementHelper {
         $ph_logo_small = $params->get('ph_logo_small', 0);
         $ph_icon = $params->get('ph_icon', 'images/com_sportsmanagement/database/placeholders/placeholder_21.png');
         $ph_team = $params->get('ph_team', 0);
+	$ph_stadium = $params->get('ph_stadium', 0);
+	    
+	    $ph_player_men_large = $params->get('ph_player_men_large', 0);
+	    $ph_player_men_small = $params->get('ph_player_men_small', 0);
+	    $ph_player_woman_large = $params->get('ph_player_woman_large', 0);
+	    $ph_player_woman_small = $params->get('ph_player_woman_small', 0);
 
         //setup the different placeholders
         switch ($type) {
             case "player": //player
                 return $ph_player;
                 break;
+	 case "stadium": //
+                return $ph_stadium;
+                break;
+			
+	case "menlarge": //
+                return $ph_player_men_large;
+                break;
+	case "mensmall": //
+                return $ph_player_men_small;
+                break;
+	case "womanlarge": //
+                return $ph_player_woman_large;
+                break;
+	case "womansmall": //
+                return $ph_player_woman_small;
+                break;
+			
             case "clublogobig": //club logo big
             case "logo_big":
                 return $ph_logo_big;
