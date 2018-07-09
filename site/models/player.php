@@ -50,6 +50,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         self::$personid = JFactory::getApplication()->input->get('pid', 0, 'INT');
         self::$teamplayerid = JFactory::getApplication()->input->get('pt', 0, 'INT');
         self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         $getDBConnection = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         parent::setDbo($getDBConnection);
     }
