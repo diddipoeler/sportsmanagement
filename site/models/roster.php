@@ -250,7 +250,8 @@ class sportsmanagementModelRoster extends JModelLegacy
             self::$_players = $db->loadObjectList();
             }
 catch (Exception $e){
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e->getMessage(),true).'</pre>'),'Error');	
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'),'Error');	
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');	
 }
             
             
