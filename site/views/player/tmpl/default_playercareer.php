@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_playercareer.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage player
@@ -16,9 +16,7 @@ if (count($this->historyPlayer) > 0)
 	?>
 	<!-- Player history START -->
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER'); ?></h2>
-	<table class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
-		<tr>
-			<td>
+	
 				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
 					<tr class="sectiontableheader">
 						<th class="td_l">
@@ -188,10 +186,7 @@ $this->overallconfig['use_jquery_modal']);
 					}
 					?>
 				</table>
-			</td>
-		</tr>
-	</table>
-
+			
 	<!-- Player history END -->
 	<?php
 }
