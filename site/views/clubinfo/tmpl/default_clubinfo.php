@@ -244,7 +244,15 @@ if (!isset($this->club)) {
                             if (!sportsmanagementHelper::existPicture($playground->picture)) {
                                 $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('team');
                             }
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playground->id, $playground->picture, $playground->name, $this->config['playground_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playground->id,
+            $playground->picture,
+            $playground->name,
+            $this->config['playground_picture_width'],
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']);                            
+                            
                             ?>
                         </address>
                         <?php
