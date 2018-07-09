@@ -1,5 +1,5 @@
-var windowWidth = jQuery(window).width(); //retrieve current window width
-var windowHeight = jQuery(window).height(); //retrieve current window height
+//var windowWidth = jQuery(window).width(); //retrieve current window width
+//var windowHeight = jQuery(window).height(); //retrieve current window height
 //var documentWidth = jQuery(document).width(); //retrieve current document width
 //var documentHeight = jQuery(document).height(); //retrieve current document height
 //var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
@@ -11,6 +11,8 @@ var PreviousUrl; /* global variable which will store the
 
 
 jQuery(document).ready(function(){
+var windowWidth = jQuery(window).width(); //retrieve current window width
+var windowHeight = jQuery(window).height(); //retrieve current window height	
 console.log("document.URL : "+document.URL);
 console.log("document.location.href : "+document.location.href);
 console.log("document.location.origin : "+document.location.origin);
