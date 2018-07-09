@@ -588,7 +588,7 @@ class="radio btn-group btn-group-yesno"
 			<option value="1">JYES</option>
 		</field>
 
-<field name="boostrap_div_class" type="list" default=""
+<field name="boostrap_div_class" type="list" default="row"
 			label="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND" description="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND_DESC">
 			<option value="">JNO</option>
 			<option value="row">row</option>
