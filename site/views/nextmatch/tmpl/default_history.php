@@ -93,7 +93,16 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
     {
     $home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam1_id,$home->picture,$home->name,'20')
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game->id.'-'.$game->projectteam1_id,
+            $home->picture,
+            $home->name,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']); 	
+                            
 				?>
                 </td>
                                 
@@ -105,7 +114,14 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
     {
     $away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam2_id,$away->picture,$away->name,'20')
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game->id.'-'.$game->projectteam2_id,
+            $away->picture,
+            $away->name,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']); 
 				?>
                 </td>
                 
@@ -120,7 +136,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				echo $game->team2_result;
 				?></td>
 				<td class="nowrap"><?php
-				if ($game->show_report==1)
+				if ( $game->show_report == 1 )
 				{
 					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					JText::_( 'Match Report' ),

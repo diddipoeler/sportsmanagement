@@ -398,7 +398,7 @@ $this->overallconfig['use_jquery_modal']);
 	?>
 	<?php
 //--------------------------------------------------------------------------------------------------------------
-		if ($this->config['result_style']==1)
+		if ( $this->config['result_style'] == 1 )
 		{
 			?>
 			<!-- show team-icons and/or -names -->

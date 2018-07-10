@@ -292,7 +292,7 @@ $this->setLayout('form_bootstrap');
 		$title = $team->name;
        
 		$attribs = array_merge(array('title' => $title,$attribs));
-		if ($type==1)
+		if ( $type==1 )
 		{
 			$attribs = array_merge(array('width' => '20',$attribs));
 
@@ -319,7 +319,7 @@ $modalheight,
 $use_jquery_modal);
 			}
 		}
-        elseif ($type==5)
+        elseif ( $type == 5 )
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
           
@@ -346,7 +346,7 @@ $modalheight,
 $use_jquery_modal);
 			}
 		}
-        elseif ($type==6)
+        elseif ( $type == 6)
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
 
@@ -373,7 +373,7 @@ $modalheight,
 $use_jquery_modal);
 			}
 		}
-		elseif ($type==2 && !empty($team->country))
+		elseif ( $type == 2 && !empty($team->country))
 		{
 			$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
@@ -389,7 +389,7 @@ $use_jquery_modal);
 			}
 		}
         
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big)  )
+        elseif ( $type == 7 && !empty($team->country) && !empty($team->logo_big)  )
 		{
 
 			if (empty($image))
@@ -407,7 +407,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) )
+        elseif ( $type == 7 && !empty($team->country) && !empty($team->logo_big) )
 		{
 			if (empty($image))
 			{
@@ -423,7 +423,7 @@ $use_jquery_modal);
 			}
 		}
         
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
+        elseif ( $type == 3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -438,7 +438,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-        elseif ($type==3 && !empty($team->country) && !empty($team->logo_small) )
+        elseif ( $type == 3 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -453,7 +453,7 @@ $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
 			}
 		}
-    elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
+    elseif ( $type == 4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
@@ -468,7 +468,7 @@ $modalheight,
 $use_jquery_modal);
 			}
 		}
-        elseif ($type==4 && !empty($team->country) && !empty($team->logo_small) )
+        elseif ( $type == 4 && !empty($team->country) && !empty($team->logo_small) )
 		{
 			if (empty($image))
 			{
