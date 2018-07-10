@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_previousx.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage nextmatch
@@ -69,14 +69,30 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				?></td>
                 
                 <td class="nowrap"><?php
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam1_id,$game->home_picture,$home->name,'20')
-				?></td>
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game->id.'-'.$game->projectteam1_id,
+            $game->home_picture,
+            $home->name,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']); 				
+			
+			
+			?></td>
                 
 				<td nowrap="nowrap">-</td>
                 
                 <td class="nowrap"><?php
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam2_id,$game->away_picture,$away->name,'20')
-				?></td>
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game->id.'-'.$game->projectteam2_id,
+            $game->away_picture,
+            $away->name,
+            '20',
+            '',
+            $this->modalwidth,
+            $this->modalheight,
+            $this->overallconfig['use_jquery_modal']); 				
+			?></td>
                 
 				<td nowrap="nowrap"><?php
 				echo $away->name;
