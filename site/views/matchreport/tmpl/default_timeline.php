@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_timeline.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
@@ -69,7 +69,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>
@@ -96,7 +96,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1);
+			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>
