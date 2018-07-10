@@ -257,7 +257,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			$awaylink = null;
 		}
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
-		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink);
+		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 
 		$teamA .= '<td width="30%" class="'.$class1.'">'.$home.'</td>';
 
@@ -325,7 +325,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
-		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink);
+		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 		
 		$teamB .= '<td width="30%" class="'.$class2.'">'.$away.'</td>';
 		
