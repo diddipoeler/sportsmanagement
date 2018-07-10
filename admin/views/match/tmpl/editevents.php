@@ -106,10 +106,7 @@ if($close == 1) {
 
 <div id="ajaxresponse" ></div>
 	<fieldset>
-		<div class="fltrt">
-			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
-		</div>
+		
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TITLE', $this->teams->team1, $this->teams->team2); ?>
 		</div>
