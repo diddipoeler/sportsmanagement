@@ -43,7 +43,21 @@
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>	
-		<field
+		
+<field
+			name="gender"
+			type="extensionradiobutton"
+			class="radio btn-group btn-group-yesno"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_GENDER_DESC">
+			<option	value="0">COM_SPORTSMANAGEMENT_ADMIN_PERSON_UNKNOWN</option>
+			<option	value="1">COM_SPORTSMANAGEMENT_ADMIN_PERSON_MALE</option>
+			<option	value="2">COM_SPORTSMANAGEMENT_ADMIN_PERSON_FEMALE</option>	
+</field> 	  
+	  
+	  <field
 			name="jl_users"
 			type="user"
 			class="inputbox"
