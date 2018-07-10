@@ -321,7 +321,18 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */
        if ( empty($data['picture']) )
        {
+	switch($data['gender'])
+        {
+	case 0:
        $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
+	break;	
+		case 1:
+       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small','');
+	break;
+			case 2:
+       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small','');
+	break;
+	}
        }
        $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
        $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
