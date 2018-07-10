@@ -43,8 +43,7 @@ if($close == 1) {
 				<?php echo JText::_('JAPPLY');?></button>
 			<button type="button" onclick="$('close').value=1; Joomla.submitform('matches.savestats', this.form);">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+			
 		</div>
 		<div class="configuration" >
 			Stats
