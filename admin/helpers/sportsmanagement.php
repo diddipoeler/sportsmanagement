@@ -77,7 +77,8 @@ abstract class sportsmanagementHelper {
                     'title' => $text,
                     'url' => $url,
                     'height' => $height,
-                    'width' => $width
+                    'width' => $width,
+                    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">'.JText::_('JCANCEL').'</button>'
                         )
         );
 
