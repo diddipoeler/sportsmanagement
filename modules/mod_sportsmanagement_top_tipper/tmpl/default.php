@@ -14,17 +14,11 @@ JHtml::_('behavior.tooltip');
 
 $mainframe = JFactory::getApplication();
 
-//echo '<br /><pre>~' . print_r($config,true) . '~</pre><br />';
-//echo '<br /><pre>~' . print_r($config['limit'],true) . '~</pre><br />';
 ?>
-    <!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
-//foreach ($predictionProjectS AS $predictionProject)
 {
     $gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
-
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' gotSettings<br><pre>'.print_r($gotSettings,true).'</pre>'),'');
 
     if ( ( ( sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) && ( $gotSettings ) ) || ( sportsmanagementModelPrediction::$pjID == 0 ) )
     {
@@ -33,27 +27,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         sportsmanagementModelPrediction::$pjID = $predictionProject->project_id;
         $modelpg->predictionProject            = $predictionProject;
         $actualProjectCurrentRound             = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
-//        echo 'actualProjectCurrentRound <br /><pre>~' . print_r($actualProjectCurrentRound ,true) . '~</pre><br />';
-//echo 'modelpg<br /><pre>~' . print_r($modelpg,true) . '~</pre><br />';
+
         $roundID = $actualProjectCurrentRound;
-        /*
-        if (!isset($this->roundID) || ($this->roundID < 1)){
-            $this->roundID=$actualProjectCurrentRound;
-        }
-        if ($this->roundID < 1){$this->roundID=1;}
-        if ($modelpg->from < 1){
-            $modelpg->from=1;
-        }
-        if ($this->roundID > $modelpg->getProjectRounds($predictionProject->project_id)){
-            $this->roundID=$modelpg->_projectRoundsCount;
-        }
-        if ($modelpg->to > $modelpg->_projectRoundsCount){
-            $modelpg->to=$modelpg->_projectRoundsCount;
-        }
-        if ($modelpg->to == 0){
-            $modelpg->to=$actualProjectCurrentRound;
-        }
-        */
+        
         ?>
         <form name='resultsRoundSelector' method='post'>
             <input type='hidden' name='prediction_id' value='<?php echo (int) $predictionGame[0]->id; ?>'/>
@@ -68,7 +44,6 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 <tr>
                     <td class='sectiontableheader'>
                         <?php
-                        //echo '<b>'.JText::sprintf('JL_PRED_RANK_SUBTITLE_01').'</b>';
                         if ( $config['show_project_name'] )
                         {
                             echo '<b>' . $predictionGame[0]->name . '</b>';
@@ -105,7 +80,6 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                             if ( $config['show_tip_ranking'] )
                             {
                                 echo '&nbsp;&nbsp;';
-// predictionresults/0-intern/4-test-2016-17/0/73400-1-bundesliga-2017-18/1813608-7-spieltag/0
                                 if ( !$config['show_tip_ranking_round'] )
                                 {
                                     $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id,
@@ -278,7 +252,7 @@ sportsmanagementModelPrediction::$to,
 $member->user_id,
 sportsmanagementModelPrediction::$type);
 }                    
-                //echo '<br /><pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
+
                 $predictionsCount = 0;
                 $totalPoints      = 0;
                 $totalTop         = 0;
@@ -305,7 +279,7 @@ sportsmanagementModelPrediction::$type);
                                 $memberPredictionPoint->homeDecision,
                                 $memberPredictionPoint->awayDecision);
                             $newPoints = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject, $result);
-                            //if (!is_null($memberPredictionPoint->prPoints))
+                            if (!is_null($memberPredictionPoint->prPoints))
                             {
                                 $points = $memberPredictionPoint->prPoints;
                                 if ( $newPoints != $points )
@@ -358,11 +332,8 @@ sportsmanagementModelPrediction::$type);
                 {
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
-                //tobe removed
-                //$imgTitle = JText::sprintf('JL_PRED_AVATAR_OF',$member->name);
-                //$output = JHtml::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
 
-                $output                                            = sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 25);
+                $output = sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 25);
                 $membersDataArray[$member->pmID]['show_user_icon'] = $output;
 
                 if ( ( $config['show_user_link'] ) && ( ( $member->show_profile ) || ( $predictionMember[0]->pmID == $member->pmID ) ) )
@@ -393,26 +364,8 @@ sportsmanagementModelPrediction::$type);
 
             }
 
-            //echo '<br /><pre>~' . print_r($membersResultsArray,true) . '~</pre><br />';
-            //echo '<br /><pre>~' . print_r($membersDataArray,true) . '~</pre><br />';
-            //$membersResultsArray2=$membersResultsArray;
-            //$membersResultsArray3=$membersResultsArray;
-            //$membersResultsArray4=$membersResultsArray;
-            //$membersResultsArray5=$membersResultsArray;
-            //$membersResultsArray6=$membersResultsArray;
-
-            /*
-            $membersResultsArray = array_merge(	$membersResultsArray,
-                                                $membersResultsArray2,
-                                                $membersResultsArray3,
-                                                $membersResultsArray4,
-                                                $membersResultsArray5,
-                                                $membersResultsArray6
-                                                );
-            */
             $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray, $config);
             $recordCount            = count($computedMembersRanking);
-            //echo '<br /><pre>~' . print_r($computedMembersRanking,true) . '~</pre><br />';
 
             $i = 1;
             if ( (int) $config['limit'] < 1 )
@@ -425,7 +378,6 @@ sportsmanagementModelPrediction::$type);
 
             foreach ($computedMembersRanking AS $key => $value)
             {
-                //echo '<br /><pre>~' . print_r($value,true) . '~</pre><br />';
                 if ( $i <= $skipMemberCount )
                 {
                     $i++;
@@ -437,7 +389,6 @@ sportsmanagementModelPrediction::$type);
                 $class      = ( $predictionMember[0]->pmID == $key ) ? 'sectiontableentry1' : $class;
                 $tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
 
-                //$config['show_all_user']=1;
                 if ( ( ( !$config['show_all_user'] ) && ( $value['predictionsCount'] > 0 ) ) ||
                     ( $config['show_all_user'] ) ||
                     ( $predictionMember[0]->pmID == $key )
