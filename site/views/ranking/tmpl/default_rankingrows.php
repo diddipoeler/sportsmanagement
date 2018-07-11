@@ -657,6 +657,9 @@ $this->overallconfig['use_jquery_modal']);
                     echo ' style="background-color:' . $color . '"';
                 }
                 echo '>';
+                ?>
+                <ul class="nav navbar-nav">
+                <?php
                 if (isset($this->previousgames[$ptid])) {
                     foreach ($this->previousgames[$ptid] as $g) {
                         $txt = $this->teams[$g->projectteam1_id]->name . ' [ ' . $g->team1_result . ' - ' . $g->team2_result . ' ] ' . $this->teams[$g->projectteam2_id]->name;
@@ -682,10 +685,18 @@ $this->overallconfig['use_jquery_modal']);
                         $routeparameter['mid'] = $g->slug;
                         $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 
-                        //$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)));
+                        ?>
+                        <li>
+                        <?php
                         echo JHtml::link($url, $img, $attr);
+                        ?>
+                        </li>
+                        <?php
                     }
                 }
+                ?>
+                </ul>
+                <?php
                 echo '</td>';
                 echo "\n";
                 break;
