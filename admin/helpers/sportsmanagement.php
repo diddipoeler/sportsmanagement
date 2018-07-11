@@ -1753,7 +1753,7 @@ abstract class sportsmanagementHelper {
         $clubSlug = (isset($team->club_slug) ? $team->club_slug : $team->club_id);
         $division_slug = (isset($team->division_slug) ? $team->division_slug : $team->division_id);
         $projectSlug = (isset($team->project_slug) ? $team->project_slug : $team->project_id);
-        $output = '<ul class="nav navbar-nav">';
+        $output = '<ul class="list-inline">';
 
         if ($config['show_team_link']) {
             $routeparameter = array();
