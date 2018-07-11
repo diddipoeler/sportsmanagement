@@ -55,6 +55,17 @@ $mainframe = JFactory::getApplication();
 $config    = array();
 
 /**
+ * sprachdatei aus dem frontend laden
+ */
+$langtag = JFactory::getLanguage();
+$lang = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_SITE;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+
+/**
  * add css file
  */
 $document->addStyleSheet(JURI::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
@@ -102,9 +113,9 @@ $actJoomlaUser[]      = JFactory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
 $type_array    = array();
-$type_array[]  = JHTML::_('select.option', '0', JText::_('JL_PRED_RANK_FULL_RANKING'));
-$type_array[]  = JHTML::_('select.option', '1', JText::_('JL_PRED_RANK_FIRST_HALF'));
-$type_array[]  = JHTML::_('select.option', '2', JText::_('JL_PRED_RANK_SECOND_HALF'));
+$type_array[]  = JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+$type_array[]  = JHTML::_('select.option', '1', JText::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
+$type_array[]  = JHTML::_('select.option', '2', JText::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
 $lists['type'] = $type_array;
 unset($type_array);
 
