@@ -207,7 +207,14 @@ else
 		{
 			$feed->image->url = '';
 		}
+		if ( !is_null($rssDoc->get_image_title()) )
+		{
 				$feed->image->title = $rssDoc->get_image_title();
+		}
+		else
+		{
+			$feed->image->title = '';
+		}
 	
 				// items
 				$items = $rssDoc->get_items();
