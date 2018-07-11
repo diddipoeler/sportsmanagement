@@ -113,8 +113,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         <?php
         if ( ( $showProjectID > 0 ) && ( $config['show_rankingnav'] ) )
         {
-            $from_matchday = $modelpg->createFromMatchdayList($predictionProject->project_id);
-            $to_matchday   = $modelpg->createToMatchdayList($predictionProject->project_id);
+            $from_matchday = $modelpg->createMatchdayList($predictionProject->project_id);
+            $to_matchday   = $modelpg->createMatchdayList($predictionProject->project_id);
             ?>
             <form name='adminForm' id='adminForm' method='post'>
                 <table class="table">
