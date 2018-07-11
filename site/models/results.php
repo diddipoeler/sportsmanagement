@@ -199,7 +199,7 @@ else
 				$feed->description = $rssDoc->get_description();
 	
 				// channel image if exists
-		if ( isset($rssDoc->get_image_url()) )
+		if ( !is_null($rssDoc->get_image_url()) )
 		{
 				$feed->image->url = $rssDoc->get_image_url();
 		}
