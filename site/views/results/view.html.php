@@ -274,17 +274,17 @@ $this->setLayout('form_bootstrap');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
         
-    if ( !sportsmanagementHelper::existPicture($team->logo_small) )
+    if ( !JFile::exists($team->logo_small) )
     {
     $team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');    
     }
-    if ( !sportsmanagementHelper::existPicture($team->logo_middle) )
+    if ( !JFile::exists($team->logo_middle) )
     {
     $team->logo_middle = sportsmanagementHelper::getDefaultPlaceholder('logo_middle');    
     }
-    if ( !sportsmanagementHelper::existPicture($team->logo_big) )
+    if ( !JFile::exists($team->logo_big) )
     {
-    $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');   
     }
         
         
@@ -292,12 +292,10 @@ $this->setLayout('form_bootstrap');
 		$title = $team->name;
        
 		$attribs = array_merge(array('title' => $title,$attribs));
-		if ( $type==1 )
+		if ( $type == 1 )
 		{
 			$attribs = array_merge(array('width' => '20',$attribs));
 
-            if ( !empty($team->logo_small) )
-			{
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
@@ -306,25 +304,13 @@ $this->setLayout('form_bootstrap');
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
         elseif ( $type == 5 )
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
           
-            if ( !empty($team->logo_middle) )
-			{
+            
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_middle,
                 $title,
@@ -333,25 +319,12 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogomedium"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
         elseif ( $type == 6)
 		{
 		  $attribs = array_merge(array('width' => '20',$attribs));
-
-            if ( !empty($team->logo_big) )
-			{
+            
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
 			$team->logo_big,
 			$title,
@@ -360,42 +333,17 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-			else
-			{
-                $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("clublogobig"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
-		elseif ( $type == 2 && !empty($team->country))
+		elseif ( $type == 2 )
 		{
 			$image = JSMCountries::getCountryFlag($team->country);
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
         
-        elseif ( $type == 7 && !empty($team->country) && !empty($team->logo_big)  )
+        elseif ( $type == 7 )
 		{
-
-			if (empty($image))
-			{
-				$attribs = array_merge(array('width' => '20',$attribs));
-                
+		$attribs = array_merge(array('width' => '20',$attribs));
                 $image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_big,
                 $title,
@@ -405,13 +353,13 @@ $modalwidth,
 $modalheight,
 $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+			
 		}
-        elseif ( $type == 7 && !empty($team->country) && !empty($team->logo_big) )
+        elseif ( $type == 8 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+		$attribs = array_merge(array('width' => '20',$attribs));
+		$image = JSMCountries::getCountryFlag($team->country).' ';
+                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_big,
                 $title,
                 $attribs['width'],
@@ -419,15 +367,13 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-                $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+                
+			
 		}
-        
-        elseif ( $type == 3 && !empty($team->country) && !empty($team->logo_small) )
+        elseif ( $type == 3 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
+		$attribs = array_merge(array('width' => '20',$attribs));	
+		$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
                 $attribs['width'],
@@ -436,28 +382,12 @@ $modalwidth,
 $modalheight,
 $use_jquery_modal);
                 $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
+			
 		}
-        elseif ( $type == 3 && !empty($team->country) && !empty($team->logo_small) )
+    elseif ( $type == 4 )
 		{
-			if (empty($image))
-			{
-				$image = sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-                $image .= ' '.JSMCountries::getCountryFlag($team->country);
-			}
-		}
-    elseif ( $type == 4 && !empty($team->country) && !empty($team->logo_small) )
-		{
-			if (empty($image))
-			{
-				$image = JSMCountries::getCountryFlag($team->country).' ';
+	    $attribs = array_merge(array('width' => '20',$attribs));
+		$image = JSMCountries::getCountryFlag($team->country).' ';
                 $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
                 $team->logo_small,
                 $title,
@@ -466,22 +396,7 @@ $use_jquery_modal);
 $modalwidth,
 $modalheight,
 $use_jquery_modal);
-			}
-		}
-        elseif ( $type == 4 && !empty($team->country) && !empty($team->logo_small) )
-		{
-			if (empty($image))
-			{
-				$image = JSMCountries::getCountryFlag($team->country).' ';
-                $image .= sportsmanagementHelperHtml::getBootstrapModalImage('resultsteam'.$team->projectteamid,
-                sportsmanagementHelper::getDefaultPlaceholder("icon"),
-                $title,
-                $attribs['width'],
-                '',
-$modalwidth,
-$modalheight,
-$use_jquery_modal);
-			}
+			
 		}
 		else
 		{
