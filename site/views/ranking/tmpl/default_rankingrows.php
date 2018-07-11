@@ -658,7 +658,7 @@ $this->overallconfig['use_jquery_modal']);
                 }
                 echo '>';
                 ?>
-                <ul class="nav navbar-nav">
+                <ul class="list-inline">
                 <?php
                 if (isset($this->previousgames[$ptid])) {
                     foreach ($this->previousgames[$ptid] as $g) {
