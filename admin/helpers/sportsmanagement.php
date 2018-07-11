@@ -1753,7 +1753,7 @@ abstract class sportsmanagementHelper {
         $clubSlug = (isset($team->club_slug) ? $team->club_slug : $team->club_id);
         $division_slug = (isset($team->division_slug) ? $team->division_slug : $team->division_id);
         $projectSlug = (isset($team->project_slug) ? $team->project_slug : $team->project_id);
-        $output = '';
+        $output = '<ul class="nav navbar-nav">';
 
         if ($config['show_team_link']) {
             $routeparameter = array();
@@ -1767,7 +1767,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if (((!isset($team_plan)) || ($teamid != $team_plan->id)) && ($config['show_plan_link'])) {
@@ -1783,7 +1785,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_curve_link']) {
@@ -1799,7 +1803,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_teaminfo_link']) {
@@ -1814,7 +1820,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_club_link']) {
@@ -1830,7 +1838,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/mail.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_teamstats_link']) {
@@ -1844,7 +1854,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_clubplan_link']) {
@@ -1859,7 +1871,9 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
 
         if ($config['show_rivals_link']) {
@@ -1873,9 +1887,11 @@ abstract class sportsmanagementHelper {
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK') . '&nbsp;' . $teamname;
             $picture = 'media/com_sportsmanagement/jl_images/rivals.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+		$output .= '<li>';
             $output .= JHtml::link($link, $desc);
+		$output .= '</li>';
         }
-
+$output .= '</ul>';
         return $output;
     }
 
