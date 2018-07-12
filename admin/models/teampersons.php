@@ -285,14 +285,18 @@ catch (Exception $e) {
         $query->where('stp.season_id = '.$season_id);
         $query->where('stp.persontype = '.$persontype);
         $query->where('ppos.project_id = '.$project_id);
-        $db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+try { 
+	$db->setQuery($query);
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+        }
+catch (Exception $e) {
+    // catch any database errors.
+	$result = false;
+	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+       
         if ( $result )
         {
             foreach( $result as $row )
@@ -375,7 +379,7 @@ catch (Exception $e) {
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id -> '.$season_id.'<br>','Notice');
         
         // Select some fields
-		$query->select('ppl.*');
+	$query->select('ppl.*');
         // From table
         $query->from('#__sportsmanagement_person AS ppl');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
@@ -383,66 +387,23 @@ catch (Exception $e) {
         $query->where('st.team_id IN ('.$team_id.')');
         $query->where('st.season_id = '.$season_id);
         $query->where('tp.team_id = '.$season_id);
-        
+        try {
         $db->setQuery($query);
-        //$db->query();
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
+         }
+catch (Exception $e) {
+    // catch any database errors.
+	$result = false;
+	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
                 
-		if (!$result)
-		{
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
-			return false;
-		}
+		
 		return $result;
     }
 	
-//	/**
-//	 * remove specified players from team
-//	 * @param $cids player ids
-//	 * @return int count of removed
-//	 */
-//	function remove($cids)
-//	{
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $post = $jinput->post->getArray(array());
-//        $option = $jinput->getCmd('option');
-//        
-//        $project_team_id = $post['project_team_id'];
-//        $team_id = $post['team_id'];
-//        $pid = $post['pid'];
-//        $persontype = $post['persontype'];
-//        
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
-//        
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' cids<br><pre>'.print_r($cids, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        
-//        /*
-//        $count = 0;
-//		foreach($cids as $cid)
-//		{
-//			$object=&$this->getTable('teamplayer');
-//			if ($object->canDelete($cid) && $object->delete($cid))
-//			{
-//				$count++;
-//			}
-//			else
-//			{
-//				$this->setError(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_TEAMPLAYER',$object->getError()));
-//			}
-//		}
-//		return $count;
-//        */
-//	}
+
 
 }
 ?>
