@@ -85,6 +85,18 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="1">normal</option>
 		</field>
     
+<field name="pagepeeker_size" 
+    type="extensionradiobutton" 
+    default="2"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE">
+			<option value="x">eXtra large</option>
+			<option value="l">Large</option>
+	<option value="m">Medium</option>
+	<option value="s">Small</option>
+	<option value="t">Tiny</option>
+		</field>	
     
 		<field name="show_club_number" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
