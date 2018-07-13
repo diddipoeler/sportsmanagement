@@ -87,7 +87,7 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
     
 <field name="pagepeeker_size" 
     type="extensionradiobutton" 
-    default="2"
+    default="m"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PAGEPEEKER_SIZE">
