@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_teams.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage teams
@@ -151,7 +151,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
             echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect='.$this->config['internetadress_picture_thumbsniper_preview'].'&url='.$team->club_www.'">';
             break;
             case 'pagepeeker':
-            echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=x&url='.$team->club_www.'">';
+            echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size='.$this->config['pagepeeker_size'].'&url='.$team->club_www.'">';
             break;
             }
             ?>
