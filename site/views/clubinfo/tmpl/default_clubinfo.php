@@ -76,7 +76,7 @@ if (!isset($this->club)) {
             }
             if ($this->club->website) {
                 if ($this->config['show_club_internetadress_picture']) {
-                    echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url=' . $this->club->website . '">';
+                    echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=m&url=' . $this->club->website . '">';
                 }
             }
             ?>
