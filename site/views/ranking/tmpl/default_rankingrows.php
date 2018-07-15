@@ -686,7 +686,7 @@ $this->overallconfig['use_jquery_modal']);
                         $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
 
                         ?>
-                        <li>
+                        <li class="list-inline-item">
                         <?php
                         echo JHtml::link($url, $img, $attr);
                         ?>
