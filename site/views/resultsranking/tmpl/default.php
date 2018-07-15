@@ -11,11 +11,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//echo 'config <pre>'.print_r($this->config ,true).'</pre>';
-//echo 'params <pre>'.print_r($this->params ,true).'</pre>';
-
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews', 'results', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 

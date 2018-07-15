@@ -1,57 +1,57 @@
-.joomleague .pagenav {
+.jsm .pagenav {
 	text-align: center;
 }
 
-.joomleague .col0 {
+.jsm .col0 {
 	background: none repeat scroll 0 0 #FFFFFF;
 	border: 1px solid #DCDCDC;
 	padding: 4px;
 	text-align: center;
 }
 
-.joomleague .col1 {
+.jsm .col1 {
 	background: none repeat scroll 0 0 #FAFAFA;
 	border: 1px solid #DCDCDC;
 	padding: 4px;
 	text-align: center;
 }
 
-.joomleague .rankheader {
+.jsm .rankheader {
 	vertical-align: middle;
 	text-align: left;
 	padding: 5px;
 }
 
-.joomleague .teamheader {
+.jsm .teamheader {
 	vertical-align: middle;
 	text-align: left;
 	padding: 5px;
 }
 
-.joomleague .headers {
+.jsm .headers {
 	vertical-align: middle;
 	text-align: center;
 	padding: 5px;
 }
 
-.joomleague .rankingrow {
+.jsm .rankingrow {
 	vertical-align: middle;
 	text-align: center;
 	padding: 5px;
 }
 
-.joomleague .rankingrow_rank {
+.jsm .rankingrow_rank {
 	vertical-align: middle;
 	width: 15px;
 	padding: 5px;
 }
-.joomleague .rankingrow_lastrankimg {
+.jsm .rankingrow_lastrankimg {
 	vertical-align: middle;
 	width: 15px;
 	padding: 5px;
 }
 
-.joomleague .rankingrow_lastrank {
+.jsm .rankingrow_lastrank {
 	vertical-align: middle;
 	text-align: right;
 	width: 10px;	
@@ -59,36 +59,36 @@
 	font-size:90%;
 }
 
-.joomleague .rankingrow_logo {
+.jsm .rankingrow_logo {
 	vertical-align: middle;	
 	text-align: center;	
 }
 
-.joomleague .rankingrow_teamname {
+.jsm .rankingrow_teamname {
 	vertical-align: middle;
 	width: 250px;
 	padding: 5px;
 	text-align: left;	
 }
 
-.joomleague .rankingrow_played {
+.jsm .rankingrow_played {
 	vertical-align: middle;
 	text-align: center;
 	font-weight: bold;
 	padding: 5px;
 }
 
-.joomleague .rankingrow_points {
+.jsm .rankingrow_points {
 	vertical-align: middle;
 	text-align: center;
 	font-weight: bold;
 	padding: 5px;
 }
 
-.joomleague .rankingrow.lastgames {
+.jsm .rankingrow.lastgames {
 	white-space:nowrap;
 }
 
-.joomleague .rankingrow.lastgames img {
+.jsm .rankingrow.lastgames img {
 	padding: 0 2px 0 2px;
 }

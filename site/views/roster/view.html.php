@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewRoster
@@ -23,7 +22,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewRoster extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewRoster::init()
@@ -79,7 +77,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 		else
 		{
 			// Set page title
-			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
+			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', JText :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM') ));
 		}
         
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
