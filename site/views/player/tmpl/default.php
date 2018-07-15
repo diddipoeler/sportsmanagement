@@ -19,11 +19,6 @@ if (isset($this->person))
 {
 ?>
 
-<script>
-console.log("jquery version : "+jQuery().jquery);
-console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
-</script>
-
 <!-- player anfang -->
 <div class="container-fluid">
 <?php

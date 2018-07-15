@@ -15,12 +15,6 @@
   JHtml::_('behavior.modal');
 
 
-?>
-<script>
-console.log("jquery version : "+jQuery().jquery);
-console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
-</script>
-<?php
   // Make sure that in case extensions are written for mentioned (common) views,
   // that they are loaded i.s.o. of the template of this view
   $templatesToLoad = array('globalviews');
