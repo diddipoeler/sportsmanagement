@@ -45,14 +45,6 @@ class sportsmanagementViewResults extends sportsmanagementView
         $default_name_format = '';
 
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-		
-
-        //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
-        /*
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
-        */
-        //$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/diddioeler.js');
 
 		$model	= $this->getModel();
 		
@@ -696,7 +688,7 @@ $use_jquery_modal);
 	 */
 	public static function showMatchRefereesAsTooltip(&$game,$project=array(),$config=array())
 	{
-		if ($config['show_referee'])
+		if ( $config['show_referee'] )
 		{
 			if ($project->teams_as_referees)
 			{
@@ -724,7 +716,21 @@ $use_jquery_modal);
 					}
 				}
 
-				?>
+				switch ( $config['show_referee'] )
+                {
+                case 1:
+                ?>
+			<!-- Referee tooltip -->
+			<span class="hasTip"
+				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> 
+                <?php
+                echo $ref->firstname.' '.$ref->lastname.' ('.$ref->position_name.')';
+                ?>
+                </span>
+				<?php
+                break;
+                case 2:    
+                ?>
 			<!-- Referee tooltip -->
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
@@ -732,6 +738,8 @@ $use_jquery_modal);
 				alt="" title="" /> </span>
 			
 				<?php
+                break;
+                }
 			}
 			else
 			{

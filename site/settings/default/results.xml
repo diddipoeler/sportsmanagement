@@ -99,7 +99,8 @@
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_REFEREES"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_REFEREES">
 			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_REFEREE</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION2_SHOW_REFEREE</option>
 		</field>
 
 		<field	name="show_playground" type="extensionradiobutton" default="0"

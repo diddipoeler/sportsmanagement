@@ -487,24 +487,37 @@ $this->overallconfig['use_jquery_modal']); ?>
 	?>
 
 		<!-- show hammer if there is a alternative decision of the score -->
-		<td width="" class="">
+		<td width="" class="" id="">
 		<?php sportsmanagementViewResults::showReportDecisionIcons($game); ?>
 		</td>
 
 		<?php
-		if($this->config['show_referee'])
-		{
-			?>
+        switch ( $this->config['show_referee'] )
+        {
+            case 0:
+            break;
+            case 1:
+            ?>
 		<!-- show matchreferees icon with tooltip -->
-			<td width="" class="">
+			<td width="" class="" id="">
 			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
 			</td>
 		<?php
-		}
+            break;
+            case 2:
+            ?>
+		<!-- show matchreferees icon with tooltip -->
+			<td width="" class="" id="">
+			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
+			</td>
+		<?php
+            break;
+        }
+        
 		?>
 
 		<?php
-		if (($this->config['show_playground'] || $this->config['show_playground_alert']))
+		if ( $this->config['show_playground'] || $this->config['show_playground_alert'] )
 		{
 			?>
 		<!-- show only playground or playgroundalert if playgrund differs from normal -->
@@ -516,7 +529,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 		?>
 
 		<?php
-		if ($this->config['show_attendance_column'])
+		if ( $this->config['show_attendance_column'] )
 		{
 			?>
 		<!-- show attendance -->

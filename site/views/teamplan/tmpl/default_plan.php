@@ -908,15 +908,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 		<td><?php
 		if ((isset($match->referees)) && (count($match->referees)>0))
 		{
-			if ($this->project->teams_as_referees)
+			if ( $this->project->teams_as_referees )
 			{
-				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
-				$toolTipText='';
+				$output = '';
+				$toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipText = '';
 
 				for ($i=0; $i<count($match->referees); $i++)
 				{
-					if ($match->referees[$i]->referee_name != '')
+					if ( $match->referees[$i]->referee_name != '' )
 					{
 						$output .= $match->referees[$i]->referee_name;
 						$toolTipText .= $match->referees[$i]->referee_name.'&lt;br /&gt;';
@@ -927,11 +927,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$toolTipText .= '-&lt;br /&gt;';
 					}
 				}
-				if ($this->config['show_referee']==1)
+				if ( $this->config['show_referee'] == 1 )
 				{
 					echo $output;
 				}
-				elseif ($this->config['show_referee']==2)
+				elseif ( $this->config['show_referee'] == 2 )
 				{
 				?>
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
@@ -941,13 +941,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			}
 			else
 			{
-				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
-				$toolTipText='';
+				$output = '';
+				$toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipText = '';
 
 				for ($i=0; $i<count($match->referees); $i++)
 				{
-					if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
+					if ( $match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname )
 					{
 						$output .= '<span class="hasTip" title="'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
 						$ref=$match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
