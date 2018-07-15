@@ -11,13 +11,12 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-//echo 'this->overallconfig<br /><pre>~' . print_r($this->overallconfig,true) . '~</pre><br />';
-//echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
-}
+?>
+<script>
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+</script>
+<?php
 
 $nbcols = 2;
 if ( $this->overallconfig['show_project_sporttype_picture'] ) { $nbcols++; }
