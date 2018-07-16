@@ -103,7 +103,8 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.p
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
 break;
 case 'resultsranking':
-require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'ranking.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'results.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'round.php');
