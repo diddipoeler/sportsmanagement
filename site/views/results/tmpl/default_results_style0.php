@@ -99,7 +99,7 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
     	?>
 	<!-- DATE HEADER -->
     <thead>
-	<tr >
+	<tr id="" class="" >
 
 		<?php
         $timestamp = strtotime($date);
@@ -235,7 +235,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 			}
 			?>
 
-	<tr	class=""<?php echo $favStyle; ?>>
+	<tr class="team<?php echo $game->projectteam1_id;?>  team<?php echo $game->projectteam2_id;?> "<?php echo $favStyle;?> >
 		<?php
 		if ($this->config['show_match_number'])
 		{
