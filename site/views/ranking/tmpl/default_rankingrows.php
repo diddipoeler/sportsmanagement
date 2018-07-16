@@ -78,7 +78,7 @@ foreach ($current as $ptid => $team) {
         }
     }
     echo "\n\n";
-    echo '<tr id="rankingrow'.$team->team->id.'" class=""' . $favStyle . '>';
+    echo '<tr id="rankingrow'.$team->team->id.'" class="team'.$ptid.'"' . $favStyle . '>';
     echo "\n";
 
     //**************rank row
