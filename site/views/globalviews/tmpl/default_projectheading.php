@@ -15,6 +15,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <script>
 console.log("jquery version : "+jQuery().jquery);
 console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+	
+if( typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null ){
+console.log("bootstrap version ist nicht vorhanden");    
+}	
+	
 </script>
 <?php
 
