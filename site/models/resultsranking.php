@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage matrix
+ * @subpackage resultsranking
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
