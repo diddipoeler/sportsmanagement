@@ -99,7 +99,14 @@ case 'project':
 case 'round':
 
 $query = $db->getQuery(true);
- 
+$query->select('id,name');
+$query->from('#__sportsmanagement_'.$table);
+$db->setQuery($query);
+$result = $db->loadObjectList();
+		
+echo '<br>result<pre>',print_r($result ,true),'</pre>';		
+		
+		
 // Fields to update.
 $fields = array(
     $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'name' )
@@ -130,7 +137,7 @@ echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';s
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'season\')" value="Saison" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'club\')" value="Vereine" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'team\')" value="Mannschaften" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'playground\')" value="Spielstätten" />';
+echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'playground\')" value="SpielstÃ¤tten" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'division\')" value="Gruppen" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'project\')" value="Projekte" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'round\')" value="Spieltage" />';
