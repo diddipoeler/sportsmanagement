@@ -1,11 +1,18 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsm_update_timestamp.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage updates
+ */
+ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-// Include library dependencies
-//jimport('joomla.filter.input');
 
 jimport('joomla.filter.output');
-
 
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
@@ -18,22 +25,9 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 $uri	= JFactory::getUri();
 
-//$link = $uri->toString();
-//$link = $uri->current();
-
 $table = JFactory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
-//$request = JFactory::getApplication()->input->get();
-
-//echo '<br>table<pre>',print_r($table,true),'</pre>';
-
-//echo '<br>post<pre>',print_r($_POST,true),'</pre>';
-//echo '<br>request<pre>',print_r($_REQUEST,true),'</pre>';
-//echo '<br>request<pre>',print_r($request,true),'</pre>';
-//echo '<br>uri<pre>',print_r($uri,true),'</pre>';
-
-//echo '<br>link<pre>',print_r($link ,true),'</pre>';
 
 ?>
 <script type="text/javascript">

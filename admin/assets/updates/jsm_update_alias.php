@@ -1,29 +1,24 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsm_update_alias.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage updates
+ */
+ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-// Include library dependencies
-//jimport('joomla.filter.input');
 
 jimport('joomla.filter.output');
 
 $uri	= JFactory::getUri();
 
-//$link = $uri->toString();
-//$link = $uri->current();
-
 $table = JFactory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
-//$request = JFactory::getApplication()->input->get();
-
-//echo '<br>table<pre>',print_r($table,true),'</pre>';
-
-//echo '<br>post<pre>',print_r($_POST,true),'</pre>';
-//echo '<br>request<pre>',print_r($_REQUEST,true),'</pre>';
-//echo '<br>request<pre>',print_r($request,true),'</pre>';
-//echo '<br>uri<pre>',print_r($uri,true),'</pre>';
-
-//echo '<br>link<pre>',print_r($link ,true),'</pre>';
 
 ?>
 <script type="text/javascript">
@@ -84,27 +79,7 @@ $object->alias = JFilterOutput::stringURLSafe( $row->firstname ).'-'.JFilterOutp
 $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }		
 		
-/*		
-// Fields to update.
-$fields = array(
-    $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'firstname' ).'-'.JFilterOutput::stringURLSafe( 'lastname' )
-);
- 
-// Conditions for which records should be updated.
-$conditions = array(
-    $db->quoteName('id') . ' <> 0'
-);
- 
-$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
- 
-$db->setQuery($query);
- 
-$result = $db->execute();
-*/
-
 break;
-
-
 case 'league':
 case 'season':
 case 'club':
@@ -119,8 +94,7 @@ $query->select('id,name');
 $query->from('#__sportsmanagement_'.$table);
 $db->setQuery($query);
 $result = $db->loadObjectList();
-		
-//echo '<br>result<pre>',print_r($result ,true),'</pre>';		
+	
 foreach ( $result as $row )
 {
 // Create an object for the record we are going to update.
@@ -131,26 +105,6 @@ $object->alias = JFilterOutput::stringURLSafe( $row->name );
 // Update their details in the table using id as the primary key.
 $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }
-		
-		
-/*		
-// Fields to update.
-$fields = array(
-    $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'name' )
-);
- 
-// Conditions for which records should be updated.
-$conditions = array(
-    $db->quoteName('id') . ' <> 0'
-);
- 
-$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
- 
-$db->setQuery($query);
- 
-$result = $db->execute();
-*/
-
 break;
 
 }
