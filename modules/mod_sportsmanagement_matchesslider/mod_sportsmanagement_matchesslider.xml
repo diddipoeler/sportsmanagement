@@ -84,6 +84,20 @@
 			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE" 
 			description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
 
+<field name="teams" 
+		type="dependsql" 
+		default="0" 
+		depends="p"
+		task="projectteamoptions" 
+		key_field="project_id"
+		value_field="p"
+		slug="true"
+		required="false"
+		size="10"
+		multiple="multiple"
+		label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
+description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+				
 				<field 	name="project_season" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
