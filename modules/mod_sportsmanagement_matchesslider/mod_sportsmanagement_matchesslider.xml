@@ -72,7 +72,7 @@
 					required="">
 			</field>
       
-			<field 	name="project"
+			<field 	name="p"
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -87,10 +87,10 @@
 <field name="teams" 
 		type="dependsql" 
 		default="0" 
-		depends="project"
+		depends="p"
 		task="projectteamoptions" 
 		key_field="project_id"
-		value_field="project"
+		value_field="p"
 		slug="true"
 		required="false"
 		size="10"
