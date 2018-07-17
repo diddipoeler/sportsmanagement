@@ -1557,6 +1557,8 @@ $use_jquery_modal);
     $db->setQuery($query);
 	$result = $db->loadObjectList();
 	
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result<pre>'.print_r($result, true).'</pre><br>','Error');
+    
 	foreach ($result AS $inout)
 	{
     $query->clear();
@@ -1567,6 +1569,8 @@ $use_jquery_modal);
     $query->where('tp1.id = '.$inout->teamplayer_id );
     $db->setQuery($query);
 	$result1 = $db->loadObject();
+
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result1<pre>'.print_r($result1, true).'</pre><br>','Error');
 
 	$inout->firstname = $result1->firstname;
 	$inout->nickname = $result1->nickname;
@@ -1581,6 +1585,9 @@ $use_jquery_modal);
 	$query->where('pos.id = '.$inout->project_position_id );
 	$db->setQuery($query);
     $result1 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result1<pre>'.print_r($result1, true).'</pre><br>','Error');
+    
 	$inout->in_position = $result1->name;	
 	
     $query->clear();
@@ -1590,6 +1597,9 @@ $use_jquery_modal);
     $query->where('ppos.project_id = '.(int)self::$projectid );
 	$db->setQuery($query);
     $result2 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result2<pre>'.print_r($result2, true).'</pre><br>','Error');
+    
 	$inout->pposid1 = $result2->id;
     	
 	$query->clear();
@@ -1600,6 +1610,9 @@ $use_jquery_modal);
     $query->where('tp1.id = '.$inout->in_for );
     $db->setQuery($query);
 	$result1 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result1<pre>'.print_r($result1, true).'</pre><br>','Error');
+    
 	$inout->out_firstname = $result1->out_firstname;
 	$inout->out_nickname = $result1->out_nickname;
 	$inout->out_lastname = $result1->out_lastname;
@@ -1615,6 +1628,9 @@ $use_jquery_modal);
 	$query->where('mp.match_id = '.(int)$match_id);	
 	$db->setQuery($query);	
     $result1 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result1<pre>'.print_r($result1, true).'</pre><br>','Error');
+    
 	$inout->out_position = $result1->name;	
 	
     $query->clear();
@@ -1625,6 +1641,9 @@ $use_jquery_modal);
 		try {
 	$db->setQuery($query);
     $result2 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result2<pre>'.print_r($result2, true).'</pre><br>','Error');
+    
 	$inout->pposid2 = $result2->id;
     	 }
 catch (Exception $e) {
@@ -1646,6 +1665,9 @@ catch (Exception $e) {
 	$query->where('tp1.id = '.$inout->teamplayer_id );
 	$db->setQuery($query);
 	$result1 = $db->loadObject();
+    
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result1<pre>'.print_r($result1, true).'</pre><br>','Error');
+    
 	$inout->ptid = $result1->ptid;	
 	$inout->team_id = $result1->team_slug;
     $inout->team_slug = $result1->team_slug;
