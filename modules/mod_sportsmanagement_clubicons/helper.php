@@ -142,7 +142,7 @@ $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
         
 		$imgtitle = JText::_('View ') . $item->name;
-		return JHTML::image($logourl, $item->name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
+		return JHTML::image($logourl, $item->name,'border="0" width="'.$this->params->get('jcclubiconsglobalmaxwidth').'" class="'.$class.'" title="'.$imgtitle.'"');
 	}
     
 	/**
