@@ -113,7 +113,7 @@ $object = new stdClass();
 $object->id = $row->id;  
 $object->alias = JFilterOutput::stringURLSafe( $row->name );
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'$table, $object, 'id', true);	
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }
 		
 		
