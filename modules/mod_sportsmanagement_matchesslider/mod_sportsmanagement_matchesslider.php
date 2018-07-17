@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.00
  * @file      mod_sportsmanagement_matchesslider.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @subpackage mod_sportsmanagement_matchesslider
  */ 
@@ -94,16 +94,29 @@ if ( !$projectid )
 $cfg_which_database = $params->get('cfg_which_database');
 $s = $params->get('s');
     
-    foreach( $params->get('project') as $key => $value )
+    foreach( $params->get('p') as $key => $value )
     {
-        //$projectid = $value;
+	    if ( $params->get('teams') )
+	    {
+	foreach( $params->get('teams') as $keyteam => $valueteam )
+    {
+	sportsmanagementModelProject::$projectid = (int)$value;
+        sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
+        sportsmanagementModelResults::$projectid = $projectid;
+        sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
+        $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database,(int)$valueteam);
+        $slidermatches = array_merge($matches);	
+	}
+	    }
+	    else
+	    {
         sportsmanagementModelProject::$projectid = (int)$value;
         sportsmanagementModelProject::$cfg_which_database = $cfg_which_database;
         sportsmanagementModelResults::$projectid = $projectid;
         sportsmanagementModelResults::$cfg_which_database = $cfg_which_database;
         $matches = sportsmanagementModelResults::getResultsRows(0,0,$config,$params,$cfg_which_database);
-        //$slidermatches[] = $matches;
         $slidermatches = array_merge($matches);
+	    }
     }
     
 }    
