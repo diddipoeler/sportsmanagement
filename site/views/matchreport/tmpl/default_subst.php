@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- START of Substitutions -->
 <?php
-if ($this->config['show_substitutions']==1)
+if ( $this->config['show_substitutions'] )
 {
 	if (!empty($this->substitutes))
 	{

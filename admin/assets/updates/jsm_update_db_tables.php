@@ -1,52 +1,18 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsm_update_db_tables.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage updates
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-//jimport('joomla.html.pane');
-
-//jimport('joomla.html.html.sliders');
-//jimport('joomla.html.html.tabs');
 JHtml::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
-//jimport('joomla.application.component.view');
-//jimport('joomla.html.html.bootstrap');
   
 $version			= '1.0.58';
 $updateFileDate		= '2017-01-15';
@@ -129,30 +95,6 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 	
 		$imports=explode(';',$imports);
 		$cntPanel=0;
-//		echo JHtml::_('sliders.start','tables',array(
-//						'allowAllClose' => true,
-//						'startTransition' => true,
-//						true));
-
-
-/*
-// Example accordion usage
-echo JHtml::_('bootstrap.startAccordion', 'slide-example', array('active' => 'slide2'));
-echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 1'), 'slide1');
-echo "Content of slide 1";
-echo JHtml::_('bootstrap.endSlide');
-echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 2'), 'slide2');
-echo "Content of slide 2";
-echo JHtml::_('bootstrap.endSlide');
-echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 3'), 'slide3');
-echo "Content of slide 3";
-echo JHtml::_('bootstrap.endSlide');
-echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 4'), 'slide4');
-echo "Content of slide 4";
-echo JHtml::_('bootstrap.endSlide');
-echo JHtml::_('bootstrap.endAccordion');
-*/
-
 
 //$slidesOptions = '';
  // Define slides options
@@ -454,7 +396,6 @@ $slide_id = 1;
 			unset($import);
             echo JHtml::_('bootstrap.endSlide');
 		}
-		//echo JHtml::_('sliders.end');
         echo JHtml::_('bootstrap.endAccordion');
 		return '';
 
@@ -465,10 +406,10 @@ $slide_id = 1;
 ?>
 <hr />
 <?php
-	$mtime=microtime();
-	$mtime=explode(" ",$mtime);
-	$mtime=$mtime[1] + $mtime[0];
-	$starttime=$mtime;
+	$mtime = microtime();
+	$mtime = explode(" ",$mtime);
+	$mtime = $mtime[1] + $mtime[0];
+	$starttime = $mtime;
 
 	JToolbarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
 	echo '<h2>'.JText::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
@@ -476,7 +417,7 @@ $slide_id = 1;
 	$totalUpdateParts = 2;
 	setUpdatePart();
 
-	if (getUpdatePart() < $totalUpdateParts)
+	if ( getUpdatePart() < $totalUpdateParts )
 	{
 		echo '<p><b>';
 		echo JText::sprintf('Please remember that this update routine has totally %1$s update steps!',$totalUpdateParts).'</b><br />';
@@ -488,7 +429,7 @@ $slide_id = 1;
 		echo '<hr>';
 	}
 
-	if (getUpdatePart()==$totalUpdateParts)
+	if ( getUpdatePart() == $totalUpdateParts )
 	{
 		echo '<hr />';
 		echo ImportTables();

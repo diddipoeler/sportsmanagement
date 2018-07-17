@@ -17,17 +17,23 @@ if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_resul
 echo $this->loadTemplate('timeline');
 }
 
-
 ?>
 <!-- START of match events -->
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
 
-<table class="table" border="0">
+<table class="table" border="0" id="">
 
 		<thead>
 	        <tr class="sectiontableheader">
-	            <th style="text-align:center"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
+	            <?php
+                if ( $this->config['show_event_minute'] )
+                {
+                ?>
+                <th style="text-align:center"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
+                <?php
+                }
+                ?>
 	            <th colspan=3><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_EVENTS_EVENT'); ?></th>
 	        </tr>
 	    </thead>
@@ -47,7 +53,7 @@ echo $this->loadTemplate('timeline');
 	global $sortEventsDesc;
 	$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
 
-	if ($this->config['show_substitutions']==1) {
+	if ( $this->config['show_substitutions'] ) {
 	  $matchevents = array_merge($this->matchevents,$this->substitutes);
 	  usort($matchevents, "compareMatchEventsSubs");
 	} else {
@@ -69,7 +75,7 @@ echo $this->loadTemplate('timeline');
                     
                     //Time
                     $prefix = '';
-                    if ($this->config['show_event_minute'] == 1 && $me->event_time > 0)
+                    if ( $this->config['show_event_minute'] && $me->event_time > 0)
                     {
                         $prefix = str_pad($me->event_time, 2 ,'0', STR_PAD_LEFT);
                     }
