@@ -131,6 +131,12 @@ class modJSMClubiconsHelper
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
 		$logourl = $item->$imgtype;
+		
+if ( !$logourl )
+{
+$logourl = $this->placeholders[$imgtype];	
+}
+		
 $cfg_which_database = $this->params->get('cfg_which_database');
 		
 if ( $cfg_which_database )
