@@ -95,8 +95,8 @@
 		required="false"
 		size="10"
 		multiple="multiple"
-		label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
-description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+		label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_TITLE"
+description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_THESE_TEAMS_DESCR" />
 				
 				<field 	name="project_season" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
