@@ -83,11 +83,7 @@
 			multiple="multiple"
 			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE" 
 			description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
-<!--						
-				<field	name="project" type="projects" default="" required="false"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
--->
+
 				<field 	name="project_season" type="extensionradiobutton" default="1"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
@@ -114,9 +110,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_HEADINGSETTINGS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
-            <!--
-            <field name="spacer5" type="spacer" class="text" label=""/>
-            -->
+           
 				<field 	name="p_link_func" type="list" default="results"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_DESCR">
@@ -132,10 +126,7 @@
 						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
             
-            <!--
-            <field name="spacer6" type="spacer" class="text" label=""/>
-            <field name="spacer7" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES"/>
-            -->
+            
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
 				<field 	name="show_picture" type="extensionradiobutton" default="1"
@@ -146,9 +137,7 @@
 					<option value="1">JYES</option>
 				</field>
         
-        <!--
-        <field name="spacer9" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF"/>
-        -->
+       
         <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF" />
         
 				<field 	name="picture_type" type="list" default="logo_big" 
@@ -166,9 +155,7 @@
 				<field 	name="xsize" type="text" default="50" 
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_DESCR" />
-        <!--
-        <field name="spacer11" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT"/>
-        -->
+        
         <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT" />
         
 				<field 	name="team_names" type="list" default="short_name"
@@ -198,14 +185,10 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_DESCR" />
             
-            <!--
-            <field name="spacer8" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME"/>
-            -->
+            
             <field type="jsmmessage" style="error" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME" />
             
-            <!--
-            <field name="spacer12" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM"/>
-            -->
+           
             
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
             
