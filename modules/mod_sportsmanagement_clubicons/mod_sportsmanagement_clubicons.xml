@@ -80,6 +80,7 @@
 		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
 		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
 		<option value="projectteam_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECTTEAM_PICTURE</option>
+		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
 	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
