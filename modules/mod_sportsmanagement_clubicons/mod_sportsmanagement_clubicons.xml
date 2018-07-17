@@ -83,7 +83,9 @@
 		<option value="team_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEAM_PICTURE</option>
 	</field>
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
-	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
+<!--	
+				<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
+-->				
 	<field name="iconsperrow" type="text" default="20" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONSPERROW_DESC" />
 	<field name="iconpos" type="list" default="middle" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_DESC">
 		<option value="top">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_ICONPOS_TOP</option>
