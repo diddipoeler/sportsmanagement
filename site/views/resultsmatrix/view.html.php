@@ -90,7 +90,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $project->slug;
-$routeparameter['r'] = $this->roundid;
+$routeparameter['r'] = $project->round_slug;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = 0;
