@@ -290,7 +290,7 @@ else
 	 * @param mixed $config
 	 * @return
 	 */
-	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0)
+	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0,$team = 0)
 	{
 	$app = JFactory::getApplication();
 	$option = $app->input->getCmd('option');
@@ -359,6 +359,10 @@ else
         $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 		
         // where
+		if ( $team )
+		{
+		$query->where('(st1.team_id = '.$team . ' OR st2.team_id = '.$team.')' );	
+		}
         $query->where('m.published = 1');
         $query->where('r.project_id = '.(int)$project->id);
         if(version_compare(JSM_JVERSION,'3','eq')) 
