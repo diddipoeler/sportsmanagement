@@ -104,9 +104,20 @@ $query->from('#__sportsmanagement_'.$table);
 $db->setQuery($query);
 $result = $db->loadObjectList();
 		
-echo '<br>result<pre>',print_r($result ,true),'</pre>';		
+//echo '<br>result<pre>',print_r($result ,true),'</pre>';		
+foreach ( $result as $row )
+{
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $row->id;  
+$object->alias = JFilterOutput::stringURLSafe( $row->name );
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'$table, $object, 'id', true);	
+}
 		
 		
+/*		
 // Fields to update.
 $fields = array(
     $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'name' )
@@ -122,7 +133,7 @@ $query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->whe
 $db->setQuery($query);
  
 $result = $db->execute();
-
+*/
 
 break;
 
