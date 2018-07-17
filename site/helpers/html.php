@@ -501,7 +501,8 @@ catch (Exception $e)
 }
 catch (Exception $e)
 {
-    JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	// keine fehlermeldung ausgeben
+    //JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
             if ($pginfo) {
                 $toolTipText .= $pginfo->name . '&lt;br /&gt;';
