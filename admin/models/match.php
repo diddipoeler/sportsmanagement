@@ -819,6 +819,11 @@ $tournement_round = $this->jsmdb->loadResult();
                             $object->team2_result	+= 1; 
                         }
                     }
+		else
+                    {
+                    $object->team1_result	= $post['team1_result'.$pks[$x]];
+            	$object->team2_result	= $post['team2_result'.$pks[$x]];
+                    }	
                 }
             }
             else
