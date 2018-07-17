@@ -47,16 +47,11 @@ $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC,
      
         return $array;
     }
-
-
- 
- 
  
 }
 
 $usedp = $params->get('projects', '0');
 $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $usedp;
-
 
 //$usedp = $params->get('teams','0');
 //$usedteams = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
@@ -119,6 +114,7 @@ if ( $params->get('use_which') <= 1 ) {
     $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+ $query->select('CONCAT_WS(\':\',s.id,s.alias) AS season_slug');
     $query->select('t.name as team_name');
 
     $query->from('#__sportsmanagement_person AS p ');
@@ -126,6 +122,7 @@ if ( $params->get('use_which') <= 1 ) {
     $query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id and st.season_id = stp.season_id ');
     $query->join('INNER', '#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
     $query->join('INNER', '#__sportsmanagement_project AS pro ON pro.id = pt.project_id and pro.season_id = st.season_id');
+ $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = pro.season_id');
     $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
  if ( $params->get('use_which') == 1 )
