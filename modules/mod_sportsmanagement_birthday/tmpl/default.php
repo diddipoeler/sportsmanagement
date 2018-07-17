@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_birthday
@@ -202,24 +202,24 @@ switch ($mode) {
 
                     if ($person_type == 1) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['tid'] = $person['team_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player', $routeparameter);
                     } else if ($person_type == 2) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['tid'] = $person['team_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff', $routeparameter);
                     } else if ($person_type == 3) {
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JRequest::getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = $params->get("cfg_which_database");
+                        $routeparameter['s'] = $params->get("cfg_which_database");
                         $routeparameter['p'] = $person['project_slug'];
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
