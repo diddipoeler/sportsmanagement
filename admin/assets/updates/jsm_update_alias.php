@@ -68,7 +68,23 @@ switch ($table)
 case 'person':
 
 $query = $db->getQuery(true);
- 
+$query->select('id,firstname,lastname');
+$query->from('#__sportsmanagement_'.$table);
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach ( $result as $row )
+{
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $row->id;  
+$object->alias = JFilterOutput::stringURLSafe( $row->firstname ).'-'.JFilterOutput::stringURLSafe( $row->lastname );
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
+}		
+		
+/*		
 // Fields to update.
 $fields = array(
     $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'firstname' ).'-'.JFilterOutput::stringURLSafe( 'lastname' )
@@ -84,7 +100,7 @@ $query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->whe
 $db->setQuery($query);
  
 $result = $db->execute();
-
+*/
 
 break;
 
