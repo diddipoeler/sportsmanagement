@@ -16,7 +16,10 @@ if (!isset($this->team)) {
     JError::raiseWarning('ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'));
 } else {
     ?>
-    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="default_teaminfo">
+	<!-- anfang default_teaminfo -->
+    <div class="container" id="default_teaminfo">
+	<div class="row" id="default_teaminfo_row">
+	<!-- anfang default_teaminfo_left -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo-left">
             <?PHP
             ?>
@@ -40,6 +43,8 @@ $this->overallconfig['use_jquery_modal']);
             }
             ?>
         </div>
+		<!-- ende default_teaminfo_left -->
+		<!-- anfang default_teaminfo_right -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo_right">
             <?php
             if ($this->config['show_club_info'] || $this->config['show_team_info']) {
@@ -219,3 +224,5 @@ $this->overallconfig['use_jquery_modal']);
     </div>
     <!-- ende default_teaminfo -->
 </div>
+</div>
+<!-- ende default_teaminfo -->
