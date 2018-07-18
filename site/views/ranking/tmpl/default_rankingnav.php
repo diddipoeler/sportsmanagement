@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-
+<div class="row" id="rankingnav">
 <form name="adminForm" id="adminForm" method="post"	action="<?php echo $this->action; ?>">
     <table class="table">
         <tr>
@@ -33,4 +33,4 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo JHtml::_('form.token'); ?>
 </form>
 <br />
-
+</div>
