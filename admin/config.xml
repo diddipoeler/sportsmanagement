@@ -612,7 +612,7 @@ class="radio btn-group btn-group-yesno"
 	
                 <field name="use_jsmflex" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_GRID_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX" description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JSM_FLEX_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
