@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-
+<div class="row" id="notes">
 <h4>
     <?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
 </h4>
@@ -36,4 +36,4 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
 </table>
-
+</div>
