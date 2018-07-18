@@ -34,7 +34,7 @@
 
   </script>
 
-  <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+  <div class="container" id="defaultranking">
   <?php
 
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
