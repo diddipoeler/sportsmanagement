@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <!-- matchdays pageNav -->
+<div class="row" id="pagnav">
 <br />
 <table class="table">
     <tr>
@@ -25,4 +26,5 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
 </table>
+</div>
 <!-- matchdays pageNav END -->

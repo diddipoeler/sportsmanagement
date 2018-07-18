@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div class="row" id="projectinfo">
 <h4>
     <?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
 </h4>
@@ -36,4 +37,4 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
 </table>
-
+</div>

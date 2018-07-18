@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div>
+<div class="row" id="hint">
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
@@ -20,5 +20,4 @@ defined('_JEXEC') or die('Restricted access');
             </td>
         </tr>
     </table>
-
 </div> 

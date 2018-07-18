@@ -61,6 +61,9 @@
     {
   if ( $this->config['show_ranking'] )
   {
+?>
+<div class="row" id="ranking">
+<?php    
 /**
  * sollen überhaupt reiter angezeigt werden ?
  */
@@ -101,7 +104,7 @@ echo JHtml::_('bootstrap.endTabSet'); //end tab set
     
     
     ?>
-    
+</div>    
 
                     <?PHP
                 } else {

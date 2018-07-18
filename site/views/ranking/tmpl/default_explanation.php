@@ -15,7 +15,7 @@ $config = &$this->tableconfig;
 $columns = explode(",", $config['ordered_columns']);
 $column_names = explode(',', $config['ordered_columns_names']);
 ?>
-
+<div class="row" id="explanation">
 <br />
 <table class="table">
     <tr class="explanation">
@@ -37,3 +37,4 @@ $column_names = explode(',', $config['ordered_columns_names']);
         </td>
     </tr>
 </table>
+</div>
