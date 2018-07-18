@@ -37,7 +37,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 {
 	?>
 <!--	<div class="componentheading"> -->
-<!--		<div class="container"> -->
+<div class="row" id="projectheading">
 		<table class="table">
 <!--				<tbody> -->
 				<?php
@@ -179,7 +179,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 				</tr>
 <!--				</tbody> -->
 		</table>
-<!--	</div> -->
+</div>
 <?php 
 }
 else
@@ -187,7 +187,7 @@ else
 	if ( $this->overallconfig['show_print_button'] )
 	{
 ?>
-		<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+		<div class="row">
 			<table class="table">
 	<!--				<tbody> -->
 					<tr class="contentheading">
