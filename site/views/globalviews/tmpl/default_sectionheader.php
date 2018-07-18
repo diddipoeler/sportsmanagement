@@ -369,7 +369,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     case 'teaminfo':
     ?>
 <!-- START: Contentheading -->
-<div class="">
+<div class="container">
 	<h4>
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
