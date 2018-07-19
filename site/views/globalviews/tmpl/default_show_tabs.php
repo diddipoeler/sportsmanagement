@@ -42,80 +42,32 @@ echo JHtml::_('bootstrap.endTabSet');
 elseif(version_compare(JSM_JVERSION,'3','eq')) 
 {
 // Joomla! 3.0 code here
-$idxTab = 0;
-$view = JFactory::getApplication()->input->getCmd('view');
-
-
-?>
-
-<!-- This is a list with tabs names. -->
-<div class="panel with-nav-tabs panel-default">
-<div class="panel-heading">
-<!-- Tabs-Navs -->
-<ul class="nav nav-tabs" role="tablist">
-<?PHP			
+$idxTab = 0;    
+echo JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
 foreach ($this->output as $key => $templ) 
 {
-$active = ($idxTab==0) ? 'active' : '';   
-switch ($view)
-{
-case 'player':
-$template = $templ['template'];
-$text = $templ['text'];   
-break;
-default:
 $template = $templ;
 $text = $key;
-break;
-}    
+$active = ($idxTab==0) ? JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
 
+echo JHtml::_('bootstrap.addTab', 'myTab4', $text, JText::_($text));
 ?>
-
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($text); ?></a>
-</li>
+<div class="container">
+<div class="row">
 <?PHP
-$idxTab++;
-}
-?>
-</ul>
-</div>
-
-<!-- Tab-Inhalte -->
-<div class="panel-body">
-<div class="tab-content">
-
-<?PHP	
-$idxTab = 0;		
-foreach ($this->output as $key => $templ) 
-{
-$active = ($idxTab==0) ? 'in active' : '';   
-switch ($view)
-{
-case 'player':
-$template = $templ['template'];
-$text = $templ['text'];   
-break;
-default:
-$template = $templ;
-$text = $key;
-break;
-}    
-
-?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $text; ?>">
-<?PHP   
 echo $this->loadTemplate($template);
 ?>
 </div>
+</div>
 <?PHP
+echo JHtml::_('bootstrap.endTab');
 $idxTab++;
-}
-?>
-</div>
-</div>
-</div>
+}    
+echo JHtml::_('bootstrap.endTabSet');  
 
-<?PHP   
+
+
+   
         
 }
 elseif(version_compare(JSM_JVERSION,'2','eq'))
