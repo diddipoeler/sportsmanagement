@@ -849,43 +849,45 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE
      */
     function getAllProjectTeams($projectid=0,$divisionid=0,$team_ids=NULL,$cfg_which_database = 0)
 	{
-        $starttime = microtime(); 
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+	$db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+	$starttime = microtime(); 
         
-		$teams = array();
-        $this->jsmquery->clear();
-        $this->jsmquery->select('tl.id AS projectteamid,tl.team_id,tl.picture projectteam_picture,tl.project_id');
-        $this->jsmquery->select('t.id,t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture team_picture');
-        $this->jsmquery->select('c.name as club_name,c.address as club_address,c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.email as club_email,c.logo_big,c.unique_id,c.logo_small,c.logo_middle,c.country as club_country,c.website AS club_www,c.latitude AS latitude,c.longitude AS longitude');
-        $this->jsmquery->from('#__sportsmanagement_project_team as tl ');
-        $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = tl.team_id ');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_team as t ON st.team_id = t.id ');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_club as c ON t.club_id = c.id ');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_division as d ON d.id = tl.division_id ');
-        $this->jsmquery->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standard_playground');
+	$teams = array();
+        $query->clear();
+        $query->select('tl.id AS projectteamid,tl.team_id,tl.picture projectteam_picture,tl.project_id');
+        $query->select('t.id,t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture team_picture');
+        $query->select('c.name as club_name,c.address as club_address,c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.email as club_email,c.logo_big,c.unique_id,c.logo_small,c.logo_middle,c.country as club_country,c.website AS club_www,c.latitude AS latitude,c.longitude AS longitude');
+        $query->from('#__sportsmanagement_project_team as tl ');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = tl.team_id ');
+        $query->join('LEFT','#__sportsmanagement_team as t ON st.team_id = t.id ');
+        $query->join('LEFT','#__sportsmanagement_club as c ON t.club_id = c.id ');
+        $query->join('LEFT','#__sportsmanagement_division as d ON d.id = tl.division_id ');
+        $query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standard_playground');
         
-        $this->jsmquery->where('tl.project_id = ' . $projectid);
+        $query->where('tl.project_id = ' . $projectid);
         
         if ( $team_ids )
 		{
-            $this->jsmquery->where('st.team_id IN (' . implode(',',$team_ids) .')');
+            $query->where('st.team_id IN (' . implode(',',$team_ids) .')');
 		}
 
 		if ( $divisionid > 0 )
 		{
-            $this->jsmquery->where('tl.division_id = ' . $divisionid);
+            $query->where('tl.division_id = ' . $divisionid);
 		}
-        $this->jsmquery->order('t.name');
+        $query->order('t.name');
 
-		$this->jsmdb->setQuery($this->jsmquery);
+		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		if ( !$teams = $this->jsmdb->loadObjectList() )
+		if ( !$teams = $db->loadObjectList() )
 		{
-		  $this->jsmapp->enqueueMessage(JText::_(COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM),'error');
+		  $app->enqueueMessage(JText::_(COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM),'error');
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
