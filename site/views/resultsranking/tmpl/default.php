@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage resultsranking
@@ -22,8 +22,8 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<!--	<a name="jl_top" id="jl_top"></a> -->
+<div class="container" id="resultsranking">
+
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -76,12 +76,11 @@ echo $this->loadTemplate('show_tabs');
 		echo $this->loadTemplate('pagnav');
 	}
 ?>
-	<div>
+	
     <?PHP
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
+echo $this->loadTemplate('jsminfo');
 	?>
-	</div>
+	
     <?PHP
 	?>
 </div>
