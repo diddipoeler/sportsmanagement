@@ -97,12 +97,11 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
      */
     echo $this->loadTemplate($this->config['show_clubinfo_tabs']);
     ?>
-    <div class="<?php echo $params->get('boostrap_div_class'); ?>" id="backbuttonfooter">
+    
         <?PHP
-        echo $this->loadTemplate('backbutton');
-        echo $this->loadTemplate('footer');
+        echo $this->loadTemplate('jsminfo');
         ?>
-    </div>
+    
     <?PHP
     ?>
     <!-- ende clubinfo -->    
