@@ -152,13 +152,9 @@ echo JHtml::_('bootstrap.endTabSet'); //end tab set
                 }
     
   }    
-                ?>
-<div class="row" id="backbuttonfooter">
-<?PHP
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
+    
+echo $this->loadTemplate('jsminfo');
 ?>
-</div>
 </div>
 <?PHP
 }
