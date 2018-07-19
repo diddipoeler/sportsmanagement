@@ -31,7 +31,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
        $routeparameter['ptid'] = $team->ptid;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 				?>
-                <div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			
 					<?php
 						
