@@ -17,5 +17,3 @@ echo $this->loadTemplate('backbutton');
 echo $this->loadTemplate('footer');
 ?>
 </div>
-
-?>
