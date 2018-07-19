@@ -30,19 +30,19 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         echo $this->loadTemplate('debug');
     }
     ?>
-    <div class="<?php echo $params->get('boostrap_div_class'); ?>">
+   
         <?PHP
         echo $this->loadTemplate('projectheading');
         ?>
-    </div>
+    
     <?PHP
     if ($this->config['show_sectionheader']) {
         ?>
-        <div class="<?php echo $params->get('boostrap_div_class'); ?>">
+        
             <?PHP
             echo $this->loadTemplate('sectionheader');
             ?>
-        </div>
+        
         <?PHP
     }
     ?>
