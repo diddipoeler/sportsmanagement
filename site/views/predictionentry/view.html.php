@@ -127,9 +127,9 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 		}
 		$output = '';
 		$output .= '<input type="hidden" name="tipps[' . $pid . '][' . $mid . ']" value="' . $tipp . '" />';
-		$output .= '<input name="homes[' . $pid . '][' . $mid . ']" class="'.$css.'" style="text-align:center; " size="2" value="' . $tipp_home . '" tabindex="1" type="text" ' . $disabled . '/>';
+        $output .= '<input name="homes[' . $pid . '][' . $mid . ']" class="'.$css.' " style="text-align:center;color:blue;font-weight:bold; background: white; max-width: 18px" size="20" value="' . $tipp_home . '" tabindex="1" type="text" ' . $disabled . '/>';
 		$output .= ' <b>' . $seperator . '</b> ';
-		$output .= '<input name="aways[' . $pid . '][' . $mid . ']" class="'.$css.'" style="text-align:center; " size="2" value="' . $tipp_away . '" tabindex="1" type="text" ' . $disabled . '/>';
+        $output .= '<input name="aways[' . $pid . '][' . $mid . ']" class="'.$css.' " style="text-align:center;color:blue;font-weight:bold; background: white; max-width: 18px" size="20" value="' . $tipp_away . '" tabindex="1" type="text" ' . $disabled . '/>';
 		if (!$allow)
 		{
 			$output .= '<input type="hidden" name="homes[' . $pid . '][' . $mid . ']" value="' . $tipp_home . '" />';
