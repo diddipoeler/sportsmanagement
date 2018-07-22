@@ -1,17 +1,17 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÂ¸r alle Sportarten
  * @version   1.0.05
  * @file      default_view_tippentry_do.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage predictionentry
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-
+    
+    
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $visible = 'text';    
@@ -146,10 +146,10 @@ Responsive tables
 Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
 When viewing on anything larger than 768px wide, you will not see any difference in these tables.
 --> 
-<div class="table-responsive">
-				<table class="table table-responsive" >
-					<tr>
-						<td class=""><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
+ <div class="table-responsive">
+				 <table class="table table-responsive">
+                    <tr>
+					<!-- <td class=""><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td> -->
 					<!--	<td class="" style='text-align:right; ' width='20%'  > -->
 							<?php
                             if ( $this->config['use_pred_select_rounds'] )
@@ -161,8 +161,8 @@ When viewing on anything larger than 768px wide, you will not see any difference
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
 							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
-													'<td>'.$htmlRoundsOptions.'</td>',
-													'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td>');
+													'<tr><td>'.$htmlRoundsOptions.'</td></tr>',
+													'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td></tr>');
 							?>
 					<!--	</td> -->
 					</tr>
@@ -224,29 +224,29 @@ Responsive tables
 Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
 When viewing on anything larger than 768px wide, you will not see any difference in these tables.
 -->                 
-                <div class="table-responsive">
-				<table class="<?PHP echo $this->config['table_class']; ?> table-responsive" >
+                <div class=" table-responsive">
+<table class="table table-responsive">
 					<tr>
-						<th class="" style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th>
-						<th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>
-						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT'); ?></th>
-						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS'); ?></th>
+<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th></th>
+<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th></th>
+<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th></th>
+<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th></th>
 						<?php
 						if (($predictionProject->joker) && ($predictionProject->mode==0))
 						{
-							?><th class='sectiontableheader' style='text-align:center; '><?php
+                            ?> <th style='text-align:left;color:white; background-color:teal; '> <?php
 							if ($predictionProject->joker_limit > 0)
 							{
-								echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER_COUNT',$memberProjectJokersCount,$predictionProject->joker_limit);
-							}
-							else
+                                echo $memberProjectJokersCount."/".$predictionProject->joker_limit;
+                            }
+                            else
 							{
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER');
+                                echo "";
 							}
 							?></th><?php
 						}
 						?>
-						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS'); ?></th>
+						<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS'); ?></th> -->
 					</tr>
 					<?php
 					$k = 1;
@@ -288,7 +288,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					if (count($roundResults) > 0)
 					{
 					
-          // schleife über die ergebnisse in der runde
+          // schleife Â¸ber die ergebnisse in der runde
 					foreach ($roundResults AS $result)
 					{
 						$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
@@ -303,7 +303,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 						
 
-            // änderungen erlaubt ?   $this->config['show_help']
+            // â€°nderungen erlaubt ?   $this->config['show_help']
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />this->closingtime<pre>~' . print_r($closingtime,true) . '~</pre><br />';
@@ -343,7 +343,9 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
  */
 $jdate = JFactory::getDate($result->match_date);
 $jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
-echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
+                                    
+                                echo JHtml::date($result->match_date, 'd.m', false),"</br>";
+                                echo JHtml::date($result->match_date, 'H:i', false);
 								?>
 							</td>
 								<?php
@@ -358,16 +360,14 @@ echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
 									($favTeamsList[$predictionProject->project_id]==$result->projectteam1_id))
 								{
 								?>
-								<span style='background-color:yellow; color:black; padding:2px; '><?php echo $homeName; ?></span>
+								<span style='background-color:yellow; color:black; padding:2px; '><?php echo $homeName."<br />"; ?></span>
 								<?php
 								}
 								else
 								{
-									echo $homeName;
+									echo $homeName."<br />";
 								}
 								?>
-							</td>
-							<td nowrap='nowrap' class="td_c">
 								<?php
                 // clublogo oder vereinsflagge
 								switch($this->config['show_logo_small'])
@@ -408,15 +408,7 @@ $this->modalheight,
                 echo JSMCountries::getCountryFlag($country_home);
                 break;
                 }
-								?>
-							</td>							
-							<td nowrap='nowrap' class="td_c">
-								<?php							
-								echo ' <b>' . $this->config['seperator'] . '</b> ';
-								?>
-							</td>
-							<td nowrap='nowrap' class="td_c">
-								<?php	
+                            ?><td nowrap='nowrap' class="td_c"><?php echo $awayName.'<br />';
                 // clublogo oder vereinsflagge
 								switch($this->config['show_logo_small'])
                         //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
@@ -456,28 +448,10 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
                 echo JSMCountries::getCountryFlag($country_away);
                 break;
                 }
-								?>
-							</td>						
-							<td nowrap='nowrap' class="td_l">
-								<?php	
-								if 	((isset($favTeamsList[$predictionProject->project_id])) &&
-									($favTeamsList[$predictionProject->project_id] == $result->projectteam2_id))
-								{
-									?><span style='background-color:yellow; color:black; padding:2px; '><?php echo $awayName; ?></span>
-								<?php
-								}
-								else
-								{
-									echo $awayName;
-								}
-								?>
-							</td>
+								?></td>
+							<!-- </td> -->
 						<!-- @ShortBrother <td class="td_c"> -->
-                            <td style="text-align: center;">
-								<?php
-								echo $resultHome . $this->config['seperator'] . $resultAway;
-								?>
-							</td>
+                            <!-- <td style="text-align: center;"> -->
 							<td class="td_c">
 								<?php
 								echo '<input type="hidden" name="cids[' . $predictionProject->project_id . '][]"
@@ -542,20 +516,6 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 								</td><?php
 							}
 							?>
-							<td class="td_c"><?php
-								if ((!$tippAllowed) || (($this->allowedAdmin)&&($this->predictionMember->admintipp)))
-								{
-									$points = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
-									$totalPoints = $totalPoints+$points;
-									echo $points;
-								}
-								else
-								{
-									?>&nbsp;<?php
-								}
-								?>
-							</td>
-						</tr>
 						<?php
 						if ( $this->config['show_tipp_tendence'] )
 						{
@@ -616,14 +576,15 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 						else
 						{
 							?>
-							<td colspan='6'>&nbsp;</td>
+                            <!-- <td colspan='6'>&nbsp;</td> -->
+							<td colspan='3'>&nbsp;</td>
 							<td class="td_c">
 								<?php
 								if (count($roundResults) > 0)
 								{
 									if ($showSaveButton)
 									{
-									?><input type='submit' name='addtipp' value='<?php echo JText::_('JSAVE'); ?>' class='button' /><?php
+									?><input type='submit' name='addtipp' style='color:white; background-color:teal; font-weight:bold;'value='<?php echo JText::_('JSAVE'); ?>' class='button' /><?php
 									}
 									else
 									{
@@ -637,7 +598,7 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 								?>
 							</td>
 							<?php echo $colspan=($predictionProject->joker) ? '<td>&nbsp;</td>' : ''; ?>
-							<td class="td_c"><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints); ?></td>
+							<!-- <td class="td_c"><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints); ?></td> -->
 							<?php
 						}
 						?>
