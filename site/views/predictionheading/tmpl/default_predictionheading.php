@@ -12,6 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
+<script>
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+
+</script>
 <?php
 //echo '<br /><pre>~' . print_r($this,true) . '~</pre><br />';
 if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['show_prediction_heading'] ) )
