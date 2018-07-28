@@ -24,6 +24,8 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
+DEFINE( 'JPATH_COMPONENT_ADMINISTRATOR','administrator/components/com_sportsmanagement' );
+
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
