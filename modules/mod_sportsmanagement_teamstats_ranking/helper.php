@@ -52,6 +52,7 @@ class modSportsmanagementTeamStatHelper
 		if (!$stat) 
         {
 			echo 'Undefined stat<br>';
+            return false;
 		}
 		
 //        echo ' stat<br><pre>'.print_r($stat,true).'</pre>';

@@ -80,13 +80,6 @@
 						label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_DESCR" />
 						
-<!--			
-			<field name="p" type="project" 
-					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_LABEL"
-					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_PROJECT_DESCR" />
--->
-
-
 			<field name="sid" type="dependsql" depends="p"
 			key_field="project_id"
 			value_field="p"
@@ -95,7 +88,8 @@
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SELECT_STAT_DESCR" />
 
 
-			<field name="ranking_order" type="list" default="DESC"
+			<field name="ranking_order" type="extensionradiobutton" default="DESC"
+			class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_STAT_RANKING_ORDER" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_STAT_RANKING_ORDER_DESC">
 					<option value="ASC">Ascending</option>
@@ -106,7 +100,8 @@
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_ROW_LIMIT_LABEL"
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_ROW_LIMIT_LABEL_DESC" />
 
-			<field name="show_project_name" type="list" default="0"
+			<field name="show_project_name" type="extensionradiobutton" default="0"
+			class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_PROJECT_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNo</option>
@@ -144,7 +139,8 @@
 
 			<field name="@spacer" type="spacer" default="" label=""
 					description="" />
-				<field name="show_event_icon" type="list" default="1"
+				<field name="show_event_icon" type="extensionradiobutton" default="1"
+				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_STATISTIC_ICON_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_SHOW_STATISTIC_ICON_DESC">
 					<option value="0">JNo</option>
