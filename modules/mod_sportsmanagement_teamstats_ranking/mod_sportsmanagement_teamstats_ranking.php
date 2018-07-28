@@ -36,15 +36,6 @@ $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
-if ( !class_exists('SMStatistic') ) 
-{
-/**
- * add the classes for handling
- */
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'statistics'.DS.'base.php'); 
-}
-
-
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
 
