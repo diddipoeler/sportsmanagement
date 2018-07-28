@@ -9,7 +9,9 @@
  * @subpackage mod_sportsmanagement_teamplayers
  */
 
-// no direct access
+/**
+ * no direct access
+ */
 defined('_JEXEC') or die('Restricted access');
 
 if (! defined('DS'))
@@ -31,9 +33,6 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
 
 // welche tabelle soll genutzt werden
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' );
  
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
@@ -55,17 +54,17 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 }
 
-
-
-// get helper
+/**
+ * get helper
+ */
 require_once (dirname(__FILE__).DS.'helper.php');
-
-
 
 $list = modSportsmanagementTeamPlayersHelper::getData($params);
 
 $document = JFactory::getDocument();
-//add css file
+/**
+ * add css file
+ */
 $document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 ?>           
