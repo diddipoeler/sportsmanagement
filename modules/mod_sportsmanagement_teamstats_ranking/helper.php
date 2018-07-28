@@ -41,7 +41,7 @@ class modSportsmanagementTeamStatHelper
         
         //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
-		sportsmanagementModelProject::setProjectId($params->get('p'));
+		sportsmanagementModelProject::setProjectId((int)$params->get('p'));
 		$stat_id = (int)$params->get('sid');
 		
         if ( $stat_id )
