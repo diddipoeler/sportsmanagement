@@ -9,7 +9,9 @@
  * @subpackage mod_sportsmanagement_teamstats_ranking
  */
 
-// no direct access
+/**
+ * no direct access
+ */
 defined('_JEXEC') or die('Restricted access');
 
 if (! defined('DS'))
@@ -22,10 +24,14 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-//add the classes for handling
+/**
+ * add the classes for handling
+ */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -38,13 +44,17 @@ if (!class_exists('sportsmanagementModelProject'))
 	require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
 }
 
-// get helper
+/**
+ * get helper
+ */
 require_once (dirname(__FILE__).DS.'helper.php');
 
 $list = modSportsmanagementTeamStatHelper::getData($params);
 
 $document = JFactory::getDocument();
-//add css file
+/**
+ * add css file
+ */
 $document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 ?>
