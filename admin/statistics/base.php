@@ -444,7 +444,7 @@ class SMStatistic extends JObject
 
 		if (!class_exists($classname))
 		{
-			$file = JPATH_COMPONENT_ADMINISTRATOR .DS . 'statistics' . DS .$class.'.php';
+			$file = 'administrator'.DS.'components'.DS.'con_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
 			if (!file_exists($file)) {
 				JError::raiseError(0, $classname .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
 			}
