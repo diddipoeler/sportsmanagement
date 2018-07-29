@@ -65,7 +65,7 @@ class modSportsmanagementTeamStatHelper
 			$ids[] = $db->Quote($r->team_id);
 		}
         
-        $query->select('t.*, c.logo_bigc.country');
+        $query->select('t.*, c.logo_big,c.country');
         $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
         $query->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS club_slug');
         $query->from('#__sportsmanagement_team as t ');
