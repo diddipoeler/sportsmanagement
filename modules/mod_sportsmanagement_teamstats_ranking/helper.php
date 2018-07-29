@@ -73,7 +73,7 @@ class modSportsmanagementTeamStatHelper
 			$ids[] = $db->Quote($r->team_id);
 		}
         
-        $query->select('t.*, c.logo_small');
+        $query->select('t.*, c.logo_big');
         $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
         $query->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS club_slug');
         $query->from('#__sportsmanagement_team as t ');
@@ -104,9 +104,9 @@ class modSportsmanagementTeamStatHelper
 	{
 		if ($type == 1) // club small logo
 		{
-			if (!empty($item->logo_small))
+			if (!empty($item->logo_big))
 			{
-				return JHTML::image($item->logo_small, $item->short_name, 'class="teamlogo"');
+				return JHTML::image($item->logo_big, $item->short_name, 'class="teamlogo"');
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))
