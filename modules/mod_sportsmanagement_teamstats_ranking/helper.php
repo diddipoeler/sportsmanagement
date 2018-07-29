@@ -14,7 +14,6 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * modSportsmanagementTeamStatHelper
  * 
@@ -39,8 +38,6 @@ class modSportsmanagementTeamStatHelper
 		$db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-
 		sportsmanagementModelProject::setProjectId((int)$params->get('p'));
 		$stat_id = (int)$params->get('sid');
 		
@@ -48,7 +45,6 @@ class modSportsmanagementTeamStatHelper
         {		
 		$project = sportsmanagementModelProject::getProject();
 		$stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id,0,0)));
-        //$stat = sportsmanagementModelProject::getProjectStats($stat_id,0,0);
 		if (!$stat) 
         {
 			echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_UNDEFINED_STAT').'<br>';
@@ -56,11 +52,7 @@ class modSportsmanagementTeamStatHelper
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
 		}
-		
-//        echo ' stat<br><pre>'.print_r($stat,true).'</pre>';
-//        echo ' current stat<br><pre>'.print_r(current($stat),true).'</pre>';
-//        echo ' 2 current stat<br><pre>'.print_r(current(current($stat)),true).'</pre>';
-        
+       
 		$ranking = $stat->getTeamsRanking($project->id, $params->get('limit'), 0, $params->get('ranking_order', 'DESC'));
 		if (empty($ranking)) 
         {
@@ -73,7 +65,7 @@ class modSportsmanagementTeamStatHelper
 			$ids[] = $db->Quote($r->team_id);
 		}
         
-        $query->select('t.*, c.logo_big');
+        $query->select('t.*, c.logo_bigc.country');
         $query->select('CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug');
         $query->select('CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS club_slug');
         $query->from('#__sportsmanagement_team as t ');
@@ -81,9 +73,7 @@ class modSportsmanagementTeamStatHelper
         $query->where('t.id IN ('.implode(',', $ids).')');
 
 		$db->setQuery($query);
-        
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$teams = $db->loadObjectList('id');
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return array('project' => $project, 'ranking' => $ranking, 'teams' => $teams, 'stat' => $stat);
@@ -97,12 +87,12 @@ class modSportsmanagementTeamStatHelper
 	/**
 	 * get img for team
 	 * @param object ranking row
-	 * @param int type = 1 for club small logo, 2 for country
+	 * @param int type = 1 for club logo, 2 for country
 	 * @return html string
 	 */
 	public static function getLogo($item, $type = 1)
 	{
-		if ($type == 1) // club small logo
+		if ($type == 1) // club logo
 		{
 			if (!empty($item->logo_big))
 			{
