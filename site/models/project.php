@@ -1361,11 +1361,11 @@ catch (Exception $e)
         
 		$stats = array();
 		
-        // init
-		foreach ($positions as $pos)
-		{
-			$stats[$pos->id] = array();
-		}
+//        // init
+//		foreach ($positions as $pos)
+//		{
+//			$stats[$pos->id] = array();
+//		}
         
 		if (count(self::$_stats) > 0)
 		{

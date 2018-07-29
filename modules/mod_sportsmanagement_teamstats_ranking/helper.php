@@ -127,14 +127,28 @@ class modSportsmanagementTeamStatHelper
 	 */
 	public static function getTeamLink($item, $params, $project)
 	{
-		switch ($params->get('teamlink'))
+$routeparameter = array();		
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $project->season_slug;
+$routeparameter['p'] = $project->slug;
+                
+        switch ($params->get('teamlink'))
 		{
 			case 'teaminfo':
-				return sportsmanagementHelperRoute::getTeamInfoRoute($project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+            $routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			case 'roster':
-				return sportsmanagementHelperRoute::getPlayersRoute($project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+            $routeparameter['ptid'] = 0;
+            $routeparameter['division'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 			case 'teamplan':
-				return sportsmanagementHelperRoute::getTeamPlanRoute($project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+            $routeparameter['division'] = 0;
+            $routeparameter['mode'] = 0;
+            $routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 			case 'clubinfo':
 				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $item->club_slug);
 				
