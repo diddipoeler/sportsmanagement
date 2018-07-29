@@ -1301,7 +1301,8 @@ catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
-		return $events;
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        return $events;
 	}
 
 	/**
@@ -1350,9 +1351,13 @@ catch (Exception $e)
 }
 		
 		}
+       $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
        
 		// sort into positions
 		$positions = self::getProjectPositions($cfg_which_database);
+        
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
         
 		$stats = array();
 		
@@ -1419,6 +1424,7 @@ catch (Exception $e)
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$_positions;
 	}
 

@@ -51,7 +51,9 @@ class modSportsmanagementTeamStatHelper
         //$stat = sportsmanagementModelProject::getProjectStats($stat_id,0,0);
 		if (!$stat) 
         {
-			echo 'Undefined stat<br>';
+			echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_UNDEFINED_STAT').'<br>';
+            
+            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
 		}
 		
