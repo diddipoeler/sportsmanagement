@@ -47,7 +47,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 
 	if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
-			//$app->setUserState( "$option.prediction_id", $this->state->get('filter.prediction_id') );
+			$this->app->setUserState( "$this->option.prediction_id", $this->state->get('filter.prediction_id') );
 			$this->_display( $tpl );
 			return;
 		}
@@ -71,19 +71,21 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
   function _editlist( $tpl = null )
 	{
 		// Reference global application object
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
     //$db					= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
+//		$uri = JFactory::getURI();
 		
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		//$document	= JFactory::getDocument();
     
-		$this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//		$this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
+
+$this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id' );
         		
 		//$prediction_id		= (int) $app->getUserState( $option . '.prediction_id' );
 		$prediction_name	= $this->getModel()->getPredictionProjectName($this->prediction_id);
@@ -118,8 +120,8 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
                     																
 	//$this->prediction_id	= $prediction_id ;
 	$this->lists	= $lists;
-	$this->request_url	= $uri->toString();
-    $this->user	= JFactory::getUser();
+	//$this->request_url	= $uri->toString();
+    //$this->user	= JFactory::getUser();
 		$this->setlayout('editlist');
         
 	}	
