@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 //echo '<pre>',print_r($this->club,true),'</pre><br>';
 
 ?>
+<div class="row" id="clubplandatenav">
 <form name="adminForm" id="adminForm" method="post">
 	<?php $dateformat="%d-%m-%Y"; ?>
 	<table class="table" >
@@ -60,8 +61,14 @@ defined('_JEXEC') or die('Restricted access');
     {
     $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('clplan'.$this->club->id,$picture,$this->club->name,'50');
-
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clplan'.$this->club->id,
+$picture,
+$this->club->name,
+'50',
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']);
            
             }
 			?>
@@ -70,4 +77,5 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clplan'.$this->club->id
         
 	</table>
 	<?php echo JHtml::_('form.token')."\n"; ?>
-</form><br />
+</form>
+</div>

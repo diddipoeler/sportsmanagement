@@ -10,12 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
-
-
 //echo '<pre>',print_r($this->matches,true),'</pre><br>';
 
 ?>
 <!-- START: matches -->
+<div class="row" id="clubplanmatches">
 <table class="<?php echo $this->config['table_class']; ?>">
 <?php
 if ($this->config['type_matches'] != 0) {
@@ -267,7 +266,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal'])
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 
                 </td>
@@ -291,7 +290,7 @@ $this->overallconfig['use_jquery_modal'])
                 '',
 $this->modalwidth,
 $this->modalheight,
-$this->overallconfig['use_jquery_modal'])
+$this->overallconfig['use_jquery_modal']);
                 ?>
                 </td>
 					<?php 
@@ -399,5 +398,5 @@ $this->overallconfig['use_jquery_modal'])
 		} ;
 		?>
 </table>
-<br />
+</div>
 <!-- END: matches -->

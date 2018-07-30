@@ -9,11 +9,11 @@
  * @subpackage clubplan
  */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+?>
 
 <!-- START: matches -->
-
-
+<div class="row" id="clubplanmatchessbd">
 	<?php
 		//sort matches by dates
 		$gamesByDate = Array();
@@ -24,16 +24,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		foreach ( $this->matches as $game )
 		{
 			$gamesByDate[substr( $game->match_date, 0, 10 )][] = $game;
-							
 		}
 		
 		foreach ( $gamesByDate as $date => $games )
 		{
-		
-			
 			foreach ( $games as $game )
 			{
-			
 				//if date is the same dont show header
 				if ( substr( $game->match_date, 0, 10 ) != $pr_id)
 				{			
@@ -321,5 +317,5 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 		}
 		?>
 </table>
-<br />
+</div>
 <!-- END: matches -->
