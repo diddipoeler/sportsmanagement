@@ -1020,8 +1020,16 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$route
 				$link = sportsmanagementHelperRoute::getCurveRoute( $this->_project_slug, $this->_team_slug, 0, $this->_division_id );
 				break;
 				
-			case "eventsranking":				
-				$link = sportsmanagementHelperRoute::getEventsRankingRoute( $this->_project_slug, $this->_division_id, $this->_team_slug );
+			case "eventsranking":	
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['tid'] = $this->_team_slug;
+$routeparameter['evid'] = 0;
+$routeparameter['mid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $routeparameter);            			
 				break;
 
 			case "matrix":
