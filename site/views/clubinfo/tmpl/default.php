@@ -96,14 +96,10 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
      * show_slider
      */
     echo $this->loadTemplate($this->config['show_clubinfo_tabs']);
+
+    echo $this->loadTemplate('jsminfo');
     ?>
-    
-        <?PHP
-        echo $this->loadTemplate('jsminfo');
-        ?>
-    
-    <?PHP
-    ?>
+  
     <!-- ende clubinfo -->    
 </div>
-<!-- </div> -->
+

@@ -89,11 +89,9 @@ function searchPerson(val)
         
 	</fieldset>
 
-	<?php echo $this->loadTemplate('items'); 
-    echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
+	<?php 
+	echo $this->loadTemplate('items'); 
+   echo $this->loadTemplate('jsminfo');
     ?>
 </form>
 </div>

@@ -30,9 +30,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		echo $this->loadTemplate('clubs');
 	}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
+	echo $this->loadTemplate('jsminfo');
 	?>
 </div>

@@ -162,11 +162,8 @@ if ($this->projectteam) {
 } else {
     echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
 }
+
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

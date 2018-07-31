@@ -39,9 +39,6 @@ echo $this->loadTemplate('debug');
 		echo $this->loadTemplate( 'referees' );
 	}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
+	echo $this->loadTemplate('jsminfo');
 	?>
 </div>

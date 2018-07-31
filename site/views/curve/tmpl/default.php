@@ -34,12 +34,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('colorlegend');
 	}
-?>
-<div>
-<?PHP    
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	
+
+	echo $this->loadTemplate('jsminfo');
 	?>
-</div>
+
 </div>

@@ -56,11 +56,8 @@ if ( $this->config['show_summary'] )
 	echo $this->loadTemplate('summary');	
 }
 */    
+
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?PHP
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

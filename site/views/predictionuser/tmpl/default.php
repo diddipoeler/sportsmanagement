@@ -43,11 +43,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		?><h3><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_EXISTING_MEMBER'); ?></h3><?php
 	}
-?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
+	echo $this->loadTemplate('jsminfo');
+	?>
+
 </div>

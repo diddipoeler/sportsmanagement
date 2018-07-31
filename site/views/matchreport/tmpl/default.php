@@ -207,11 +207,7 @@ foreach ( $output as $key => $value )
 echo $this->loadTemplate($value);
 }
 }
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

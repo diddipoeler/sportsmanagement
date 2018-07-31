@@ -93,10 +93,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
         </fieldset>
         <?php
         echo $this->loadTemplate('items');
-        echo "<div>";
-        echo $this->loadTemplate('backbutton');
-        echo $this->loadTemplate('footer');
-        echo "</div>";
+        echo $this->loadTemplate('jsminfo');
         ?>
     </form>
 </div>

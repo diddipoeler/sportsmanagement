@@ -42,16 +42,6 @@ if ($this->config['show_help'])
     echo $this->loadTemplate('show_help');
 }
 
-?>
-<div>
-<?PHP
-//backbutton
-echo $this->loadTemplate('backbutton');
-// footer
-echo $this->loadTemplate('footer');
-?>
-</div>
-<?PHP
-
+echo $this->loadTemplate('jsminfo');
 ?>
 </div>
