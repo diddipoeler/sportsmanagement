@@ -158,6 +158,9 @@
 			<language tag="it-IT">language/it-IT/it-IT.com_sportsmanagement.sys.ini</language>
 			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
 			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.sys.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_sportsmanagement.ini</language>
+			<language tag="es-ES">language/es-ES/es-ES.com_sportsmanagement.sys.ini</language>
+			
 			</languages>
 		
 	</administration>
