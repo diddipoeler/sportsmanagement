@@ -30,20 +30,10 @@ class sportsmanagementViewRivals extends sportsmanagementView
 	 */
 	function init()
 	{
-//	   $app = JFactory::getApplication();
-//       // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-//        
-//		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-        
         $this->document->addScript ( JUri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js' );
-
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		
-		$this->project = sportsmanagementModelProject::getProject();
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+	
+		//$this->project = sportsmanagementModelProject::getProject();
+		//$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
         
 		if (!isset( $this->overallconfig['seperator']))
 		{
