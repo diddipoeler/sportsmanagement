@@ -269,8 +269,9 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         $query->select('CONCAT_WS( \':\', pt.id, t.alias ) AS projectteam_slug');
         $query->from('#__sportsmanagement_match_event AS me ');
             $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
-            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');  
+            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');  
             $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $query->join('INNER','#__sportsmanagement_project AS p ON pt.project_id = p.id and p.season_id = st.season_id');
             $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
             $query->join('INNER','#__sportsmanagement_person AS pl ON tp.person_id = pl.id');
              
@@ -280,6 +281,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		if (self::$projectid > 0)
 			{
                 $query->where('pt.project_id = ' . self::$projectid );
+                $query->where('p.id = ' . self::$projectid );
 			}
 			if (self::$divisionid > 0)
 			{
@@ -288,6 +290,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			if (self::$teamid > 0)
 			{
                 $query->where('st.team_id = ' . self::$teamid );
+                $query->where('tp.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{

@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="row-fluid">
+<div class="row-fluid" id="">
 	<?php
 	echo $this->loadTemplate('projectheading');
 

@@ -82,13 +82,7 @@ echo $this->loadTemplate('debug');
 	{ 
 		echo $this->loadTemplate('played_matches');
 	}
-	
+
+echo $this->loadTemplate('jsminfo');	
 	?>
-<div id="backbuttonfooter">
-<?PHP    
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
-    
 </div>
