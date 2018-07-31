@@ -25,6 +25,8 @@
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_trainingsdata.sys.ini</language>
 		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_trainingsdata.ini</language>
 		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_trainingsdata.sys.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_trainingsdata.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_trainingsdata.sys.ini</language>
 	</languages>
 	
 	<config>
