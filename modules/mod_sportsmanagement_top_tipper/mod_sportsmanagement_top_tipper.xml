@@ -21,12 +21,12 @@
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.sys.ini</language>
-	<language tag="es-ES">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.ini</language>
-        <language tag="es-ES">language/en-GB/en-GB.mod_sportsmanagement_top_tipper.sys.ini</language>    
-        <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_top_tipper.sys.ini</language>
         <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_top_tipper.ini</language>
         <language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_top_tipper.sys.ini</language>
+		<language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_top_tipper.ini</language>
+        <language tag="es-ES">language/es-ES/es-ES.mod_sportsmanagement_top_tipper.sys.ini</language>
     </languages>
 
     <config>
