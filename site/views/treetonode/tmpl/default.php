@@ -25,11 +25,8 @@ if ($this->config['show_sectionheader']==1)
 
 echo $this->loadTemplate('projectheading');
 echo $this->loadTemplate('treetonode');
+
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php    
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

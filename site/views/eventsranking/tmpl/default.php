@@ -29,12 +29,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	{
 		echo $this->loadTemplate('eventsrank');
 	}
-?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
+echo $this->loadTemplate('jsminfo');
+	?>
 
-?>
-</div>
 </div>

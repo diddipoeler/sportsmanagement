@@ -62,12 +62,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		echo $this->loadTemplate('career');
 	}
 
-	?>
-    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
-    <?PHP
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
+	echo $this->loadTemplate('jsminfo');
 	
 	?>
-</div>
+    
 </div>

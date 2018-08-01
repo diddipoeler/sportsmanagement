@@ -49,8 +49,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
 	}
 
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
+		echo $this->loadTemplate('jsminfo');
 	echo '</div>';
 	?>
 </div>

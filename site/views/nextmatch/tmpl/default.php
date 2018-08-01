@@ -66,14 +66,10 @@ $this->output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary
 }
 
 echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
+echo $this->loadTemplate('jsminfo');
 ?>
 </div>
-<div>
-<?PHP        
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 <?PHP
 }
 else

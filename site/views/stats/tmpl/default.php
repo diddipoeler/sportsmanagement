@@ -86,10 +86,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		echo $this->loadTemplate('ranking');
 	}
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
+	echo $this->loadTemplate('jsminfo');
 	?>
 </div>
 <?php

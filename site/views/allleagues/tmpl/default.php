@@ -123,14 +123,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
         <?php
         echo $this->loadTemplate('items');
-        ?>
+        echo $this->loadTemplate('jsminfo');
+		?>
 
-        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-            <?PHP
-            echo $this->loadTemplate('backbutton');
-            echo $this->loadTemplate('footer');
-            ?>
-        </div>
+        
 
     </form>
 </div>

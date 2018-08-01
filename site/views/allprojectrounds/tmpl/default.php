@@ -32,20 +32,12 @@ echo $this->loadTemplate('sectionheader');
 }
 
 ?>
-<?php echo $this->loadTemplate('results_all'); ?>
-<?PHP
-
-// if ($this->config['show_colorlegend']==1){echo $this->loadTemplate('colorlegend');}
-	
-// if ($this->config['show_explanation']==1){echo $this->loadTemplate('explanation');}
-
+<?php 
+echo $this->loadTemplate('results_all'); 
+echo $this->loadTemplate('jsminfo');
 ?>
+
 	
-<!-- backbutton -->
-<div>
-<?php echo $this->loadTemplate('backbutton'); ?>
-<!-- footer -->
-<?php echo $this->loadTemplate('footer'); ?>
-</div>
+
 
 </div>

@@ -90,14 +90,9 @@ $this->output[intval($this->config['show_order_stcareer'])] = array('text'=>'COM
  */
 ksort($this->output);   
 echo $this->loadTemplate($this->config['show_players_layout']);
-   
+echo $this->loadTemplate('jsminfo');   
 ?>
-<div>
-<?PHP    
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 <?PHP 
 
 ?>

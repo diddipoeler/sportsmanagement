@@ -46,13 +46,9 @@ function searchPerson(val)
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
 <?php 
 echo $this->loadTemplate('items');
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php 
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </form>
 </div>
 

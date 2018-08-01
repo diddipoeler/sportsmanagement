@@ -95,8 +95,7 @@ echo JHtml::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
 <div class="container">
     <div class="row">
 <?PHP
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
+echo $this->loadTemplate('jsminfo');
 ?>
     </div>
 </div>

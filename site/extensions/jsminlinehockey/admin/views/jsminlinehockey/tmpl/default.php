@@ -46,7 +46,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 <?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
+echo $this->loadTemplate('jsminfo');
 ?> 

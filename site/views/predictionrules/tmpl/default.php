@@ -22,11 +22,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 echo $this->loadTemplate('predictionheading');
 echo $this->loadTemplate('sectionheader');
 echo $this->loadTemplate('info');
+echo $this->loadTemplate('jsminfo');
 ?>
-<div>
-<?php
-echo $this->loadTemplate('backbutton');
-echo $this->loadTemplate('footer');
-?>
-</div>
+
 </div>

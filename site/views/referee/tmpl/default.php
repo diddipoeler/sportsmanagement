@@ -60,13 +60,7 @@ echo $this->loadTemplate('debug');
 	{
 		echo $this->loadTemplate( 'career' );
 	}
-		
+	echo $this->loadTemplate('jsminfo');	
  ?>
-    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
-    <?PHP
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	
-	?>
-</div>
+    
 </div>

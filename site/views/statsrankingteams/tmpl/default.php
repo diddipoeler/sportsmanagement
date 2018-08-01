@@ -23,11 +23,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		
 	echo $this->loadTemplate('projectheading');
 	echo $this->loadTemplate('stats');
-		?>
-	<div>
-	<?php
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
+echo $this->loadTemplate('jsminfo');	
 	?>
-</div>
+	
 </div>
