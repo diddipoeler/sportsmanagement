@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.5" client="site" method="upgrade">
-	<name>mod_sportsmanagement_eventsranking</name>
+	<name>MOD_SPORTSMANAGEMENT_EVENTSRANKING</name>
 	<creationDate>2018</creationDate>
 	<author>llambion</author>
 	<authorEmail>llambion@llambion.com</authorEmail>
@@ -8,10 +8,10 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<copyright>(C) 2018</copyright>
 	<version>0.0.1</version>
-	<description>MOD_SPORTSMANAGEMENT_RANKING_XML_DESC</description>
+	<description>MOD_SPORTSMANAGEMENT_EVENTSRANKING_XML_DESC</description>
 
 	<files>
-		<filename module="MOD_SPORTSMANAGEMENT_eventsranking">mod_sportsmanagement_eventsranking.php</filename>
+		<filename module="mod_sportsmanagement_eventsranking">mod_sportsmanagement_eventsranking.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<filename>mod_sportsmanagement_eventsranking.xml</filename>
@@ -39,7 +39,7 @@
 <field type="extensionversion" version="1.1.0" />
 <field type="extensionauthor" />
 <field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
-<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/sportsmanagement/" />	
 <field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Count_Record" />
 <field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
