@@ -2283,10 +2283,10 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                 {
                 $p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
                 }
-                else
-                {
-                $p_playground->notes = NULL;    
-                }
+                //else
+//                {
+//                $p_playground->notes = NULL;    
+//                }
                 
     // geo coding
     $address_parts = array();
