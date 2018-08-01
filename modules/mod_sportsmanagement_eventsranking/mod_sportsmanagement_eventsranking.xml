@@ -36,6 +36,16 @@
 			<fieldset	name="basic"
 						addfieldpath="/administrator/components/com_sportsmanagement/models/fields" >
 
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Count_Record" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
+						
 			<field name="s" 
 				task="seasons" 
 				type="dependsql"
@@ -68,22 +78,15 @@
 				<field 	name="evid" type="text" default="5" 
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_DESCR" />
-			<!--			
-				<field	name="evid" 
-				size="5" 
-				task="eventtypelist" 
-				type="dependsql" 						
-				required=""
-				key_field="pos_id"
-				label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_LABEL"
-				description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_DESCR" /> -->
+			
 						
 				<field	name="mid" type="dependsql" depends="p"
 						task="matchesoptions" 
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_MATCH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_MATCH_DESCR" />
 				
-				<field 	name="ranking_order" type="radio" default="DESC" 
+				<field 	name="ranking_order" type="extensionradiobutton" default="DESC" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_RANKING_ORDER_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_RANKING_ORDER_DESCR" >
 					<option value="ASC">MOD_SPORTSMANAGEMENT_EVENTSRANKING_ASCENDING</option>
@@ -94,24 +97,27 @@
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_ROW_LIMIT_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_ROW_LIMIT_DESCR" />
 		    
-				<field 	name="show_project_name" type="list" default="0" 
+				<field 	name="show_project_name" type="extensionradiobutton" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PROJECT_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PROJECT_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field 	name="show_division_name" type="list" default="0" 
+				<field 	name="show_division_name" type="extensionradiobutton" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_DIVISION_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_DIVISION_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				
-				<field 	name="show_full_link" type="list" default="1" 
+				<field 	name="show_full_link" type="extensionradiobutton" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PERSON_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PERSON_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				
 				<field 	name="@spacer" type="spacer" default="" 
@@ -122,11 +128,12 @@
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PERSON_NAME_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PERSON_NAME_DESCR" />
 				
-				<field 	name="show_picture" type="list" default="0" 
+				<field 	name="show_picture" type="extensionradiobutton" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PICTURE_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PICTURE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				
 				<field 	name="picture_height" type="text" default="20" 
@@ -137,22 +144,24 @@
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PICTURE_WIDTH_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_PICTURE_WIDTH_DESCR" />
 		
-				<field 	name="show_player_link" type="list" default="1" 
+				<field 	name="show_player_link" type="extensionradiobutton" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PLAYER_LINK_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_PLAYER_LINK_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				
 				<field 	name="@spacer" type="spacer" default="" 
 						label="" 
 						description="" />
 				
-				<field 	name="show_team" type="list" default="1" 
+				<field 	name="show_team" type="extensionradiobutton" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_TEAM_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_TEAM_DESCR" >
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 				
 				<field 	name="teamnametype" type="list" default="short_name" 
@@ -174,9 +183,10 @@
 				</field>
 				
 				<field 	name="show_logo" type="list" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_LOGO_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_LOGO_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
+					<option value="0">JNO</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_CLUB_LOGO</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_EVENTSRANKING_COUNTRY_FLAG</option>
 				</field>
@@ -185,18 +195,20 @@
 						label="" 
 						description="" />
 				
-				<field 	name="show_event_icon" type="list" default="1" 
+				<field 	name="show_event_icon" type="extensionradiobutton" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_EVENT_ICON_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SHOW_EVENT_ICON_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 			</fieldset>
 
 			<fieldset name="advanced">
 
-				<field 	name="cache" type="list" default="1" 
+				<field 	name="cache" type="extensionradiobutton" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_CACHING_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_CACHING_DESCR">
 					<option value="1">MOD_SPORTSMANAGEMENT_EVENTSRANKING_CACHING_USE_GLOBAL</option>

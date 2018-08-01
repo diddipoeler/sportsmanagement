@@ -23,11 +23,9 @@ class modSMEventsrankingHelper
 	{ 
 	  
        $app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 		if (!class_exists('sportsmanagementModelEventsRanking')) 
         {
-			//require_once(JLG_PATH_SITE.DS.'models'.DS.'ranking.php');
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'eventsranking.php' );
 		}
@@ -56,15 +54,7 @@ class modSMEventsrankingHelper
 		$eventtypes = sportsmanagementModelEventsRanking::getEventTypes();
 		$events = sportsmanagementModelEventsRanking::_getEventsRanking( $params->get('evid'), "desc", 20, 0 );
 		$teams = sportsmanagementModelProject::getTeamsIndexedById();
-		
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(count($events),true).'</pre>'),'');
-		
-		        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-              {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($eventtypes,true).'</pre>'),'');
-				//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teamstring,true).'</pre>'),'');
-				//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($projectstring ,true).'</pre>'),'');
-              }				
+
 		return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams, 'model' => $model); 
 	}
 
@@ -110,21 +100,54 @@ class modSMEventsrankingHelper
 		return '';
 	}
 
+	/**
+	 * modSMEventsrankingHelper::getTeamLink()
+	 * 
+	 * @param mixed $team
+	 * @param mixed $params
+	 * @param mixed $project
+	 * @return
+	 */
 	function getTeamLink($team, $params, $project)
 	{
+
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+$routeparameter['p'] = $project->slug;
+               
 		switch ($params->get('teamlink'))
 		{
-			case 'teaminfo':
-				return sportsmanagementHelperRoute::getTeamInfoRoute($project->slug, $team->team_slug);
+            case 'teaminfo':
+            $routeparameter['tid'] = $team->team_slug;
+                $routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);;
 			case 'roster':
-				return sportsmanagementHelperRoute::getPlayersRoute($project->slug, $team->team_slug);
+            $routeparameter['tid'] = $team->team_slug;
+                $routeparameter['ptid'] = 0;
+                $routeparameter['division'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
 			case 'teamplan':
-				return sportsmanagementHelperRoute::getTeamPlanRoute($project->slug, $team->team_slug);
+            $routeparameter['tid'] = $team->team_slug;
+                $routeparameter['division'] = 0;
+                $routeparameter['mode'] = 0;
+                $routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);;
 			case 'clubinfo':
+            
 				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $team->club_slug);				
 		}
 	}
 	
+	/**
+	 * modSMEventsrankingHelper::printName()
+	 * 
+	 * @param mixed $item
+	 * @param mixed $team
+	 * @param mixed $params
+	 * @param mixed $project
+	 * @return void
+	 */
 	function printName($item, $team, $params, $project)
 	{
 				$name = sportsmanagementHelper::formatName(null, $item->fname, 
@@ -155,6 +178,12 @@ class modSMEventsrankingHelper
 	}
 	
 	
+		/**
+		 * modSMEventsrankingHelper::getEventIcon()
+		 * 
+		 * @param mixed $event
+		 * @return
+		 */
 		function getEventIcon($event)
 	{
 		if ($event->icon == 'media/com_sportsmanagement/event_icons/event.gif')

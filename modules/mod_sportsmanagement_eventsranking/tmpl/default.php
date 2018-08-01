@@ -192,7 +192,7 @@ if (count($list['eventtypes']) > 0)
 else
 {
 ?>
-<p class="modjlgstat"><?php echo JText::_("MOD_JOOMLEAGUE_EVENTSRANKING_NO_EVENTS_SELECTED"); ?></p>
+<p class="modjlgstat"><?php echo JText::_("MOD_SPORTSMANAGEMENT_EVENTSRANKING_NO_EVENTS_SELECTED"); ?></p>
 <?php
 }
 ?>
