@@ -87,9 +87,9 @@ class modSMEventsrankingHelper
 	{
 		if ($type == 1) // club small logo
 		{
-			if (!empty($item->logo_small))
+			if (!empty($item->logo_big))
 			{
-				return JHTML::image(JURI::root().$item->logo_small, $item->short_name, 'class="teamlogo"');
+				return JHtml::_('image',$item->logo_big, $item->short_name, array('width' => '50', 'class' => 'teamlogo') );
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))
