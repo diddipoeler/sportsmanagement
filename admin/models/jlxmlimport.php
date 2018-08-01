@@ -1660,7 +1660,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $p_league->sports_type_id = $this->_sportstype_id;
                 
                 try {
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_league', $profile);
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_league', $p_league);
 $insertID = JFactory::getDbo()->insertid();
 					$this->_league_id = $insertID;
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
