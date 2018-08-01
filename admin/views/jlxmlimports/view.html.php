@@ -138,7 +138,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
-        $uri = JFactory::getURI();
+        //$uri = JFactory::getURI();
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $data = $model->getData();
@@ -168,7 +168,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // diddi
         $this->countries = JSMCountries::getCountryOptions();
 
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
         $this->xml = $data;
         // diddi
         $mdl = JModelLegacy::getInstance('leagues', 'sportsmanagementModel');
