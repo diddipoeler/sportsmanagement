@@ -213,6 +213,18 @@
 					<option value="1">JYES</option>
 				</field>
 
+				<field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
 			</fieldset>
 
 			<fieldset name="advanced">

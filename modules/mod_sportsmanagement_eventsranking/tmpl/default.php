@@ -20,7 +20,7 @@
 defined('_JEXEC') or die; 
 ?>
 
-<div class="modjlgevent">
+<div class="row">
 
 <?php
 $header = ""; 
@@ -55,19 +55,12 @@ $teamnametype = $params->get('teamnametype', 'short_name');
 if (count($list['eventtypes']) > 0)
 {
 ?>
-<table class="eventsrankinglist">
+<table class="table">
 	<tbody>
 	<?php 
 	foreach ($list['eventtypes'] as $eventtype)
 	{
-		//echo $eventtype->etid;
-		//print_r($list['ranking']);
-		//if (array_key_exists($eventtype->etid, $list['ranking']))
-		//{
-			//$rankingforevent = $list['ranking'][$eventtype->etid];
 			$rankingforevent = $list['ranking'];
-			//echo $eventtype->etid . '<br>';
-			//echo count($rankingforevent);
 			?>
 		<tr class="sectiontableheader">
 			<td class="eventtype"><?php echo JText::_($eventtype->name); ?></td>
@@ -78,7 +71,7 @@ if (count($list['eventtypes']) > 0)
 			if (count($rankingforevent) > 0)
 			{
 				?>
-				<table class="eventsranking">
+				<table class="<?php echo $params->get('table_class', '');?>">
 					<thead>
 						<tr class="sectiontableheader">
 							<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_RANK')?></th>
