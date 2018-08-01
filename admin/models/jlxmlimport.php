@@ -2231,17 +2231,18 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 		return true;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importPlayground()
+	 * 
+	 * @return
+	 */
 	private function _importPlayground()
 	{
 	   $app = JFactory::getApplication();
 	   $query = JFactory::getDbo()->getQuery(true);
        
-if ( $this->show_debug_info )
-{	   
-$this->dump_header("function _importPlayground");
-$this->dump_variable("this->_datas playground", $this->_datas['playground']);
-}	   
-		$my_text='';
+
+		$my_text = '';
 		if (!isset($this->_datas['playground']) || count($this->_datas['playground'])==0){return true;}
 		if ((!isset($this->_newplaygroundid) || count($this->_newplaygroundid)==0) &&
 			(!isset($this->_dbplaygroundsid) || count($this->_dbplaygroundsid)==0)){return true;}
@@ -2250,8 +2251,8 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 		{
 			foreach ($this->_dbplaygroundsid AS $key => $id)
 			{
-				$oldID=$this->_getDataFromObject($this->_datas['playground'][$key],'id');
-				$this->_convertPlaygroundID[$oldID]=$id;
+				$oldID = $this->_getDataFromObject($this->_datas['playground'][$key],'id');
+				$this->_convertPlaygroundID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 				$my_text .= JText::sprintf(	'Using existing playground data: %1$s - %2$s',
 											'</span><strong>'.$this->_getObjectName('playground',$id).'</strong>',
@@ -2264,23 +2265,21 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 		{
 			foreach ($this->_newplaygroundid AS $key => $id)
 			{
-				
-                $mdl = JModelLegacy::getInstance("playground", "sportsmanagementModel");
-                $p_playground = $mdl->getTable();
+                $p_playground = new stdClass();
                 
 				$import_playground = $this->_datas['playground'][$key];
 				$oldID = $this->_getDataFromObject($import_playground,'id');
 				$alias = $this->_getDataFromObject($import_playground,'alias');
-				$p_playground->set('name',trim($this->_newplaygroundname[$key]));
-				$p_playground->set('short_name',$this->_newplaygroundshort[$key]);
-				$p_playground->set('address',$this->_getDataFromObject($import_playground,'address'));
-				$p_playground->set('zipcode',$this->_getDataFromObject($import_playground,'zipcode'));
-				$p_playground->set('city',$this->_getDataFromObject($import_playground,'city'));
-				$p_playground->set('country',$this->_getDataFromObject($import_playground,'country'));
-				$p_playground->set('max_visitors',$this->_getDataFromObject($import_playground,'max_visitors'));
-				$p_playground->set('website',$this->_getDataFromObject($import_playground,'website'));
-				$p_playground->set('picture',$this->_getDataFromObject($import_playground,'picture'));
-				$p_playground->set('notes',$this->_getDataFromObject($import_playground,'notes'));
+				$p_playground->name = substr(trim($this->_newplaygroundname[$key]),0,74);
+				$p_playground->short_name = substr($this->_newplaygroundshort[$key],0,14);
+				$p_playground->address = $this->_getDataFromObject($import_playground,'address');
+				$p_playground->zipcode = $this->_getDataFromObject($import_playground,'zipcode');
+				$p_playground->city = $this->_getDataFromObject($import_playground,'city');
+				$p_playground->country = $this->_getDataFromObject($import_playground,'country');
+				$p_playground->max_visitors = $this->_getDataFromObject($import_playground,'max_visitors');
+				$p_playground->website = $this->_getDataFromObject($import_playground,'website');
+				$p_playground->picture = $this->_getDataFromObject($import_playground,'picture');
+				$p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
                 
     // geo coding
     $address_parts = array();
@@ -2310,32 +2309,22 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
 	}
 	$address = implode(', ', $address_parts);
 	$coords = sportsmanagementHelper::resolveLocation($address);
-    $p_playground->set('latitude',$coords['latitude']);
-    $p_playground->set('longitude',$coords['longitude']);        
+    $p_playground->latitude = $coords['latitude'];
+    $p_playground->longitude = $coords['longitude'];        
                 
-				if ((isset($alias)) && (trim($alias)!=''))
+				if ( ( isset($alias) ) && ( trim($alias) != '' ) )
 				{
-					$p_playground->set('alias',$alias);
+					$p_playground->alias = substr($alias,0,74);
 				}
 				else
 				{
-					$p_playground->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_playground,'name')));
+					$p_playground->alias = substr(JFilterOutput::stringURLSafe($this->_getDataFromObject($p_playground,'name')),0,74);
 				}
-				/*
-                if (array_key_exists((int)$this->_getDataFromObject($import_playground,'country'),$this->_convertCountryID))
+				
+				if ( $this->_importType != 'playgrounds' )	// force club_id to be set to default if only playgrounds are imported
 				{
-					$p_playground->set('country',(int)$this->_convertCountryID[(int)$this->_getDataFromObject($import_playground,'country')]);
-				}
-				else
-				{
-					$p_playground->set('country',$this->_getDataFromObject($import_playground,'country'));
-				}
-                */
-				if ($this->_importType!='playgrounds')	// force club_id to be set to default if only playgrounds are imported
-				{
-					//if (!isset($this->_getDataFromObject($import_playground,'club_id')))
 					{
-						$p_playground->set('club_id',$this->_getDataFromObject($import_playground,'club_id'));
+						$p_playground->club_id = $this->_getDataFromObject($import_playground,'club_id');
 					}
 				}
                 
@@ -2343,40 +2332,41 @@ $this->dump_variable("this->_datas playground", $this->_datas['playground']);
           // Select some fields
         $query->select('id,name,country');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+		$query->from('#__sportsmanagement_playground');
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_playground->name)).''));
         //$query->where('country LIKE '.JFactory::getDbo()->Quote(''.$p_playground->country.''));
 			JFactory::getDbo()->setQuery($query);
  
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
-				if ($object=JFactory::getDbo()->loadObject())
+				if ($object = JFactory::getDbo()->loadObject())
 				{
-					$this->_convertPlaygroundID[$oldID]=$object->id;
+					$this->_convertPlaygroundID[$oldID] = $object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
 					$my_text .= JText::sprintf('Using existing playground data: %1$s',"</span><strong>$object->name</strong>");
 					$my_text .= '<br />';
 				}
 				else
 				{
-					if ($p_playground->store()===false)
-					{
-						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= JText::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
-						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
-						//$my_text .= '<pre>'.print_r($p_playground,true).'</pre>';
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-						//return false;
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-					}
-					else
-					{
-						$insertID=JFactory::getDbo()->insertid();
-						$this->_convertPlaygroundID[$oldID]=$insertID;
+try {
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $p_playground);
+$insertID = JFactory::getDbo()->insertid();
+						$this->_convertPlaygroundID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 						$my_text .= JText::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
-						$my_text .= '<br />';
-					}
+						$my_text .= '<br />';                   
+                    }
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+						$my_text .= JText::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
+                    $my_text .= $e->getMessage().'<br />';
+					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}					
+                    
+                    
+                    
+                    
+                    
 				}
 			}
 		}
