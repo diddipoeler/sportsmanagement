@@ -20,7 +20,7 @@
 defined('_JEXEC') or die; 
 ?>
 
-<div class="row">
+<div class="row-fluid">
 
 <?php
 $header = ""; 
