@@ -161,7 +161,7 @@ $routeparameter['p'] = $project->slug;
 					$routeparameter = array();
 					$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
 					$routeparameter['s'] = $params->get('s');
-					$routeparameter['p'] = $project->project_slug;
+					$routeparameter['p'] = $project->slug;
 					$routeparameter['tid'] = $item->team_slug;
 					$routeparameter['pid'] = $item->person_slug;					
 									
