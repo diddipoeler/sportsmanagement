@@ -1640,9 +1640,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			JFactory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
                 
-			if ($leagueObject=JFactory::getDbo()->loadObject())
+			if ( $leagueObject = JFactory::getDbo()->loadObject() )
 			{
-				$this->_league_id=$leagueObject->id;
+				$this->_league_id = $leagueObject->id;
 				$my_text .= '<span style="color:orange">';
 				$my_text .= JText::sprintf('Using existing league data: %1$s',"</span><strong>$this->_league_new</strong>");
 				$my_text .= '<br />';
@@ -1671,6 +1671,7 @@ catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
+                    $my_text .= $e->getMessage().'<br />';
 					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }
 
