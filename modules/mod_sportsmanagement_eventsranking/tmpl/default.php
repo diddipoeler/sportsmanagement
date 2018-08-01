@@ -138,7 +138,7 @@ if (count($list['eventtypes']) > 0)
 						?>
 							<td class="team">
 						<?php
-						if ($showLogo == 1)
+						if ( $showLogo )
 						{
 							echo modSMEventsrankingHelper::getLogo($team, $showLogo);
 						}

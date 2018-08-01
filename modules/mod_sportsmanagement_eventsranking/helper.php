@@ -89,7 +89,7 @@ class modSMEventsrankingHelper
 		{
 			if (!empty($item->logo_big))
 			{
-				return JHtml::_('image',$item->logo_big, $item->short_name, array('width' => '50', 'class' => 'teamlogo') );
+				return JHtml::_('image',$item->logo_big, $item->short_name, array('width' => '20', 'class' => 'teamlogo') );
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))
