@@ -2279,7 +2279,14 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$p_playground->max_visitors = $this->_getDataFromObject($import_playground,'max_visitors');
 				$p_playground->website = $this->_getDataFromObject($import_playground,'website');
 				$p_playground->picture = $this->_getDataFromObject($import_playground,'picture');
-				$p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
+				if ( $this->_getDataFromObject($import_playground,'notes') )
+                {
+                $p_playground->notes = $this->_getDataFromObject($import_playground,'notes');
+                }
+                else
+                {
+                $p_playground->notes = NULL;    
+                }
                 
     // geo coding
     $address_parts = array();
@@ -2362,11 +2369,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
                     $my_text .= $e->getMessage().'<br />';
 					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }					
-                    
-                    
-                    
-                    
-                    
+
 				}
 			}
 		}
