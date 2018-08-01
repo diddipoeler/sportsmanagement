@@ -187,7 +187,7 @@
 <module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
-
+<module module="mod_sportsmanagement_eventsranking" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_act_season" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
