@@ -1650,34 +1650,31 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			else
 			{
 				
-                $mdl = JModelLegacy::getInstance("league", "sportsmanagementModel");
-                $p_league = $mdl->getTable();
+                //$mdl = JModelLegacy::getInstance("league", "sportsmanagementModel");
+                $p_league = new stdClass();
+				$p_league->name = trim($this->_league_new);
+				$p_league->alias = JFilterOutput::stringURLSafe($this->_league_new);
+                $p_league->short_name = JFilterOutput::stringURLSafe($this->_league_new);
+                $p_league->middle_name = JFilterOutput::stringURLSafe($this->_league_new);
+				$p_league->country = $this->_league_new_country;
+                $p_league->sports_type_id = $this->_sportstype_id;
                 
-				$p_league->set('name',trim($this->_league_new));
-				$p_league->set('alias',JFilterOutput::stringURLSafe($this->_league_new));
-                
-                $p_league->set('short_name',JFilterOutput::stringURLSafe($this->_league_new));
-                $p_league->set('middle_name',JFilterOutput::stringURLSafe($this->_league_new));
-                
-				$p_league->set('country',$this->_league_new_country);
-                $p_league->set('sports_type_id',$this->_sportstype_id);
-
-				if ($p_league->store()===false)
-				{
-					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+                try {
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_league', $profile);
+$insertID = JFactory::getDbo()->insertid();
+					$this->_league_id = $insertID;
+					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+					$my_text .= JText::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
+					$my_text .= '<br />';                    
+                    }
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
 					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-				}
-				else
-				{
-					$insertID=JFactory::getDbo()->insertid();
-					$this->_league_id=$insertID;
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
-					$my_text .= '<br />';
-				}
+}
+
+				
 			}
 		}
 		else
