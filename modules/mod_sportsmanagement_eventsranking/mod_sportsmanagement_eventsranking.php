@@ -44,6 +44,11 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',JComponentHelper::getParams
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
 
+/**
+ * die übersetzungen laden
+ */
+$language = JFactory::getLanguage();
+$language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 // Reference global application object
 $app = JFactory::getApplication();
