@@ -1668,7 +1668,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
 					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-                    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+                    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
 				{
