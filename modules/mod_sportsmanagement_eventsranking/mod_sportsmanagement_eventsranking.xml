@@ -75,7 +75,7 @@
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_DIVISION_ID_DESCR" />
 		
 		
-				<field 	name="evid" type="text" default="5" 
+				<field 	name="evid" type="eventtypelist" default="1" 
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_EVENT_DESCR" />
 			
