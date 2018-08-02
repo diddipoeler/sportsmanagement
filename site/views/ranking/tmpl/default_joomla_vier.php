@@ -102,6 +102,28 @@ echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', JText:
 echo JHtml::_('bootstrap.' . $this->endPanel);
 
 echo JHtml::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
+
+
+$options2 = array(
+    'active'    => 'tab1_id'    // Not in docs, but DOES work
+);
+
+echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group2', $options2);
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab1_id', JText::_('COM_BOOTSTRAPTABS_TAB_1')); ?> 
+
+<p>Content of the first tab.</p> 
+
+<?php echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab2_id', JText::_('COM_BOOTSTRAPTABS_TAB_2')); ?>
+
+<p>Content of the second tab.</p> 
+
+<?php echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.endTabSet');
+
+
+
+
 ?>
 <div class="container">
     <div class="row">
