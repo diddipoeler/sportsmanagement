@@ -4440,49 +4440,49 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
  * hier muss noch der timestamp übergeben werden, da sonst
  * die spiele nicht angezeigt weden. 
  */                
-				$p_match->set('match_timestamp', sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match,'match_date')));
-                $p_match->set('time_present',$this->_getDataFromObject($match,'time_present'));
+				$p_match->match_timestamp = sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match,'match_date'));
+                $p_match->time_present = $this->_getDataFromObject($match,'time_present');
 
-				$team1_result=$this->_getDataFromObject($match,'team1_result');
+				$team1_result = $this->_getDataFromObject($match,'team1_result');
 				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->team1_result = $team1_result; }
 
-				$team2_result=$this->_getDataFromObject($match,'team2_result');
+				$team2_result = $this->_getDataFromObject($match,'team2_result');
 				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->team2_result = $team2_result; }
 
-				$team1_bonus=$this->_getDataFromObject($match,'team1_bonus');
+				$team1_bonus = $this->_getDataFromObject($match,'team1_bonus');
 				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->team1_bonus = $team1_bonus; }
 
-				$team2_bonus=$this->_getDataFromObject($match,'team2_bonus');
+				$team2_bonus = $this->_getDataFromObject($match,'team2_bonus');
 				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->team2_bonus = $team2_bonus; }
 
-				$team1_legs=$this->_getDataFromObject($match,'team1_legs');
+				$team1_legs = $this->_getDataFromObject($match,'team1_legs');
 				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->team1_legs = $team1_legs; }
 
-				$team2_legs=$this->_getDataFromObject($match,'team2_legs');
+				$team2_legs = $this->_getDataFromObject($match,'team2_legs');
 				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->team2_legs = $team2_legs; }
 
 				$p_match->team1_result_split = $this->_getDataFromObject($match,'team1_result_split');
 				$p_match->team2_result_split = $this->_getDataFromObject($match,'team2_result_split');
 				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
 
-				$team1_result_ot=$this->_getDataFromObject($match,'team1_result_ot');
+				$team1_result_ot = $this->_getDataFromObject($match,'team1_result_ot');
 				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
 
 				$team2_result_ot=$this->_getDataFromObject($match,'team2_result_ot');
 				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
 
-				$team1_result_so=$this->_getDataFromObject($match,'team1_result_so');
+				$team1_result_so = $this->_getDataFromObject($match,'team1_result_so');
 				if (isset($team1_result_so) && ($team1_result_so !=NULL)) { $p_match->team1_result_so = $team1_result_so; }
 
-				$team2_result_so=$this->_getDataFromObject($match,'team2_result_so');
+				$team2_result_so = $this->_getDataFromObject($match,'team2_result_so');
 				if (isset($team2_result_so) && ($team2_result_so !=NULL)) { $p_match->team2_result_so = $team2_result_so; }
 
 				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
 
-				$team1_result_decision=$this->_getDataFromObject($match,'team1_result_decision');
+				$team1_result_decision = $this->_getDataFromObject($match,'team1_result_decision');
 				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
 
-				$team2_result_decision=$this->_getDataFromObject($match,'team2_result_decision');
+				$team2_result_decision = $this->_getDataFromObject($match,'team2_result_decision');
 				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
 
 				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
