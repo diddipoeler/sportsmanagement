@@ -3771,13 +3771,30 @@ $t_params = json_encode( $ini );
 				}
 				$p_projectteam->set('info',$this->_getDataFromObject($projectteam,'info'));
 				$p_projectteam->set('reason',$this->_getDataFromObject($projectteam,'reason'));
+				if ( $this->_getDataFromObject($projectteam,'notes') )
+				{
 				$p_projectteam->set('notes',$this->_getDataFromObject($projectteam,'notes'));
+				}
+				else
+				{
+				$p_projectteam->set('notes',' ');	
+				}
 			}
 			else
 			{
+				if ( $this->_getDataFromObject($projectteam,'notes') )
+				{
 				$p_projectteam->set('notes',$this->_getDataFromObject($projectteam,'description'));
+				}
+				else
+				{
+				$p_projectteam->set('notes',' ');	
+				}
 				$p_projectteam->set('reason',$this->_getDataFromObject($projectteam,'info'));
 			}
+			
+			
+			
 			if ((isset($projectteam->standard_playground)) && ($projectteam->standard_playground > 0))
 			{
 				if (isset($this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')]))
