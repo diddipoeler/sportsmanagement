@@ -2803,7 +2803,7 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
                 
 				if ((!empty($import_team->club_id)) && (isset($this->_convertClubID[$oldClubID])))
 				{
-					$p_team->club_id = $this->_convertClubID[$oldClubID]);
+					$p_team->club_id = $this->_convertClubID[$oldClubID];
 				}
 				else
 				{
