@@ -4289,8 +4289,8 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-		$my_text='';
-		if (!isset($this->_datas['round']) || count($this->_datas['round'])==0)
+		$my_text = '';
+		if ( !isset($this->_datas['round']) || count($this->_datas['round']) == 0 )
         {
         return true;
         }
@@ -4301,14 +4301,14 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
             $mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
             $p_round = $mdl->getTable();
             
-			$oldId=(int)$round->id;
-			$name=trim($this->_getDataFromObject($round,'name'));
-			$alias=trim($this->_getDataFromObject($round,'alias'));
+			$oldId = (int)$round->id;
+			$name = trim($this->_getDataFromObject($round,'name'));
+			$alias = trim($this->_getDataFromObject($round,'alias'));
 			// if the roundcode field is empty,it is an old .jlg-Import file
-			$roundnumber=$this->_getDataFromObject($round,'roundcode');
+			$roundnumber = $this->_getDataFromObject($round,'roundcode');
 			if (empty($roundnumber))
 			{
-				$roundnumber=$this->_getDataFromObject($round,'matchcode');
+				$roundnumber = $this->_getDataFromObject($round,'matchcode');
 			}
 			$p_round->set('roundcode',$roundnumber);
 			$p_round->set('name',$name);
