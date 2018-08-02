@@ -50,7 +50,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 	
   $post	= JFactory::getApplication()->input->post->getArray(array());
 	$cid	= JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
-  $prediction_id = (int) $cid[0];
+  $prediction_id = $post['cid'];
   //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
   
   //$app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
