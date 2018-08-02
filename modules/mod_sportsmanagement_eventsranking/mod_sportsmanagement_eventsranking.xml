@@ -80,6 +80,8 @@
 											
 					
 				<field 	name="division_id" type="dependsql" depends="p" 
+				       key_field="project_id"
+value_field="p"
 						task="projectdivisionsoptions" 
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_DIVISION_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_DIVISION_ID_DESCR" />
@@ -91,6 +93,8 @@
 			
 						
 				<field	name="mid" type="dependsql" depends="p"
+				       key_field="project_id"
+value_field="p"
 						task="matchesoptions" 
 						label="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_MATCH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_EVENTSRANKING_SELECT_MATCH_DESCR" />
