@@ -34,17 +34,28 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $app = JFactory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
+//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
+//            $uri = JUri::getInstance();
+//        } else {
+//            $uri = JFactory::getURI();
+//        }
         $model = $this->getModel();
         $params = JComponentHelper::getParams($option);
         $document = JFactory::getDocument();
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
-        $table_info = $_db->getTableFields('#__sportsmanagement_match');
+        
+        if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$table_info = $this->getDbo()->getTableColumns('#__sportsmanagement_match', true);
+		}
+		else
+		{
+			$fieldsArray = $this->getDbo()->getTableFields('#__sportsmanagement_match', true);
+			$table_info = array_shift($fieldsArray);
+		}
+        
+        //$table_info = $_db->getTableFields('#__sportsmanagement_match');
      
      $this->projectteamsel = JFactory::getApplication()->input->getvar('projectteam', 0);
 
@@ -61,9 +72,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         //$this->sortColumn = $this->state->get('list.ordering');
         //$items = $this->get('Items');
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
+//        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
+//            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+//        }
 
         //$total = $this->get('Total');
         //$pagination = $this->get('Pagination');
@@ -87,13 +98,13 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
         $projectws = $mdlProject->getProject($this->project_id);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'projectws <pre>' . print_r($projectws, true) . '</pre>';
-            //$my_text .= 'inoutstats <pre>'.print_r($inoutstats,true).'</pre>';   
-            //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
-        }
+//        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
+//            $my_text = 'projectws <pre>' . print_r($projectws, true) . '</pre>';
+//            //$my_text .= 'inoutstats <pre>'.print_r($inoutstats,true).'</pre>';   
+//            //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
+//            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
+//            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+//        }
 
         $mdlRound = JModelLegacy::getInstance('Round', 'sportsmanagementModel');
         $roundws = $mdlRound->getRound($this->rid);
@@ -221,7 +232,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $this->projectws = $projectws;
         $this->roundws = $roundws;
         //$this->pagination	= $pagination;
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
         $this->prefill = $params->get('use_prefilled_match_roster',0);
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
 
