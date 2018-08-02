@@ -3635,35 +3635,27 @@ $t_params = json_encode( $ini );
         $db = JFactory::getDbo();
         
 		$my_text = '';
-		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0){return true;}
+		if ( !isset($this->_datas['projectteam']) || count($this->_datas['projectteam']) == 0 )
+        {
+            return true;
+        }
 
-		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0)
+		if ( !isset($this->_datas['team']) || count($this->_datas['team']) == 0 )
         {
             return true;
         }
 		
-        if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
-			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0))
+        if (( !isset($this->_newteams) || count($this->_newteams) == 0 ) &&
+			( !isset($this->_dbteamsid) || count($this->_dbteamsid) == 0 ))
             {
                 return true;
             }
-
-//		$my_text .= __FUNCTION__.' '.__LINE__.' _convertTeamID -> ';
-//		$my_text .= '<~<pre>'.print_r($this->_convertTeamID,true).'</pre>~>';
-//        $my_text .= '<br />';
-            
+           
         foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
-			
-//  	        $my_text .= __FUNCTION__.' '.__LINE__.' projectteam -> ';
-//            $my_text .= '<~<pre>'.print_r($projectteam,true).'</pre>~>';
-//            $my_text .= '<br />';
-            
-//            $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
+
             $p_projectteam = new stdClass();
-                
 			$import_projectteam = $this->_datas['projectteam'][$key];
-//$this->dump_variable("import_projectteam", $import_projectteam);
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
 			$p_projectteam->project_id = $this->_project_id;
             $p_projectteam->picture = $this->_getDataFromObject($projectteam,'picture');
@@ -3674,14 +3666,12 @@ $t_params = json_encode( $ini );
 */            
 			$new_team_id = 0;
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
-            
-//            $my_text .= __FUNCTION__.' '.__LINE__.' team_id -> ';
-//			$my_text .= $team_id;
-//            $my_text .= '<br />';
-            
+           
             if ( $team_id )
             {
-            // ist das team schon durch ein anderes projekt angelegt ?
+/**
+ * ist das team schon durch ein anderes projekt angelegt ?
+ */
             $query = $db->getQuery(true);
 		    $query->select('id');		
 		    $query->from('#__sportsmanagement_season_team_id AS t');
@@ -3689,11 +3679,7 @@ $t_params = json_encode( $ini );
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
 		    $new_team_id = $db->loadResult();
-            
-//            $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
-//			$my_text .= $new_team_id;
-//            $my_text .= '<br />';
-                
+               
             if ( $new_team_id )
             {
                 $p_projectteam->team_id = $new_team_id;
@@ -3716,17 +3702,11 @@ $t_params = json_encode( $ini );
             
 			if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			}
 			else
 			{
                 // die neue id übergeben
                 $new_team_id = $db->insertid();
-                
-//                $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
-//			    $my_text .= $new_team_id;
-//                $my_text .= '<br />';
-                
                 $p_projectteam->team_id = $new_team_id;
 			}
             }
@@ -3734,8 +3714,6 @@ $t_params = json_encode( $ini );
             
             
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
-
-//$this->dump_variable(__FUNCTION__." _convertTeamID -> team_id", $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')]);
 
 			if ( isset($this->_convertDivisionID) )
             {
@@ -3808,7 +3786,8 @@ $t_params = json_encode( $ini );
 
 try {
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $p_projectteam);
-//$insertID = JFactory::getDbo()->insertid();
+$insertID = JFactory::getDbo()->insertid();
+$p_projectteam->id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
 			'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
@@ -3816,34 +3795,14 @@ $my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s
 $my_text .= '<br />';
 }	
 catch (Exception $e){
+$p_projectteam->id = 0;    
 $my_text .= 'error on projectteam import: ';
 $my_text .= $oldID;
 $my_text .= '<br />';
 $my_text .= $e->getMessage().'<br />';
 $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
-
-//			if ( $p_projectteam->store() === false )
-//			{
-//				$my_text .= 'error on projectteam import: ';
-//				$my_text .= $oldID;
-//                $my_text .= '<br />';
-//                //$my_text .= '<~<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>~>';
-//                $my_text .= '<br />';
-//				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
-//				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-//				//return false;
-//                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			}
-//			else
-//			{
-//				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-//				$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
-//											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
-//                                            '<strong>'.$team_id.'</strong>');
-//				$my_text .= '<br />';
-//			}
-            
+           
 			$insertID = $p_projectteam->id;//JFactory::getDbo()->insertid();
 			
             if ($this->import_version=='NEW')
@@ -3855,11 +3814,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
             $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'team_id')] = $p_projectteam->id;    
             }
 
-//$this->dump_variable(__FUNCTION__." p_projectteam", $p_projectteam);
-
 		}
-
-//$this->dump_variable(__FUNCTION__." this->_convertProjectTeamID", $this->_convertProjectTeamID);
 
 		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
@@ -4403,18 +4358,18 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-		$my_text='';
-		if (!isset($this->_datas['match']) || count($this->_datas['match'])==0)
+		$my_text = '';
+		if ( !isset($this->_datas['match']) || count($this->_datas['match']) == 0 )
         {
         return true;
         }
 
-		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0)
+		if ( !isset($this->_datas['team']) || count($this->_datas['team']) == 0 )
         {
         return true;
         }
-		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
-			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0))
+		if (( !isset($this->_newteams) || count($this->_newteams) == 0 ) &&
+			( !isset($this->_dbteamsid) || count($this->_dbteamsid) == 0 ))
             {
             return true;
             }
@@ -4422,14 +4377,12 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 		foreach ($this->_datas['match'] as $key => $match)
 		{
 			
-            $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
-            $p_match = $mdl->getTable();
-            
-			$oldId=(int)$match->id;
-			if ($this->import_version=='NEW')
+            $p_match = new stdClass();
+			$oldId = (int)$match->id;
+			if ( $this->import_version == 'NEW' )
 			{
-				$p_match->set('round_id',$this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]);
-				$p_match->set('match_number',$this->_getDataFromObject($match,'match_number'));
+				$p_match->round_id = $this->_convertRoundID[$this->_getDataFromObject($match,'round_id')];
+				$p_match->match_number = $this->_getDataFromObject($match,'match_number');
 
 				if ($match->projectteam1_id > 0)
 				{
@@ -4446,7 +4399,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				{
 					$team1 = 0;
 				}
-				$p_match->set('projectteam1_id',$team1);
+				$p_match->projectteam1_id = $team1;
 
 				if ($match->projectteam2_id > 0)
 				{
@@ -4463,25 +4416,25 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				{
 					$team2 = 0;
 				}
-				$p_match->set('projectteam2_id',$team2);
+				$p_match->projectteam2_id = $team2;
 
 				if (!empty($this->_convertPlaygroundID))
 				{
 					if (array_key_exists((int)$this->_getDataFromObject($match,'playground_id'),$this->_convertPlaygroundID))
 					{
-						$p_match->set('playground_id',$this->_convertPlaygroundID[$this->_getDataFromObject($match,'playground_id')]);
+						$p_match->playground_id = $this->_convertPlaygroundID[$this->_getDataFromObject($match,'playground_id')];
 					}
 					else
 					{
-						$p_match->set('playground_id',0);
+						$p_match->playground_id = 0;
 					}
 				}
-				if ($p_match->playground_id ==0)
+				if ( $p_match->playground_id == 0 )
 				{
-					$p_match->set('playground_id',NULL);
+					$p_match->playground_id = NULL;
 				}
 
-				$p_match->set('match_date',$this->_getDataFromObject($match,'match_date'));
+				$p_match->match_date = $this->_getDataFromObject($match,'match_date');
 
 /**
  * hier muss noch der timestamp übergeben werden, da sonst
@@ -4491,222 +4444,221 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
                 $p_match->set('time_present',$this->_getDataFromObject($match,'time_present'));
 
 				$team1_result=$this->_getDataFromObject($match,'team1_result');
-				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->set('team1_result',$team1_result); }
+				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->team1_result = $team1_result; }
 
 				$team2_result=$this->_getDataFromObject($match,'team2_result');
-				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->set('team2_result',$team2_result); }
+				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->team2_result = $team2_result; }
 
 				$team1_bonus=$this->_getDataFromObject($match,'team1_bonus');
-				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->set('team1_bonus',$team1_bonus); }
+				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->team1_bonus = $team1_bonus; }
 
 				$team2_bonus=$this->_getDataFromObject($match,'team2_bonus');
-				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->set('team2_bonus',$team2_bonus); }
+				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->team2_bonus = $team2_bonus; }
 
 				$team1_legs=$this->_getDataFromObject($match,'team1_legs');
-				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->set('team1_legs',$team1_legs); }
+				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->team1_legs = $team1_legs; }
 
 				$team2_legs=$this->_getDataFromObject($match,'team2_legs');
-				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->set('team2_legs',$team2_legs); }
+				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->team2_legs = $team2_legs; }
 
-				$p_match->set('team1_result_split',$this->_getDataFromObject($match,'team1_result_split'));
-				$p_match->set('team2_result_split',$this->_getDataFromObject($match,'team2_result_split'));
-				$p_match->set('match_result_type',$this->_getDataFromObject($match,'match_result_type'));
+				$p_match->team1_result_split = $this->_getDataFromObject($match,'team1_result_split');
+				$p_match->team2_result_split = $this->_getDataFromObject($match,'team2_result_split');
+				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
 
 				$team1_result_ot=$this->_getDataFromObject($match,'team1_result_ot');
-				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->set('team1_result_ot',$team1_result_ot); }
+				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
 
 				$team2_result_ot=$this->_getDataFromObject($match,'team2_result_ot');
-				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->set('team2_result_ot',$team2_result_ot); }
+				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
 
 				$team1_result_so=$this->_getDataFromObject($match,'team1_result_so');
-				if (isset($team1_result_so) && ($team1_result_so !=NULL)) { $p_match->set('team1_result_so',$team1_result_so); }
+				if (isset($team1_result_so) && ($team1_result_so !=NULL)) { $p_match->team1_result_so = $team1_result_so; }
 
 				$team2_result_so=$this->_getDataFromObject($match,'team2_result_so');
-				if (isset($team2_result_so) && ($team2_result_so !=NULL)) { $p_match->set('team2_result_so',$team2_result_so); }
+				if (isset($team2_result_so) && ($team2_result_so !=NULL)) { $p_match->team2_result_so = $team2_result_so; }
 
-				$p_match->set('alt_decision',$this->_getDataFromObject($match,'alt_decision'));
+				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
 
 				$team1_result_decision=$this->_getDataFromObject($match,'team1_result_decision');
-				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->set('team1_result_decision',$team1_result_decision); }
+				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
 
 				$team2_result_decision=$this->_getDataFromObject($match,'team2_result_decision');
-				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->set('team2_result_decision',$team2_result_decision); }
+				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
 
-				$p_match->set('decision_info',$this->_getDataFromObject($match,'decision_info'));
-				$p_match->set('cancel',$this->_getDataFromObject($match,'cancel'));
-				$p_match->set('cancel_reason',$this->_getDataFromObject($match,'cancel_reason'));
-				$p_match->set('count_result',$this->_getDataFromObject($match,'count_result'));
-				$p_match->set('crowd',$this->_getDataFromObject($match,'crowd'));
-				$p_match->set('summary',$this->_getDataFromObject($match,'summary'));
-				$p_match->set('show_report',$this->_getDataFromObject($match,'show_report'));
-				$p_match->set('preview',$this->_getDataFromObject($match,'preview'));
-				$p_match->set('match_result_detail',$this->_getDataFromObject($match,'match_result_detail'));
-				$p_match->set('new_match_id',$this->_getDataFromObject($match,'new_match_id'));
-				$p_match->set('old_match_id',$this->_getDataFromObject($match,'old_match_id'));
-				$p_match->set('extended',$this->_getDataFromObject($match,'extended'));
-				$p_match->set('published',$this->_getDataFromObject($match,'published'));
+				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
+				$p_match->cancel = $this->_getDataFromObject($match,'cancel');
+				$p_match->cancel_reason = $this->_getDataFromObject($match,'cancel_reason');
+				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
+				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
+				$p_match->summary = $this->_getDataFromObject($match,'summary');
+				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
+				$p_match->preview = $this->_getDataFromObject($match,'preview');
+				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
+				$p_match->new_match_id = $this->_getDataFromObject($match,'new_match_id');
+				$p_match->old_match_id = $this->_getDataFromObject($match,'old_match_id');
+				$p_match->extended = $this->_getDataFromObject($match,'extended');
+				$p_match->published = $this->_getDataFromObject($match,'published');
                 
 /**
  * diddipoeler
  */
-                $p_match->set('import_match_id',$this->_getDataFromObject($match,'id'));
+                $p_match->import_match_id = $this->_getDataFromObject($match,'id');
                 
                 if ( isset($this->_convertDivisionID) )
                 {
-                $p_match->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')]);
+                $p_match->division_id = $this->_convertDivisionID[$this->_getDataFromObject($match,'division_id')];
                 }
                 
                 
 			}
 			else // ($this->import_version=='OLD')
 			{
-				$p_match->set('round_id',$this->_convertRoundID[intval($match->round_id)]);
-				$p_match->set('match_number',$this->_getDataFromObject($match,'match_number'));
+				$p_match->round_id = $this->_convertRoundID[intval($match->round_id)];
+				$p_match->match_number = $this->_getDataFromObject($match,'match_number');
                 
 				if ($match->matchpart1 > 0)
 				{
-                    $p_match->set('projectteam1_id',$this->_convertProjectTeamID[intval($match->matchpart1)]);
+                    $p_match->projectteam1_id = $this->_convertProjectTeamID[intval($match->matchpart1)];
 				}
 				else
 				{
-					$p_match->set('projectteam1_id',0);
+					$p_match->projectteam1_id = 0;
 				}
 
 				if ($match->matchpart2 > 0)
 				{
-                    $p_match->set('projectteam2_id',$this->_convertProjectTeamID[intval($match->matchpart2)]);
+                    $p_match->projectteam2_id = $this->_convertProjectTeamID[intval($match->matchpart2)];
 				}
 				else
 				{
-					$p_match->set('projectteam2_id',0);
+					$p_match->projectteam2_id = 0;
 				}
                 
-				$matchdate=(string)$match->match_date;
-				$p_match->set('match_date',$matchdate);
+				$matchdate = (string)$match->match_date;
+				$p_match->match_date = $matchdate;
 
-				$team1_result=$this->_getDataFromObject($match,'matchpart1_result');
-				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->set('team1_result',$team1_result); }
+				$team1_result = $this->_getDataFromObject($match,'matchpart1_result');
+				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->team1_result = $team1_result; }
 
-				$team2_result=$this->_getDataFromObject($match,'matchpart2_result');
-				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->set('team2_result',$team2_result); }
+				$team2_result = $this->_getDataFromObject($match,'matchpart2_result');
+				if (isset($team2_result) && ($team2_result !=NULL)) { $p_match->team2_result = $team2_result; }
 
-				$team1_bonus=$this->_getDataFromObject($match,'matchpart1_bonus');
-				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->set('team1_bonus',$team1_bonus); }
+				$team1_bonus = $this->_getDataFromObject($match,'matchpart1_bonus');
+				if (isset($team1_bonus) && ($team1_bonus !=NULL)) { $p_match->team1_bonus = $team1_bonus; }
 
-				$team2_bonus=$this->_getDataFromObject($match,'matchpart2_bonus');
-				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->set('team2_bonus',$team2_bonus); }
+				$team2_bonus = $this->_getDataFromObject($match,'matchpart2_bonus');
+				if (isset($team2_bonus) && ($team2_bonus !=NULL)) { $p_match->team2_bonus = $team2_bonus; }
 
-				$team1_legs=$this->_getDataFromObject($match,'matchpart1_legs');
-				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->set('team1_legs',$team1_legs); }
+				$team1_legs = $this->_getDataFromObject($match,'matchpart1_legs');
+				if (isset($team1_legs) && ($team1_legs !=NULL)) { $p_match->team1_legs = $team1_legs; }
 
-				$team2_legs=$this->_getDataFromObject($match,'matchpart2_legs');
-				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->set('team2_legs',$team2_legs); }
+				$team2_legs = $this->_getDataFromObject($match,'matchpart2_legs');
+				if (isset($team2_legs) && ($team2_legs !=NULL)) { $p_match->team2_legs = $team2_legs; }
 
-				$p_match->set('team1_result_split',$this->_getDataFromObject($match,'matchpart1_result_split'));//NULL
-				$p_match->set('team2_result_split',$this->_getDataFromObject($match,'matchpart2_result_split'));//NULL
-				$p_match->set('match_result_type',$this->_getDataFromObject($match,'match_result_type'));
+				$p_match->team1_result_split = $this->_getDataFromObject($match,'matchpart1_result_split');//NULL
+				$p_match->team2_result_split = $this->_getDataFromObject($match,'matchpart2_result_split');//NULL
+				$p_match->match_result_type = $this->_getDataFromObject($match,'match_result_type');
 
-				$team1_result_ot=$this->_getDataFromObject($match,'matchpart1_result_ot');
-				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->set('team1_result_ot',$team1_result_ot); }
+				$team1_result_ot = $this->_getDataFromObject($match,'matchpart1_result_ot');
+				if (isset($team1_result_ot) && ($team1_result_ot !=NULL)) { $p_match->team1_result_ot = $team1_result_ot; }
 
-				$team2_result_ot=$this->_getDataFromObject($match,'matchpart2_result_ot');
-				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->set('team2_result_ot',$team2_result_ot); }
+				$team2_result_ot = $this->_getDataFromObject($match,'matchpart2_result_ot');
+				if (isset($team2_result_ot) && ($team2_result_ot !=NULL)) { $p_match->team2_result_ot = $team2_result_ot; }
 
-				$p_match->set('alt_decision',$this->_getDataFromObject($match,'alt_decision'));
+				$p_match->alt_decision = $this->_getDataFromObject($match,'alt_decision');
 
-				$team1_result_decision=$this->_getDataFromObject($match,'matchpart1_result_decision');
-				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->set('team1_result_decision',$team1_result_decision); }
+				$team1_result_decision = $this->_getDataFromObject($match,'matchpart1_result_decision');
+				if (isset($team1_result_decision) && ($team1_result_decision !=NULL)) { $p_match->team1_result_decision = $team1_result_decision; }
 
-				$team2_result_decision=$this->_getDataFromObject($match,'matchpart2_result_decision');
-				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->set('team2_result_decision',$team2_result_decision); }
+				$team2_result_decision = $this->_getDataFromObject($match,'matchpart2_result_decision');
+				if (isset($team2_result_decision) && ($team2_result_decision !=NULL)) { $p_match->team2_result_decision = $team2_result_decision; }
 
-				$p_match->set('decision_info',$this->_getDataFromObject($match,'decision_info'));
-				$p_match->set('count_result',$this->_getDataFromObject($match,'count_result'));
-				$p_match->set('crowd',$this->_getDataFromObject($match,'crowd'));
-				$p_match->set('summary',$this->_getDataFromObject($match,'summary'));
-				$p_match->set('show_report',$this->_getDataFromObject($match,'show_report'));
-				$p_match->set('match_result_detail',$this->_getDataFromObject($match,'match_result_detail'));
-				$p_match->set('published',$this->_getDataFromObject($match,'published'));
+				$p_match->decision_info = $this->_getDataFromObject($match,'decision_info');
+				$p_match->count_result = $this->_getDataFromObject($match,'count_result');
+				$p_match->crowd = $this->_getDataFromObject($match,'crowd');
+				$p_match->summary = $this->_getDataFromObject($match,'summary');
+				$p_match->show_report = $this->_getDataFromObject($match,'show_report');
+				$p_match->match_result_detail = $this->_getDataFromObject($match,'match_result_detail');
+				$p_match->published = $this->_getDataFromObject($match,'published');
                 
                 // diddipoeler
-                $p_match->set('import_match_id',$this->_getDataFromObject($match,'id'));
+                $p_match->import_match_id = $this->_getDataFromObject($match,'id');
 			}
 
-			if ( $p_match->store() === false )
-			{
-				$my_text .= 'error on match import: ';
-				$my_text .= $oldID;
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			}
-			else
-			{
-				if ($this->import_version=='NEW')
-				{
-					if ($match->projectteam1_id > 0)
-					{
-						$teamname1 = $this->_getTeamName($p_match->projectteam1_id);
-					}
-					else
-					{
-						$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
-					}
-					if ($match->projectteam2_id > 0)
-					{
-						$teamname2 = $this->_getTeamName($p_match->projectteam2_id);
-					}
-					else
-					{
-						$teamname2='<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
-					}
+try {
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $p_match);
+$insertID = JFactory::getDbo()->insertid();
+$p_match->id = $insertID;
+if ( $this->import_version == 'NEW' )
+{
+if ($match->projectteam1_id > 0)
+{
+$teamname1 = $this->_getTeamName($p_match->projectteam1_id);
+}
+else
+{
+$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+}
+if ($match->projectteam2_id > 0)
+{
+$teamname2 = $this->_getTeamName($p_match->projectteam2_id);
+}
+else
+{
+$teamname2='<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
+}
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
+			'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+			"</span><strong>$teamname1</strong>",
+            "<strong>$teamname2</strong>",
+			"<strong>$match->projectteam1_id</strong>",
+            "<strong>$match->projectteam2_id</strong>",
+            "<strong>$team1</strong>",
+            "<strong>$team2</strong>"
+            );
+$my_text .= '<br />';
+}
+                
+if ( $this->import_version == 'OLD' )
+{
+if ($match->matchpart1 > 0)
+{
+$teamname1 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart1)]);
+}
+else
+{
+$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+}
+if ($match->matchpart2 > 0)
+{
+$teamname2 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart2)]);
+}
+else
+{
+$teamname2 = '<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
+}
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s',
+			'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+			"</span><strong>$teamname1</strong>",
+			"<strong>$teamname2</strong>");
+$my_text .= '<br />';
+}
 
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
-									'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
-									"</span><strong>$teamname1</strong>",
-                                    "<strong>$teamname2</strong>",
-									"<strong>$match->projectteam1_id</strong>",
-                                    "<strong>$match->projectteam2_id</strong>",
-                                    "<strong>$team1</strong>",
-                                    "<strong>$team2</strong>"
-                                    );
-					$my_text .= '<br />';
-				}
+}	
+catch (Exception $e){
+$p_match->id = 0;    
+$my_text .= 'error on match import: ';
+$my_text .= $oldID;
+$my_text .= $e->getMessage().'<br />';
+$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
+}	
 
-				if ($this->import_version == 'OLD')
-				{
-					if ($match->matchpart1 > 0)
-					{
-						$teamname1 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart1)]);
-					}
-					else
-					{
-						$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
-					}
-					if ($match->matchpart2 > 0)
-					{
-						$teamname2 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart2)]);
-					}
-					else
-					{
-						$teamname2 = '<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
-					}
-
-					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s',
-									'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
-									"</span><strong>$teamname1</strong>",
-									"<strong>$teamname2</strong>");
-					$my_text .= '<br />';
-				}
-			}
-//$this->dump_variable("p_match", $p_match);
-
-			$insertID=$p_match->id;//JFactory::getDbo()->insertid();
-			$this->_convertMatchID[$oldId]=$insertID;
+			$insertID = $p_match->id;//JFactory::getDbo()->insertid();
+			$this->_convertMatchID[$oldId] = $insertID;
 		}
-//$this->dump_variable("this->_convertMatchID", $this->_convertMatchID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
