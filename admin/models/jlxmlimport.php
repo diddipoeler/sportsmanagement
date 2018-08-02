@@ -3766,8 +3766,15 @@ $t_params = json_encode( $ini );
 					$p_projectteam->mark = $this->_getDataFromObject($projectteam,'mark');
 				}
 				$p_projectteam->info = $this->_getDataFromObject($projectteam,'info');
-				$p_projectteam->reason = $this->_getDataFromObject($projectteam,'reason');
-				if ( $this->_getDataFromObject($projectteam,'notes') )
+				if ( $this->_getDataFromObject($projectteam,'reason') )
+				{
+                $p_projectteam->reason = $this->_getDataFromObject($projectteam,'reason');
+				}
+                else
+                {
+                $p_projectteam->reason = ' ';    
+                }
+                if ( $this->_getDataFromObject($projectteam,'notes') )
 				{
 				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'notes');
 				}
