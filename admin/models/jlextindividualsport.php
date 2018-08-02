@@ -648,7 +648,16 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 		$option='com_joomleague';
 		$app	=& JFactory::getApplication();
 		$datatable[0]='#__joomleague_match_single';
-		$fields = $this->_db->getTableFields($datatable);
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$fields = $this->_db->getTableColumns($datatable, true);
+		}
+		else
+		{
+			$fieldsArray = $this->_db->getTableFields($datatable, true);
+			$fields = array_shift($fieldsArray);
+		}
+
 		
     $sporttype = $app->getUserState( $option . 'sporttype' );
     $defaultvalues = array();

@@ -49,13 +49,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $user = JFactory::getUser();
-        $uri = JFactory::getURI();
+//        $uri = JFactory::getURI();
 		$model = $this->getModel();
         $document = JFactory::getDocument();
         $browser = JBrowser::getInstance();
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->config	= $config ;
-$this->request_url	= $uri->toString();
+//$this->request_url	= $uri->toString();
         $project_id	= $app->getUserState( "$option.pid", '0' );
         $this->project_id	= $project_id;
         $default_name_format = '';
