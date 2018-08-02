@@ -4295,6 +4295,11 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
         return true;
         }
 
+
+$table_info = JFactory::getDbo()->getTableColumns('#__sportsmanagement_round', true);
+echo ' table_info round<pre>'.print_r($table_info,true).'</pre>';
+
+
 		foreach ($this->_datas['round'] as $key => $round)
 		{
 			
@@ -4341,7 +4346,8 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
 				$my_text .= '<br />';
 			}
-			$insertID=JFactory::getDbo()->insertid();
+			
+            $insertID = JFactory::getDbo()->insertid();
 			$this->_convertRoundID[$oldId]=$insertID;
 		}
 		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
