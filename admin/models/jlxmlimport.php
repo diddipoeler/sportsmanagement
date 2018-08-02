@@ -3186,6 +3186,16 @@ $app->enqueueMessage(JText::_($e->getMessage()), 'error');
 		$p_project->template = $this->_getDataFromObject($this->_datas['project'],'template');
 		$p_project->enable_sb = $this->_getDataFromObject($this->_datas['project'],'enable_sb');
 		$p_project->sb_catid = $this->_getDataFromObject($this->_datas['project'],'sb_catid');
+		
+		if ( $this->_getDataFromObject($this->_datas['project'],'projectinfo') )
+		{
+		$p_project->projectinfo = $this->_getDataFromObject($this->_datas['project'],'projectinfo');	
+		}
+		else
+		{
+		$p_project->projectinfo = ' ';	
+		}
+		
 		if ($this->_publish){$p_project->published = 1;}
 		
 try {		
@@ -3204,25 +3214,7 @@ $my_text .= JText::sprintf('Projectname: %1$s',$p_project->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
 $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 }		
-		/*
-		if ($p_project->store()===false)
-		{
-			$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-			$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-			$my_text .= JText::sprintf('Projectname: %1$s',$p_project->name).'<br />';
-			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-		}
-		else
-		{
-			$insertID = JFactory::getDbo()->insertid();
-			$this->_project_id = $insertID;
-			$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-			$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$this->_name</strong>");
-			$my_text .= '<br />';
-			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-			return true;
-		}
-		*/
+		
 	}
 
 	/**
