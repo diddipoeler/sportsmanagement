@@ -2752,7 +2752,7 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
           // Select some fields
         $query->select('id,name,club_id,short_name,middle_name,info');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         $query->group('id');
         
 			JFactory::getDbo()->setQuery($query);
@@ -3634,7 +3634,6 @@ $t_params = json_encode( $ini );
         // Get a db connection.
         $db = JFactory::getDbo();
         
-//$this->dump_header("function _importProjectTeam");
 		$my_text = '';
 		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0){return true;}
 
@@ -3649,28 +3648,25 @@ $t_params = json_encode( $ini );
                 return true;
             }
 
-//$this->dump_variable(__FUNCTION__." projectteam", $this->_datas['projectteam']);
-//$this->dump_variable(__FUNCTION__." _convertTeamID", $this->_convertTeamID);
-
-		$my_text .= __FUNCTION__.' '.__LINE__.' _convertTeamID -> ';
-		$my_text .= '<~<pre>'.print_r($this->_convertTeamID,true).'</pre>~>';
-        $my_text .= '<br />';
+//		$my_text .= __FUNCTION__.' '.__LINE__.' _convertTeamID -> ';
+//		$my_text .= '<~<pre>'.print_r($this->_convertTeamID,true).'</pre>~>';
+//        $my_text .= '<br />';
             
         foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
 			
-  	        $my_text .= __FUNCTION__.' '.__LINE__.' projectteam -> ';
-            $my_text .= '<~<pre>'.print_r($projectteam,true).'</pre>~>';
-            $my_text .= '<br />';
+//  	        $my_text .= __FUNCTION__.' '.__LINE__.' projectteam -> ';
+//            $my_text .= '<~<pre>'.print_r($projectteam,true).'</pre>~>';
+//            $my_text .= '<br />';
             
-            $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
-            $p_projectteam = $mdl->getTable();
+//            $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
+            $p_projectteam = new stdClass();
                 
 			$import_projectteam = $this->_datas['projectteam'][$key];
 //$this->dump_variable("import_projectteam", $import_projectteam);
 			$oldID = $this->_getDataFromObject($import_projectteam,'id');
-			$p_projectteam->set('project_id',$this->_project_id);
-            $p_projectteam->set('picture',$this->_getDataFromObject($projectteam,'picture'));
+			$p_projectteam->project_id = $this->_project_id;
+            $p_projectteam->picture = $this->_getDataFromObject($projectteam,'picture');
             
 /**
 * jetzt erfolgt die umsetzung der team_id in die neue struktur 
@@ -3679,9 +3675,9 @@ $t_params = json_encode( $ini );
 			$new_team_id = 0;
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
             
-            $my_text .= __FUNCTION__.' '.__LINE__.' team_id -> ';
-			$my_text .= $team_id;
-            $my_text .= '<br />';
+//            $my_text .= __FUNCTION__.' '.__LINE__.' team_id -> ';
+//			$my_text .= $team_id;
+//            $my_text .= '<br />';
             
             if ( $team_id )
             {
@@ -3694,13 +3690,13 @@ $t_params = json_encode( $ini );
 		    $db->setQuery($query);
 		    $new_team_id = $db->loadResult();
             
-            $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
-			$my_text .= $new_team_id;
-            $my_text .= '<br />';
+//            $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
+//			$my_text .= $new_team_id;
+//            $my_text .= '<br />';
                 
             if ( $new_team_id )
             {
-                $p_projectteam->set('team_id',$new_team_id);
+                $p_projectteam->team_id = $new_team_id;
             }
             else
             {
@@ -3727,11 +3723,11 @@ $t_params = json_encode( $ini );
                 // die neue id übergeben
                 $new_team_id = $db->insertid();
                 
-                $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
-			    $my_text .= $new_team_id;
-                $my_text .= '<br />';
+//                $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
+//			    $my_text .= $new_team_id;
+//                $my_text .= '<br />';
                 
-                $p_projectteam->set('team_id',$new_team_id);
+                $p_projectteam->team_id = $new_team_id;
 			}
             }
             }
@@ -3745,52 +3741,52 @@ $t_params = json_encode( $ini );
             {
             if (count($this->_convertDivisionID) > 0)
 			{
-				$p_projectteam->set('division_id',$this->_convertDivisionID[$this->_getDataFromObject($projectteam,'division_id')]);
+				$p_projectteam->division_id = $this->_convertDivisionID[$this->_getDataFromObject($projectteam,'division_id')];
 			}
             }
 
-			$p_projectteam->set('start_points',$this->_getDataFromObject($projectteam,'start_points'));
-			$p_projectteam->set('points_finally',$this->_getDataFromObject($projectteam,'points_finally'));
-			$p_projectteam->set('neg_points_finally',$this->_getDataFromObject($projectteam,'neg_points_finally'));
-			$p_projectteam->set('matches_finally',$this->_getDataFromObject($projectteam,'matches_finally'));
-			$p_projectteam->set('won_finally',$this->_getDataFromObject($projectteam,'won_finally'));
-			$p_projectteam->set('draws_finally',$this->_getDataFromObject($projectteam,'draws_finally'));
-			$p_projectteam->set('lost_finally',$this->_getDataFromObject($projectteam,'lost_finally'));
-			$p_projectteam->set('homegoals_finally',$this->_getDataFromObject($projectteam,'homegoals_finally'));
-			$p_projectteam->set('guestgoals_finally',$this->_getDataFromObject($projectteam,'guestgoals_finally'));
-			$p_projectteam->set('diffgoals_finally',$this->_getDataFromObject($projectteam,'diffgoals_finally'));
-			$p_projectteam->set('is_in_score',$this->_getDataFromObject($projectteam,'is_in_score'));
-			$p_projectteam->set('use_finally',$this->_getDataFromObject($projectteam,'use_finally'));
-			$p_projectteam->set('admin',$this->_joomleague_admin);
+			$p_projectteam->start_points = $this->_getDataFromObject($projectteam,'start_points');
+			$p_projectteam->points_finally = $this->_getDataFromObject($projectteam,'points_finally');
+			$p_projectteam->neg_points_finally = $this->_getDataFromObject($projectteam,'neg_points_finally');
+			$p_projectteam->matches_finally = $this->_getDataFromObject($projectteam,'matches_finally');
+			$p_projectteam->won_finally = $this->_getDataFromObject($projectteam,'won_finally');
+			$p_projectteam->draws_finally = $this->_getDataFromObject($projectteam,'draws_finally');
+			$p_projectteam->lost_finally = $this->_getDataFromObject($projectteam,'lost_finally');
+			$p_projectteam->homegoals_finally = $this->_getDataFromObject($projectteam,'homegoals_finally');
+			$p_projectteam->guestgoals_finally = $this->_getDataFromObject($projectteam,'guestgoals_finally');
+			$p_projectteam->diffgoals_finally = $this->_getDataFromObject($projectteam,'diffgoals_finally');
+			$p_projectteam->is_in_score = $this->_getDataFromObject($projectteam,'is_in_score');
+			$p_projectteam->use_finally = $this->_getDataFromObject($projectteam,'use_finally');
+			$p_projectteam->admin = $this->_joomleague_admin;
 
 			if ($this->import_version=='NEW')
 			{
 				if (isset($import_projectteam->mark))
 				{
-					$p_projectteam->set('mark',$this->_getDataFromObject($projectteam,'mark'));
+					$p_projectteam->mark = $this->_getDataFromObject($projectteam,'mark');
 				}
-				$p_projectteam->set('info',$this->_getDataFromObject($projectteam,'info'));
-				$p_projectteam->set('reason',$this->_getDataFromObject($projectteam,'reason'));
+				$p_projectteam->info = $this->_getDataFromObject($projectteam,'info');
+				$p_projectteam->reason = $this->_getDataFromObject($projectteam,'reason');
 				if ( $this->_getDataFromObject($projectteam,'notes') )
 				{
-				$p_projectteam->set('notes',$this->_getDataFromObject($projectteam,'notes'));
+				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'notes');
 				}
 				else
 				{
-				$p_projectteam->set('notes',' ');	
+				$p_projectteam->notes = ' ';	
 				}
 			}
 			else
 			{
 				if ( $this->_getDataFromObject($projectteam,'notes') )
 				{
-				$p_projectteam->set('notes',$this->_getDataFromObject($projectteam,'description'));
+				$p_projectteam->notes = $this->_getDataFromObject($projectteam,'description');
 				}
 				else
 				{
-				$p_projectteam->set('notes',' ');	
+				$p_projectteam->notes = ' ';	
 				}
-				$p_projectteam->set('reason',$this->_getDataFromObject($projectteam,'info'));
+				$p_projectteam->reason = $this->_getDataFromObject($projectteam,'info');
 			}
 			
 			
@@ -3799,30 +3795,48 @@ $t_params = json_encode( $ini );
 			{
 				if (isset($this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')]))
 				{
-					$p_projectteam->set('standard_playground',$this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')]);
+					$p_projectteam->standard_playground = $this->_convertPlaygroundID[$this->_getDataFromObject($projectteam,'standard_playground')];
 				}
 			}
 
-			if ( $p_projectteam->store() === false )
-			{
-				$my_text .= 'error on projectteam import: ';
-				$my_text .= $oldID;
-                $my_text .= '<br />';
-                //$my_text .= '<~<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>~>';
-                $my_text .= '<br />';
-				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
-				//return false;
-                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			}
-			else
-			{
-				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
-											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
-                                            '<strong>'.$team_id.'</strong>');
-				$my_text .= '<br />';
-			}
+try {
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $p_projectteam);
+//$insertID = JFactory::getDbo()->insertid();
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
+			'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
+            '<strong>'.$team_id.'</strong>');
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= 'error on projectteam import: ';
+$my_text .= $oldID;
+$my_text .= '<br />';
+$my_text .= $e->getMessage().'<br />';
+$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
+}	
+
+//			if ( $p_projectteam->store() === false )
+//			{
+//				$my_text .= 'error on projectteam import: ';
+//				$my_text .= $oldID;
+//                $my_text .= '<br />';
+//                //$my_text .= '<~<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>~>';
+//                $my_text .= '<br />';
+//				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
+//				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+//				//return false;
+//                //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+//			}
+//			else
+//			{
+//				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+//				$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
+//											'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
+//                                            '<strong>'.$team_id.'</strong>');
+//				$my_text .= '<br />';
+//			}
+            
 			$insertID = $p_projectteam->id;//JFactory::getDbo()->insertid();
 			
             if ($this->import_version=='NEW')
