@@ -4589,6 +4589,10 @@ if ( !$p_match->summary )
 {
     $p_match->summary = ' ';
 }
+if ( !$p_match->preview )
+{
+    $p_match->preview = ' ';
+}
 
 try {
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $p_match);
