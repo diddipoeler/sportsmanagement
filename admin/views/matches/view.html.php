@@ -47,11 +47,11 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         
         if (version_compare(JVERSION, '3.0', 'ge'))
 		{
-			$table_info = $this->getDbo()->getTableColumns('#__sportsmanagement_match', true);
+			$table_info = $_db->getTableColumns('#__sportsmanagement_match', true);
 		}
 		else
 		{
-			$fieldsArray = $this->getDbo()->getTableFields('#__sportsmanagement_match', true);
+			$fieldsArray = $_db->getTableFields('#__sportsmanagement_match', true);
 			$table_info = array_shift($fieldsArray);
 		}
         
