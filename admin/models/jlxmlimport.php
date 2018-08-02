@@ -4585,6 +4585,11 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
                 $p_match->import_match_id = $this->_getDataFromObject($match,'id');
 			}
 
+if ( !$p_match->summary )
+{
+    $p_match->summary = ' ';
+}
+
 try {
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $p_match);
 $insertID = JFactory::getDbo()->insertid();
