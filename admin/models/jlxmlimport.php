@@ -2741,21 +2741,10 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 	   $app = JFactory::getApplication();
 	   $query = JFactory::getDbo()->getQuery(true);
 
-if ( $this->show_debug_info )
-{
-$this->dump_header("Function _importTeams");
-}
-
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0){return true;}
 		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
 			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)){return true;}
-
-
-//$this->dump_variable(__FUNCTION__." this->_datas['team']", $this->_datas['team']);
-//$this->dump_variable(__FUNCTION__." this->_newteams", $this->_newteams);
-//$this->dump_variable(__FUNCTION__." this->_dbteamsid", JFactory::getDbo()teamsid);
-
 
 		if (!empty($this->_dbteamsid))
 		{
@@ -2768,7 +2757,6 @@ $this->dump_header("Function _importTeams");
         
 			JFactory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery();
-            
 
 			$dbTeams = JFactory::getDbo()->loadObjectList('id');
 
@@ -2794,42 +2782,20 @@ $this->dump_header("Function _importTeams");
 				}
 			}
 
-if ( $this->show_debug_info )
-{
-$this->dump_variable("_convertTeamID", $this->_convertTeamID);
-}
+
 		}
 //To Be fixed: Falls Verein neu angelegt wird, muss auch das Team neu angelegt werden.
-if ( $this->show_debug_info )
-{
-echo '_dbclubsid<pre>'.print_r($this->_dbclubsid,true).'</pre>';
-echo '_newclubs<pre>'.print_r($this->_newclubs,true).'</pre>';
-echo '_newclubsid<pre>'.print_r($this->_newclubsid,true).'</pre>';
-echo '_dbteamsid<pre>'.print_r($this->_dbteamsid,true).'</pre>';
-echo '_newteams<pre>'.print_r($this->_newteams,true).'</pre>';
-echo '_convertClubID<pre>'.print_r($this->_convertClubID,true).'</pre>';
-}
+
 
 		if (!empty($this->_newteams))
 		{
 
-if ( $this->show_debug_info )
-{		  
-$this->dump_variable("newteams", $this->_newteams);
-}
-
 			foreach ($this->_newteams AS $key => $value)
 			{
 				
-                $mdl = JModelLegacy::getInstance("team", "sportsmanagementModel");
-                $p_team = $mdl->getTable();
+                $p_team = new stdClass();
             
 				$import_team = $this->_datas['team'][$key];
-
-if ( $this->show_debug_info )
-{
-$this->dump_variable("import_team", $import_team);
-}
 
 				$oldID = $this->_getDataFromObject($import_team,'id');
 				$alias = $this->_getDataFromObject($import_team,'alias');
@@ -2837,48 +2803,49 @@ $this->dump_variable("import_team", $import_team);
                 
 				if ((!empty($import_team->club_id)) && (isset($this->_convertClubID[$oldClubID])))
 				{
-					$p_team->set('club_id',$this->_convertClubID[$oldClubID]);
+					$p_team->club_id = $this->_convertClubID[$oldClubID]);
 				}
 				else
 				{
-					$p_team->set('club_id',(-1));
+					$p_team->club_id = 0;
 				}
                 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' _datas team -><br><pre>'.print_r($this->_datas['team'][$key],true).'</pre>'),'');
-//                $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' import_team -><br><pre>'.print_r($import_team,true).'</pre>'),'');
-//                $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' oldClubID -> '.$oldClubID.''),'');
-//                $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' club_id -> '.$p_team->club_id.''),'');
+				$p_team->name = substr($this->_newteams[$key],0,74);
+				$p_team->short_name = substr($this->_newteamsshort[$key],0,14);
+				$p_team->middle_name = substr($this->_newteamsmiddle[$key],0,24);
+				$p_team->website = $this->_getDataFromObject($import_team,'website');
                 
-                
-				$p_team->set('name',$this->_newteams[$key]);
-				$p_team->set('short_name',$this->_newteamsshort[$key]);
-				$p_team->set('middle_name',$this->_newteamsmiddle[$key]);
-				$p_team->set('website',$this->_getDataFromObject($import_team,'website'));
-                
-                $p_team->set('agegroup_id',$this->_getDataFromObject($import_team,'agegroup_id'));
-                $p_team->set('sports_type_id',$this->_sportstype_id);
-                
-				$p_team->set('notes',$this->_getDataFromObject($import_team,'notes'));
-				$p_team->set('picture',$this->_getDataFromObject($import_team,'picture'));
-				$p_team->set('info',$this->_newteamsinfo[$key]);
+                $p_team->agegroup_id = $this->_getDataFromObject($import_team,'agegroup_id');
+                $p_team->sports_type_id = $this->_sportstype_id;
+                if ( $this->_getDataFromObject($import_team,'notes') )
+		{
+				$p_team->notes = $this->_getDataFromObject($import_team,'notes');
+		}
+				else
+				{
+				$p_team->notes = ' ';	
+				}
+				$p_team->picture = $this->_getDataFromObject($import_team,'picture');
+				$p_team->info = $this->_newteamsinfo[$key];
+				
 				if ((isset($alias)) && (trim($alias)!=''))
 				{
-					$p_team->set('alias',$alias);
+					$p_team->alias = $alias;
 				}
 				else
 				{
-					$p_team->set('alias',JFilterOutput::stringURLSafe($this->_getDataFromObject($p_team,'name')));
+					$p_team->alias = JFilterOutput::stringURLSafe($this->_getDataFromObject($p_team,'name'));
 				}
 				if (($this->import_version=='NEW') && ($import_team->extended!=''))
 				{
-					$p_team->set('extended',$this->_getDataFromObject($import_team,'extended'));
+					$p_team->extended = $this->_getDataFromObject($import_team,'extended');
 				}
                 
                 $query->clear();
           // Select some fields
         $query->select('id,name,short_name,middle_name,info,club_id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         $query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->name)).''));
         $query->where('middle_name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->middle_name)).''));
         $query->where('info LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($p_team->info)).''));
@@ -2894,16 +2861,35 @@ $this->dump_variable("import_team", $import_team);
 				}
 				else
 				{
+					
+try {
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
+$insertID = JFactory::getDbo()->insertid();
+$this->_convertTeamID[$oldID] = $insertID;
+$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= JText::sprintf('Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
+	"</span><strong>$p_team->name</strong>",
+	"<strong>$p_team->short_name</strong>",
+	"<strong>$p_team->middle_name</strong>",
+	"<strong>$p_team->info</strong>",
+	"<strong>$p_team->club_id</strong>"
+	);
+$my_text .= '<br />';
+}	
+catch (Exception $e){
+$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
+$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
+$my_text .= $e->getMessage().'<br />';	
+$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;	
+}	
+					/*
 					if ($p_team->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 						$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
-						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
-						//$my_text .= '<pre>'.print_r($p_team,true).'</pre>';
 						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
-						//return false;
-                        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
 					else
 					{
@@ -2919,6 +2905,7 @@ $this->dump_variable("import_team", $import_team);
 													);
 						$my_text .= '<br />';
 					}
+					*/
 				}
 			}
 		}
