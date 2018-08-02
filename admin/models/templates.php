@@ -241,7 +241,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
+                            if (version_compare(JVERSION, '3.0.0', 'ge')) {
+                $xml = simplexml_load_file($metafile);
+            } else {
                         $xml = JFactory::getXML($metafile,true);
+                        }
+                        
                         $attributetitle = (string)$xml->layout->attributes()->title;
                         }
 

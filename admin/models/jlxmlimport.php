@@ -4295,10 +4295,10 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
         return true;
         }
 
-
+/*
 $table_info = JFactory::getDbo()->getTableColumns('#__sportsmanagement_round', true);
 $my_text .= ' table_info round<pre>'.print_r($table_info,true).'</pre>';
-
+*/
 
 		foreach ($this->_datas['round'] as $key => $round)
 		{
