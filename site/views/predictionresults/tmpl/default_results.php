@@ -431,13 +431,22 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 
                         $matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->timezone);
                         $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
-						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
+			$predMemberId = explode(":", $this->predictionMember->pmID);
+						
+						/*$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
 										(!is_null($memberPredictionPoint->homeResult)) ||
 										(!is_null($memberPredictionPoint->awayResult)) ||
 										(!is_null($memberPredictionPoint->homeDecision)) ||
 										(!is_null($memberPredictionPoint->awayDecision)) ||
-										($this->predictionMember->pmID==$member->pmID));
-
+										($this->predictionMember->pmID==$member->pmID));*/
+						
+						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
+                                        	(!is_null($memberPredictionPoint->homeResult)) ||
+                                        	(!is_null($memberPredictionPoint->awayResult)) ||
+                                        	(!is_null($memberPredictionPoint->homeDecision)) ||
+                                        	(!is_null($memberPredictionPoint->awayDecision)) ||
+                                         	$predMemberId[0] == $member->pmID);
+						
 //echo '<br />showAllowed<pre>~' . print_r($showAllowed,true) . '~</pre><br />';
 //echo '<br />matchTimeDate <pre>~' . print_r($matchTimeDate ,true) . '~</pre><br />';
 //echo '<br />thisTimeDate <pre>~' . print_r($thisTimeDate ,true) . '~</pre><br />';
