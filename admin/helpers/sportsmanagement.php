@@ -726,11 +726,11 @@ abstract class sportsmanagementHelper {
                             return JDatabase::getInstance($option);
                         }
                     } else {
-                        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
+                        //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
                         return JFactory::getDbo();
                     }
                 } else {
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
+                    //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
                     return JFactory::getDbo();
                 }
             }
