@@ -11,6 +11,7 @@
 
 /**
  * Joomla 4
+ * Potential backward compatibility issues in Joomla 4
  * https://docs.joomla.org/Potential_backward_compatibility_issues_in_Joomla_4
  * Class 'JToolBarHelper' not found #14330
  * https://github.com/joomla/joomla-cms/issues/14330
@@ -59,6 +60,8 @@
  * 
  * protokollierung von fehlern
  * http://eddify.me/posts/logging-in-joomla-with-jlog.html
+ * 
+ * 
  * 
  */
 
