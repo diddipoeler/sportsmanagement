@@ -167,6 +167,19 @@ echo JHtml::_('bootstrap.endTab');
  * eingebunden werden
  */
 
+switch ($view)
+{
+    case 'position':
+    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', JText::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
+    echo $this->loadTemplate('position_events');
+    echo JHtml::_('bootstrap.endTab');
+    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
+    echo $this->loadTemplate('position_statistics');
+    echo JHtml::_('bootstrap.endTab');  
+    break;
+    
+} 
+
 echo JHtml::_('bootstrap.endTabSet'); 
 ?>
 </div>
