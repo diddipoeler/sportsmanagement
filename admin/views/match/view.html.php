@@ -349,7 +349,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$events = $model->getEventsOptions($this->project_id, $matchnumber);
 		if (!$events)
 		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
 			return;
 		}
 		$eventlist = array();
