@@ -1886,7 +1886,7 @@ return $result;
         $query->where('et.published = 1');
         
         $query->order('pet.ordering, et.ordering');
-        $query->group('et.id');
+        //$query->group('et.id');
                     
 		JFactory::getDbo()->setQuery($query);
         
