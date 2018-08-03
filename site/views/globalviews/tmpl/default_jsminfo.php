@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="row" id="backbuttonfooter">
+<div class="container" id="backbuttonfooter">
 <?PHP
 echo $this->loadTemplate('backbutton');
 echo $this->loadTemplate('footer');
