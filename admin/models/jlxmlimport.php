@@ -276,7 +276,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'OLD';
                     //$this->import_version='NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), 'error');
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), '');
 					//JError::raiseNotice(0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
 				}
 
@@ -285,7 +285,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), 'error');
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), '');
 					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
 				}
 
@@ -294,7 +294,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), 'error');
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), '');
 					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
 				}
 
