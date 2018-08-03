@@ -32,7 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
-*   31-08-2018: **1.0.65** Neues Modul Eventsranking
+*   31-08-2018: **1.0.65** Neues Modul Eventsranking, Installation f. Joomla 4
 *   06-07-2018: **1.0.64** Joomla Fehlerhandling mit Tabellenauswertung vorbereitet
 *   05-04-2018: **1.0.63** JCE MediaBox for Joomla! 3
 *   30-03-2018: **1.0.62** Neues Datenbankfeld zur Turnierdarstellung
