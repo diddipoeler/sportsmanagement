@@ -146,11 +146,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 							t2.name as awayteam, t2.id AS t2id,
 							pt1.project_id,
 							m.extended as matchextended
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=m.projectteam1_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=m.projectteam2_id
-						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id
+						FROM #__sportsmanagement_match AS m
+						INNER JOIN #__sportsmanagement_project_team AS pt1 ON pt1.id=m.projectteam1_id
+						INNER JOIN #__sportsmanagement_team AS t1 ON t1.id=pt1.team_id
+						INNER JOIN #__sportsmanagement_project_team AS pt2 ON pt2.id=m.projectteam2_id
+						INNER JOIN #__sportsmanagement_team AS t2 ON t2.id=pt2.team_id
 						WHERE m.import_match_id = '.(int) $value->id;
 			JFactory::getDbo()->setQuery($query);
 			$match_data = JFactory::getDbo()->loadObject();
@@ -212,15 +212,18 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		if ( !$xmlData = $this->_getXml() )
 		{
 			$errorFound = false;
-            JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
+            JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'), 'error');
+            //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
 			foreach(libxml_get_errors() as $error)
 			{
-                JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
+                JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
+                //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
 				$errorFound = true;
 			}
 			if (!$errorFound)
             {
-                JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
+                JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('), 'error');
+                //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
             }
 		}
         
@@ -262,34 +265,37 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			foreach ($xmlData->record as $value)
 			{
 				// collect the project data of a .jlg file of JoomLeague <1.5x
-				if ($xmlData->record[$i]['object']=='JoomLeagueVersion')
+				if ($xmlData->record[$i]['object'] == 'JoomLeagueVersion')
 				{
-					$this->_datas['exportversion']=$xmlData->record[$i];
+					$this->_datas['exportversion'] = $xmlData->record[$i];
 				}
 
 				// collect the project data of a .jlg file of JoomLeague <1.5x
-				if ($xmlData->record[$i]['object']=='JoomLeague')
+				if ($xmlData->record[$i]['object'] == 'JoomLeague')
 				{
-					$this->_datas['project']=$xmlData->record[$i];
-					$this->import_version='OLD';
+					$this->_datas['project'] = $xmlData->record[$i];
+					$this->import_version = 'OLD';
                     //$this->import_version='NEW';
-					JError::raiseNotice(0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), 'error');
+					//JError::raiseNotice(0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
-				if ($xmlData->record[$i]['object']=='JoomLeague15')
+				if ($xmlData->record[$i]['object'] == 'JoomLeague15')
 				{
-					$this->_datas['project']=$xmlData->record[$i];
-					$this->import_version='NEW';
-					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
+					$this->_datas['project'] = $xmlData->record[$i];
+					$this->import_version = 'NEW';
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), 'error');
+					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
-				if ($xmlData->record[$i]['object']=='JoomLeague20')
+				if ($xmlData->record[$i]['object'] == 'JoomLeague20')
 				{
-					$this->_datas['project']=$xmlData->record[$i];
-					$this->import_version='NEW';
-					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
+					$this->_datas['project'] = $xmlData->record[$i];
+					$this->import_version = 'NEW';
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), 'error');
+					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
 				}
 
 				// collect the division data
@@ -799,7 +805,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		}
 		else
 		{
-			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'));
+		  JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'), 'error');
+			//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'));
 			return false;
 		}
 	}
@@ -5805,20 +5812,20 @@ $query->clear();
 				}
 				else
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname'));
 					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname')."'); window.history.go(-1); </script>\n";
 				}
 
 				if (empty($this->_datas['project']))
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!'));
 					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!')."'); window.history.go(-1); </script>\n";
 					return false;
 				}
 
 				if ($this->_checkProject()===false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists'));
 					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists')."'); window.history.go(-1); </script>\n";
 					return false;
 				}
@@ -5837,7 +5844,7 @@ $query->clear();
 					}
 					else
 					{
-						JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype'));
+						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype'));
 						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
@@ -5856,7 +5863,7 @@ $query->clear();
 					}
 					else
 					{
-						JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league'));
+						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league'));
 						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
@@ -5871,7 +5878,7 @@ $query->clear();
 					}
 					else
 					{
-						JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season'));
+						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season'));
 						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
@@ -5918,7 +5925,7 @@ $query->clear();
         {
 				if ( $this->_importSportsType() === false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','sports-type'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','sports-type'));
 					return $this->_success_text;
 				}
                 }
@@ -5931,7 +5938,7 @@ $query->clear();
         {
 				if ( $this->_importLeague()===false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','league'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','league'));
 					return $this->_success_text;
 				}
 }
@@ -5940,7 +5947,7 @@ $query->clear();
         {
 				if ( $this->_importSeason()===false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','season'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','season'));
 					return $this->_success_text;
 				}
                 }
@@ -5951,7 +5958,7 @@ $query->clear();
         {
 			if ( $this->_importEvents() === false )
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','event'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','event'));
 				return $this->_success_text;
 			}
 }
@@ -5960,7 +5967,7 @@ $query->clear();
         {
 			if ($this->_importStatistics()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','statistic'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','statistic'));
 				return $this->_success_text;
 			}
 }
@@ -5969,7 +5976,7 @@ $query->clear();
         {
 			if ($this->_importParentPositions()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','parent-position'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','parent-position'));
 				return $this->_success_text;
 			}
 }
@@ -5978,7 +5985,7 @@ $query->clear();
         {
 			if ($this->_importPositions()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position'));
 				return $this->_success_text;
 			}
 }
@@ -5987,7 +5994,7 @@ $query->clear();
         {
 			if ($this->_importPositionEventType()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position-eventtype'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position-eventtype'));
 				return $this->_success_text;
 			}
 }
@@ -5996,7 +6003,7 @@ $query->clear();
         {
 			if ($this->_importPlayground()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','playground'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','playground'));
 				return $this->_success_text;
 			}
 }
@@ -6005,7 +6012,7 @@ $query->clear();
         {
 			if ($this->_importClubs()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','club'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','club'));
 				return $this->_success_text;
 			}
 }
@@ -6016,7 +6023,7 @@ $query->clear();
         {
 				if ($this->_convertNewPlaygroundIDs()===false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','conversion of playground club-id'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','conversion of playground club-id'));
 					return $this->_success_text;
 				}
                 }
@@ -6027,7 +6034,7 @@ $query->clear();
         {
 			if ($this->_importTeams()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','team'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','team'));
 				return $this->_success_text;
 			}
 }
@@ -6036,7 +6043,7 @@ $query->clear();
         {
 			if ($this->_importPersons()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','person'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','person'));
 				return $this->_success_text;
 			}
 }
@@ -6048,7 +6055,7 @@ $query->clear();
         {
 				if ($this->_importProject()===false)
 				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','project'));
+					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','project'));
 					return $this->_success_text;
 				}
 }
@@ -6070,7 +6077,7 @@ $query->clear();
         {
 			if ($this->_importDivisions()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','division'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','division'));
 				return $this->_success_text;
 			}
 }
@@ -6079,7 +6086,7 @@ $query->clear();
         {
 			if ($this->_importProjectPositions()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectpositions'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectpositions'));
 				return $this->_success_text;
 			}
 }
@@ -6088,7 +6095,7 @@ $query->clear();
         {
 			if ($this->_importProjectReferees()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectreferees'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectreferees'));
 				return $this->_success_text;
 			}
 }
@@ -6098,7 +6105,7 @@ $query->clear();
         {
 			if ($this->_importProjectTeam()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectteam'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectteam'));
 				return $this->_success_text;
 			}
 }
@@ -6107,7 +6114,7 @@ $query->clear();
         {
 			if ($this->_importTeamPlayer()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamplayer'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamplayer'));
 				return $this->_success_text;
 			}
 }
@@ -6116,7 +6123,7 @@ $query->clear();
         {
 			if ($this->_importTeamStaff()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamstaff'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamstaff'));
 				return $this->_success_text;
 			}
 }
@@ -6125,7 +6132,7 @@ $query->clear();
         {
 			if ($this->_importTeamTraining()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamtraining'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamtraining'));
 				return $this->_success_text;
 			}
 }
@@ -6134,7 +6141,7 @@ $query->clear();
         {
 			if ( $this->_importRounds() === false )
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','round'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','round'));
 				return $this->_success_text;
 			}
 }
@@ -6149,7 +6156,7 @@ $query->clear();
         {
 			if ($this->_importMatches()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','match'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','match'));
 				return $this->_success_text;
 			}
 }
@@ -6158,7 +6165,7 @@ $query->clear();
         {
 			if ($this->_importMatchPlayer()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchplayer'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchplayer'));
 				return $this->_success_text;
 			}
 }
@@ -6167,7 +6174,7 @@ $query->clear();
         {
 			if ($this->_importMatchStaff()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaff'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaff'));
 				return $this->_success_text;
 			}
 }
@@ -6176,7 +6183,7 @@ $query->clear();
         {
 			if ($this->_importMatchReferee()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchreferee'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchreferee'));
 				return $this->_success_text;
 			}
 }
@@ -6185,7 +6192,7 @@ $query->clear();
         {
 			if ($this->_importMatchEvent()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchevent'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchevent'));
 				return $this->_success_text;
 			}
 }
@@ -6194,7 +6201,7 @@ $query->clear();
         {
 			if ($this->_importPositionStatistic()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','positionstatistic'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','positionstatistic'));
 				return $this->_success_text;
 			}
 }
@@ -6203,7 +6210,7 @@ $query->clear();
         {
 			if ($this->_importMatchStaffStatistic()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaffstatistic'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaffstatistic'));
 				return $this->_success_text;
 			}
 }
@@ -6212,7 +6219,7 @@ $query->clear();
         {
 			if ($this->_importMatchStatistic()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstatistic'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstatistic'));
 				return $this->_success_text;
 			}
             }
@@ -6221,7 +6228,7 @@ $query->clear();
         {
 			if ($this->_importTreetos()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treeto'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treeto'));
 				return $this->_success_text;
 			}
 }
@@ -6230,7 +6237,7 @@ $query->clear();
         {
 			if ($this->_importTreetonode()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetonode'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetonode'));
 				return $this->_success_text;
 			}
 }
@@ -6239,7 +6246,7 @@ $query->clear();
         {
 			if ($this->_importTreetomatch()===false)
 			{
-				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetomatch'));
+				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetomatch'));
 				return $this->_success_text;
 			}
 }
@@ -6263,7 +6270,7 @@ $mdl->setNewPicturePath();
 		else
 		{
 			$this->_deleteImportFile();
-			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing import data'));
+			//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing import data'));
 			return false;
 		}
 	}
