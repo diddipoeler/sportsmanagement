@@ -15,9 +15,11 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
-// import JArrayHelper
-jimport( 'joomla.utilities.array' );
-jimport( 'joomla.utilities.arrayhelper' ) ; 
+use Joomla\Utilities\ArrayHelper;
+
+//// import JArrayHelper
+//jimport( 'joomla.utilities.array' );
+//jimport( 'joomla.utilities.arrayhelper' ) ; 
 
 /**
  * sportsmanagementModelpositioneventtype
