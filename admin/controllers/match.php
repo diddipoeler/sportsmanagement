@@ -504,28 +504,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
         
         
     }
-    
-//  /**
-//   * sportsmanagementControllermatch::savecsvpressebericht()
-//   * 
-//   * @return void
-//   */
-//  function savecsvpressebericht()
-//    {
-//// Reference global application object
-//$app = JFactory::getApplication();
-//$post = $app->input->post->getArray(array());
-//$app->input->post->set('post', $post);	  
-//	  
-////$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-//	  
-//$match_id = JFactory::getApplication()->input->getInt('id',0);	  
-//$msg = '';
-//$link='index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=savepressebericht&match_id='.$match_id;
-//$this->setRedirect($link,$msg); 	  
-//	  
-//    }
-        
+       
     /**
      * sportsmanagementControllermatch::pressebericht()
      * 

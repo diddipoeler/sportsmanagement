@@ -163,20 +163,19 @@ $query->order('m.match_number');
             // Must be a valid primary key value.
             $object->id = $pks[$x];  
           $object->count_result = $count_result;
+          try {
           // Update their details in the table using id as the primary key.
-        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id', true);
-            if(!$result_update) 
-            {
-				//$this->setError(JFactory::getDbo()->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
-				$result = false;
-			}
-            else
-            {
-
-                sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
+        $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+        sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
                 $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
             }
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.JText::_($e->getMessage()),'Error');
+$result = false;
+}
+            
+            
+            
         }  
     }
     
@@ -904,21 +903,17 @@ $tournement_round = $this->jsmdb->loadResult();
             $object->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $object->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
-        // Update their details in the table using id as the primary key.
+          try {
+          // Update their details in the table using id as the primary key.
         $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
-            if(!$result_update) 
-            {
-				//$this->setError(JFactory::getDbo()->getErrorMsg());
-                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
-				$result = false;
-			}
-            else
-            {
-
-                sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
+        sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
                 $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
             }
-            
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.JText::_($e->getMessage()),'Error');
+$result = false;
+}
+
 		}
 		return $result;
 
