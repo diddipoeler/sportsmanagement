@@ -1164,23 +1164,16 @@ $result = false;
         // Where
         $query->where('m.id = '.(int) $match_id );
                 
-			$db->setQuery($query);
+		
+
+          try {
+          	$db->setQuery($query);
             $result = $db->loadObject();
-            if ( !$result )
-		    {
-			//$app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-		    $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             }
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $my_text = 'match_id<pre>'.print_r($result,true).'</pre>'; 
-        //$my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
-        }
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.JText::_($e->getMessage()),'Error');
+$result = false;
+}            
         
 			//$this->_data=JFactory::getDbo()->loadObject();
 			return $result;
