@@ -36,25 +36,16 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		
         $starttime = microtime(); 
         
-        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
-        {
-            $this->app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
-            $this->jquery = true;
-        }
-        else
-        {
-            $this->app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
-            $this->jquery = false;
-        }
-        
-        
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		
+//        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
+//        {
+//            $this->app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+//            $this->jquery = true;
+//        }
+//        else
+//        {
+//            $this->app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+//            $this->jquery = false;
+//        }
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
