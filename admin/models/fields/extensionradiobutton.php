@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version 1.0.58
 * @file 
 * @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
@@ -31,7 +31,7 @@ class JSMFormField extends JFormFieldRadio {}
  * JFormFieldExtensionRadioButton
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
@@ -59,7 +59,11 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
 	 */
 	protected function getInput() 
 	{
-	/**
+	
+		
+JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r(substr(JVERSION,0,1),true).'</pre>'),'Notice');		
+		
+		/**
      * welche joomla version ?
      */
     if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
@@ -70,7 +74,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
     {
     $this->class = "radio btn-group btn-group-yesno";    
     }	
-		
+JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' class<br><pre>'.print_r($this->class,true).'</pre>'),'Notice');				
 
 	return parent::getInput();
 	}
