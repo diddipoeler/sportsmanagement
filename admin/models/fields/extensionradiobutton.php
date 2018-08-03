@@ -68,7 +68,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
      */
     if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
     {
-	$this->class = "switcher";   
+	$this->class = "switcher btn-group btn-group-yesno";   
     }
     else
     {
