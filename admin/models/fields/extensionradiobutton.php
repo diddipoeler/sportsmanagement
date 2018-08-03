@@ -60,9 +60,6 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
 	protected function getInput() 
 	{
 	
-		
-//JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r(substr(JVERSION,0,1),true).'</pre>'),'Notice');		
-		
 		/**
      * welche joomla version ?
      */
@@ -74,7 +71,6 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
     {
     $this->class = "radio btn-group btn-group-yesno";    
     }	
-//JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' class<br><pre>'.print_r($this->class,true).'</pre>'),'Notice');				
 
 	return parent::getInput();
 	}
