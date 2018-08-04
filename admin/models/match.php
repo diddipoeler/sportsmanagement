@@ -3063,7 +3063,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         
         if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]) )
         {
-            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']] = new stdClass();
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']] = new stdClass();
         }
         
         
@@ -3088,6 +3088,11 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
     
         if ( $person_id )
         {
+            if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]) )
+            {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']] = new stdClass();
+            }
+        
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = $person_id;
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
@@ -3104,7 +3109,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
         
         if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]) )
         {
-            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']] = new stdClass();
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']] = new stdClass();
         }
         
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-A'.$a.'-Nr'];
@@ -3127,6 +3132,10 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
     }
         if ( $person_id )
         {
+            if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]) )
+            {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']] = new stdClass();
+            }
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = $person_id;
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
@@ -3609,6 +3618,18 @@ $temp->away_detail = ' ';
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
 $newpersonid = $db->insertid();       
+}
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+}                
+                    
+}
+else
+{
+$newpersonid = $playerpersonid[$key];     
+}
+
+// zuordnung season personid
 $jerseynumber = $playernumber[$key];
 // Create a new query object.
 $insertquery = $db->getQuery(true);
@@ -3621,10 +3642,16 @@ $insertquery
 ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
 ->columns($db->quoteName($columns))
 ->values(implode(',', $values));
+try {
 // Set the query using our newly populated query object and execute it.
 $db->setQuery($insertquery);
 $db->execute();
+}
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+} 
 
+// zuordnung season team personid
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
@@ -3636,17 +3663,18 @@ $insertquery
 ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
 ->columns($db->quoteName($columns))
 ->values(implode(',', $values));
+try {
 // Set the query using our newly populated query object and execute it.
 $db->setQuery($insertquery);
 $db->execute();
-         
+$new_season_team_person_id = $db->insertid(); 
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
-}                
-                
-                    
-}
+$new_season_team_person_id = 0; 
+} 
+
+
 
 }
 
