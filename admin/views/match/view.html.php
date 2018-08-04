@@ -302,6 +302,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$document = JFactory::getDocument();
 		$model = $this->getModel();
     
+    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
+    
 		$csv_file = $model->getPressebericht(); 
 		$this->csv	= $csv_file; 
 		$matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
