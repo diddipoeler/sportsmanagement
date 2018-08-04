@@ -3626,7 +3626,8 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 }
 else
 {
-$newpersonid = $playerpersonid[$key];     
+$newpersonid = $playerpersonid[$key];  
+$position_id = $project_position_id[$key];   
 }
 
 // zuordnung season personid
