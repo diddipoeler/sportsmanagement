@@ -3625,7 +3625,7 @@ $db->execute();
          
 }
 catch (Exception $e){
-
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
 }                
                 
                     
