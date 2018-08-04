@@ -3591,6 +3591,20 @@ $temp->position_id = $position_id;
 $temp->notes = ' ';
 $temp->email = ' ';
 $temp->website = ' ';
+
+$temp->injury_date = -1;
+$temp->injury_end = -1;
+$temp->injury_detail = ' ';
+
+$temp->suspension_date = -1;
+$temp->suspension_end = -1;
+$temp->suspension_detail = ' ';
+
+$temp->away_date = -1;
+$temp->away_end = -1;
+$temp->away_detail = ' ';
+
+
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
