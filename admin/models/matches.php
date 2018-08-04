@@ -14,8 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
-
-
 /**
  * sportsmanagementModelMatches
  * 
@@ -25,7 +23,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatches extends JModelList
+class sportsmanagementModelMatches extends JSMModelList
 {
 	var $_identifier = "matches";
     var $_rid = 0;
@@ -67,7 +65,11 @@ class sportsmanagementModelMatches extends JModelList
         // Initialise variables.
 		//$app = JFactory::getApplication('administrator');
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -235,12 +237,6 @@ class sportsmanagementModelMatches extends JModelList
         
         $query->order($db->escape($this->getState('list.ordering', 'mc.match_date')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
- 
- if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-         
 
 		return $query;
         
@@ -278,11 +274,11 @@ class sportsmanagementModelMatches extends JModelList
   {
   $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
-
 $query->select('count(m.id)');
 $query->from('#__sportsmanagement_match as m');
 $query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
 $query->where('r.project_id = '.$project_id);
+
 $db->setQuery($query);
 		return $db->loadResult();
 
@@ -304,16 +300,18 @@ $db->setQuery($query);
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        
-		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;
+        $query->select('*');
+        $query->from('#__sportsmanagement_match as m');
+        $query->where('round_id = '.$roundId);
+        try {
 		$db->setQuery($query);
-		//echo($this->_db->getQuery());
 		$result = $db->loadObjectList();
-		if ($result === FALSE)
-		{
-			JError::raiseError(0, $db->getErrorMsg());
-			return false;
-		}
+ }
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.JText::_($e->getMessage()),'Error');
+$result = false;
+}
+
 		return $result;
 	}
 
