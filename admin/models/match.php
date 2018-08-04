@@ -3533,10 +3533,14 @@ $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
 
-
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
 $playerpersonid = $post['playerpersonid'];
+
+$season_id = $post['season_id'];
+$fav_team = $post['fav_team'];
+$projectteamid = $post['projectteamid'];
+
 
 $this->csv_staff = $app->getUserState($option.'csv_staff');
 $this->csv_cards = $app->getUserState($option.'csv_cards');
@@ -3562,6 +3566,16 @@ $query->clear();
 
 $my_text = '';	
 
+$query->clear();
+$query->select('*');
+$query->from('#__sportsmanagement_project_position');
+$query->where('project_id = '.$project_id);
+$db->setQuery( $query );
+$result_pro_position = $db->loadAssocList('position_id');
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
+
+/*
 foreach ( $playerlastname as $key => $value )
 {
 
@@ -3571,11 +3585,11 @@ if ( !$playerpersonid[$key] )
 $temp = new stdClass();
 $temp->firstname = $playerfirstname[$key];
 $temp->lastname = $playerlastname[$key];
-
+$temp->alias = JFilterOutput::stringURLSafe( $temp->firstname.' '.$temp->lastname );
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
-                
+$newpersonid = $db->insertid();                
 }
 catch (Exception $e){
 
@@ -3585,7 +3599,7 @@ catch (Exception $e){
 }
 
 }
-
+*/
 
 
 

@@ -267,6 +267,7 @@ $lfdnummer = 0;
 <input type="hidden" name="view" value="match" />
 <input type="hidden" name="tmpl" value="component" />
 <input type="hidden" name="match_id" value="<?php echo JFactory::getApplication()->input->getInt('match_id',0); ?>" />
+
 <input type="hidden" name="season_id" value="<?php echo $this->projectws->season_id; ?>" />	
 <input type="hidden" name="fav_team" value="<?php echo $this->projectws->fav_team; ?>" />	
 <input type="hidden" name="projectteamid" value="<?php echo $this->projectteamid; ?>" />
