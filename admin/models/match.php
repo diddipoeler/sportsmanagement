@@ -3566,16 +3566,15 @@ $query->clear();
 
 $my_text = '';	
 
-$query->clear();
-$query->select('*');
-$query->from('#__sportsmanagement_project_position');
-$query->where('project_id = '.$project_id);
-$db->setQuery( $query );
-$result_pro_position = $db->loadAssocList('position_id');
+//$query->clear();
+//$query->select('*');
+//$query->from('#__sportsmanagement_project_position');
+//$query->where('project_id = '.$project_id);
+//$db->setQuery( $query );
+//$result_pro_position = $db->loadAssocList('position_id');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
 
-/*
 foreach ( $playerlastname as $key => $value )
 {
 
@@ -3586,10 +3585,43 @@ $temp = new stdClass();
 $temp->firstname = $playerfirstname[$key];
 $temp->lastname = $playerlastname[$key];
 $temp->alias = JFilterOutput::stringURLSafe( $temp->firstname.' '.$temp->lastname );
+$position_id = $project_position_id[$key];
+$temp->position_id = $position_id;
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
-$newpersonid = $db->insertid();                
+$newpersonid = $db->insertid();       
+
+// Create a new query object.
+$insertquery = $db->getQuery(true);
+// Insert columns.
+$columns = array('person_id','season_id','persontype','position_id');
+// Insert values.
+$values = array($newpersonid,$season_id,1,$position_id);
+// Prepare the insert query.
+$insertquery
+->insert($db->quoteName('#__sportsmanagement_season_person_id'))
+->columns($db->quoteName($columns))
+->values(implode(',', $values));
+// Set the query using our newly populated query object and execute it.
+$db->setQuery($insertquery);
+$db->execute();
+
+// Create a new query object.
+$insertquery = $db->getQuery(true);
+// Insert columns.
+$columns = array('person_id','season_id','team_id','persontype','published','project_position_id','jerseynumber','position_id');
+// Insert values.
+$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$team_member->jerseynumber,$position_id);
+// Prepare the insert query.
+$insertquery
+->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
+->columns($db->quoteName($columns))
+->values(implode(',', $values));
+// Set the query using our newly populated query object and execute it.
+$db->setQuery($insertquery);
+$db->execute();
+         
 }
 catch (Exception $e){
 
@@ -3599,7 +3631,7 @@ catch (Exception $e){
 }
 
 }
-*/
+
 
 
 
