@@ -3514,6 +3514,13 @@ $projectpersonid = new stdClass();
 $projectpersonid->id = 0;
 $projectpersonid->project_position_id = 0;
 }    
+
+if ( !$projectpersonid )
+{
+$projectpersonid = new stdClass();	
+$projectpersonid->id = 0;
+$projectpersonid->project_position_id = 0;    
+}
     
 return $projectpersonid;    
     
@@ -3659,7 +3666,7 @@ $insertquery = $db->getQuery(true);
 // Insert columns.
 $columns = array('person_id','season_id','team_id','persontype','published','project_position_id','jerseynumber','position_id','notes');
 // Insert values.
-$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$jerseynumber,$position_id,' ');
+$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$jerseynumber,$position_id,'\''.' '.'\'');
 // Prepare the insert query.
 $insertquery
 ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
