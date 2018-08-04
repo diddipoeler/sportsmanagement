@@ -18,7 +18,7 @@ if ( $this->matchnumber )
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<table id="<?php echo $dcsv['tableid']; ?>" class="table_from_csv_sortable<? if ($dcsv['sortable'] == false){ echo '_not';} ?>" width="<?php echo $dcsv['tablewidth']; ?>" border="<?php echo $dcsv['border']; ?>" cellspacing="<?php echo $dcsv['cellspacing']; ?>" cellpadding="<?php echo $dcsv['cellpadding']; ?>" bgcolor="<?php echo $dcsv['tablebgcolor']; ?>">
+<table id="csvplayers" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
 <tr>	
 <th class="">Spielnummer</th>	
 <th class="">Vorname</th>
@@ -85,7 +85,7 @@ if ( $this->matchnumber )
 	
 </table>
 
-<table id="<?php echo $dcsv['tableid']; ?>" class="table_from_csv_sortable<? if ($dcsv['sortable'] == false){ echo '_not';} ?>" width="<?php echo $dcsv['tablewidth']; ?>" border="<?php echo $dcsv['border']; ?>" cellspacing="<?php echo $dcsv['cellspacing']; ?>" cellpadding="<?php echo $dcsv['cellpadding']; ?>" bgcolor="<?php echo $dcsv['tablebgcolor']; ?>">
+<table id="csvstaff" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
 <tr>	
 <th class="">Staff Position</th>	
 <th class="">Vorname</th>
@@ -147,7 +147,7 @@ if ( $this->matchnumber )
 	
 </table>
 
-<table id="<?php echo $dcsv['tableid']; ?>" class="table_from_csv_sortable<? if ($dcsv['sortable'] == false){ echo '_not';} ?>" width="<?php echo $dcsv['tablewidth']; ?>" border="<?php echo $dcsv['border']; ?>" cellspacing="<?php echo $dcsv['cellspacing']; ?>" cellpadding="<?php echo $dcsv['cellpadding']; ?>" bgcolor="<?php echo $dcsv['tablebgcolor']; ?>">
+<table id="csvinout" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
 <tr>	
 <th class="">Spieler</th>	
 <th class="">Minute</th>
@@ -181,7 +181,7 @@ if ( $this->matchnumber )
 	
 </table>
 
-<table id="<?php echo $dcsv['tableid']; ?>" class="table_from_csv_sortable<? if ($dcsv['sortable'] == false){ echo '_not';} ?>" width="<?php echo $dcsv['tablewidth']; ?>" border="<?php echo $dcsv['border']; ?>" cellspacing="<?php echo $dcsv['cellspacing']; ?>" cellpadding="<?php echo $dcsv['cellpadding']; ?>" bgcolor="<?php echo $dcsv['tablebgcolor']; ?>">
+<table id="csvcards" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
 <tr>	
 <th class="">Spieler</th>	
 <th class="">Minute</th>
