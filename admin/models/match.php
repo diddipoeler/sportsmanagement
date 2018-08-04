@@ -3533,6 +3533,7 @@ $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
 
+$playernumber = $post['player'];
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
 $playerpersonid = $post['playerpersonid'];
@@ -3591,7 +3592,7 @@ $temp->position_id = $position_id;
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
 $newpersonid = $db->insertid();       
-
+$jerseynumber = $playernumber[$key];
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
@@ -3612,7 +3613,7 @@ $insertquery = $db->getQuery(true);
 // Insert columns.
 $columns = array('person_id','season_id','team_id','persontype','published','project_position_id','jerseynumber','position_id');
 // Insert values.
-$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$team_member->jerseynumber,$position_id);
+$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$jerseynumber,$position_id);
 // Prepare the insert query.
 $insertquery
 ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
