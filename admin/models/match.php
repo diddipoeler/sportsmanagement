@@ -3346,6 +3346,8 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     $app->setUserState($option.'csv_player',$this->csv_player);
     $app->setUserState($option.'projectteamid',$projectteamid);
     
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' csv_staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'   ),'');
+    
     }
 
 
