@@ -3631,7 +3631,7 @@ $position_id = $project_position_id[$key];
 }
 
 // zuordnung season personid
-$jerseynumber = $playernumber[$key];
+
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
@@ -3653,6 +3653,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 } 
 
 // zuordnung season team personid
+$jerseynumber = $playernumber[$key];
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
@@ -3672,6 +3673,7 @@ $new_season_team_person_id = $db->insertid();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
 
