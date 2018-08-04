@@ -865,7 +865,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 	$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
 $post = $app->input->post->getArray(array());
-// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
     $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
     $csv_file_save = $model->savePressebericht($post);
