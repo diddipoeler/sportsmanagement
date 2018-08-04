@@ -3363,7 +3363,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     $this->csv_staff[$i]->position = 'Zeugwart';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
     $teile = explode(",",$this->csv_staff[$i]->name);
-    if ( $teile )
+    if ( isset($teile[1]) )
     {
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);    
@@ -3588,6 +3588,7 @@ $temp->lastname = $playerlastname[$key];
 $temp->alias = JFilterOutput::stringURLSafe( $temp->firstname.' '.$temp->lastname );
 $position_id = $project_position_id[$key];
 $temp->position_id = $position_id;
+$temp->notes = ' ';
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_person', $temp);
