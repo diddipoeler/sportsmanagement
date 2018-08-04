@@ -3062,7 +3062,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         
         if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]) )
         {
-            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->nummer = 0;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']] = new stdClass();
         }
         
         
