@@ -57,6 +57,7 @@ if ( $this->matchnumber )
         <td>
         <?php 
         $inputappend = '';
+        $append = '';
         if ( $value->project_position_id != 0 )
 	{
 	$selectedvalue = $value->project_position_id;
@@ -65,11 +66,11 @@ if ( $this->matchnumber )
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFFFFF"';
+	//$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->project_position_id == 0 )
 	{
-	$append=' style="background-color:#FFFFFF"';
+	//$append=' style="background-color:#FFFFFF"';
 	}
 	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
@@ -123,6 +124,7 @@ if ( $this->matchnumber )
         <?php
         //$inputappend = ' disabled="disabled"'; 
         $inputappend = '';
+        $append = '';
         if ( $value->project_position_id != 0 )
 	{
 	$selectedvalue = $value->project_position_id;
@@ -131,11 +133,11 @@ if ( $this->matchnumber )
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFFFFF"';
+	//$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->project_position_id == 0 )
 	{
-	$append=' style="background-color:#FFFFFF"';
+	//$append=' style="background-color:#FFFFFF"';
 	}
 	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
@@ -168,7 +170,8 @@ if ( $this->matchnumber )
          
         $inputappend = '';
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFFFFF"';
+	//$append = ' style="background-color:#FFFFFF"';
+    $append = '';
 	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
@@ -211,6 +214,7 @@ if ( $this->matchnumber )
         <td>
         <?php
         $inputappend = '';
+        $append = '';
         if ( $value->event_type_id != 0 )
 	{
 	$selectedvalue = $value->event_type_id;
@@ -219,11 +223,11 @@ if ( $this->matchnumber )
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFFFFF"';
+	//$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->event_type_id == 0 )
 	{
-	$append=' style="background-color:#FFFFFF"';
+	//$append=' style="background-color:#FFFFFF"';
 	}
         echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
