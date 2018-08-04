@@ -374,6 +374,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
 	    
+        $this->projectteamid = $model->projectteamid;
         $this->lists = $lists;
     	$this->setLayout('readpressebericht');
     

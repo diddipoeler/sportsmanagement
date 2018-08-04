@@ -55,7 +55,7 @@ var $csv_player = array();
 var $csv_in_out = array();
 var $csv_cards = array();
 var $csv_staff = array();
-
+var $projectteamid = 0;
 	
 	/**
 	 * Override parent constructor.
@@ -2086,7 +2086,7 @@ else
                 
                 }
 catch (Exception $e){
-sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 }
                 					}
 				
@@ -3042,6 +3042,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     
     if ( $projectteamid )
     {
+    $this->projectteamid = $projectteamid;
     $app->enqueueMessage(JText::_('Spieldetails von '.$tblteam->name.' werden verarbeitet.'),'Notice');
     if ( $projectteamid == $tblmatch->projectteam1_id )
     {
@@ -3532,6 +3533,11 @@ $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
 
+
+$playerfirstname = $post['playerfirstname'];
+$playerlastname = $post['playerlastname'];
+$playerpersonid = $post['playerpersonid'];
+
 $this->csv_staff = $app->getUserState($option.'csv_staff');
 $this->csv_cards = $app->getUserState($option.'csv_cards');
 $this->csv_in_out = $app->getUserState($option.'csv_in_out');
@@ -3556,10 +3562,27 @@ $query->clear();
 
 $my_text = '';	
 
-foreach ( $project_position_id as $key => $value )
+foreach ( $playerlastname as $key => $value )
 {
 
+// hat der spieler schon eine personid
+if ( !$playerpersonid[$key] )
+{
+$temp = new stdClass();
+$temp->firstname = $playerfirstname[$key];
+$temp->lastname = $playerlastname[$key];
 
+// Insert the object into the table.
+try {
+$result = $db->insertObject('#__sportsmanagement_person', $temp);
+                
+}
+catch (Exception $e){
+
+}                
+                
+                    
+}
 
 }
 
