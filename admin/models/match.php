@@ -3637,8 +3637,9 @@ $newpersonid = $playerpersonid[$key];
 $position_id = $project_position_id[$key];   
 }
 
+if ( $position_id )
+{
 // zuordnung season personid
-
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
@@ -3657,8 +3658,12 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
+}
 
+if ( $position_id )
+{
 // zuordnung season team personid
 $jerseynumber = $playernumber[$key];
 // Create a new query object.
@@ -3680,9 +3685,37 @@ $new_season_team_person_id = $db->insertid();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
+}
+
+if ( $position_id )
+{
+// zuordnung season personid
+// Create a new query object.
+$insertquery = $db->getQuery(true);
+// Insert columns.
+$columns = array('person_id','project_id','persontype','project_position_id');
+// Insert values.
+$values = array($newpersonid,$project_id,1,$position_id);
+// Prepare the insert query.
+$insertquery
+->insert($db->quoteName('#__sportsmanagement_person_project_position'))
+->columns($db->quoteName($columns))
+->values(implode(',', $values));
+try {
+// Set the query using our newly populated query object and execute it.
+$db->setQuery($insertquery);
+$db->execute();
+}
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
+} 
+}
+
+
 
 
 
