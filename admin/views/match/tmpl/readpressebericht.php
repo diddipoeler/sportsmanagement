@@ -15,7 +15,7 @@ if ( $this->matchnumber )
 
 //echo ' csv <pre>',print_r($this->csv, true),'</pre>';
 //echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
-
+$lfdnummer = 0;
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <table id="csvplayers" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
@@ -31,9 +31,15 @@ if ( $this->matchnumber )
 	
 	<?php foreach ($this->csvplayers as $value): ?>
 	<tr>
-        <td><?php echo $value->nummer; ?></td>
-        <td><?php echo $value->firstname; ?></td>
-        <td><?php echo $value->lastname; ?></td>
+        <td><?php echo $value->nummer; ?>
+        <input type='hidden' name='player[<?php echo $lfdnummer; ?>]' value='<?php echo $value->nummer; ?>' />
+        </td>
+        <td><?php echo $value->firstname; ?>
+        <input type='hidden' name='playerfirstname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->firstname; ?>' />
+        </td>
+        <td><?php echo $value->lastname; ?>
+        <input type='hidden' name='playerlastname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->lastname; ?>' />
+        </td>
         <?PHP
         if ( $value->person_id )
         {
@@ -72,16 +78,19 @@ if ( $this->matchnumber )
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
 	<td>
         <?php 	
-	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
+	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
 	?>
 	</td>	
         </tr>
-	<?php endforeach; ?>
+	<?php 
+    $lfdnummer++;
+    endforeach; 
+    ?>
 	
 </table>
 
@@ -139,11 +148,14 @@ if ( $this->matchnumber )
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
-	<?php endforeach; ?>
+	<?php 
+    $lfdnummer++;
+    endforeach; 
+    ?>
 	
 </table>
 
