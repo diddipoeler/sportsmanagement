@@ -17,6 +17,15 @@ jimport('joomla.application.component.modeladmin');
 
 use Joomla\Utilities\ArrayHelper;
 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+$jsmarrayhelper = 'ArrayHelper';    
+}
+else
+{
+$jsmarrayhelper = 'JArrayHelper';    
+}   
+ 
 //// import JArrayHelper
 //jimport( 'joomla.utilities.array' );
 //jimport( 'joomla.utilities.arrayhelper' ) ; 
@@ -148,7 +157,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		$app = JFactory::getApplication();
         $result	= true;
 		$peid	= (isset($data['position_eventslist']) ? $data['position_eventslist'] : array());
-		JArrayHelper::toInteger( $peid );
+		$jsmarrayhelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype '
 		       . ' WHERE position_id = ' . $position_id
