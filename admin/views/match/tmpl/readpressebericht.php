@@ -72,12 +72,12 @@ if ( $this->matchnumber )
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
 	<td>
         <?php 	
-	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', 0 );
+	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
 	?>
 	</td>	
         </tr>
@@ -139,7 +139,7 @@ if ( $this->matchnumber )
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -172,7 +172,7 @@ if ( $this->matchnumber )
 	$selectedvalue = 0;
 	//$append = ' style="background-color:#FFFFFF"';
     $append = '';
-	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -229,7 +229,7 @@ if ( $this->matchnumber )
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
 	<?php endforeach; ?>
