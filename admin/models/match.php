@@ -3542,7 +3542,7 @@ $this->csv_player = $app->getUserState($option.'csv_player');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' in out<br><pre>'.print_r($this->csv_in_out,true).'</pre>'),'notice');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' player<br><pre>'.print_r($this->csv_player,true).'</pre>'),'notice');
 	
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post<br><pre>'.print_r($post,true).'</pre>'),'error');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post<br><pre>'.print_r($post,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_position_id<br><pre>'.print_r($project_position_id,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' project_staff_position_id<br><pre>'.print_r($project_staff_position_id,true).'</pre>'),'error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' inout_position_id<br><pre>'.print_r($inout_position_id,true).'</pre>'),'error');

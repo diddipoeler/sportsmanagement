@@ -33,6 +33,9 @@ $lfdnummer = 0;
 	<tr>
         <td><?php echo $value->nummer; ?>
         <input type='hidden' name='player[<?php echo $lfdnummer; ?>]' value='<?php echo $value->nummer; ?>' />
+        <input type='hidden' name='playerpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->person_id; ?>' />
+        <input type='hidden' name='playerprojectpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_person_id; ?>' />
+        <input type='hidden' name='playerprojectpositionid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_position_id; ?>' />
         </td>
         <td><?php echo $value->firstname; ?>
         <input type='hidden' name='playerfirstname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->firstname; ?>' />
@@ -106,9 +109,16 @@ $lfdnummer = 0;
 	
 		<?php foreach ($this->csvstaff as $value): ?>
 		<tr>
-        <td><?php echo $value->position; ?></td>
-        <td><?php echo $value->firstname; ?></td>
-        <td><?php echo $value->lastname; ?></td>
+        <td><?php echo $value->position; ?>
+        <input type='hidden' name='staffprojectpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_person_id; ?>' />
+        <input type='hidden' name='staffprojectpositionid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_position_id; ?>' />
+        </td>
+        <td><?php echo $value->firstname; ?>
+        <input type='hidden' name='stafffirstname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->firstname; ?>' />
+        </td>
+        <td><?php echo $value->lastname; ?>
+        <input type='hidden' name='stafflastname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->lastname; ?>' />
+        </td>
         <?PHP
         if ( $value->person_id )
         {
