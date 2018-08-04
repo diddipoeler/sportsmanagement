@@ -337,7 +337,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $lists['inout_position_id'] = $position_id;
 		unset( $position_id );
 
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
         
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
@@ -354,11 +354,11 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.pr
 		unset( $position_id );
         
         // events
-		$events = $model->getEventsOptions($this->project_id, $matchnumber);
+		$events = $model->getEventsOptions($this->project_id);
 		if (!$events)
 		{
             $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'),'Error');
-			return;
+			//return;
 		}
 		$eventlist = array();
         $eventlist[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT' ) );
@@ -372,7 +372,7 @@ $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.pr
 	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
         $lists['startaufstellung'] = $myoptions;
 
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
 	    
         $this->lists = $lists;
     	$this->setLayout('readpressebericht');

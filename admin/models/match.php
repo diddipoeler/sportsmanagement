@@ -1862,7 +1862,7 @@ return $result;
      * @param mixed $match_id
      * @return
      */
-    public static function getEventsOptions($project_id,$match_id)
+    public static function getEventsOptions($project_id=0,$match_id=0)
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
