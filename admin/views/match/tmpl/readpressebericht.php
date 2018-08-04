@@ -13,7 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if ( $this->matchnumber )
 {
 
-//echo '<pre>',print_r($this->csv, true),'</pre>';
+echo ' csv <pre>',print_r($this->csv, true),'</pre>';
+echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">

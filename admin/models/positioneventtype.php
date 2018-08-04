@@ -128,7 +128,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 				$row->ordering=$order[$i];
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+					//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return false;
 				}
 			}
@@ -148,7 +148,8 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 		$app = JFactory::getApplication();
         $result	= true;
 		$peid	= (isset($data['position_eventslist']) ? $data['position_eventslist'] : array());
-        if( version_compare(JSM_JVERSION,'4','eq') ) 
+        
+if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 ArrayHelper::toInteger( $peid );
 }
@@ -158,7 +159,7 @@ JArrayHelper::toInteger( $peid );
 }  
 		
 		$peids = implode( ',', $peid );
-		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype '
+		$query = ' DELETE	FROM #__sportsmanagement_position_eventtype '
 		       . ' WHERE position_id = ' . $position_id
 		       ;
 		if (count($peid)) {
@@ -168,27 +169,27 @@ JArrayHelper::toInteger( $peid );
 		$this->_db->setQuery( $query );
 		if( !$this->_db->execute() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
 		}
 
 		for ( $x = 0; $x < count( $peid ); $x++ )
 		{
-			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype SET ordering='$x' WHERE position_id = '" . $position_id . "' AND eventtype_id = '" . $peid[$x] . "'";
+			$query = "UPDATE #__sportsmanagement_position_eventtype SET ordering='$x' WHERE position_id = '" . $position_id . "' AND eventtype_id = '" . $peid[$x] . "'";
  			$this->_db->setQuery( $query );
 			if( !$this->_db->execute() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
 			}
 		}
 		for ( $x = 0; $x < count ($peid ); $x++ )
 		{
-			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype (position_id, eventtype_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
+			$query = "INSERT IGNORE INTO #__sportsmanagement_position_eventtype (position_id, eventtype_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
 			$this->_db->setQuery( $query );
 			if ( !$this->_db->execute() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
 			}
 		}
