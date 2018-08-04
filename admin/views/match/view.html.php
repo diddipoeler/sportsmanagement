@@ -302,7 +302,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$document = JFactory::getDocument();
 		$model = $this->getModel();
     
-//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
+    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
     
 		$csv_file = $model->getPressebericht(); 
 		$this->csv	= $csv_file; 
@@ -369,7 +369,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
         $lists['startaufstellung'] = $myoptions;
 
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($this->lists,true).'</pre>'),'Notice');
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
 	    
         $this->lists = $lists;
     	$this->setLayout('readpressebericht');

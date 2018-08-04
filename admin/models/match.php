@@ -3169,11 +3169,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
             $this->csv_cards[$a]->spielernummer = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Nr'];
             $this->csv_cards[$a]->spieler = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Spieler'];
             $this->csv_cards[$a]->notice = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Grund'];
-            if ( !isset($this->csv_cards[$start]) )
-            {
-            $this->csv_cards[$start] = new stdClass();
-            }
-            $this->csv_cards[$start]->event_type_id = 0;
+            $this->csv_cards[$a]->event_type_id = 0;
         }
 
     }
@@ -3204,6 +3200,10 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
     foreach ( $this->csv_cards as $key => $value )
     {
     $spielernummer = $value->spielernummer;
+    if ( !isset($this->csv_player[$spielernummer]) )
+    {
+    $this->csv_player[$spielernummer] = new stdClass();
+    }
     $project_person_id = $this->csv_player[$spielernummer]->project_person_id;
     if ( $project_person_id )
     {
