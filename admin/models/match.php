@@ -3656,9 +3656,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 // Create a new query object.
 $insertquery = $db->getQuery(true);
 // Insert columns.
-$columns = array('person_id','season_id','team_id','persontype','published','project_position_id','jerseynumber','position_id');
+$columns = array('person_id','season_id','team_id','persontype','published','project_position_id','jerseynumber','position_id','notes');
 // Insert values.
-$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$jerseynumber,$position_id);
+$values = array($newpersonid,$season_id,$fav_team,1,1,$position_id,$jerseynumber,$position_id,' ');
 // Prepare the insert query.
 $insertquery
 ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
