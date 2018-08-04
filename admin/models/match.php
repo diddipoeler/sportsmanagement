@@ -3103,7 +3103,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
         
         if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]) )
         {
-            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = 0;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']] = new stdClass();
         }
         
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-A'.$a.'-Nr'];
