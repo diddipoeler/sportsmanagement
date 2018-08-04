@@ -50,6 +50,12 @@ static $_project_id = 0;
 var $storeFailedColor = 'red';
 var $storeSuccessColor = 'green';
 var $existingInDbColor = 'orange';
+
+var $csv_player = array();
+var $csv_in_out = array();
+var $csv_cards = array();
+var $csv_staff = array();
+
 	
 	/**
 	 * Override parent constructor.
