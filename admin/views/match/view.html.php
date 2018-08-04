@@ -329,6 +329,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 			$position_id = array_merge( $position_id, $res );
 		}
+        
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getProjectPositionsOptions<br><pre>'.print_r($res,true).'</pre>'),'Notice');
+        
 		$lists['project_position_id'] = $position_id;
         $lists['inout_position_id'] = $position_id;
 		unset( $position_id );
