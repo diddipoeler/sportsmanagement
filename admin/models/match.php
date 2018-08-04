@@ -3059,6 +3059,13 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     {
         if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Nr']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Nr'])  )
         {
+        
+        if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]) )
+        {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->nummer = 0;
+        }
+        
+        
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-S'.$a.'-Nr'];
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->name = $csv_file->data[0][$find_csv.'-S'.$a.'-Spieler'];
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->hinweis = $csv_file->data[0][$find_csv.'-S'.$a.'-Hinweis'];
@@ -3093,6 +3100,12 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
     {
         if ( isset($csv_file->data[0][$find_csv.'-A'.$a.'-Nr']) && !empty($csv_file->data[0][$find_csv.'-A'.$a.'-Nr'])  )
         {
+        
+        if ( !isset($this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]) )
+        {
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = 0;
+        }
+        
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->nummer = $csv_file->data[0][$find_csv.'-A'.$a.'-Nr'];
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->name = $csv_file->data[0][$find_csv.'-A'.$a.'-Spieler'];
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->hinweis = $csv_file->data[0][$find_csv.'-A'.$a.'-Hinweis'];
@@ -3352,7 +3365,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     $app->setUserState($option.'csv_player',$this->csv_player);
     $app->setUserState($option.'projectteamid',$projectteamid);
     
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' csv_staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' csv_staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'   ),'');
     
     }
 

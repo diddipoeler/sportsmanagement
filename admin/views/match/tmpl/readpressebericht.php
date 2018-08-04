@@ -65,11 +65,11 @@ echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFCCCC"';
+	$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->project_position_id == 0 )
 	{
-	$append=' style="background-color:#FFCCCC"';
+	$append=' style="background-color:#FFFFFF"';
 	}
 	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
@@ -131,11 +131,11 @@ echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFCCCC"';
+	$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->project_position_id == 0 )
 	{
-	$append=' style="background-color:#FFCCCC"';
+	$append=' style="background-color:#FFFFFF"';
 	}
 	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
@@ -168,7 +168,7 @@ echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
          
         $inputappend = '';
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFCCCC"';
+	$append = ' style="background-color:#FFFFFF"';
 	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
@@ -219,11 +219,11 @@ echo ' csvplayers <pre>',print_r($this->csvplayers, true),'</pre>';
 	else
 	{
 	$selectedvalue = 0;
-	$append = ' style="background-color:#FFCCCC"';
+	$append = ' style="background-color:#FFFFFF"';
 	}
         if ( $value->event_type_id == 0 )
 	{
-	$append=' style="background-color:#FFCCCC"';
+	$append=' style="background-color:#FFFFFF"';
 	}
         echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
         ?>
