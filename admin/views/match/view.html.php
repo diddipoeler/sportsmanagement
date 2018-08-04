@@ -308,6 +308,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->csv	= $csv_file; 
 		$matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
 		$this->matchnumber	= $matchnumber;
+        $lists = Array();
 		if ( $matchnumber )
 			{
 				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
@@ -335,6 +336,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$lists['project_position_id'] = $position_id;
         $lists['inout_position_id'] = $position_id;
 		unset( $position_id );
+
+$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
         
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )

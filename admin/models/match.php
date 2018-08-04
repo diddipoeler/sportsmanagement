@@ -3236,7 +3236,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     }
     $this->csv_staff[$i]->position = 'Trainer';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainer'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
@@ -3264,7 +3264,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     $this->csv_staff[$i]->position = 'Trainerassistent';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainerassistent'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
@@ -3291,7 +3291,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     $this->csv_staff[$i]->position = 'Arzt';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Arzt'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
@@ -3318,7 +3318,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     $this->csv_staff[$i]->position = 'Masseur';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Masseur'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
@@ -3345,7 +3345,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     $this->csv_staff[$i]->position = 'Zeugwart';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
@@ -3373,7 +3373,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     
     $this->csv_staff[$i]->position = 'Mannschaftsverantwortlicher';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Mannschaftsverantwortlicher'];
-    $teile = explode(" ",$this->csv_staff[$i]->name);
+    $teile = explode(",",$this->csv_staff[$i]->name);
     $this->csv_staff[$i]->lastname = trim($teile[1]);
     $this->csv_staff[$i]->firstname = trim($teile[0]);
     $this->csv_staff[$i]->person_id = 0;
