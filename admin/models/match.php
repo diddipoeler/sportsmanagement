@@ -3140,6 +3140,10 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
     {
         if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit'])  )
         {
+            if ( !isset($this->csv_in_out[$a]) )
+            {
+            $this->csv_in_out[$a] = new stdClass();
+            }
             $this->csv_in_out[$a]->in_out_time = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Zeit'];
             $this->csv_in_out[$a]->came_in = 1;
             $this->csv_in_out[$a]->in = $csv_file->data[0][$find_csv.'-S'.$a.'-Ausw-Nr'];
@@ -3155,12 +3159,20 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
 
         if ( isset($csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit']) && !empty($csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit'])  )
         {
+            if ( !isset($this->csv_cards[$a]) )
+            {
+            $this->csv_cards[$a] = new stdClass();
+            }
             $this->csv_cards[$a]->event_time = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Zeit'];
             $this->csv_cards[$a]->event_name = 'Gelbe-Karte';
             $this->csv_cards[$a]->event_sum = 1;
             $this->csv_cards[$a]->spielernummer = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Nr'];
             $this->csv_cards[$a]->spieler = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Spieler'];
             $this->csv_cards[$a]->notice = $csv_file->data[0][$find_csv.'-S'.$a.'-Gelb-Grund'];
+            if ( !isset($this->csv_cards[$start]) )
+            {
+            $this->csv_cards[$start] = new stdClass();
+            }
             $this->csv_cards[$start]->event_type_id = 0;
         }
 
