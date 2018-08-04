@@ -3218,6 +3218,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     }
     // mannschaftsverantwortliche
     $i = 1;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
     $this->csv_staff[$i]->position = 'Trainer';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainer'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
@@ -3242,6 +3246,10 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     
     $i++;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
     $this->csv_staff[$i]->position = 'Trainerassistent';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainerassistent'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
@@ -3265,6 +3273,10 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     
     $i++;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
     $this->csv_staff[$i]->position = 'Arzt';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Arzt'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
@@ -3288,6 +3300,10 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     
     $i++;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
     $this->csv_staff[$i]->position = 'Masseur';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Masseur'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
@@ -3311,6 +3327,10 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     
     $i++;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
     $this->csv_staff[$i]->position = 'Zeugwart';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
@@ -3334,6 +3354,11 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     }
     
     $i++;
+    if ( !isset($this->csv_staff[$i]) )
+    {
+        $this->csv_staff[$i] = new stdClass();
+    }
+    
     $this->csv_staff[$i]->position = 'Mannschaftsverantwortlicher';
     $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Mannschaftsverantwortlicher'];
     $teile = explode(" ",$this->csv_staff[$i]->name);
