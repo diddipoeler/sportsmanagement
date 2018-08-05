@@ -3658,7 +3658,7 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
 }
 
@@ -3685,7 +3685,7 @@ $new_season_team_person_id = $db->insertid();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
 }
