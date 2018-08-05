@@ -3607,6 +3607,7 @@ $temp->position_id = $position_id;
 $temp->notes = ' ';
 $temp->email = ' ';
 $temp->website = ' ';
+$temp->published = 1;
 
 $temp->injury_date = -1;
 $temp->injury_end = -1;
