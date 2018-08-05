@@ -356,7 +356,7 @@ foreach($position_ids as $items => $item) {
 								{
 									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'teampersons');
 									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'teampersons');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
 								}
 								?>
             </div>								
