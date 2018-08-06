@@ -205,9 +205,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->teams	= $teams;
 		$this->events	= $events;
         
-        // diddipoeler
-        //$this->assignRef('eventsprojecttime',$project_model->_data->game_regular_time);
-
 		$this->addToolbar_Editeventsbb();
         
         $this->setLayout('editeventsbb');		   
