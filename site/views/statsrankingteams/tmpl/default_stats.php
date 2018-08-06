@@ -42,14 +42,14 @@ foreach ( $this->teamstotal as $key => $value )
 //echo '<pre>'.print_r($value,true).'</pre>';
 $team = $this->teams[$value[team_id]];
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $value[team_id];
 $routeparameter['ptid'] = 0;
 $routeparameter['division'] = 0;				
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);	
-$teamName = sportsmanagementHelper::formatTeamName($team,'t'.$value[team_id].'st'.$rank.'p',$this->config, $isFavTeam, $link);
+$teamName = sportsmanagementHelper::formatTeamName($team, 't'.$value[team_id].'st'.$rank.'p', $this->config, $isFavTeam, $link);
 
 ?>
 <tr>
