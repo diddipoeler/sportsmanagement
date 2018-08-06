@@ -277,7 +277,8 @@ $option = $app->input->getCmd('option');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
        
 		if (!$this->_projectid) {
-			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'));
+
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'),'error');			
 			return false;
 		}
 
