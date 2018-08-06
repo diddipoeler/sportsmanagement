@@ -54,6 +54,12 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 
+/**
+ * die übersetzungen laden
+ */
+$language = JFactory::getLanguage();
+$language->load('com_sportsmanagement', JPATH_SITE, null, true);
+
 switch ($option)
 {
     case 'com_dmod':
