@@ -360,7 +360,7 @@ $this->overallconfig['use_jquery_modal']
 		?></td>
 		<td width="5%" style="text-align: left;" class="nowrap">&nbsp; <?php
 		$model = $this->getModel();
-		$this->assign('playertool',$model->getTeamPlayer($this->project->current_round,$row->playerid));
+		$this->playertool = $model->getTeamPlayer($this->project->current_round,$row->playerid);
 		if (!empty($this->playertool[0]->injury))
 		{
 			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
