@@ -300,9 +300,17 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->where('pet.position_id IN (' . implode(',', $positionhistory) . ')');
         $query->where('et.published = 1');
         $query->order('pet.ordering ');
-
+try {
         $db->setQuery($query);
         $info = $db->loadObjectList();
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $info = false;
+}
+        
         return $info;
     }
 
