@@ -454,17 +454,17 @@ catch (Exception $e){
              $object = new stdClass();
              $object->id = $project->id;
              $object->current_round = $result->id;
+				try {
              // Update their details in the users table using id as the primary key.
              $resultupdate = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
-
-				if (!$resultupdate) 
-                {
-                    JError::raiseWarning(500, JText::_('COM_SPORTSMANAGEMENT_ERROR_CURRENT_ROUND_UPDATE_FAILED'));
-				}
-                else
-                {
-
-                }
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
+		
+				
 			}
             
 			self::$_current_round = $result;
