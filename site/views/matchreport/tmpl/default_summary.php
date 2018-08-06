@@ -1,15 +1,16 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_summary.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage matchreport
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Dispatcher\Dispatcher;
 ?>
 <!-- START of match summary -->
 <?php
@@ -57,8 +58,12 @@ if (!empty($this->match->summary))
 // Comments integration
 if (!$commentsDisabled) 
 {
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+            $dispatcher = Dispatcher::getInstance();
+        } else {
+            $dispatcher = JDispatcher::getInstance();
+        }
 
-$dispatcher = JDispatcher::getInstance();
 JPluginHelper::importPlugin( 'content', 'joomleague_comments' );
 $comments = '';
 
