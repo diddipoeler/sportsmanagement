@@ -679,7 +679,7 @@ catch (Exception $e)
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat<br><pre>'.print_r($stat,true).'</pre>'),'');                    
-if ($stat->_showinsinglematchreports) {
+if ( isset($stat->_showinsinglematchreports) ) {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat->_name<br><pre>'.print_r($stat->_name,true).'</pre>'),'');  
 //require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.$stat->_name.'.php');     
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
