@@ -1783,6 +1783,7 @@ catch (Exception $e) {
 		// Where
         $query->where('me.match_id = '.(int)$match_id );
         $query->where('p.published = 1');
+	$query->group('me.id');	
         // order
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
 try {        	
