@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_clubicons.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_clubicons
@@ -75,6 +75,13 @@ $data = new modJSMClubiconsHelper ($params,$module);
 
 $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
+
+/**
+ * die Ã¼bersetzungen laden
+ */
+$language = JFactory::getLanguage();
+$language->load('com_sportsmanagement', JPATH_SITE, null, true);
+
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
