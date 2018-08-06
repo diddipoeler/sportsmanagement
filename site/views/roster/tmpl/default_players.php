@@ -97,7 +97,7 @@ if (!empty($this->rows))
 		}
 	}
 	?>
-    
+<div class="row" id="defaultplayers">    
 <table class="<?php echo $this->config['table_class'];?> table-responsive">
 	<?php
     // jetzt kommt die schleife über die positionen
@@ -692,6 +692,7 @@ $this->overallconfig['use_jquery_modal']
 	}
 	?>
 </table>
+</div>
 	<?php
 }
 ?>
