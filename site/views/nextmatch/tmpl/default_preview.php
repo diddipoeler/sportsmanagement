@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Dispatcher\Dispatcher;
 ?>
 <!-- START of match preview -->
 <?php
@@ -49,7 +50,11 @@ if (!empty($this->match->preview))
 
 <?php
 }
-$dispatcher = JDispatcher::getInstance();
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+            $dispatcher = Dispatcher::getInstance();
+        } else {
+            $dispatcher = JDispatcher::getInstance();
+        }
 $comments = '';
 if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 		{
