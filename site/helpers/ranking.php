@@ -1141,8 +1141,8 @@ $option = $app->input->getCmd('option');
         
 		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
-			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID').': '.$round_id);
-            JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID').': '.$this->_projectid);
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'),'error');	
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'),'error');				
 			return false;
 		}
 		return $this->_roundcodes[(int)$round_id];
