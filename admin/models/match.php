@@ -3727,7 +3727,7 @@ $projectpersonid = $playerprojectpersonid[$key];
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' start '. JText::_($start),'');
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_(projectpersonid),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_($projectpersonid),'');
 
 if ( $start && $position_id && $projectpersonid )
 {
