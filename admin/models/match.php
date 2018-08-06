@@ -1472,10 +1472,18 @@ catch (Exception $e)
         $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         $query->join('LEFT','#__users u ON u.id = mc.checked_out');
         $query->where('mc.id = ' . $match_id );
-
+try{
 		$db->setQuery($query);
-		return	$db->loadObject();
-
+		$result = $db->loadObject();
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+	$result = false;
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect  
+return $result;
 	}
     
     /**
@@ -1620,39 +1628,24 @@ return $result;
         $query->select('pos.name AS positionname');
         $query->select('ppos.position_id,ppos.id AS pposid');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_'.$table.' AS mp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+		$query->from('#__sportsmanagement_match_'.$table.' AS mp');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS sp ON mp.'.$id.' = sp.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = sp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 
-//$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = sp.person_id');
-$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = sp.person_id and ppp.persontype = sp.persontype');
-
-$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = ppp.project_position_id');
+$query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = sp.person_id and ppp.persontype = sp.persontype');
+$query->join('LEFT',' #__sportsmanagement_project_position as ppos ON ppos.id = ppp.project_position_id');
  
-//$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.project_id = ppos.project_id'); 
-//$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id');
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id');
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
 
-/*        
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id');
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id'); 
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.project_id = ppos.project_id'); 
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id');
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id');
-$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
-*/        
+$query->join('INNER',' #__sportsmanagement_person AS pl ON pl.id = sp.person_id');
+$query->join('INNER',' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
 
 		// Where
         $query->where('mp.match_id = '.$match_id);
         $query->where('pl.published = 1');
         
         $query->where('ppp.project_id = '.self::$_project_id);
-        
-//        $query->where('tpl.published = 1');
-//        $query->where('tpl.projectteam_id = '.$projectteam_id);
-        
+       
         if ($projectteam_id > 0)
 		{
           $query->where('pt.id = '.$projectteam_id);
@@ -3548,7 +3541,8 @@ $project_position_id = $post['project_position_id'];
 $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
-
+$startaufstellung = $post['startaufstellung'];
+$playerprojectpersonid = $post['playerprojectpersonid'];
 $playernumber = $post['player'];
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
@@ -3629,6 +3623,7 @@ $newpersonid = $db->insertid();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 }                
                     
 }
@@ -3659,6 +3654,7 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
 }
@@ -3683,15 +3679,19 @@ try {
 $db->setQuery($insertquery);
 $db->execute();
 $new_season_team_person_id = $db->insertid(); 
+$playerprojectpersonid[$key] = $new_season_team_person_id;
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
+
+//$playerprojectpersonid[$key] = $new_season_team_person_id;
 }
 
-if ( $position_id )
+if ( $position_id && $newpersonid )
 {
 // zuordnung season personid
 // Create a new query object.
@@ -3712,12 +3712,37 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
 }
 
+// startaufstellung
+$position_id = $project_position_id[$key]; 
+$start = $startaufstellung[$key]; 
+$projectpersonid = $playerprojectpersonid[$key]; 
 
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' start '. JText::_($start),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_($projectpersonid),'');
 
+if ( $start && $position_id && $projectpersonid )
+{
+$temp = new stdClass();
+$temp->match_id = $match_id;
+$temp->teamplayer_id = $projectpersonid;
+$temp->project_position_id = $position_id;    
+// Insert the object into the table.
+try {
+$result = $db->insertObject('#__sportsmanagement_match_player', $temp);
+//$newpersonid = $db->insertid();       
+}
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
+}      
+}
 
 
 }

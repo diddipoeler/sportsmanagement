@@ -176,35 +176,19 @@ fieldset button {
                                     
                                     if ($canEdit && !$row->checked_out ) :
                                     ?>
-                            
-                            
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=<?php echo $row->id; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS').'"');
-									?>
-								</a>
+	
                                 <?PHP
+echo sportsmanagementHelper::getBootstrapModalImage('matchdetails'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/edit.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id='.$row->id,$modalwidth,$modalheight);                                
                                 endif; 
                                 
                                 //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
                                 $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/'.$row->id;
                                 //$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';
                                 ?>
-								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="<?php echo $pcture_link; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/link.png',
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE').'"');
-									?>
-								</a>
+								
                                 
               <?php
+echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);              
 							// diddipoeler einzelsportart
             
             //if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
@@ -321,11 +305,13 @@ fieldset button {
 							</td>
               
 							<td class="right"  nowrap="nowrap">
+                            <!--
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=<?php echo $date; ?>&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
 									 class="modal openroster-team1<?php echo $row->id; ?>"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
+                                     -->
 									 <?php
 									 if($row->homeplayers_count==0 || $row->homestaff_count==0 ) {
 									 	$image = 'players_add.png';
@@ -344,8 +330,11 @@ fieldset button {
 													 
 									 echo '<sub>'.$row->homestaff_count.'</sub> ';	
 									 									 ?>
-								</a>
+							<!--	</a> -->
 								<?php
+$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+                                
 								$append='';
 								if ($row->projectteam1_id == 0)
 								{
@@ -367,11 +356,13 @@ fieldset button {
 								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
+                                <!--
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
 									class="modal open-starting-away"
 									title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
+                                    -->
 									 <?php
 									 if($row->awayplayers_count==0 || $row->awaystaff_count==0 ) {
 									 	$image = 'players_add.png';
@@ -388,7 +379,11 @@ fieldset button {
 									 echo '<sub>'.$row->awaystaff_count.'</sub> ';	
 								
 									  ?>
-								</a>
+							<!--	</a> -->
+                                <?php
+$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam2_id;                                 
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+                                ?>
 							</td>
 							<td class="left"  nowrap="nowrap">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
@@ -518,9 +513,9 @@ fieldset button {
 								<td>
 									<?php
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-									echo JHtml::_(	'select.genericlist',$this->lists['match_result_type'],
-													'match_result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
-													$row->match_result_type);
+									echo JHtml::_('select.genericlist',$this->lists['match_result_type'],
+												'match_result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
+												$row->match_result_type);
 									?>
 								</td>
 								<?php
@@ -534,9 +529,9 @@ fieldset button {
                                 if (array_key_exists('result_type', $this->selectlist)) 
                                 {
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                                    echo JHtml::_(	'select.genericlist',$this->selectlist['result_type'],
-													'result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
-													$row->result_type);
+                                    echo JHtml::_('select.genericlist',$this->selectlist['result_type'],
+												'result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
+												$row->result_type);
     
                                 }
                                 else                               
@@ -556,9 +551,9 @@ fieldset button {
                             <?php
                                 
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                                    echo JHtml::_(	'select.genericlist',$this->lists['articles'],
-													'content_id'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
-													$row->content_id);
+                                    echo JHtml::_('select.genericlist',$this->lists['articles'],
+												'content_id'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
+												$row->content_id);
     
                         
 

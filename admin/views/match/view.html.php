@@ -205,9 +205,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->teams	= $teams;
 		$this->events	= $events;
         
-        // diddipoeler
-        //$this->assignRef('eventsprojecttime',$project_model->_data->game_regular_time);
-
 		$this->addToolbar_Editeventsbb();
         
         $this->setLayout('editeventsbb');		   
@@ -560,6 +557,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 	$document = JFactory::getDocument();
     $model = $this->getModel();
     $default_name_format = '';
+    $lists = array();
     
     $document->addStyleSheet(JURI::base().'/components/'.$option.'/assets/css/sportsmanagement.css');
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');  
@@ -568,6 +566,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         $tid = JFactory::getApplication()->input->getVar('team','0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
+        $this->teamname	= $teamname;
         
         // get starters
 		$starters = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
@@ -583,7 +582,8 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         
 		if (!$not_assigned && !$starters_id)
 		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH').'<br /><br />');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'),'');
+            $this->lists	= $lists;
 			return;
 		}
 
@@ -593,7 +593,8 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         		
         if (!$projectpositions)
 		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'),'');
+            $this->lists	= $lists;
 			return;
 		}
 
@@ -601,13 +602,13 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		$not_assigned_options = array();
 		foreach ((array) $not_assigned AS $p)
 		{
-			$not_assigned_options[] = JHtml::_( 'select.option',$p->value,'['.$p->jerseynumber.'] '.
-			  									sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
-			  									' - ('.JText::_($p->positionname).')');
+			$not_assigned_options[] = JHtml::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
+			  								sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
+			  								' - ('.JText::_($p->positionname).')');
 		}
-		$lists['team_players'] = JHtml::_(	'select.genericlist', $not_assigned_options, 'roster[]',
-											'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"',
-											'value', 'text');
+		$lists['team_players'] = JHtml::_('select.genericlist', $not_assigned_options, 'roster[]',
+										'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"',
+										'value', 'text');
 
 		// build position select
 		$selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
@@ -734,7 +735,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		$this->playersoptionsin	= $playersoptionsin;
         $this->playersoptionsout	= $playersoptionsout;
         $this->tid	= $tid;
-		$this->teamname	= $teamname;
+		//$this->teamname	= $teamname;
         $this->starters	= $starters;
         $this->lists	= $lists;
         
