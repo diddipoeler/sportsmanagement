@@ -78,7 +78,7 @@ catch (Exception $e)
         if (isset($this->overallconfig['person_events'])) {
             // alles ok    
         } else {
-            $person_events = sportsmanagementModelEventtypes::getEvents($project->sports_type_id);
+            $person_events = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id);
             if (is_array($person_events) || is_object($person_events)) {
                 foreach ($person_events as $events) {
                     $this->overallconfig['person_events'][] = $events->value;
