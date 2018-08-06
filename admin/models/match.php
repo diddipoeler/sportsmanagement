@@ -3549,6 +3549,7 @@ $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
 $startaufstellung = $post['startaufstellung'];
+$playerprojectpersonid = $post['playerprojectpersonid'];
 $playernumber = $post['player'];
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
