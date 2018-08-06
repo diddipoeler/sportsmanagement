@@ -866,7 +866,7 @@ $displaystats[] = $stat;
                 $quoted_tpids[] = $this->_db->Quote($teamplayer->id);
             }
 
-            $query->select('SUM(me.event_sum) as value,me.*');
+            $query->select('SUM(me.event_sum) as value,me.match_id, me.event_type_id');
             $query->from('#__sportsmanagement_match_event AS me ');
             $query->where('me.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
             $query->group('me.match_id, me.event_type_id');
