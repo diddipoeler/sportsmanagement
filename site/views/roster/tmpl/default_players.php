@@ -344,7 +344,7 @@ $this->overallconfig['use_jquery_modal']
 		if ($this->config['link_player']==1)
 		{
 		  $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', '');
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0);
        $routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
@@ -436,7 +436,7 @@ $this->overallconfig['use_jquery_modal']
 		{
 			$model = $this->getModel();
 			
-            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0));
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JFactory::getApplication()->input->get('cfg_which_database', 0));
             
 //echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';
