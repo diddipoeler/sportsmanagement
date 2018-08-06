@@ -356,11 +356,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
+                                <!--
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
 									class="modal open-starting-away"
 									title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
+                                    -->
 									 <?php
 									 if($row->awayplayers_count==0 || $row->awaystaff_count==0 ) {
 									 	$image = 'players_add.png';
@@ -377,7 +379,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 									 echo '<sub>'.$row->awaystaff_count.'</sub> ';	
 								
 									  ?>
-								</a>
+							<!--	</a> -->
+                                <?php
+$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam2_id;                                 
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+                                ?>
 							</td>
 							<td class="left"  nowrap="nowrap">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
