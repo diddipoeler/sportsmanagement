@@ -1785,11 +1785,17 @@ catch (Exception $e) {
         $query->where('p.published = 1');
         // order
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
-        	
-		$db->setQuery( $query );
-
+try {        	
+	$db->setQuery( $query );
         $events = $db->loadObjectList();
-        
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $events = false;
+}
+	
         if ( !$events )
 	    {
 	   
