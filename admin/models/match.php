@@ -3719,6 +3719,11 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 }
 
 // startaufstellung
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' startaufstellung '. JText::_($startaufstellung[$key]),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' playerprojectpersonid '. JText::_($playerprojectpersonid[$key]),'');
+
 if ( $startaufstellung[$key] && $position_id && $playerprojectpersonid[$key] )
 {
 $temp = new stdClass();
@@ -3728,7 +3733,7 @@ $temp->project_position_id = $position_id;
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_match_player', $temp);
-$newpersonid = $db->insertid();       
+//$newpersonid = $db->insertid();       
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
