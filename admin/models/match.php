@@ -3720,16 +3720,20 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 }
 
 // startaufstellung
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' startaufstellung '. JText::_($startaufstellung[$key]),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' playerprojectpersonid '. JText::_($playerprojectpersonid[$key]),'');
+$position_id = $project_position_id[$key]; 
+$start = $startaufstellung[$key]; 
+$projectpersonid = $playerprojectpersonid[$key]; 
 
-if ( $startaufstellung[$key] && $position_id && $playerprojectpersonid[$key] )
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' start '. JText::_($start),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_(projectpersonid),'');
+
+if ( $start && $position_id && $projectpersonid )
 {
 $temp = new stdClass();
 $temp->match_id = $match_id;
-$temp->teamplayer_id = $playerprojectpersonid[$key];
+$temp->teamplayer_id = $projectpersonid;
 $temp->project_position_id = $position_id;    
 // Insert the object into the table.
 try {
