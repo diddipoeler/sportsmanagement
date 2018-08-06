@@ -3548,7 +3548,7 @@ $project_position_id = $post['project_position_id'];
 $project_staff_position_id = $post['project_staff_position_id'];
 $inout_position_id = $post['inout_position_id'];
 $project_events_id = $post['project_events_id'];
-
+$startaufstellung = $post['startaufstellung'];
 $playernumber = $post['player'];
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
@@ -3689,6 +3689,8 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Er
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
+
+$playerprojectpersonid[$key] = $new_season_team_person_id;
 }
 
 if ( $position_id )
@@ -3716,8 +3718,23 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,tr
 } 
 }
 
-
-
+// startaufstellung
+if ( $startaufstellung[$key] && $position_id && $playerprojectpersonid[$key] )
+{
+$temp = new stdClass();
+$temp->match_id = $match_id;
+$temp->teamplayer_id = $playerprojectpersonid[$key];
+$temp->project_position_id = $position_id;    
+// Insert the object into the table.
+try {
+$result = $db->insertObject('#__sportsmanagement_match_player', $temp);
+$newpersonid = $db->insertid();       
+}
+catch (Exception $e){
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
+}      
+}
 
 
 }
