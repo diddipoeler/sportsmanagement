@@ -583,6 +583,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		if (!$not_assigned && !$starters_id)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'),'');
+            $this->lists	= $lists;
 			return;
 		}
 
@@ -593,6 +594,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         if (!$projectpositions)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'),'');
+            $this->lists	= $lists;
 			return;
 		}
 
