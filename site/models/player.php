@@ -870,12 +870,16 @@ $displaystats[] = $stat;
             $query->from('#__sportsmanagement_match_event AS me ');
             $query->where('me.teamplayer_id IN (' . implode(',', $quoted_tpids) . ')');
             $query->group('me.match_id, me.event_type_id');
-
+try {
             $db->setQuery($query);
             $events = $db->loadObjectList();
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
+ }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $events = false;
+}
 
             foreach ((array) $events as $ev) {
                 if (isset($gameevents[$ev->match_id])) {
@@ -885,6 +889,7 @@ $displaystats[] = $stat;
                 }
             }
         }
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect    
         return $gameevents;
     }
 
