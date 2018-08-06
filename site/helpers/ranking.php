@@ -1148,6 +1148,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSI
 	 */
 	function _getRankingCriteria()
 	{
+$app = JFactory::getApplication();		
 		if (empty($this->_criteria))
 		{
 			// get the values from ranking template setting
