@@ -580,7 +580,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         
 		if (!$not_assigned && !$starters_id)
 		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH').'<br /><br />');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'),'');
 			return;
 		}
 
@@ -590,7 +590,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         		
         if (!$projectpositions)
 		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'),'');
 			return;
 		}
 
