@@ -1125,16 +1125,7 @@ $option = $app->input->getCmd('option');
         
 			$this->_roundcodes = $db->loadAssocList('id');
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-                        $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            $my_text .= '_roundcodes -><pre>'.print_r($this->_roundcodes,true).'</pre>';
-//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
-//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    }
+            
 		}
         
       
@@ -1169,7 +1160,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSI
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-					JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA').': '.$v);
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');				
 				}
 			}
 			// set a default criteria if empty
