@@ -3630,6 +3630,7 @@ $newpersonid = $db->insertid();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 }                
                     
 }
@@ -3660,6 +3661,7 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
 }
@@ -3684,17 +3686,19 @@ try {
 $db->setQuery($insertquery);
 $db->execute();
 $new_season_team_person_id = $db->insertid(); 
+$playerprojectpersonid[$key] = $new_season_team_person_id;
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 $new_season_team_person_id = 0; 
 } 
 
-$playerprojectpersonid[$key] = $new_season_team_person_id;
+//$playerprojectpersonid[$key] = $new_season_team_person_id;
 }
 
-if ( $position_id )
+if ( $position_id && $newpersonid )
 {
 // zuordnung season personid
 // Create a new query object.
@@ -3715,6 +3719,7 @@ $db->execute();
 }
 catch (Exception $e){
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($e,true).'</pre>'),'Error');
 } 
 }
