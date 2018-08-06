@@ -344,8 +344,8 @@ $this->overallconfig['use_jquery_modal']
 		if ($this->config['link_player']==1)
 		{
 		  $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', '');
+       $routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['pid'] = $row->person_slug;
