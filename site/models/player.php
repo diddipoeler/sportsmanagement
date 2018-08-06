@@ -674,6 +674,8 @@ catch (Exception $e)
                     }
                 }
             }
+		if ( $pos_stats )
+		{
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat<br><pre>'.print_r($stat,true).'</pre>'),'');                    
@@ -688,6 +690,7 @@ $displaystats[] = $stat;
 }                    
                 }
             }
+	}
         }
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' displaystats<br><pre>'.print_r($displaystats,true).'</pre>'),'');          
         return $displaystats;
