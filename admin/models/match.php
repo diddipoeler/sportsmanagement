@@ -3690,7 +3690,7 @@ $new_season_team_person_id = 0;
 
 if ( $position_id && $newpersonid )
 {
-$position_id = $result_pro_position[$position_id]->id;	
+$position_id = $result_pro_position[$position_id]['id'];	
 // zuordnung season personid
 // Create a new query object.
 $insertquery = $db->getQuery(true);
@@ -3720,12 +3720,22 @@ $position_id = $project_position_id[$key];
 $start = $startaufstellung[$key]; 
 $projectpersonid = $playerprojectpersonid[$key]; 
 
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' start '. JText::_($start),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
-$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_($projectpersonid),'');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' schlüssel '. JText::_($key),'');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' start '. JText::_($start),'');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' position_id '. JText::_($position_id),'');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectpersonid '. JText::_($projectpersonid),'');
 
-if ( $start && $position_id && $projectpersonid )
+
+$query->clear();
+$query->select('*');
+$query->from('#__sportsmanagement_match_player');
+$query->where('match_id = '.$match_id);
+$query->where('teamplayer_id = '.$projectpersonid);
+$query->where('project_position_id = '.$position_id);
+$db->setQuery( $query );
+$result = $db->loadResult();
+
+if ( $start && $position_id && $projectpersonid && !$result )
 {
 $temp = new stdClass();
 $temp->match_id = $match_id;
