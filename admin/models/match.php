@@ -1281,7 +1281,7 @@ $result = false;
         
 		//$project_id=$app->getUserState($option.'project');
 		$in_out = array();
-        $query->select('mp.*,mp.came_in');
+        $query->select('mp.id,mp.came_in,mp.teamplayer_id,mp.match_id,mp.in_out_time');
         $query->select('p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname');
         $query->select('p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname');
         $query->select('pos.name AS in_position');
@@ -1306,18 +1306,15 @@ $result = false;
         $query->order("(mp.in_out_time+0)");
         
         $query->group("mp.teamplayer_id");
-        
+ try {       
 		$db->setQuery($query);
-        
-        
-        
-		$in_out[$tid] = $db->loadObjectList();
-        
-        if ( !$in_out[$tid] )
-	    {
-	//	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
+        $in_out[$tid] = $db->loadObjectList();
+ }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$in_out[$tid] = false;
+}        
         
 		return $in_out;
 	}
