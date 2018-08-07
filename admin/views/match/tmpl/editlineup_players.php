@@ -45,6 +45,8 @@ defined('_JEXEC') or die('Restricted access');
 					<td style="text-align:center; vertical-align:top; ">
 						<table>
 							<?php
+							if ( $this->positions )
+							{
 							foreach ($this->positions AS $position_id => $pos)
 							{
 								?>
@@ -74,6 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 									</td>
 								</tr>
 								<?php
+							}
 							}
 							?>
 						</table>
