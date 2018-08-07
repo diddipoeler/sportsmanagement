@@ -573,6 +573,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 	$this->staffpositions  = false;
 	$lists['team_players'] = '';
 	$lists['team_staffs'] = '';
+	$lists['projectpositions'] = '';
         $playersoptionsout = array();
 	$playersoptionsout[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
 	$playersoptionsin = array();
