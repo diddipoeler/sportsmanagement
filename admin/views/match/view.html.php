@@ -567,7 +567,17 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         $this->teamname	= $teamname;
-        
+        $this->preFillSuccess = false;
+	$this->positions = false;
+	$this->substitutions = false;
+	$this->staffpositions  = false;
+	$lists['team_players'] = '';
+	$lists['team_staffs'] = '';
+	$lists['projectpositions'] = '';
+        $playersoptionsout = array();
+	$playersoptionsout[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
+	$playersoptionsin = array();
+	$playersoptionsin[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
         // get starters
 		$starters = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
         $starters_id = array_keys($starters);
@@ -583,6 +593,8 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		if (!$not_assigned && !$starters_id)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'),'');
+			$this->playersoptionsin	= $playersoptionsin;
+        $this->playersoptionsout	= $playersoptionsout;
             $this->lists	= $lists;
 			return;
 		}
@@ -594,6 +606,8 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         if (!$projectpositions)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'),'');
+		$this->playersoptionsin	= $playersoptionsin;
+        $this->playersoptionsout	= $playersoptionsout;
             $this->lists	= $lists;
 			return;
 		}
@@ -619,8 +633,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		//$allplayers = $model->getTeamPlayers($tid);
         $allplayers = $model->getTeamPersons($tid, FALSE, 1);
 		
-        $playersoptionsout = array();
-		$playersoptionsout[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
+
 		
         foreach ((array)$starters AS $player)
         //foreach ((array)$allplayers AS $player)
@@ -629,8 +642,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 			sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
         
-        $playersoptionsin = array();
-		$playersoptionsin[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
+        
 		
         foreach ((array)$not_assigned AS $player)
         //foreach ((array)$allplayers AS $player)

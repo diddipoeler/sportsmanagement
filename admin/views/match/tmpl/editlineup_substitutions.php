@@ -44,6 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 				<tbody>
 					<?php
 					$k = 0;
+					if ( $this->substitutions )
+					{
 					for ($i = 0; $i < count($this->substitutions); $i++)
 					{
 						$substitution = $this->substitutions[$i];
@@ -81,6 +83,7 @@ defined('_JEXEC') or die('Restricted access');
 						</tr>
 						<?php
 						$k=(1-$k);
+					}
 					}
 					?>
 					<tr id="row-new">

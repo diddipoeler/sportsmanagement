@@ -1281,7 +1281,7 @@ $result = false;
         
 		//$project_id=$app->getUserState($option.'project');
 		$in_out = array();
-        $query->select('mp.*,mp.came_in');
+        $query->select('mp.id,mp.came_in,mp.teamplayer_id,mp.match_id,mp.in_out_time');
         $query->select('p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname');
         $query->select('p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname');
         $query->select('pos.name AS in_position');
@@ -1305,19 +1305,16 @@ $result = false;
         $query->where('pt1.id = '.$tid);
         $query->order("(mp.in_out_time+0)");
         
-        $query->group("mp.teamplayer_id");
-        
+        $query->group("mp.id,mp.came_in,mp.teamplayer_id,mp.match_id,mp.in_out_time");
+ try {       
 		$db->setQuery($query);
-        
-        
-        
-		$in_out[$tid] = $db->loadObjectList();
-        
-        if ( !$in_out[$tid] )
-	    {
-	//	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
-        
+        $in_out[$tid] = $db->loadObjectList();
+ }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$in_out[$tid] = false;
+}        
         
 		return $in_out;
 	}
@@ -3577,13 +3574,13 @@ $query->clear();
 
 $my_text = '';	
 
-//$query->clear();
-//$query->select('*');
-//$query->from('#__sportsmanagement_project_position');
-//$query->where('project_id = '.$project_id);
-//$db->setQuery( $query );
-//$result_pro_position = $db->loadAssocList('position_id');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
+$query->clear();
+$query->select('*');
+$query->from('#__sportsmanagement_project_position');
+$query->where('project_id = '.$project_id);
+$db->setQuery( $query );
+$result_pro_position = $db->loadAssocList('position_id');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
 
 
 foreach ( $playerlastname as $key => $value )
@@ -3693,6 +3690,7 @@ $new_season_team_person_id = 0;
 
 if ( $position_id && $newpersonid )
 {
+$position_id = $result_pro_position[$position_id]->id;	
 // zuordnung season personid
 // Create a new query object.
 $insertquery = $db->getQuery(true);
