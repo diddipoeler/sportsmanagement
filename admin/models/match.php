@@ -3068,7 +3068,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = 0;
-        
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->position_id = 0;
         // gibt es den spieler
         // Select some fields
         if ( $teile[0] )
@@ -3087,6 +3087,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->position_id = $projectpersonid->position_id;
         }
         
         }
@@ -3113,7 +3114,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = 0;
-        
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->position_id = 0;
         // gibt es den spieler ?
         // Select some fields
         if ( $teile[0] )
@@ -3130,6 +3131,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->position_id = $projectpersonid->position_id;
         }
         
         }
@@ -3242,6 +3244,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
+    $this->csv_staff[$i]->position_id = 0;
     
     // gibt es den staff ?
     // Select some fields
@@ -3255,6 +3258,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
     
     $i++;
@@ -3270,7 +3274,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
-    
+    $this->csv_staff[$i]->position_id = 0;
     // gibt es den staff ?
     if ( $teile[0] )
     {
@@ -3282,6 +3286,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
     
     $i++;
@@ -3317,6 +3322,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
     
     $i++;
@@ -3352,6 +3358,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
     
     $i++;
@@ -3387,6 +3394,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
     
     $i++;
@@ -3403,7 +3411,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
     $this->csv_staff[$i]->person_id = 0;
     $this->csv_staff[$i]->project_person_id = 0;
     $this->csv_staff[$i]->project_position_id = 0;
-    
+    $this->csv_staff[$i]->position_id = 0;
     // gibt es den staff ?
     if ( $teile[0] )
     {
@@ -3415,6 +3423,7 @@ $person_id = $this->getPersonId($teile[0], $teile[1]);
             $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
     }
    
     
@@ -3511,6 +3520,13 @@ $projectpersonid = new stdClass();
 $projectpersonid->id = 0;
 $projectpersonid->project_position_id = 0;    
 }
+
+$query->clear('');
+$query->select('position_id');
+$query->from('#__sportsmanagement_project_position');
+$query->where('id = ' . $projectpersonid->project_position_id );
+$db->setQuery($query);
+$projectpersonid->position_id = $db->loadResult();
     
 return $projectpersonid;    
     
@@ -3656,8 +3672,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. JText::_($e->getCode()),'Error
 } 
 }
 
-if ( $position_id )
+if ( $position_id  && $newpersonid )
 {
+$position_id = $result_pro_position[$position_id]['id'];
 // zuordnung season team personid
 $jerseynumber = $playernumber[$key];
 // Create a new query object.

@@ -69,7 +69,8 @@ $lfdnummer = 0;
         $append = '';
         if ( $value->project_position_id != 0 )
 	{
-	$selectedvalue = $value->project_position_id;
+	//$selectedvalue = $value->project_position_id;
+    $selectedvalue = $value->position_id;
 	$append = '';
 	}
 	else
