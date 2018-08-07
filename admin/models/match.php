@@ -3690,7 +3690,7 @@ $new_season_team_person_id = 0;
 
 if ( $position_id && $newpersonid )
 {
-$position_id = $result_pro_position[$position_id]->id;	
+$position_id = $result_pro_position[$position_id][id];	
 // zuordnung season personid
 // Create a new query object.
 $insertquery = $db->getQuery(true);
