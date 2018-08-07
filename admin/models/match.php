@@ -3574,13 +3574,13 @@ $query->clear();
 
 $my_text = '';	
 
-//$query->clear();
-//$query->select('*');
-//$query->from('#__sportsmanagement_project_position');
-//$query->where('project_id = '.$project_id);
-//$db->setQuery( $query );
-//$result_pro_position = $db->loadAssocList('position_id');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
+$query->clear();
+$query->select('*');
+$query->from('#__sportsmanagement_project_position');
+$query->where('project_id = '.$project_id);
+$db->setQuery( $query );
+$result_pro_position = $db->loadAssocList('position_id');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' position<br><pre>'.print_r($result_pro_position,true).'</pre>'),'error');
 
 
 foreach ( $playerlastname as $key => $value )
