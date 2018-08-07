@@ -567,7 +567,13 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         $this->teamname	= $teamname;
-        
+        $this->preFillSuccess = false;
+	    $this->positions = false;
+	    $this->substitutions = false;
+	    $this->staffpositions  = false;
+	$lists['team_players'] = '';
+	$lists['team_staffs'] = '';
+	    
         // get starters
 		$starters = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
         $starters_id = array_keys($starters);
@@ -583,9 +589,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 		if (!$not_assigned && !$starters_id)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH'),'');
-			$this->preFillSuccess = false;
-			$lists['team_players'] = '';
-			$lists['team_staffs'] = '';
+			
             $this->lists	= $lists;
 			return;
 		}
@@ -597,9 +601,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         if (!$projectpositions)
 		{
             $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS'),'');
-		$this->preFillSuccess = false;
-		$lists['team_players'] = '';
-		$lists['team_staffs'] = '';
+		
             $this->lists	= $lists;
 			return;
 		}
