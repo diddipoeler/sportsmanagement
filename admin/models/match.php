@@ -1305,7 +1305,7 @@ $result = false;
         $query->where('pt1.id = '.$tid);
         $query->order("(mp.in_out_time+0)");
         
-        $query->group("mp.teamplayer_id");
+        $query->group("mp.id,mp.came_in,mp.teamplayer_id,mp.match_id,mp.in_out_time");
  try {       
 		$db->setQuery($query);
         $in_out[$tid] = $db->loadObjectList();
