@@ -182,8 +182,14 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchdetails'.$row->id,JURI
                                 endif; 
                                 
                                 //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
-                                $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/'.$row->id;
-                                //$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+$pcture_link = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/'.$row->id;
+} else {
+$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/'.$row->id;
+}                                
+						
+                                
+						//$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';
                                 ?>
 								
                                 
