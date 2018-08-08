@@ -183,7 +183,6 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	$result = false;
     if (count($pks))
 		{
-		//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
             $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join

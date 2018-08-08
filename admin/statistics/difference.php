@@ -49,16 +49,14 @@ class SMStatisticDifference extends SMStatistic
 		$app = JFactory::getApplication();
 		//$add_ids = explode(',', $params->get('add_ids'));
         $add_ids = $params->get('add_ids');
-		//JArrayHelper::toInteger($add_ids);
 		if (!count($add_ids)) 
         {
 			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id));
 			return(array(0));
 		}
 		
-		//$sub_ids = explode(',', $params->get('sub_ids'));
         $sub_ids = $params->get('sub_ids');
-		//JArrayHelper::toInteger($sub_ids);
+
 		if (!count($sub_ids)) 
         {
 			JError::raiseError(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id));

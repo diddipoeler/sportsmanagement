@@ -10,7 +10,7 @@
  */
  
 defined('_JEXEC') or die; 
-
+use Joomla\Utilities\ArrayHelper;
 //add js file
 JHtml::_('behavior.framework');
 

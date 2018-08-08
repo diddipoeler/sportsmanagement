@@ -57,12 +57,7 @@ public function __construct($config = array())
     
 public function genNode()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$cid = $jinput->get('cid',array(),'array');
-//		JArrayHelper::toInteger($cid);
 		$id = $this->jsmjinput->get->get('id');
-		
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=treeto&layout=gennode&id=' . $id);
 	}
         

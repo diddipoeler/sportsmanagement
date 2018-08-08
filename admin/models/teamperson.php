@@ -363,7 +363,6 @@ $db->setQuery($query);
 	$result = false;
     if (count($pks))
 		{
-		//JArrayHelper::toInteger($cid);
 	    foreach( $pks as $key => $value )
 	    {
 		$delete_all[] = $tpid[$value];    

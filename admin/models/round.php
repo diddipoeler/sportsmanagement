@@ -280,9 +280,6 @@ class sportsmanagementModelround extends JSMModelAdmin
 
     if (count($pks))
 		{
-			//JArrayHelper::toInteger($cid);
-			//$cids = implode(',',$pks);
-            
             // matches
             $query->clear();
             $query->select('m.id');
