@@ -46,13 +46,18 @@ if (!empty($this->matchplayerpositions ))
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
 	
 		<?php
-    $idxTab = 100;
-    echo JHtml::_('tabs.start','tabs_matchreport_stats', array('useCookie'=>1));
-	echo JHtml::_('tabs.panel', $this->team1->name, 'panel'.($idxTab++));
-    echo $this->loadTemplate('stats_home');
-	echo JHtml::_('tabs.panel', $this->team2->name, 'panel'.($idxTab++));
-    echo $this->loadTemplate('stats_away');
-    echo JHtml::_('tabs.end');
+// Define tabs options for version of Joomla! 4.0
+$tabsOptions = array(
+    "active" => "tab1_id" // It is the ID of the active tab.
+);
+echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', JText::_($this->team1->name));
+echo $this->loadTemplate('stats_home');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats2_id', JText::_($this->team2->name));
+echo $this->loadTemplate('stats_away');
+echo JHtml::_('bootstrap.endTab');
+echo JHtml::_('bootstrap.endTabSet', 'ID-Tabs-Group-Stats');
     
 	endif;
 }
