@@ -293,7 +293,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             return array();
         }
 
-        $query->select('DISTINCT et.*');
+        $query->select('DISTINCT et.*,pet.ordering');
         $query->from('#__sportsmanagement_eventtype AS et');
         $query->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
         $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pet.position_id');
