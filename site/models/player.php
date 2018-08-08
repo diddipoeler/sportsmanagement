@@ -614,19 +614,18 @@ catch (Exception $e)
                 $query_core->where('pos.sports_type_id = ' . $sports_type_id);
             }
 
-            $query_core->group('s.id');
-
+            $query_core->group('s.id,ppos.id');
+try{
             $db->setQuery($query_core);
-
-            if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-                $my_text = 'dump <pre>' . print_r($query_core->dump(), true) . '</pre>';
-                //$my_text .= 'cardsresult <pre>'.print_r($cardsresult,true).'</pre>';   
-                //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-                sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-            }
-
             $this->_careerStats = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $this->_careerStats = false;
+}            
+            
         }
 
         $stats = array();
