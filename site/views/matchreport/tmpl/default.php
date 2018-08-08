@@ -70,7 +70,7 @@ if (!empty($this->matchplayerpositions ))
 
 ?>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container">
 
 <?php
 
