@@ -59,7 +59,7 @@ if (!empty($this->match->summary))
 if (!$commentsDisabled) 
 {
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $dispatcher = Dispatcher::getInstance();
+            //$dispatcher = Dispatcher::getInstance();
         } else {
             $dispatcher = JDispatcher::getInstance();
         }
@@ -96,13 +96,13 @@ $comments = '';
 	if ($separate_comments) {
 
 	// Comments integration trigger when separate_comments in plugin is set to yes/1
-		if ($dispatcher->trigger( 'onMatchReportComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		if (\JFactory::getApplication()->triggerEvent( 'onMatchReportComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
 	else {
 		// Comments integration trigger when separate_comments in plugin is set to no/0
-		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		if (\JFactory::getApplication()->triggerEvent( 'onMatchComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
