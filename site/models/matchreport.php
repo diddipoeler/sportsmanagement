@@ -725,16 +725,17 @@ catch (Exception $e)
     break;
     
   }
-  		
+  	try{	
         $db->setQuery($query);
-	  try{
 		$res = $db->loadResult();
 		}
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+	if ( $res )
+    {
+    	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -742,7 +743,6 @@ catch (Exception $e)
         }
         else
         {
-		//$jRegistry->loadString($res, 'ini');
 		$jRegistry->loadJSON($res);
 		}
     
@@ -751,6 +751,7 @@ catch (Exception $e)
     $bildpositionen[$schema][$a][$which]['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
     $bildpositionen[$schema][$a][$which]['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
     $position++;
+    }
     }
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $bildpositionen;
