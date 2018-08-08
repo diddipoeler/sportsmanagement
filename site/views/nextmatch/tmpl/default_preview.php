@@ -51,7 +51,7 @@ if (!empty($this->match->preview))
 <?php
 }
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $dispatcher = Dispatcher::getInstance();
+            //$dispatcher = Dispatcher::getInstance();
         } else {
             $dispatcher = JDispatcher::getInstance();
         }
@@ -85,7 +85,7 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 /**
  * Comments integration trigger when separate_comments in plugin is set to yes/1
  */
-		if ($dispatcher->trigger( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
+		if (\JFactory::getApplication()->triggerEvent( 'onNextMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
@@ -93,7 +93,7 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 /**
  * Comments integration trigger when separate_comments in plugin is set to no/0
  */
-		if ($dispatcher->trigger( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
+		if (\JFactory::getApplication()->triggerEvent( 'onMatchComments', array( &$this->match, $this->teams[0]->name .' - '. $this->teams[1]->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
