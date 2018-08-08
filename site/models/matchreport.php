@@ -431,11 +431,10 @@ catch (Exception $e)
         $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id ');
 	    $query->join('LEFT','#__sportsmanagement_match_event AS me ON et.id = me.event_type_id ');
         $query->where('me.match_id = '.(int)$this->matchid);
-        $query->group('et.id');
+        $query->group('pet.ordering,et.id');
         $query->order('pet.ordering');
-                    
+        try{            
 		$db->setQuery($query);
-		try{
         $result = $db->loadObjectList();
 		}
 catch (Exception $e)
