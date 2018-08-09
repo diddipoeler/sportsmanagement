@@ -1,7 +1,7 @@
 <?php
 
 defined('_JEXEC') or die();
-
+use Joomla\Utilities\ArrayHelper;
 class JElementJLMLItemid extends JElement
 {
 
@@ -86,13 +86,13 @@ class JElementJLMLItemid extends JElement
 		$items = $menu->getMenu();		
 		
 		$items2 = $menu->getItems("component","com_sportsmanagement");
-		JArrayHelper::sortObjects($items2,"menutype");
+		ArrayHelper::sortObjects($items2,"menutype");
 		foreach ($items2 as &$item) {
 			$item->title = $item->name. " (".$item->menutype." - ".$item->component.")";
 			unset($item);
 		}
 		
-		JArrayHelper::sortObjects($items,"menutype");
+		ArrayHelper::sortObjects($items,"menutype");
 		foreach ($items as &$item) {
 			if ($item->component!="com_sportsmanagement"){
 				$item->title = $item->name. " (".$item->menutype." - ".$item->component.")";

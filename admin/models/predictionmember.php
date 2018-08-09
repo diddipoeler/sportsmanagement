@@ -17,6 +17,7 @@ jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelpredictionmember
@@ -478,7 +479,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		if ( !$cids = $this->_db->loadResultArray() ) { return false; }
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 
-		JArrayHelper::toInteger( $cids );
+		ArrayHelper::toInteger( $cids );
 		$cids = implode( ',', $cids );
 		$query =	'	SELECT u.email
 						FROM #__users AS u
@@ -721,7 +722,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
 			$query = 'DELETE FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ')';
 			$this->_db->setQuery( $query );
@@ -752,7 +753,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
 		if (count($cid))
 		{
-			JArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode(',',$cid);
 			$query = 'SELECT user_id FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />';
@@ -776,7 +777,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			}
 			//echo '<pre>'; print_r($result); echo '</pre>';
 
-			JArrayHelper::toInteger($result);
+			ArrayHelper::toInteger($result);
 			$cids = implode(',',$result);
 			$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />'; return true;

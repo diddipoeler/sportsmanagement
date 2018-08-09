@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
-
+use Joomla\Utilities\ArrayHelper;
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'predictiongames.php');
 
 /**
@@ -220,7 +220,7 @@ else
         
          $result	= true;
 		$peid	= ( isset( $data['user_ids'] ) ? $data['user_ids'] : array() );
-		JArrayHelper::toInteger( $peid );
+		ArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 
 		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin WHERE prediction_id = ' . $data['id'];
@@ -271,7 +271,7 @@ else
         
          $result	= true;
 		$peid	= (isset($data['project_ids']) ? $data['project_ids'] : array());
-		JArrayHelper::toInteger($peid);
+		ArrayHelper::toInteger($peid);
 		$peids = implode(',',$peid);
 
 		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project WHERE prediction_id = ' . $data['id'];
@@ -324,7 +324,7 @@ else
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
@@ -355,7 +355,7 @@ else
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project')->where('prediction_id IN ('.$cids.')' );
 
@@ -387,7 +387,7 @@ else
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
@@ -418,7 +418,7 @@ else
         
 		if ( count( $cid ) )
 		{
-			JArrayHelper::toInteger( $cid );
+			ArrayHelper::toInteger( $cid );
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
@@ -542,8 +542,6 @@ else
         $query = $db->getQuery(true);
         
  		$result	= true;
-
-		//JArrayHelper::toInteger($cid);
 
 		foreach ($cid AS $predictonID)
 		{

@@ -23,6 +23,8 @@ JLoader::import('joomla.utilities.simplecrypt');
 JLoader::import('libraries.joomla.google.google', JPATH_ADMINISTRATOR);
 JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * sportsmanagementModelMatch
  * 
@@ -945,7 +947,7 @@ $result = false;
 	$result = false;
     if (count($pks))
 		{
-			//JArrayHelper::toInteger($cid);
+
 			$cids = implode(',',$pks);
             // wir löschen mit join
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
@@ -1969,7 +1971,7 @@ $query->clear();
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' delete referees: <br><pre>'.print_r($result_referee_delete ,true).'</pre>'),'Error');          
           
           // Delete all referees which are not selected anymore from this match
-			JArrayHelper::toInteger($peid);
+			ArrayHelper::toInteger($peid);
 			$peids = implode(',',$peid);
             $query->clear();
             $query->delete($db->quoteName('#__sportsmanagement_match_referee'));

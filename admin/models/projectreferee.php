@@ -39,7 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\Utilities\ArrayHelper; 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
  
@@ -100,7 +100,6 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	$result = false;
     if (count($pks))
 		{
-		//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
             $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join

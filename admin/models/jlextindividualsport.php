@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
+use Joomla\Utilities\ArrayHelper;
 
 //jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
@@ -963,7 +964,7 @@ break;
 	$app	=& JFactory::getApplication();
 	$post=JFactory::getApplication()->input->post->getArray(array());
   $cid=JFactory::getApplication()->input->getVar('cid',array(),'post','array');
-	JArrayHelper::toInteger($cid);
+	ArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );
   $defaultvalues = array();
@@ -1026,7 +1027,7 @@ $temp = implode( "\n", $defaultvalues );
 	$app	=& JFactory::getApplication();
 	$post = JFactory::getApplication()->input->post->getArray(array());
   $cid = JFactory::getApplication()->input->getVar('cid',array(),'post','array');
-	JArrayHelper::toInteger($cid);
+	ArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );
   $defaultvalues = array();

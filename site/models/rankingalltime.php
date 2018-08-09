@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
+use Joomla\Utilities\ArrayHelper;
 jimport('joomla.application.component.model');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
@@ -913,7 +913,7 @@ $query->clear();
         $arr2 = array();
         
         foreach ($ranking as $row) {
-                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
+                $arr2[$row->_teamid] = ArrayHelper::fromObject($row);
             }
 
 
@@ -958,10 +958,8 @@ $query->clear();
 
             foreach ($arr2 as $key => $row) 
             {
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
+
+                $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
 
         } else //     if ( !$order_dir)
@@ -1063,10 +1061,7 @@ $query->clear();
 
             foreach ($arr2 as $key => $row) 
             {
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
+                $ranking[$key] = ArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
             
 //            if ($order_dir == 'DESC') {

@@ -15,6 +15,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * @package		Joomla
@@ -251,10 +252,10 @@ class JInstallationHelper
 	function getFilePerms($input, $type = 'file')
 	{
 		$perms = '';
-		if (JArrayHelper::getValue($input, $type.'PermsMode', 0))
+		if (ArrayHelper::getValue($input, $type.'PermsMode', 0))
 		{
 			$action = ($type == 'dir') ? 'Search' : 'Execute';
-			$perms = '0'. (JArrayHelper::getValue($input, $type.'PermsUserRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsUserWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsUser'.$action, 0)). (JArrayHelper::getValue($input, $type.'PermsGroupRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsGroupWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsGroup'.$action, 0)). (JArrayHelper::getValue($input, $type.'PermsWorldRead', 0) * 4 + JArrayHelper::getValue($input, $type.'PermsWorldWrite', 0) * 2 + JArrayHelper::getValue($input, $type.'PermsWorld'.$action, 0));
+			$perms = '0'. (ArrayHelper::getValue($input, $type.'PermsUserRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsUserWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsUser'.$action, 0)). (ArrayHelper::getValue($input, $type.'PermsGroupRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsGroupWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsGroup'.$action, 0)). (ArrayHelper::getValue($input, $type.'PermsWorldRead', 0) * 4 + ArrayHelper::getValue($input, $type.'PermsWorldWrite', 0) * 2 + ArrayHelper::getValue($input, $type.'PermsWorld'.$action, 0));
 		}
 		return $perms;
 	}
@@ -264,15 +265,15 @@ class JInstallationHelper
 	 */
 	function createAdminUser(& $vars)
 	{
-		$DBtype		= JArrayHelper::getValue($vars, 'DBtype', 'mysql');
-		$DBhostname	= JArrayHelper::getValue($vars, 'DBhostname', '');
-		$DBuserName	= JArrayHelper::getValue($vars, 'DBuserName', '');
-		$DBpassword	= JArrayHelper::getValue($vars, 'DBpassword', '');
-		$DBname		= JArrayHelper::getValue($vars, 'DBname', '');
-		$DBPrefix	= JArrayHelper::getValue($vars, 'DBPrefix', '');
+		$DBtype		= ArrayHelper::getValue($vars, 'DBtype', 'mysql');
+		$DBhostname	= ArrayHelper::getValue($vars, 'DBhostname', '');
+		$DBuserName	= ArrayHelper::getValue($vars, 'DBuserName', '');
+		$DBpassword	= ArrayHelper::getValue($vars, 'DBpassword', '');
+		$DBname		= ArrayHelper::getValue($vars, 'DBname', '');
+		$DBPrefix	= ArrayHelper::getValue($vars, 'DBPrefix', '');
 
-		$adminPassword	= JArrayHelper::getValue($vars, 'adminPassword', '');
-		$adminEmail		= JArrayHelper::getValue($vars, 'adminEmail', '');
+		$adminPassword	= ArrayHelper::getValue($vars, 'adminPassword', '');
+		$adminEmail		= ArrayHelper::getValue($vars, 'adminEmail', '');
 
 		jimport('joomla.user.helper');
 

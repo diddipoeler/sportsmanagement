@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * modSportsmanagementAjaxTopNavigationMenuHelper
@@ -256,7 +257,7 @@ if ($res)
       $row->text = JText::_($row->text);
       }
       
-      $res = JArrayHelper::sortObjects($res,'text',1);
+      $res = ArrayHelper::sortObjects($res,'text',1);
       
 		  $options = array(JHTML::_('select.option', 0, JText::_($fedtext)));
 			$options = array_merge($options, $res);

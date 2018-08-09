@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementViewPersons
@@ -246,7 +247,7 @@ $starttime = microtime();
 	{
 		JHtml::_('behavior.calendar'); //load the calendar behavior
 
-		if (is_array($attribs)){$attribs=JArrayHelper::toString($attribs);}
+		if (is_array($attribs)){$attribs=ArrayHelper::toString($attribs);}
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('window.addEvent(\'domready\',function() {Calendar.setup({
 	        inputField     :    "'.$id.'",    // id of the input field

@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\Utilities\ArrayHelper;
 //jimport('joomla.application.component.controller');
 // import Joomla controllerform library
 //jimport('joomla.application.component.controllerform');
@@ -68,7 +68,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		
 		$post = $this->jsmjinput->post->getArray();
 		$cid = $cid = $this->jsmjinput->get('cid',array(),'array');;
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		
 		$model = $this->getModel('treetos');
 		
@@ -99,7 +99,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		$proj = $this->jsmapp->getUserState($this->jsmoption.'.pid',0);
 		$post = $this->jsmjinput->post->getArray(array());
 		$cid = $this->jsmjinput->post->get('cid');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 
 		$model = $this->getModel('treeto');
 
@@ -159,7 +159,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function remove()
 	{
 		$cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ISELECT_TO_DELETE'));}
 		$model = $this->getModel('treeto');
 		if (!$model->delete($cid)){echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";}

@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\Utilities\ArrayHelper;
 /**
 * welche joomla version ?
 */
@@ -68,18 +68,9 @@ public static function jsm_birthday_sort ($array, $sort)
 	 * @since   11.1
 	 */
      
-/**
- * welche joomla version ?
- */
-if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
-{
-	//$res = ArrayHelper::sortObjects($array,'age',$sort);
-    $res = JArrayHelper::sortObjects($array,'age',$sort);
-}
-else
-{	
-	$res = JArrayHelper::sortObjects($array,'age',$sort);
-}
+
+	$res = ArrayHelper::sortObjects($array,'age',$sort);
+
         return $res;
 	}    
 

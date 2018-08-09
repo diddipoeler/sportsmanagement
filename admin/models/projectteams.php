@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelProjectteams
@@ -345,7 +346,7 @@ catch (Exception $e) {
 		}
 		else
 		{
-			JArrayHelper::toInteger( $peid );
+			ArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
 			$query = "	DELETE
 						FROM #__sportsmanagement_project_team

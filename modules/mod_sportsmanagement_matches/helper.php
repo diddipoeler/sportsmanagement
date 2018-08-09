@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * modMatchesHelper
@@ -57,7 +58,7 @@ class modMatchesSportsmanagementHelper {
 			return $string;
 		}
 		$ids = explode($sep, $string);
-		JArrayHelper :: toInteger($ids);
+		ArrayHelper :: toInteger($ids);
 		$string = implode($sep, $ids);
 		return $string;
 	}

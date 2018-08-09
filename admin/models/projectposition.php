@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
-
+use Joomla\Utilities\ArrayHelper;
 
 
 /**
@@ -154,7 +154,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		else
 		{
 			$pidArray=$data['project_positionslist'];
-			JArrayHelper::toInteger($pidArray);
+			ArrayHelper::toInteger($pidArray);
 			$peids=implode(",",$pidArray);
 			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id']." AND position_id NOT IN ($peids)";
 		}

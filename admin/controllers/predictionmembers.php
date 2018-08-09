@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
-
+use Joomla\Utilities\ArrayHelper;
 /**
  * sportsmanagementControllerpredictionmembers
  * 
@@ -118,7 +118,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     function publish()
 	{
 		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger( $cids );
+		ArrayHelper::toInteger( $cids );
 		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
@@ -144,7 +144,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     function unpublish()
 	{
 		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger( $cids );
+		ArrayHelper::toInteger( $cids );
 		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
@@ -178,7 +178,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		$d		= ' - ';
 		$msg	= '';
 		$cid	= JFactory::getApplication()->input->getVar('cid',array(),'post','array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$prediction_id	= JFactory::getApplication()->input->getInt('prediction_id',(-1),'post');
 		//echo '<pre>'; print_r($cid); echo '</pre>';
 

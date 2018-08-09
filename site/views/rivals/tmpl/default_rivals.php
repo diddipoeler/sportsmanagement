@@ -33,7 +33,7 @@ JHtml::_('behavior.framework');
 	foreach ($this->opos as $opos => $v)
 	{
 		if( empty($v['name']) ) continue;
-		$team = JArrayHelper::toObject($v);
+		$team = ArrayHelper::toObject($v);
 		if(empty($team->id)) continue;
 		?>
 	<tr class="">

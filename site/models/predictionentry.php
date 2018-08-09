@@ -387,7 +387,7 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
 
 		//$pids = JFactory::getApplication()->input->getVar('pids',array(),'post','array');
         $pids = $jinput->getVar('pids', null, 'post', 'array');
-		JArrayHelper::toInteger($pids);
+		ArrayHelper::toInteger($pids);
 
 		$cids = $jinput->getVar('cids',array(),'post','array');
 		$prids = $jinput->getVar('prids',array(),'post','array');

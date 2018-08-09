@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
- 
+use Joomla\Utilities\ArrayHelper; 
 
 /**
  * sportsmanagementControllertemplate
@@ -52,9 +52,9 @@ function __construct()
 function remove()
 	{
 		$cid = JFactory::getApplication()->input->getVar('cid',array(0),'post','array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$isMaster = JFactory::getApplication()->input->getVar('isMaster',array(),'post','array');
-		JArrayHelper::toInteger($isMaster);
+		ArrayHelper::toInteger($isMaster);
 		if (count($cid) < 1){
 			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
 		}

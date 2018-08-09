@@ -1826,14 +1826,9 @@ catch (Exception $e)
                 $events[] = $temp;
             }
         }
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
+
 $events = ArrayHelper::sortObjects($events,'event_time',$arrayobjectsort);
-}
-else
-{
-$events = JArrayHelper::sortObjects($events,'event_time',$arrayobjectsort);
-}
+
         return $events;
 	}
 	

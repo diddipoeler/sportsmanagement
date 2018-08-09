@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
-
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementModelTreetomatchs
@@ -83,7 +83,7 @@ $conditions = array(
         }
 		else
 		{
-			JArrayHelper::toInteger( $peid );
+			ArrayHelper::toInteger( $peid );
 			$peids = implode( ',', $peid );
 $conditions = array(
     $this->jsmdb->quoteName('node_id') . ' = ' . $this->jsmdb->quote($data['id']),

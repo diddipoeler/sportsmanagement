@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementControllerPredictionEntry
@@ -95,7 +96,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                 } else {
                     $cids = array();
                     $cids[] = $mdlPredictionEntry->getDbo()->insertid();
-                    JArrayHelper::toInteger($cids);
+                    ArrayHelper::toInteger($cids);
 
                     $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_2');
                     if ($model->sendMembershipConfirmation($cids)) {

@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
- 
+use Joomla\Utilities\ArrayHelper; 
 
 
 /**
@@ -74,7 +74,7 @@ public function save()
 		//$app = JFactory::getApplication();
 		//$jinput = $app->input;
 		$cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		
 		$post = $this->jsmjinput->post->getArray();
 		$data['project_id'] = $post['project_id'];

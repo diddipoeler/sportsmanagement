@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 //jimport('joomla.application.component.controller');
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * sportsmanagementControllerTreetonode
@@ -193,7 +194,7 @@ function save($key = NULL, $urlVar = NULL)
 //		$option = $jinput->getCmd('option');
 		//$cid = $jinput->get('cid',array(),'array');
         $cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$post = $this->jsmjinput->post->getArray(array());
 		//$post['treeto_id'] = $app->getUserState($option . 'treeto_id',0);
         $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
@@ -223,7 +224,7 @@ function save($key = NULL, $urlVar = NULL)
 		JSession::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
 		$cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$post = $this->jsmjinput->post->getArray(array());
 		//$post['treeto_id'] = $app->getUserState($option . 'treeto_id',0);
         $post['treeto_id'] = (int) $this->jsmjinput->get('tid');
@@ -256,7 +257,7 @@ function save($key = NULL, $urlVar = NULL)
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 		$cid = $this->jsmjinput->get('cid',array(),'array');
-		JArrayHelper::toInteger($cid);
+		ArrayHelper::toInteger($cid);
 		$post = $this->jsmjinput->post->getArray(array());
 
 		$model = $this->getModel('treetonodes');

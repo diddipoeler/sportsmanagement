@@ -11,6 +11,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
+use Joomla\Utilities\ArrayHelper;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -805,7 +806,7 @@ abstract class sportsmanagementHelper {
     function _setLeagueData($league) {
 
         if ($league) {
-            $result[] = JArrayHelper::fromObject($league);
+            $result[] = ArrayHelper::fromObject($league);
             $result[0]['object'] = 'League';
             return $result;
         }
@@ -824,7 +825,7 @@ abstract class sportsmanagementHelper {
      */
     function _setProjectData($project) {
         if ($project) {
-            $result[] = JArrayHelper::fromObject($project);
+            $result[] = ArrayHelper::fromObject($project);
             $result[0]['object'] = 'JoomLeague20';
             return $result;
         }
@@ -843,7 +844,7 @@ abstract class sportsmanagementHelper {
      */
     function _setSeasonData($season) {
         if ($season) {
-            $result[] = JArrayHelper::fromObject($season);
+            $result[] = ArrayHelper::fromObject($season);
             $result[0]['object'] = 'Season';
             return $result;
         }
@@ -863,7 +864,7 @@ abstract class sportsmanagementHelper {
     function _setSportsType($sportstype) {
 
         if ($sportstype) {
-            $result[] = JArrayHelper::fromObject($sportstype);
+            $result[] = ArrayHelper::fromObject($sportstype);
             $result[0]['object'] = 'SportsType';
             return $result;
         }
@@ -883,7 +884,7 @@ abstract class sportsmanagementHelper {
     function _setXMLData($data, $object) {
         if ($data) {
             foreach ($data as $row) {
-                $result[] = JArrayHelper::fromObject($row);
+                $result[] = ArrayHelper::fromObject($row);
             }
             $result[0]['object'] = $object;
             return $result;

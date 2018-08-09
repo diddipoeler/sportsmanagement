@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
- 
+use Joomla\Utilities\ArrayHelper; 
 
 /**
  * sportsmanagementModelpositionstatistic
@@ -170,7 +170,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	{
  		$result	= true;
 		$peid	= (isset($data['position_statistic']) ? $data['position_statistic'] : array());
-		JArrayHelper::toInteger( $peid );
+		ArrayHelper::toInteger( $peid );
 		$peids = implode( ',', $peid );
 		
 		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic '

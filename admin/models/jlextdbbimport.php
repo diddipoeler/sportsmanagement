@@ -35,8 +35,8 @@ require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' .
 require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'ical.php' );
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS. 'helpers' . DS . 'countries.php');
 
-
-// import JArrayHelper
+use Joomla\Utilities\ArrayHelper;
+// import ArrayHelper
 jimport( 'joomla.utilities.array' );
 jimport( 'joomla.utilities.arrayhelper' ) ;
 
