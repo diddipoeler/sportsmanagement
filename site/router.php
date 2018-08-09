@@ -368,6 +368,12 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
                     unset($query['cid']);
                 }
                 break;
+                case 'rivals':
+                if (isset($query['tid'])) {
+                    $segments[] = $query['tid'];
+                    unset($query['tid']);
+                }
+                break;
             case 'curve':
                 if (isset($query['tid1'])) {
                     $segments[] = $query['tid1'];
@@ -889,6 +895,12 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
             case 'clubinfo':
                 if (isset($segments[4])) {
                     $vars['cid'] = $segments[4];
+                }
+
+                break;
+                case 'rivals':
+                if (isset($segments[4])) {
+                    $vars['tid'] = $segments[4];
                 }
 
                 break;
