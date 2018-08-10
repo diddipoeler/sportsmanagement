@@ -74,7 +74,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('rinjuryfrom.round_date_first as injury_date,rinjuryfrom.name as rinjury_from');
         $query->select('rinjuryto.round_date_last as injury_end,rinjuryto.name as rinjury_to');
         $query->select('rsuspfrom.round_date_first as suspension_date,rsuspfrom.name as rsusp_from');
@@ -86,11 +86,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id and st.season_id = tp.season_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id and p.season_id = st.season_id');
-
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pe.id');
         $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id and ppos.project_id = perpos.project_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->join('LEFT', '#__sportsmanagement_round AS rinjuryfrom ON pe.injury_date = rinjuryfrom.id');
         $query->join('LEFT', '#__sportsmanagement_round AS rinjuryto ON pe.injury_end = rinjuryto.id');
         $query->join('LEFT', '#__sportsmanagement_round AS rsuspfrom ON pe.suspension_date = rsuspfrom.id');
@@ -101,10 +99,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->where('tp.person_id = ' . self::$personid);
         $query->where('pe.id = ' . self::$personid);
         $query->where('p.published = 1');
+	try {
         $db->setQuery($query);
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');        
-        self::$_teamplayers = $db->loadObjectList('projectteam_id');
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r(self::$_teamplayers,true).'</pre>'),'');
+        $result = $db->loadObjectList('projectteam_id');
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+self::$_teamplayers = $result;
         return self::$_teamplayers;
     }
 
@@ -134,19 +140,15 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
-
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('ps.firstname, ps.lastname');
-
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->join('INNER', '#__sportsmanagement_person AS ps ON ps.id = tp.person_id');
-
         $query->where('pt.project_id = ' . self::$projectid);
         if (self::$personid) {
             $query->where('tp.person_id = ' . self::$personid);
@@ -158,9 +160,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 
         $query->where('p.published = 1');
         $query->where('tp.persontype = 1');
-
+try {
         $db->setQuery($query);
-        self::$_inproject = $db->loadObjectList();
+        $result = $db->loadObjectList();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+self::$_inproject = $result;
         
         return self::$_inproject;
     }
@@ -181,7 +192,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('tp.*');
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->from('#__sportsmanagement_season_team_person_id AS tp ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
@@ -192,10 +203,18 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->where('tp.person_id = ' . self::$personid);
         $query->where('p.published = 1');
         $query->where('tp.persontype = 2');
-
+try {
         $db->setQuery($query);
-        self::$_inproject = $db->loadObject();
-
+        $result = $db->loadObject();
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+self::$_inproject = $result;
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return self::$_inproject;
     }
 
@@ -223,7 +242,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('pos.name AS position_name,pos.id AS posID');
         $query->select('pt.id AS ptid,pt.project_id,pt.picture as team_picture');
-        $query->select('ppos.position_id');
+        $query->select('ppos.position_id,pos.picture AS position_image');
         $query->select('tp.picture as season_picture');
         $query->select('p.picture as project_picture');
         $query->select('c.logo_big as club_picture');
@@ -236,12 +255,9 @@ class sportsmanagementModelPlayer extends JModelLegacy {
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id');
         $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id');
-
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = p.id AND perpos.person_id = pr.id');
-
         $query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
         $query->join('LEFT', '#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
-
         $query->where('pr.id = ' . self::$personid);
         $query->where('p.published = 1');
         $query->where('pr.published = 1');
@@ -250,12 +266,17 @@ class sportsmanagementModelPlayer extends JModelLegacy {
             $query->where('p.sports_type_id = ' . $sportstype);
         }
 
-
         $query->order('s.ordering ' . $order . ',l.ordering ASC,p.name ASC ');
-
+try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
-
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
         switch ($persontype) {
             case 1:
                 self::$_playerhistory = $result;
@@ -266,7 +287,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
                 return self::$_playerhistorystaff;
                 break;
         }
-        //return self::$_playerhistory;
+
     }
 
     /**

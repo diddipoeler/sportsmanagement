@@ -24,7 +24,8 @@ if ( !isset($this->teamPlayer->position_name)  )
     $this->teamPlayer->position_name = 'hauptposition.png';
 }	
 				
-$backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png'; 					
+//$backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png';
+$backimage = $this->teamPlayer->position_image ; 					
 $hauptimage = 'images/com_sportsmanagement/database/person_playground/hauptposition.png';
 $nebenimage = 'images/com_sportsmanagement/database/person_playground/nebenposition.png';
 
