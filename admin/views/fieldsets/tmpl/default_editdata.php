@@ -260,18 +260,15 @@ switch ($fieldset->name)
                 
                 if ( $field->name == 'jform[website]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
-                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
-                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 break;
                 }
