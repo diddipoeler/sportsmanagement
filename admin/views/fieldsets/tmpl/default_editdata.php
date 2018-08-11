@@ -121,15 +121,15 @@ echo JHtml::_('bootstrap.renderModal',
                 
                 if ( $field->name == 'jform[website]' )
                 {
-                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=t&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
-                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=t&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
-                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=t&url='.$field->value.'">'; 
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
                 }
                 break;
                 }
