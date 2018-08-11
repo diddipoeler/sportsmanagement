@@ -121,15 +121,24 @@ echo JHtml::_('bootstrap.renderModal',
                 
                 if ( $field->name == 'jform[website]' )
                 {
-                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                    if ( $field->value )
+                    {
+                echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">';
+                } 
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
+                    if ( $field->value )
+                    {
                 echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
+                    if ( $field->value )
+                    {
                 echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 break;
                 }
@@ -260,15 +269,24 @@ switch ($fieldset->name)
                 
                 if ( $field->name == 'jform[website]' )
                 {
+                    if ( $field->value )
+                    {
                 echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[twitter]' )
                 {
+                    if ( $field->value )
+                    {
                 echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 if ( $field->name == 'jform[facebook]' )
                 {
+                    if ( $field->value )
+                    {
                 echo '<img style="" src="http://free.pagepeeker.com/v2/thumbs.php?size=s&url='.$field->value.'">'; 
+                }
                 }
                 break;
                 }
