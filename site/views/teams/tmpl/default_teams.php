@@ -11,8 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<div class="table-responsive">
-<table class="<?php echo $this->config['table_class']; ?>">
+<div class="row" id="teams">
+<table class="<?php echo $this->config['table_class']; ?> table-responsive">
 	<thead>
 	<tr >
 		<?php if ($this->config['show_small_logo']) { ?>
