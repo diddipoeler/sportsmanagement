@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div>
+<div class="row" id="defaultmatrixdivision">
  <?php
 
 	#$this->config['highlight_fav_team'] = 1;

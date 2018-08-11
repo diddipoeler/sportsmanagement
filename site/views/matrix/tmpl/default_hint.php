@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div>
+<div class="row" id="hint">
 	<table class="matrix">
 		<tr>
 			<td align="left"><br /> <?php echo JText :: _('COM_SPORTSMANAGEMENT_MATRIX_HINT');?>

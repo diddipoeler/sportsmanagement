@@ -12,10 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-
+<div class="row" id="defaultmatrixrussia">
  <?php
 	$division_id = $this->divisionid;
-	//$matrix = '<table class="matrix" border="2px">';
     $matrix = '<table class="'.$this->config['table_class'].'" border="2px">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
@@ -545,4 +544,4 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	$matrix .= '</table>';
 	echo $matrix;
 ?>
-
+</div>

@@ -114,16 +114,14 @@ defined('_JEXEC') or die('Restricted access');
    </style>
 <!--<![endif]--> 
 
-<div class="table-responsive">
+<div class="row" id="defaultmatrix">
  <?php
 
 	#$this->config['highlight_fav_team'] = 1;
 	#$this->project->fav_team_text_color = "#FFFFFF";
 	$division_id = $this->divisionid;
-	//$matrix = '<table class="matrix">';
     
-    $matrix = '<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">';
-    $matrix .= '<table class="'.$this->config['table_class'].' table-header-rotated">';
+    $matrix = '<table class="'.$this->config['table_class'].' table-header-rotated table-responsive">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
@@ -443,7 +441,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	}
 	$matrix .= '</table>';
     
-    $matrix .= '</div>';
+
 	echo $matrix;
 ?>
 </div>
