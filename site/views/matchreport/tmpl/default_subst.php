@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of Substitutions -->
 <?php
@@ -18,7 +19,7 @@ if ( $this->config['show_substitutions'] )
 	if (!empty($this->substitutes))
 	{
 		?>
-		<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'); ?></h2>	
+		<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'); ?></h2>	
 		<table class="table table-responsive">
 			<tr>
 				<td class="list">

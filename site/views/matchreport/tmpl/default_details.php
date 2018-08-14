@@ -9,12 +9,14 @@
  * @subpackage matchreport
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <!-- Details-->
 <h2>
 <?php 
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
 ?>
 </h2>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
@@ -28,7 +30,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 		
         
         <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></strong>
 			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->old_match_id ),$this->oldmatchtext); ?>
             </address>
             
@@ -43,7 +45,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
 		
         
         <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></strong>
 			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->new_match_id ),$this->newmatchtext); ?>
             </address>
             
@@ -59,8 +61,8 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         {
             ?>
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
-			<?php echo JHtml::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
+			<?php echo JHtml::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
             </address>
             <?php
         }
@@ -68,7 +70,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         {
             ?>
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
 			<?php echo ''; ?>
             </address>
             <?php
@@ -84,7 +86,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         {
             ?>
              <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
 			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
             </address>
             <?php
@@ -93,7 +95,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         {
             ?>
              <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
 			<?php echo ''; ?>
             </address>
             <?php
@@ -105,7 +107,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         
         
          <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT' ); ?></strong>
 			<?php echo $this->match->time_present; ?>
             </address>
         <?php endif;
@@ -121,7 +123,7 @@ echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
        
         
         <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER' ); ?></strong>
 			<?php echo $this->match->match_number; ?>
             </address>
         
@@ -145,7 +147,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
         
         
         <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND' ); ?></strong>
 			<?php 
                 if ( isset($this->playground->name) )
                     { 
@@ -153,7 +155,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                     }
                     else
                     {
-                    echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
+                    echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
                     } 
 if ( $this->config["show_playground_picture"] )
 {
@@ -181,7 +183,7 @@ $this->overallconfig['use_jquery_modal']);
             ?>
                         
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE' ); ?></strong>
 			<?php 
             
             $first = true;
@@ -229,7 +231,7 @@ $this->overallconfig['use_jquery_modal']);
             
             
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES' ); ?></strong>
 			<?php echo ': ' . number_format( $this->match->crowd, 0, ',' , '.' ); ?>
             </address>
             

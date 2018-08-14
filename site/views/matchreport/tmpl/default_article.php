@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 
 <!-- START of match summary -->
@@ -22,7 +23,7 @@ if (!empty($this->match_article->introtext))
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE' );
 				?>
 			</td>
 		</tr>

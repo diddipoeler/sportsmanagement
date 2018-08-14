@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of match commentary -->
 <?php
@@ -21,7 +22,7 @@ if (!empty($this->matchcommentary))
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY' );
 				?>
 			</td>
 		</tr>

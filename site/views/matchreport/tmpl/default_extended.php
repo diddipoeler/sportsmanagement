@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <!-- EXTENDED DATA-->
 <?php
@@ -40,7 +41,7 @@ if(count($this->extended->getFieldsets()) > 0)
 			if ($hasData)
 			{
 				?>
-				<h2><?php echo '&nbsp;' . JText::_($fieldset->name); ?></h2>
+				<h2><?php echo '&nbsp;' . Text::_($fieldset->name); ?></h2>
 				<table class="table table-responsive" >
 					<tbody>
 				<?php
@@ -52,16 +53,16 @@ if(count($this->extended->getFieldsets()) > 0)
 						?>
 						<tr>
 							<td class="label"><?php echo $field->label; ?></td>
-							<td class="data"><?php if ($field->value =="foggy") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');}
-                                                                                 else { if ($field->value =="rainy") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');}
-                                   							else { if ($field->value =="sunny") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY');}
-                										else { if ($field->value =="windy") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY');}
-                											else { if ($field->value =="dry") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY');}
-                  												else { if ($field->value =="snowing") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING');}
-                   													else { if ($field->value =="normal") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL');}
-                    														else { if ($field->value =="wet") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET');}
-                     															else { if ($field->value =="fielddry") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY');}
-                      																else { if ($field->value =="snow") {echo JText::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');}
+							<td class="data"><?php if ($field->value =="foggy") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_FOGGY');}
+                                                                                 else { if ($field->value =="rainy") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_RAINY');}
+                                   							else { if ($field->value =="sunny") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SUNNY');}
+                										else { if ($field->value =="windy") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_WINDY');}
+                											else { if ($field->value =="dry") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_DRY');}
+                  												else { if ($field->value =="snowing") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_WEATHER_SNOWING');}
+                   													else { if ($field->value =="normal") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_NORMAL');}
+                    														else { if ($field->value =="wet") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_WET');}
+                     															else { if ($field->value =="fielddry") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_DRY');}
+                      																else { if ($field->value =="snow") {echo Text::_('COM_SPORTSMANAGEMENT_EXT_MATCH_FIELDCONDITION_SNOW');}
                                                														else { echo $field->value;
                                                				}	}	}	}	}	}	}	}	}	} ?>                 
                                                </td>

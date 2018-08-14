@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Dispatcher\Dispatcher;
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of match summary -->
 <?php
@@ -31,7 +32,7 @@ if (!empty($this->match->summary))
 		<tr>
 			<td class="contentheading">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY' );
 				?>
 			</td>
 		</tr>

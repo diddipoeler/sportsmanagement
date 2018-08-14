@@ -48,7 +48,7 @@ if (!empty($this->matchplayerpositions ))
 		<?php
 // Define tabs options for version of Joomla! 4.0
 $tabsOptions = array(
-    "active" => "tab1_id" // It is the ID of the active tab.
+    "active" => "tabstats1_id" // It is the ID of the active tab.
 );
 echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
 echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', JText::_($this->team1->name));
