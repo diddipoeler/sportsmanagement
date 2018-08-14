@@ -1828,7 +1828,7 @@ catch (Exception $e)
         }
 
 $events = ArrayHelper::sortObjects($events,'event_time',$arrayobjectsort);
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $events;
 	}
 	
