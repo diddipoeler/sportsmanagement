@@ -10,8 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-//jimport('joomla.html.pane');
+use Joomla\CMS\Language\Text;
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
@@ -126,10 +125,10 @@ if ( $this->config['show_pictures'] )
 /**
  * Set page title
  */
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE' );
 		if (( isset( $this->team1 ) ) AND (isset( $this->team1 )))
 		{
-			$pageTitle .= ": ".$this->team1->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->team2->name;
+			$pageTitle .= ": ".$this->team1->name." ".Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->team2->name;
 		}
 		$this->document->setTitle( $pageTitle );
         $view = $this->jinput->getVar( "view") ;
@@ -260,11 +259,11 @@ if ( $this->config['show_pictures'] )
 		$pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 		$pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 
-		$result='<b>'.$sub->in_out_time.'. '. JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
+		$result='<b>'.$sub->in_out_time.'. '. Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE') .'</b>';
 		$result .= '<br />';
 		$outName = sportsmanagementHelper::formatName(null, $sub->out_firstname, $sub->out_nickname, $sub->out_lastname, $this->config["name_format"]);
 		if($outName != '') {
-			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
+			$imgTitle=Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 			$imgTitle2=array(' title' => $imgTitle);
 			$result .= JHtml::image($pic_out,$imgTitle,$imgTitle2).'&nbsp;';
 
@@ -287,13 +286,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			}
 
 			if($sub->out_position!='') {
-				$result .= '&nbsp;('.JText::_($sub->out_position).')';
+				$result .= '&nbsp;('.Text::_($sub->out_position).')';
 			}
 			$result .= '<br />';
 		}
 		$inName = sportsmanagementHelper::formatName(null, $sub->firstname, $sub->nickname, $sub->lastname, $this->config["name_format"]);
 		if($inName!='') {
-			$imgTitle=JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
+			$imgTitle=Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 			$imgTitle2=array(' title' => $imgTitle);
 			$result .= JHtml::image($pic_in,$imgTitle,$imgTitle2).'&nbsp;';
 
@@ -316,7 +315,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			}
 
 			if($sub->in_position!='') {
-				$result .= '&nbsp;('.JText::_($sub->in_position).')';
+				$result .= '&nbsp;('.Text::_($sub->in_position).')';
 			}
 			$result .= '<br /><br />';
 		}
@@ -511,7 +510,7 @@ $match_player = JHtml::link($player_link,$match_player);
 		$time = $sub->in_out_time;
         $matchtime = $this->getTimelineMatchTime();
         $time2 = ($time / $matchtime) *100;
-		$tiptext = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
+		$tiptext = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SUBSTITUTION_MIN').' ';
 		$tiptext .= $time;
 		$tiptext .= ' ::';
 		$tiptext .= sportsmanagementViewMatchReport::getHtmlImageForTips($pic_in);
@@ -689,7 +688,7 @@ $match_player = JHtml::link($player_link,$match_player);
 		if(empty($event->icon)) {
 			$event->icon = JUri::Base() . "media/com_sportsmanagement/jl_images/same.png";
 		}
-		$tiptext=JText::_($event->name).' '.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE_SHORT').' '.$matchEvent->event_time;
+		$tiptext=Text::_($event->name).' '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE_SHORT').' '.$matchEvent->event_time;
 		$tiptext .= ' ::';
 		if (file_exists($picture))
 		{
