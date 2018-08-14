@@ -218,7 +218,14 @@ else
 						$match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+$routeparameter = array(); 
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+$routeparameter['p'] = $this->project->slug; 
+$routeparameter['tid'] = $me->team_id; 
+$routeparameter['pid'] = $me->playerid; 
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 				
+//$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHtml::link($player_link,$match_player);
                         }
                         echo $match_player;
@@ -270,7 +277,14 @@ else
 						$match_player = sportsmanagementHelper::formatName($prefix, $me->firstname1, $me->nickname1, $me->lastname1, $this->config["name_format"]);
 						if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 						{
-							$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+$routeparameter = array(); 
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+$routeparameter['p'] = $this->project->slug; 
+$routeparameter['tid'] = $me->team_id; 
+$routeparameter['pid'] = $me->playerid; 
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 							
+//$player_link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
 							$match_player = JHtml::link($player_link,$match_player);
 						}
 						echo $match_player;
