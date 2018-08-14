@@ -151,8 +151,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id;
 $routeparameter['pid'] = $me->playerid;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);                            
-            //                $player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
-                            $match_player = JHtml::link($player_link,$match_player);
+$match_player = JHtml::link($player_link,$match_player);
                         }                         
                         
                         echo '<td>' . $eventname . $sum_notice . ' - ' . $match_player . $teamname . '</td>';
