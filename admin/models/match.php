@@ -1876,15 +1876,13 @@ return $result;
         $query->where('ppos.project_id = '.$project_id);    
         }
         
-        
         $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.position_id = ppos.position_id ');
         $query->join('INNER','#__sportsmanagement_eventtype AS et ON et.id = pet.eventtype_id ');
         
-        
         $query->where('et.published = 1');
         
-        $query->order('pet.ordering, et.ordering');
-        //$query->group('et.id');
+        $query->order('et.id,pet.ordering, et.ordering');
+        $query->group('et.id');
                     
 		JFactory::getDbo()->setQuery($query);
         
