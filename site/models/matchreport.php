@@ -436,6 +436,7 @@ catch (Exception $e)
         try{            
 		$db->setQuery($query);
         $result = $db->loadObjectList();
+        $result = array_unique($result, SORT_REGULAR );
 		}
 catch (Exception $e)
 {
