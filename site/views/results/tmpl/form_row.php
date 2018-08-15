@@ -10,6 +10,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 
 if ( $this->overallconfig['use_jquery_modal'] )
 {
@@ -47,7 +48,7 @@ if ( $this->overallconfig['use_jquery_modal'] )
 			$userIsTeamAdmin = $this->isAllowed;
 		}
 		$teams = $this->teams;
-		$teamsoptions[] = JHtml::_('select.option','0','- '.JText::_('Select Team').' -');
+		$teamsoptions[] = JHtml::_('select.option','0','- '.Text::_('Select Team').' -');
 		foreach ($teams AS $team)
         {
             $teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');
@@ -92,7 +93,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND'),
 '20',
 $url,
 $this->modalwidth,
@@ -190,7 +191,7 @@ else
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/players_add.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME'),
 '20',
 $url,
 $this->modalwidth,
@@ -232,7 +233,7 @@ $this->overallconfig['use_jquery_modal']);
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/players_add.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY'),
 '20',
 $url,
 $this->modalwidth,
@@ -329,9 +330,9 @@ $this->overallconfig['use_jquery_modal']);
 			?>
 	<td align='center' valign='top'><?php
 		$xrounds=array();
-		$xrounds[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RESULTS_REGULAR_TIME'));
-		$xrounds[]=JHtml::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2'));
-		$xrounds[]=JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2'));
+		$xrounds[]=JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_RESULTS_REGULAR_TIME'));
+		$xrounds[]=JHtml::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2'));
+		$xrounds[]=JHtml::_('select.option','2',Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2'));
 
 		echo JHtml::_(	'select.genericlist', $xrounds, 'match_result_type'.$thismatch->id, 'class="inputbox" size="1" style="font-size:9px;"
 				onchange="document.getElementById(\'cb'.$i.'\').checked=true;if (this.selectedIndex==0) $(\'ot'.$thismatch->id .
@@ -353,7 +354,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/events.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND'),
 '20',
 $url,
 $this->modalwidth,
@@ -375,7 +376,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/calc16.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND'),
 '20',
 $url,
 $this->modalwidth,
@@ -397,7 +398,7 @@ $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResu
 <?php
 echo sportsmanagementHelperHtml::getBootstrapModalImage('editreferees'.$thismatch->id,
 'administrator/components/com_sportsmanagement/assets/images/players_add.png',
-JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),
+Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND'),
 '20',
 $url,
 $this->modalwidth,

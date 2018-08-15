@@ -9,7 +9,7 @@
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.switcher');
 JHtml::_('behavior.modal');
 
@@ -31,7 +31,7 @@ echo $this->loadTemplate('projectheading');
 
 echo JHtml::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
 if ($this->config['show_table_1']) {
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', JText::_($this->config['table_text_1']));
+echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', Text::_($this->config['table_text_1']));
 
 ?>
 <div class="container">
@@ -45,7 +45,7 @@ echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', JText:
 echo JHtml::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_2']) {
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', JText::_($this->config['table_text_2']));
+echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', Text::_($this->config['table_text_2']));
 
 ?>
 <div class="container">
@@ -59,7 +59,7 @@ echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', JText:
 echo JHtml::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_3']) {
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', JText::_($this->config['table_text_3']));
+echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', Text::_($this->config['table_text_3']));
 
 ?>
 <div class="container">
@@ -73,7 +73,7 @@ echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', JText:
 echo JHtml::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_4']) {
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', JText::_($this->config['table_text_4']));
+echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', Text::_($this->config['table_text_4']));
 
 ?>
 <div class="container">
@@ -87,7 +87,7 @@ echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', JText:
 echo JHtml::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_5']) {
-echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', JText::_($this->config['table_text_5']));
+echo JHtml::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_($this->config['table_text_5']));
 
 ?>
 <div class="container">
@@ -109,12 +109,12 @@ $options2 = array(
 );
 
 echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group2', $options2);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab1_id', JText::_('COM_BOOTSTRAPTABS_TAB_1')); ?> 
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab1_id', Text::_('COM_BOOTSTRAPTABS_TAB_1')); ?> 
 
 <p>Content of the first tab.</p> 
 
 <?php echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab2_id', JText::_('COM_BOOTSTRAPTABS_TAB_2')); ?>
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab2_id', Text::_('COM_BOOTSTRAPTABS_TAB_2')); ?>
 
 <p>Content of the second tab.</p> 
 

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
@@ -55,7 +56,7 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 			$this->predictionProjectS = $model->getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 
-      $predictionRounds[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
+      $predictionRounds[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = &$model->getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}
 			$lists['predictionRounds']=JHTML::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->roundID);
 			unset($res);
@@ -64,7 +65,7 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 			$this->lists = $lists;
 			$this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
 
 			$document->setTitle($pageTitle);
 
@@ -72,7 +73,7 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
 	}
 

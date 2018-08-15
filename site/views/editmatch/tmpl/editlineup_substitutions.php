@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $savenewsubst = array();
 $savenewsubst[] = $this->match->id;
 $savenewsubst[] = $this->tid;
@@ -24,24 +25,24 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 	<!-- nicht löschen -->
 	<div id="ajaxresponse" ></div>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">
 				<thead>
 					<tr>
 						<th>
 							<?php
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
-							echo '&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
+							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',Text::_('Out'));
+							echo '&nbsp;'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
+							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
+							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',Text::_('In'));
 							?>
 						</th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_TIME'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_TIME'); ?></th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
@@ -72,7 +73,7 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 								?>
 							</td>
 							<td>
-								<?php echo JText::_($substitution->in_position); ?>
+								<?php echo Text::_($substitution->in_position); ?>
 							</td>
 							<td>
 								<?php
@@ -82,7 +83,7 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 							</td>
 							<td>
 		<input onclick="delete_subst(<?php echo $substitution->id; ?>,<?php echo $baseurl; ?>)" id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
-										value="<?php echo JText::_('JACTION_DELETE'); ?>" />
+										value="<?php echo Text::_('JACTION_DELETE'); ?>" />
 							</td>
 						</tr>
 						<?php
@@ -101,7 +102,7 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
 						}
 						else
 						{
-						echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+						echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 						}
 						?>
 						</td>
@@ -110,7 +111,7 @@ $baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."
                         
                         
 						<td>
-<input id="save-new-subst" onclick="save_new_subst(<?php echo implode(",",$savenewsubst); ?>)" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JSAVE'); ?>" />
+<input id="save-new-subst" onclick="save_new_subst(<?php echo implode(",",$savenewsubst); ?>)" type="button" class="inputbox button-save-subst" value="<?php echo Text::_('JSAVE'); ?>" />
                             
 						</td>
 					</tr>

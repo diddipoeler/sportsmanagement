@@ -9,6 +9,7 @@
      * @subpackage predictionentry
      */
     defined('_JEXEC') or die('Restricted access');
+	use Joomla\CMS\Language\Text;
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
         $visible = 'text';
@@ -26,7 +27,7 @@
     {
         if ($this->allowedAdmin)
         {
-            echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SELECT_EXISTING_MEMBER');
+            echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SELECT_EXISTING_MEMBER');
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
                 echo '<br />allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
@@ -138,7 +139,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 <div class="table-responsive">
 <table class="table table-responsive" >
 <tr>
-<!-- <td class=""><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td> -->
+<!-- <td class=""><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td> -->
 <!--    <td class="" style='text-align:right; ' width='20%'  > -->
 <?php
     if ( $this->config['use_pred_select_rounds'] )
@@ -149,14 +150,14 @@ When viewing on anything larger than 768px wide, you will not see any difference
     /*$rounds = sportsmanagementHelper::getRoundsOptions((int)sportsmanagementModelPrediction::$pjID,'ASC',FALSE,$round_ids);
     //                            $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
     $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
-    echo JText::sprintf(    'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
+    echo Text::sprintf(    'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
                         '<td>'.$htmlRoundsOptions.'</td>',
                         '<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td>');*/
     
     $rounds = sportsmanagementHelper::getRoundsOptions((int)sportsmanagementModelPrediction::$pjID,'ASC',FALSE,$round_ids);
     //                            $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
     $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
-    echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
+    echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
                         '<tr><td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td></tr>',
                         '<tr> <td>'.$htmlRoundsOptions.'</td></tr>');
     ?>
@@ -203,7 +204,7 @@ function chkFormular()
     var message = "";
     if ( parseInt(document.<?php echo $formName; ?>.jokerCount.value) > parseInt(document.<?php echo $formName; ?>.maxJokerCount.value) )
     {
-        message+="<?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CHECK_JOKERS_COUNT'); ?>\n";
+        message+="<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CHECK_JOKERS_COUNT'); ?>\n";
     }
     if (message==""){return true;}
     else {
@@ -221,13 +222,13 @@ When viewing on anything larger than 768px wide, you will not see any difference
 <table class="<?PHP echo $this->config['table_class']; ?> table-responsive" >
 <tr>
 
-<!-- <th class="" style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th> -->
-<!-- <th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>  -->
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT'); ?></th> -->
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS'); ?></th> -->
-<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th></th>
-<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th></th>
-<th style='color:white ;background-color:teal;'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th></th>
+<!-- <th class="" style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th> -->
+<!-- <th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>  -->
+<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT'); ?></th> -->
+<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS'); ?></th> -->
+<th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_HOME_TEAM'); ?></th></th>
+<th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_AWAY_TEAM'); ?></th></th>
+<th style='color:white ;background-color:teal;'><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th></th>
 
 <?php
     if (($predictionProject->joker) && ($predictionProject->mode==0))
@@ -236,18 +237,18 @@ When viewing on anything larger than 768px wide, you will not see any difference
             ?> <th style='text-align:left;color:white; background-color:teal; '> <?php
             if ($predictionProject->joker_limit > 0)
             {
-                //echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER_COUNT',$memberProjectJokersCount,$predictionProject->joker_limit);
+                //echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER_COUNT',$memberProjectJokersCount,$predictionProject->joker_limit);
                echo $memberProjectJokersCount."/".$predictionProject->joker_limit;
             }
             else
             {
-                //echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER');
+                //echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_JOKER');
                  echo "";
             }
             ?></th><?php
                 }
                 ?>
-<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS'); ?></th> -->
+<!-- <th class='sectiontableheader' style='text-align:center; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS'); ?></th> -->
 </tr>
 <?php
     $k = 1;
@@ -384,7 +385,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
             {
                 $logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
             }
-            $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
+            $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
             //echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
             
             echo sportsmanagementHelperHtml::getBootstrapModalImage('tippteaminfohome' . $result->projectteam1_id,
@@ -454,7 +455,7 @@ case 'country_flag':
             {
                 $logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
             }
-            $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
+            $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
             echo ' ';
         ?>
 
@@ -549,7 +550,7 @@ value='<?php echo $result->joker; ?>' <?php
     document.<?php echo $formName; ?>.jokerCount.value++;
     if ( parseInt(document.<?php echo $formName; ?>.jokerCount.value) > parseInt(document.<?php echo $formName; ?>.maxJokerCount.value) )
     {
-        alert("<?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAX_JOKER_WARNING'); ?>");
+        alert("<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAX_JOKER_WARNING'); ?>");
         this.checked=false;
         document.<?php echo $formName; ?>.jokerCount.value--;
     }
@@ -612,11 +613,11 @@ if ((!empty($disabled)) && (!empty($result->joker)))
     }
     ?>
 <span style='color:<?php echo $this->config['color_home_win']; ?>; ' >
-<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount);?></span><br />
+<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount);?></span><br />
 <span style='color:<?php echo $this->config['color_draw']; ?>; '>
-<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount);?></span><br />
+<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount);?></span><br />
 <span style='color:<?php echo $this->config['color_guest_win']; ?>; '>
-<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount); ?></span>
+<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount); ?></span>
 </td>
 <td colspan='8'>&nbsp;</td>
 </tr>
@@ -637,7 +638,7 @@ if ((!empty($disabled)) && (!empty($result->joker)))
         $colspan=($predictionProject->joker) ? '6' : '5';
         ?>
 <td colspan='<?php echo $colspan; ?>' class="td_c" >
-<b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_POSSIBLE_PREDICTIONS'); ?></b>
+<b><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_POSSIBLE_PREDICTIONS'); ?></b>
 </td>
 <?php
     }
@@ -652,8 +653,8 @@ if ((!empty($disabled)) && (!empty($result->joker)))
     {
         if ($showSaveButton)
         {
-            ?><!-- <input type='submit' name='addtipp' value='<?php echo JText::_('JSAVE'); ?>' class='button' /> --> <?php
-                ?><input type='submit' name='addtipp'  style='color:white; background-color:teal; font-weight:bold;'  value='<?php echo JText::_('JSAVE'); ?>' class='button' /><?php
+            ?><!-- <input type='submit' name='addtipp' value='<?php echo Text::_('JSAVE'); ?>' class='button' /> --> <?php
+                ?><input type='submit' name='addtipp'  style='color:white; background-color:teal; font-weight:bold;'  value='<?php echo Text::_('JSAVE'); ?>' class='button' /><?php
                 }
                 else
                 {
@@ -667,7 +668,7 @@ if ((!empty($disabled)) && (!empty($result->joker)))
                                 ?>
 </td>
 <?php echo $colspan=($predictionProject->joker) ? '<td>&nbsp;</td>' : ''; ?>
-<!-- <td class="td_c"><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints); ?></td> -->
+<!-- <td class="td_c"><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints); ?></td> -->
 <?php
     }
     ?>

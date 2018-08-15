@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 
 /**
@@ -162,17 +162,17 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $tomatchday = array();
         $lists = array();
 
-        $frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+        $frommatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
         $frommatchday = array_merge($frommatchday, $rounds);
         $lists['frommatchday'] = $frommatchday;
-        $tomatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
+        $tomatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
         $tomatchday = array_merge($tomatchday, $rounds);
         $lists['tomatchday'] = $tomatchday;
 
         $opp_arr = array();
-        $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-        $opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
-        $opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
+        $opp_arr[] = JHTML :: _('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+        $opp_arr[] = JHTML :: _('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
+        $opp_arr[] = JHTML :: _('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
         $lists['type'] = $opp_arr;
         $this->lists = $lists;
@@ -243,12 +243,12 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         unset($lists);
 
         // Set page title
-        $pageTitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+        $pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
         if (isset($this->project->name)) {
             $pageTitle .= ': ' . $this->project->name;
         }
         $this->document->setTitle($pageTitle);
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
 
         if (!isset($this->config['table_class'])) {
             $this->config['table_class'] = 'table';

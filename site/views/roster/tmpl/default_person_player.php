@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
@@ -18,7 +19,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 $personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format"]);
 if ($this->config['show_player_icon']) 
 {
-	$imgTitle = JText::sprintf( $personName );
+	$imgTitle = Text::sprintf( $personName );
 	$picture = $this->row->picture;
 	if ((empty($picture)) || ($picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png' ))
 	{
@@ -90,7 +91,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?>
+							<?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STATUS'); ?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php 
@@ -98,19 +99,19 @@ $routeparameter['pid'] = $this->row->person_slug;
 		$this->playertool = $model->getTeamPlayer($this->project->current_round,$this->row->playerid);
 		if (!empty($this->playertool[0]->injury))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
@@ -128,12 +129,12 @@ $routeparameter['pid'] = $this->row->person_slug;
 			case 1:	 // show Birthday and Age
 				$showbirthday = 1;
 				$showage = 1;
-				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
+				$birthdayformat = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 2:	 // show Only Birthday
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
+				$birthdayformat = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 3:	 // show Only Age
 				$showbirthday = 0;
@@ -142,7 +143,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 			case 4:	 // show Only Year of birth
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('%Y');
+				$birthdayformat = Text::_('%Y');
 				break;
 			default:
 				$showbirthday = 0;
@@ -155,7 +156,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php
-			echo JText::_("COM_SPORTSMANAGEMENT_PERSON_AGE");
+			echo Text::_("COM_SPORTSMANAGEMENT_PERSON_AGE");
 ?>
 						</span>
 						<span class="jl_roster_persondetails_data">
@@ -171,7 +172,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_( "COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY" );?>
+							<?php echo Text::_( "COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY" );?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo JHtml::date( $this->row->birthday,$birthdayformat );?>
@@ -186,12 +187,12 @@ $routeparameter['pid'] = $this->row->person_slug;
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php 
-			echo JText::_( "COM_SPORTSMANAGEMENT_ROSTER_DEATHDAY" );
+			echo Text::_( "COM_SPORTSMANAGEMENT_ROSTER_DEATHDAY" );
 ?>
  [ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-<?php echo JHtml::date( $this->row->deathday,JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) );?>
+<?php echo JHtml::date( $this->row->deathday,Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) );?>
 						</span>
 					</div>
 <?php
@@ -202,7 +203,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_( "COM_SPORTSMANAGEMENT_PERSON_NATIONALITY" );?>
+							<?php echo Text::_( "COM_SPORTSMANAGEMENT_PERSON_NATIONALITY" );?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
@@ -233,7 +234,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				if ( $this->config['show_games_played'] && isset( $this->InOutStat->played ) )
 				{
 					$cnt++;
-					echo '<div title="'.$this->InOutStat->played.' '.JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
+					echo '<div title="'.$this->InOutStat->played.' '.Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED').'" class="jl_roster_in_out'.'1'.' jl_roster_in_out">
 					'.$this->InOutStat->played.'		</div>
 				';
 				}
@@ -242,21 +243,21 @@ $routeparameter['pid'] = $this->row->person_slug;
 					if ( isset( $this->InOutStat->started ) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->started.' '.JText::_( 'COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP' ).'" class="jl_roster_in_out'.'2'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->started.' '.Text::_( 'COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP' ).'" class="jl_roster_in_out'.'2'.' jl_roster_in_out">
 						'.$this->InOutStat->started.'		</div>
 						';
 					}
 					if ( isset( $this->InOutStat->sub_in ) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->sub_in.' '.JText::_( 'COM_SPORTSMANAGEMENT_ROSTER_IN' ).'" class="jl_roster_in_out'.'3'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->sub_in.' '.Text::_( 'COM_SPORTSMANAGEMENT_ROSTER_IN' ).'" class="jl_roster_in_out'.'3'.' jl_roster_in_out">
 						'.$this->InOutStat->sub_in.'		</div>
 						';
 					}
 					if ( isset($this->InOutStat->sub_out) )
 					{
 						$cnt++;
-						echo '<div title="'.$this->InOutStat->sub_out.' '.JText::_( 'COM_SPORTSMANAGEMENT_ROSTER_OUT' ).'" class="jl_roster_in_out'.'4'.' jl_roster_in_out">
+						echo '<div title="'.$this->InOutStat->sub_out.' '.Text::_( 'COM_SPORTSMANAGEMENT_ROSTER_OUT' ).'" class="jl_roster_in_out'.'4'.' jl_roster_in_out">
 						'.$this->InOutStat->sub_out.'		</div>
 						';
 					}
@@ -284,7 +285,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 				if ($cnt == 0)
 				{
 						echo '<div class="jl_roster_in_out jl_rosternostats">
-						'.JText::_( 'COM_SPORTSMANAGEMENT_ROSTER_NO_STATISTICS' ).'		</div>
+						'.Text::_( 'COM_SPORTSMANAGEMENT_ROSTER_NO_STATISTICS' ).'		</div>
 						';
 				}
 ?>

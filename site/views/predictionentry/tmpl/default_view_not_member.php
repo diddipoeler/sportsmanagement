@@ -9,7 +9,8 @@
  * @subpackage predictionentry
  */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -21,22 +22,22 @@ $visible = 'hidden';
 }
 
 ?><p><?php
-	echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_01');
+	echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_01');
 	?></p><p><?php
-	echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_02');
+	echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_02');
 	?></p><p><?php
-	echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_03',$this->config['ownername'],'<b>'.$this->websiteName.'</b>');
+	echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_03',$this->config['ownername'],'<b>'.$this->websiteName.'</b>');
 	?></p><p>&nbsp;</p><p><?php
 	if ($this->isNotApprovedMember==1)
 	{
-		echo '<span class="button">'.JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_04').'</span>';
+		echo '<span class="button">'.Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_04').'</span>';
 		?></p><p><?php
-		echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_05');
+		echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_05');
 		?></p><?php
 	}
 	else
 	{
-		echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_06');
+		echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_06');
 		?>
     </p>
     <?php
@@ -45,7 +46,7 @@ $visible = 'hidden';
       ?>
       
       <form name='predictionRegisterForm' id='predictionRegisterForm' method='post' action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=predictionentry.register'); ?>" >
-			<input type='submit' name='register' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_07') ; ?>' class='button' />
+			<input type='submit' name='register' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_07') ; ?>' class='button' />
 			<input type='<?php echo $visible; ?>' name='prediction_id' value='<?php echo $this->predictionGame->id; ?>' />
 			<input type='<?php echo $visible; ?>' name='user_id' value='<?php echo $this->actJoomlaUser->id; ?>' />
 			<input type='<?php echo $visible; ?>' name='approved' value='<?php echo ( $this->predictionGame->auto_approve ) ? '1' : '0'; ?>' />

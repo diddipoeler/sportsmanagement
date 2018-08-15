@@ -10,12 +10,13 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 
 <table class="table table-responsive">
 <tr>
 <td width="50%">
-<h2><?php echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PLAYFIELD' ); ?></h2>
+<h2><?php echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PLAYFIELD' ); ?></h2>
 
 <?php
 
@@ -33,7 +34,7 @@ if ( isset($this->person_position) )
 {
 ?>
 <div style="position:relative;height:170px;background-image:url(<?PHP echo $backimage;?>);background-repeat:no-repeat;">
-<img src="<?PHP echo $hauptimage;?>" class="<?PHP echo $this->person_position;?>" alt="<?PHP echo JText::_($this->teamPlayer->position_name); ?>" title="<?PHP echo JText::_($this->teamPlayer->position_name); ?>" />
+<img src="<?PHP echo $hauptimage;?>" class="<?PHP echo $this->person_position;?>" alt="<?PHP echo Text::_($this->teamPlayer->position_name); ?>" title="<?PHP echo Text::_($this->teamPlayer->position_name); ?>" />
 
 <?PHP
 

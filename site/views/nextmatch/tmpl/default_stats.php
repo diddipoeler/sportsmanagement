@@ -10,12 +10,12 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 //echo 'homeranked <br><pre>'.print_r($this->homeranked,true).'</pre>';
 
 ?>
 
-<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
+<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
 <table class="table">
 	<thead>
         <tr class="" align="center">
@@ -27,14 +27,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             }
             else
             {
-                echo JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
+                echo Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
             }
             ?>
         </th>
 			
 			<th  class="h2h" width="33%">
                 <?php
-                echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_STATS' );
+                echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_STATS' );
                 ?>
             </th>
         <th class="h2h">
@@ -45,7 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             }
             else
             {
-                echo JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
+                echo Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
             }
             ?>
         </th>
@@ -64,7 +64,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             </td>
             <td class="statlabel">
                 <?php
-                echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CHANCES' );
+                echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CHANCES' );
                 ?>
             </td>
             <td class="valueright">
@@ -87,7 +87,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             </td>
             <td class="statlabel">
                 <?php
-                echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CURRENT_RANK' );
+                echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CURRENT_RANK' );
                 ?>
             </td>
             <td class="valueright">
@@ -110,7 +110,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             </td>
             <td class="statlabel">
                 <?php
-                echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_COUNT_MATCHES' );
+                echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_COUNT_MATCHES' );
                 ?>
             </td>
             <td class="valueright">
@@ -133,7 +133,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
             </td>
             <td class="statlabel">
                    <?php
-                echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_TOTAL');
+                echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_TOTAL');
                 ?>
             </td>
             <td class="valueright">
@@ -157,7 +157,7 @@ if ( $this->config['show_match_total_home'] == 1 )
                 $this->homeranked->cnt_lost_home);?>
         </td>
         <td class="statlabel">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HOME');?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HOME');?>
 		</td>
         <td class="valueright">
         <?php printf(
@@ -183,7 +183,7 @@ if ( $this->config['show_match_total_away'] == 1 )
                 $this->homeranked->cnt_lost-$this->homeranked->cnt_lost_home);?>
         </td>
         <td class="statlabel">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY');?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_AWAY');?>
 		</td>
         <td class="valueright">
         <?php printf(
@@ -207,7 +207,7 @@ if ( $this->config['show_match_points'] == 1 )
         //echo JSMRankingTeam->getPoints();
         ?>
         </td>
-        <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_POINTS');?></td>
+        <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_POINTS');?></td>
         <td class="valueright"><?php echo $this->awayranked->sum_points;?></td>
     </tr>
 <?php
@@ -224,7 +224,7 @@ if ( $this->config['show_match_goals'] == 1 )
                 $this->homeranked->sum_team1_result,
                 $this->homeranked->sum_team2_result);?>
         </td>
-        <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GOALS');?></td>
+        <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_GOALS');?></td>
         <td class="valueright">
         <?php printf(
                 "%s : %s",
@@ -243,7 +243,7 @@ if ( $this->config['show_match_diff'] == 1 )
         <td class="valueleft">
         <?php echo $this->homeranked->diff_team_results;?>
         </td>
-        <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DIFFERENCE');?></td>
+        <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DIFFERENCE');?></td>
         <td class="valueright">
         <?php echo $this->awayranked->diff_team_results;?>
         </td>
@@ -269,7 +269,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      	----
 	      <?php endif; ?>
       </td>
-      <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME');?></td>
+      <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME');?></td>
        <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_away_win): ?>
 	        	<?php  
@@ -296,7 +296,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      	----
 	      <?php endif; ?>
       </td>
-      <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME');?></td>
+      <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_away_def): ?>
 	        	<?php 
@@ -323,7 +323,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      	----
 	      <?php endif; ?>
       </td>
-      <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY');?></td>
+      <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_home_win): ?>
 	        	<?php 
@@ -349,7 +349,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	      	----
 	      <?php endif; ?>
       </td>
-      <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY');?></td>
+      <td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_home_def): ?>
 	        	<?php 

@@ -1,4 +1,7 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' ); 
+<?php 
+
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 
 if ( $this->show_debug_info )
 {
@@ -11,7 +14,7 @@ $kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 <div style="width: 100%; float: left">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_JOOMLEAGUE_GMAP_DIRECTIONS'); ?>
+			<?php echo Text::_('COM_JOOMLEAGUE_GMAP_DIRECTIONS'); ?>
 		</div>
 	</div>
 	<?php

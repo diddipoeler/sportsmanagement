@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 $params = $this->params;
 ?>
@@ -167,32 +168,32 @@ $calCode .= "			day: '".jsmFullcalendar::convertFromPHPDate($params->get('timefo
 $calCode .= "			list: '".jsmFullcalendar::convertFromPHPDate($params->get('timeformat_list', 'g:i a{ - g:i a}'))."'},\n";
 $calCode .= "		columnFormat: { month: 'ddd', week: 'ddd d', day: 'dddd d'},\n";
 $calCode .= "		axisFormat: '".jsmFullcalendar::convertFromPHPDate($params->get('axisformat', 'g:i a'))."',\n";
-$calCode .= "		allDayText: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_ALL_DAY'), ENT_QUOTES)."',\n";
+$calCode .= "		allDayText: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_ALL_DAY'), ENT_QUOTES)."',\n";
 $calCode .= "			buttonText: {\n";
 $calCode .= "			prev:     '&nbsp;&#9668;&nbsp;',\n";  // left triangle
 $calCode .= "			next:     '&nbsp;&#9658;&nbsp;',\n";  // right triangle
 $calCode .= "			prevYear: '&nbsp;&lt;&lt;&nbsp;',\n"; // <<
 $calCode .= "			nextYear: '&nbsp;&gt;&gt;&nbsp;',\n"; // >>
-$calCode .= "			today:    '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_TOOLBAR_TODAY'), ENT_QUOTES)."',\n";
-$calCode .= "			month:    '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_MONTH'), ENT_QUOTES)."',\n";
-$calCode .= "			week:     '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_WEEK'), ENT_QUOTES)."',\n";
-$calCode .= "			day:      '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_DAY'), ENT_QUOTES)."',\n";
-$calCode .= "			list:     '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_LIST'), ENT_QUOTES)."'\n";
+$calCode .= "			today:    '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_TOOLBAR_TODAY'), ENT_QUOTES)."',\n";
+$calCode .= "			month:    '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_MONTH'), ENT_QUOTES)."',\n";
+$calCode .= "			week:     '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_WEEK'), ENT_QUOTES)."',\n";
+$calCode .= "			day:      '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_DAY'), ENT_QUOTES)."',\n";
+$calCode .= "			list:     '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_LIST'), ENT_QUOTES)."'\n";
 $calCode .= "		},\n";
 $calCode .= "		listSections: 'smart',\n";
 $calCode .= "		listRange: 30,\n";
 $calCode .= "		listPage: 30,\n";
 $calCode .= "		listTexts: {
-						until: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_UNTIL'), ENT_QUOTES)."',
-						past: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_PAST'), ENT_QUOTES)."',
-						today: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TODAY'), ENT_QUOTES)."',
-						tomorrow: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TOMORROW'), ENT_QUOTES)."',
-						thisWeek: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_WEEK'), ENT_QUOTES)."',
-						nextWeek: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_WEEK'), ENT_QUOTES)."',
-						thisMonth: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_MONTH'), ENT_QUOTES)."',
-						nextMonth: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_MONTH'), ENT_QUOTES)."',
-						future: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_FUTURE'), ENT_QUOTES)."',
-						week: '".htmlspecialchars(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_WEEK'), ENT_QUOTES)."'
+						until: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_UNTIL'), ENT_QUOTES)."',
+						past: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_PAST'), ENT_QUOTES)."',
+						today: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TODAY'), ENT_QUOTES)."',
+						tomorrow: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TOMORROW'), ENT_QUOTES)."',
+						thisWeek: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_WEEK'), ENT_QUOTES)."',
+						nextWeek: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_WEEK'), ENT_QUOTES)."',
+						thisMonth: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_MONTH'), ENT_QUOTES)."',
+						nextMonth: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_MONTH'), ENT_QUOTES)."',
+						future: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_FUTURE'), ENT_QUOTES)."',
+						week: '".htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_WEEK'), ENT_QUOTES)."'
 					},\n";
 $calCode .= $calsSources;
 $calCode .= "		viewRender: function(view) {\n";
@@ -246,7 +247,7 @@ if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) =
 	echo "<div align=\"center\" style=\"text-align:center\">\n";
 	$image = JURI::base().'components/com_sportsmanagement/assets/images/down.png';
 	if($params->get('show_selection', 1) == 3) $image = JURI::base().'components/com_sportsmanagement/assets/images/up.png';
-	echo "<img id=\"gc_gcalendar_view_toggle_status\" name=\"gc_gcalendar_view_toggle_status\" src=\"".$image."\" alt=\"".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\" title=\"".JText::_('COM_GCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\"/>\n";
+	echo "<img id=\"gc_gcalendar_view_toggle_status\" name=\"gc_gcalendar_view_toggle_status\" src=\"".$image."\" alt=\"".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\" title=\"".Text::_('COM_GCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')."\"/>\n";
 	echo "</div>\n";
 }
 

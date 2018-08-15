@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
@@ -36,22 +37,22 @@ $fieldsets = $this->form->getFieldsets();
 	<fieldset class="adminform">
 	<div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo JText::_('JCANCEL');?></button>
+						<?php echo Text::_('JCANCEL');?></button>
 				</div>
 	<legend>
   <?php 
-  echo JText::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
+  echo Text::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
   ?>
   </legend>
   </fieldset>
     
 <div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php 
             foreach($this->form->getFieldset('details') as $field) :
@@ -110,8 +111,8 @@ $fieldsets = $this->form->getFieldsets();
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
                 
@@ -138,9 +139,9 @@ $fieldsets = $this->form->getFieldsets();
 			if ( $fieldset->name == 'details' ||  $fieldset->name == 'seasons' ) :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;

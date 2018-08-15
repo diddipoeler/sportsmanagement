@@ -96,8 +96,6 @@ class sportsmanagementViewReferee extends JViewLegacy
         
         $this->headertitle = $this->title;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-
 		parent::display($tpl);
 	}
 

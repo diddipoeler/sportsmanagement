@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die; 
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 //add js file
 JHtml::_('behavior.framework');
 
@@ -21,12 +22,12 @@ JHtml::_('behavior.framework');
 <table class="<?php echo $this->config['table_class']; ?>">
 	<tr class="sectiontableheader">
     <th class="name_row"><?php echo ''; ?></th>
-		<th class="name_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_RIVAL'); ?></th>
-		<th class="match_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_MATCHES'); ?></th>
-		<th class="win_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_WIN'); ?></th>
-		<th class="tie_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_DRAW'); ?></th>
-		<th class="los_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_LOS'); ?></th>
-		<th class="goals_row"><?php echo JText::_('COM_SPORTSMANAGEMENT_RIVALS_TOTAL_GOALS'); ?></th>
+		<th class="name_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_RIVAL'); ?></th>
+		<th class="match_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_MATCHES'); ?></th>
+		<th class="win_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_WIN'); ?></th>
+		<th class="tie_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_DRAW'); ?></th>
+		<th class="los_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_LOS'); ?></th>
+		<th class="goals_row"><?php echo Text::_('COM_SPORTSMANAGEMENT_RIVALS_TOTAL_GOALS'); ?></th>
 	</tr>
 	<?php
 	$k=0;

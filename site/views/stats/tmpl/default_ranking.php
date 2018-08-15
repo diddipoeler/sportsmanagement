@@ -9,12 +9,14 @@
  * @subpackage stats
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
     <table class="<?php echo $this->config['ranking_table_class'];?>">
     <tbody>
 	<tr>
-	    <td class="contentheading"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING'); ?></td>
+	    <td class="contentheading"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING'); ?></td>
 	</tr>
     </tbody>
     </table>
@@ -27,32 +29,32 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 <th style="width:6px;"></th>
                 <th style="width:25%;">
                 <?php
-        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TEAM'), "name", null, "ASC");
+        sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TEAM'), "name", null, "ASC");
         ?>
                 </th>
                 <th style="width:3%;text-align:center;">
                 <?php
-        echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_MATCHES');
+        echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_MATCHES');
         ?>
                 </th>
                 <th style="width:16%;text-align:right;">
                 <?php
-        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'), "totalattend", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'), "totalattend", null);
         ?>
                 </th>
                 <th style="width:16%;text-align:right;">
                 <?php
-        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_AVG'), "avgattend", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_AVG'), "avgattend", null);
         ?>
                 </th>
                 <th style="width:19%;text-align:right;">
                 <?php
-        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_CAPACITY'), "capacity", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_CAPACITY'), "capacity", null);
         ?>
                 </th>
                 <th style="width:20%;text-align:right;">
                 <?php
-        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_UTILISATION'), "utilisation", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_UTILISATION'), "utilisation", null);
         ?>
                 </th>
             </tr>

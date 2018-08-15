@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 //echo '<pre>',print_r($this->matches,true),'</pre><br>';
 
 ?>
@@ -21,22 +22,22 @@ if ($this->config['type_matches'] != 0) {
 ?>
 	<tr class="sectiontableheader">
 		<?php if ( $this->config['show_matchday'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_match_nr'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
 		<?php } ;?>		
 		<?php if ( $this->config['show_match_date'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_match_time'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_time_present'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_league'] ) { ?>		
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
 		<?php } ;?>		
 		<?php if ( $this->config['show_club_logo'] ) { ?>
 		<th></th>
@@ -48,12 +49,12 @@ if ($this->config['type_matches'] != 0) {
 		<?php } ?>
 		<th>&nbsp;</th>
 		<?php if ( $this->config['show_referee'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
 		<?php } ;?>
 		<?php if ( $this->config['show_playground'] ) { ?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
 		<?php } ;?>
-		<th colspan=3 align="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
+		<th colspan=3 align="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
 		<?php if ( $this->config['show_thumbs_picture'] ) { ?>
 		<th align="center">&nbsp;</th>
 		<?php } ;?>
@@ -72,7 +73,7 @@ if ($this->config['type_matches'] != 0) {
 				?>
 					<tr class="sectiontableheader">
 						<th colspan="16">
-							<?php echo JHtml::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHtml::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<?php
@@ -222,7 +223,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				<?php if ( $this->config['show_match_date'] ) { ?>
 				<td>
 					<?php
-					echo JHtml::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
+					echo JHtml::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
 					?>
 				</td>
 					<?php } ;?>
@@ -369,20 +370,20 @@ $this->overallconfig['use_jquery_modal']);
 							echo '<td align="center" valign="middle">' .
 							JHtml::image("media/com_sportsmanagement/jl_images/draw.png",
 							"draw.png",
-							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
+							array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
 								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
 								"thumbs_up.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
 								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
 								"thumbs_down.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";
 							}
 							else

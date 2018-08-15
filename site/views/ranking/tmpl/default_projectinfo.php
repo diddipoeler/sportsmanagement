@@ -10,10 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="projectinfo">
 <h4>
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
 </h4>
 
 <table class="<?PHP echo $this->config['table_class']; ?>">
@@ -27,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
                     ?>
                     <div class="alert alert-warning" role="alert">
                     <?PHP
-                    echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO');
+                    echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO');
                     ?>
                     </div>
                     <?PHP

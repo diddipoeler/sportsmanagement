@@ -37,21 +37,23 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
+?>
 
 <!-- Player stats History START -->
-<h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h4>
+<h4><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h4>
 <table class="<?php echo $this->config['table_class'];?>" >
 	<tr>
 		<td>
 			<br/>
 			<table id="stats_history" class="<?php echo $this->config['table_class'];?>">
 				<tr class="sectiontableheader">
-					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
-					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
-                     <th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
+					<th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+					<th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+                     <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
 					<th class="td_c"><?php
-						$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
+						$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
 						echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 											$imageTitle,array(' title' => $imageTitle,' width' => 20,' height' => 20));
 						?></th>
@@ -120,7 +122,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				}
 				?>
 				<tr class="career_stats_total">
-					<td class="td_r" colspan="2"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
+					<td class="td_r" colspan="2"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
 					<td class="td_c"><?php echo ($career['played'] > 0) ? $career['played'] : '-'; ?></td>
 					<?php // stats per project
 					if ($this->config['show_careerstats'])

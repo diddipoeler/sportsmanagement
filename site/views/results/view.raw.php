@@ -1,6 +1,7 @@
 <?php 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
@@ -63,7 +64,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		}
 		
 		// Set page title
-		$pageTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+		$pageTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;
@@ -72,9 +73,9 @@ class sportsmanagementViewResults extends JViewLegacy
 
 		//build feed links
 		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
-		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
+		$rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($this->getLayout(),true).'</pre>' ),'');
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($this->getLayout(),true).'</pre>' ),'');
         
         // add the links
 		//$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
@@ -105,7 +106,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		$not_playing=count($teams) - count($playing_teams);
 		if ($not_playing > 0)
 		{
-			$output .= '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';
+			$output .= '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';
 			foreach ($teams AS $id => $team)
 			{
 				if (!isset($team->$config['names'])) continue;
@@ -215,7 +216,7 @@ class sportsmanagementViewResults extends JViewLegacy
 	{
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
-		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
+		$imgTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
 		$desc=JHtml::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
 		echo JHtml::link($link,$desc,$params);
@@ -275,7 +276,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		if ($this->project->allow_add_time)
 		{
 			if($match->match_result_type >0){
-				echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').':';
+				echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').':';
 				echo '<input type="text" style="font-size:9px;"';
 				echo ' name="team1_result_ot'.$match->id.'"';
 				echo ' value="';
@@ -292,7 +293,7 @@ class sportsmanagementViewResults extends JViewLegacy
 			}
 			if($match->match_result_type == 2){
 				echo '<br />';
-				echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').':';
+				echo Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').':';
 				echo '<input type="text" style="font-size:9px;"';
 				echo ' name="team1_result_so'.$match->id.'"';
 				echo ' value="';
@@ -357,7 +358,7 @@ class sportsmanagementViewResults extends JViewLegacy
 				$result .= '<br />';
 			}else{$result .= ' ';
 			}
-			$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').' ';
+			$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').' ';
 			$result .= $homeResultSO.'&nbsp;'.$config['seperator'].'&nbsp;'.$awayResultSO;
 			$result .= ')';
 		}
@@ -369,7 +370,7 @@ class sportsmanagementViewResults extends JViewLegacy
 					$result .= '<br />';
 				}else{$result .= ' ';
 				}
-				$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+				$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
 				$result .= ')';
 			}
 		}
@@ -379,7 +380,7 @@ class sportsmanagementViewResults extends JViewLegacy
 				$result .= '<br />';
 			}else{$result .= ' ';
 			}
-			$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').' ';
+			$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME').' ';
 			$result .= $homeResultOT.'&nbsp;'.$config['seperator'].'&nbsp;'.$awayResultOT;
 			$result .= ')';
 		}
@@ -391,7 +392,7 @@ class sportsmanagementViewResults extends JViewLegacy
 					$result .= '<br />';
 				}else{$result .= ' ';
 				}
-				$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+				$result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
 				$result .= ')';
 			}
 		}
@@ -430,7 +431,7 @@ class sportsmanagementViewResults extends JViewLegacy
 	 */
 	function prepareEventsOutput($match_id)
 	{
-		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_EVENTS_OF_MATCH');
+		$imgTitle=Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_EVENTS_OF_MATCH');
 		$attribs=array(	"title" => $imgTitle,
 		 		"id" => 'events-'. $match_id,
 		 		"class" => "eventstoggle");
@@ -453,7 +454,7 @@ class sportsmanagementViewResults extends JViewLegacy
 
 			if (!empty($referees))
 			{
-				$toolTipTitle	= JText::_('Match Referees');
+				$toolTipTitle	= Text::_('Match Referees');
 				$toolTipText	= '';
 
 				foreach ($referees as $ref)
@@ -495,12 +496,12 @@ class sportsmanagementViewResults extends JViewLegacy
 		{
 			if ($game->alt_decision)
 			{
-				$imgTitle = JText::_($game->decision_info);
+				$imgTitle = Text::_($game->decision_info);
 				$img = 'media/com_sportsmanagement/jl_images/court.gif';
 			}
 			else
 			{
-				$imgTitle=JText::_('Has match summary');
+				$imgTitle=Text::_('Has match summary');
 				$img='media/com_sportsmanagement/jl_images/zoom.png';
 			}
 			$output .= JHtml::_(	'link',
@@ -553,7 +554,7 @@ class sportsmanagementViewResults extends JViewLegacy
 				if($cnt==0){continue;}
 				// I think its better to show the event name,the the event image(gives some probs with tabs)
 				$pic_tab	= JURI::root().$event->icon;
-				$imgTitle	= JText::_($event->name); $imgTitle2=array(' title' => $imgTitle);
+				$imgTitle	= Text::_($event->name); $imgTitle2=array(' title' => $imgTitle);
 				$txt_tab	= JHtml::image($pic_tab,$imgTitle,$imgTitle2);
 
 				$backgroundStyle="background: url(".$pic_tab.") no-repeat transparent";
@@ -594,12 +595,12 @@ class sportsmanagementViewResults extends JViewLegacy
 				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 				$pic_tab	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
 
-				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_IN_OUT'); $imgTitle2=array(' title' => $imgTitle);
+				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_IN_OUT'); $imgTitle2=array(' title' => $imgTitle);
 				$txt_tab	= JHtml::image($pic_tab,$imgTitle,$imgTitle2);
 
-				$imgTime=JHtml::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut=JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn=JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$imgTime=JHtml::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut=JHtml::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn=JHtml::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				$output .= $result->startPanel($txt_tab,'0');
 				$output .= '<table class="matchreport" border="0">';
@@ -649,11 +650,11 @@ class sportsmanagementViewResults extends JViewLegacy
 					$output .= '<li class="list">';
 					if (!strlen($me->firstname1.$me->lastname1))
 					{
-						$output .= $me->event_time.'\' '.JText::_($projectevents[$me->event_type_id]->name). ' '.JText::_('Unknown Person');
+						$output .= $me->event_time.'\' '.Text::_($projectevents[$me->event_type_id]->name). ' '.Text::_('Unknown Person');
 					}
 					else
 					{
-						$output .= $me->event_time.'\' '.JText::_($projectevents[$me->event_type_id]->name). ' '.$me->firstname1.' '.$me->lastname1;
+						$output .= $me->event_time.'\' '.Text::_($projectevents[$me->event_type_id]->name). ' '.$me->firstname1.' '.$me->lastname1;
 					}
 					
 					// only show event sum and match notice when set to on in template cofig
@@ -704,11 +705,11 @@ class sportsmanagementViewResults extends JViewLegacy
 					$output .= '<li class="list">';
 					if (!strlen($me->firstname1.$me->lastname1))
 					{
-						$output .= $me->event_time.'\' '.JText::_($projectevents[$me->event_type_id]->name). ' '.JText::_('Unknown Person');
+						$output .= $me->event_time.'\' '.Text::_($projectevents[$me->event_type_id]->name). ' '.Text::_('Unknown Person');
 					}
 					else
 					{
-						$output .= $me->event_time.'\' '.JText::_($projectevents[$me->event_type_id]->name). ' '.$me->firstname1.' '.$me->lastname1;
+						$output .= $me->event_time.'\' '.Text::_($projectevents[$me->event_type_id]->name). ' '.$me->firstname1.' '.$me->lastname1;
 					}
 					
 					// only show event sum and match notice when set to on in template cofig
@@ -762,7 +763,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		{
 			$output = JHtml::_(	'link', $reportLink,
 					'<span class="score0">'.$this->showMatchState($game,$this->config).'</span>',
-			array("title" => JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
+			array("title" => Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
 		}
 		else
 		{
@@ -781,7 +782,7 @@ class sportsmanagementViewResults extends JViewLegacy
 			$output .= '<li class="events" style="'.$backgroundStyle.'">';
 			if (!strlen($matchevent->firstname1.$matchevent->lastname1))
 			{
-				$output .= $matchevent->event_time.'\' '.JText :: _('Unknown Person');
+				$output .= $matchevent->event_time.'\' '.Text :: _('Unknown Person');
 			}
 			else
 			{
@@ -822,17 +823,17 @@ class sportsmanagementViewResults extends JViewLegacy
 		{
 			$output .= '<li class="events">';
 			// $output .= $imgTime;
-			$output .= '&nbsp;'.$subs->in_out_time.'. '.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
+			$output .= '&nbsp;'.$subs->in_out_time.'. '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
 
 			$output .= $imgOut;
 			$output .= '&nbsp;'.$subs->out_firstname.' '.$subs->out_lastname;
-			$output .= '&nbsp;('.JText :: _($subs->out_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->out_position).')';
 			$output .= '<br />';
 
 			$output .= $imgIn;
 			$output .= '&nbsp;'.$subs->firstname.' '.$subs->lastname;
-			$output .= '&nbsp;('.JText :: _($subs->in_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->in_position).')';
 			$output .= '<br /><br />';
 			$output .= '</li>';
 		}

@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewRoster
@@ -72,12 +73,12 @@ class sportsmanagementViewRoster extends sportsmanagementView
             $this->stafflist = $this->model->getTeamPlayers(2);
 
 			// Set page title
-			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
 		}
 		else
 		{
 			// Set page title
-			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', JText :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM') ));
+			$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', Text :: _('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM') ));
 		}
         
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
@@ -86,16 +87,16 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
     // select roster view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "player_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+    $opp_arr[] = JHTML :: _('select.option', "player_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
+	$opp_arr[] = JHTML :: _('select.option', "player_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
+	$opp_arr[] = JHTML :: _('select.option', "player_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
 
 	$lists['type'] = $opp_arr;
   // select staff view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "staff_standard", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_card", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+    $opp_arr[] = JHTML :: _('select.option', "staff_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
+	$opp_arr[] = JHTML :: _('select.option', "staff_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
+	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
 
 	$lists['typestaff'] = $opp_arr;
 	$this->lists = $lists;

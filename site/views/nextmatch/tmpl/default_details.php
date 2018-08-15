@@ -10,11 +10,11 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <!-- START of match details -->
-<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h4>
+<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h4>
 <table class="table">
 	<!-- Prev Match-->
 	<?php
@@ -22,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	{
 		?>
 	<tr>
-		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH' ); ?></span>
+		<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH' ); ?></span>
 		<span><?php 
 		$routeparameter = array();
 $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
@@ -42,7 +42,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	{
 		?>
 	<tr>
-		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH' ); ?></span>
+		<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH' ); ?></span>
 		<span>
         <?php 
         echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id,$this->match->new_match_id,JFactory::getApplication()->input->getInt('cfg_which_database',0) ),$this->newmatchtext);
@@ -59,8 +59,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	{
 		if ($this->match->match_date > 0): ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_DATE' ); ?></span>
-					<span><?php echo JHtml::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_DATE' ); ?></span>
+					<span><?php echo JHtml::date($this->match->match_date, Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
 				</td>
 			</tr>
 			<?php endif;
@@ -72,7 +72,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	{
 		if ($this->match->match_date > 0): ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_TIME' ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_TIME' ); ?></span>
 					<span><?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?></span>
 				</td>
 			</tr>
@@ -85,7 +85,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	{
 		if ($this->match->time_present > 0): ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PRESENT' ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PRESENT' ); ?></span>
 					<span><?php echo $this->match->time_present; ?></span></td>
 			</tr>
 			<?php endif;
@@ -97,7 +97,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	{
 		if ($this->match->match_number > 0): ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NUMBER' ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NUMBER' ); ?></span>
 				<span><?php echo $this->match->match_number; ?></span></td>
 			</tr>
 		<?php endif;
@@ -106,7 +106,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	<!-- match canceled -->
 	<?php if ($this->match->cancel > 0): ?>
 	<tr>
-		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CANCEL_REASON' ); ?></span>
+		<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_CANCEL_REASON' ); ?></span>
 		<span><?php echo $this->match->cancel_reason; ?></span></td>
 	</tr>
 	<?php endif; ?>
@@ -130,7 +130,7 @@ $routeparameter['pgid'] = $this->match->playground_slug;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
             ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
 					<span>
                     <?php
                     if ( isset($this->playground->name) )
@@ -139,7 +139,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                     }
                     else
                     {
-                    echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
+                    echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
                     } 
                     ?>
                     </span>
@@ -157,7 +157,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 		if (!empty($this->referees)): ?>
 			<?php $html = array(); ?>
 			<tr>
-				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE' ); ?></span>
+				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE' ); ?></span>
 				<?php foreach ($this->referees AS $ref): ?> 
 				<?php 
 $routeparameter = array();

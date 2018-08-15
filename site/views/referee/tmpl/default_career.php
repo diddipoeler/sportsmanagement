@@ -10,22 +10,23 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if (count($this->history) > 0)
 {
 	?>
 <h2>
 
-<?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');	?></h2>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');	?></h2>
 <!-- staff history START -->
 <table class="<?php echo $this->config['career_table_class']; ?>">
 	<tr>
 		<td><br />
 			<table class="<?php echo $this->config['career_table_class']; ?>">
 				<tr class="sectiontableheader">
-					<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
-					<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
-					<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
+					<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+					<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
+					<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
 				</tr>
 					<?php
 					$k=0;
@@ -42,7 +43,7 @@ $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routep
 						<tr class="">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
-							<td class="td_l"><?php echo ($station->position_name ? JText::_($station->position_name) : ""); ?></td>
+							<td class="td_l"><?php echo ($station->position_name ? Text::_($station->position_name) : ""); ?></td>
 						</tr>
 						<?php
 						$k=(1-$k);

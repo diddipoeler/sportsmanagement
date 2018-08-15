@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
@@ -119,8 +120,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
         
         // Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-			? JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
-			: JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
+			: Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
             
 		if ( isset( $this->project->name ) )
 		{

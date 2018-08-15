@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.framework');
 JHtml::_('behavior.modal');
@@ -45,19 +45,19 @@ function searchPerson(val)
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
 	<fieldset class="filters">
-	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
+	<legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 	<div class="filter-search">
 
-<!--label class="filter_search-lbl" for="filter_search"><!--?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
+<!--label class="filter_search-lbl" for="filter_search"><!--?php echo Text::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
 		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
 		<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
 		<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-		<!--button type="submit" class="button"><!--?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button-->
+		<!--button type="submit" class="button"><!--?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button-->
 		
         <!--button class="button" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<!--?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
+					echo Text::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button-->
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
@@ -85,7 +85,7 @@ function searchPerson(val)
 
         
     <div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
 		</div>
         

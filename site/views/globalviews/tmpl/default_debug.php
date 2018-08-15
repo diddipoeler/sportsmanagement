@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 //echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
 
@@ -53,12 +54,12 @@ if(version_compare(JVERSION,'3.0.0','ge'))
             "active" => "slide2_id" // It is the ID of the active tab.
         );    
 echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
-echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
+echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
 foreach (sportsmanagementHelper::$_success_text as $key => $value)
 		{
 			?>
 			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
+				<legend><?php echo Text::_($key); ?></legend>
 				<table class='adminlist'><tr><td><?php echo '<pre>'.print_r($value,true).'</pre>' ; ?></td></tr></table>
 			</fieldset>
 			<?php
@@ -81,14 +82,14 @@ for($a=0; $a < sizeof($array_schluessel); $a++ )
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
-<a data-toggle="collapse" data-parent="#accordion" href="#<?php echo JText::_($array_schluessel[$a]); ?>"><?php echo JText::_($array_schluessel[$a]); ?></a>
+<a data-toggle="collapse" data-parent="#accordion" href="#<?php echo Text::_($array_schluessel[$a]); ?>"><?php echo Text::_($array_schluessel[$a]); ?></a>
 </h4>
 </div>
 <?PHP    
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
-<div id="<?php echo JText::_($array_schluessel[$a]); ?>" class="panel-collapse collapse">
+<div id="<?php echo Text::_($array_schluessel[$a]); ?>" class="panel-collapse collapse">
 <div class="panel-body">
 <table class="adminlist"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
 </div>

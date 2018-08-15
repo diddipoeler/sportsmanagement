@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 //echo 'project<pre>',print_r($this->project,true),'</pre>';
 //echo 'rows <pre>',print_r($this->rows,true),'</pre>';
@@ -118,7 +119,7 @@ if (!empty($this->rows))
 	<thead>
 	<tr class="sectiontableheader rosterheader">
 		<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
-			<?php echo '&nbsp;'.JText::_($row->position); ?>
+			<?php echo '&nbsp;'.Text::_($row->position); ?>
 		</th>
 		<?php
 		if ( $this->config['show_birthday'] )
@@ -143,7 +144,7 @@ if (!empty($this->rows))
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 						break;
 				}
-				echo JText::_( $outputStr );
+				echo Text::_( $outputStr );
 				?>
 		</th>
 		<?php
@@ -161,7 +162,7 @@ if (!empty($this->rows))
 		?>
 		<th class="td_c">
 		<?php
-		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
+		$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
                 $picture = $picture_path_sport_type_name.'/played.png';
                 
                 echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
@@ -173,19 +174,19 @@ if (!empty($this->rows))
 		?>
 		<th class="td_c">
 		<?php
-		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
+		$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
                 $picture = $picture_path_sport_type_name.'/startroster.png';
                 
 		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
+		$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
                 $picture = $picture_path_sport_type_name.'/in.png';
                 
 		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
+		$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
                 $picture = $picture_path_sport_type_name.'/out.png';
                 
 		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
@@ -193,7 +194,7 @@ if (!empty($this->rows))
         
         <th class="td_c">
 		<?php
-		$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+		$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
 
 		echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
@@ -215,7 +216,7 @@ if (!empty($this->rows))
 					{
 						if (empty($eventtype->icon))
 						{
-							$eventtype_header = JText::_($eventtype->name);
+							$eventtype_header = Text::_($eventtype->name);
 						}
 						else
 						{
@@ -226,8 +227,8 @@ if (!empty($this->rows))
 								$iconPath = 'images/com_sportsmanagement/database/events/'.$iconPath;
 							}
                             				$eventtype_header = JHtml::image(	$iconPath,
-																JText::_($eventtype->name),
-																array(	'title'=> JText::_($eventtype->name),
+																Text::_($eventtype->name),
+																array(	'title'=> Text::_($eventtype->name),
 																		  'align'=> 'top',
 																		  'hspace'=> '2'));
 						}
@@ -260,7 +261,7 @@ if (!empty($this->rows))
 	{
 	?>
 		<th class="td_c">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE');?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE');?>
 		</th>
 						<?php
 	}
@@ -363,19 +364,19 @@ $this->overallconfig['use_jquery_modal']
 		$this->playertool = $model->getTeamPlayer($this->project->current_round,$row->playerid);
 		if (!empty($this->playertool[0]->injury))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
-			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
+			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
 			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 								$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
@@ -390,11 +391,11 @@ $this->overallconfig['use_jquery_modal']
 				switch ($this->config['show_birthday'])
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = JHtml::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 						break;
 					case 2:	 // show Only Birthday
-						$birthdateStr = JHtml::date($row->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = JHtml::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						break;
 					case 3:	 // show Only Age
 						$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
@@ -420,7 +421,7 @@ $this->overallconfig['use_jquery_modal']
 			// deathday
 			if ( $row->deathday !="0000-00-00" )
 			{
-				$birthdateStr .= ' [&dagger; '.JHtml::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+				$birthdateStr .= ' [&dagger; '.JHtml::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}
 					
 			echo $birthdateStr;
@@ -565,7 +566,7 @@ $this->overallconfig['use_jquery_modal']
 						}
 					}
 					?>
-		<td class="td_c" class="hasTip" title="<?php echo JText::_($stat->name); ?>">
+		<td class="td_c" class="hasTip" title="<?php echo Text::_($stat->name); ?>">
 			<?php echo $value; ?>
 		</td>
 					<?php
@@ -610,12 +611,12 @@ $this->overallconfig['use_jquery_modal']
         <td class="td_r" colspan="3">
             <?php
             if ($this->config['show_average_age']) {
-                echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
+                echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE') . ' ' . $meanage;
             }
             ?>
         </td>
         <td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>">
-            <b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?>:</b></td>
+            <b><?php echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?>:</b></td>
 		<?php
 		if ($this->config['show_events_stats'])
 		{

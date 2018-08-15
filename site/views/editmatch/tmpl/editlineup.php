@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.framework'); 
 $params = $this->form->getFieldsets('params');
 ?>
@@ -24,11 +25,11 @@ $params = $this->form->getFieldsets('params');
 <fieldset>
 <div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('editmatch.save', this.form);">
-<?php echo JText::_('JSAVE');?></button>
+<?php echo Text::_('JSAVE');?></button>
 
 		</div>
 		<div class="configuration" >
-			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
+			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
 		</div>
 	</fieldset>
 	<div class="clear"></div>
@@ -39,10 +40,10 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?>    
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#player"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
-<li><a data-toggle="tab" href="#subst"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
-<li><a data-toggle="tab" href="#staff"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
-<li><a data-toggle="tab" href="#trikotnumber"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
+<li class="active"><a data-toggle="tab" href="#player"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
+<li><a data-toggle="tab" href="#subst"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
+<li><a data-toggle="tab" href="#staff"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
+<li><a data-toggle="tab" href="#trikotnumber"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
 </ul>    
 
 <div class="tab-content">
@@ -75,16 +76,16 @@ echo $this->loadTemplate('players_trikot_numbers');
 		// focus on players tab 
 		$startOffset = 1;
 		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
+		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
 		echo $this->loadTemplate('substitutions');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
+		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
 		echo $this->loadTemplate('players');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
+		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
 		echo JHtml::_('tabs.end');

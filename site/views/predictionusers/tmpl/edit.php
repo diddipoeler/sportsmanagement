@@ -9,7 +9,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
 JHTML::_('behavior.tooltip');
 
 //echo '<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
@@ -22,7 +23,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 
 if (!$this->showediticon)
 {
-	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),JText::_('ALERTNOTAUTH'));
+	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
 }
 $document =& JFactory::getDocument();
 
@@ -38,7 +39,7 @@ $document->addScriptDeclaration($script);
 $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 ?>
 <form name='adminForm' id='adminForm' method='post' >
-	<table width='100%'><tr><td class='sectiontableheader'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?></td></tr></table>
+	<table width='100%'><tr><td class='sectiontableheader'><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?></td></tr></table>
 	<br />
 	<?php /* approved show_profile fav_team champ_tipp slogan reminder receipt admintipp picture */ ?>
 	<table class='plinfo' cellpadding='4' cellspacing='1'>
@@ -57,7 +58,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 				$regTime = substr($this->predictionMember->pmRegisterDate,11,5);
 				if ($this->allowedAdmin)
 				{
-					echo JText::sprintf(	'%1$s - %2$s',
+					echo Text::sprintf(	'%1$s - %2$s',
 											JHTML::calendar(JoomleagueHelper::convertDate($regDate),'registerDate','date','%d-%m-%Y','size="10"'),
 											'<input class="inputbox" type="text" name="registerTime" size="4" maxlength="5" value="'.$regTime.'" />');
 				}
@@ -66,8 +67,8 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 					echo '<input type="hidden" name="registerDate" value="'.JoomleagueHelper::convertDate($regDate).'" />';
 					echo '<input type="hidden" name="registerTime" value="'.$regTime.'" />';
 					echo	$this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
-							JHTML::date($this->predictionMember->pmRegisterDate,JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
-							JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN');
+							JHTML::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
+							Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN');
 				}
 				?></td>
 		</tr>
@@ -167,11 +168,11 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 						{
 							if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
 							{
-								echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_FAVTEAM_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
+								echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_FAVTEAM_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
 							}
 							else
 							{
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_GETPROJECT_ERROR');
+								echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_GETPROJECT_ERROR');
 							}
 						}
 						else {echo '&nbsp;';}
@@ -205,11 +206,11 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 						{
 							if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
 							{
-								echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
+								echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
 							}
 							else
 							{
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_GETPROJECT_ERROR');
+								echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_GETPROJECT_ERROR');
 							}
 						}
 						else {echo '&nbsp;';}
@@ -229,10 +230,10 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			?>
 			<td colspan='2'>
 				<img	class='imagepreview' src='<?PHP echo $this->predictionMember->picture  ; ?>' name='picture_preview'
-						id='picture_preview' border='3' alt='<?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_AVATAR_PREVIEW'); ?>' title='<?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_AVATAR_PREVIEW'); ?>' /><br /><?php echo $this->imageselect; ?>
+						id='picture_preview' border='3' alt='<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_AVATAR_PREVIEW'); ?>' title='<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_AVATAR_PREVIEW'); ?>' /><br /><?php echo $this->imageselect; ?>
 
 <fieldset class="adminform">
-			<legend><?php echo JText::_('JL_PRED_USERS_EDIT_LABEL_AVATAR' );?>
+			<legend><?php echo Text::_('JL_PRED_USERS_EDIT_LABEL_AVATAR' );?>
 			</legend>
 			<table class="admintable">
 					<?php foreach ($this->form->getFieldset('picture') as $field): ?>
@@ -252,9 +253,9 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 		<tr>
 			<td>&nbsp;</td>
 			<td colspan='2'>
-				<input	type='submit' name='saveInfo' value='<?php echo JText::_('JSAVE'); ?>'
+				<input	type='submit' name='saveInfo' value='<?php echo Text::_('JSAVE'); ?>'
 						onClick="javascript:submitbutton('save'); " />
-				<input	type='submit' name='cancel' value='<?php echo JText::_('JPREV'); ?>'
+				<input	type='submit' name='cancel' value='<?php echo Text::_('JPREV'); ?>'
 						onClick="javascript:submitbutton('cancel'); " />
 			</td>
 		</tr>

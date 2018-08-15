@@ -9,7 +9,9 @@
  * @subpackage stats
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <div id="jl_stats">
 
@@ -17,36 +19,36 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <table class="<?php echo $this->config['stats_table_class'];?>">
 <thead>
 	<tr class="sectiontableheader">
-		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_GENERAL'); ?></th>
+		<th colspan="2"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_GENERAL'); ?></th>
 	</tr>
 </thead>
 <tbody>
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHDAYS'); ?>:</td>
+		<td class="statlabel"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHDAYS'); ?>:</td>
 		<td class="statvalue"><?php	echo $this->totalrounds; ?></td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_CURRENT_MATCHDAY');	?>:
+		<td class="statlabel"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_CURRENT_MATCHDAY');	?>:
 		</td>
 		<td class="statvalue"><?php	echo $this->actualround; ?></td>
 	</tr>
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PER_MATCHDAY'); ?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PER_MATCHDAY'); ?>:</td>
 		<td class="statvalue"><?php	echo ($this->totalrounds > 0 ? round (($this->totals->totalmatches / $this->totalrounds),2) : 0); ?>
 		</td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL');?>:</td>
 		<td class="statvalue"><?php	echo $this->totals->totalmatches;?></td>
 	</tr>
 	<tr  class="sectiontableentry1">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PLAYED');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_PLAYED');?>:</td>
 		<td class="statvalue"><?php	echo $this->totals->playedmatches;?></td>
 	</tr>
 	
 	<?php	if ($this->config['home_away_stats']): ?>
 	<tr  class="sectiontableentry2">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_HOME');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_HOME');?>:</b>
 		<br />
 		<?php
 		if($this->totals->playedmatches>0 && $this->highest_home)
@@ -59,7 +61,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		</td>
 	</tr>
 	<tr  class="sectiontableentry1">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_AWAY');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WON_AWAY');?>:</b>
 		<br />
 		<?php
 		if($this->totals->playedmatches>0 && $this->highest_away) {
@@ -88,7 +90,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		}
 		?>
 	<tr  class="sectiontableentry2">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WIN');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_HIGHEST_WIN');?>:</b>
 		<br />
 		<?php echo $this->highest->hometeam." - ".$this->highest->guestteam; ?>
 		</td>

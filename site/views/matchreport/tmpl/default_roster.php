@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 ?>
 <!-- START: game roster -->
@@ -21,7 +22,7 @@ if (!empty($this->matchplayerpositions))
 {
 ?>
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>		
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>		
 <table class="table table-responsive">
 <?php
 		foreach ($this->matchplayerpositions as $pos)
@@ -39,7 +40,7 @@ if (!empty($this->matchplayerpositions))
 			if ($personCount > 0)
 			{
 				?>
-				<tr><td colspan="2" class="positionid"><?php echo JText::_($pos->name); ?></td></tr>
+				<tr><td colspan="2" class="positionid"><?php echo Text::_($pos->name); ?></td></tr>
 				<tr>
 					<!-- list of home-team -->
 					<td class="list">
@@ -98,7 +99,7 @@ echo $match_player;
 
 if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 {
-$imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
+$imgTitle=($this->config['show_player_profile_link'] == 1) ? Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
 $picture=$player->picture;
 if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
 {
@@ -170,7 +171,7 @@ $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 
 if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 {
-$imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
+$imgTitle=($this->config['show_player_profile_link'] == 1) ? Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
 $picture=$player->picture;
 if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
 {

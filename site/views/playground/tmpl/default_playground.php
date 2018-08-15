@@ -9,13 +9,14 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row-fluid">
 <table class="table">
 	<tr class="">
 		<th colspan="2">
 			<?php
-			echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_DATA' );
+			echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_DATA' );
 			?>
 		</th>
 	</tr>
@@ -24,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<th class="" width="">
 
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_SHORT' );
 				?>
 
 		</th>
@@ -42,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	{
 		?>
 		<tr>
-			<th class="" width=''><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS' ); ?></th>
+			<th class="" width=''><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_ADDRESS' ); ?></th>
 			<td width=''>
 				<?php
 				echo JSMCountries::convertAddressString(	'',
@@ -65,7 +66,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
 		<tr>
 			<th class="" width="">
-			   <?php echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE' ); ?>
+			   <?php echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_WEBSITE' ); ?>
 			</th>
 			<td>
 				<?php
@@ -85,7 +86,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<th class="" width="">
 
 					<?php
-					echo JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS' );
+					echo Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_MAX_VISITORS' );
 					?>
 
 			</th>

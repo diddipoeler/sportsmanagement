@@ -9,7 +9,8 @@
  * @subpackage predictionresults
  */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
 JHTML::_('behavior.tooltip');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -84,7 +85,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 				<tr>
 					<td >
 						<?php
-						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
+						echo '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
 						?>
 					</td>
 					
@@ -101,13 +102,13 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						//$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->roundID);
 						$htmlRoundsOptions = JHTML::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
                         
-                        $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
+                        $predictionGroups[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
                         $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
             
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
             
-            echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
+            echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
 						'<td>'.$htmlRoundsOptions.'</td>',
 						'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id).'</td>',
                         '<td>'.$htmlGroupOptions.'</td>');
@@ -127,7 +128,7 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
 
-						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
+						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 						echo JHTML::link($link,$desc,array('target' => ''));
 						?>
@@ -163,20 +164,20 @@ When viewing on anything larger than 768px wide, you will not see any difference
 				<?php 
                 $tdClassStr = "style='text-align:center; vertical-align:middle; '"; 
                 ?>
-				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
+				<th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
 				<?php
 				
         if ($this->config['show_user_icon'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
 				}
 				
 				?>
-				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
+				<th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
 				<?php
                 if ($this->config['show_pred_group'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
 				}
                 
 				$match_ids = NULL;
@@ -260,7 +261,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
                         
 						?>
-                        <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
+                        <span class='hasTip' title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
                         <br />
                         <?php
 						
@@ -315,13 +316,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult' . $match->a
 				<?php
 				if ($this->config['show_points'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_average_points'])
 				{
-					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
 				}
 				?>
 			</tr>
@@ -427,7 +428,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) . '~</pre><br />';
 }
 						
-						$memberPredictionOutput = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
+						$memberPredictionOutput = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 
                         $matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->timezone);
                         $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
@@ -527,7 +528,7 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
 				//tobe removed
-				//$imgTitle = JText::sprintf('JL_PRED_AVATAR_OF',$member->name);
+				//$imgTitle = Text::sprintf('JL_PRED_AVATAR_OF',$member->name);
 				//$output = JHTML::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
 				
 					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
@@ -619,7 +620,7 @@ $durchlauf = 1;
 							}
 							else
 							{
-								echo JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
+								echo Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
 							}
 							echo '</td>';
 						}

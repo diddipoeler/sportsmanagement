@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
@@ -117,8 +118,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
         
 		// Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
-		? JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
-		: JText::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
+		? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
+		: Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ' - ' . $this->project->name;
@@ -131,7 +132,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		/*
 		 //build feed links
 		 $feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
-		 $rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
+		 $rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
 		 // add the links
 		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
@@ -157,9 +158,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
-        
+       
 		$options = array();
 		foreach ($rounds as $r)
 		{

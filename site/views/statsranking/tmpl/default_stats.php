@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 //echo 'stats <pre>',print_r($this->stats,true),'</pre>';
 
 ?>
@@ -30,13 +30,13 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 <table class="<?php	echo $this->config['table_class'];	?>">
 	<thead>
 	<tr class="sectiontableheader">
-		<th class="td_r rank"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_RANK' );	?></th>
+		<th class="td_r rank"><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_RANK' );	?></th>
 
 		<?php if ($this->config['show_picture_thumb'] == 1 ):	?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
-		<th class="td_l"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_PLAYER_NAME' ); ?>
+		<th class="td_l"><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_PLAYER_NAME' ); ?>
 		</th>
 
 		<?php	if ( $this->config['show_nation'] == 1 ):	?>
@@ -44,12 +44,12 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		<?php endif; ?>
 		
 		<?php	if ( $this->config['show_team'] == 1 ):	?>
-		<th class="td_l"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_TEAM' );	?></th>
+		<th class="td_l"><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_TEAM' );	?></th>
 		<?php endif; ?>
 		<?php	if ( $show_icons == 1 ):	?>
 		<th class="td_r" class="nowrap"><?php	echo $rows->getImage(); ?></th>
 		<?php else: ?>	
-		<th class="td_r" class="nowrap"><?php	echo JText::_($rows->name); ?></th>
+		<th class="td_r" class="nowrap"><?php	echo Text::_($rows->name); ?></th>
 		<?php endif; ?>		
 	</tr>
 	</thead>
@@ -194,7 +194,7 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['division'] = $this->division->id;
 $routeparameter['tid'] = $this->teamid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking',$routeparameter);	 
-echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); 
+echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); 
 ?>
 </div>
 <?php

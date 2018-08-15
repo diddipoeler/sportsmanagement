@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 // Reference global application object
 $app = JFactory::getApplication();
 // JInput object
@@ -33,19 +33,19 @@ switch ( $view )
 		if ( isset( $this->round->name ) && $timestamp )
 		{
 			$matchDate = sportsmanagementHelper::getTimestamp( $this->match->match_date, 1 );
-			echo '&nbsp;' . JText::sprintf(	$pageTitle,
+			echo '&nbsp;' . Text::sprintf(	$pageTitle,
 			$this->round->name,
-			JHtml::date( $matchDate, JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE' ) ),
+			JHtml::date( $matchDate, Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE' ) ),
 			sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project) );
 		
 		}
         elseif ( isset( $this->round->name ) && !$timestamp )
 		{
-		  echo '&nbsp;' . JText::sprintf( $pageTitle, $this->round->name, '', '' );
+		  echo '&nbsp;' . Text::sprintf( $pageTitle, $this->round->name, '', '' );
 		}  
 		else
 		{
-			echo '&nbsp;' . JText::sprintf( $pageTitle, '', '', '' );
+			echo '&nbsp;' . Text::sprintf( $pageTitle, '', '', '' );
 		}
 		?></td>
 	</tr>
@@ -59,7 +59,7 @@ switch ( $view )
 	<tr>
 		<td class="contentheading">
 			<?php
-	echo JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
+	echo Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
 	
 	if ( $this->showediticon )
 	{
@@ -75,7 +75,7 @@ $routeparameter['pid'] = $this->person->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter,'person.edit');
 echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
+Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
 '20',
 $link,
 $this->modalwidth,
@@ -86,7 +86,7 @@ $this->overallconfig['use_jquery_modal']);
 
 	if ( isset($this->teamPlayer->injury) && $this->teamPlayer->injury )
 	{
-		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
+		$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
 		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 							$imageTitle,
 							array( 'title' => $imageTitle ) );
@@ -94,7 +94,7 @@ $this->overallconfig['use_jquery_modal']);
 
 	if ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension )
 	{
-		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
+		$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
 		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 							$imageTitle,
 							array( 'title' => $imageTitle ) );
@@ -103,7 +103,7 @@ $this->overallconfig['use_jquery_modal']);
 
 	if ( isset($this->teamPlayer->away) && $this->teamPlayer->away )
 	{
-		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
+		$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
 		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 							$imageTitle,
 							array( 'title' => $imageTitle ) );
@@ -129,7 +129,7 @@ $this->overallconfig['use_jquery_modal']);
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
 echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
@@ -155,10 +155,10 @@ $this->overallconfig['use_jquery_modal']);
 		<?php
 		if ( $this->roundid)
 		{
-			$title = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS' );
+			$title = Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS' );
 			if ( isset( $this->division ) )
 			{
-				$title = JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', '<i>' . $this->division->name . '</i>' );
+				$title = Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', '<i>' . $this->division->name . '</i>' );
 			}
 			sportsmanagementHelperHtml::showMatchdaysTitle(	$title, $this->roundid, $this->config );
 
@@ -175,7 +175,7 @@ $routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = $this->config['result_style_edit'];
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 				
-				$imgTitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS' );
+				$imgTitle = Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS' );
 				$desc = JHtml::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
 				echo ' ';
 				echo JHtml::link( $link, $desc );
@@ -185,7 +185,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		{
 			//1 request for current round
 			// seems to be this shall show a plan of matches of a team???
-			sportsmanagementHelperHtml::showMatchdaysTitle( JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_PLAN' ) , 0, $this->config );
+			sportsmanagementHelperHtml::showMatchdaysTitle( Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_PLAN' ) , 0, $this->config );
 		}
 		?>
 		</td>
@@ -197,7 +197,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		<td>
         <?php
 		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
-        $imgtitle = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PREV' );
+        $imgtitle = Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PREV' );
 		echo JHtml::link(sportsmanagementModelPagination::$prevlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
         //echo sportsmanagementModelPagination::$prevlink;
 		?>
@@ -208,7 +208,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
                 <td>
         <?php
 		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
-        $imgtitle = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEXT' );
+        $imgtitle = Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEXT' );
         echo JHtml::link(sportsmanagementModelPagination::$nextlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_right_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
         //echo sportsmanagementModelPagination::$nextlink;
 		?>
@@ -241,7 +241,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			{
 				$output .= ' '.$this->project->name;
 			}
-			echo JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$output);
+			echo Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$output);
 			?>
 		</td>
 		<?php
@@ -263,8 +263,8 @@ $routeparameter['ptid'] = $this->ptid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparameter);
 				    
 				//$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
-				$text = JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
-				$attribs = array('title' => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
+				$text = JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
+				$attribs = array('title' => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				echo JHtml::_('link',$link,$text,$attribs);
 				}
 				?>
@@ -283,7 +283,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 			<td class=""><a name="division<?php echo $this->divisions;?>"></a>
 			
 			<?php 
-				echo JText::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');
+				echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TITLE');
 				if ($this->division) {
 					echo ' '.$this->division->name;
 				}
@@ -300,7 +300,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 		<tr>
 			<td class="">
 				<?php
-				echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_MATRIX' );
+				echo '&nbsp;' . Text::_( 'COM_SPORTSMANAGEMENT_MATRIX' );
 				if ( $this->divisionid )
 				{
 					echo " " . $this->division->name;
@@ -324,11 +324,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 		<?php
 		if ( $this->config['show_team_shortform'] == 1 && !empty($this->team->short_name))
 		{
-			echo '&nbsp;' . JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_TITLE2', $this->team->name, $this->team->short_name );
+			echo '&nbsp;' . Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_TITLE2', $this->team->name, $this->team->short_name );
 		}
 		else
 		{
-			echo '&nbsp;' . JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name );
+			echo '&nbsp;' . Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_TITLE', $this->team->name );
 		}
 		?>
 		</td>
@@ -359,7 +359,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     <table class="table">
 	<tr>
 		<td class="contentheading"><?php
-		echo JHtml::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ). " ".
+		echo JHtml::date($this->match->match_date, Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ). " ".
 		sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); 
 		?></td>
 	</tr>
@@ -371,13 +371,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 <!-- START: Contentheading -->
 <div class="container">
 	<h4>
-		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
+		<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
@@ -399,7 +399,7 @@ $this->overallconfig['use_jquery_modal']);
 
 		<h4>
 			<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
+				echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
 
 	            if ( $this->showediticon )
 	            {
@@ -408,7 +408,7 @@ $this->overallconfig['use_jquery_modal']);
                     
 echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,

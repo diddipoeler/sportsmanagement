@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 //echo 'previousx <br><pre>'.print_r($this->previousx,true).'</pre>';
 //echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre>';
 //echo 'teams <br><pre>'.print_r($this->teams,true).'</pre>';
@@ -22,7 +22,7 @@ foreach ( $this->teams as $currentteam )
 <?php if ( isset($this->previousx[$currentteam->id])) :	?>
 <!-- Start of last 5 matches -->
 
-<h4><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name); ?></h4>
+<h4><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name); ?></h4>
 <table class="table">
 	<tr>
 		<td>
@@ -59,7 +59,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
 				<td nowrap="nowrap"><?php
-				echo JHtml::date( $game->match_date, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
+				echo JHtml::date( $game->match_date, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -108,8 +108,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game-
 				if ($game->show_report==1)
 				{
 					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
-					JText::_( 'Match Report' ),
-					array( "title" => JText::_( 'Match Report' ) ) );
+					Text::_( 'Match Report' ),
+					array( "title" => Text::_( 'Match Report' ) ) );
 					echo JHtml::link( $report_link, $desc);
 				}
 				$k = 1 - $k;

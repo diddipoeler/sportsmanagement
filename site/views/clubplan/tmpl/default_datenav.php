@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //echo '<pre>',print_r($this->club,true),'</pre><br>';
 
 ?>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
                 </td>
                 <td>
-                <input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
+                <input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
                 </td>
 			            
             <td>

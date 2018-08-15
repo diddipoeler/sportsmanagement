@@ -38,11 +38,12 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>			
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_DETAILS' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_DETAILS' );
 				?>
 			</legend>
 			<br/>
@@ -51,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td align="right" class="key">
 						<label>
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_OLD_ID' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_OLD_ID' );
 							?>
 						</label>
 					</td>
@@ -66,7 +67,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td align="right" class="key">
 						<label>
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_NEW_ID' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MREL_NEW_ID' );
 							?>
 						</label>
 					</td>

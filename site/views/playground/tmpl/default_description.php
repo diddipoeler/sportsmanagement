@@ -9,12 +9,13 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <?php
 if ( $this->playground->notes )
 {
 ?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
 <div class="row-fluid">
 <?php 
 $description = $this->playground->notes;

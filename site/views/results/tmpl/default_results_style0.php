@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
+use Joomla\CMS\Language\Text;
 ?>
 <style>
 #sbox-window {
@@ -51,7 +52,7 @@ if ( $this->config['show_comments_count'] )
 if(!JComponentHelper::isEnabled('com_jcomments', true))
 {
     $comJcomments = false;
-    JError::raiseWarning('Komponentenfehler', JText::_('Die Komponente JComments ist nicht installiert'));
+    JError::raiseWarning('Komponentenfehler', Text::_('Die Komponente JComments ist nicht installiert'));
 }
 else
 	{
@@ -114,23 +115,23 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
     }
     else
     {
-            echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
+            echo JHtml::date( $date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
                 if ($this->config['show_matchday_dateheader']) 
                 {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    echo ' - ' . Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
                     } 
                     ?>
             </th>
             <?php
             if ($this->config['show_attendance_column']) {
 				?>
-				<th class="right"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
+				<th class="right"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ATTENDANCE' ); ?></th>
 			<?php
 			}
             if ($this->config['show_comments_count'] > 0) {
 				?>
-				<th class="center"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
+				<th class="center"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_COMMENTS' ); ?></th>
 			<?php
 			}
 
@@ -144,11 +145,11 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
     }
     else
     {
-            echo JHtml::date( $date, JTExt::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
+            echo JHtml::date( $date, Text::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
             }
                 if ($this->config['show_matchday_dateheader']) 
                 {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    echo ' - ' . Text::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
                     } 
                     ?>
             </th>
@@ -265,7 +266,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 		{
 			$link = "javascript:void(0);";
 			$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-			$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+			$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 							"onclick" => 'switchMenu(\'info'.$game->id.'\');return false;');
 			echo JHtml::link($link,$img,$params);
 		}
@@ -579,7 +580,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 
 			if ($count == 1) 
             {
-				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
+				$imgTitle = $count.' '.Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) 
                 {
 					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
@@ -613,7 +614,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 			}
 			elseif ($count > 1) 
             {
-				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
+				$imgTitle = $count.' '.Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) 
                 {
 					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
@@ -647,7 +648,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 			}
 			else 
             {
-				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
+				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
 					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {

@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 <!-- Show Match staff -->
 <?php
@@ -22,7 +22,7 @@ if (!empty($this->matchstaffpositions))
 		foreach ($this->matchstaffpositions as $pos)
 		{
 			?>
-			<tr><td colspan="2" class="positionid"><?php echo JText::_($pos->name); ?></td></tr>
+			<tr><td colspan="2" class="positionid"><?php echo Text::_($pos->name); ?></td></tr>
 			<tr>
 				<!-- list of home-team -->
 				<td class="list">
@@ -46,7 +46,7 @@ if (!empty($this->matchstaffpositions))
 										$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
 										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										echo JHtml::link($player_link,$match_player);
-										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										$imgTitle = Text::sprintf('Picture of %1$s',$match_player);
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 										echo '&nbsp;';
@@ -74,7 +74,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 									<li class="list">
 										<?php
 										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										$imgTitle = Text::sprintf('Picture of %1$s',$match_player);
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 

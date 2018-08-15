@@ -10,21 +10,22 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 // player staff start
 if (count($this->historyPlayerStaff) > 0)
 {
 	?>
-	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>
+	<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>
 	<table class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
 		<tr>
 			<td>
 				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
 					<tr class="sectiontableheader">
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
+						<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+						<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
+						<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+						<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
 					</tr>
 					<?php
 					$k=0;
@@ -60,7 +61,7 @@ if (count($this->historyPlayerStaff) > 0)
 								echo $station->team_name;
 							}
 							?></td>
-							<td class="td_l"><?php echo JText::_($station->position_name); ?></td>
+							<td class="td_l"><?php echo Text::_($station->position_name); ?></td>
 						</tr>
 						<?php
 						$k=(1-$k);

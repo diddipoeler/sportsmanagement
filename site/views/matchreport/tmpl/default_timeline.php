@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of match timeline -->
 
@@ -23,7 +24,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         t.scrollIntoView()
     }
 </script>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
 <table id="timeline" class="table table-responsive" >
 	<tr>
   <?php
@@ -44,11 +45,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     <td id="" style="">
     <div id="timelinetop" style="position:relative;width:100%;">
     <div id="firsthalftime" style="position:absolute; top:0px; left:0px; width:50%; height:15px;text-align: center;color:#FFFFFF;background-color:lightgrey;">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_FIRST_HALF'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_FIRST_HALF'); ?>
     </div>
    
     <div id="secondhalftime" style="position:absolute; top:0px; left:50%; width:50%; height:15px;text-align: center;color:#FFFFFF;background-color:grey;">
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SECOND_HALF'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE_SECOND_HALF'); ?>
     </div>
     </div>
     <br>

@@ -9,8 +9,8 @@
  * @subpackage matchreport
  */
 
-
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 
 if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
 {
@@ -20,7 +20,7 @@ echo $this->loadTemplate('timeline');
 ?>
 <!-- START of match events -->
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
 
 <table class="table" border="0" id="">
 
@@ -30,11 +30,11 @@ echo $this->loadTemplate('timeline');
                 if ( $this->config['show_event_minute'] )
                 {
                 ?>
-                <th style="text-align:center"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
+                <th style="text-align:center"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENT_TIME'); ?></th>
                 <?php
                 }
                 ?>
-	            <th colspan=3><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_EVENTS_EVENT'); ?></th>
+	            <th colspan=3><?php echo Text::_('COM_SPORTSMANAGEMENT_EDIT_EVENTS_EVENT'); ?></th>
 	        </tr>
 	    </thead>
 			
@@ -71,7 +71,7 @@ echo $this->loadTemplate('timeline');
                     <?php
                     //Icon
                     $pic_tab=$IconArr[$me->event_type_id];
-                    $eventname=JText::_($TextArr[$me->event_type_id]);
+                    $eventname=Text::_($TextArr[$me->event_type_id]);
                     
                     //Time
                     $prefix = '';
@@ -194,7 +194,7 @@ $match_player = JHtml::link($player_link,$match_player);
                     <?php
                     //Icon
                     //$pic_tab=$IconArr[$me->event_type_id];
-                    //$eventname=JText::_($TextArr[$me->event_type_id]);
+                    //$eventname=Text::_($TextArr[$me->event_type_id]);
 		    
 		    $pic_time = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
 		    $pic_out = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
@@ -209,9 +209,9 @@ $match_player = JHtml::link($player_link,$match_player);
                     echo '<td class="tcenter">' . $prefix . '</td>';
                     
                         
-		    $imgTitle_in = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
+		    $imgTitle_in = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 		    $imgTitle_in2 = array(' title' => $imgTitle_in);
-		    $imgTitle_out = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
+		    $imgTitle_out = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 		    $imgTitle_out2 = array(' title' => $imgTitle_out);
 		    $txt_tab_out = JHtml::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
 		    $txt_tab_in = JHtml::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
@@ -259,7 +259,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 				}
 
 				if($me->out_position!='') {
-					$outName .= '&nbsp;('.JText::_($me->out_position).')';
+					$outName .= '&nbsp;('.Text::_($me->out_position).')';
 				}
 			  }
 			}
@@ -295,7 +295,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 				}
 
 				if($me->out_position!='') {
-					$inName .= '&nbsp;('.JText::_($me->in_position).')';
+					$inName .= '&nbsp;('.Text::_($me->in_position).')';
 				}
 			  }
 			}

@@ -38,22 +38,22 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 foreach ($this->extended->getFieldsets() as $fieldset)
 {
 	?>
 	
-	<legend><?php echo JText::_($fieldset->name); ?></legend>
+	<legend><?php echo Text::_($fieldset->name); ?></legend>
 	<?php
 	$fields = $this->extended->getFieldset($fieldset->name);
 	
 	if(!count($fields)) {
-		echo JText::_('COM_JOOMLEAGUE_GLOBAL_NO_PARAMS');
+		echo Text::_('COM_JOOMLEAGUE_GLOBAL_NO_PARAMS');
 	}
 	?>
 			<fieldset class="adminform">
-			<legend><?php echo JText::_($fieldset->name); ?></legend>
+			<legend><?php echo Text::_($fieldset->name); ?></legend>
 			<table class='adminForm' border='0'>
 			<?php
 	foreach ($fields as $field)

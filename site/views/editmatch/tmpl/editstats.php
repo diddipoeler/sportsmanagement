@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -52,9 +53,9 @@ $params = $this->form->getFieldsets('params');
 		<div class="fltrt">
 <!--
 					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
                         -->
-<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
+<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
 				</div>
         
 		<div class="configuration" >
@@ -68,8 +69,8 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 ?>    
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_($this->teams->team1);?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo JText::_($this->teams->team2);?></a></li>
+<li class="active"><a data-toggle="tab" href="#home"><?php echo Text::_($this->teams->team1);?></a></li>
+<li><a data-toggle="tab" href="#menu1"><?php echo Text::_($this->teams->team2);?></a></li>
 </ul>    
 
 <div class="tab-content">
@@ -90,10 +91,10 @@ echo $this->loadTemplate('away');
 else
 {        
 		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
-		echo JHtml::_('tabs.panel',JText::_($this->teams->team1), 'panel1');
+		echo JHtml::_('tabs.panel',Text::_($this->teams->team1), 'panel1');
 		echo $this->loadTemplate('home');
 		
-		echo JHtml::_('tabs.panel',JText::_($this->teams->team2), 'panel2');
+		echo JHtml::_('tabs.panel',Text::_($this->teams->team2), 'panel2');
 		echo $this->loadTemplate('away');
 		
 		echo JHtml::_('tabs.end');

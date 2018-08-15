@@ -10,8 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 if (! defined('JSM_PATH'))
 {
@@ -61,13 +60,13 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$this->pagination	= $this->get('Pagination');
 		
         //build the html options for nation
-		$temp[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$temp[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $temp = array_merge($temp,$res);
@@ -83,7 +82,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
+        $temp[] = JHtml::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
         $modeltemp = JModelLegacy::getInstance("Leagues", "sportsmanagementModel");
 		if ($res = $modeltemp->getLeagues())
         {
@@ -100,7 +99,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
+        $temp[] = JHtml::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
         $modeltemp = JModelLegacy::getInstance("Seasons", "sportsmanagementModel");
 		if ($res = $modeltemp->getSeasons())
         {
@@ -118,7 +117,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         unset($temp);
         
         // Set page title
-		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();

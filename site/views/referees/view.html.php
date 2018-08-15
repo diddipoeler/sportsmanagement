@@ -10,8 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewReferees
@@ -41,10 +40,10 @@ class sportsmanagementViewReferees extends sportsmanagementView
 		$this->rows = $this->model->getReferees();
 
 		// Set page title
-		$pagetitle=JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
-		$this->document->setTitle( JText::sprintf( $pagetitle, $this->project->name ) );
+		$pagetitle=Text::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
+		$this->document->setTitle( Text::sprintf( $pagetitle, $this->project->name ) );
         
-        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
+        $this->headertitle = Text::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
 
 	}
 

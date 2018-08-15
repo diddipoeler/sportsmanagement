@@ -10,11 +10,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="hint">
 	<table class="matrix">
 		<tr>
-			<td align="left"><br /> <?php echo JText :: _('COM_SPORTSMANAGEMENT_MATRIX_HINT');?>
+			<td align="left"><br /> <?php echo Text :: _('COM_SPORTSMANAGEMENT_MATRIX_HINT');?>
 			</td>
 		</tr>
 	</table>

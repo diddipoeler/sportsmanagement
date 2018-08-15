@@ -10,12 +10,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <div class="row-fluid">
 <h4>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
 </h4>
 </div>
 
@@ -31,7 +31,7 @@ if (!empty($value)) // && !$field->backendonly)
 ?>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-<strong><?php echo JText::_( $field->name); ?></strong>
+<strong><?php echo Text::_( $field->name); ?></strong>
 </div>
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <?php 
@@ -48,7 +48,7 @@ switch ($field_type)
     echo JHtml::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
     break;
     default:
-    echo JText::_( $field->fvalue); 
+    echo Text::_( $field->fvalue); 
     break;
 }
 

@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.view');
 jimport('joomla.html.pane');
@@ -73,7 +74,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
                 else{$pageTitle='';
                 }
 		}
-		$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
+		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         
 /**
  *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
@@ -132,12 +133,12 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				if ($this->config['show_events_with_icons'] == 1)
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = JText::_($event->name);
+					$imgTitle = Text::_($event->name);
 					$tab_content = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
-					$tab_content = JText::_($event->name);
+					$tab_content = Text::_($event->name);
 				}
 
 				$output .= $result->startPanel($tab_content, $event->id);
@@ -173,21 +174,21 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				if ($this->config['show_events_with_icons'] == 1)
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
-					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					$imgTitle = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
 				{
-					$tab_content = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
+					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
 				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
 				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-				$imgTime = JHtml::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut  = JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn   = JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$imgTime = JHtml::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut  = JHtml::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn   = JHtml::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				$output .= $result->startPanel($tab_content,'0');
 				$output .= '<table class="matchreport" border="0">';
@@ -276,7 +277,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			{
 				// Size of the event icons in the tabs
 				$width = 20; $height = 20; $type = 4;
-				$imgTitle = JText::_($event->name);
+				$imgTitle = Text::_($event->name);
 				$icon = sportsmanagementHelper::getPictureThumb($event->icon, $imgTitle, $width, $height, $type);
 
 				$output .= $icon;
@@ -290,7 +291,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 			if ($showEventInfo == 2)
 			{
-				$output .= JText::_($event->name).' ';
+				$output .= Text::_($event->name).' ';
 			}
 
 			if (strlen($matchevent->firstname1.$matchevent->lastname1) > 0)
@@ -299,7 +300,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			}
 			else
 			{
-				$output .= JText :: _('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
+				$output .= Text :: _('COM_SPORTSMANAGEMENT_UNKNOWN_PERSON');
 			}
 			
 			// only show event sum and match notice when set to on in template cofig
@@ -346,17 +347,17 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		{
 			$output .= '<li class="events">';
 			// $output .= $imgTime;
-			$output .= '&nbsp;'.$subs->in_out_time.'. '.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
+			$output .= '&nbsp;'.$subs->in_out_time.'. '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
 
 			$output .= $imgOut;
 			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $this->config["name_format"]);
-			$output .= '&nbsp;('.JText :: _($subs->out_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->out_position).')';
 			$output .= '<br />';
 
 			$output .= $imgIn;
 			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $this->config["name_format"]);
-			$output .= '&nbsp;('.JText :: _($subs->in_position).')';
+			$output .= '&nbsp;('.Text :: _($subs->in_position).')';
 			$output .= '<br /><br />';
 			$output .= '</li>';
 		}

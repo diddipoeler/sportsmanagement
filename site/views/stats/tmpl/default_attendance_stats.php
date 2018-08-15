@@ -9,22 +9,24 @@
  * @subpackage stats
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <div id="jl_stats">
 
 <div class="jl_substats">
 <table class="<?php echo $this->config['attendance_table_class'];?>">
 	<tr class="sectiontableheader">
-		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE'); ?></th>
+		<th colspan="2"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE'); ?></th>
 	</tr>
 
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_TOTAL');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_TOTAL');?>:</td>
 		<td class="statvalue"><?php echo $this->totals->sumspectators;?></td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_PER_MATCH');?>:</td>
+		<td class="statlabel"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_PER_MATCH');?>:</td>
 		<td class="statvalue">
         <?php 
         if ( isset($this->totals->sumspectators) && $this->totals->attendedmatches )
@@ -39,13 +41,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		</td>
 	</tr>
 	<tr class="sectiontableentry1">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_BEST_AVG');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_BEST_AVG');?>:</b>
 		<br />
 		<?php echo $this->bestavgteam;?></td>
 		<td class="statvalue"><?php echo $this->bestavg;?></td>
 	</tr>
 	<tr class="sectiontableentry2">
-		<td class="statlabel"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_WORST_AVG');?>:</b>
+		<td class="statlabel"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_WORST_AVG');?>:</b>
 		<br />
 		<?php echo $this->worstavgteam;?></td>
 		<td class="statvalue"><?php echo $this->worstavg;?></td>

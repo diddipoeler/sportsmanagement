@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 $document = JFactory::getDocument();
 
 ?>
@@ -115,7 +116,7 @@ $this->overallconfig['use_jquery_modal']
 
 if ( $copyright )
 {
-echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
+echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
 }
 ?>
 
@@ -145,7 +146,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 				    	<td>
 						<?php
 						//echo $this->project->staffel_id;
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID','<i>'.$this->project->staffel_id.'</i>');
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_PROJECT_INFO_STAFFEL_ID','<i>'.$this->project->staffel_id.'</i>');
 						?>
 						</td>
 					<?php	
@@ -167,7 +168,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					if ( $this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid )
                     {
 						$link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
-						$imgTitle = JText::_($this->project->name.' Forum');
+						$imgTitle = Text::_($this->project->name.' Forum');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 						echo '&nbsp;';
 						echo JHtml::link($link, $desc);    

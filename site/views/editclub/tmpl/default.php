@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
 //JHTML::_('behavior.tooltip');
@@ -42,15 +42,15 @@ $fieldsets = $this->form->getFieldsets();
         <fieldset>
         <div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('editclub.apply');">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('editclub.save');">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo JText::_('JCANCEL');?></button>
+						<?php echo Text::_('JCANCEL');?></button>
 				</div>
 			<legend>
       <?php 
-      echo JText::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->club->name.'</i>'); 
+      echo Text::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->club->name.'</i>'); 
       ?>
       </legend>
 </fieldset>
@@ -75,15 +75,15 @@ $options = array(
  
 echo JHtml::_('tabs.start', 'tab_group_id', $options);
  
-echo JHtml::_('tabs.panel', JText::_('PANEL_1_TITLE'), 'panel_1_id');
+echo JHtml::_('tabs.panel', Text::_('PANEL_1_TITLE'), 'panel_1_id');
 //echo 'Panel 1 content can go here.';
 echo $this->loadTemplate('details');
  
-echo JHtml::_('tabs.panel', JText::_('PANEL_2_TITLE'), 'panel_2_id');
+echo JHtml::_('tabs.panel', Text::_('PANEL_2_TITLE'), 'panel_2_id');
 //echo 'Panel 2 content can go here.';
 echo $this->loadTemplate('picture');
 
-echo JHtml::_('tabs.panel', JText::_('PANEL_3_TITLE'), 'panel_3_id');
+echo JHtml::_('tabs.panel', Text::_('PANEL_3_TITLE'), 'panel_3_id');
 //echo 'Panel 3 content can go here.';
 //echo $this->loadTemplate('extended');
  
@@ -94,17 +94,17 @@ echo JHtml::_('sliders.start');
 foreach ($fieldsets as $fieldset) :
 if ($fieldset->name == 'details')
 {
-    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('details');
 }
 if ($fieldset->name == 'picture')
 {
-    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('picture');
 }
 if ($fieldset->name == 'extended')
 {
-    echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('extended');
 }
 endforeach;
@@ -112,11 +112,11 @@ echo JHtml::_('sliders.end');
 */
 
 //echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));    
-//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
+//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
 //echo $this->loadTemplate('details');
-//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
+//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
 //echo $this->loadTemplate('picture');
-//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
+//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
 //echo $this->loadTemplate('extended');
 //echo JHtml::_('tabs.end');
 

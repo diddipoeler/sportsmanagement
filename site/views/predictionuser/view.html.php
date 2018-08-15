@@ -11,7 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+
 require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
 
 /**
@@ -82,14 +83,14 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
             
              if ( JComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
         {
-            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionMember<br><pre>'.print_r($this->predictionMember,true).'</pre>'),'Notice'); 
+            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' predictionMember<br><pre>'.print_r($this->predictionMember,true).'</pre>'),'Notice'); 
 }
 			$lists = array();
 
 			if ($this->predictionMember->pmID > 0){$dMemberID=$this->predictionMember->pmID;}else{$dMemberID=0;}
 			if (!$this->allowedAdmin){$userID=$this->actJoomlaUser->id;}else{$userID=null;}
 
-			$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
+			$predictionMembers[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
 			if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID))
             {
                 $predictionMembers = array_merge($predictionMembers,$res);
@@ -129,8 +130,8 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 
 			if ( $this->getLayout() == 'edit' )
 			{
-				$dArray[] = JHTML::_('select.option',0,JText::_('JNO'));
-				$dArray[] = JHTML::_('select.option',1,JText::_('JYES'));
+				$dArray[] = JHTML::_('select.option',0,Text::_('JNO'));
+				$dArray[] = JHTML::_('select.option',1,Text::_('JYES'));
 
 				$lists['show_profile'] = JHTML::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
 				$lists['reminder'] = JHTML::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
@@ -149,7 +150,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
           echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
           }
           
-					$projectteams[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
+					$projectteams[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
 					if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 					{
 						$projectteams = array_merge($projectteams,$res);
@@ -172,7 +173,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
            */
           if ( $predictionProject->start_date == '0000-00-00' )
           {
-          $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
+          $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
           $disabled=' disabled="disabled" ';
           }
           else
@@ -214,7 +215,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           $disabled = ' disabled="disabled" ';
           }
           
-          $predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
+          $predictionMembers[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
 			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
             {
                 $predictionMembers = array_merge($predictionMembers,$res);
@@ -250,8 +251,8 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
             $this->tippallowed = $tippAllowed;
       
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
-            $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE' );
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
+            $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE' );
 
 			$this->document->setTitle($pageTitle);
 
@@ -259,7 +260,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
 
 
@@ -299,7 +300,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 	{
 		$bar = new $config['bartype_1']();
 		$bar->set_values( $userpoints);	
-		$bar->set_tooltip( JText::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'). ": #val#" );
+		$bar->set_tooltip( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS'). ": #val#" );
 		$bar->set_colour( $config['bar1'] );
 		$bar->set_on_show(new bar_on_show($config['animation_1'], $config['cascade_1'], $config['delay_1']));
 
@@ -310,7 +311,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$x->set_labels_from_array($round_labels);
 		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
+		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
 		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_x_legend( $x_legend );
 
@@ -320,7 +321,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 		$y->set_steps(round(@max($userpoints)/8));
 		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
 		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
+		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		
@@ -392,7 +393,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		//$x->set_labels_from_array($round_labels);
 		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
+		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_ROUNDS') );
 		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_x_legend( $x_legend );
 
@@ -402,7 +403,7 @@ $lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.
 		$y->set_steps(round(@max($data_1)/8));
 		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
 		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
+		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_PRED_USER_POINTS') );
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		

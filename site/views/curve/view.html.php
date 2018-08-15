@@ -10,8 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
 
@@ -50,7 +49,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 		{
 			$teamid1 = sportsmanagementModelCurve::$teamid1;
 			$teamid2 = sportsmanagementModelCurve::$teamid2;
-			$options = array(	JHtml::_( 'select.option', '0', JText::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
+			$options = array(	JHtml::_( 'select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
 			$divisions = sportsmanagementModelProject::getDivisions(0,sportsmanagementModelCurve::$cfg_which_database);
 			if (count($divisions)>0 && $division == 0)
 			{
@@ -121,7 +120,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$this->team2select = $team2select;
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 			// Set page title
-			$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
+			$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
 			if (( isset( $this->team1 ) ) AND (isset( $this->team1 )))
 			{
 				//$pageTitle .= ": ".$this->team1->name." - ".$this->team2->name;
@@ -162,9 +161,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 		{
 			$data = $model->getDataByDivision($division->id);
 			$allteams = sportsmanagementModelProject::getTeams($division->id,'name',$model::$cfg_which_database);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($allteams,true).'</pre>'),'');
-            
+           
 			if(empty($allteams) || count($allteams)==0) continue;
 			
 			$chart = new open_flash_chart();
@@ -262,7 +259,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$x->set_labels($xlabels);
 			$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 			$chart->set_x_axis( $x );
-			$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
+			$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
 			$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 			$chart->set_x_legend( $x_legend );
 
@@ -270,7 +267,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$y->set_range( count($data), 1, -1);
 			$y->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 			$chart->set_y_axis( $y );
-			$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
+			$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
 			$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 			$chart->set_y_legend( $y_legend );
 

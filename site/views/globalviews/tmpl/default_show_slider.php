@@ -9,6 +9,7 @@
  * @subpackage globalviews
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row-fluid" id="show_slider">
     <?php
@@ -32,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
             if ($idxTab == 1) {
                 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide' . $idxTab);
+            echo JHtml::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
             echo JHtml::_('bootstrap.endSlide');
             $idxTab++;
@@ -59,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
             if ($idxTab == 1) {
                 echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, JText::_($text), 'slide' . $idxTab);
+            echo JHtml::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
             echo JHtml::_('bootstrap.endSlide');
             $idxTab++;
@@ -77,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion-nextmatch" href="#<?php echo $key; ?>"><?php echo JText::_($key); ?></a>
+                            <a data-toggle="collapse" data-parent="#accordion-nextmatch" href="#<?php echo $key; ?>"><?php echo Text::_($key); ?></a>
                         </h4>
                     </div>
 

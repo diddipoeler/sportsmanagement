@@ -9,7 +9,9 @@
  * @subpackage nextmatch
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <!-- Start of show matches through all projects -->
 <?php
@@ -17,7 +19,7 @@ if ( $this->games )
 {
 	?>
 
-<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'); ?></h4>
+<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'); ?></h4>
 <table class="<?php echo $this->config['hystory_table_class']; ?>">
 	<tr>
 		<td>
@@ -78,7 +80,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
 				<td class="nowrap"><?php
-				echo JHtml::date( $date, JText::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
+				echo JHtml::date( $date, Text::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -139,8 +141,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game
 				if ( $game->show_report == 1 )
 				{
 					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
-					JText::_( 'Match Report' ),
-					array( "title" => JText::_( 'Match Report' ) ) );
+					Text::_( 'Match Report' ),
+					array( "title" => Text::_( 'Match Report' ) ) );
 					echo JHtml::link( $report_link, $desc);
 				}
 				$k = 1 - $k;

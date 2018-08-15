@@ -10,8 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
-jimport('joomla.application.component.view');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
 
 /**
@@ -103,15 +103,15 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $this->teamprojects = $this->model->getTeamsProjects();
         $this->teamseasons = $this->model->getTeamsSeasons();
         
-        $fromteamart[] = JHTML :: _('select.option', '', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+        $fromteamart[] = JHTML :: _('select.option', '', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);
 		$lists['fromteamart'] = $fromteamart;
         
-        $fromteamprojects[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
+        $fromteamprojects[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
 		$fromteamprojects = array_merge($fromteamprojects, $this->teamprojects);
 		$lists['fromteamprojects'] = $fromteamprojects;
         
-        $fromteamseasons[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
+        $fromteamseasons[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
 		$lists['fromteamseasons'] = $fromteamseasons;
 
@@ -119,15 +119,15 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
  * auswahl welche spiele
  */        
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
-	$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
-	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
+    $opp_arr[] = JHTML :: _('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
+	$opp_arr[] = JHTML :: _('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
+	$opp_arr[] = JHTML :: _('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
 
 	$lists['type'] = $opp_arr;
     $this->lists = $lists;
 
 		// Set page title
-		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
+		$pageTitle=Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
 		if (isset($this->club)){
 			$pageTitle .= ': '.$this->club->name;
 		}
@@ -141,7 +141,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 
 		//$feed='index.php?option=com_sportsmanagement&view=clubplan&cid='.$this->club->id.'&format=feed';
 		$feed = 'index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
-		$rss = array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
+		$rss = array('type' => 'application/rss+xml','title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
 		// add the links
 		$this->document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
@@ -153,7 +153,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
  *         $document->addCustomTag($stylelink);
  */
         
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
 
 	}
 

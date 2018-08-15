@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 $style  = 'style="background-color: '.$this->config['tree_bg_colour'].';';
 $style .= 'border: 1px solid  '.$this->config['tree_border_colour'].';';
@@ -47,7 +48,7 @@ $h = '<img src="'.$path.$treeh.'" alt="" width="16" height="30">';
 
 if(!$this->node)
 {
-    echo JText::_( 'COM_SPORTSMANAGEMENT_TREETONODE_GENERATE_THE_TREE' );
+    echo Text::_( 'COM_SPORTSMANAGEMENT_TREETONODE_GENERATE_THE_TREE' );
 }
 else
 {

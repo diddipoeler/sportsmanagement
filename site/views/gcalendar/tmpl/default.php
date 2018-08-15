@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 $params = $this->params;
 
 if ($this->params->get('show_page_heading', 1)) { ?>
@@ -142,28 +142,28 @@ $calCode .= "			day: '".jsmFullcalendar::convertFromPHPDate($params->get('timefo
 $calCode .= "			list: '".jsmFullcalendar::convertFromPHPDate($params->get('timeformat_list', 'g:i a{ - g:i a}'))."'},\n";
 $calCode .= "		columnFormat: { month: 'ddd', week: 'ddd d', day: 'dddd d'},\n";
 $calCode .= "		axisFormat: '".jsmFullcalendar::convertFromPHPDate($params->get('axisformat', 'g:i a'))."',\n";
-$calCode .= "		allDayText: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_ALL_DAY', true)."',\n";
+$calCode .= "		allDayText: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_ALL_DAY', true)."',\n";
 $calCode .= "		buttonText: {\n";
-$calCode .= "			today:    '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TOOLBAR_TODAY', true)."',\n";
-$calCode .= "			month:    '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_MONTH', true)."',\n";
-$calCode .= "			week:     '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_WEEK', true)."',\n";
-$calCode .= "			day:      '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_DAY', true)."',\n";
-$calCode .= "			list:      '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_LIST', true)."'\n";
+$calCode .= "			today:    '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TOOLBAR_TODAY', true)."',\n";
+$calCode .= "			month:    '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_MONTH', true)."',\n";
+$calCode .= "			week:     '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_WEEK', true)."',\n";
+$calCode .= "			day:      '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_DAY', true)."',\n";
+$calCode .= "			list:      '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_VIEW_LIST', true)."'\n";
 $calCode .= "		},\n";
 $calCode .= "		listSections: 'smart',\n";
 $calCode .= "		listRange: 30,\n";
 $calCode .= "		listPage: 30,\n";
 $calCode .= "		listTexts: {
-						until: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_UNTIL', true)."',
-						past: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_PAST', true)."',
-						today: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TODAY', true)."',
-						tomorrow: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TOMORROW', true)."',
-						thisWeek: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_WEEK', true)."',
-						nextWeek: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_WEEK', true)."',
-						thisMonth: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_MONTH', true)."',
-						nextMonth: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_MONTH', true)."',
-						future: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_FUTURE', true)."',
-						week: '".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_WEEK', true)."'
+						until: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_UNTIL', true)."',
+						past: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_PAST', true)."',
+						today: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TODAY', true)."',
+						tomorrow: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_TOMORROW', true)."',
+						thisWeek: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_WEEK', true)."',
+						nextWeek: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_WEEK', true)."',
+						thisMonth: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_THIS_MONTH', true)."',
+						nextMonth: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_NEXT_MONTH', true)."',
+						future: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_FUTURE', true)."',
+						week: '".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TEXTS_WEEK', true)."'
 					},\n";
 $calCode .= $calsSources;
 $calCode .= "		viewDisplay: function(view) {\n";
@@ -228,11 +228,11 @@ $class = empty($theme)?'fc':'ui';
 $calCode .= "	var custom_buttons = '<span class=\"fc-button fc-button-datepicker ".$class."-state-default ".$class."-corner-left ".$class."-corner-right\">'+\n";
 $calCode .= "			'<span class=\"fc-button-inner\"><span class=\"fc-button-content\" id=\"gcalendar_component_date_picker_button\">'+\n";
 $calCode .= "			'<input type=\"hidden\" id=\"gcalendar_component_date_picker\" value=\"\">'+\n";
-$calCode .= "			'<i class=\"icon-calendar\" title=\"".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_SHOW_DATEPICKER')."\"></i>'+\n";
+$calCode .= "			'<i class=\"icon-calendar\" title=\"".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_SHOW_DATEPICKER')."\"></i>'+\n";
 $calCode .= "			'</span></span></span></span>';\n";
 $calCode .= "		custom_buttons +='<span class=\"hidden-phone fc-button fc-button-print ".$class."-state-default ".$class."-corner-left ".$class."-corner-right\">'+\n";
 $calCode .= "			'<span class=\"fc-button-inner\"><span class=\"fc-button-content\" id=\"gcalendar_component_print_button\">'+\n";
-$calCode .= "			'<i class=\"icon-print\" title=\"".JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TOOLBAR_PRINT')."\"></i>'+\n";
+$calCode .= "			'<i class=\"icon-print\" title=\"".Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_TOOLBAR_PRINT')."\"></i>'+\n";
 $calCode .= "			'</span></span></span></span>';\n";
 $calCode .= "	gcjQuery('span.fc-header-space').after(custom_buttons);\n";
 $calCode .= "	if (gcjQuery('table').disableSelection) gcjQuery('div.fc-header-space').closest('table.fc-header').disableSelection();\n";
@@ -307,7 +307,7 @@ if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) =
 $image = JURI::base().'components/com_sportsmanagement/assets/images/down.png';
 if($params->get('show_selection', 1) == 3) $image = JURI::base().'components/com_sportsmanagement/assets/images/up.png';?>
 <div style="text-align:center">
-<img id="gcalendar_view_toggle_status" src="<?php echo $image?>" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>"/>
+<img id="gcalendar_view_toggle_status" src="<?php echo $image?>" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_GCALENDAR_VIEW_CALENDAR_LIST')?>"/>
 </div>
 <?php }?>
 

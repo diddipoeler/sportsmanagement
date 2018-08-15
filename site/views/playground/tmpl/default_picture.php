@@ -9,7 +9,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <?php
@@ -17,7 +17,7 @@ if ( ( $this->playground->picture ) )
 {
     ?>
 
- <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE'); ?></h2>  
+ <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE'); ?></h2>  
 		<div class="row-fluid">
                 <?php
                 if (($this->playground->picture)) 

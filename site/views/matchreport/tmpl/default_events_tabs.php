@@ -9,12 +9,14 @@
  * @subpackage matchreport
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 <!-- START of match events -->
 
 <h2>
 <?php 
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 	
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 	
 ?>
 </h2>	
 <?php
@@ -54,14 +56,14 @@ $pic_tab = $event->icon;
 if ($pic_tab == '/events/event.gif')
 {
 $text_bild = '';
-$text = JText::_($event->name);
+$text = Text::_($event->name);
 }
 else
 {
-$imgTitle = JText::_($event->name);
+$imgTitle = Text::_($event->name);
 $imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
 $text_bild = JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
-$text = JText::_($event->name);
+$text = Text::_($event->name);
 }
 
 
@@ -88,7 +90,7 @@ $idxTab = 0;
 foreach ($this->eventtypes AS $event)
 {
 $active = ($idxTab==0) ? 'in active' : '';   
-$text = JText::_($event->name);
+$text = Text::_($event->name);
 
 ?>
 <!-- Tab-event anfang-->
@@ -186,11 +188,11 @@ else
 				$pic_tab = $event->icon;
 				if ($pic_tab == '/events/event.gif')
 				{
-					$txt_tab = JText::_($event->name);
+					$txt_tab = Text::_($event->name);
 				}
 				else
 				{
-					$imgTitle=JText::_($event->name);
+					$imgTitle=Text::_($event->name);
 					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
 					$txt_tab=JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
 				}

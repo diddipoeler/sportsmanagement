@@ -10,7 +10,7 @@
  */ 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row-fluid" id="show_tabs">
 <?php
@@ -24,7 +24,7 @@ $template = $templ;
 $text = $key;
 $active = ($idxTab==0) ? JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
 
-echo JHtml::_('bootstrap.addTab', 'myTab4', $text, JText::_($text));
+echo JHtml::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
 <div class="container">
 <div class="row">
@@ -50,7 +50,7 @@ $template = $templ;
 $text = $key;
 $active = ($idxTab==0) ? JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
 
-echo JHtml::_('bootstrap.addTab', 'myTab4', $text, JText::_($text));
+echo JHtml::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
 <div class="container">
 <div class="row">
@@ -100,7 +100,7 @@ $text = $key;
 break;
 }
 ?>  
-<li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $template; ?>" data-toggle="tab"><?PHP echo JText::_($text); ?></a></li>
+<li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $template; ?>" data-toggle="tab"><?PHP echo Text::_($text); ?></a></li>
 <?PHP
 $count++;
 }

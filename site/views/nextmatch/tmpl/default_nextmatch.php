@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 //echo '<pre>',print_r($this->teams,true),'</pre><br>';
 
 ?>
@@ -109,11 +109,11 @@ $this->overallconfig['use_jquery_modal'])
 		}
 		else
 		{
-			echo JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
+			echo Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
 		}
 		?></td>
 		<td class="vs"><?php
-		echo JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" );
+		echo Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" );
 		?></td>
 		<td class="team"><?php
 		if ( !is_null ( $this->teams ) )
@@ -122,7 +122,7 @@ $this->overallconfig['use_jquery_modal'])
 		}
 		else
 		{
-			echo JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
+			echo Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_UNKNOWNTEAM" );
 		}
 		?></td>
 	</tr>
@@ -141,7 +141,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
             { ?>
 			<div class="notice">
 			<?php 
-                $text = JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED" );
+                $text = Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED" );
                 echo JHtml::link( $report_link, $text );
 			?>
 			</div>

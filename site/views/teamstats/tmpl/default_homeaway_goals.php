@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 ?>
 
@@ -19,7 +20,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableheader">
 					<th colspan="2">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_HOME_STATS');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_HOME_STATS');
 						?>
 					</th>
 				</tr>
@@ -28,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_HOME_GAME_PERCENTAGE');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_HOME_GAME_PERCENTAGE');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -44,7 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_OVERALL');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_OVERALL');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -56,7 +57,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_PLAYED');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_PLAYED');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -68,7 +69,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -80,7 +81,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL_PER_MATCH');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL_PER_MATCH');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -103,7 +104,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry2">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR');
 							?>
 						</td>
 						<td class="statvalue">
@@ -114,7 +115,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					</tr>
 					<tr class="sectiontableentry1">
 						<td class="statlabel">
-							<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR_PER_MATCH');?>:
+							<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR_PER_MATCH');?>:
 						</td>
 						<td class="statvalue">
 							<?php
@@ -132,7 +133,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry2">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST');
 							?>
 						</td>
 						<td class="statvalue">
@@ -144,7 +145,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry1">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST_PER_MATCH');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST_PER_MATCH');
 							?>:
 						</td>
 						<td class="statvalue">
@@ -172,7 +173,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableheader">
 					<th colspan="2">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_AWAY_STATS');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_AWAY_STATS');
 						?>
 					</th>
 				</tr>
@@ -181,7 +182,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_AWAY_GAME_PERCENTAGE');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_AWAY_GAME_PERCENTAGE');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -197,7 +198,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_OVERALL');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_OVERALL');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -209,7 +210,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_PLAYED');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_MATCHES_PLAYED');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -221,7 +222,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -233,7 +234,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL_PER_MATCH');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_TOTAL_PER_MATCH');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -253,7 +254,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry2">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR');
 							?>
 						</td>
 						<td class="statvalue">
@@ -265,7 +266,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry1">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR_PER_MATCH');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_FOR_PER_MATCH');
 							?>:
 						</td>
 						<td class="statvalue">
@@ -284,7 +285,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry2">
 						<td class="statlabel">
 						 <?php
-						 echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST');
+						 echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST');
 						 ?>
 						</td>
 						<td class="statvalue">
@@ -296,7 +297,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<tr class="sectiontableentry1">
 						<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST_PER_MATCH');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_AGAINST_PER_MATCH');
 							?>:
 						</td>
 						<td class="statvalue">

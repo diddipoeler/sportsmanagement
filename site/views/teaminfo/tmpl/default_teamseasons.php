@@ -10,13 +10,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 if ($this->config['show_teams_seasons'] == "1")
 {
 	?>
 <table class="fixtures">
 	<tr class="sectiontableheader">
-		<td><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE');?></td>
+		<td><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TITLE');?></td>
 	</tr>
 </table>
 
@@ -35,7 +35,7 @@ if ($season->projectname)
 
 		?> <a href="javascript:void(0)"
 			onclick="switchMenu('tid<?php echo $this->team->id . $season->projectid; ?>');"
-			title="<?php echo JText::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
+			title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SHOW_OPTIONS'); ?>"><?php echo $season->projectname; ?>
 		</a> 
         <?php
 
@@ -61,7 +61,7 @@ if ($season->projectname)
 			$picture = JoomleagueHelper::getDefaultPlaceholder("team");
 		}
 
-		$picture_descr = JText::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
+		$picture_descr = Text::_("COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE") . " " . $this->team->name . " (" . $season->projectname . ")";
 		echo JHtml::image($picture, $picture_descr, array("title" => $picture_descr));
 	}
 	?> <br />
@@ -74,7 +74,7 @@ if ($season->projectname)
        $routeparameter['ptid'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 	
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
+	echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
 	?> <br />
 	<?php
 	$routeparameter = array();
@@ -88,7 +88,7 @@ if ($season->projectname)
        $routeparameter['layout'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
+	echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
 	?> <br />
 	<?php
 	$routeparameter = array();
@@ -102,7 +102,7 @@ if ($season->projectname)
        $routeparameter['division'] = 0;
        		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 	
-	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
+	echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
 	?> <br />
 </div>
 	<?php

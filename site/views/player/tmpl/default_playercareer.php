@@ -10,23 +10,24 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if (count($this->historyPlayer) > 0)
 {
 	?>
 	<!-- Player history START -->
-	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER'); ?></h2>
+	<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER'); ?></h2>
 	
 				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
 					<tr class="sectiontableheader">
 						<th class="td_l">
                         <?php echo 
-                        JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION');
+                        Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION');
 							?>
                             </th>
 						<th class="td_l">
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON');
+                        echo Text::_('COM_SPORTSMANAGEMENT_PERSON_SEASON');
 							?>
                             </th>
                             
@@ -36,7 +37,7 @@ if (count($this->historyPlayer) > 0)
 	   ?>
 						<th class="td_l">
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM');
+                        echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM');
 							?>
                             </th>
                             <?PHP
@@ -46,7 +47,7 @@ if (count($this->historyPlayer) > 0)
                             ?>
                         <th class="td_l">
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');
+                        echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');
 							?>
                             </th>  
                              <?PHP
@@ -55,7 +56,7 @@ if (count($this->historyPlayer) > 0)
                             ?>  
 						<th class="td_l">
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION');
+                        echo Text::_('COM_SPORTSMANAGEMENT_PERSON_POSITION');
 							?>
                             </th>
 					</tr>
@@ -178,7 +179,7 @@ $this->overallconfig['use_jquery_modal']);
                             }
                             
                             ?>
-							<td class="td_l"><?php echo JText::_($station->position_name);
+							<td class="td_l"><?php echo Text::_($station->position_name);
 								?></td>
 						</tr>
 						<?php

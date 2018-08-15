@@ -36,10 +36,7 @@ $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "di
 
 foreach( $this->teams as $rowclub )
 {
-    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_id,true).'</pre>'),'');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($rowclub->club_name,true).'</pre>'),'');
-
+   
 $mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
 $mdlClubInfo::$historyhtmltree = '';
@@ -52,14 +49,10 @@ $this->findclub[$rowclub->club_id] = $rowclub->club_id;
  */
 if ( $rowclub->new_club_id )
 {
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($rowclub->club_name,true).'</pre>'),'');    
 $this->firstclubid = $mdlClubInfo::getFirstClubId($rowclub->club_id,$rowclub->new_club_id);
 $firstclubid = $mdlClubInfo::$first_club_id; 
 $tree_club_id = $firstclubid;
 $mdlClubInfo::$clubid = $rowclub->club_id; 	
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($this->firstclubid,true).'</pre>'),'');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstclubid<br><pre>'.print_r($firstclubid,true).'</pre>'),'');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($rowclub->new_club_id,true).'</pre>'),'');
 }
 
 $this->clubhistory = $mdlClubInfo::getClubHistory($tree_club_id);

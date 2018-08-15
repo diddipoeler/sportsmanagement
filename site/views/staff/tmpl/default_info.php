@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 
 //echo ' config<pre>'.print_r($this->config,true).'</pre>';
 //echo ' person<pre>'.print_r($this->person,true).'</pre>';
@@ -17,7 +18,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
 <!-- person data START -->
-<h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
+<h4><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
 
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <div class="col-md-6">
@@ -29,8 +30,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 
 				<?php
-				$picturetext = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
-				$imgTitle = JText::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
+				$picturetext = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+				$imgTitle = Text::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
 				$picture = $this->inprojectinfo->season_picture;
 				if ((empty($picture))|| ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  ))
 				{
@@ -63,10 +64,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			
             
             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
 			<?php
 					echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
-					JText::_( JSMCountries::getCountryName($this->person->country));
+					Text::_( JSMCountries::getCountryName($this->person->country));
 					?>
             </address>
 			<?php
@@ -76,7 +77,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	
 				
 						<?php
-						$outputName = JText::sprintf( '%1$s %2$s', $this->person->firstname, $this->person->lastname);
+						$outputName = Text::sprintf( '%1$s %2$s', $this->person->firstname, $this->person->lastname);
 						if ( $this->person->user_id )
 						{
 							switch ( $this->config['show_user_profile'] )
@@ -101,7 +102,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					
                 
                  <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
 			<?php echo $outputName; ?>
             </address>
                 
@@ -112,7 +113,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				    
 					?>
 				<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
 			<?php echo $this->person->nickname; ?>
             </address>
 				<?php
@@ -146,7 +147,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 														break;
 								}
-								//echo JText::_( $outputStr );
+								//echo Text::_( $outputStr );
 								?>
 
 						
@@ -155,13 +156,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -170,7 +171,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, JText::_( '%Y' ) ) : "-";
+															JHtml::date( $this->person->birthday, Text::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -181,7 +182,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						
                     
                     <address>
-			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo $birthdateStr; ?>
             </address>
                     
@@ -190,16 +191,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					
 					<?php
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY';
-						//echo JText::_( $outputStr );
+						//echo Text::_( $outputStr );
 						?>
 						
 						<?php
 						$deathdateStr =	$this->person->deathday != "0000-00-00" ?
-							JHtml::date( $this->person->deathday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+							JHtml::date( $this->person->deathday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 							echo '&dagger; '.$deathdateStr;
 						?>
 						<address>
-			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo '&dagger; '.$deathdateStr; ?>
             </address>
 					<?php
@@ -213,7 +214,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 				<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
             <?php
 						echo JSMCountries::convertAddressString(	'',
 																$this->person->address,
@@ -232,7 +233,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
 			<?php echo $this->person->phone; ?>
             </address>
 					<?php
@@ -242,7 +243,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
 			<?php echo $this->person->mobile; ?>
             </address>
 					<?php
@@ -252,7 +253,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php 
             $user = JFactory::getUser();
 				if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
@@ -274,7 +275,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
 			<?php echo JHtml::_(	'link',
 				$this->person->website,
 				$this->person->website,
@@ -288,8 +289,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
-			<?php echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->person->height, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -298,8 +299,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
 					<address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
-			<?php echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->person->weight, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
             </address>
 					<?php
 					}
@@ -309,8 +310,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					?>
 				
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
-			<?php echo JText::_( $this->inprojectinfo->position_name ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
+			<?php echo Text::_( $this->inprojectinfo->position_name ); ?>
             </address>
                 
                 
@@ -322,7 +323,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					?>
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
 			<?php echo $this->person->knvbnr; ?>
             </address>
 					

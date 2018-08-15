@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 //echo 'getTeamPlayers staff<br><pre>'.print_r($this->row,true).'</pre><br>';
 
@@ -19,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 $personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
 if ($this->config['show_staff_icon'] == 1)
 {
-	$imgTitle = JText::sprintf( $personName );
+	$imgTitle = Text::sprintf( $personName );
 	$picture = $this->row->picture;
 	if ((empty($picture)) || ($picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png' ))
 	{
@@ -71,16 +72,16 @@ $this->overallconfig['use_jquery_modal']);
 					<div>
 						<span class="jl_roster_persondetails_label">
 <?php 
-							echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION');
+							echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_STAFF_FUNCTION');
 ?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
 						if (!empty($this->row->parentname))
 						{
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($this->row->parentname));
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($this->row->parentname));
 						}
-						echo '&nbsp;' . JText::_( $this->row->position );
+						echo '&nbsp;' . Text::_( $this->row->position );
 						?>
 						</span><!-- /.jl_roster_persondetails_data -->
 					</div>
@@ -92,12 +93,12 @@ $this->overallconfig['use_jquery_modal']);
 			case 1:	 // show Birthday and Age
 				$showbirthday = 1;
 				$showage = 1;
-				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
+				$birthdayformat = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 2:	 // show Only Birthday
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
+				$birthdayformat = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE');
 				break;
 			case 3:	 // show Only Age
 				$showbirthday = 0;
@@ -106,7 +107,7 @@ $this->overallconfig['use_jquery_modal']);
 			case 4:	 // show Only Year of birth
 				$showbirthday = 1;
 				$showage = 0;
-				$birthdayformat = JText::_('%Y');
+				$birthdayformat = Text::_('%Y');
 				break;
 			default:
 				$showbirthday = 0;
@@ -118,7 +119,7 @@ $this->overallconfig['use_jquery_modal']);
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_AGE");?>
+							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_AGE");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo sportsmanagementHelper::getAge($this->row->birthday,$this->row->deathday);?>
@@ -131,7 +132,7 @@ $this->overallconfig['use_jquery_modal']);
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
+							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
 							<?php echo JHtml::date($this->row->birthday,$birthdayformat);?>
@@ -145,10 +146,10 @@ $this->overallconfig['use_jquery_modal']);
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_DEATHDAY");?>[ &dagger; ]
+							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_DEATHDAY");?>[ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHtml::date($this->row->deathday,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
+							<?php echo JHtml::date($this->row->deathday,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
 						</span>
 					</div>
 <?php
@@ -159,7 +160,7 @@ $this->overallconfig['use_jquery_modal']);
 ?>
 					<div>
 						<span class="jl_roster_persondetails_label">
-							<?php echo JText::_("COM_SPORTSMANAGEMENT_PERSON_NATIONALITY");?>
+							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_NATIONALITY");?>
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php

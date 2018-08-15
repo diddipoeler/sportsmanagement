@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -32,23 +32,23 @@ $params = $this->form->getFieldsets('params');
 	<fieldset>
 		<div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">
-<?php echo JText::_('JSAVE');?></button>			
+<?php echo Text::_('JSAVE');?></button>			
 		</div>
 		<div class="configuration" >
-			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
+			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'); ?>
 		</div>
 	</fieldset>
 	<div class="clear"></div>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_DESCR'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_DESCR'); ?></legend>
 			<table class='adminlist'>
 			<thead>
 				<tr>
 					<th>
-					<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_REFS'); ?>
+					<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_REFS'); ?>
 					</th>
 					<th>
-					<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
+					<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_ASSIGNED'); ?>
 					</th>					
 				</tr>
 			</thead>			
@@ -73,22 +73,22 @@ $params = $this->form->getFieldsets('params');
 										<br />
 										
                                         
-<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
-<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
+<input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
+<input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
                                         
 									</td>
 									<td>
 										<!-- player affected to this position -->
-										<b><?php echo JText::_($pos->text); ?></b><br />
+										<b><?php echo Text::_($pos->text); ?></b><br />
 										<?php echo $this->lists['team_referees'.$key];?>
 									</td>
 									<td style='text-align:center; vertical-align:middle; '>
 										<!-- up/down buttons -->
 										<br />
 										<input	type="button" id="moveup-<?php echo $key;?>" class="inputbox move-up"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
+												value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UP'); ?>" /><br />
 										<input	type="button" id="movedown-<?php echo $key;?>" class="inputbox move-down"
-												value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
+												value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DOWN'); ?>" />
 									</td>
 								</tr>
 								<?php

@@ -9,7 +9,9 @@
  * @subpackage stats
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <!-- Flash Statistik Start -->
 <script	type="text/javascript" src="<?php echo JURI::base().'components/com_sportsmanagement/assets/js/json2.js'; ?>"></script>
@@ -26,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <table class="<?php echo $this->config['goals_table_class'];?>">
 	<tr class="sectiontableheader">
-		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_GOALS_STATISTIC'); ?></th>
+		<th colspan="2"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS_STATISTIC'); ?></th>
 	</tr>
 </table>
 

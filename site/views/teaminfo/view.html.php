@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewTeamInfo
  * 
@@ -48,13 +48,13 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
             }
 
 			$daysOfWeek=array(
-				1 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
-				2 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
-				3 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
-				4 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
-				5 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
-				6 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
-				7 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
+				1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
+				2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
+				3 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
+				4 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
+				5 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
+				6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
+				7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
 			);
 			$this->daysOfWeek = $daysOfWeek;
                   
@@ -76,7 +76,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 		$this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
     
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE' );
 		if ( isset( $this->team ) )
 		{
 			$pageTitle .= ': ' . $this->team->tname;

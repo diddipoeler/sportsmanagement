@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view' );
 
 /**
@@ -78,7 +78,7 @@ class sportsmanagementViewStats extends JViewLegacy
 			$this->_setChartdata(array_merge($flashconfig, $config));
 		}
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_STATS_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_STATS_PAGE_TITLE' );
 		if ( isset( $this->project ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;
@@ -93,7 +93,7 @@ class sportsmanagementViewStats extends JViewLegacy
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 
 		parent::display( $tpl );
 	}
@@ -143,17 +143,17 @@ class sportsmanagementViewStats extends JViewLegacy
 			{
 				$bar1 = new $config['bartype_1']();
 				$bar1->set_values( $homeSum );
-				$bar1->set_tooltip( JText::_('COM_SPORTSMANAGEMENT_STATS_HOME'). ": #val#" );
+				$bar1->set_tooltip( Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'). ": #val#" );
 				$bar1->set_colour( $config['bar1'] );
 				$bar1->set_on_show(new bar_on_show($config['animation_1'], $config['cascade_1'], $config['delay_1']));
-				$bar1->set_key(JText::_('COM_SPORTSMANAGEMENT_STATS_HOME'), 12);
+				$bar1->set_key(Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'), 12);
 
 				$bar2 = new $config['bartype_2']();
 				$bar2->set_values( $awaySum );
-				$bar2->set_tooltip(   JText::_('COM_SPORTSMANAGEMENT_STATS_AWAY'). ": #val#" );
+				$bar2->set_tooltip(   Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'). ": #val#" );
 				$bar2->set_colour( $config['bar2'] );
 				$bar2->set_on_show(new bar_on_show($config['animation_2'], $config['cascade_2'], $config['delay_2']));
-				$bar2->set_key(JText::_('COM_SPORTSMANAGEMENT_STATS_AWAY'), 12);
+				$bar2->set_key(Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'), 12);
 
 				$chart->add_element($bar1);
 				$chart->add_element($bar2);
@@ -164,13 +164,13 @@ class sportsmanagementViewStats extends JViewLegacy
 		$d->size((int)$config['line3_dot_strength']);
 		$d->halo_size(1);
 		$d->colour($config['line3']);
-		$d->tooltip(JText::_('COM_SPORTSMANAGEMENT_STATS_TOTAL2').' #val#');
+		$d->tooltip(Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL2').' #val#');
 
 		$line = new line();
 		$line->set_default_dot_style($d);
 		$line->set_values( $matchDayGoalsCount );
 		$line->set_width( (int) $config['line3_strength'] );
-		$line->set_key(JText::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'), 12);
+		$line->set_key(Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'), 12);
 		$line->set_colour( $config['line3'] );
 		$line->on_show(new line_on_show($config['l_animation_3'], $config['l_cascade_3'], $config['l_delay_3']));
 		$chart->add_element($line);
@@ -180,7 +180,7 @@ class sportsmanagementViewStats extends JViewLegacy
 		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$x->set_labels_from_array($round_labels);
 		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_STATS_ROUNDS') );
+		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_STATS_ROUNDS') );
 		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_x_legend( $x_legend );
 
@@ -189,7 +189,7 @@ class sportsmanagementViewStats extends JViewLegacy
 		$y->set_steps(round(@max($matchDayGoalsCount)/8));
 		$y->set_colours($config['y_axis_colour'], $config['y_axis_colour_inner']);
 		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_STATS_GOALS') );
+		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_STATS_GOALS') );
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 

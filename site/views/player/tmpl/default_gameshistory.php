@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
 ?>
@@ -18,39 +19,39 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 if (count($this->games))
 {
 	?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
 <table class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
 	<tr>
 		<td>
 		<table id="gameshistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive">
 			<thead>
 				<tr class="">
-					<th class="" colspan="6"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
+					<th class="" colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
 					<?php
 					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
 					{
 						?>
 					<th class=""><?php
-					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
+					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = $picture_path_sport_type_name.'/startroster.png';
                    
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
-					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
+					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = $picture_path_sport_type_name.'/in.png';
                     
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
-					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
+					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = $picture_path_sport_type_name.'/out.png';
                    
 					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
                     
                     <th class=""><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
                 
 				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
@@ -74,8 +75,8 @@ if (count($this->games))
                     
                     
 
-					echo JHtml::image($iconPath,JText::_($eventtype->name),
-					array(	"title" => JText::_($eventtype->name),
+					echo JHtml::image($iconPath,Text::_($eventtype->name),
+					array(	"title" => Text::_($eventtype->name),
 					"align" => "top",
 					"hspace" => "2"));
 					?></th>
@@ -99,7 +100,7 @@ if (count($this->games))
 								}
 catch (Exception $e)
 {
-    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$stat), 'error');
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$stat), 'error');
 }
 							}
 						}
@@ -107,7 +108,7 @@ catch (Exception $e)
                     if ($this->config['show_player_market_value'] )
                     {
                     ?>
-					<th class="td_c"><?php echo JText::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
+					<th class="td_c"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
 					<?php    
                     }
                     
@@ -304,7 +305,7 @@ $this->overallconfig['use_jquery_modal']);
 			}
 			?>
 				<tr class="career_stats_total">
-					<td class="" colspan="6"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_TOTAL'); ?></b></td>
+					<td class="" colspan="6"><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_TOTAL'); ?></b></td>
 					<?php
 					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution']==1)
 					{

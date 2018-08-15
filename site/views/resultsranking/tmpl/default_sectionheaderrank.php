@@ -9,14 +9,16 @@
  * @subpackage resultsranking
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
     <!-- START: Contentheading -->
 <table class="contentpaneopen" width="100%">
     <tr>
         <td class="contentheading">
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
+            echo Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
             ?>
         </td>
     </tr>

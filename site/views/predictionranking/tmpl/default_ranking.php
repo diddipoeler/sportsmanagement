@@ -9,7 +9,8 @@
  * @subpackage predictionranking
  */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
 JHTML::_('behavior.tooltip');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -65,7 +66,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 				<tr>
 					<td>
 						<?php
-						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SUBTITLE_01').'</b>';
+						echo '<b>'.Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SUBTITLE_01').'</b>';
 						?>
 					</td>
 					<td>
@@ -79,7 +80,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 					<td>
           <?php
           $groups = sportsmanagementModelPrediction::getPredictionGroupList();
-          $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
+          $predictionGroups[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
                         $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
           echo $htmlGroupOptions;
@@ -108,7 +109,7 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);                            
 
-							$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
+							$imgTitle=Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 							$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 							echo JHTML::link($link,$desc,array('target' => ''));
 							?>
@@ -160,7 +161,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
 						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$from); ?></td>
 						<td><?php echo JHTML::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$to); ?></td>
-						<td><input type='submit' class='button' name='reload View' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>' /></td>
+						<td><input type='submit' class='button' name='reload View' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>' /></td>
 					</tr>
 
 <tfoot>
@@ -196,29 +197,29 @@ When viewing on anything larger than 768px wide, you will not see any difference
 		<table class="<?PHP echo $this->config['table_class'];?> <?PHP echo $this->config['table_class_responsive'];?>" >
         <thead>
 			<tr>
-				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
+				<th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
 				<?php
                 
                 if ( sportsmanagementModelPrediction::$pggrouprank )
                 {
                     ?>
-                <th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
+                <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
                     <?php
                 }
                 else
                 {    
 				if ($this->config['show_user_icon'])
 				{
-					?><th  style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
+					?><th  style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
 				}
 				?>
-				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
+				<th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
 				<?php
                 
                 if ($this->config['show_pred_group'])
 				{
 					?>
-                <th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
+                <th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
                     <?php
 				}
                 
@@ -227,49 +228,49 @@ When viewing on anything larger than 768px wide, you will not see any difference
 
         if ($this->config['show_champion_tip'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP'); ?></th><?php
 				}
 
 				if ($this->config['show_tip_details'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_DETAILS'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_DETAILS'); ?></th><?php
 				}
 				?>
-				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th>
+				<th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th>
 				<?php
 				if ($this->config['show_average_points'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_tips'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_joker'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_JOKERS'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_JOKERS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_topptips'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TOPS'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TOPS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_difftips'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_MARGINS'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_MARGINS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_tendtipps'])
 				{
-					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TENDENCIES'); ?></th><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TENDENCIES'); ?></th><?php
 				}
 				?>
 			</tr>
@@ -482,7 +483,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
 					//tobe removed
-					//$imgTitle = JText::sprintf('JL_PRED_AVATAR_OF',$member->name);
+					//$imgTitle = Text::sprintf('JL_PRED_AVATAR_OF',$member->name);
 					//$output = JHTML::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
 					
 					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
@@ -513,7 +514,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     
 					$membersDataArray[$member->pmID]['name'] = $output;
 					
-					$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
+					$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					// bugtracker id 0000088
                     //$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
@@ -532,7 +533,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     
                     if ( (int)sportsmanagementModelPrediction::$pggrouprank )
                     {
-                    $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->pg_group_name);
+                    $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->pg_group_name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound ,sportsmanagementModelPrediction::$pjID,$member->pmID,'',$member->pg_group_id);
                     $output = JHTML::link( $link, $imgFile);
@@ -666,7 +667,7 @@ foreach ($computedMembersRanking AS $key => $value)
                             } 
                             else
                             {
-                            $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
+                            $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
 				$imgFile = JHTML::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));    
                             }
                              
@@ -674,7 +675,7 @@ foreach ($computedMembersRanking AS $key => $value)
 							 }
                              else
                              {
-              $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
+              $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
 				$imgFile = JHTML::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));
               }
               ?>

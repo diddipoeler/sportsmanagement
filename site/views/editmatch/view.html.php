@@ -187,22 +187,10 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         }
         $this->playersoptionsout = $playersoptionsout;
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersoptionsout'.'<pre>'.print_r($playersoptionsout,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersoptionsin'.'<pre>'.print_r($playersoptionsin,true).'</pre>' ),'');
-
         foreach ((array) $not_assigned AS $player) {
-        //foreach ((array)$allplayers AS $player)
             $playersoptionsin[] = JHtml::_('select.option', $player->value, sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format) . ' - (' . JText::_($player->positionname) . ')');
         }
         $this->playersoptionsin = $playersoptionsin;
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersoptionsin'.'<pre>'.print_r($playersoptionsin,true).'</pre>' ),'');
-
-        /* 		
-          $lists['all_players']=JHtml::_(	'select.genericlist',$playersoptions,'roster[]',
-          'id="roster" style="font-size:12px;height:auto;min-width:15em;" class="inputbox" size="4"',
-          'value','text');
-         */
 
         // generate selection list for each position
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
@@ -211,8 +199,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
             // get players assigned to this position
             $starters[$position_id] = sportsmanagementModelMatch::getRoster($tid, $pos->value, $this->match->id, $pos->text);
         }
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
 
         foreach ($starters AS $position_id => $players) {
             $options = array();

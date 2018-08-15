@@ -10,14 +10,14 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 //echo 'referee <pre>',print_r($this->referee,true),'</pre>';
 //echo 'person <pre>',print_r($this->person,true),'</pre>';
 
 ?>
 <!-- person data START -->
 <?php if ($this->referee) { ?>
-<h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
+<h2><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
 
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 
@@ -31,8 +31,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 			
 				<?php
-				$picturetext=JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
-				$imgTitle = JText::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->referee->firstname, $this->referee->nickname, $this->referee->lastname, $this->config["name_format"]) );
+				$picturetext=Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+				$imgTitle = Text::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->referee->firstname, $this->referee->nickname, $this->referee->lastname, $this->config["name_format"]) );
 				$picture = $this->referee->picture;
 				if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  ))
 				{
@@ -58,10 +58,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				               
                 
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
 			<?php
 						echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
-						JText::_( JSMCountries::getCountryName($this->person->country));
+						Text::_( JSMCountries::getCountryName($this->person->country));
 						?>
             </address>
             
@@ -70,7 +70,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				?>
 				
 						<?php
-						$outputName = JText::sprintf( '%1$s %2$s', $this->referee->firstname, $this->referee->lastname);
+						$outputName = Text::sprintf( '%1$s %2$s', $this->referee->firstname, $this->referee->lastname);
 						if ( $this->referee->user_id )
 						{
 							switch ( $this->config['show_user_profile'] )
@@ -95,7 +95,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				
                 
                 <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
 			<?php
 						echo $outputName;
 						?>
@@ -107,7 +107,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							?>
 							
                             <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
 			<?php
 						echo $this->referee->nickname;
 						?>
@@ -143,7 +143,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 														break;
 								}
-								//echo JText::_( $outputStr );
+								//echo Text::_( $outputStr );
 								?>
 
 						
@@ -152,13 +152,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															JHtml::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -167,7 +167,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, JText::_( '%Y' ) ) : "-";
+															JHtml::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -190,7 +190,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
 			<?php echo Countries::convertAddressString(	'',
 																	$this->referee->address,
 																	$this->referee->state,
@@ -209,7 +209,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
 			<?php echo $this->referee->phone; ?>
             </address>
             
@@ -222,7 +222,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
 			<?php echo $this->referee->mobile; ?>
             </address>
                     
@@ -234,7 +234,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 				                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php
 							$user = JFactory::getUser();
 							if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
@@ -263,7 +263,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					                    
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
 			<?php echo JHtml::_(	'link',
 											$this->referee->website,
 											$this->referee->website,
@@ -278,8 +278,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                      <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
-			<?php echo str_replace( "%HEIGHT%", $this->referee->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->referee->height, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -289,8 +289,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
-			<?php echo str_replace( "%WEIGHT%", $this->referee->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->referee->weight, Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) ); ?>
             </address>
 					<?php
 				}
@@ -300,8 +300,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
-			<?php echo JText::_( $this->referee->position_name ); ?>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
+			<?php echo Text::_( $this->referee->position_name ); ?>
             </address>
             
 					<?php
@@ -312,7 +312,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					
                     
                     <address>
-			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
 			<?php echo $this->referee->knvbnr; ?>
             </address>
 					<?php

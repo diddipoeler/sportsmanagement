@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 
 //echo '<pre>',print_r($this->project,true),'</pre><br>';
@@ -68,7 +69,7 @@ if ( $this->project->use_tie_break )
 ?>
 
 <div id="verein_display">
-		<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_SINGLE'); ?></h3>
+		<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_SINGLE'); ?></h3>
 		<table class="matchreport">
 			<tr style="">
 				<th>Nr</th>
@@ -111,7 +112,7 @@ if ( $this->project->use_tie_break )
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }    
                 echo '<td>';
-                echo JText::_($player->position_name);
+                echo Text::_($player->position_name);
                 echo '</td>';  
                 echo '<td>';
                 echo $player->firstname.' '.$player->lastname;
@@ -145,7 +146,7 @@ if ( $this->project->use_tie_break )
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 } 
                 echo '<td>';
-                echo JText::_($player->position_name);
+                echo Text::_($player->position_name);
                 echo '</td>';  
                 echo '<td>';
                 echo $player->firstname.' '.$player->lastname;
@@ -243,7 +244,7 @@ if ( $this->project->use_tie_break )
 </table>
 
 
-<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_DOUBLE'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_DOUBLE'); ?></h3>
 		<table class="matchreport">
 			<tr style="">
 				<th>Nr</th>
@@ -287,7 +288,7 @@ if ( $this->project->use_tie_break )
 				{
                     $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }   
-                $matchposition =  JText::_($player->position_name).'<br>';  
+                $matchposition =  Text::_($player->position_name).'<br>';  
                 $matchplayer1 = $player->firstname.' '.$player->lastname; 
                 }
                 foreach( $playerinfo2 as $player)
@@ -297,7 +298,7 @@ if ( $this->project->use_tie_break )
 				{
                     $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
-                $matchposition .=  JText::_($player->position_name);  
+                $matchposition .=  Text::_($player->position_name);  
                 $matchplayer2 = $player->firstname.' '.$player->lastname; 
                 }
                 
@@ -342,7 +343,7 @@ if ( $this->project->use_tie_break )
 				{
                     $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
-                $matchposition =  JText::_($player->position_name).'<br>';  
+                $matchposition =  Text::_($player->position_name).'<br>';  
                 $matchplayer1 = $player->firstname.' '.$player->lastname; 
                 }
                 foreach( $playerinfo2 as $player)
@@ -352,7 +353,7 @@ if ( $this->project->use_tie_break )
 				{
                     $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }     
-                $matchposition .=  JText::_($player->position_name);  
+                $matchposition .=  Text::_($player->position_name);  
                 $matchplayer2 = $player->firstname.' '.$player->lastname; 
                 }
                 
@@ -455,13 +456,13 @@ if ( $this->project->use_tie_break )
             
 </table>
 
-<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS'); ?></h3>
 <table class="matchreport">
 <tr style="">
 <th></th>
-<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_POINTS'); ?></th>
-<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_SETS'); ?></th>
-<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_GAMES'); ?></th>
+<th><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_POINTS'); ?></th>
+<th><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_SETS'); ?></th>
+<th><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_GAMES'); ?></th>
 </tr>
             
 <?PHP
@@ -476,7 +477,7 @@ foreach ( $complete_results as $key => $value )
 {
 echo '<tr>'; 
 echo '<td>';
-echo JText::_($key);
+echo Text::_($key);
 echo '</td>';
 echo '<td>';
 echo $value['POINTS1'].':'.$value['POINTS2'];
@@ -499,7 +500,7 @@ $all_over_games_2 += $value['GAMES2'];
 
 echo '<tr>'; 
 echo '<td>';
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AGO');
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AGO');
 echo '</td>';
 echo '<td>';
 echo $all_over_points_1.':'.$all_over_points_2;
@@ -514,7 +515,7 @@ echo '</tr>';
 
 echo '<tr>'; 
 echo '<td>';
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AFTER');
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TENNIS_RESULTS_ALL_OVER_AFTER');
 echo '</td>';
 echo '<td>';
 echo $all_over_points_1.':'.$all_over_points_2;

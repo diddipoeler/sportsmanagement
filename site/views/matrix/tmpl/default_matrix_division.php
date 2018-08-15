@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="defaultmatrixdivision">
  <?php
@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
       {
 				if ( $divisions->id == $team_row_header->division_id )
         {
-        $title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
+        $title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->slug, $team_row_header->club_slug);
 				$desc = $team_row_header->short_name;
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
@@ -136,7 +136,7 @@ defined('_JEXEC') or die('Restricted access');
       {
 			if ($k_c == 0) // Header columns
 				{
-				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
+				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
@@ -179,12 +179,12 @@ defined('_JEXEC') or die('Restricted access');
 						$e2 = $result->e2;
 						switch ($result->rtype) {
 								case 1 : // Overtime
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                                     $ResultType .= ')';
 									break;
 
 								case 2 : // Shootout
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                                     $ResultType .= ')';
 									break;
 
@@ -227,7 +227,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams))) {
 								#$resultStr = str_replace( "%TEAMHOME%",
 								#                           $this->teams[$result->projectteam1_id]->name,
-								#                           JText::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
+								#                           Text::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
 								#$title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
 								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
 								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams))) {
@@ -252,12 +252,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
-									//                       JText::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
+									//                       Text::_( 'COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
 								case 2 : // Link to Match report
-									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, JText :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
+									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, Text :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
@@ -301,7 +301,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
 						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid);
-						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
+						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {
@@ -403,7 +403,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			}
 
 			foreach ($this->teams as $team_row_header) {
-				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
+				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
 				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->slug, $team_row_header->club_id);
 				$desc = $team_row_header->short_name;
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
@@ -434,7 +434,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
     {
 			if ($k_c == 0) // Header columns
 				{
-				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
+				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
@@ -477,12 +477,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$e2 = $result->e2;
 						switch ($result->rtype) {
 								case 1 : // Overtime
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                                     $ResultType .= ')';
 									break;
 
 								case 2 : // Shootout
-									$ResultType = ' ('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+									$ResultType = ' ('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                                     $ResultType .= ')';
 									break;
 
@@ -525,7 +525,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams) && !in_array($team_col->id, $this->favteams))) {
 								#$resultStr = str_replace( "%TEAMHOME%",
 								#                           $this->teams[$result->projectteam1_id]->name,
-								#                           JText::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
+								#                           Text::_( 'COM_SPORTSMANAGEMENT_STANDARD_MATCH_REPORT_FORM' ) );
 								#$title = str_replace( "%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title );
 								$resultStr = $e1 . $this->overallconfig['seperator'] . $e2 . $ResultType;
 								if (($this->config['highlight_fav_team'] > 0) && ($this->project->fav_team_text_color != "") && (in_array($team_row->id, $this->favteams) || in_array($team_col->id, $this->favteams))) {
@@ -550,12 +550,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
-									//                       JText::_( 'JL_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
+									//                       Text::_( 'JL_FORCED_MATCH_REPORT_NEXTPAGE_FORM' ) );
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
 								case 2 : // Link to Match report
-									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, JText :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
+									$title = str_replace("%TEAMHOME%", $this->teams[$result->projectteam1_id]->name, Text :: _('COM_SPORTSMANAGEMENT_FORCED_MATCH_REPORT_FORM'));
 									$title = str_replace("%TEAMGUEST%", $this->teams[$result->projectteam2_id]->name, $title);
 									break;
 
@@ -599,7 +599,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
 						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid);
-						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
+						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 						if (($this->config['highlight_fav_team'] != 2) || (!in_array($team_row->id, $this->favteams)) && (!in_array($team_col->id, $this->favteams))) {

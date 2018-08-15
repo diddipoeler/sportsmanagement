@@ -9,7 +9,7 @@
  * @subpackage clubinfo
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //$this->columns = 2;
 $this->divclass = '';
 
@@ -28,7 +28,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq') || $paramscomponent->get('use_jsmgr
 }
 
 if (!isset($this->club)) {
-    JError::raiseWarning('ERROR_CODE', JText::_('Error: ClubID was not submitted in URL or Club was not found in database'));
+    JError::raiseWarning('ERROR_CODE', Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
     <div class="<?php echo $paramscomponent->get('boostrap_div_class'); ?>">
@@ -37,7 +37,7 @@ if (!isset($this->club)) {
             <!-- SHOW LOGO - START -->
             <?php
             if ($this->config['show_club_logo'] && $this->club->logo_big != '') {
-                $club_emblem_title = str_replace("%CLUBNAME%", $this->club->name, JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE'));
+                $club_emblem_title = str_replace("%CLUBNAME%", $this->club->name, Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE'));
                 $picture = $this->club->logo_big;
             }
 
@@ -56,7 +56,7 @@ if (!isset($this->club)) {
 
             if ($this->config['show_club_logo_copyright']) {
                 if ($this->club->cr_logo_big) {
-                    echo JText::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->club->cr_logo_big . '</i>');
+                    echo Text::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO', '<i>' . $this->club->cr_logo_big . '</i>');
                 }
                 ?> 
                 <!--        : &copy; -->	
@@ -70,7 +70,7 @@ if (!isset($this->club)) {
             <!-- SHOW SMALL LOGO - START -->
             <?php
             if (( $this->config['show_club_shirt']) && ( $this->club->logo_small != '' )) {
-                $club_trikot_title = str_replace("%CLUBNAME%", $this->club->name, JText::_("COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE"));
+                $club_trikot_title = str_replace("%CLUBNAME%", $this->club->name, Text::_("COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE"));
                 $picture = $this->club->logo_small;
                 echo sportsmanagementHelper::getPictureThumb($picture, $club_emblem_title, 20, 20, 3);
             }
@@ -93,7 +93,7 @@ if (!isset($this->club)) {
                     ?>
                     <address>
                         <strong><?php
-                            echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
+                            echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS');
                             ?></strong>
                         <?php echo $addressString; ?>
 
@@ -114,7 +114,7 @@ if (!isset($this->club)) {
                 if ($this->club->phone) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PHONE'); ?></strong>
                         <?php echo $this->club->phone; ?>
                     </address>
                     <?php
@@ -123,7 +123,7 @@ if (!isset($this->club)) {
                 if ($this->club->fax) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_FAX'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FAX'); ?></strong>
                         <?php echo $this->club->fax; ?>
                     </address>
                     <?php
@@ -132,7 +132,7 @@ if (!isset($this->club)) {
                 if ($this->club->email) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_EMAIL'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_EMAIL'); ?></strong>
 
                         <?php
                         // to prevent spam, crypt email display if nospam_email is selected
@@ -152,7 +152,7 @@ if (!isset($this->club)) {
                 if ($this->club->website) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
 
                         <?php echo JHtml::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
 
@@ -163,7 +163,7 @@ if (!isset($this->club)) {
                 if ($this->club->president) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PRESIDENT'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PRESIDENT'); ?></strong>
                         <?php echo $this->club->president; ?>
                     </address>
                     <?php
@@ -172,7 +172,7 @@ if (!isset($this->club)) {
                 if ($this->club->manager) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_MANAGER'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_MANAGER'); ?></strong>
                         <?php echo $this->club->manager; ?>
                     </address>
                     <?php
@@ -181,7 +181,7 @@ if (!isset($this->club)) {
                 if ($this->club->founded && $this->club->founded != '0000-00-00' && $this->config['show_founded']) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED'); ?></strong>
                         <?php echo sportsmanagementHelper::convertDate($this->club->founded, 1); ?>
                     </address>
                     <?php
@@ -189,7 +189,7 @@ if (!isset($this->club)) {
                 if ($this->club->founded_year && $this->config['show_founded_year']) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED_YEAR'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED_YEAR'); ?></strong>
                         <?php echo $this->club->founded_year; ?>
                     </address>
                     <?php
@@ -197,7 +197,7 @@ if (!isset($this->club)) {
                 if ($this->club->dissolved && $this->club->dissolved != '0000-00-00' && $this->config['show_dissolved']) {
                     ?>
                     <address>	
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED'); ?></strong>
                         <?php echo sportsmanagementHelper::convertDate($this->club->dissolved, 1) ?>   
                     </address>   
                     <?php
@@ -205,7 +205,7 @@ if (!isset($this->club)) {
                 if ($this->club->dissolved_year && $this->config['show_dissolved_year']) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED_YEAR'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED_YEAR'); ?></strong>
                         <?php echo $this->club->dissolved_year; ?>
                     </address>
                     <?php
@@ -213,7 +213,7 @@ if (!isset($this->club)) {
                 if ($this->club->unique_id) {
                     ?>
                     <address>
-                        <strong><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID'); ?></strong>
+                        <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID'); ?></strong>
                         <?php echo $this->club->unique_id; ?>
                     </address>
                     <?php
@@ -231,7 +231,7 @@ if (!isset($this->club)) {
                         $routeparameter['p'] = $this->project->slug;
                         $routeparameter['pgid'] = $playground->slug;
                         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
-                        $pl_dummy = JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND');
+                        $pl_dummy = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND');
                         ?>
                         <address>
                             <strong>
@@ -269,7 +269,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                     </span>
                     <?PHP
                     $link = sportsmanagementHelperRoute::getKunenaRoute($this->club->sb_catid);
-                    $imgTitle = JText::_($this->club->name . ' Forum');
+                    $imgTitle = Text::_($this->club->name . ' Forum');
                     $desc = JHtml::image('media/COM_SPORTSMANAGEMENT/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle, 'width' => '100'));
                     ?>
                     <span class="clubinfo_listing_value">
@@ -291,7 +291,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                 ?>
                 <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
                     <strong>
-                        <?php echo JText::_('Fusionen'); ?>
+                        <?php echo Text::_('Fusionen'); ?>
                     </strong>
                 </a>
                 <div id="fusion" class="<?PHP echo $class_collapse; ?>">

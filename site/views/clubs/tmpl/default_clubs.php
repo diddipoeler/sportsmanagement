@@ -39,23 +39,23 @@
 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 ?>
 <div class="table-responsive">
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr>
-		<?php if ($this->config['show_small_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<?php if ($this->config['show_medium_logo'])	{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<?php if ($this->config['show_big_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
-		<th class="club_name"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME' ); ?></th>
-		<?php if ($this->config['show_club_teams'])		{ ?><th class="club_teams"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_TEAMS' ); ?></th><?php } ?>
+		<?php if ($this->config['show_small_logo'])		{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<?php if ($this->config['show_medium_logo'])	{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<?php if ($this->config['show_big_logo'])		{ ?><th class="club_logo"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
+		<th class="club_name"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME' ); ?></th>
+		<?php if ($this->config['show_club_teams'])		{ ?><th class="club_teams"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_TEAMS' ); ?></th><?php } ?>
 		
          <?php if ($this->config['show_club_internetadress_picture']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
 		<?php } ?>
         
-        <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
+        <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
 	</tr>
 	</thead>
 	<?php
@@ -63,7 +63,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	foreach ($this->clubs as $club)
 	{
 		$clubinfo_link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $club->club_slug );
-		$title			= JText::sprintf( 'COM_SPORTSMANAGEMENT_CLUBS_TITLE2', $club->name );
+		$title			= Text::sprintf( 'COM_SPORTSMANAGEMENT_CLUBS_TITLE2', $club->name );
 
 		$picture = $club->logo_small;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )

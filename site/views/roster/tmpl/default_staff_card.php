@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
 
 ?>
@@ -22,11 +22,11 @@ defined('_JEXEC') or die('Restricted access');
 				echo '&nbsp;';
 				if ( $this->config['show_team_shortform'] == 1 )
 				{
-					echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2', $this->team->name, $this->team->short_name );
+					echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2', $this->team->name, $this->team->short_name );
 				}
 				else
 				{
-					echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF', $this->team->name );
+					echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF', $this->team->name );
 				}
 				?>
 			</td>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 					  
 						  <?php
 		
-		$imgTitle = JText::sprintf( $playerName );
+		$imgTitle = Text::sprintf( $playerName );
 		$picture = $row->picture;
 		if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ))
 		{

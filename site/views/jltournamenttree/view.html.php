@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 
 /**
@@ -45,8 +46,6 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy {
         //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
         $this->project = sportsmanagementModelProject::getProject();
-
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
 
         if ($this->project->project_type == 'TOURNAMENT_MODE') {
             $model = $this->getModel();

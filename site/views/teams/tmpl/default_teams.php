@@ -10,27 +10,28 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="teams">
 <table class="<?php echo $this->config['table_class']; ?> table-responsive">
 	<thead>
 	<tr >
 		<?php if ($this->config['show_small_logo']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_TEAM' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_TEAM' ); ?></th>
 		<?php } ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_TEAM' ); ?></th>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUB' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_TEAM' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUB' ); ?></th>
 		<?php if ($this->config['show_medium_logo']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_CLUB' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_CLUB' ); ?></th>
 		<?php } ?>
     
     <?php if ($this->config['show_club_internetadress_picture']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
 		<?php } ?>
     <?php if ($this->config['show_club_number']) { ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_NUMBER' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_NUMBER' ); ?></th>
 		<?php } ?>
-		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS' ); ?></th>
+		<th ><?php echo Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS' ); ?></th>
 	</tr>
 	</thead>
 	<?php
@@ -47,8 +48,8 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 
 		//$teaminfo_link	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->slug, $team->team_slug,0,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
 		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
-		$teamTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
-		$clubTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
+		$teamTitle		= Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
+		$clubTitle		= Text::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
 
 		if ($this->config['show_small_logo']) {
 			$teampic = $this->config['team_picture'];

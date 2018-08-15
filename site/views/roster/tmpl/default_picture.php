@@ -9,7 +9,9 @@
  * @subpackage roster
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <?php
 	// Show team-picture if defined.
@@ -27,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 						$picture = $this->team->picture;
 					}
 										
-					$imgTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
+					$imgTitle = Text::sprintf( 'COM_SPORTSMANAGEMENT_ROSTER_PICTURE_TEAM', $this->team->name );
            
 echo sportsmanagementHelperHtml::getBootstrapModalImage('roster'.$this->team->name,
 $picture,

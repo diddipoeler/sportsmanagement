@@ -9,20 +9,21 @@
  * @subpackage teaminfo
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 
 <h4>
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
 </h4>
 
 <table class="table table-striped" >
     <thead>
         <tr class="sectiontableheader">
-            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
-            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
-            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
-            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
-            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
+            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
+            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
+            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
+            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
+            <th class="" nowrap="" style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
         </tr>
     </thead>
     <?php
@@ -82,7 +83,7 @@ defined('_JEXEC') or die('Restricted access');
         ?>
         <div class="bg-warning alert alert-warning">
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
+            echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
             ?>
         </div>
         <?php

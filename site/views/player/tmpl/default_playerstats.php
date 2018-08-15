@@ -10,37 +10,38 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
             
 ?>
 <!-- Player stats History START -->
-<h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
+<h2><?php	echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
 
 		<table class="<?PHP echo $this->config['player_table_class']; ?> table-responsive" >
 			<thead>
 			<tr class="sectiontableheader">
-				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+				<th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
                 <?PHP
                 if ( $this->config['show_plstats_team'] )
 	{
 	   $colspan++;
 	   ?>
-				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+				<th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
                 <?PHP
                 }
                 if ( $this->config['show_plstats_ppicture'] )
 	{
 	   $colspan++;
                 ?>
-                <th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
+                <th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
                  <?PHP
                 }
                 ?>
 				<th class="td_c">
                 <?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
                 $picture = $picture_path_sport_type_name.'/played.png';
                 if ( !curl_init($picture) )
 {
@@ -56,7 +57,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					{
 						?>
 				<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                 $picture = $picture_path_sport_type_name.'/startroster.png';
                 if ( !curl_init($picture) )
 {
@@ -65,7 +66,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                 $picture = $picture_path_sport_type_name.'/in.png';
                 if ( !curl_init($picture) )
 {
@@ -74,7 +75,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                 $picture = $picture_path_sport_type_name.'/out.png';
                 if ( !curl_init($picture) )
 {
@@ -87,7 +88,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
                 // gespielte zeit
                 ?>
                 <th class="td_c"><?php
-				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
                 if ( !curl_init($picture) )
 {
@@ -118,8 +119,8 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
                     
 				echo JHtml::image($iconPath,
-					JText::_($eventtype->name),
-					array(	"title" => JText::_($eventtype->name),
+					Text::_($eventtype->name),
+					array(	"title" => Text::_($eventtype->name),
 						"align" => "top",
 						"hspace" => "2"));
 				?></th>
@@ -343,7 +344,7 @@ $this->overallconfig['use_jquery_modal']);
 						if (!empty($stat)) {
 						    if ($stat->showInPlayer()) {    
 				?>
-				<td class="td_c hasTip" title="<?php echo JText::_($stat->name); ?>">
+				<td class="td_c hasTip" title="<?php echo Text::_($stat->name); ?>">
 				<?php
 							if(isset($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid])) {
                                 echo ($this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] <> 0 ? $this->projectstats[$stat->id][$player_hist->project_id][$player_hist->ptid] : $this->overallconfig['zero_events_value']);
@@ -367,7 +368,7 @@ $this->overallconfig['use_jquery_modal']);
             
             ?>
 			<tr class="career_stats_total">
-				<td class="td_r" colspan="<?php echo $colspan; ?>  "><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
+				<td class="td_r" colspan="<?php echo $colspan; ?>  "><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
 				<td class="td_c"><?php echo $career['played']; ?></td>
 				<?php //substitution system
 				if	($this->config['show_substitution_stats'] && isset($this->overallconfig['use_jl_substitution']) &&
@@ -414,7 +415,7 @@ $this->overallconfig['use_jquery_modal']);
 						if(!empty($stat)) {
 						    if ($stat->showInPlayer()) {
 						?>
-							<td class="td_c" title="<?php echo JText::_($stat->name); ?>">
+							<td class="td_c" title="<?php echo Text::_($stat->name); ?>">
 							<?php
 								if (isset($this->projectstats) &&
 								    array_key_exists($stat->id, $this->projectstats))

@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 <!-- EXTENDED DATA-->
 <?php
@@ -54,7 +54,7 @@ if(count($this->extended->getFieldsets()) > 0)
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <h4>
 <?php 
-echo JText::_($fieldset->name); 
+echo Text::_($fieldset->name); 
 ?>
 </h4>
 
@@ -69,7 +69,7 @@ echo JText::_($fieldset->name);
 						?>
                         <tr>
                         <td>
-                        <strong><?php echo JText::_( $field->label); ?></strong>
+                        <strong><?php echo Text::_( $field->label); ?></strong>
                         </td>
                         <td>
                             <?php
@@ -78,13 +78,13 @@ echo JText::_($fieldset->name);
                             
                             foreach( $field->value as $key => $value)  
                             {
-                            echo JText::_( $value ).'<br>';      
+                            echo Text::_( $value ).'<br>';      
                             }
                               
                             }
                             else
                             { 
-                            echo JText::_( $field->value );
+                            echo Text::_( $field->value );
                             }
                             ?>
                         </td>

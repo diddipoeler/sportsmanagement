@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewPlayer
@@ -50,7 +50,7 @@ JLog::add(json_encode($logarray), JLog::INFO, $this->option);
  }
 catch (Exception $e)
 {
-    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }        
 */        
         $model = $this->model;
@@ -200,7 +200,7 @@ catch (Exception $e)
             $name = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
         }
         $this->playername = $name;
-        $this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
+        $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
         $view = $this->jinput->getVar("view");
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";

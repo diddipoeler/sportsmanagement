@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 $columns		= explode( ',', $this->config['ordered_columns'] );
 $column_names	= explode( ',', $this->config['ordered_columns_names'] );
@@ -45,7 +46,7 @@ $column_names	= explode( ',', $this->config['ordered_columns_names'] );
 <thead>
 	<tr class="sectiontableheader">
 		<th class="rankheader" colspan="3">
-			<?php sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking( JText::_( 'COM_SPORTSMANAGEMENT_RANKING_POSITION' ), "rank", $this->config, "ASC" ); ?>
+			<?php sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking( Text::_( 'COM_SPORTSMANAGEMENT_RANKING_POSITION' ), "rank", $this->config, "ASC" ); ?>
 		</th>
 		
 		<?php
@@ -56,7 +57,7 @@ $column_names	= explode( ',', $this->config['ordered_columns_names'] );
 		?>
 		
 		<th class="teamheader">	
-			<?php sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking( JText::_( 'COM_SPORTSMANAGEMENT_RANKING_TEAM' ), "name", $this->config, "ASC" ); ?>
+			<?php sportsmanagementHelperHtml::printColumnHeadingSortAllTimeRanking( Text::_( 'COM_SPORTSMANAGEMENT_RANKING_TEAM' ), "name", $this->config, "ASC" ); ?>
 		</th>
 		
 <?php
@@ -68,7 +69,7 @@ $column_names	= explode( ',', $this->config['ordered_columns_names'] );
 		$c="COM_SPORTSMANAGEMENT_".$c;		
 
 		$toolTipTitle=$column_names[$k];
-		$toolTipText=JText::_($c);		
+		$toolTipText=Text::_($c);		
 		
 		switch ( trim( strtoupper( $column ) ) )	
 		{
@@ -292,7 +293,7 @@ $column_names	= explode( ',', $this->config['ordered_columns_names'] );
 			default:
 				echo '<th class="headers">';
 				echo '<span class="hasTip" title="'.$toolTipTitle.'::'.$toolTipText.'">';	
-				echo JText::_($column);
+				echo Text::_($column);
 				echo '</th>';
 				break;
 		}

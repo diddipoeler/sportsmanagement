@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 $colspan	= 4;
 $show_icons	= 0;
 if ($this->config['show_picture_thumb'] == 1) $colspan++;
@@ -22,24 +24,24 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 
 <?php foreach ($this->eventtypes AS $rows): ?>
 <?php if ($this->multiple_events == 1) :?>
-<h2><?php echo JText::_($rows->name); ?></h2>
+<h2><?php echo Text::_($rows->name); ?></h2>
 <?php endif; ?>
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr class="sectiontableheader">
-		<th class="rank"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
+		<th class="rank"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
 
 		<?php if ( $this->config['show_picture_thumb'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
-		<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
+		<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
 
 		<?php if( $this->config['show_nation'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
-		<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
+		<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
 
 
 		<?php if ($show_icons == 1): ?>
@@ -47,11 +49,11 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			<?php
 				$iconPath=$rows->icon;
 				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
-				echo JHtml::image($iconPath,JText::_($rows->name),array('title'=> JText::_($rows->name),'align'=> 'top','hspace'=> '2'));
+				echo JHtml::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','hspace'=> '2'));
 			?>
 			</th>
 		<?php else: ?>
-		<th class="td_c" nowrap="nowrap"><?php	echo JText::_($rows->name); ?></th>
+		<th class="td_c" nowrap="nowrap"><?php	echo Text::_($rows->name); ?></th>
 		<?php endif; ?>
 	</tr>
 	</thead>
@@ -185,7 +187,7 @@ $routeparameter['tid'] = $this->teamid;
 $routeparameter['evid'] = $rows->event_slug;
 $routeparameter['mid'] = (isset($this->matchid) ? $this->matchid : 0);
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
-echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
+echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 </div>
 <?php else: ?>
 <div class="pageslinks">

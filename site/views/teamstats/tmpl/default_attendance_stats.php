@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>	
 		<div class="clr"></div>
 		<div class="jl_teamsubstats">
@@ -17,14 +18,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableheader">
 					<th colspan="2" class="le">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE');
 						?>
 					</th>
 				</tr>
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_TOTAL');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_TOTAL');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -36,7 +37,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_PER_MATCH');
+						echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_PER_MATCH');
 						?>:
 					</td>
 					<td class="statvalue">
@@ -48,7 +49,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry1">
 					<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_BEST');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_BEST');
 							?>:
 					</td>
 					<td class="statvalue">
@@ -60,7 +61,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr class="sectiontableentry2">
 					<td class="statlabel">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_WORST');
+							echo Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_ATTENDANCE_WORST');
 							?>:
 					</td>
 					<td class="statvalue">

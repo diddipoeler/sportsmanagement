@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
@@ -108,25 +109,25 @@ function toggle_altdecision()
 	<div class="fltrt">
 <!--
 					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
                         -->
-<input type='submit' name='save' value='<?php echo JText::_('JSAVE' );?>' />
+<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
 				</div>
 	<legend>
   <?php 
-//  echo JText::sprintf('COM_SPORTSMANAGEMENT_PERSON_LEGEND_DESC','<i>'.$this->item->firstname.'</i>','<i>'.$this->item->lastname.'</i>');
+
   ?>
   </legend>
   </fieldset>
 
 <ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS');?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION');?></a></li>
-<li><a data-toggle="tab" href="#menu2"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW');?></a></li>
-<li><a data-toggle="tab" href="#menu3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS');?></a></li>
-<li><a data-toggle="tab" href="#menu4"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT');?></a></li>
-<li><a data-toggle="tab" href="#menu5"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION');?></a></li>
-<li><a data-toggle="tab" href="#menu6"><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED');?></a></li>
+<li class="active"><a data-toggle="tab" href="#home"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS');?></a></li>
+<li><a data-toggle="tab" href="#menu1"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION');?></a></li>
+<li><a data-toggle="tab" href="#menu2"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW');?></a></li>
+<li><a data-toggle="tab" href="#menu3"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS');?></a></li>
+<li><a data-toggle="tab" href="#menu4"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT');?></a></li>
+<li><a data-toggle="tab" href="#menu5"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION');?></a></li>
+<li><a data-toggle="tab" href="#menu6"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED');?></a></li>
 </ul>
      
 <div class="tab-content">

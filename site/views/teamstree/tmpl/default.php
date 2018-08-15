@@ -9,6 +9,7 @@
  * @subpackage teamstree
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if ($this->familyteamstree) {
                     $class_collapse = 'collapse in';
@@ -21,7 +22,7 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
 ?>
 <a href="#fusion<?php echo $rowclub; ?>" class="btn btn-info btn-block" data-toggle="collapse">
                     <strong>
-                        <?php echo JText::_($this->familyclub[$rowclub]->name); ?>
+                        <?php echo Text::_($this->familyclub[$rowclub]->name); ?>
                     </strong>
                 </a>
                 <div id="fusion<?php echo $rowclub; ?>" class="<?PHP echo $class_collapse; ?>">

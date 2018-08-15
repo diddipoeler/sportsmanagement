@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
@@ -66,7 +67,7 @@ $nbcols = 0;
 		if ($this->config['show_matchday'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_MATCHDAY'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_MATCHDAY'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -76,7 +77,7 @@ $nbcols = 0;
 		if ($this->config['show_match_number'])
 		{
 			?>
-		<th><?php echo '&nbsp;'.JText::_('NUM').'&nbsp;'; ?></th>
+		<th><?php echo '&nbsp;'.Text::_('NUM').'&nbsp;'; ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -86,7 +87,7 @@ $nbcols = 0;
 		if (($this->project->project_type=='DIVISIONS_LEAGUE') && ($this->config['show_division']) )
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_DIVISION'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_DIVISION'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -96,7 +97,7 @@ $nbcols = 0;
 		if (($this->config['show_playground'] || $this->config['show_playground_alert']))
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_PLAYGROUND'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_PLAYGROUND'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -106,7 +107,7 @@ $nbcols = 0;
 		if ($this->config['show_date'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EDIT_DATE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EDIT_DATE'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -116,7 +117,7 @@ $nbcols = 0;
 		if ($this->config['show_time'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EDIT_TIME'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EDIT_TIME'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -126,7 +127,7 @@ $nbcols = 0;
 		if ($this->config['show_time_present'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_TIME_PRESENT'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_TIME_PRESENT'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -139,11 +140,11 @@ $nbcols = 0;
 				echo '<th class="right">';
 				if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
 				}
 				elseif ($this->config['show_home_guest_team_marker'] && $this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
 				}
 				$nbcols++;
 				echo '</th>';
@@ -156,7 +157,7 @@ $nbcols = 0;
 				}
 
 				// Create room for the score to be displayed
-				echo '<th>'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_RESULT').'</th>';
+				echo '<th>'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_RESULT').'</th>';
 				$nbcols++;
 
 				// Create space for logo guest team
@@ -170,11 +171,11 @@ $nbcols = 0;
 				echo '<th class="left">';
 				if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
 				}
 				elseif ($this->config['show_home_guest_team_marker'] && $this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
 				}
 				$nbcols++;
 				echo '</th>';
@@ -186,11 +187,11 @@ $nbcols = 0;
 				echo '<th class="right">';
 				if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
 				}
 				elseif ($this->config['show_home_guest_team_marker'] && $this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
 				}
 				$nbcols++;
 				echo '</th>';
@@ -216,16 +217,16 @@ $nbcols = 0;
 				// Show guest team marker
 				if ($this->config['show_home_guest_team_marker'] && !$this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_AWAY_TEAM');
 				}
 				elseif ($this->config['show_home_guest_team_marker'] && $this->config['switch_home_guest'])
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
+					echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_HOME_TEAM');
 				}
 				$nbcols++;
 				echo '</th>';
 
-				echo '<th class="center">'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_RESULT').'</th>';
+				echo '<th class="center">'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_RESULT').'</th>';
 				$nbcols++;
 				break;
 		}
@@ -235,7 +236,7 @@ $nbcols = 0;
 		if ( $this->config['show_referee'] )
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REFEREE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REFEREE'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -255,7 +256,7 @@ $nbcols = 0;
 		if ( $this->config['show_matchreport_column'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -265,7 +266,7 @@ $nbcols = 0;
 		if ( $this->config['show_attendance_column'])
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ATTENDANCE'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ATTENDANCE'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -275,7 +276,7 @@ $nbcols = 0;
 		if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2)
 		{
 			?>
-		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS'); ?></th>
+		<th><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS'); ?></th>
 		<?php
 			$nbcols++;
 		}
@@ -397,7 +398,7 @@ $nbcols = 0;
 			{
 				$link = "javascript:void(0);";
 				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+				$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
 				echo JHtml::link($link,$img,$params);
 			}
@@ -493,7 +494,7 @@ $temp3 = $jdate->format('D');
         {
         if ( !strstr($match->match_date,"0000-00-00") )
 			{
-				echo JHtml::date($match->match_date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
+				echo JHtml::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 			}
 			else
 			{
@@ -757,19 +758,19 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                         } else {
                             $result .= ' ';
                         }
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                         $result .= ')';
 
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS;
                             }
                         if (isset($leftResultSO))
                             {
                                         $SOresultS = $leftResultSO . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultSO;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
                                         $SOTtolltip = ' | ' . $SOresultS;
                             }
                     }
@@ -783,13 +784,13 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                             $result .= ' ';
                         }
 
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                         $result .= ')';
 
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS ;
                             }
                     }
@@ -830,7 +831,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
                     {
                                 $resultS = $part_results_left[$i] . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $part_results_right[$i];
                                 $whichPeriod = $i + 1;
-                                $PartResult .= '<br /><span class="hasTip" title="' . JText::sprintf( 'COM_SPORTSMANAGEMENT_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
+                                $PartResult .= '<br /><span class="hasTip" title="' . Text::sprintf( 'COM_SPORTSMANAGEMENT_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
                                 if ($i != 0) {
                                 $ResultsTooltipTp .= ' | ' . $resultS;
                                 } else {
@@ -867,7 +868,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 		}
 		else
 		{
-			$score='<td>'.JText::_($match->cancel_reason).'</td>';
+			$score='<td>'.Text::_($match->cancel_reason).'</td>';
 		}
 
 		switch ($this->config['result_style'])
@@ -911,7 +912,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			if ( $this->project->teams_as_referees )
 			{
 				$output = '';
-				$toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText = '';
 
 				for ($i=0; $i<count($match->referees); $i++)
@@ -942,14 +943,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			else
 			{
 				$output = '';
-				$toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText = '';
 
 				for ($i=0; $i<count($match->referees); $i++)
 				{
 					if ( $match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname )
 					{
-						$output .= '<span class="hasTip" title="'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
+						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
 						$ref=$match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
@@ -1008,9 +1009,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
             if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = JHtml::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
@@ -1023,9 +1024,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			else
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = JHtml::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
 $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
 $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
@@ -1080,7 +1081,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 			$count = JCommentsModel::getCommentsCount($options);
 
 			if ($count == 1) {
-				$imgTitle		= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
+				$imgTitle		= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {
 					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
@@ -1102,7 +1103,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				echo $viewComment;
 			}
 			elseif ($count > 1) {
-				$imgTitle	= $count.' '.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
+				$imgTitle	= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) {
 					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
@@ -1124,7 +1125,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				echo $viewComment;
 			}
 			else {
-				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
+				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
 					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
@@ -1188,7 +1189,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 else
 {
 	?>
-<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
 	<?php
 }
 ?>

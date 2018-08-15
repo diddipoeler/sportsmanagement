@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 ?>
 	<table class="table table-responsive" >
 		<?php
@@ -20,7 +20,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			?>
 				<tr>
 					<td colspan="2" class="positionid">
-						<?php echo JText::_( $pos->name ); ?>
+						<?php echo Text::_( $pos->name ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -29,7 +29,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<table class="playerstats">
 							<thead>
 								<tr>
-									<th class="playername"><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
+									<th class="playername"><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_NAME'); ?></th>
 									<?php 
 									if(isset($this->stats[$pos->position_id])) :
 										foreach ($this->stats[$pos->position_id] as $stat): ?>
@@ -123,7 +123,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 			?>
 				<tr>
 					<td colspan="2" class="positionid">
-						<?php echo JText::_( $pos->name ); ?>
+						<?php echo Text::_( $pos->name ); ?>
 					</td>
 				</tr>
 				<tr>
@@ -132,7 +132,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 						<table class="playerstats">
 							<thead>
 								<tr>
-									<th class="playername"><?php echo JText::_('Name'); ?></th>
+									<th class="playername"><?php echo Text::_('Name'); ?></th>
 									<?php foreach ($this->stats[$pos->position_id] as $stat): ?>
 										<?php if ($stat->showInSingleMatchReports() && $stat->showInMatchReport()):?>
 											<th><?php echo $stat->getImage(); ?></th>

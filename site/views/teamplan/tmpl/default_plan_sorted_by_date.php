@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 if ( !isset($this->config['show_matchreport_column']) ) 
 {
     $this->config['show_matchreport_column'] = 0;
@@ -51,7 +53,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				<table class='table'>
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
-							<?php echo JHtml::date($match->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHtml::date($match->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<h3><?php echo $match->name;?></h3>
@@ -163,7 +165,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			{
 				$link = "javascript:void(0);";
 				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
-				$params = array("title"   => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
+				$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
 				echo JHtml::link($link,$img,$params);
 			}
@@ -379,19 +381,19 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                         } else {
                             $result .= ' ';
                         }
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT');
                         $result .= ')';
                         
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS;
                             }
                         if (isset($leftResultSO))
                             {
                                         $SOresultS = $leftResultSO . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultSO;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2') .'::' . $SOresultS . '" >' . $SOresultS . '</span>';
                                         $SOTtolltip = ' | ' . $SOresultS;
                             }
                     }
@@ -405,13 +407,13 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
                             $result .= ' ';
                         }
                         
-                        $result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
+                        $result .= '('.Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
                         $result .= ')';
                         
                         if (isset($leftResultOT))
                             {
                                         $OTresultS = $leftResultOT . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $rightResultOT;
-                                        $SOTresult .= '<br /><span class="hasTip" title="' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
+                                        $SOTresult .= '<br /><span class="hasTip" title="' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME2') .'::' . $OTresultS . '" >' . $OTresultS . '</span>';
                                         $SOTtolltip = ' | ' . $OTresultS ;
                             }
                     }
@@ -449,7 +451,7 @@ $routeparameter['mid'] = $match->match_slug;
                     {
                                 $resultS = $part_results_left[$i] . '&nbsp;' . $this->config['seperator'] . '&nbsp;' . $part_results_right[$i];
                                 $whichPeriod = $i + 1;
-                                $PartResult .= '<br /><span class="hasTip" title="' . JText::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
+                                $PartResult .= '<br /><span class="hasTip" title="' . Text::sprintf( 'COM_SPORTSMANAGEMENT_GLOBAL_NPART',  "$whichPeriod")  .'::' . $resultS . '" >' . $resultS . '</span>';
                                 if ($i != 0) {
                                 $ResultsTooltipTp .= ' | ' . $resultS;
                                 } else {
@@ -486,7 +488,7 @@ $routeparameter['mid'] = $match->match_slug;
 		}
 		else
 		{
-			$score='<td>'.JText::_($match->cancel_reason).'</td>';
+			$score='<td>'.Text::_($match->cancel_reason).'</td>';
 		}
 		
 		switch ($this->config['result_style'])
@@ -530,7 +532,7 @@ $routeparameter['mid'] = $match->match_slug;
 			if ($this->project->teams_as_referees)
 			{
 				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle=Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText='';
 
 				for ($i=0; $i<count($match->referees); $i++)
@@ -561,14 +563,14 @@ $routeparameter['mid'] = $match->match_slug;
 			else
 			{
 				$output='';
-				$toolTipTitle=JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
+				$toolTipTitle=Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_TOOLTIP');
 				$toolTipText='';
 
 				for ($i=0; $i<count($match->referees); $i++)
 				{
 					if ($match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname)
 					{
-						$output .= '<span class="hasTip" title="'.JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
+						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
 						$ref=$match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
@@ -631,9 +633,9 @@ $routeparameter['mid'] = $match->match_slug;
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchreport_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = JHtml::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -643,9 +645,9 @@ $routeparameter['mid'] = $match->match_slug;
 			else
 			{	
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchpreview_image'], JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = JHtml::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
-					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
+					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				$viewPreview=JHtml::link($link, $href_text);
@@ -695,7 +697,7 @@ $routeparameter['mid'] = $match->match_slug;
 else
 {
 	?>
-<h3><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
+<h3><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_NO_MATCHES'); ?></h3>
 	<?php
 }
 ?>
