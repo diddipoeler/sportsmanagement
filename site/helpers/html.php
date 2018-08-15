@@ -166,11 +166,6 @@ $modaltext .= '</a>';
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') {
         $app = JFactory::getApplication();
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' division_id'.'<pre>'.print_r($division_id,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
-
         $output = '';
         if ($config['switch_home_guest']) {
             $tmpteam = & $hometeam;

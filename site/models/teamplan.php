@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -110,7 +111,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	  
             
@@ -152,7 +153,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
             {
 	self::$pro_teamid = 0;
             return 0;	
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }
        
@@ -204,15 +205,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 		{
 			$ordering = $config['plan_order'];
 		}
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-		{
-		$my_text = 'pro_teamid -><pre>'.print_r(self::$pro_teamid,true).'</pre>';
-          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pro_teamid'.'<pre>'.print_r($this->pro_teamid,true).'</pre>' ),'');
-        }
-        
+       
 		return self::_getResultsPlan(self::$pro_teamid,$ordering,0,1,$config['show_referee']);
 	}
 
@@ -375,7 +368,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 
@@ -460,7 +453,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 
@@ -537,7 +530,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
         
@@ -581,7 +574,7 @@ try{
           }
             catch (Exception $e)
             {
-	$app->enqueueMessage(JText::_($e->getMessage()), 'error');	
+	$app->enqueueMessage(Text::_($e->getMessage()), 'error');	
 	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
             }	
 		return $result;

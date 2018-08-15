@@ -152,15 +152,11 @@ class sportsmanagementModelRivals extends JModelLegacy
         $query->where('(m.cancel IS NULL OR m.cancel = 0)' );
         
         $query->order('m.id');   
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$db->setQuery($query);
 		$matches = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($matches,true).'</pre>'),'');
-
 		$opo = array();
 		foreach ($matches as $match)
 		{

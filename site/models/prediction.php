@@ -143,8 +143,6 @@ $query->where('project_id = '.(int)$project_id);
 $query->where('id = '.(int)$roundID);
 $db->setQuery( $query );
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 $results = $db->loadResult();
 		
 if ( !$results )
@@ -156,9 +154,6 @@ $query->where('id = '.(int)$project_id);
 $db->setQuery( $query );
 $roundIDnew = $db->loadResult();
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-
 $query->clear();
 $query->select("CONCAT_WS(':',id,alias) AS slug");
 $query->from('#__sportsmanagement_round');
@@ -166,17 +161,7 @@ $query->where('id = '.(int)$roundIDnew);
 $db->setQuery( $query );
 $roundIDnew = $db->loadResult();
 
-//$tblround = JTable::getInstance("round", "sportsmanagementTable");
-//$tblround->load((int)$roundIDnew);
-//$roundIDnew = $tblround->id.':'.$tblround->alias;
-
-//self::$roundID = $roundIDnew;
 sportsmanagementModelPrediction::$roundID = $roundIDnew;
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
 
 }
 
@@ -2150,10 +2135,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionProjects<br><pre>'.print_r($predictionProjects,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTotalSelect<br><pre>'.print_r($addTotalSelect,true).'</pre>'),'');
-        
+       
         //$output='<select class="inputbox" name="set_pj" onchange="this.form.submit();" >';
 		
     //$output='<select class="inputbox" id="p" name="p" onchange="document.forms[\'resultsRoundSelector\'].r.value=0;submit();" >';

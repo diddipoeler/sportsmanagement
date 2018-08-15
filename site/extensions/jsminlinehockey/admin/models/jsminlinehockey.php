@@ -1031,13 +1031,9 @@ if ( $stammverein == $row->id  )
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
 }
 $json_object_teams = json_decode($result);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_teams,true).'</pre>'),'');
 
 foreach( $json_object_teams->teams as $key_team => $value_team )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->club_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($value_club->club_name,true).'</pre>'),'');
-
 $team_id = $value_team->team_id;
 $team = $value_team->team;
 $team_name = $value_team->team_name;

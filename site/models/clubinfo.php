@@ -801,11 +801,6 @@ $color = '';
         $jgcat_rows_sorted = Array();
         $jgcat_rows_sorted = self::sortCategoryList($clubtree, $jgcat_rows_sorted);
 
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubtree<br><pre>'.print_r($clubtree,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root_catid<br><pre>'.print_r($root_catid,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cat_name<br><pre>'.print_r($cat_name,true).'</pre>'),'');
-//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jgcat_rows_sorted<br><pre>'.print_r($jgcat_rows_sorted,true).'</pre>'),'');
-
         $cat_link = '';
 
         $script .= "d" . $root_catid . " = new dTree('d" . $root_catid . "','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/');" . "\n";

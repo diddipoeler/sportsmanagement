@@ -402,19 +402,11 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
 
 		$predictionGameID = $jinput->get('prediction_id',0,'int');
 		$joomlaUserID = $jinput->get('user_id',0,'int');
- 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pids<br><pre>'.print_r($pids,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prids<br><pre>'.print_r($prids,true).'</pre>'),''); 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homes<br><pre>'.print_r($homes,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' aways<br><pre>'.print_r($aways,true).'</pre>'),'');
- 
+
     // _predictionMember
     $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
     $predictionMemberInfo = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configavatar<br><pre>'.print_r($configavatar,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionMemberInfo<br><pre>'.print_r($predictionMemberInfo,true).'</pre>'),'');
-    
+   
 		$changedResultArray	= array();
 
 		for ($x=0; $x < count($pids); $x++)

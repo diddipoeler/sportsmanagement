@@ -57,8 +57,6 @@ class sportsmanagementModelReferee extends JModelLegacy
         sportsmanagementModelPerson::$projectid = JFactory::getApplication()->input->getInt('p',0);
 		sportsmanagementModelPerson::$personid = JFactory::getApplication()->input->getInt('pid',0);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
 	}
 
 	/**

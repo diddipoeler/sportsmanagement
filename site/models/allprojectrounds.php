@@ -74,27 +74,6 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
     sportsmanagementModelProject::$projectid = $this->projectid;
     sportsmanagementModelProject::$projectslug = $this->projectid;
 
-//    $menu = JMenu::getInstance('site');
-//        $item = $menu->getActive();
-//        $params = $menu->getParams($item->id);
-//       $registry = new JRegistry();
-//$registry->loadArray($params);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'item->id<pre>'.print_r($item->id,true).'</pre>' ),'Error');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($params,true).'</pre>' ),'Error');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'request<pre>'.print_r($_REQUEST,true).'</pre>' ),'Error');
-
-//$newparams = $registry->toString('ini');
-//$newparams = $registry->toArray();
-//echo "<b>menue newparams</b><pre>" . print_r($newparams, true) . "</pre>";  
-
-
-//foreach ($_REQUEST as $key => $value ) {
-//            
-//            //$this->_params[$key] = $value;
-//        }
-
 $this->_params['Itemid'] = $jinput->request->get('Itemid', 0, 'INT');
 $this->_params['show_columns'] = $jinput->request->get('show_columns', 0, 'INT');
 $this->_params['show_sectionheader'] = $jinput->request->get('show_sectionheader', 0, 'INT');

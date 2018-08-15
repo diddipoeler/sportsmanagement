@@ -61,9 +61,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
-                
-	   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
-       
+     
 		parent::__construct();
 	}
 
