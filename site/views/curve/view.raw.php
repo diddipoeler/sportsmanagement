@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.view');
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
@@ -162,7 +162,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$x->set_labels($xlabels);
 		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
+		$x_legend = new x_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
 		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_x_legend( $x_legend );
 
@@ -170,7 +170,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$y->set_range( count($data), 1, -1);
 		$y->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
+		$y_legend = new y_legend( Text::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		

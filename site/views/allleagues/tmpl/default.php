@@ -44,7 +44,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 <?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
             </legend>            
             <div class="filter-search">
-                <!--label class="filter_search-lbl" for="filter_search"><!--?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
                 <input 
                     type="text"
                     name="filter_search"

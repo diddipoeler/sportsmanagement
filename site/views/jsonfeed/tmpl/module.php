@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 $document = JFactory::getDocument();
 $document->setMimeEncoding('application/json');
 
@@ -72,7 +72,7 @@ foreach ($tmp as $date => $events){
 			'start' => $date,
 			'url' => $url,
 			'allDay' => true,
-			'description' => jsmGCalendarUtil::renderEvents($events, sprintf(JText::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)).'<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
+			'description' => jsmGCalendarUtil::renderEvents($events, sprintf(Text::_('COM_GCALENDAR_JSON_VIEW_EVENT_TITLE'), count($events)).'<ul>{{#events}}<li>{{title}}</li>{{/events}}</ul>', $params)
 	);
 }
 ob_clean();

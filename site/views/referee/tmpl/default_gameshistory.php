@@ -9,21 +9,23 @@
  * @subpackage referee
  */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
+?>
 <!-- Player stats History START -->
 
 
 <?php if (count($this->games))
 {
 	?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
 <table class="<?php echo $this->config['history_table_class']; ?>">
 	<tr>
 		<td><br />
 			<table class="<?php echo $this->config['history_table_class']; ?>">
 				<thead>
 					<tr class="sectiontableheader">
-						<th colspan="6"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
+						<th colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
 					</tr>
 				</thead>
 				<tbody>

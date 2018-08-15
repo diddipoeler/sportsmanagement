@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'nextmatch.php');
 
@@ -40,8 +41,8 @@ class sportsmanagementViewical extends sportsmanagementView
     $this->teams = $mdlJSMNextMatch->getTeamsFromMatches( $this->matches );;
 
 
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
-$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matches<br><pre>'.print_r($this->matches,true).'</pre>'),'');
+$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
     
     // create a new calendar instance

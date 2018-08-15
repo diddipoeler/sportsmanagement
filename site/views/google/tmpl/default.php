@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 jsmGCalendarUtil::loadLibrary();
 
 $component = JComponentHelper::getComponent('com_gcalendar');
@@ -116,7 +116,7 @@ if($params->get('show_selection')==1 || $params->get('show_selection') == 3){
 	echo "<a id=\"gc_google_view_toggle\" name=\"gc_google_view_toggle\" href=\"#\">\n";
 	$image = JURI::base().'media/com_gcalendar/images/down.png';
 	if($params->get('show_selection', 1) == 3) $image = JURI::base().'media/com_gcalendar/images/up.png';
-	echo "<img id=\"gc_google_view_toggle_status\" name=\"gc_google_view_toggle_status\" src=\"".$image."\" alt=\"".JText::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\" title=\"".JText::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\"/>\n";
+	echo "<img id=\"gc_google_view_toggle_status\" name=\"gc_google_view_toggle_status\" src=\"".$image."\" alt=\"".Text::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\" title=\"".Text::_('COM_GCALENDAR_GOOGLE_VIEW_CALENDAR_LIST')."\"/>\n";
 	echo "</a></div>\n";
 }
 $calendar_url="";
@@ -131,7 +131,7 @@ echo $params->get( 'textbefore' );
 	width="<?php echo $params->get( 'width', 500); ?>"
 	height="<?php echo $params->get( 'height', 500); ?>" align="top"
 	frameborder="0"
-	class="gcalendar<?php echo $params->get( 'pageclass_sfx' ); ?>"> <?php echo JText::_( 'COM_GCALENDAR_GCALENDAR_VIEW_CALENDAR_NO_IFRAMES' ); ?>
+	class="gcalendar<?php echo $params->get( 'pageclass_sfx' ); ?>"> <?php echo Text::_( 'COM_GCALENDAR_GCALENDAR_VIEW_CALENDAR_NO_IFRAMES' ); ?>
 </iframe></div>
 
 <?php
