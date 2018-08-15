@@ -10,8 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewNextMatch
@@ -57,7 +56,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			{
 				$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = JHtml::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 			$this->newmatchtext = $newmatchtext;
@@ -66,7 +65,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			{
 				$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = JHtml::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
             
@@ -102,10 +101,10 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		}
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE' );
 		if ( isset( $this->teams ) ) 
 		{
-			$pageTitle .= ": ".$this->teams[0]->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->teams[1]->name;
+			$pageTitle .= ": ".$this->teams[0]->name." ".Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->teams[1]->name;
 		}
         
 		$this->document->setTitle( $pageTitle );

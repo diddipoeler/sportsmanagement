@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <!-- START: game stats -->
@@ -43,7 +43,7 @@ if (!empty($this->matchplayerpositions ))
 	if($hasMatchPlayerStats || $hasMatchStaffStats) :
 	?>
 
-	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
+	<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'); ?></h2>
 	
 		<?php
 // Define tabs options for version of Joomla! 4.0
@@ -51,10 +51,10 @@ $tabsOptions = array(
     "active" => "tabstats1_id" // It is the ID of the active tab.
 );
 echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', JText::_($this->team1->name));
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', Text::_($this->team1->name));
 echo $this->loadTemplate('stats_home');
 echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats2_id', JText::_($this->team2->name));
+echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats2_id', Text::_($this->team2->name));
 echo $this->loadTemplate('stats_away');
 echo JHtml::_('bootstrap.endTab');
 echo JHtml::_('bootstrap.endTabSet', 'ID-Tabs-Group-Stats');

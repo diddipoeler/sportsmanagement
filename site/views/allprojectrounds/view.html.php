@@ -10,7 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 
 /**
@@ -69,12 +69,9 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
 
         $this->content = $model->getRoundsColumn($this->rounds, $this->config);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
+        
 
-        //$this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2' );
-        $this->headertitle = JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
+        $this->headertitle = Text::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2', $this->project->name);
         parent::display($tpl);
     }
 

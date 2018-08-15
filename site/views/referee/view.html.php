@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 
 /**
@@ -53,11 +53,11 @@ class sportsmanagementViewReferee extends JViewLegacy
 		$ref = sportsmanagementModelPerson::getReferee();
 		if ($ref)
 		{
-			$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
+			$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_REFEREE_ABOUT_AS_A_REFEREE',sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"]));
 		}
 		else
 		{
-			$titleStr = JText::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
+			$titleStr = Text::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
 		}
 
 		$this->referee = $ref;

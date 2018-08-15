@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewMatrix
  * 
@@ -118,7 +118,7 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 		}
 		
     // Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
 		if ( isset( $this->project->name ) )
 		{
 			$pageTitle .= ': ' . $this->project->name;

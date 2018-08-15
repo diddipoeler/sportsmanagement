@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 
 /**
@@ -58,19 +58,14 @@ class sportsmanagementViewStaff extends JViewLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
         
-//        $app->enqueueMessage(JText::_('sportsmanagementViewStaff person<br><pre>'.print_r($person,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_('sportsmanagementViewStaff personid<br><pre>'.print_r($model->personid,true).'</pre>'),'');
-
 		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 		$this->config = $config;
 		$this->person = $person;
 		$this->showediticon = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
-        
+      
 		$staff = $model->getTeamStaff();
-		$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
+		$titleStr = Text::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
 		
 		$this->inprojectinfo = $staff;
 		$this->history = $model->getStaffHistory('ASC');

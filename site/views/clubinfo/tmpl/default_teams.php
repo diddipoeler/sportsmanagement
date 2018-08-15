@@ -7,12 +7,14 @@
  * @license   This file is part of SportsManagement.
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <div class="row-fluid" id="default_teams">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">	
 <h4>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
 </h4>
 	
 	<?php

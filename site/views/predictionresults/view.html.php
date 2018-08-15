@@ -11,12 +11,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+
 jimport( 'joomla.filesystem.file' );
-
-// pagination
-//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
-
 
 /**
  * sportsmanagementViewPredictionResults
@@ -58,7 +55,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 
-      $predictionRounds[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
+      $predictionRounds[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = sportsmanagementModelPrediction::getRoundNames($this->predictionGame->id) )
       {
         $predictionRounds = array_merge($predictionRounds,$res);
@@ -70,7 +67,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			$this->lists = $lists;
 			$this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
         
             $this->memberList = $this->get('Data');
             $this->pagination = $this->get('Pagination');
@@ -88,7 +85,7 @@ $this->config['table_class'] = 'table';
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
 	}
 

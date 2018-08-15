@@ -9,7 +9,9 @@
  * @subpackage referee
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 <!-- Person description START -->
 <?php
 	$description = "";
@@ -28,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	if ( $description != '' )
 	{
 		?>
-		<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_INFO'); ?></h2>
+		<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_INFO'); ?></h2>
 		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>

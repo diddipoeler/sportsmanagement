@@ -9,6 +9,7 @@
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="rankingnav">
 <form name="adminForm" id="adminForm" method="post"	action="<?php echo $this->action; ?>">
@@ -21,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
             ?>
             <td>
                 <input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View"
-                       value="<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>">
+                       value="<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>">
 
                 <input type="hidden" name="p" value="<?php echo sportsmanagementModelRanking::$projectid; ?>" />
                 <input type="hidden" name="r" value="<?php echo sportsmanagementModelRanking::$round; ?>" />

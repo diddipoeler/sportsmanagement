@@ -9,10 +9,11 @@
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="notes">
 <h4>
-    <?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
+    <?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
 </h4>
 
 <table class="<?PHP echo $this->config['table_class']; ?>">
@@ -26,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
                     ?>
                     <div class="alert alert-warning" role="alert">
                         <?PHP
-                        echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
+                        echo Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
                         ?>
                     </div>
                     <?PHP

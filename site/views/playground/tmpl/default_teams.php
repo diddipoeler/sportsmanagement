@@ -9,9 +9,10 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
 <!-- Now show teams of this club -->
 <div class="row-fluid">
 	<?php foreach ((array)$this->teams AS $key => $value): ?>	
@@ -31,7 +32,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 			<div class="clubteaminfo">
         	<?php
         	$description = $teaminfo->notes;
-        	echo (!empty($description) ? JText :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . JHtml::_('content.prepare', $description) : ''); ?>
+        	echo (!empty($description) ? Text :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . JHtml::_('content.prepare', $description) : ''); ?>
 			</div>
 		<?php endforeach; ?>
 	<?php endforeach; ?>

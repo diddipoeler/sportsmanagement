@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\Registry\Registry;
 use Joomla\CMS\Dispatcher\Dispatcher;
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of match preview -->
 <?php
@@ -30,7 +31,7 @@ if (!empty($this->match->preview) && preg_match('/{jcomments\s+(off|lock)}/is', 
 if (!empty($this->match->preview))
 {
 	?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
 <table class="table">
 	<tr>
 		<td><?php

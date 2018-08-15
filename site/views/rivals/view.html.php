@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewRivals
@@ -44,7 +45,7 @@ class sportsmanagementViewRivals extends sportsmanagementView
 		$this->team = $this->model->getTeam();
        
 		// Set page title
-		$titleInfo = sportsmanagementHelper::createTitleInfo(JText::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
+		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_RIVALS_PAGE_TITLE'));
 		if (!empty($this->team))
 		{
 			$titleInfo->team1Name = $this->team->name;

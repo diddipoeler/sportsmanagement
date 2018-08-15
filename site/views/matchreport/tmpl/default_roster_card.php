@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 ?>
 <link rel="stylesheet" href="<?php echo JURI::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css" >
@@ -39,7 +40,7 @@ foreach ($this->matchplayerpositions as $pos)
             Home team
         </div>  
         <div class="positionid">
-            <?php echo JText::_($pos->name); ?>
+            <?php echo Text::_($pos->name); ?>
         </div>
         <div class="">
             Guest team
@@ -100,7 +101,7 @@ echo $match_player;
 
 if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 {
-$imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
+$imgTitle=($this->config['show_player_profile_link'] == 1) ? Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
 $picture=$player->picture;
 if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
 {
@@ -182,7 +183,7 @@ $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team));
 <?php
 if (($this->config['show_player_picture'] == 1) || ($this->config['show_player_picture'] == 2))
 {
-$imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
+$imgTitle=($this->config['show_player_profile_link'] == 1) ? Text::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
 $picture=$player->picture;
 if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
 {

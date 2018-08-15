@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
 {
@@ -21,11 +21,11 @@ if (count($this->stafflist) > 0)
 				echo '&nbsp;';
 				if ($this->config['show_team_shortform'] == 1)
 				{
-					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
+					echo Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF2',$this->team->name, $this->team->short_name);
 				}
 				else
 				{
-					echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF',$this->team->name);
+					echo Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_STAFF_OF',$this->team->name);
 				}
 ?>
 		</div><!-- /.jl_roster_staffheading -->

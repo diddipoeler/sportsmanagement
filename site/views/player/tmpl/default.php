@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -107,11 +107,11 @@ else
 <div class="alert alert-error">
 <h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
+echo Text::_('COM_SPORTSMANAGEMENT_ERROR');
 ?>
 </h4>
 <?php
-echo JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_SELECTED');
+echo Text::_('COM_SPORTSMANAGEMENT_PERSON_NO_SELECTED');
 ?>
 </div>
 <?php

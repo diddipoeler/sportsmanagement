@@ -9,8 +9,7 @@
  * @subpackage teamstree
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-jimport( 'joomla.application.component.view' );
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewTeamsTree
@@ -60,7 +59,6 @@ $this->clubhistoryhtml = $mdlClubInfo::getClubHistoryHTML($tree_club_id);
 $this->clubhistoryfamilytree = $mdlClubInfo::fbTreeRecurse($tree_club_id, '', array (),$mdlClubInfo::$tree_fusion, 10, 0, 1);
 $this->genfamilytree = $mdlClubInfo::generateTree($tree_club_id,$this->config['show_bootstrap_tree']);
 $this->familytree = $mdlClubInfo::$historyhtmltree;
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');  
 
 if ( !array_key_exists($tree_club_id, $this->familyteamstree) )
 {
@@ -111,9 +109,7 @@ $this->document->addScriptDeclaration( $javascript );
 		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
 	}
 
-$this->document->setTitle( JText::_( 'COM_SPORTSMANAGEMENT_TEAMSTREE_PAGE_TITLE' ) );
-
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+$this->document->setTitle( Text::_( 'COM_SPORTSMANAGEMENT_TEAMSTREE_PAGE_TITLE' ) );
         
 }
 

@@ -10,8 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewEventsRanking
@@ -49,10 +48,10 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart);
 		$this->multiple_events = count($this->eventtypes) > 1 ;
         
-        $prefix = JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
+        $prefix = Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
 		if ( $this->multiple_events )
 		{
-			$prefix .= " - " . JText::_( 'COM_SPORTSMANAGEMENT_EVENTSRANKING_TITLE' );
+			$prefix .= " - " . Text::_( 'COM_SPORTSMANAGEMENT_EVENTSRANKING_TITLE' );
 		}
 		else
 		{
@@ -60,7 +59,7 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 			$evid = array_keys($this->eventtypes);
 
 			// Selected one valid eventtype, so show its name
-			$prefix .= " - " . JText::_($this->eventtypes[$evid[0]]->name);
+			$prefix .= " - " . Text::_($this->eventtypes[$evid[0]]->name);
 		}
 
 		// Set page title

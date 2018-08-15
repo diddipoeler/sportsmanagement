@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // pagination
 //require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
@@ -48,7 +48,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 	$this->items = $this->get('Data');	
 	$this->pagination =$this->get('Pagination');
     
-    $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
+    $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
        
 		if (isset($this->predictionGame))
 		{
@@ -68,21 +68,21 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			
             
             $ranking_array = array();
-			$ranking_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
-			$ranking_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
+			$ranking_array[] = JHTML ::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
+			$ranking_array[] = JHTML ::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
 			$lists['ranking_array'] = $ranking_array;
 			unset($ranking_array);
 
 			$type_array = array();
-			$type_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
-			$type_array[] = JHTML ::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
-			$type_array[] = JHTML ::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
+			$type_array[] = JHTML ::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
+			$type_array[] = JHTML ::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
+			$type_array[] = JHTML ::_('select.option','2',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
 			$lists['type'] = $type_array;
 			unset($type_array);
 
 			$this->lists = $lists;
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
 			$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 			foreach ( $this->predictionProjectS as $project )
@@ -103,7 +103,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
 	}
 

@@ -9,13 +9,14 @@
  * @subpackage ranking
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <div class="row" id="hint">
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
                 <span class="<?PHP echo $this->config['label_class_teams']; ?>">
-                    <?php echo JText :: _('COM_SPORTSMANAGEMENT_RANKING_HINT'); ?>
+                    <?php echo Text :: _('COM_SPORTSMANAGEMENT_RANKING_HINT'); ?>
                 </span>
             </td>
         </tr>

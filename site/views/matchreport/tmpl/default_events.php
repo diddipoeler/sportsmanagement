@@ -10,12 +10,13 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <!-- START of match events -->
 
 <h2>
 <?php 
-echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
+echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
 ?>
 </h2>		
 
@@ -32,7 +33,7 @@ echo $this->loadTemplate('timeline');
 				?>
 				<tr>
 					<td colspan="2" class="eventid">
-						<?php echo JHtml::_( 'image', $event->icon, JText::_($event->icon ), NULL ) . JText::_($event->name); ?>
+						<?php echo JHtml::_( 'image', $event->icon, Text::_($event->icon ), NULL ) . Text::_($event->name); ?>
 					</td>
 				</tr>
 				<tr>

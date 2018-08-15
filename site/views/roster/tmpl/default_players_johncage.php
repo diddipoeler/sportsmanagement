@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $totalEvents = array();
 if (count($this->rows) > 0) {
     ?>
@@ -17,7 +18,7 @@ if (count($this->rows) > 0) {
     <?php
     $position = "";
     foreach ($this->rows as $position_id => $rows) {
-        $position = JText::_($rows[0]->position);
+        $position = Text::_($rows[0]->position);
         ?>
             <div class="jl_rosterposition sectiontableheader">
             <?php

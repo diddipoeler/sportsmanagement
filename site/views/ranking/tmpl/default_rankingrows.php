@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 
 $current = &$this->current;
@@ -566,7 +566,7 @@ $this->overallconfig['use_jquery_modal']);
                 }
                 echo '>';
                 if ((($team->team->start_points) != 0) AND ( ( $config['show_manipulations']) == 1)) {
-                    $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_START');
+                    $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_START');
                     $toolTipText = $team->team->reason;
                     echo '<span class="hasTip" title="' . $toolTipTitle . ' :: ' . $toolTipText . '">' . printf($format, $team->team->start_points) . '</span>';
                 } else {

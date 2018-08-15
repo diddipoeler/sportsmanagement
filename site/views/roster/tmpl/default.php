@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.modal');
 
 //echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
@@ -160,7 +161,7 @@ if ($this->projectteam) {
         }
     }
 } else {
-    echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
+    echo Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
 }
 
 echo $this->loadTemplate('jsminfo');

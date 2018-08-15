@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 ?>
 
 <!-- START: matches -->
@@ -38,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">				
 					<tr class="sectiontableheader">
 						<th colspan=16>
-							<?php echo JHtml::date($game->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo JHtml::date($game->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				
@@ -287,20 +288,20 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 							echo '<td align="center" valign="middle">' .
 							JHtml::image("media/com_sportsmanagement/jl_images/draw.png",
 							"draw.png",
-							array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
+							array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
 								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
 								"thumbs_up.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
 								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
 								"thumbs_down.png",
-								array("title" => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
+								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";
 							}
 							else

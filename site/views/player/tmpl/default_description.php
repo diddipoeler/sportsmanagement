@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 <!-- Team Player Description START -->
 <?php
@@ -29,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	if ( !empty($description) )
 	{
 		?>
-		<h2><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INFO' );	?></h2>
+		<h2><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INFO' );	?></h2>
 		<div class="personinfo">
 			<?php	
 			$description = JHtml::_('content.prepare', $description);

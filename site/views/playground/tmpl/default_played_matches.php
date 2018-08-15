@@ -9,6 +9,7 @@
  * @subpackage playground
  */
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 ?>
 
 <?php
@@ -17,7 +18,7 @@ if ( $this->playedgames )
 {
 	?>
 	<!-- Playground played games -->
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_PREV_GAMES'); ?></h2>
 		<div class="row-fluid">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
@@ -38,7 +39,7 @@ if ( $this->playedgames )
 							<tr>
 								<td align="left" colspan="<?php echo $colspan; ?>" class="">
 									<?php
-									echo JHtml::date($date, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+									echo JHtml::date($date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>
 								</td>
 							</tr>

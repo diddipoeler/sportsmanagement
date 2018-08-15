@@ -10,8 +10,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_RANKS'); ?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_RANKS'); ?></h2>
 
 <!-- Flash Statistik Start -->
 <script type="text/javascript">

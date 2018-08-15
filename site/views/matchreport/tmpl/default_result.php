@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 //echo '<pre>'.print_r($this->config,true).'</pre>';
 ?>
 
@@ -106,7 +107,7 @@ $this->overallconfig['use_jquery_modal']);
 				<?php echo $this->showMatchresult($this->match->alt_decision, 1); ?>
 			</td>
 		<td>
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
 		</td>
         <td class="resultaway">
 				<?php echo $this->showMatchresult($this->match->alt_decision, 2); ?>
@@ -138,7 +139,7 @@ $this->overallconfig['use_jquery_modal']);
                         <?php echo $this->showLegresult(1); ?>
                     </td>
                     <td>
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_VS') ?>
 		</td>
                     <td class="legsaway">
                         <?php echo $this->showLegresult(2); ?>
@@ -182,7 +183,7 @@ else
                 ?>
                 <tr>
                     <td class="legs" colspan="2">
-                        <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_OVERTIME');
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_OVERTIME');
                         echo " " . $this->showOvertimeresult(); ?>
                     </td>
                 </tr>
@@ -197,7 +198,7 @@ else
                 ?>
                 <tr>
                     <td class="legs" colspan="2">
-                        <?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SHOOTOUT');
+                        <?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SHOOTOUT');
                         echo " " . $this->showShotoutResult(); ?>
                     </td>
                 </tr>

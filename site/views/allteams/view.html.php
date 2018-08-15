@@ -10,8 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 if (! defined('JSM_PATH'))
 {
@@ -55,13 +54,13 @@ class sportsmanagementViewallteams extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$this->pagination	= $this->get('Pagination');
 	
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
 		
         $lists['nation'] = $nation;
@@ -73,7 +72,7 @@ class sportsmanagementViewallteams extends sportsmanagementView
 																$this->state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE'));
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLTEAMS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();

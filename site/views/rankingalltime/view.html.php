@@ -10,7 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
-//jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewRankingAllTime
@@ -54,8 +54,6 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView {
         $this->projectids = $this->model->getAllProject();
         $project_ids = implode(",", $this->projectids);
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
-
         $this->project_ids = $project_ids;
         $this->teams = $this->model->getAllTeamsIndexedByPtid($project_ids);
 
@@ -72,7 +70,7 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView {
 
 
         // Set page title
-        $pageTitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
+        $pageTitle = Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE');
         $this->document->setTitle($pageTitle);
 
         //parent::display($tpl);

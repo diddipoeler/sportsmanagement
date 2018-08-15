@@ -10,8 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewClubs
@@ -40,7 +39,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$this->clubs = $clubs;
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE' );
 		if ( isset( $this->project ) )
 		{
 			$pageTitle .= ' - ' . $this->project->name;

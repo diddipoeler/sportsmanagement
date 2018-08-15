@@ -10,25 +10,26 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>
 <table class="<?php echo $this->config['table_class'];?>">
 <thead>
 <tr class="">
-<th class="td_r rank"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_RANK' );	?></th>  
-<th class="td_l"><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_TEAM' );	?></th>  
+<th class="td_r rank"><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_RANK' );	?></th>  
+<th class="td_l"><?php	echo Text::_( 'COM_SPORTSMANAGEMENT_STATSRANKING_TEAM' );	?></th>  
 <?php  
 foreach ( $this->stats AS $rows )
 {
   if ( $rows->_name == 'basic' )
   {  
 ?>  
-<th class="td_r" class="nowrap"><?php	echo JText::_($rows->name); ?></th>
+<th class="td_r" class="nowrap"><?php	echo Text::_($rows->name); ?></th>
 <?php  
 }
   }  
   
 ?>  
-<th class="td_r" class="nowrap"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'); ?></th>
+<th class="td_r" class="nowrap"><?php	echo Text::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'); ?></th>
 </tr>
 </thead>  
 

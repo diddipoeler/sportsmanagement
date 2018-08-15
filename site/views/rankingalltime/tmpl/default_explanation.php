@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 $config   = &$this->tableconfig;
 
 $columns = explode( ",", $config['ordered_columns'] );
@@ -57,7 +57,7 @@ $column_names	= explode( ',', $config['ordered_columns_names'] );
 			$c=strtoupper(trim($column));
 			$c="COM_JOOMLEAGUE_".$c;
 			echo "<td class=\"col$d\">";
-			echo $column_names[$k] ." = ".JText::_($c) ;
+			echo $column_names[$k] ." = ".Text::_($c) ;
 			echo "</td>";
 			$d=(1-$d);
 		}

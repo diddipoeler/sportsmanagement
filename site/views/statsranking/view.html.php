@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-//jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewStatsRanking
@@ -73,10 +73,10 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 		$this->limitstart = $this->model->getLimitStart();
 		$this->multiple_stats = count($this->stats) > 1 ;
         
-		$prefix = JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
+		$prefix = Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
 		if ( $this->multiple_stats )
 		{
-			$prefix .= " - " . JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE' );
+			$prefix .= " - " . Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_TITLE' );
 		}
 		else
 		{

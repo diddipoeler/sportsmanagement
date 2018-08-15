@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewTeams
@@ -35,7 +36,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
         $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
 
 		// Set page title
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 		if ( isset( $this->project ) )
 		{
 			$pageTitle .= " " . $this->project->name;
@@ -46,7 +47,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		}
 		$this->document->setTitle( $pageTitle );
         
-        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
+        $this->headertitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 
 	}
 }

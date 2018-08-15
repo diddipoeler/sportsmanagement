@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $this->view = JFactory::getApplication()->input->getCmd('view');
 //echo $this->kmlfile.'<br>';
 //echo JURI::root(true).'<br>';
@@ -52,7 +53,7 @@ break;
 <div class="row" id="jsmgooglemap">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <h4>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 </h4>
 	
 <?php
@@ -76,7 +77,7 @@ $sef = JFactory::getConfig()->getValue('config.sef', false);
 if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
 //if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) )
 {
-// JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
+
 
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
 $this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');

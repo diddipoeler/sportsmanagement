@@ -9,8 +9,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewPlayground
@@ -58,7 +57,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 /**
  * Set page title
  */
-		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE' );
+		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE' );
 		if ( isset( $this->playground->name ) )
 		{
 			$pageTitle .= ' - ' . $this->playground->name;

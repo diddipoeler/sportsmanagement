@@ -11,6 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 
 /**
@@ -41,7 +42,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
-        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
+        $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
 
 		if (isset($this->predictionGame))
 		{
@@ -56,7 +57,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 			// Set page title
-			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
+			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 
 			$document->setTitle($pageTitle);
 
@@ -64,7 +65,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 		}
 		else
 		{
-			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
         
 	}

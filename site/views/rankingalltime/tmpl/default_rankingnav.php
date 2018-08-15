@@ -1,4 +1,7 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+<?php 
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
 <form name="adminForm" id="adminForm" method="post"
 	action="<?php echo $this->action;?>">
@@ -18,7 +21,7 @@
 
 	?>
 		<td><input type="submit" class="button" name="reload View"
-			value="<?php echo JText::_('COM_JOOMLEAGUE_RANKING_FILTER'); ?>"></td>
+			value="<?php echo Text::_('COM_JOOMLEAGUE_RANKING_FILTER'); ?>"></td>
 	</tr>
 </table>
 	<?php echo JHTML::_( 'form.token' ); ?></form>

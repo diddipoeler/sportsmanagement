@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -46,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	else
 	{
 		echo "<div>";
-			echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
+			echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
 	}
 
 		echo $this->loadTemplate('jsminfo');

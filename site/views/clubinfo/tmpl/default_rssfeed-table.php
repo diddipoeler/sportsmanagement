@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -50,7 +51,7 @@ $app	= JFactory::getApplication();
 <div class="no-column">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_RSS_FEEDS'); ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_RSS_FEEDS'); ?>
 		</div>
 	</div>
 
@@ -104,7 +105,7 @@ $app	= JFactory::getApplication();
 			
 			<?php if($this->feedItemReadMore): ?>
 			<span class="srfrReadMore">
-				<a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo JText::_('MOD_JW_SRFR_READ_MORE'); ?></a>
+				<a target="_blank" href="<?php echo $feed->itemLink; ?>"><?php echo Text::_('MOD_JW_SRFR_READ_MORE'); ?></a>
 			</span>
 			<?php endif; ?>
 			

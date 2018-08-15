@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 JLoader::import('joomla.application.component.view');
 
 JLoader::import('components.com_sportsmanagement.libraries.fullcalendar.fullcalendar', JPATH_BASE);
@@ -65,9 +65,9 @@ class sportsmanagementViewGcalendar extends JViewLegacy
 		if (empty($title)) {
 			$title = $app->getCfg('sitename');
 		} elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
 		} elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 		$this->document->setTitle($title);
 

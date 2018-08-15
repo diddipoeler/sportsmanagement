@@ -38,7 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 
 ?>
 <script>
@@ -63,7 +63,7 @@ foreach ($this->divisions as $division)
 	</tr>
 	<tr>
 	<td style="text-align: right">
-		<?php echo JText::_('COM_SPORTSMANAGEMENT_CURVE_TEAMS').' '.$division->name; ?>
+		<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_TEAMS').' '.$division->name; ?>
 	</td>	
     <td style="text-align: right">    
         <?php echo $this->team1select[$division->id]; ?>
@@ -84,7 +84,7 @@ foreach ($this->divisions as $division)
 			<input type="hidden" name="tid2" value="" />  
 			<input type="hidden" name="division" value="<?php echo $division->id; ?>" /> 
 			<input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
-				value="<?php echo JText::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
+				value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
 			<?php echo JHtml::_( 'form.token' ); ?>
 		</form>
 	</td>

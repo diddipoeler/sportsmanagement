@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
@@ -25,7 +25,7 @@ $kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
 <div style="width: 100%; float: left">
 	<div class="contentpaneopen">
 		<div class="contentheading">
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+			<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 		</div>
 	</div>
 	<?php

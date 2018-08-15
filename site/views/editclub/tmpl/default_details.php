@@ -38,13 +38,14 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
 ?>
 
 <fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php 
             foreach($this->form->getFieldset('details') as $field) :
@@ -103,8 +104,8 @@ $fieldsets = $this->form->getFieldsets();
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
                 

@@ -1,6 +1,6 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
-
+use Joomla\CMS\Language\Text;
 ?>
 
 
@@ -23,7 +23,7 @@ function initialize()
 </script>
 <div class="contentpaneopen">
 <div class="contentheading">
-			<?php echo JText::_('JL_GMAP_DIRECTIONS'); ?>
+			<?php echo Text::_('JL_GMAP_DIRECTIONS'); ?>
 		</div>
 
                 

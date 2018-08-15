@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 if ( isset( $this->overallconfig['show_back_button'] ) )
 {
 	?>
@@ -33,7 +33,7 @@ if ( isset( $this->overallconfig['show_back_button'] ) )
 		<div class="btn back_button">
 			<a href='javascript:history.go(-1)'>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_BACKBUTTON_BACK' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_BACKBUTTON_BACK' );
 				?>
 			</a>
 		</div>

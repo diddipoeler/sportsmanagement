@@ -124,17 +124,12 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         $this->teamname = $teamname;
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tid'.'<pre>'.print_r($tid,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamname'.'<pre>'.print_r($teamname,true).'</pre>' ),'');
         // get starters
         $starters = sportsmanagementModelMatch::getMatchPersons($tid, 0, $this->match->id, 'player');
         $starters_id = array_keys($starters);
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
         // get players not already assigned to starter
         $not_assigned = sportsmanagementModelMatch::getTeamPersons($tid, $starters_id, 1);
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
 
         $playersoptionsout = array();
         $playersoptionsout[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
@@ -290,12 +285,9 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
     
-        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         // mannschaften der paarung
         $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
         $this->teams = $teams;
-
-        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
 
         $teamlist = array();
         $teamlist[] = JHtml::_('select.option', $teams->projectteam1_id, $teams->team1);
@@ -369,9 +361,7 @@ foreach ($rosters['away'] as $player)
 	$temp[] = $obj;
 }
 $lists['awayroster'] = JHtml::_('select.genericlist', $temp, $teams->projectteam2_id, 'style="" size="1" class="inputbox" size="1"', 'value', 'text');
-
-//$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents awayRoster<br><pre>'.print_r($lists,true).'</pre>'   ),'');        
-        
+       
         $matchCommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
         $matchevents = sportsmanagementModelMatch::getMatchEvents($this->match->id);
         //$document->addScriptDeclaration( $javascript );
@@ -436,13 +426,6 @@ $document->addScriptDeclaration( $javascript );
         }
         $playerstats = sportsmanagementModelMatch::getMatchStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
         $staffstats = sportsmanagementModelMatch::getMatchStaffStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
-
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playerstats<br><pre>'.print_r($playerstats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' staffstats<br><pre>'.print_r($staffstats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
 
         $this->playerstats = $playerstats;
         $this->staffstats = $staffstats;

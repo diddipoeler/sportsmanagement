@@ -37,14 +37,16 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
+?>
 
     <!-- START: Contentheading -->
 <table class="contentpaneopen" width="100%">
     <tr>
         <td class="contentheading">
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
+            echo Text::_('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
             ?>
         </td>
     </tr>

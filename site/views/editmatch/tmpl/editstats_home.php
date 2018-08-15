@@ -37,20 +37,21 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 //row index
 $i = 0;
 $j = 0;
 ?>
 
 <fieldset class="adminform">
-	<legend><?php echo JText::_( $this->teams->team1 );?></legend>
+	<legend><?php echo Text::_( $this->teams->team1 );?></legend>
 	<?php foreach ($this->positions as $position): ?>
 	<h3><?php echo $position->text; ?></h3>
 	<table class='adminlist'>
 		<thead>
 			<tr>
 				<th style="text-align: left;width: 10px;"></th>
-				<th style="text-align: left;"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ES_NAME' ); ?></th>
+				<th style="text-align: left;"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ES_NAME' ); ?></th>
 				<?php
 				foreach ( $this->stats as $stat)
 				{
@@ -104,7 +105,7 @@ $j = 0;
 		<thead>
 			<tr>
 				<th style="text-align: left;"></th>
-				<th style="text-align: left; width: 200px;"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_ES_NAME' ); ?></th>
+				<th style="text-align: left; width: 200px;"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_ES_NAME' ); ?></th>
 				<?php
 				foreach ( $this->stats as $stat)
 				{

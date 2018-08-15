@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //echo '<pre>'.print_r($this->items,true).'</pre>';
 
 ?>
@@ -108,7 +108,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
     echo sportsmanagementHelper::convertDate($item->$value,1) ;
     break;
     case 'position_id':
-    echo JText::_( $item->position_name );
+    echo Text::_( $item->position_name );
     break;
     default:
     echo $item->$value;
