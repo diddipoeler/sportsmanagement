@@ -9,7 +9,7 @@
  * @subpackage positions
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'po.ordering');
 
@@ -24,7 +24,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <thead>
             <tr>
                 <th width="5">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
                 </th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
@@ -35,7 +35,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
                 <th>
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TRANSLATION'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TRANSLATION'); ?>
                 </th>
                 <th>
                     <?php
@@ -58,10 +58,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
                 <th width="5%">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_HAS_EVENTS'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_HAS_EVENTS'); ?>
                 </th>
                 <th width="5%">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_HAS_STATS'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_HAS_STATS'); ?>
                 </th>
                 <th width="5%">
                     <?php
@@ -125,25 +125,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php echo $this->escape($row->name); ?>
                         <?php endif; ?>
                         <div class="small">
-                            <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
                         </div>
                     </td>
                     <td>
                         <?php
-                        if ($row->name == JText::_($row->name)) {
+                        if ($row->name == Text::_($row->name)) {
                             echo '&nbsp;';
                         } else {
-                            echo JText::_($row->name);
+                            echo Text::_($row->name);
                         }
                         ?>
                     </td>
                     <td width="5%" class="center">
                         <?php
                         if ($row->picture == '') {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
                             echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("icon")) {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
                             echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
@@ -151,7 +151,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             </a>
                             <?PHP
                         } elseif ($row->picture !== '') {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
                             echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
@@ -167,15 +167,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         echo JHtml::_('select.genericlist', $this->lists['parent_id'], 'parent_id' . $row->id, '' . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"', 'value', 'text', $row->parent_id);
                         ?>
                     </td>
-                    <td class="center"><?php echo JText::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id)); ?></td>
-                    <td class="center"><?php echo JText::_(sportsmanagementHelper::getPosPersonTypeName($row->persontype)); ?></td>
+                    <td class="center"><?php echo Text::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id)); ?></td>
+                    <td class="center"><?php echo Text::_(sportsmanagementHelper::getPosPersonTypeName($row->persontype)); ?></td>
                     <td class="center">
                         <?php
                         if ($row->countEvents == 0) {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NO_EVENTS');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NO_EVENTS');
                             echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } else {
-                            $imageTitle = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NR_EVENTS', $row->countEvents);
+                            $imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NR_EVENTS', $row->countEvents);
                             echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         }
                         ?>
@@ -183,10 +183,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class="center">
                         <?php
                         if ($row->countStats == 0) {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NO_STATISTICS');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NO_STATISTICS');
                             echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } else {
-                            $imageTitle = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NR_STATISTICS', $row->countStats);
+                            $imageTitle = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_NR_STATISTICS', $row->countStats);
                             echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         }
                         ?>

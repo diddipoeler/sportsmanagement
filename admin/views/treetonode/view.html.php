@@ -56,14 +56,6 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		//$project_id = $this->jinput->get('pid');
         $pid = $this->app->getUserState( $this->option . '.pid' );
         $tid = $this->app->getUserState( $this->option . '.tid' );
-        
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tid<br><pre>'.print_r($tid,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
-
-		//$uri 	= JFactory::getURI();
-//		$user 	= JFactory::getUser();
-		//$model	= $this->getModel();
 
 		$lists = array();
 		

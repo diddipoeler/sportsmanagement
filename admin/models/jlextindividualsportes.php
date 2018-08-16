@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
@@ -94,7 +94,7 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
 $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  
 
         return $query;
@@ -231,8 +231,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 		if (!$result = $db->loadObjectList())
 		{
-			$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
 		else
@@ -321,8 +321,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
 		return $result;
   
@@ -338,7 +338,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$this->_db->setQuery($query);
 		$sporttype = $this->_db->loadResult();
 		$app->setUserState($option.'sporttype',$sporttype);
-		$app->enqueueMessage(JText::_('Sporttype: '.$sporttype ),'');
+		$app->enqueueMessage(Text::_('Sporttype: '.$sporttype ),'');
 		
 		switch ( strtolower($sporttype) )
 		{
@@ -367,15 +367,15 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	$dir = JPATH_SITE.DS.'tmp'.DS.'ringerdateien';
   $files = JFolder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
   
-  $app->enqueueMessage(JText::_('_getSinglefile: '.print_r($files,true) ),'');
+  $app->enqueueMessage(Text::_('_getSinglefile: '.print_r($files,true) ),'');
   
   if ( $files )
   {
-  $app->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' vorhanden' ),'Notice');
+  $app->enqueueMessage(Text::_('Einzelk&auml;mpfe '.$match_number.' vorhanden' ),'Notice');
   }
   else
   {
-  $app->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' nicht vorhanden' ),'Error');
+  $app->enqueueMessage(Text::_('Einzelk&auml;mpfe '.$match_number.' nicht vorhanden' ),'Error');
   }
   
   }

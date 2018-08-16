@@ -127,26 +127,6 @@ class JFormFieldDependSQL extends JFormField
 //        }
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
-        
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' norequest -> '.$norequest.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($this->fieldset,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jform<br><pre>'.print_r($this->jform,true).'</pre>'),'Notice');
-        
-//        
-//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> '.$div.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->value -> '.$this->value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
-
-//        }
 
 		$ctrl = $this->name;
 		$id = $this->id;

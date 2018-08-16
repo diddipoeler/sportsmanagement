@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewProjectReferee
  * 
@@ -68,7 +68,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         
         if ( $this->show_debug_info )
         {
-            $this->app->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+            $this->app->enqueueMessage(Text::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
         }
         
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectreferee');		
@@ -85,7 +85,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	protected function addToolbar()
 	{
     	$this->jinput->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
         $this->icon = 'projectreferee';
         $this->app->setUserState( "$this->option.pid", $this->item->project_id );
         $this->app->setUserState( "$this->option.persontype", $this->_persontype );	

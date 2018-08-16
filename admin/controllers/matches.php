@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
  
@@ -70,11 +70,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		$model = $this->getModel();
 		if (!$result=$model->deleteevent($event_id))
 		{
-			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
+			$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
 		}
 		else
 		{
-			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
+			$result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -92,11 +92,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
-			$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
+			$result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
 		}
 		else
 		{
-			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
+			$result='1'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -114,11 +114,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		$model = $this->getModel();
 		if (!$result = $model->removeSubstitution($substid))
 		{
-			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.$model->getError();
+			$result="0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST').': '.$model->getError();
 		}
 		else
 		{
-			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
+			$result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -148,9 +148,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
         
         $model = $this->getModel();
 		if (!$result = $model->saveevent($data)) {
-			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
+			$result = "0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
         } else {
-			$result = $result."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
+			$result = $result."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT');
 		}    
  
 		echo json_encode($result);
@@ -175,9 +175,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
         
         $model = $this->getModel();
 		if (!$result = $model->savecomment($data)) {
-            $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
+            $result = '0&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
         } else {
-            $result = $result.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
+            $result = $result.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -200,9 +200,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         $model = $this->getModel();
 		if (!$result = $model->savesubstitution($data)){
-			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
+			$result = "0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
 		} else {
-            $result = $model->getDbo()->insertid()."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
+            $result = $model->getDbo()->insertid()."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
 		}
 		echo json_encode($result);
 		JFactory::getApplication()->close();
@@ -221,11 +221,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $model = $this->getModel();
         if ($model->savestats($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
 		}
         
         if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
@@ -257,22 +257,22 @@ class sportsmanagementControllermatches extends JControllerAdmin
         
         if ($model->updateRoster($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_PLAYER').'<br />';
-            $msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_PLAYER_TRIKOT').'<br />';
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_PLAYER').'<br />';
+            $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_PLAYER_TRIKOT').'<br />';
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER').'<br />';
-            $msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER_TRIKOT').'<br />';
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER').'<br />';
+            $msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER_TRIKOT').'<br />';
 		}
         
         if ($model->updateStaff($post))
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_STAFF').'<br />';
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_STAFF').'<br />';
 		}
 		else
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_STAFF').'<br />';
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_STAFF').'<br />';
 		}
         
         if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
@@ -302,11 +302,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
         
         if ($model->updateReferees($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
 		}
 
         if ( JFactory::getApplication()->input->getString('close', 0) == 1 )

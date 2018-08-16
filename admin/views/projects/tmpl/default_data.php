@@ -219,7 +219,6 @@ echo $row->league.'<br>';
                         
                         <td class="center">
                         <?php 
-                        //echo JText::_($row->agegroup); 
                         $inputappend = '';
                         $append = ' style="background-color:#bbffff"';
 									echo JHtml::_(	'select.genericlist',

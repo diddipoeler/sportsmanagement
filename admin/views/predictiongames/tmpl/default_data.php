@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 $ordering = ($this->sortColumn=='pre.ordering');
 
@@ -27,7 +27,7 @@ JHtml::_('behavior.modal');
 <!--			<fieldset class="adminform"> -->
 				<legend>
 					<?php
-					echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE2','<i>'.$this->items[0]->name.'</i>');
+					echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE2','<i>'.$this->items[0]->name.'</i>');
 					?>
 				</legend>
 			<?php
@@ -36,54 +36,54 @@ JHtml::_('behavior.modal');
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width='10'><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width='10'><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width='20'>
 						<input	type='checkbox' name='toggle' value='' onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 					</th>
 					<th width='20'>&nbsp;</th>
 					<th class='title' nowrap='nowrap'>
 						<?php
-						echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NAME'),'pre.name',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NAME'),'pre.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					<th class='title' nowrap='nowrap' colspan='2'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_COUNT'); ?></th>
-					<th class='title' nowrap='nowrap' colspan='2'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_ADMIN_COUNT'); ?></th>
+					<th class='title' nowrap='nowrap' colspan='2'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_COUNT'); ?></th>
+					<th class='title' nowrap='nowrap' colspan='2'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_ADMIN_COUNT'); ?></th>
 					<th class='title' width='5%' nowrap='nowrap'>
 						<?php
-						echo JHtml::_('grid.sort',JText::_('JSTATUS'),'pre.published',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort',Text::_('JSTATUS'),'pre.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					
 					<th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
 						?>
 					</th>
 					<th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
 						?>
 					</th>
 					<th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
 						?>
 					</th>
 					
 					<th class='title' width='20' nowrap='nowrap'>
 						<?php
-						echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ID'),'pre.id',$this->sortDirection,$this->sortColumn);
+						echo JHtml::_('grid.sort',Text::_('JGRID_HEADING_ID'),'pre.id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 						?>
 					</th>
                     
@@ -131,8 +131,8 @@ JHtml::_('behavior.modal');
 							<a href='<?php echo $link; ?>'>
 									<img	src='<?php echo JURI::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
 											border='0'
-											alt='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'
-											title='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'>
+											alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'
+											title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'>
 								</a>
 							<?php
 						
@@ -147,7 +147,7 @@ JHtml::_('behavior.modal');
 //						{
 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$row->id);  
 						?><a href="<?php echo $link; ?>"
-								title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME',$row->name); ?>">
+								title="<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME',$row->name); ?>">
 								<?php
 								echo $row->name;
 								?>
@@ -163,7 +163,7 @@ JHtml::_('behavior.modal');
 					<td style='text-align:center; '>
 						<?php 
 				$image = 'players.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_USERS');
 			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictionmembers&prediction_id='.$row->id);
 						?>
 <a href="<?php echo $link2; ?>">
@@ -178,7 +178,7 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 <td style='text-align:center; '>
 						<?php 
 				$image = 'division.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_GROUPS');
 			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictiongroups&prediction_id='.$row->id);
 						?>
 <a href="<?php echo $link2; ?>">
@@ -193,7 +193,7 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 					<td style='text-align:center; '>
 						<?php 
 				$image = 'templates.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TEMPLATES');
 			$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=predictiontemplates&prediction_id='.$row->id);	
 						?>
 <a href="<?php echo $link2; ?>">
@@ -221,15 +221,15 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 				<thead>
 					<tr>
 						<th>&nbsp;</th>
-						<th><?php echo JText::_( 'NUM' ); ?></th>
+						<th><?php echo Text::_( 'NUM' ); ?></th>
 						<th>&nbsp;</th>
-						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_NAME' ); ?></th>
-						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE' ); ?></th>
-						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW' ); ?></th>
-						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER' ); ?></th>
-						<th class='title'><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP' ); ?></th>
-						<th class='title'><?php echo JText::_( 'JSTATUS' ); ?></th>
-						<th class='title'><?php echo JText::_( 'JGRID_HEADING_ID' ); ?></th>
+						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PROJ_NAME' ); ?></th>
+						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MODE' ); ?></th>
+						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_OVERVIEW' ); ?></th>
+						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER' ); ?></th>
+						<th class='title'><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP' ); ?></th>
+						<th class='title'><?php echo Text::_( 'JSTATUS' ); ?></th>
+						<th class='title'><?php echo Text::_( 'JGRID_HEADING_ID' ); ?></th>
 					</tr>
 				</thead>
 				<?php
@@ -254,28 +254,28 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 								<a class="modal"	
                                 rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
                                 href='<?php echo $link; ?>'
-									title='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS' ); ?>' />
+									title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_SETTINGS' ); ?>' />
 									<?php echo $pred_project['project_name']; ?>
 								</a>
 							</td>
 							<td style='text-align:center; '><?php
 								if ( $pred_project['mode'] == '0' )
 								{
-									echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD' );
+									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_STANDARD' );
 								}
 								else
 								{
-									echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO' );
+									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TOTO' );
 								}
 								?></td>
 							<td style='text-align:center; '><?php
 								if ( $pred_project['overview'] == '0' )
 								{
-									echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON' );
+									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_FULL_SEASON' );
 								}
 								else
 								{
-									echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON' );
+									echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_HALF_SEASON' );
 								}
 								?></td>
 							<td style='text-align:center; '><?php
@@ -283,18 +283,18 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 								{
 									if ($pred_project['joker_limit']==0)
 										{
-											$maxJ = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNLIMITED_JOKER');
+											$maxJ = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNLIMITED_JOKER');
 										}
 									else
 										{
 											$maxJ = $pred_project['joker_limit'];
 										}
-									$imageTitle = JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MAX_JOKER', $maxJ );
+									$imageTitle = Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_MAX_JOKER', $maxJ );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 								}
 								else
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_JOKER' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_JOKER' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
 								echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
@@ -302,12 +302,12 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 							<td style='text-align:center; '><?php
 								if ( $pred_project['champ'] == '1' )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PICK_CHAMP' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PICK_CHAMP' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 								}
 								else
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PICK_CHAMP' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_PICK_CHAMP' );
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 								}
 								echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
@@ -316,12 +316,12 @@ echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/imag
 								<?php
 									if ( $pred_project['published'] == '1' )
 									{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );

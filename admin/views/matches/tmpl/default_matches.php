@@ -10,15 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-//// welche joomla version
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('behavior.framework', true);
-//}
-//else
-//{
-//JHtml::_( 'behavior.mootools' );    
-//}
+use Joomla\CMS\Language\Text;
+
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
@@ -35,7 +28,7 @@ fieldset button {
 </style>
 <div id="editcell">
 <!--	<fieldset class="adminform"> -->
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
+		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 
 	<?php echo $this->loadTemplate('teamselect'); ?>	
 	<?php echo $this->loadTemplate('roundselect'); ?>
@@ -43,7 +36,7 @@ fieldset button {
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
 <div class="btn-group pull-right hidden-phone">
-				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+				<label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
 				<?php echo $this->pagination->getLimitBox(); ?>
 </div>
 			<?php
@@ -61,7 +54,7 @@ fieldset button {
             if ( JComponentHelper::getParams($this->option)->get('cfg_be_extension_single_match',0) )
             {
             ?>
-            <th width="20" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH'); ?></th>
+            <th width="20" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH'); ?></th>
             <?php
             }
             ?>
@@ -71,8 +64,8 @@ fieldset button {
 						<th class="" >
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
 						<?php 
 							if($this->projectws->project_type=='DIVISIONS_LEAGUE') {
 								$colspan++;
@@ -91,27 +84,27 @@ fieldset button {
 						<?php 
 							}
 						?>
-						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
-						<th style="  "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
+						<th style="  "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
 						<?php
 						if ($this->projectws->allow_add_time)
 						{
 							?>
-							<th style="text-align:center;  "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+							<th style="text-align:center;  "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
 							<?php
 						}
 						?>
-                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+                        <th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
                         
-                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
+                        <th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
                         
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
-						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
-                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
-						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
+						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
+                        <th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
+						<th width="1%" ><?php echo Text::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
@@ -178,7 +171,7 @@ fieldset button {
                                     ?>
 	
                                 <?PHP
-echo sportsmanagementHelper::getBootstrapModalImage('matchdetails'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/edit.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id='.$row->id,$modalwidth,$modalheight);                                
+echo sportsmanagementHelper::getBootstrapModalImage('matchdetails'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/edit.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id='.$row->id,$modalwidth,$modalheight);                                
                                 endif; 
                                 
                                 //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
@@ -194,7 +187,7 @@ $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_
 								
                                 
               <?php
-echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);              
+echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);              
 							// diddipoeler einzelsportart
             
             //if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
@@ -206,13 +199,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 							<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>&rid=<?php echo $row->round_id; ?>  "
 									 class="modal"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
+									 title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
 									 <?php
 									 
 								 	$image = 'players_add.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -265,15 +258,15 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
 									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
-															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'),
-															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT').'"');
+															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'),
+															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT').'"');
 									?>
 								</a><br />
 								<span id="present<?php echo $row->id; ?>" style="display: none">
 									<br />
 										<input ondblclick="copyValue('time_present')" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="time_present<?php echo $row->id; ?>"
-												value="<?php echo $row->time_present; ?>" size="4" maxlength="5" tabindex="3" class="form-control form-control-inline" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>" />		
-										<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>			
+												value="<?php echo $row->time_present; ?>" size="4" maxlength="5" tabindex="3" class="form-control form-control-inline" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>" />		
+										<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>			
 								</span>
 							</td>
 							<td class="center">
@@ -312,11 +305,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
               
 							<td class="right"  nowrap="nowrap">
                             <!--
-								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
+								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=<?php echo $date; ?>&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
 									 class="modal openroster-team1<?php echo $row->id; ?>"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
+									 title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
                                      -->
 									 <?php
 									 if($row->homeplayers_count==0 || $row->homestaff_count==0 ) {
@@ -324,14 +317,14 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 									 } else {
 									 	$image = 'players_edit.png';
 									 }
-									 $title=  ' '.JText::_('COM_SPORTSMANAGEMENT_F_PLAYERS').': ' .$row->homeplayers_count. ', ' . 
-													 ' '.JText::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->homestaff_count . ' ';
+									 $title=  ' '.Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS').': ' .$row->homeplayers_count. ', ' . 
+													 ' '.Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->homestaff_count . ' ';
 									
 									echo '<sub>'.$row->homeplayers_count.'</sub> ';
 												 
 
 									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),
 													 'title= "' .$title. '"');
 													 
 									 echo '<sub>'.$row->homestaff_count.'</sub> ';	
@@ -339,7 +332,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 							<!--	</a> -->
 								<?php
 $pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
-echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
                                 
 								$append='';
 								if ($row->projectteam1_id == 0)
@@ -363,11 +356,11 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
                                 <!--
-								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
+								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
 									class="modal open-starting-away"
-									title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
+									title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
                                     -->
 									 <?php
 									 if($row->awayplayers_count==0 || $row->awaystaff_count==0 ) {
@@ -375,12 +368,12 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 									 } else {
 									 	$image = 'players_edit.png';
 									 }
-									 $title=' '.JText::_('COM_SPORTSMANAGEMENT_F_PLAYERS').': ' .$row->awayplayers_count. ', ' . 
-													 ' '.JText::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->awaystaff_count;
+									 $title=' '.Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS').': ' .$row->awayplayers_count. ', ' . 
+													 ' '.Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->awaystaff_count;
 													 
 									 echo '<sub>'.$row->awayplayers_count.'</sub> ';
 									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),
 													 'title= "' .$title. '"');
 									 echo '<sub>'.$row->awaystaff_count.'</sub> ';	
 								
@@ -388,13 +381,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 							<!--	</a> -->
                                 <?php
 $pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam2_id;                                 
-echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
                                 ?>
 							</td>
 							<td class="left"  nowrap="nowrap">
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
 								
                                 <?PHP
@@ -402,21 +395,21 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 {
                                 ?>
                                 <br />MP
-                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_matchpoint<?php echo $row->id; ?>"
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_matchpoint<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_single_matchpoint; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_matchpoint<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_matchpoint<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_single_matchpoint; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
                                 
                                 <br />MS
-                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_sets<?php echo $row->id; ?>"
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_sets<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_single_sets; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_sets<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_sets<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_single_sets; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
                                 
                                 <br />MG
-                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_games<?php echo $row->id; ?>"
+                                <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_games<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_single_games; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_games<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_games<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_single_games; ?>" size="2" tabindex="5" class="form-control form-control-inline" />                
                                 <?PHP
                                 }
@@ -425,8 +418,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 <a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
 									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
-															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
-															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
+															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
+															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
 									?>
 								</a>
                                 
@@ -434,8 +427,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 if ( $row->alt_decision == 1 )
                                 {
                                     echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',
-															JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
-															'title= "'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC').'"');
+															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
+															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC').'"');
 
                                 }
                                 ?>
@@ -569,9 +562,9 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
 							<td class="center">
 								
 								<?php
-echo sportsmanagementHelper::getBootstrapModalImage('pressebericht'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id='.$row->id,$modalwidth,$modalheight);
-echo sportsmanagementHelper::getBootstrapModalImage('editevents'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id='.$row->id,$modalwidth,$modalheight);																				
-echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/teams.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id='.$row->id,$modalwidth,$modalheight);								
+echo sportsmanagementHelper::getBootstrapModalImage('pressebericht'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id='.$row->id,$modalwidth,$modalheight);
+echo sportsmanagementHelper::getBootstrapModalImage('editevents'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/events.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id='.$row->id,$modalwidth,$modalheight);																				
+echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/teams.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id='.$row->id,$modalwidth,$modalheight);								
 
 								?>
 
@@ -582,7 +575,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb'.$row->id,JURI
 							</td>
 							<td class="center">
 								<?php
-echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id='.$row->id,$modalwidth,$modalheight);                                
+echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'),'20',JURI::base().'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id='.$row->id,$modalwidth,$modalheight);                                
 								//start statistics:
 								?>
 
@@ -591,7 +584,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
 									 class="modal open-editreferees"
-									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'); ?>">
+									 title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'); ?>">
 									 <?php
 									 if($row->referees_count==0) {
 									 	$image = 'players_add.png';
@@ -600,7 +593,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 									 }
 									 $title= $row->referees_count;
 									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'),
 													 'title= "'. $title. '"') ;
 									 echo '<sub>'.$row->referees_count.'</sub> ';	
 									 ?>
@@ -610,12 +603,12 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 								<?php
 									if ( $row->count_result )
 									{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
 									}
 									else
 									{
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
 									echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );

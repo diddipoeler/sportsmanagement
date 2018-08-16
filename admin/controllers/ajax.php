@@ -146,22 +146,7 @@ public function predictionpj()
         public function projects()
         {
             $app = JFactory::getApplication();
-            
-//            $model = $this->getModel('Projects', '', array());
-//            $results = $model->getItems();
-//            // Output a JSON object
-//		echo json_encode($results);
-            
-//            $db = sportsmanagementHelper::getDBConnection();
-//            $query = $db->getQuery(true);
-//            $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
-//            $query->from('#__sportsmanagement_project as p');
-//            $db->setQuery($query);
-//            $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-//            //return array_merge($mitems, $elements);
-//            return json_encode(array_merge($mitems, $db->loadObjectList() ) );
-            //return json_encode( $db->loadObjectList() );
-            
+
        // JInput object
         //$jinput = $app->input;
         //$menutype = $this->input->get->get('menutype');

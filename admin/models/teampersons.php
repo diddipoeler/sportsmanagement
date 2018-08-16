@@ -326,20 +326,14 @@ catch (Exception $e) {
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
-                
+               
                 if ( $insert )
                 {
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
                 {
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
-                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-                    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
                 }
                 else
                 {
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 }
                 }
                 

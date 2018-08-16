@@ -2,6 +2,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 class JFormFieldPageTitleFormat extends JFormField
 {
@@ -18,14 +19,14 @@ class JFormFieldPageTitleFormat extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
-		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
-		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 3, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_SEASON'));
-		$mitems[] = JHtml::_('select.option', 4, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE'));
-		$mitems[] = JHtml::_('select.option', 5, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 6, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
-		$mitems[] = JHtml::_('select.option', 7, JText::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
+		$mitems[] = JHtml::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT'));
+		$mitems[] = JHtml::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE'));
+		$mitems[] = JHtml::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_LEAGUE_SEASON'));
+		$mitems[] = JHtml::_('select.option', 3, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_PROJECT_SEASON'));
+		$mitems[] = JHtml::_('select.option', 4, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE'));
+		$mitems[] = JHtml::_('select.option', 5, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_LEAGUE_SEASON'));
+		$mitems[] = JHtml::_('select.option', 6, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_SEASON'));
+		$mitems[] = JHtml::_('select.option', 7, Text::_('COM_SPORTSMANAGEMENT_FES_PARAM_PAGE_TITLE_NONE'));
 		
 		$output= JHtml::_('select.genericlist',  $mitems,
 							$this->name,

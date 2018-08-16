@@ -121,9 +121,6 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
 
         $cid = $post['cid'];
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
-
         foreach ($cid as $key => $value) {
             $name = $post['picture'][$value];
             $folder = $post['folder'][$value];
@@ -134,11 +131,6 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
 
             $servercopy = $server . $folder . '/' . $file;
 
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($servercopy,true).'</pre>'),'Notice');
             //set the target directory
             $base_Dir = JPATH_SITE . DS . 'tmp' . DS;
             //$file['name'] = basename($servercopy);
@@ -147,10 +139,6 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
             //$file['name'] = $file;
             $filename = $file;
             $filepath = $base_Dir . $filename;
-
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'filename<br><pre>'.print_r($filename,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'filepath<br><pre>'.print_r($filepath,true).'</pre>'),'Notice');
 
             if (!copy($servercopy, $filepath)) {
                 $app->enqueueMessage(JText::_(get_class($this) . ' ' . __FUNCTION__ . 'file<br><pre>' . print_r($servercopy, true) . '</pre>'), 'Error');

@@ -112,29 +112,11 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$lists['createNewTreeto'] = JHtmlSelect::radiolist($ynOptions,'createNewTreeto','class="inputbox"','value','text',1);
 
 		$this->lists = $lists;
-//		$this->assignRef('node',$node);
-	//	$this->assignRef('roundcode',$roundcode);
 		$this->style = $style;
 		$this->path = $path;
 		$this->projectws = $projectws;
 		$this->treetows = $treetows;
-        
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($this->lists,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' style<br><pre>'.print_r($this->style,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' path<br><pre>'.print_r($this->path,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectws<br><pre>'.print_r($this->projectws,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' treetows<br><pre>'.print_r($this->treetows,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' node<br><pre>'.print_r($this->node,true).'</pre>'),'Notice');
-        
-        //$this->addToolBar();
-        
-        //$this->setLayout('default'); 
-        
-//		$this->assignRef('total',$total);
-//		$this->assignRef('pagination',$pagination);
-		//$this->assignRef('request_url',$uri->toString());
 
-		//parent::display($tpl);
 	}
     
     

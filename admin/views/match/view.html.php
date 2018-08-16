@@ -427,14 +427,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		}
 		$playerstats = $model->getMatchStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
 		$staffstats = $model->getMatchStaffStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playerstats<br><pre>'.print_r($playerstats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' staffstats<br><pre>'.print_r($staffstats,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
-        
+       
         $this->playerstats	= $playerstats;
 		$this->staffstats	= $staffstats;
         $this->stats	= $stats;

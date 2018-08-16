@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -29,12 +30,12 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 
 	<div  class="table-responsive" id="editcell">
 	<!--	<fieldset class="adminform"> -->
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
+			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<?php $cell_count=25; ?>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+						<th ><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
@@ -61,7 +62,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
-								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
 								$imageParams = 'title= "'.$imageTitle.'"';
 								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams = '';
@@ -76,18 +77,18 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 						?>
                         <br />
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY'); 
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY'); 
                         ?>
                         <br />
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR'); 
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR'); 
                         ?>
                         <br />
                         <?php 
-                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID'); 
+                        echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID'); 
                         ?>
 					</th>
-						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
+						<th colspan="2"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th >
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
@@ -110,7 +111,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
+								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
 								$imageParams='title= "'.$imageTitle.'"';
 								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
@@ -137,20 +138,20 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 						<th>
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
-                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PENALTY_P'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_W'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_D'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_L'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PLUS_P'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MINUS_P'); ?></th>
+                        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PENALTY_P'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_W'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_D'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_L'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_HG'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_GG'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DG'); ?></th>
                         
-                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
-                        <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
+                        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
+                        <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
                         
                         <th >
 							<?php echo JHtml::_('grid.sort','STID','st.id',$this->sortDirection,$this->sortColumn); ?>
@@ -211,7 +212,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 					<?php if ($canEdit && !$row->checked_out ) : ?>
 						<?php
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams = 'title= "'.$imageTitle.'"';
 									$image = JHtml::image($imageFile,$imageTitle,$imageParams);
 									$linkParams = '';
@@ -236,7 +237,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
                             //echo JSMCountries::getCountryFlag($row->country); 
                             if ($row->club_logo == '')
 							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
                             // die möglichkeit bieten, das vereinslogo zu aktualisieren
@@ -249,7 +250,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -261,7 +262,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 							}
 							elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
 							{
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
+								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
@@ -282,7 +283,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -295,7 +296,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
                                                 
 							} else {
 								if (JFile::exists(JPATH_SITE.DS.$row->club_logo)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
@@ -315,7 +316,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -324,7 +325,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 							
               <?php                                                                
 								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
                                 // die möglichkeit bieten, das vereinslogo zu aktualisieren
@@ -337,7 +338,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -396,7 +397,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									$image = "players_edit.png";
 								}
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
-								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PLAYERS');
 								$imageParams = 'title= "'.$imageTitle.'"';
 								$image = JHtml::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->playercount.'</sub>';
 								$linkParams = '';
@@ -409,7 +410,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									$image = "players_edit.png";
 								}
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/'.$image;
-								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_STAFF');
 								$imageParams = 'title= "'.$imageTitle.'"';
 								$image = JHtml::image($imageFile,$imageTitle,$imageParams).' <sub>'.$row->staffcount.'</sub>';
 								$linkParams = '';
@@ -442,13 +443,13 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
 									echo JHtml::image('administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								
@@ -462,7 +463,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								else
 								{
 								    if (JFile::exists(JPATH_SITE.DS.$row->picture)) {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
@@ -471,7 +472,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 </a>
 <?PHP                                                     
 								} else {
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

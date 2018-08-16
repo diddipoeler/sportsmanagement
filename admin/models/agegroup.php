@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelagegroup
  * 
@@ -38,8 +38,8 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 	
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
 	}
 		
 	}
@@ -61,8 +61,8 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
     
     if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sporttypes<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sporttypes<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
 
         }
     
@@ -72,16 +72,16 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         $insert_sport_type = $databasetool->insertSportType($type);  
 	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert_sport_type<br><pre>'.print_r($insert_sport_type,true).'</pre>'),'Notice');	    
-	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type ,true).'</pre>'),'Notice');	    
-	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' checksporttype <br><pre>'.print_r($checksporttype ,true).'</pre>'),'Notice');
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insert_sport_type<br><pre>'.print_r($insert_sport_type,true).'</pre>'),'Notice');	    
+	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type ,true).'</pre>'),'Notice');	    
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' checksporttype <br><pre>'.print_r($checksporttype ,true).'</pre>'),'Notice');
 	    }
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert_agegroup<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'Notice');		
+	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insert_agegroup<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'Notice');		
 		}
         }
         }
@@ -110,7 +110,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
         }
         $post = JFactory::getApplication()->input->post->getArray(array());
         
@@ -142,7 +142,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 				return false;
 			}
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
 	}
         
     

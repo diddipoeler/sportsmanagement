@@ -42,19 +42,13 @@ $query = $db->getQuery(true);
         $jinput = $app->input;    
 
 $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
-        
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml ,true).'</pre>'),'');    
-     
+    
      foreach( $xml->children() as $quote )  
              { 
               
              $country = (string)$quote->clubname->attributes()->country; 
              $name = (string)$quote->clubname->attributes()->name; 
              $clubname = (string)$quote->clubname;
-             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country <br><pre>'.print_r($country ,true).'</pre>'),'Notice');             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name <br><pre>'.print_r($name ,true).'</pre>'),'Notice');             
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubname<br><pre>'.print_r($clubname,true).'</pre>'),'Notice');                          
   
 $query->clear();  
 $query->select('id');  

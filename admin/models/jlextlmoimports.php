@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 $option = JFactory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -142,13 +143,13 @@ function parse_ini_file_ersatz($f)
 			}
 			else
 			{
-				JError::raiseWarning(500,JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
+				JError::raiseWarning(500,Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
 			}
 		}
 		else
 		{
-			JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
-			echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
+			JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file'));
+			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_ERROR','Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
 
@@ -211,7 +212,7 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
-  $app->enqueueMessage(JText::_('land '.$country.''),'');
+  $app->enqueueMessage(Text::_('land '.$country.''),'');
   
   $option = JFactory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
@@ -240,7 +241,7 @@ WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
 $row = $this->_db->loadAssoc();
 $tempprovorschlag = $row['name'];
-$app->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
+$app->enqueueMessage(Text::_('project '.$tempprovorschlag.''),'');
 
 // saisonname  
   $query = 'SELECT se.name,se.id
@@ -255,7 +256,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['season'] = $temp;
-$app->enqueueMessage(JText::_('season '.$temp->name.''),'');
+$app->enqueueMessage(Text::_('season '.$temp->name.''),'');
 $convert = array (
       $temp->name => ''
   );
@@ -285,7 +286,7 @@ $row = $this->_db->loadAssoc();
   }
   
   $this->_datas['league'] = $temp;
-$app->enqueueMessage(JText::_('league '.$temp->name.''),'');
+$app->enqueueMessage(Text::_('league '.$temp->name.''),'');
   
 //   $temp = new stdClass();
 //   $temp->project_type = 'SIMPLE_LEAGUE';
@@ -304,7 +305,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['sportstype'] = $temp;
-$app->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');  
+$app->enqueueMessage(Text::_('sportstype '.$temp->name.''),'');  
   
   $temp = new stdClass();
   $this->_datas['template'] = $temp;
@@ -803,11 +804,11 @@ $countjoomleagueteams = $this->_db->loadResult();
 
 if (  $countlmoteams != $countjoomleagueteams  )
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
+$app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
 }
 else
 {
-$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
+$app->enqueueMessage(Text::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
 }
     
     }
@@ -824,51 +825,51 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLea
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$app->enqueueMessage(JText::_('project daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('project daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$app->enqueueMessage(JText::_('league daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('league daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$app->enqueueMessage(JText::_('season daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('season daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
-$app->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('sportstype daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$app->enqueueMessage(JText::_('round daten '.'generiert'),'');      
+$app->enqueueMessage(Text::_('round daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$app->enqueueMessage(JText::_('team daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$app->enqueueMessage(JText::_('club daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('club daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$app->enqueueMessage(JText::_('match daten '.'generiert'),'');    
+$app->enqueueMessage(Text::_('match daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
@@ -1003,7 +1004,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 		$query="SELECT $fieldName FROM #__joomleague_$tableName WHERE id=$id";
 		$this->_db->setQuery($query);
 		if ($result=$this->_db->loadResult()){return $result;}
-		return JText::sprintf('Item with ID [%1$s] not found inside [#__joomleague_%2$s]',$id,$tableName)." $query";
+		return Text::sprintf('Item with ID [%1$s] not found inside [#__joomleague_%2$s]',$id,$tableName)." $query";
 	}
 
 
@@ -1037,7 +1038,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 						{
 							$converted=true;
 							$my_text .= '<span style="color:green">';
-							$my_text .= JText::sprintf(	'Converted club-info %1$s in imported playground %2$s',
+							$my_text .= Text::sprintf(	'Converted club-info %1$s in imported playground %2$s',
 														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
 														"</span><strong>$p_playground->name</strong>");
 							$my_text .= '<br />';
@@ -1046,7 +1047,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 					}
 				}
 			}
-			if (!$converted){$my_text .= '<span style="color:green">'.JText::_('Nothing needed to be converted').'<br />';}
+			if (!$converted){$my_text .= '<span style="color:green">'.Text::_('Nothing needed to be converted').'<br />';}
 			$this->_success_text['Converting new playground club-IDs of new playground data:']=$my_text;
 		}
 		return true;

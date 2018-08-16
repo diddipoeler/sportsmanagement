@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
  
@@ -160,7 +160,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }
@@ -191,7 +191,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }    
@@ -222,7 +222,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }        
@@ -392,11 +392,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
             }
             else
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
             }
         }    
         // dann die auswärtsspiele
@@ -410,11 +410,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
             }
             else
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
             }
         }    
         

@@ -38,7 +38,7 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.html.bootstrap');
 
 $templatesToLoad = array('footer','listheader');
@@ -102,13 +102,13 @@ foreach ($this->items as $item)
 echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($item->country).' '.$item->name, 'slide'.$item->id.'_id');
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&task=project.edit&id=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/projekte.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/projekte.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS') ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=templates&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/templates.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_FES') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_FES') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/templates.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_FES') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_FES') ?></span>
 </a>
 
 <?php
@@ -118,8 +118,8 @@ if ((isset($item->project_type)) &&
 {
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=divisions&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/divisionen.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>" /><br />
-<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?></span>
+<img src="components/com_sportsmanagement/assets/icons/divisionen.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?>" /><br />
+<span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions) ?></span>
 </a>								
 <?php
 }
@@ -131,8 +131,8 @@ if ((isset($item->project_type)) &&
 
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=treetos&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/turnierbaum.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/turnierbaum.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE') ?></span>
 </a>
 <?PHP
 
@@ -142,31 +142,31 @@ if ( $item->project_art_id != 3 )
 {
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectpositions&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions) ?>" /><br />
-<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions) ?></span>
+<img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions) ?>" /><br />
+<span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions) ?></span>
 </a>
 <?PHP
 }
 ?>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>" /><br />
-<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?></span>
+<img src="components/com_sportsmanagement/assets/icons/projektschiedsrichter.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?>" /><br />
+<span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees) ?></span>
 </a>		
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=projectteams&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/mannschaften.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams) ?>" /><br />
-<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams) ?></span>
+<img src="components/com_sportsmanagement/assets/icons/mannschaften.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams) ?>" /><br />
+<span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams) ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=rounds&pid=<?PHP echo $item->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/spieltage.png" alt="<?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays) ?>" /><br />
-<span><?php echo JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays) ?></span>
+<img src="components/com_sportsmanagement/assets/icons/spieltage.png" alt="<?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays) ?>" /><br />
+<span><?php echo Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays) ?></span>
 </a>
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlxmlexports&pid=<?PHP echo $item->project->id; ?>">
-<img src="components/com_sportsmanagement/assets/icons/xmlexport.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/xmlexport.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT') ?></span>
 </a>
 
 

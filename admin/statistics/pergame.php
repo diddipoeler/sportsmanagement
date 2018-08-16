@@ -116,9 +116,6 @@ class SMStatisticPergame extends SMStatistic
 		$query_num = SMStatistic::getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id,$sids);
         $query_den = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_den<br><pre>'.print_r($query_den->dump(),true).'</pre>'),'');
-
 		$query_select_details = '(n.num / d.played) AS total, n.person_id, 1 as rank,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'

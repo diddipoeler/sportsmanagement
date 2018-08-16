@@ -10,11 +10,12 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 		<fieldset class='adminform'>
 			<legend>
 				<?php
-				echo JText::sprintf('Predictiongame settings for project [%1$s]','<i>'.$this->pred_project->project_name.'</i>');
+				echo Text::sprintf('Predictiongame settings for project [%1$s]','<i>'.$this->pred_project->project_name.'</i>');
 				?>
 			</legend>
 			<table class='admintable' border='0'>
@@ -22,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Publish Prediction Project?');
+							echo Text::_('Publish Prediction Project?');
 							?>
 						</label>
 					</td>
@@ -37,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 						<label for="name">
 							<?php
-							echo JText::_('Prediction game mode');
+							echo Text::_('Prediction game mode');
 							?>
 						</label>
 					</td>
@@ -52,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 						<label for="admins">
 							<?php
-							echo JText::_('Evaluation of prediction ranking');
+							echo Text::_('Evaluation of prediction ranking');
 							?>
 						</label>
 					</td>
@@ -66,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Prediction with Joker?');
+							echo Text::_('Prediction with Joker?');
 							?>
 						</label>
 					</td>
@@ -86,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td colspan='3' class='key' style='text-align:center;'>
 		 				<label for='league'>
 						<?php
-							echo JText::_('Tipp Calculation');
+							echo Text::_('Tipp Calculation');
 						?>
 						</label>
 					</td>
@@ -95,13 +96,13 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' style='text-align:right;'>&nbsp;</td>
 					<td class='key' style='text-align:center;'>
 						<?php
-							echo JText::_('Calculation without Joker');
+							echo Text::_('Calculation without Joker');
 						?>
 					</td>
 					<td class='key' width='5%'>&nbsp;</td>
 					<td class='key' style='text-align:center;'>
 						<?php
-							echo JText::_('Calculation with Joker');
+							echo Text::_('Calculation with Joker');
 						?>
 					</td>
 				</tr>
@@ -109,7 +110,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for correct prediction');
+							echo Text::_('Points for correct prediction');
 							?>
 						</label>
 					</td>
@@ -129,7 +130,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for correct margin');
+							echo Text::_('Points for correct margin');
 							?>
 						</label>
 					</td>
@@ -149,7 +150,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for draw difference');
+							echo Text::_('Points for draw difference');
 							?>
 						</label>
 					</td>
@@ -169,7 +170,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for correct tendency');
+							echo Text::_('Points for correct tendency');
 							?>
 						</label>
 					</td>
@@ -189,7 +190,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for wrong prediction');
+							echo Text::_('Points for wrong prediction');
 							?>
 						</label>
 					</td>
@@ -212,7 +213,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Limit Joker predictions?');
+							echo Text::_('Limit Joker predictions?');
 							?>
 						</label>
 					</td>
@@ -226,7 +227,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Number of Joker predictions');
+							echo Text::_('Number of Joker predictions');
 							?>
 						</label>
 					</td>
@@ -239,7 +240,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Pick the champion?');
+							echo Text::_('Pick the champion?');
 							?>
 						</label>
 					</td>
@@ -254,7 +255,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 		 				<label for='league'>
 							<?php
-							echo JText::_('Points for picking the champion');
+							echo Text::_('Points for picking the champion');
 							?>
 						</label>
 					</td>
@@ -268,7 +269,7 @@ defined('_JEXEC') or die('Restricted access');
 					<td nowrap='nowrap' class='key' style='text-align:right;'>
 						<label for="league_teams">
 							<?php
-							echo JText::_('JL_PREDGAME_LEAGUE_TEAMS_CHAMPION');
+							echo Text::_('JL_PREDGAME_LEAGUE_TEAMS_CHAMPION');
 							?>
 						</label>
 					</td>

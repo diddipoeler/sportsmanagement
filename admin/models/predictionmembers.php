@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPredictionMembers
  * 
@@ -159,7 +159,7 @@ try{
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -188,7 +188,7 @@ try{
     			}
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }	
 	}
@@ -251,7 +251,7 @@ try{
 }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}

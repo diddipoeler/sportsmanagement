@@ -146,13 +146,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$this->extended	= $extended;
 		
 		$mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
-        //$bildpositionenhome = $mdlRosterpositions->getRosterHome();
-//        $bildpositionenaway = $mdlRosterpositions->getRosterAway();
-     
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition extended<br><pre>'.print_r($this->item->extended,true).'</pre>'),'Notice');
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterHome<br><pre>'.print_r($bildpositionenhome,true).'</pre>'),'Notice');
-     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
-     
+    
      // position ist vorhanden
 	if ( $this->item->id )  
 	{   

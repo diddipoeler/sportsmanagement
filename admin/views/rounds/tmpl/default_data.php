@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -47,11 +48,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 <!--	<div id="editcell"> -->
 	<!--	<fieldset class="adminform"> -->
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
+			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
-						<th width="1%"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+						<th width="1%"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 					<!--	<th width="20">&nbsp;</th> -->
  						<th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn ); ?></th>
@@ -62,10 +63,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<th width="1%">&nbsp;</th>
                         <th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ENDDATE', 'r.round_date_last', $this->sortDirection, $this->sortColumn ); ?></th>
                         
-						<th width="10%"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
-						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
-						<th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
-                        <th width="20"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT'); ?></th>
+						<th width="10%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
+						<th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
+						<th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULT_CHECK'); ?></th>
+                        <th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT'); ?></th>
 						<th width="5%" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JSTATUS','r.published',$this->sortDirection,$this->sortColumn);
@@ -111,7 +112,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									<?php endif; ?>
                             <?php
                             if ($canEdit && !$row->checked_out ) :
-								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageParams = "title='$imageTitle'";
 								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
@@ -124,7 +125,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">
 								<input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							<p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
                             </td>
 							<td class="center">
 								<?php
@@ -179,7 +180,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 </td>
 							<td class="center" class="nowrap">
                             <?php
-								$link2Title=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES_LINK');
+								$link2Title=Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES_LINK');
 								$link2Params="title='$link2Title'";
 								echo JHtml::link($link2,$link2Title,$link2Params);
 					  			?>
@@ -188,7 +189,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php
 								if (($row->countUnPublished == 0) && ($row->countMatches > 0))
 								{
-									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
+									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
 									echo JHtml::image($imageFile,$imageTitle,$imageParams);
@@ -197,11 +198,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								{
 									if ($row->countMatches == 0)
 									{
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
+										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
 									}
 									else
 									{
-										$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_NR',$row->countUnPublished);
+										$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_NR',$row->countUnPublished);
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
@@ -213,7 +214,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                               <?php
 								if (($row->countNoResults == 0) && ($row->countMatches > 0))
 								{
-									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
+									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
 									echo JHtml::image($imageFile,$imageTitle,$imageParams);
@@ -222,11 +223,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								{
 									if ($row->countMatches == 0)
 									{
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
+										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ANY_MATCHES');
 									}
 									else
 									{
-										$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULTS_MISSING',$row->countNoResults);
+										$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_RESULTS_MISSING',$row->countNoResults);
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";

@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
@@ -54,7 +55,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=sportstypes'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),
@@ -62,7 +63,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=seasons'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),
@@ -70,7 +71,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=leagues'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),      
@@ -78,7 +79,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextfederations'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),    
@@ -86,7 +87,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextcountries'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),    
@@ -94,7 +95,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextassociations'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),    
@@ -102,7 +103,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=positions'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),
@@ -110,7 +111,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=eventtypes'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						),
@@ -118,7 +119,7 @@ $buttons = array(
 						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=agegroups'),
 						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
+						'text' => Text::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
 						)          
@@ -128,7 +129,7 @@ $buttons = array(
 $buttonsproject = array( array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_PROJECT'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_PROJECT'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
@@ -136,49 +137,49 @@ $buttonsproject = array( array('link' => JRoute::_('index.php?option=com_sportsm
 array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEMPLATES'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEMPLATES'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_POSITIONS'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_POSITIONS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_REFEREES'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_REFEREES'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEAMS'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEAMS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_ROUNDS'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_ROUNDS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_DIVISIONS'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_DIVISIONS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=treetos&pid='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-			'text' => JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE'),
+			'text' => Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			)
@@ -254,8 +255,8 @@ else
     
 <div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
-				<label for="filter_search" class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL');?></label>
-				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('JGLOBAL_LOOKING_FOR'); ?>" />
+				<label for="filter_search" class="element-invisible"><?php echo Text::_('JSEARCH_FILTER_LABEL');?></label>
+				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('JGLOBAL_LOOKING_FOR'); ?>" />
 			</div>
 			<div class="btn-group pull-left">
 				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
@@ -275,7 +276,7 @@ else
                 
 				?>
 			<div class="btn-group pull-right hidden-phone">
-				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+				<label for="limit" class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
 				<?php echo $this->pagination->getLimitBox(); ?>
 			</div>
 			

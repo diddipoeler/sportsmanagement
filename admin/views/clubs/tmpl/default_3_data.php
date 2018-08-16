@@ -9,7 +9,7 @@
  * @subpackage clubs
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 } else {
@@ -28,7 +28,7 @@ $joomlaicon = $params->get('show_joomla_icons');
         <thead>
             <tr>
                 <th width="1%">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
                 </th>
                 <th width="1%">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
@@ -42,7 +42,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                 <th width="1%">
                     <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID', 'a.unique_id', $this->sortDirection, $this->sortColumn); ?>
                     <br />
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
                 </th>
                 <th width="1%">
                     <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_L_LOGO', 'a.logo_big', $this->sortDirection, $this->sortColumn); ?>
@@ -122,7 +122,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                             if ($joomlaicon) {
                                 echo '<span class="icon-star-2 large-icon"> </span>';
                             } else {
-                                $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
+                                $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
                                 $attribs['title'] = $imageTitle;
                                 echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png', $imageTitle, $attribs);
                             }
@@ -141,14 +141,14 @@ $joomlaicon = $params->get('show_joomla_icons');
                         <?php //echo $checked; ?>
                         <?php //echo $row->name;  ?>
                         <div class="small">
-                            <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>    
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>    
                     </td>
                     <td class="center">
                         <?php
                         if ($row->website != '') {
-                            echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . JText::_('JYES') . '</span></a>';
+                            echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
                         } else {
-                            echo '<span class="label">' . JText::_('JNO') . '</span>';
+                            echo '<span class="label">' . Text::_('JNO') . '</span>';
                         }
                         ?>
                     </td>
@@ -168,7 +168,7 @@ $joomlaicon = $params->get('show_joomla_icons');
                     <td class="center">
                         <?php
 $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+$imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
 echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,JURI::root().$row->logo_big,$imageTitle,'20',JURI::root().$row->logo_big);                        
@@ -177,7 +177,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row
                     <td class="center">
                         <?php
 $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+$imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
 echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                        
@@ -186,7 +186,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$
                     <td class="center">
                         <?php
 $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? 'information.png' : 'ok.png'; 
-$imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+$imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
 echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,JURI::root().$row->logo_small,$imageTitle,'20',JURI::root().$row->logo_small);                       

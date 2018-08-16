@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
 use Joomla\Utilities\ArrayHelper; 
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllertreetos
@@ -69,7 +69,7 @@ public function genNode()
 public function save()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		
 		//$app = JFactory::getApplication();
 		//$jinput = $app->input;
@@ -89,11 +89,11 @@ public function save()
 		//$table = JTable::getInstance('Treeto','sportsmanagementTable');
 		if($row->save($data))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_ERROR_SAVED') . $model->getError();
 		}
         
         

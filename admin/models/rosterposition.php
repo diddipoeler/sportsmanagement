@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 //jimport('joomla.application.component.modeladmin');
 
 
@@ -95,7 +96,7 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

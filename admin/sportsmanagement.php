@@ -182,16 +182,8 @@ $model_pathes[]	= array();
 $view_pathes[]	= array();
 $template_pathes[]	= array();
 
-//JFactory::$database = sportsmanagementHelper::getDBConnection();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm joomlaversion<br><pre>'.print_r(JSM_JVERSION,true).'</pre>'),'notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'');
-
-
 // Check for array format.
 $filter = JFilterInput::getInstance();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter<br><pre>'.print_r($filter,true).'</pre>'),'');
 
 if (is_array($command))
 {

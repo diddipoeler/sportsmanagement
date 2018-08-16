@@ -179,9 +179,7 @@ class SMStatisticBasic extends SMStatistic
 
 		$res = new stdclass;
 		$db->setQuery($query_core);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+       
 		$res->pagination_total = $db->loadResult();
         
         $query_core->clear('select');
@@ -190,9 +188,7 @@ class SMStatisticBasic extends SMStatistic
         $query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id '); 
 
 		$db->setQuery($query_core, $limitstart, $limit);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+       
 		$res->ranking = $db->loadObjectList();
 	
 		if ($res->ranking)

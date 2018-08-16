@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPersons
  * 
@@ -67,8 +67,8 @@ class sportsmanagementModelPersons extends JSMModelList
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
         // Load the filter state.
@@ -213,7 +213,6 @@ class sportsmanagementModelPersons extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'pl.lastname')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
                 
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 		return $this->jsmquery;
         
         
@@ -247,7 +246,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -276,7 +275,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -307,7 +306,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -338,7 +337,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
         
@@ -367,7 +366,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
         
@@ -415,7 +414,7 @@ class sportsmanagementModelPersons extends JSMModelList
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}

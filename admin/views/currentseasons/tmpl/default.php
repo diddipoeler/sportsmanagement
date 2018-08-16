@@ -37,7 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die(JText::_('Restricted access'));
+defined('_JEXEC') or die(Text::_('Restricted access'));
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -61,14 +62,14 @@ foreach ($this->items as $item)
 				<div class="t"><div class="t"><div class="t">&nbsp;</div></div></div>
 				<div class="m">
 					<fieldset class="adminform">
-						<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_LEGEND','<i>'.$item->name.'</i>'); ?></legend>
+						<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_LEGEND','<i>'.$item->name.'</i>'); ?></legend>
 						<table border='0'>
 							<tr>
 								
 									<div id="cpanel">
 										<?php
 				 						$link=JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$item->id.'&pid='.$item->id  );
-										$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS');
+										$text=Text::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS');
 										$imageFile='projekte.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -76,7 +77,7 @@ foreach ($this->items as $item)
 										<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>		
 										<?php
 				 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=templates&pid='.$item->id);
-										$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_FES');
+										$text=Text::_('COM_SPORTSMANAGEMENT_P_PANEL_FES');
 										$imageFile='templates.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -88,7 +89,7 @@ foreach ($this->items as $item)
 										{
 											$link=JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$item->id);
 											
-                                            $text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions);
+                                            $text=Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $item->count_projectdivisions);
 											$imageFile='divisionen.png';
 											$linkParams="<span>$text</span>&nbsp;";
 											$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -101,7 +102,7 @@ foreach ($this->items as $item)
 											 ($item->project_type == 'DIVISIONS_LEAGUE')))
 										{
 											$link=JRoute::_('index.php?option=com_sportsmanagement&view=treetos&pid='.$item->id);
-											$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE');
+											$text=Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE');
 											$imageFile='turnierbaum.png';
 											$linkParams="<span>$text</span>&nbsp;";
 											$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -111,7 +112,7 @@ foreach ($this->items as $item)
 										}
 										$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectposition&pid='.$item->id);
 										
-                                        $text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions);
+                                        $text=Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $item->count_projectpositions);
 										$imageFile='positionen.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -120,7 +121,7 @@ foreach ($this->items as $item)
 										<?php
 										$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&pid='.$item->id);
 										
-                                        $text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees);
+                                        $text=Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $item->count_projectreferees);
 										$imageFile='projektschiedsrichter.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -129,7 +130,7 @@ foreach ($this->items as $item)
 										<?php
 				 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$item->id);
 										
-                                        $text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams);
+                                        $text=Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $item->count_projectteams);
 										$imageFile='mannschaften.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -138,7 +139,7 @@ foreach ($this->items as $item)
 										<?php
 				 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$item->id);
 										
-                                        $text=JText::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays);
+                                        $text=Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $item->count_matchdays);
 										$imageFile='spieltage.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -146,7 +147,7 @@ foreach ($this->items as $item)
 										<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
 										<?php
 				 						$link=JRoute::_('index.php?option=com_sportsmanagement&view=jlxmlexports&pid='.$item->id);
-										$text=JText::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT');
+										$text=Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT');
 										$imageFile='xmlexport.png';
 										$linkParams="<span>$text</span>&nbsp;";
 										$image=JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
@@ -160,7 +161,7 @@ foreach ($this->items as $item)
 				</div>
 				<div class="m">
 					<fieldset class="adminform">
-						<table><tr><td><div id="cpanel"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_HINT'); ?></div></td></tr></table>
+						<table><tr><td><div id="cpanel"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_HINT'); ?></div></td></tr></table>
 					</fieldset>
 				</div>
 				<div class="b"><div class="b"><div class="b"></div></div></div>

@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
@@ -88,18 +88,18 @@ echo $this->loadTemplate('joomla2');
   // tabs anzeigen
   $idxTab = 1;
   echo JHtml::_('tabs.start','tabs_updates', array('useCookie'=>1)); 
-  echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
+  echo JHtml::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
   ?>
   <table class="table">
 		<thead>
 			<tr>
-				<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+				<th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FILE','name',$this->sortDirection,$this->sortColumn); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DESCR'); ?></th>
 				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSION','version',$this->sortDirection,$this->sortColumn); ?></th>
 				<th class="title" class="nowrap"><?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DATE','date',$this->sortDirection,$this->sortColumn); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
-				<th class="title" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT');?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_EXECUTED'); ?></th>
+				<th class="title" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_COUNT');?></th>
 			</tr>
 		</thead>
 		<tfoot><tr><td colspan='7'><?php echo '&nbsp;'; ?></td></tr></tfoot>
@@ -114,7 +114,7 @@ echo $this->loadTemplate('joomla2');
 				<td class="center"><?php echo $i+1; ?></td>
 				<?php
 					$linkTitle=$row['file_name'];
-					$linkParams="title='".JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE')."'";
+					$linkParams="title='".Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE')."'";
                     $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name='.$row['file_name'];
 					//echo JHtml::link($link,$linkTitle,$linkParams);
                     ?>
@@ -134,7 +134,7 @@ echo $this->loadTemplate('joomla2');
 								 	$image = 'icon-16-Teams.png';
 								 	$title=  '';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 													 'title= "' .$title. '"');
 													 
 										
@@ -160,11 +160,11 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 					}
 					else
 					{
-						echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE',$row['last_version'],$row['version']);
+						echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_UPDATE',$row['last_version'],$row['version']);
 					}
 					?></td>
 				<td class="center"><?php echo $row['version']; ?></td>
-				<td class="center"><?php echo JText::_($row['updateFileDate']).' '.JText::_($row['updateFileTime']); ?></td>
+				<td class="center"><?php echo Text::_($row['updateFileDate']).' '.Text::_($row['updateFileTime']); ?></td>
 				<td class="center"><?php echo $row['date']; ?></td>
 				<td class="center"><?php echo $row['count']; ?></td>
 			</tr>
@@ -175,7 +175,7 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 	</table>
 	
 	<?PHP
-	echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel'.($idxTab++));
+	echo JHtml::_('tabs.panel', Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_HISTORY'), 'panel'.($idxTab++));
 	foreach ( $this->versionhistory as $history )
 	{
   ?>
@@ -184,13 +184,13 @@ echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
 <strong>
 <?php 
 //echo $history->date; 
-echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN',$history->version,JHtml::date($history->date, JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
+echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_VERSIONEN',$history->version,JHtml::date($history->date, Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_DAYDATE')));
 ?>
 </strong>
 </legend>
 <?php 
 //echo $history->text; 
-echo JText::_($history->text);
+echo Text::_($history->text);
 ?>
 	</fieldset>
 	<?PHP

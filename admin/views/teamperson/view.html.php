@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewTeamPerson
  * 
@@ -114,7 +114,7 @@ foreach($position_id as $items => $item) {
     }
 } 	
 $this->form->setValue('project_position_id', null, $results);
-$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSITION'),'notice');	
 }
         
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'teamperson');
@@ -123,12 +123,12 @@ $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POS
         
 		if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 		{
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
 		}
  
   
@@ -164,11 +164,11 @@ $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POS
         
 		if ( $this->_persontype == 1 )
         {
-        JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
+        JToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_EDIT'), 'teamplayer');
 		}
         elseif ( $this->_persontype == 2 )
         {
-        JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
+        JToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
 		}
 
 parent::addToolbar();

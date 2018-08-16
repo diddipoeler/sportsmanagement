@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JHtml::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
   
@@ -116,11 +117,11 @@ $slide_id = 1;
 				$panelName = substr(str_replace('sportsmanagement','',str_replace('_','',$DummyStr)),1);
 				
                 //echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$panelName);
-				echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($panelName), "slide".$slide_id."_id");
+				echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_($panelName), "slide".$slide_id."_id");
                 	
 				echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 				echo "Checking existence of table [$DummyStr] - <span style='color:";
-				if ($db->execute()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
+				if ($db->execute()){echo "green'>".Text::_('Success');}else{echo "red'>".Text::_('Failed');}
 				echo '</span>';
 				echo '</h3></td></tr></thead><tbody>';
 				$DummyStr=$import;
@@ -174,7 +175,7 @@ $slide_id = 1;
 	
 				$rows=count($newIndexes)+1;
 				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-				echo JText::sprintf('Table needs following<br />keys/indexes:',$tableName);
+				echo Text::sprintf('Table needs following<br />keys/indexes:',$tableName);
 				echo '</th></tr>';
 				$k=0;
 				foreach ($newIndexes AS $index)
@@ -188,7 +189,7 @@ $slide_id = 1;
 	
 				$rows=count($newIndexes)+1;
 				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-				echo JText::_('Dropping keys/indexes:');
+				echo Text::_('Dropping keys/indexes:');
 				echo '</th></tr>';
 				$keys = $db->getTableKeys($tableName);
                 
@@ -243,7 +244,7 @@ $slide_id = 1;
                             
 							if(strcasecmp($key->Key_name, $reg[1])!==0) 
                             {
-								echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
+								echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
 								$skip = true;
 								break;
 							}
@@ -257,15 +258,15 @@ $slide_id = 1;
                         try {    
 						$db->setQuery($queryDelete);
                         $db->execute();
-                        echo "$queryDelete - <span style='color:green'".JText::_('Success').'</span>';
+                        echo "$queryDelete - <span style='color:green'".Text::_('Success').'</span>';
                         } catch (Exception $e) {
-                        echo "$queryDelete - <span style='color:red'".JText::_('Failed').'</span>';
+                        echo "$queryDelete - <span style='color:red'".Text::_('Failed').'</span>';
                         }    
                         }
 					}
 					else
 					{
-						echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
+						echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$index).'</span>';
 					}
 					echo '&nbsp;</td></tr>';
 					$k=(1-$k);
@@ -275,7 +276,7 @@ $slide_id = 1;
 	
 				$rows=count($newFields)+1;
 				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-				echo JText::_('Updating fields:');
+				echo Text::_('Updating fields:');
 				echo '</th></tr>';
 				$columns = $db->getTableColumns($tableName, false);
 				foreach ($newFields AS $field)
@@ -289,7 +290,7 @@ $slide_id = 1;
 					if(array_key_exists($fieldName, $columns) && 
 						(strcasecmp($fieldName,$columns[$fieldName]->Field)===0) && 
 						strpos(strtolower($dFieldSetting), $columns[$fieldName]->Type)) {
-						echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$query).'</span>';
+						echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$query).'</span>';
 						continue;
 					} else {
 						if(isset($columns[$fieldName])) {
@@ -306,9 +307,9 @@ $slide_id = 1;
 						try {    
 						$db->setQuery($query);
                         $db->execute();
-                        echo "$query - <span style='color:green'".JText::_('Success').'</span>';
+                        echo "$query - <span style='color:green'".Text::_('Success').'</span>';
                         } catch (Exception $e) {
-                        echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
+                        echo "$query - <span style='color:red'".Text::_('Failed').'</span>';
                         }
                         }
 					} else {
@@ -320,9 +321,9 @@ $slide_id = 1;
                         try {    
 						$db->setQuery($query);
                         $db->execute();
-                        echo "$query - <span style='color:green'".JText::_('Success').'</span>';
+                        echo "$query - <span style='color:green'".Text::_('Success').'</span>';
                         } catch (Exception $e) {
-                        echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
+                        echo "$query - <span style='color:red'".Text::_('Failed').'</span>';
                         }
                         }
 					}
@@ -332,7 +333,7 @@ $slide_id = 1;
 	
 				$rows=count($newIndexes)+1;
 				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-				echo JText::_('Adding keys/indexes:');
+				echo Text::_('Adding keys/indexes:');
 				echo '</th></tr>';
 				$keys = $db->getTableKeys($tableName);
 				foreach ($newIndexes AS $index)
@@ -364,7 +365,7 @@ $slide_id = 1;
 						foreach($keys as $key) {
 							preg_match('/`(.*?)`/', $keyName, $reg);
 							if(strcasecmp($key->Key_name, $reg[1])===0) {
-								echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
+								echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
 								$skip = true;
 								break;
 							}
@@ -375,15 +376,15 @@ $slide_id = 1;
                         try {    
 						$db->setQuery($queryAdd);
                         $db->execute();
-                        echo "$queryAdd - <span style='color:green'".JText::_('Success').'</span>';
+                        echo "$queryAdd - <span style='color:green'".Text::_('Success').'</span>';
                         } catch (Exception $e) {
-                        echo "$queryAdd - <span style='color:red'".JText::_('Failed').'</span>';
+                        echo "$queryAdd - <span style='color:red'".Text::_('Failed').'</span>';
                         }
                         }
 					}
 					else
 					{
-						echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
+						echo "<span style='color:orange; '>".Text::sprintf('Skipping handling of %1$s',$index).'</span>';
 					}
 					echo '&nbsp;</td></tr>';
 					$k=(1-$k);
@@ -411,8 +412,8 @@ $slide_id = 1;
 	$mtime = $mtime[1] + $mtime[0];
 	$starttime = $mtime;
 
-	JToolbarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
-	echo '<h2>'.JText::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
+	JToolbarHelper::title(Text::_('JSM Sportsmanagement - Database update process'));
+	echo '<h2>'.Text::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 								$version,$updateDescription,$updateFileDate,$updateFileTime).'</h2>';
 	$totalUpdateParts = 2;
 	setUpdatePart();
@@ -420,11 +421,11 @@ $slide_id = 1;
 	if ( getUpdatePart() < $totalUpdateParts )
 	{
 		echo '<p><b>';
-		echo JText::sprintf('Please remember that this update routine has totally %1$s update steps!',$totalUpdateParts).'</b><br />';
-		echo JText::_('So please go to the bottom of this page to check if there are errors and more update steps to do!');
+		echo Text::sprintf('Please remember that this update routine has totally %1$s update steps!',$totalUpdateParts).'</b><br />';
+		echo Text::_('So please go to the bottom of this page to check if there are errors and more update steps to do!');
 		echo '</p>';
 		echo '<p style="color:red; font-weight:bold; ">';
-		echo JText::_('It is recommended that you make a backup of your Database before!!!').'<br />';
+		echo Text::_('It is recommended that you make a backup of your Database before!!!').'<br />';
 		echo '</p>';
 		echo '<hr>';
 	}
@@ -434,22 +435,22 @@ $slide_id = 1;
 		echo '<hr />';
 		echo ImportTables();
 		echo '<br /><center><hr />';
-			echo JText::sprintf('Memory Limit is %1$s',ini_get('memory_limit')).'<br />';
-			echo JText::sprintf('Memory Peak Usage was %1$s Bytes',number_format(memory_get_peak_usage(true),0,'','.')).'<br />';
-			echo JText::sprintf('Time Limit is %1$s seconds',ini_get('max_execution_time')).'<br />';
+			echo Text::sprintf('Memory Limit is %1$s',ini_get('memory_limit')).'<br />';
+			echo Text::sprintf('Memory Peak Usage was %1$s Bytes',number_format(memory_get_peak_usage(true),0,'','.')).'<br />';
+			echo Text::sprintf('Time Limit is %1$s seconds',ini_get('max_execution_time')).'<br />';
 			$mtime=microtime();
 			$mtime=explode(" ",$mtime);
 			$mtime=$mtime[1] + $mtime[0];
 			$endtime=$mtime;
 			$totaltime=($endtime - $starttime);
-			echo JText::sprintf('This page was created in %1$s seconds',$totaltime);
+			echo Text::sprintf('This page was created in %1$s seconds',$totaltime);
 		echo '<hr /></center>';
 		setUpdatePart(0);
 	}
 	else
 	{
 		echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';location.reload(true)" value="';
-		echo JText::sprintf('Click here to do step %1$s of %2$s steps to finish the update.',getUpdatePart()+1,$totalUpdateParts);
+		echo Text::sprintf('Click here to do step %1$s of %2$s steps to finish the update.',getUpdatePart()+1,$totalUpdateParts);
 		echo '" />';
 	}
 ?>

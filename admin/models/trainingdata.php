@@ -39,7 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
  
@@ -102,7 +102,7 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

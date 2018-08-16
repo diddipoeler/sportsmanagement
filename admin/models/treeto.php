@@ -99,15 +99,6 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
 		$global_known = (int) $this->jsmjinput->post->get('global_known');
 		$global_fake = (int) $this->jsmjinput->post->get('global_fake');
         
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->jsmjinput->post->get('jform'),true).'</pre>'),'Notice');        
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' treeto_id<br><pre>'.print_r($treeto_id,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tree_i<br><pre>'.print_r($tree_i,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_bestof<br><pre>'.print_r($global_bestof,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_matchday<br><pre>'.print_r($global_matchday,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_known<br><pre>'.print_r($global_known,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' global_fake<br><pre>'.print_r($global_fake,true).'</pre>'),'Notice');
-
-        
 		if( $tree_i == 0 ) //nothing selected in dropdown
 		{
 			return false;

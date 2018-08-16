@@ -141,11 +141,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
-		
-//        $app->enqueueMessage(JText::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
-//        $app->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
-//        $app->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
-        
+       
 		$this->request_url	= $uri->toString ();
 		$this->config	= $config;
 		$revisionDate = '2011-04-28 - 12:00';

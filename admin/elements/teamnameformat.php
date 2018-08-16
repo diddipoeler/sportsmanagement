@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldTeamNameFormat
  * 
@@ -67,9 +67,9 @@ class JFormFieldTeamNameFormat extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
-		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
-		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
+		$mitems[] = JHtml::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_SHORT'));
+		$mitems[] = JHtml::_('select.option', 1, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_MEDIUM'));
+		$mitems[] = JHtml::_('select.option', 2, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TEAM_NAME_FORMAT_FULL'));
 
 		$output= JHtml::_('select.genericlist',  $mitems,
 				$this->name,

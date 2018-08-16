@@ -51,11 +51,7 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
         $this->task = $command;
         // Explode the controller.task command.
 	   //list ($this->controller, $this->task) = explode('.', $command);
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command2<br><pre>'.print_r($command2,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($this->task,true).'</pre>'),'');
-        
+       
         $this->step = $app->getUserState( "$option.step", '0' );
         
         if ( !$this->step )

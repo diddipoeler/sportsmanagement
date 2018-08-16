@@ -10,63 +10,64 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 ?>
 
 <form method="post" id="adminForm" action="<?php echo $this->request_url; ?>">
 	<fieldset class='adminform'>	
 	<fieldset class="adminform">
-	<?php echo Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_DESC'); ?>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_DESC'); ?>
 	</fieldset>
-	<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+	<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 		<?php echo JHtml::_('form.token')."\n"; ?>
 		<table class='admintable'>
 		<tbody>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TIP'); ?>">
-				<label for="scheduling"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TIP'); ?>">
+				<label for="scheduling"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_LABEL'); ?></label>
 			</td>
 			<td><?php echo $this->lists['scheduling']; ?></td>
 		</tr>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_TIP'); ?>">
-				<label for="time"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_TIP'); ?>">
+				<label for="time"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTTIME_LABEL'); ?></label>
 			</td>
 			<td><input type="text" name="time" value="20:00"/></td>
 		</tr>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_TIP'); ?>">
-				<label for="interval"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_TIP'); ?>">
+				<label for="interval"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ROUNDS_INTERVAL_LABEL'); ?></label>
 			</td>
 			<td><input type="text" name="interval" value="7"/></td>
 		</tr>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_TIP'); ?>">
-				<label for="start"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_TIP'); ?>">
+				<label for="start"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_STARTDATE_LABEL'); ?></label>
 			</td>
 			<td><?php echo JHtml::calendar(strftime('%Y-%m-%d'), 'start', 'start', '%Y-%m-%d'); ?></td>
 		</tr>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_TIP'); ?>">
-				<label for="roundname"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_TIP'); ?>">
+				<label for="roundname"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME_LABEL'); ?></label>
 			</td>
-			<td><input type="text" name="roundname" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME'); ?>"/></td>
+			<td><input type="text" name="roundname" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_NEW_ROUND_NAME'); ?>"/></td>
 		</tr>
 		
 		<tr>
-			<td nowrap='nowrap' class="key hasTip" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL').'::'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_TIP'); ?>">
-				<label for="roundname"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL'); ?></label>
+			<td nowrap='nowrap' class="key hasTip" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL').'::'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_TIP'); ?>">
+				<label for="roundname"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_LABEL'); ?></label>
 			</td>
 			<td>
 				<?php echo $this->lists['teamsorder']; ?>
 				<div id="ordering_buttons">
-					<button type="button" id="buttonup"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_UP')?></button>
-					<button type="button" id="buttondown"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_DOWN')?></button>
+					<button type="button" id="buttonup"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_UP')?></button>
+					<button type="button" id="buttondown"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TEAMS_ORDER_DOWN')?></button>
 				</div>
 			</td>
 		</tr>

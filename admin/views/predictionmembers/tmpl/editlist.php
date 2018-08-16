@@ -53,25 +53,11 @@ if($close == 1) {
 
 
 
-// Set toolbar items for the page
-//$edit = JFactory::getApplication()->input->getVar('edit',true);
 
-//$component_text = 'COM_SPORTSMANAGEMENT_';
-//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
-#JToolbarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
-//JToolbarHelper::save( 'predictionmember.save_memberlist' );
-
-// for existing items the button is renamed `close` and the apply button is showed
-//JToolbarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
-
-//JLToolBarHelper::onlinehelp();
-
-//$uri = JFactory::getURI();
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
-//$version = urlencode(JoomleagueHelper::getVersion());
-//echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_joomleague/assets/js/');
+
 ?>
 
 

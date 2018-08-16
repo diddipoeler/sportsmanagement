@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 
 
@@ -34,9 +34,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
-        
+       
         if ( $this->items )
         {
         foreach ($this->items as $item)
@@ -75,7 +73,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	{
 
 	// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
 $this->icon = 'currentseason';
 
         

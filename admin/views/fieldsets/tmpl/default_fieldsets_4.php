@@ -9,7 +9,7 @@
  * @subpackage fieldsets
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 switch ($this->fieldset) {
     /**
      * für die spielfeldpositionen
@@ -60,13 +60,13 @@ switch ($this->fieldset) {
             <table class="table">
                 <tr>
                     <td class='key' nowrap='nowrap'>
-        <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+        <?php echo Text::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                     </td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
-                    <td class='key' style='text-align:center;' width='5%'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
-                    <td class='key' style='text-align:center;'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_DAY'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_STARTTIME'); ?></td>
+                    <td class='key' style='text-align:center;' width='5%'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_ENDTIME'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_PLACE'); ?></td>
+                    <td class='key' style='text-align:center;'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_NOTES'); ?></td>
                 </tr>
         <?php
         if (!empty($this->trainingData)) {
@@ -87,7 +87,7 @@ switch ($this->fieldset) {
                         ?>
                         <tr>
                             <td class='key' nowrap='nowrap'>
-                                <?php echo JText::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
+                                <?php echo Text::_('JACTION_DELETE'); ?>&nbsp;<input type='checkbox' name='delete[]' value='<?php echo $td->id; ?>' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
                             </td>
                             <td nowrap='nowrap' width='5%'><?php echo $this->lists['dayOfWeek'][$td->id]; ?></td>
                             <td nowrap='nowrap' width='5%'>
@@ -120,7 +120,7 @@ switch ($this->fieldset) {
         <fieldset class='adminform'>
 
             <?php
-            echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
+            echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
             ?>
         </fieldset>
         <?php
@@ -194,7 +194,7 @@ switch ($this->fieldset) {
                 $fields = $this->extended->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -214,7 +214,7 @@ switch ($this->fieldset) {
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
     /**
@@ -230,7 +230,7 @@ switch ($this->fieldset) {
                 $fields = $this->extendeduser->getFieldset($fieldset->name);
 
                 if (!count($fields)) {
-                    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                    echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                 }
 
                 foreach ($fields as $field) {
@@ -242,7 +242,7 @@ switch ($this->fieldset) {
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
 
@@ -256,7 +256,7 @@ case 'teamperson':
                     $fields = $this->extended->getFieldset($fieldset->name);
 
                     if (!count($fields)) {
-                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                        echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                     }
 
                     foreach ($fields as $field) {
@@ -281,7 +281,7 @@ case 'teamperson':
                     <?php
                 }
             } else {
-                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
             }
 
             break;
@@ -299,7 +299,7 @@ case 'teamperson':
                     $fields = $this->extended->getFieldset($fieldset->name);
 
                     if (!count($fields)) {
-                        echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                        echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                     }
 
                     foreach ($fields as $field) {
@@ -324,7 +324,7 @@ case 'teamperson':
                     <?php
                 }
             } else {
-                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
             }
 
             break;
@@ -339,9 +339,9 @@ case 'teamperson':
                             $fields = $this->formparams->getFieldset($fieldset->name);
 
                             if (!count($fields)) {
-                                echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+                                echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
                             }
-                            echo '<b><p class="tab-description">' . JText::_($this->description) . '</p></b>';
+                            echo '<b><p class="tab-description">' . Text::_($this->description) . '</p></b>';
                             foreach ($fields as $field) {
                                 echo $field->label;
                                 echo $field->input;
@@ -351,7 +351,7 @@ case 'teamperson':
                 <?php
             }
         } else {
-            echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+            echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
         }
         break;
 
@@ -384,8 +384,8 @@ case 'teamperson':
                                    href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . $this->jinput->getVar("view") . '-' . $var_onlinehelp; ?>"
                                    class="modal">
                     <?php
-                    echo JHtml::_('image', 'media/com_sportsmanagement/jl_images/help.png', JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
-                            JText::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
+                    echo JHtml::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+                            Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
                     ?>
                                 </a>
 

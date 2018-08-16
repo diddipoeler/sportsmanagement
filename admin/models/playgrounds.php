@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPlaygrounds
  * 
@@ -146,7 +146,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
          }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -174,7 +174,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
          }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}

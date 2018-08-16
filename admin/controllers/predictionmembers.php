@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla controlleradmin library
 jimport('joomla.application.component.controlleradmin');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementControllerpredictionmembers
  * 
@@ -56,7 +57,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     {
     	
         // Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->save_memberlist();
@@ -95,7 +96,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 
 		if ( $pgmid == 0 )
 		{
-			JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
+			JError::raiseWarning( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
 		}
 		$msg		= '';
 		$d			= ' - ';
@@ -123,7 +124,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
+			JError::raiseError( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_APPR' ) );
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -149,7 +150,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 
 		if ( count( $cids ) < 1 )
 		{
-			JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
+			JError::raiseError( 500, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEL_MEMBER_REJECT' ) );
 		}
 
 		$model = $this->getModel( 'predictionmember' );
@@ -184,23 +185,23 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
+			JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
 		}
 
 		$model = $this->getModel('predictionmember');
 
 		if (!$model->deletePredictionResults($cid,$prediction_id))
 		{
-			$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
+			$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_MSG');
 		}
-		$msg .= $d . JText::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENTADMIN_PMEMBER_CTRL_DEL_PRESULTS');
 
 		if (!$model->deletePredictionMembers($cid))
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS_MSG');
 		}
 
-		$msg .= $d . JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
+		$msg .= $d . Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_PMEMBERS');
 
 		$link = 'index.php?option=com_sportsmanagement&view=predictionmembers';
 		//echo $msg;
