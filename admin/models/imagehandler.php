@@ -152,9 +152,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 
 		$images 	= array ();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder -> '.$folder.''),'Notice');
-
-		// Get the list of files and folders from the given folder
+	// Get the list of files and folders from the given folder
 		$fileList 	= JFolder::files($basePath);
 
 		// Iterate over the files if they exist

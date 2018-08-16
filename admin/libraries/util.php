@@ -71,10 +71,6 @@ class jsmGCalendarUtil
 		$menu = JFactory::getApplication()->getMenu();
 		$items = $menu->getItems('component_id', $component->id);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' component<br><pre>'.print_r($component,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'Notice');
-
 		$default = null;
 		if (is_array($items)) {
 			foreach($items as $item) {

@@ -50,17 +50,11 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 		// Check for request forgeries
 		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
-		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdbbimport' );
 		$post = JFactory::getApplication()->input->get ( 'post' );
 		
-		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
 		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
-		
-		//$app->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
-		//$app->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
-		
+	
 		if ($whichfile == 'playerfile') {
 			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
 		} elseif ($whichfile == 'matchfile') {

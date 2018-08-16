@@ -41,15 +41,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $starttime = microtime();
         $tpl = '';
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
-
         if ($this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3') {
             $this->_displayEditlist($tpl);
             return;
         }
-
-//		$filter_order		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
-//		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
 
         $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');

@@ -5,13 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 jimport('joomla.html.pane');
 
-//JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
-//
-////JLToolBarHelper::save();
-//JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
-//JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));
 
-//JToolbarHelper::help('screen.joomleague',true);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

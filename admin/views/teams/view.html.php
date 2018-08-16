@@ -73,8 +73,6 @@ class sportsmanagementViewTeams extends sportsmanagementView {
         unset($myoptions);
 
         $this->club_id = $this->jinput->get->get('club_id');
-        //$this->jinput->set('club_id', $this->club_id);
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
         $this->lists = $lists;
     }
 

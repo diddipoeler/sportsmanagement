@@ -1660,14 +1660,10 @@ $query->join('INNER',' #__sportsmanagement_position AS pos ON pos.id = ppos.posi
         JFactory::getDbo()->setQuery($query);
         
         $result = JFactory::getDbo()->loadObjectList($id);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-        
+       
         if ( !$result )
        {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+
         }
         
 		return $result;

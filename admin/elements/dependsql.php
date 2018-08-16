@@ -222,28 +222,14 @@ $script[] = "});";
        // Add the script to the document head.
     JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
         
-        //if ( $ajaxtask && $value )
-        //{
         $ajaxtask = 'get'.$ajaxtask;    
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
-        //}
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
      if ( $result )
         {
      $options = array_merge($options, $result);
      }
-//     // Merge any additional options in the XML definition.
-//		$options = array_merge(parent::getOptions(), $options);
-//
-//		return $options;   
-    //return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
+
     return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
     }    
 

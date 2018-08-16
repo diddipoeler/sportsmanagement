@@ -374,21 +374,6 @@ abstract class sportsmanagementHelper {
         $user = JFactory::getUser();
         $res = JFactory::getDate(strtotime($match->match_date));
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
-//        
-//         if(version_compare(JVERSION,'3.0.0','ge')) 
-//            {
-//                $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-//            }
-//            else
-//            {
-//				$res->setOffset($app->getCfg('offset'));
-//            }
-//        
-//        $test = $res->toUnix('true');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' test<br><pre>'.print_r($test,true).'</pre>'),'Notice');
-
         if ($match->match_date > 0) {
             $app = JFactory::getApplication();
             if ($app->isAdmin()) {

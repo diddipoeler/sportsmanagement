@@ -54,9 +54,6 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
   $prediction_id = $post['cid'];
   //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
   
-  //$app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
-  //$app->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
-  
   
   foreach ( $post['prediction_members'] as $key => $value )
   {

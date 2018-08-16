@@ -165,7 +165,6 @@ return count($division_teams);
 	public function delete(&$pks)
 	{
 	$app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);
     

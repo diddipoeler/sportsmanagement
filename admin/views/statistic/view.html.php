@@ -65,35 +65,9 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 		{
 		  //$this->setLayout('edit');
         }
-        
-        /*
-        $templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
-        $xmlfile = $templatepath.DS.$item->class.'.xml';
-        $jRegistry = new JRegistry;
-		//$jRegistry->loadString($data, $format);
-        //$jRegistry->loadJSON($this->item->params);
-        $jRegistry->loadArray($this->item->params);
-        
-        $app->enqueueMessage(JText::_('sportsmanagementViewstatistic jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-        
-        //$this->formparams = JForm::getInstance($item->class, $xmlfile,array('control'=> 'params'));
-        $this->formparams = JForm::getInstance('params', $xmlfile,array('control'=> 'params'),false, '/config');
-        //$this->formparams->bind($jRegistry);
-        $this->formparams->bind($this->item->params);
-		*/
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->params,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->baseparams,true).'</pre>'),'Notice');
-        
+
 		$formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
 		$this->formparams = $formparams;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
-        
-// 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
-// 		$this->assignRef( 'extended', $extended );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
 		
 	}
  

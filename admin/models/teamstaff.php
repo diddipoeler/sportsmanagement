@@ -218,10 +218,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	{
 	   $app = JFactory::getApplication();
        $post=JFactory::getApplication()->input->post->getArray(array());
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -229,8 +226,6 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

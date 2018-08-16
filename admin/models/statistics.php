@@ -58,13 +58,6 @@ class sportsmanagementModelStatistics extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		//$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
-        // Initialise variables.
-	//	$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);

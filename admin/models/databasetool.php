@@ -144,16 +144,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
     function getSportsManagementTables() {
         $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
 
         foreach ($result as $key => $value) {
             if (preg_match("/sportsmanagement/i", $value) && preg_match("/" . $prefix . "/i", $value)) {
                 self::$jsmtables[] = $value;
             }
         }
-
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
 
         return self::$jsmtables;
     }

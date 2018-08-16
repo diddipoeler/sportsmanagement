@@ -423,9 +423,6 @@ class parseCSV {
     {
 	  $letters[] = 'I'.$buchstabe;
     }
-    //$app->enqueueMessage(JText::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('letters<br><pre>'.print_r($letters,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('strlen<br><pre>'.print_r($strlen,true).'</pre>'   ),'');
 		
 		// walk through each character
 		for ( $i=0; $i < $strlen; $i++ ) {

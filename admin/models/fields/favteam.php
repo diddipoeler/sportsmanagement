@@ -50,10 +50,6 @@ class JFormFieldFavteam extends JFormFieldList
         $layout = $jinput->getCmd('layout');
         $id = $jinput->getVar('id','0');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'view <br><pre>'.print_r($view,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'layout <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'id <br><pre>'.print_r($id,true).'</pre>'),'Notice');
-
         // Initialize variables.
 		$options = array();
 

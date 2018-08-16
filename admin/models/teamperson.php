@@ -506,10 +506,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
-		
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        // update personendaten
        // Fields to update.
     $fields = array(

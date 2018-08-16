@@ -172,15 +172,11 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($this->project_id);
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($projectws,true).'</pre>'),'Notice');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
-        
-		//$nodews = $this->get('Data','node');
+       
+
         $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($this->jinput->get('nid'));
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nodews<br><pre>'.print_r($nodews,true).'</pre>'),'Notice');
-
 		$this->match = $this->items;
 		$this->projectws = $projectws;
 		$this->nodews = $nodews;

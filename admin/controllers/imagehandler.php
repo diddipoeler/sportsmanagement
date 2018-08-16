@@ -63,12 +63,6 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 
 		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<pre>'.print_r($jinput,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<pre>'.print_r($file,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$type),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$folder),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$base_Dir),'');
-
     //do we have an imagelink?
     if ( !empty( $linkaddress ) )
     {

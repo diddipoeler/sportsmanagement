@@ -176,15 +176,8 @@ $position = $this->jsmdb->loadColumn();
         return false;
         }
 
-
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position <br><pre>'.print_r($position ,true).'</pre>'),'');	   
 $result = array_unique($position );
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result ,true).'</pre>'),'');	   
-
 $match_ids = implode(",",$result);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');	   
-
-
 
 foreach( $items as $item )
 {

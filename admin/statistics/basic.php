@@ -306,9 +306,7 @@ try{
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id,$select,FALSE);
               
 		$db->setQuery($query, 0, 1);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$res = $db->loadResult();
 		return self::formatValue($res, $this->getPrecision());
 	}
@@ -329,9 +327,7 @@ try{
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id,$select,TRUE);
         
 		$db->setQuery($query);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
+       
 		$res = $db->loadResult();
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}

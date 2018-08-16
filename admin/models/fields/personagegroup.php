@@ -85,10 +85,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
     // Get some field values from the form.
     $select_id	= (int) $this->form->getValue('id');
 	$agegroup_id	= (int) $this->form->getValue('agegroup_id');
-    
-    //$app->enqueueMessage(JText::_('personagegroup select_id<br><pre>'.print_r($select_id,true).'</pre>'   ),'');
-    //$app->enqueueMessage(JText::_('personagegroup agegroup_id<br><pre>'.print_r($agegroup_id,true).'</pre>'   ),'');
- 
+
       $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
 			$query->from('#__sportsmanagement_agegroup as a');
             $query->join('INNER','#__sportsmanagement_'.$vartable.' AS t on t.sports_type_id = a.sportstype_id');
@@ -96,9 +93,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
 			$query->order('name');
 			$db->setQuery($query);
 			$options_select = $db->loadObjectList();
-			
-      //$app->enqueueMessage(JText::_('personagegroup options<br><pre>'.print_r($options_select,true).'</pre>'   ),'');
-			
+		
       foreach($options_select as $row)
 			{
      

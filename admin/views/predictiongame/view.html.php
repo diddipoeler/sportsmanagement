@@ -62,10 +62,7 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
         
         $pred_admins = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
 		$pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
- 
-//		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_admins<br><pre>'.print_r($pred_admins,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_projects<br><pre>'.print_r($pred_projects,true).'</pre>'),'');
-        
+       
         // Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{

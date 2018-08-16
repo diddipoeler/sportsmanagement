@@ -198,36 +198,15 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	}
         
 	}
-    
-    
-//    for($a=$count_players; $a < 11; $a++)
-//    {
-//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,'');
-//    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,'');
-//    $position++;
-//    }
-    
-    //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-    
+
 	for($a = 0; $a < $count_players; $a++)
     {
-    //if ( $a < $count_players )
-//    {    
 	$bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
 	$bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
-   // }
-//    else
-//    {
-//    $bildpositionen[$this->item->name][$a]['heim']['oben'] = '';
-//    $bildpositionen[$this->item->name][$a]['heim']['links'] = '';    
-//    }
 	$position++;
 	}
 	$this->bildpositionen = $bildpositionen;  
-    
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
-    
+   
 	}
 	else
 	{

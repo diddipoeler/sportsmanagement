@@ -49,13 +49,7 @@ class sportsmanagementControllerTreetonode extends JControllerForm
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = JFactory::getDocument();
-        
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($this->jsmjinput->get('pid'),true).'</pre>'),'Notice');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tid<br><pre>'.print_r($this->jsmjinput->get('tid'),true).'</pre>'),'Notice');
-        
-        //$this->jsmjinput->set('pid',$this->jsmjinput->get('pid'));
-        
+       
         $this->jsmapp->setUserState($this->jsmoption.'.pid',$this->jsmjinput->get('pid') );
         $this->jsmapp->setUserState($this->jsmoption.'.tid',$this->jsmjinput->get('tid') );
         

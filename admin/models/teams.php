@@ -59,9 +59,6 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->club_id = $this->jinput->get->get('club_id');
         }
 
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($this->jinput ,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
-
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
 

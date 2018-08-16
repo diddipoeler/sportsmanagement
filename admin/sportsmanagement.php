@@ -201,19 +201,11 @@ if (strpos($command, '.') !== false)
 	list ($type, $task) = explode('.', $command);
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($task,true).'</pre>'),'');
-
 for ($e = 0; $e < count($arrExtensions); $e++)
 {
 $extension = $arrExtensions[$e];
 $extensionname = $arrExtensions[$e];
 $extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extensionpath<br><pre>'.print_r($extensionpath,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extension<br><pre>'.print_r($extension,true).'</pre>'),'');
 
 if($app->isAdmin()) 
 {

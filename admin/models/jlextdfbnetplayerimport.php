@@ -1333,13 +1333,8 @@ elseif ( $whichfile == 'matchfile' )
 	}
 	else
 	{
-	//$app->enqueueMessage(JText::_('result<br><pre>'.print_r($csv->data[0],true).'</pre>'   ),'');
-	//$app->enqueueMessage(JText::_('result<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 		$importcsv = true;
 	}
-	//  echo 'csv->data<pre>';
-	//  print_r($csv->data);
-	//  echo '</pre>';
 
 	$lfdnumber = 0;
 	$lfdnumberteam = 1;

@@ -69,12 +69,6 @@ class JFormFieldrankingcolumns extends JFormField
         $option = JFactory::getApplication()->input->getCmd('option');
         
         $selrankingcol = (int) ($this->element['selrankingcol']);
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' element<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($this->value,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' selrankingcol<br><pre>'.print_r($selrankingcol,true).'</pre>'),'Notice');
-        
-        
 
     if ( $selrankingcol )
     {

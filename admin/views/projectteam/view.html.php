@@ -95,9 +95,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
         
 		$season_team = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
 		$season_team->load( $team_id );
-        
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_team<br><pre>'.print_r($season_team,true).'</pre>'),'');
-        
+       
 		$mdlTeam = JModelLegacy::getInstance('Team', 'sportsmanagementModel');
 		$project_team = $mdlTeam->getTeam($season_team->team_id,0);
 		$trainingdata = $mdlTeam->getTrainigData(0, $this->item->id);
@@ -106,10 +104,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 	{
 		$this->form->setValue('standard_playground', null, $project_team->standard_playground);
 	}
-        
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team<br><pre>'.print_r($project_team,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-        
+       
 	$daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
 			1 => JText::_('MONDAY'), 
 			2 => JText::_('TUESDAY'), 

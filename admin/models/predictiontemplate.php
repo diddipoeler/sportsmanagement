@@ -158,10 +158,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+      
        if (isset($post['params']) && is_array($post['params'])) 
 		{
 			// Convert the params field to a string.

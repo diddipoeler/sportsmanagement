@@ -164,11 +164,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
 			$extractdir = JPATH_SITE.DS.'tmp';
 			$importFile = JPATH_SITE.DS.'tmp'. DS.'joomleague_import.jlg';
-            
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dest <br><pre>'.print_r($dest,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extractdir <br><pre>'.print_r($extractdir,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' importFile <br><pre>'.print_r($importFile,true).'</pre>'),'');
-            
+           
 			if (JFile::exists($importFile))
 			{
 				JFile::delete($importFile);

@@ -45,14 +45,11 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $selected = 0;
-        //$app->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
+
         // Initialize variables.
 		$options = array();
-    //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
-		//$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
 		$select_id = JFactory::getApplication()->input->getVar('id');
-//echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
  			$select_id = $select_id[0];
  		}
@@ -67,8 +64,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$query->where('t.id = '.$select_id);
 		$db->setQuery($query);
 		$country = $db->loadResult();
-		//echo 'country<br /><pre>~' . print_r($country,true) . '~</pre><br />';
-				
+			
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
@@ -78,15 +74,11 @@ class JFormFieldAssociationsList extends JFormFieldList
 			$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
-			//$options = $db->loadObjectList();
-			
+		
 			$sections = $db->loadObjectList ();
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
-            
+           
   $categoryparent = empty($sections) ? 0 : $sections[0]->value;
-  //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
-  //$options = $this->JJ_categoryArray();
+
 $list = $this->JJ_categoryArray(0, $country);
 
 $preoptions = array();
