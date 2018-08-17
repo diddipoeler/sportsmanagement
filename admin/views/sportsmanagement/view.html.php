@@ -39,9 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text; 
  
 /**
  * SportsManagement View
@@ -98,7 +96,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolbarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT__NEW') : JText::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
+		JToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
@@ -141,9 +139,9 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	{
 		$isNew = $this->item->id == 0;
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.form');
 
 
@@ -121,7 +121,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         JFactory::getApplication()->input->set('hidemainmenu', true);
         JFactory::getApplication()->input->set('pid', $this->project_id);
         $this->item->name = $this->item->template;
-        $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(JText::_($this->item->title)));
+        $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(Text::_($this->item->title)));
         $this->icon = 'template';
         parent::addToolbar();
 	}

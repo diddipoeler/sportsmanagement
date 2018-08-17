@@ -39,7 +39,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.html.bootstrap');
 jimport('joomla.application.component.view');
 
@@ -127,7 +127,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
         $this->icon = 'updates';
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));

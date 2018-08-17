@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.file');
 
@@ -53,7 +53,7 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
 		//$total = $this->get('Total');
 		//$pagination = $this->get('Pagination');
@@ -63,7 +63,7 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 		$this->table = $table;
         
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$sportstypes[]=JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();		
 		
@@ -93,22 +93,16 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-//		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
 		
 		JToolbarHelper::publishList();
 		JToolbarHelper::unpublishList();
 		JToolbarHelper::divider();
 		JToolbarHelper::editList('statistic.edit');
 		JToolbarHelper::addNew('statistic.add');
-		JToolbarHelper::custom('statistic.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('statistic.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('statistic.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('statistic.export',Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

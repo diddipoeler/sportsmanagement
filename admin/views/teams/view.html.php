@@ -10,7 +10,7 @@
 */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 
 /**
@@ -34,13 +34,13 @@ class sportsmanagementViewTeams extends sportsmanagementView {
         $starttime = microtime();
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         $this->table = JTable::getInstance('team', 'sportsmanagementTable');
 
         //build the html select list for sportstypes
-        $sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
+        $sportstypes[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
         $mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
         $allSportstypes = $mdlSportsTypes->getSportsTypes();
         $sportstypes = array_merge($sportstypes, $allSportstypes);
@@ -51,7 +51,7 @@ class sportsmanagementViewTeams extends sportsmanagementView {
         unset($sportstypes);
 
         //build the html options for nation
-        $nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+        $nation[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
         if ($res = JSMCountries::getCountryOptions()) {
             $nation = array_merge($nation, $res);
             //$this->assignRef('search_nation', $res);
@@ -62,7 +62,7 @@ class sportsmanagementViewTeams extends sportsmanagementView {
         $lists['nation2'] = JHtmlSelect::genericlist($nation, 'filter_search_nation', 'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 'value', 'text', $this->state->get('filter.search_nation'));
 
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $myoptions[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
 
         if ($res = $mdlagegroup->getAgeGroups()) {
@@ -84,14 +84,14 @@ class sportsmanagementViewTeams extends sportsmanagementView {
     protected function addToolbar() {
 
         // Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
         $this->icon = 'teams';
         JToolbarHelper::apply('teams.saveshort');
         JToolbarHelper::addNew('team.add');
         JToolbarHelper::editList('team.edit');
-        JToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', JText::_('JTOOLBAR_DUPLICATE'), true);
-        JToolbarHelper::custom('team.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-        JToolbarHelper::archiveList('team.export', JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), true);
+        JToolbarHelper::custom('team.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        JToolbarHelper::archiveList('team.export', Text::_('JTOOLBAR_EXPORT'));
 
         if ($this->jinput->get->get('club_id')) {
             JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=clubs');

@@ -11,7 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewTemplates
  * 
@@ -55,7 +55,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         $templates = $this->get('Items');
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         $total = $this->get('Total');
@@ -69,11 +69,11 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
 
             // Build in JText of template title here
             foreach ($masterTemplates as $temptext) {
-                $temptext->text = JText::_($temptext->text);
+                $temptext->text = Text::_($temptext->text);
             }
 
             $importlist = array();
-            $importlist[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+            $importlist[] = JHtml::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
             $importlist = array_merge($importlist, $masterTemplates);
             $lists['mastertemplates'] = JHtml::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
             $master = $model->getMasterName();
@@ -98,7 +98,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
             JToolbarHelper::editList('template.edit');
             //JToolbarHelper::save('template.save');
@@ -107,7 +107,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
 
                 JToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
             } else {
-                JToolbarHelper::custom('template.reset', 'restore', 'restore', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+                JToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
             }
 
         JToolbarHelper::checkin('templates.checkin');

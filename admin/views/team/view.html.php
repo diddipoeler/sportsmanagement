@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewTeam
  * 
@@ -40,7 +40,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
 
 		// Check for errors.
@@ -73,20 +73,20 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         }
         
         //build the html select list for days of week
 		if ($trainingData = $this->model->getTrainigData($this->item->id))
 		{
-			$daysOfWeek = array( 0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
-			1 => JText::_('MONDAY'), 
-			2 => JText::_('TUESDAY'), 
-			3 => JText::_('WEDNESDAY'), 
-			4 => JText::_('THURSDAY'), 
-			5 => JText::_('FRIDAY'), 
-			6 => JText::_('SATURDAY'), 
-			7 => JText::_('SUNDAY') );
+			$daysOfWeek = array( 0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
+			1 => Text::_('MONDAY'), 
+			2 => Text::_('TUESDAY'), 
+			3 => Text::_('WEDNESDAY'), 
+			4 => Text::_('THURSDAY'), 
+			5 => Text::_('FRIDAY'), 
+			6 => Text::_('SATURDAY'), 
+			7 => Text::_('SUNDAY') );
 			$dwOptions = array();
 			foreach($daysOfWeek AS $key => $value)
 			{
@@ -111,7 +111,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	{
 
 		JFactory::getApplication()->input->set('hidemainmenu', true);
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW');
         $this->icon = 'team';
 
 parent::addToolbar();

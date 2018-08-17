@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -32,7 +33,7 @@ JHtml::_('behavior.modal');
 					<tr>
 						<th width="">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 							?>
 						</th>
 						<th width="">
@@ -85,7 +86,7 @@ JHtml::_('behavior.modal');
 						</th>
 						<th>
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS' );
 							?>
 						</th>
 						<th>
@@ -156,7 +157,7 @@ JHtml::_('behavior.modal');
 						
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
 										echo JHtml::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -210,7 +211,7 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 								<?php
 								if ( $row->season_picture == '' )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
 									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
@@ -218,7 +219,7 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 								}
 								elseif ( $row->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
 									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/information.png',
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
@@ -317,21 +318,21 @@ foreach($position_ids as $items => $item) {
 								//$row->away = 1;
 								if ( $row->injury > 0 )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_INJURED' );
 									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/injured.gif',
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->suspension > 0 )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SUSPENDED' );
 									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/suspension.gif',
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
 								}
 								if ( $row->away > 0 )
 								{
-									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
+									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_AWAY' );
 									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/away.gif',
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
@@ -340,7 +341,7 @@ foreach($position_ids as $items => $item) {
 						   !$row->suspension &&
 						   !$row->away )
 						{
-						$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS' );
+						$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS' );
 						echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/players.png',
 							$imageTitle,
 							'title= "' . $imageTitle . '"' );	

@@ -11,7 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewteampersons
  * 
@@ -93,7 +93,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 
         //build the html options for position
         $position_id = array();
-        $position_id[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
+        $position_id[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
 
         if ($this->_persontype == 1) {
@@ -112,7 +112,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 /**
  * build the html options for nation
  */
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
@@ -154,16 +154,16 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 
         // Set toolbar items for the page
         if ($this->_persontype == 1) {
-            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_TITLE');
         } elseif ($this->_persontype == 2) {
-            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE');
         }
 
-        JToolbarHelper::apply('teampersons.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
+        JToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
         JToolbarHelper::divider();
 
-        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
-	JToolbarHelper::apply('teampersons.assignplayerscountry', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
+        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
+	JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 
         JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);

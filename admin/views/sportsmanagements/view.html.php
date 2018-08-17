@@ -39,10 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+use Joomla\CMS\Language\Text; 
 
 /**
  * sportsmanagementViewsportsmanagements
@@ -96,7 +93,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		$canDo = sportsmanagementHelper::getActions();
-		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
+		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
 		if ($canDo->get('core.create')) 
 		{
 			JToolbarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
@@ -123,6 +120,6 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_HELLOWORLD_ADMINISTRATION'));
+		$document->setTitle(Text::_('COM_HELLOWORLD_ADMINISTRATION'));
 	}
 }

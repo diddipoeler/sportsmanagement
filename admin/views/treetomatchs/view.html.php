@@ -3,8 +3,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
-jimport('joomla.application.component.view');
 
 
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
@@ -13,7 +13,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 	public function init ()
 	{
 	   
-       //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+
        
 		if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' )
 		{
@@ -50,7 +50,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
         $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($node_id);
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nodews<br><pre>'.print_r($nodews,true).'</pre>'),'Notice');
+
         
 		//$nodews = $this->get('Data','node');
 		//build the html select list for node assigned matches
@@ -121,7 +121,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		}
 		else
 		{
-			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
+			JError::raiseWarning('ERROR_CODE','<br />'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
 		}
 
 		//build the html select list for matches
@@ -192,8 +192,8 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
 protected function addToolBarEditlist()
 	{
-	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
-	JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
+	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
+	JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
 
 JToolbarHelper::save( 'treetomatch.save_matcheslist' );
 
@@ -205,11 +205,11 @@ JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetono
        
 protected function addToolBarDefault()
 	{
-	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
-	JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
+	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
+	JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
 
 //JLToolBarHelper::save();
-JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
+JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
 JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
        
        

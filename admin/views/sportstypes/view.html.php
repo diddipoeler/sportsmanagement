@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewSportsTypes
  * 
@@ -36,12 +36,12 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+			$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
 		$myoptions = array();
-		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
-		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
+		$myoptions[] = JHtml::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[] = JHtml::_( 'select.option', '1', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
         
@@ -61,11 +61,11 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	{
 		        
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
 		JToolbarHelper::addNew('sportstype.add');
 		JToolbarHelper::editList('sportstype.edit');
-		JToolbarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
         				
         parent::addToolbar();
 	}

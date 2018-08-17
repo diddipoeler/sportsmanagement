@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
@@ -58,7 +58,7 @@ if($close == 1) {
 ?>
 <div id="editcell">
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'); ?></legend>
+		<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'); ?></legend>
 		
 		<!-- Start list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
@@ -72,10 +72,10 @@ if($close == 1) {
 								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
                                 
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
+					echo Text::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
         </div>
@@ -87,11 +87,11 @@ if($close == 1) {
         
                 
         <button type="button" onclick="Joomla.submitform('seasons.applyteams', this.form);">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="$('close').value=1; Joomla.submitform('seasons.saveteams', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JCANCEL');?></button>
 		
         
         
@@ -113,7 +113,7 @@ if($close == 1) {
 						<th width="20" >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-                        <th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME'); ?></th>
+                        <th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME'); ?></th>
 						
                         </tr>
                 </thead>      

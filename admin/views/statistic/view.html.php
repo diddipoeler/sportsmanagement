@@ -11,10 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+use Joomla\CMS\Language\Text; 
 
 /**
  * sportsmanagementViewstatistic
@@ -82,7 +79,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	
 		JFactory::getApplication()->input->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
         $this->icon = 'statistic';
         
 		parent::addToolbar();

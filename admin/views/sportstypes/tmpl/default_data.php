@@ -37,7 +37,7 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 's.ordering');
 
@@ -51,7 +51,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -62,13 +62,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
                 <th>
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
                 </th>
                 <th width="10%" class="title">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_ICON'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_ICON'); ?>
                 </th>
                 <th width="10%" class="title">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_SPORTSART'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_SPORTSART'); ?>
                 </th>
 
                 <th width="" class="nowrap center">
@@ -138,12 +138,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <?php //echo $checked;  ?>
                     </td>
                         <?php ?>
-                    <td><?php echo JText::_($row->name); ?></td>
+                    <td><?php echo Text::_($row->name); ?></td>
 
                     <td class="center">
                     <?php
                     $picture = JPATH_SITE . DS . $row->icon;
-                    $desc = JText::_($row->name);
+                    $desc = Text::_($row->name);
                     //echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
                     ?>                                    
                         <a href="<?php echo JURI::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">

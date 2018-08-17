@@ -11,8 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
-jimport('joomla.application.component.view');
 
 
 /**
@@ -36,7 +36,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	{
 		//$app = JFactory::getApplication();
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+
         
 		if ( $this->getLayout()=='default' || $this->getLayout()=='default_3' )
 		{
@@ -68,14 +68,14 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($this->project_id);
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
+
         
 		//$treetows = $this->get('Data','treeto');
         $mdltreeto = JModelLegacy::getInstance('treeto', 'sportsmanagementModel');
 		$treetows = $mdltreeto->getTreeToData($this->jinput->get('tid'));
 
 		//build the html options for teams
-		$team_id[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND'));
+		$team_id[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND'));
 		if ( $projectteams = $this->model->getProjectTeamsOptions() )
 		{
 			$team_id = array_merge($team_id,$projectteams);
@@ -83,7 +83,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$lists['team'] = $team_id;
 		unset($team_id);
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteams<br><pre>'.print_r($projectteams,true).'</pre>'),'Notice');
+
 
 		$style  = 'style="background-color: #dddddd; ';
 		$style .= 'border: 0px solid white;';
@@ -95,8 +95,8 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$path = 'media/com_sportsmanagement/treebracket/onwhite/';
 		
 		// build the html radio for adding into new round / exist round
-		$createYesNo = array(0 => JText::_('JNO'),1 => JText::_('JYES'));
-		$createLeftRight = array(0 => JText::_('L'),1 => JText::_('R'));
+		$createYesNo = array(0 => Text::_('JNO'),1 => Text::_('JYES'));
+		$createLeftRight = array(0 => Text::_('L'),1 => Text::_('R'));
 		$ynOptions = array();
 		$lrOptions = array();
 		foreach($createYesNo AS $key => $value){$ynOptions[]=JHtmlSelect::option($key,$value);}
@@ -129,38 +129,24 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	{
 	  // $istree = $this->treetows->tree_i;
 //$isleafed = $this->treetows->leafed;
-       $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TITLE');
+       $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TITLE');
        switch ($this->treetows->leafed)
        {
        case 1:
-       JToolbarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
-	   JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
+       JToolbarHelper::apply('treetonode.saveshort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
+	   JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
        break;
        case 2:
-       JToolbarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
-       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       JToolbarHelper::apply('treetonode.saveshortleaf',Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
+       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break; 
        case 3:
-       JToolbarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
-       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       JToolbarHelper::apply('treetonode.savefinishleaf', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
+       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break;  
         
        }
        parent::addToolbar();
-   // if( $this->treetows->leafed == 1 )
-//	{
-//	JToolbarHelper::apply('treetonode.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
-//	JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
-//	}
-//	elseif( $this->treetows->leafed )
-//	{
-//	JToolbarHelper::apply('treetonode.saveshortleaf',JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
-//	if( $this->treetows->leafed == 3 )
-//	{
-//	JToolbarHelper::apply('treetonode.savefinishleaf', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
-//	}
-//	JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
-//	}
        
       } 
 

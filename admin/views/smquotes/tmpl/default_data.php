@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'obj.ordering');
 
@@ -50,7 +50,7 @@ JHtml::_('behavior.modal');
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
@@ -60,7 +60,7 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-                    <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
 					<th>
 						<?php
@@ -124,7 +124,7 @@ JHtml::_('behavior.modal');
                                     ?>
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_EDIT_DETAILS');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_EDIT_DETAILS');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -144,13 +144,13 @@ JHtml::_('behavior.modal');
 								//if (empty($row->picture) || !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture))
                                 if (empty($row->picture) )
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

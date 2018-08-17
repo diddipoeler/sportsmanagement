@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 
 
@@ -84,7 +84,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 		$division = $this->app->getUserStateFromRequest($this->option.'tt_division', 'division', '', 'string');
 
 		//build the html options for divisions
-		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[] = JHtmlSelect::option('0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
         {
@@ -115,7 +115,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
+		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
 
 		JToolbarHelper::apply('treeto.saveshort');
 		JToolbarHelper::publishList('treetos.publish');
@@ -123,7 +123,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 		JToolbarHelper::divider();
 
 		JToolbarHelper::addNew('treetos.save');
-		JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
+		JToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
 		JToolbarHelper::divider();
         
         parent::addToolbar();

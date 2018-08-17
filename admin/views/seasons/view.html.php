@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewSeasons
  * 
@@ -39,7 +39,7 @@ $starttime = microtime();
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 
@@ -48,7 +48,7 @@ $starttime = microtime();
 		$this->table = JTable::getInstance('season', 'sportsmanagementTable');
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
 		{
             $nation = array_merge($nation, $res);
@@ -76,7 +76,7 @@ $starttime = microtime();
         
         if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' || $this->getLayout() == 'assignpersons_4')
 		{
-		$season_teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+		$season_teams[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
         $res = $this->model->getSeasonTeams($season_id); 
         $season_teams = array_merge($season_teams,$res); 
         $lists['season_teams'] = $season_teams;
@@ -100,7 +100,7 @@ $starttime = microtime();
                
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
 			JToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');

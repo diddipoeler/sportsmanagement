@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
@@ -25,7 +26,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		}
 	}
 </script>
-<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<?php 
@@ -41,7 +42,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
                     } 
             ?>
                     <tr>
-						<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+						<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="20">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
@@ -53,7 +54,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.title',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
-							<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>
+							<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>
 						</th>
 						<th>
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->sortDirection,$this->sortColumn); ?>
@@ -61,12 +62,12 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
                         
                         <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 						?>
 					</th>
 					</tr>
@@ -105,7 +106,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
                             
                             <?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
-								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
 								$imageParams = 'title= "'.$imageTitle.'"';
 								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams = '';
@@ -116,10 +117,10 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 								?>
                                 </td>
 							<td><?php echo $row->template; ?></td>
-							<td><?php echo JText::_($row->title); ?></td>
+							<td><?php echo Text::_($row->title); ?></td>
 							<td><?php
 								echo '<span style="font-weight:bold; color:';
-								echo ($row->isMaster) ? 'red; ">'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER') : 'green;">&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_INDEPENDENT');
+								echo ($row->isMaster) ? 'red; ">'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_MASTER') : 'green;">&nbsp;'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_INDEPENDENT');
 								echo '</span>';
 								?></td>
 							<td class="center"><?php
