@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <!-- START: matches -->
-<div class="row" id="clubplanmatchessbd">
+<div class="row table-responsive" id="clubplanmatchessbd">
 	<?php
 		//sort matches by dates
 		$gamesByDate = Array();
@@ -36,7 +36,7 @@ use Joomla\CMS\Language\Text;
 				{			
 
 				?>
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">				
+<table class="<?php echo $this->config['table_class']; ?>">				
 					<tr class="sectiontableheader">
 						<th colspan=16>
 							<?php echo JHtml::date($game->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>

@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 
 ?>
 <!-- START: matches -->
-<div class="row" id="clubplanmatches">
+<div class="row table-responsive" id="clubplanmatches">
 <table class="<?php echo $this->config['table_class']; ?>">
 <?php
 if ($this->config['type_matches'] != 0) {
