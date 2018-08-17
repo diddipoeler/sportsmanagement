@@ -172,7 +172,7 @@ $position = $this->jsmdb->loadColumn();
  }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 
@@ -201,7 +201,7 @@ $resultupdate = $this->jsmdb->execute();
 }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 	
