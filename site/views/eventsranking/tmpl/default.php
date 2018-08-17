@@ -16,20 +16,20 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container-fluid">
-	<?php
-	if ($this->config['show_sectionheader']==1)
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+<div class="container-fluid" id="eventsranking">
+<?php
+if ($this->config['show_sectionheader']==1)
+{
+	echo $this->loadTemplate('sectionheader');
+}
 
-	echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('projectheading');
 
-	if (($this->config['show_eventsstats'])==1)
-	{
-		echo $this->loadTemplate('eventsrank');
-	}
+if (($this->config['show_eventsstats'])==1)
+{
+	echo $this->loadTemplate('eventsrank');
+}
 echo $this->loadTemplate('jsminfo');
-	?>
+?>
 
 </div>

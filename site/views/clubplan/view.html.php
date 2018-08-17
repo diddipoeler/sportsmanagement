@@ -63,7 +63,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
             sportsmanagementModelClubPlan::$project_id = 0;
         }
         
-        
         if ( $this->type == '' )
         {
             $this->type = $this->config['type_matches'];
@@ -139,7 +138,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$club_id = (!empty($this->club->id)) ? '&cid='.$this->club->id : '';
 		$rssVar = (!empty($this->club->id)) ? $club_id : $project_id;
 
-		//$feed='index.php?option=com_sportsmanagement&view=clubplan&cid='.$this->club->id.'&format=feed';
 		$feed = 'index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
 		$rss = array('type' => 'application/rss+xml','title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 

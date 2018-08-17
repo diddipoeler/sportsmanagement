@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="row-fluid" id="">
+<div class="container-fluid" id="clubplan">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
