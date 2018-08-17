@@ -155,10 +155,6 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
     */
    function updateprojectpositions($items=NULL,$project_id=0)
    {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');	   	   
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'');	   
-
-
 $this->jsmquery->clear();
 $this->jsmquery->select('mp.match_id');
 $this->jsmquery->from('#__sportsmanagement_match_player as mp');
@@ -194,8 +190,6 @@ $conditions = array(
 );
 try{
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmquery<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'');	   
-
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();
 }
