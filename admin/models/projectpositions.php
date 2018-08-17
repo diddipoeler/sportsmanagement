@@ -172,9 +172,10 @@ $position = $this->jsmdb->loadColumn();
         return false;
         }
 
+if ( $position  )
+{
 $result = array_unique($position );
-$match_ids = implode(",",$result);
-
+$match_ids = implode(",",$result);    
 foreach( $items as $item )
 {
 $this->jsmquery->clear();
@@ -199,6 +200,7 @@ $resultupdate = $this->jsmdb->execute();
         return false;
         }
 	
+}
 }	   
    }
 	
