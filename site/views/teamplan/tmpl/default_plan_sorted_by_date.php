@@ -49,8 +49,8 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				if ( substr( $match->match_date, 0, 10 ) != $pr_id)
 				{			
 				?>
-                <div class="table-responsive">   
-				<table class='table'>
+                <div class="row table-responsive" id="teamplansbd">   
+				<table class="<?php echo $this->config['table_class']; ?>">
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
 							<?php echo JHtml::date($match->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>

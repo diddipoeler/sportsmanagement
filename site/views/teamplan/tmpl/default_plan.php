@@ -49,7 +49,7 @@ if (!empty($this->matches))
 $teamid = JFactory::getApplication()->input->getInt('tid');
 $nbcols = 0;
 ?>
-<div class="table-responsive">   
+<div class="row table-responsive" id="teamplan">   
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr >
