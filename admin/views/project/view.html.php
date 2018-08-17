@@ -10,12 +10,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 jimport('joomla.html.parameter.element.timezones');
 
 require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
 require_once(JPATH_COMPONENT.DS.'models'.DS.'leagues.php');
-
 
 /**
  * sportsmanagementViewProject
@@ -48,15 +46,6 @@ class sportsmanagementViewProject extends sportsmanagementView
 		}
         
         JFactory::getApplication()->input->setVar('hidemainmenu', true);
-
-		
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -64,7 +53,6 @@ class sportsmanagementViewProject extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
@@ -74,10 +62,7 @@ class sportsmanagementViewProject extends sportsmanagementView
         
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');		
 		$this->extendeduser	= $extendeduser;
-        
-               
-        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
-        
+
         $isNew = $this->item->id == 0;
         if ( $isNew )
         {
@@ -85,7 +70,6 @@ class sportsmanagementViewProject extends sportsmanagementView
             $this->form->setValue('start_time', null, '18:00');
             $this->form->setValue('admin', null, $this->user->id);
             $this->form->setValue('editor', null, $this->user->id);
-            //$user->id ;
         }
         
         $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
@@ -95,7 +79,6 @@ class sportsmanagementViewProject extends sportsmanagementView
 			{
 				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
             }
-            //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
         $this->form->setValue('fav_team', null, explode(',',$this->item->fav_team) );
@@ -118,12 +101,7 @@ class sportsmanagementViewProject extends sportsmanagementView
     $starttime = microtime();
            
 	$this->item = $this->get('Item');
-    
-	if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
-    
+   
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
@@ -137,15 +115,12 @@ class sportsmanagementViewProject extends sportsmanagementView
  *     bitte einmal die standard positionen, torwart, abwehr,
  *     mittelfeld und stürmer einfügen
  */
+    $iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
     if ( !$iProjectPositionsCount )
 	{
 		$mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id); 
 	}
-	
-	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
-    
 
-    
 	}
     	
 	$iProjectRefereesCount = 0;
