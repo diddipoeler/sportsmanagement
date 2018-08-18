@@ -456,20 +456,28 @@ case 'country_flag':
                 $logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
             }
             $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
-            echo ' ';
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('tippteaminfoaway' . $result->projectteam2_id,
+                                                                    $logo_away,
+                                                                    $imgTitle,
+                                                                    30,
+                                                                    '',
+                                                                    $this->modalwidth,
+                                                                    $this->modalheight,
+                                                                    2);
+		    echo ' ';
         ?>
 
-<a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam2_id;?>">
-<img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="30" />
-</a>
-<div class="modal fade" id="modal<?php echo $result->projectteam2_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
+<!-- <a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam2_id;?>"> -->
+<!-- <img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="30" /> -->
+<!-- </a> -->
+<!-- <div class="modal fade" id="modal<?php echo $result->projectteam2_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true"> -->
+<!-- <div class="modal-header"> -->
+<!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
+<!-- </div> -->
 <?PHP
-    echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));
+   // echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));
     ?>
-</div>
+<!-- </div> -->
 
 <?PHP
     //echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
