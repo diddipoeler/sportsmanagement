@@ -136,8 +136,34 @@ $this->overallconfig['use_jquery_modal']);
 					  
 					</td>
 				    <td style="padding-left: 10px;">
-				      <div class="player-position"><?php
-				echo  $row->position;
+				      <div class="player-position">
+                      <?php
+				$staff_position = '';
+				switch ($this->config['staff_position_format'])
+				{
+					case 2:	 // show member with text
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
+								break;
+
+					case 3:	 // show function with text
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
+								break;
+
+					case 4:	 // show only function
+								$staff_position = Text::_($row->parentname);
+								break;
+
+					case 5:	 // show only position
+								$staff_position = Text::_($row->position);
+								break;
+
+					default: // show member+function with text
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
+								$staff_position .= '<br />';
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
+								break;
+				}
+				echo $staff_position;
 				?></div>
 					  <div class="player-name"><?php $projectid = $this->project->id;
 					  $routeparameter = array();
