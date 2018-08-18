@@ -12,8 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 
-//echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
-
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
 {
@@ -73,7 +71,8 @@ if (count($this->stafflist) > 0)
 		</tr>
 	</table>
 	<br />
-	<table class="<?php echo $this->config['table_class'];?> table-responsive">
+    <div class="row table-responsive" id="defaultstaff"> 
+	<table class="<?php echo $this->config['table_class'];?>">
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
@@ -267,6 +266,7 @@ $this->overallconfig['use_jquery_modal']
 			}
 			?>
 	</table>
+    </div>
 	<?php
 }
 ?>
