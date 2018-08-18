@@ -110,23 +110,33 @@ $spielfeldhaelfte = $height / 2;
 
 if ( $schemahome  && $schemaguest )
 {
-// heim und gast
+/**
+ * heim und gast
+ */
 //echo "<div id=\"heimgast\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<div id=\"heimgast\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
 else if ( !$schemahome && $schemaguest )
 {
-// nur gast
+/**
+ * nur gast
+ */
 ?>
 <style>
 #gast{
-clip:rect(<?PHP echo $spielfeldhaelfte; ?>px <?PHP echo $width; ?>px <?PHP echo $height; ?>px 0px);
+//clip:rect(<?PHP echo $spielfeldhaelfte; ?>px <?PHP echo $width; ?>px <?PHP echo $height; ?>px 0px);
 height:<?PHP echo $height; ?>px;
 width:<?PHP echo $width; ?>px;
 top: -<?PHP echo $spielfeldhaelfte; ?>px;
 overflow:hidden;
 position:relative;
+}
+
+div img.bild_s {
+   clip:rect(<?PHP echo $spielfeldhaelfte; ?>px,<?PHP echo $width; ?>px,<?PHP echo $height; ?>px,0px);
+   position: absolute;
+   left: 0px;
 }
 </style>
 <?PHP
@@ -155,7 +165,9 @@ echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundima
 }
 else
 {
-// garnichts angegeben
+/**
+ * garnichts angegeben
+ */
 //echo "<div id=\"nichts\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<div id=\"nichts\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
@@ -164,7 +176,9 @@ echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundima
 //echo "<div style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 
 
-// positionen aus der rostertabelle benutzen
+/**
+ * positionen aus der rostertabelle benutzen
+ */
 ?>
 
 <table class="taktischeaufstellung" summary="Taktische Aufstellung">
@@ -175,7 +189,9 @@ echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundima
 <td>
 
 <?PHP
-// die logos
+/**
+ * die logos
+ */
 if ( $schemahome )
 {
 ?>
@@ -229,7 +245,9 @@ $this->overallconfig['use_jquery_modal']
 
 if ( $schemahome )
 {
-// hometeam
+/**
+ * hometeam
+ */
 $testlauf = 0;
 foreach ($this->matchplayerpositions as $pos)
 		{
@@ -307,7 +325,9 @@ $testlauf++;
 
 if ( $schemaguest )
 {
-// guestteam
+/**
+ * guestteam
+ */
 $testlauf = 0;
 foreach ($this->matchplayerpositions as $pos)
 		{
