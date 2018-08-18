@@ -51,7 +51,7 @@ use Joomla\CMS\Language\Text;
 					  <div class="player-name">
 					  <?php 
 					  	$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
-						if ($this->config['link_player']==1)
+						if ( $this->config['link_player'] )
 						{
 						  $routeparameter = array();
        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
@@ -78,8 +78,35 @@ use Joomla\CMS\Language\Text;
 				  <tbody><tr>
 				    <td style="padding: 5px 10px; color: rgb(173, 173, 173); font-weight: bold; width: 200px; text-transform: uppercase;">
 				      <?php
-				echo $row->position;
-				?>
+				$staff_position = '';
+				switch ($this->config['staff_position_format'])
+				{
+					case 2:	 // show member with text
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
+								break;
+
+					case 3:	 // show function with text
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
+								break;
+
+					case 4:	 // show only function
+								$staff_position = Text::_($row->parentname);
+								break;
+
+					case 5:	 // show only position
+								$staff_position = Text::_($row->position);
+								break;
+
+					default: // show member+function with text
+								$staff_position = Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',Text::_($row->parentname));
+								$staff_position .= '<br />';
+								$staff_position .= Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_FUNCTION_IS',Text::_($row->position));
+								break;
+				}
+				echo $staff_position;
+
+				
+                ?>
 				    </td>
 				    <td style="width: 55px;">
 					  
