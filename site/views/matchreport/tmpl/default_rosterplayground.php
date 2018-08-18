@@ -41,25 +41,6 @@ else
     $div_display ="";
 }
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-
-$my_text = 'formation1 <pre>'.print_r($this->formation1,true).'</pre>';
-$my_text .= 'formation2 <pre>'.print_r($this->formation2,true).'</pre>';
-$my_text .= 'extended2 <pre>'.print_r($this->extended2,true).'</pre>';
-$my_text .= 'schemahome <pre>'.print_r($this->schemahome,true).'</pre>';
-$my_text .= 'schemaaway <pre>'.print_r($this->schemaaway,true).'</pre>';
-$my_text .= 'matchplayerpositions <pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-$my_text .= 'matchplayers <pre>'.print_r($this->matchplayers,true).'</pre>';
-$my_text .= 'match <pre>'.print_r($this->match,true).'</pre>';
-$my_text .= 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';
-$my_text .= 'config <pre>'.print_r($this->config,true).'</pre>';
-sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementViewMatchReportdefault_rosterplayground',__LINE__,$my_text);
-
-}
-
-
-
 $favteams1 = explode(",",$this->project->fav_team);
 $favteams = array();
 
@@ -102,18 +83,18 @@ $schemahome = $this->formation1;
 $schemaguest = $this->formation2;
 }
 
-//$backgroundimage = 'media/com_sportsmanagement/rosterground/spielfeld_578x1050.png';
 $backgroundimage = 'media/com_sportsmanagement/rosterground/'.$this->config['roster_playground_select'];
 
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 $spielfeldhaelfte = $height / 2;
 
+echo "<div id=\"gesamt\" >";
 if ( $schemahome  && $schemaguest )
 {
 /**
  * heim und gast
  */
-//echo "<div id=\"heimgast\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
+
 echo "<div id=\"heimgast\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -125,7 +106,6 @@ else if ( !$schemahome && $schemaguest )
 ?>
 <style>
 #gast{
-//clip:rect(<?PHP echo $spielfeldhaelfte; ?>px <?PHP echo $width; ?>px <?PHP echo $height; ?>px 0px);
 height:<?PHP echo $height; ?>px;
 width:<?PHP echo $width; ?>px;
 top: -<?PHP echo $spielfeldhaelfte; ?>px;
@@ -138,9 +118,16 @@ div img.bild_s {
    position: absolute;
    left: 0px;
 }
+
+#gesamt{
+height:<?PHP echo $spielfeldhaelfte; ?>px;
+width:<?PHP echo $width; ?>px;
+overflow:hidden;
+position:relative;
+}
 </style>
+
 <?PHP
-//echo "<div id=\"gast\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;top:-".$spielfeldhaelfte."px;overflow: hidden;\">";
 echo "<div id=\"gast\" >";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -157,9 +144,14 @@ width:<?PHP echo $width; ?>px;
 overflow:hidden;
 position:relative;
 }
+#gesamt{
+height:<?PHP echo $spielfeldhaelfte; ?>px;
+width:<?PHP echo $width; ?>px;
+overflow:hidden;
+position:relative;
+}
 </style>
 <?PHP
-//echo "<div id=\"heim\"  style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;overflow: hidden;\">";
 echo "<div id=\"heim\" >";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -168,7 +160,6 @@ else
 /**
  * garnichts angegeben
  */
-//echo "<div id=\"nichts\" style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<div id=\"nichts\" style=\"background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
 echo "<img class=\"bild_s\" style=\"width:".$width."px;\" src=\"".$backgroundimage."\" alt=\"\" >";
 }
@@ -399,7 +390,7 @@ $testlauf++;
 
                             
 echo "</div>";
-
+echo "</div>";
 
 
 ?>
