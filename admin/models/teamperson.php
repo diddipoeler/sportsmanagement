@@ -205,11 +205,10 @@ $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_match_playe
 $this->jsmdb->setQuery($this->jsmquery);
 $resultupdate = $this->jsmdb->execute();
 }
-        catch (Exception $e)
-        {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
-        //return false;
-        }
+catch (Exception $e)
+{
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 }
 // ###############################
 	
