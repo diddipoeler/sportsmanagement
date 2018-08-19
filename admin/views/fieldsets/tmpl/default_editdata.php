@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * welche joomla version ?
@@ -17,10 +19,10 @@ defined('_JEXEC') or die('Restricted access');
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('behavior.formvalidator');
-JHtml::_('behavior.keepalive');    
-JHtml::_('jquery.framework');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('behavior.keepalive');    
+HTMLHelper::_('jquery.framework');
 }    
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -47,13 +49,11 @@ if( version_compare(JSM_JVERSION,'4','eq') )
 ?>
 <div>
 <?php
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
 foreach ($fieldsets as $fieldset) 
 {
-//echo JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>');
-    
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
 ?>
 <div class="row">
 <div class="col-md-12">
@@ -87,14 +87,14 @@ switch ($fieldset->name)
                 ?>
 <a href="#<?php echo $var_onlinehelp;?>" title="<?php echo $var_onlinehelp;?>" class="" data-toggle="modal">
 <?php
-echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 	
-echo JHtml::_('bootstrap.renderModal',
+echo HTMLHelper::_('bootstrap.renderModal',
 	$var_onlinehelp,
 	array(
-	'title' => JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
+	'title' => Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
 	'url' => COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp,
     'width' => COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH,
     'height' => COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT
@@ -168,7 +168,7 @@ echo JHtml::_('bootstrap.renderModal',
 </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTab');
 }
 
 /**
@@ -179,17 +179,17 @@ echo JHtml::_('bootstrap.endTab');
 switch ($view)
 {
     case 'position':
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', JText::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
     echo $this->loadTemplate('position_events');
-    echo JHtml::_('bootstrap.endTab');
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
+    echo HTMLHelper::_('bootstrap.endTab');
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
     echo $this->loadTemplate('position_statistics');
-    echo JHtml::_('bootstrap.endTab');  
+    echo HTMLHelper::_('bootstrap.endTab');  
     break;
     
 } 
 
-echo JHtml::_('bootstrap.endTabSet'); 
+echo HTMLHelper::_('bootstrap.endTabSet'); 
 ?>
 </div>
 <?php
@@ -199,12 +199,12 @@ elseif( version_compare(JSM_JVERSION,'3','eq') )
 ?> 
 <div class="form-horizontal">
 <fieldset>
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 switch ($fieldset->name)
 {
@@ -229,8 +229,6 @@ switch ($fieldset->name)
                         $suchmuster = array ("jform[","]","request[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                        //echo 'field_name -> '.$field->name;
-//                        echo 'var_onlinehelp -> '.$var_onlinehelp;
                         switch ($var_onlinehelp)
                 {
                     case 'id':
@@ -241,9 +239,9 @@ switch ($fieldset->name)
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
                 
@@ -255,11 +253,8 @@ switch ($fieldset->name)
                 
                 if ( $field->name == 'jform[standard_playground]' )
                 {
-                //echo sportsmanagementHelper::getPicturePlayground($field->value);
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
-                //echo $picture;
-                //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
-                //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+
 ?>
 <a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
 <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
@@ -314,7 +309,7 @@ switch ($fieldset->name)
     echo $this->loadTemplate('fieldsets_3');
     break;
 }    
-echo JHtml::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 /**
@@ -325,12 +320,12 @@ echo JHtml::_('bootstrap.endTab');
 switch ($view)
 {
     case 'position':
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', JText::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_EVENTS', Text::_('COM_SPORTSMANAGEMENT_TABS_EVENTS', true));
     echo $this->loadTemplate('position_events');
-    echo JHtml::_('bootstrap.endTab');
-    echo JHtml::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
+    echo HTMLHelper::_('bootstrap.endTab');
+    echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'COM_SPORTSMANAGEMENT_TABS_STATISTICS', Text::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS', true));
     echo $this->loadTemplate('position_statistics');
-    echo JHtml::_('bootstrap.endTab');  
+    echo HTMLHelper::_('bootstrap.endTab');  
     break;
     
 } 
@@ -338,7 +333,7 @@ switch ($view)
  
 ?>    
 	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </fieldset>
 </div> 
 
@@ -356,23 +351,20 @@ else
 </div>
 
 		<?php
-		echo JHtml::_('sliders.start');
+		echo HTMLHelper::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
-        
-        //echo 'fieldset name'.$fieldset->name.'<br>';
-        
 			if ($fieldset->name == 'details') :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo HTMLHelper::_('sliders.end'); ?>
 
 	
 	</div>
@@ -403,7 +395,7 @@ if ( $view == 'treetonode' )
 }
 
 	
-echo JHtml::_('form.token'); 
+echo HTMLHelper::_('form.token'); 
 ?>
 </div>
 </form>
