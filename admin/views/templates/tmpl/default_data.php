@@ -11,9 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 <script>
 	function searchTemplate(val,key)
@@ -48,16 +51,16 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TEMPLATE','tmpl.template',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.title',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_DESCR','tmpl.title',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th>
 							<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TYPE'); ?>
 						</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
                         
                         <th width="" class="title">
@@ -93,24 +96,24 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
 						
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'templates.', $canCheckin);
+                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'templates.', $canCheckin);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
+							<td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
 							<td>
                             <?php
                             if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) :  ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'templates.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'templates.', $canCheckin); ?>
 									<?php else: ?>
                             
                             <?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
 								$imageParams = 'title= "'.$imageTitle.'"';
-								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
+								$image = HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								$linkParams = '';
-								echo JHtml::link($link1,$image);
+								echo HTMLHelper::link($link1,$image);
                                 
                                 endif;
                                 

@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * sportsmanagementViewTemplates
  * 
@@ -54,10 +56,6 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         // das sind die eigenen templates
         $templates = $this->get('Items');
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
         $total = $this->get('Total');
 
         if ($project->master_template) {
@@ -73,9 +71,9 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
             }
 
             $importlist = array();
-            $importlist[] = JHtml::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
+            $importlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_SELECT_FROM_MASTER'));
             $importlist = array_merge($importlist, $masterTemplates);
-            $lists['mastertemplates'] = JHtml::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
+            $lists['mastertemplates'] = HTMLHelper::_('select.genericlist', $importlist, 'templateid', 'class="inputbox" onChange="Joomla.submitform(\'template.masterimport\', this.form);" ');
             $master = $model->getMasterName();
             $this->master = $master;
             $templates = array_merge($templates, $allMasterTemplates);
@@ -101,7 +99,6 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
             JToolbarHelper::editList('template.edit');
-            //JToolbarHelper::save('template.save');
 
             if ($this->projectws->master_template) {
 
