@@ -9,7 +9,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.html.parameter.element.timezones');
 
 require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
@@ -159,7 +159,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	protected function addToolbar()
 	{
     
-    $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
+    $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
    
         $bar = JToolBar::getInstance('toolbar');

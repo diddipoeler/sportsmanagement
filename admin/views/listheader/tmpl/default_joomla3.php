@@ -17,9 +17,11 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $view = $jinput->getCmd('view', 'cpanel');
 $document = JFactory::getDocument();
-// retrieve the value of the state variable. If no value is specified,
-// the specified default value will be returned.
-// function syntax is getUserState( $key, $default );
+/**
+ * retrieve the value of the state variable. If no value is specified,
+ * the specified default value will be returned.
+ * function syntax is getUserState( $key, $default );
+ */
 $project_id = $app->getUserState( "$option.pid", '0' );
 
 
@@ -242,8 +244,6 @@ else
    
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
-			
-            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
                 
