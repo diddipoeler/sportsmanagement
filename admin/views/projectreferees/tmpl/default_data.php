@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
@@ -48,7 +49,7 @@ JHtml::_( 'behavior.mootools' );
 						</th>
 						<th>
 							<?php
-							echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->sortDirection,$this->sortColumn);
+							echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREF_NAME','p.lastname',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 						<th width="20">
@@ -63,23 +64,23 @@ JHtml::_( 'behavior.mootools' );
 						</th>
 						<th>
 							<?php
-							echo JHtml::_('grid.sort',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->sortDirection,$this->sortColumn);
+							echo HTMLHelper::_('grid.sort',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','pref.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','pref.published',$this->sortDirection,$this->sortColumn);
 						?>
 						</th>
 						<th width="10%">
 							<?php
-							echo JHtml::_('grid.sort',Text::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->sortDirection,$this->sortColumn);
-							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
+							echo HTMLHelper::_('grid.sort',Text::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->sortDirection,$this->sortColumn);
+							echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
 							?>
 						</th>
 						<th width="5%">
 							<?php
-							echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
+							echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 					</tr>
@@ -101,10 +102,9 @@ JHtml::_( 'behavior.mootools' );
 					{
 						$row =& $this->items[$i];
 						$link = JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id.'&person_id='.$row->person_id  );
-						//$checked = JHtml::_('grid.checkedout',$row,$i);
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectreferees.', $canCheckin);
+                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectreferees.', $canCheckin);
                         
 						$inputappend='';
 						?>
@@ -116,14 +116,14 @@ JHtml::_( 'behavior.mootools' );
 							</td>
 							<td class="center">
 								<?php
-								echo JHtml::_('grid.id', $i, $row->id);
+								echo HTMLHelper::_('grid.id', $i, $row->id);
 								?>
 							</td>
 							
 								<td class="center">
                                 <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectreferees.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectreferees.', $canCheckin); ?>
 									<?php 
                                     endif; 
                                     if ($canEdit && !$row->checked_out ) :
@@ -131,7 +131,7 @@ JHtml::_( 'behavior.mootools' );
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
-										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+										echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
 										?>
@@ -156,7 +156,7 @@ JHtml::_( 'behavior.mootools' );
 								if ($row->picture == '')
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
-									echo JHtml::_(	'image',
+									echo HTMLHelper::_(	'image',
 													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
 													'title= "'.$imageTitle.'"');
@@ -165,7 +165,7 @@ JHtml::_( 'behavior.mootools' );
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
-										echo JHtml::_(	'image',
+										echo HTMLHelper::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
@@ -204,7 +204,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'
 									$append=' style="background-color:#FFCCCC"';
 								}
 
-								echo JHtml::_('select.genericlist',
+								echo HTMLHelper::_('select.genericlist',
 												$this->lists['project_position_id'],'project_position_id'.$row->id,
 												$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"'.$append,
 												'value','text',$selectedvalue);
@@ -212,7 +212,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'
 							</td>
 							<td class="center">
 								<?php
-								echo JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferees.');
+								echo HTMLHelper::_('grid.published',$row,$i, 'tick.png','publish_x.png','projectreferees.');
 								?>
 							</td>
 							<td class="order">
