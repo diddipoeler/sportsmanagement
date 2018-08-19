@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Router\Route;
 $document = JFactory::getDocument();
 $document->setMimeEncoding('application/json');
 
@@ -69,7 +69,7 @@ if (!empty($this->calendars)) {
 					'title' => $this->compactMode == 0 ? htmlspecialchars_decode($event->getTitle()) : utf8_encode(chr(160)),
 					'start' => $event->getStartDate()->format('c', true),
 					'end' => $event->getEndDate()->format('c', true),
-					'url' => JRoute::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
+					'url' => Route::::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').(empty($itemID)?'':$itemID)),
 					'color' => jsmGCalendarUtil::getFadedColor($event->getParam('gccolor')),
 					'allDay' => $this->compactMode == 0 ? $event->isAllDay() : true,
 					'description' => $description

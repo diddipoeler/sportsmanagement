@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 use Joomla\Utilities\ArrayHelper;
-
+use Joomla\CMS\Router\Route;
 /**
  * sportsmanagementControllerPredictionEntry
  * 
@@ -112,7 +112,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                         's' => '1');
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = JRoute::_('index.php?' . $query, false);
+                    $link = Route::::_('index.php?' . $query, false);
                 }
             }
         }
@@ -227,7 +227,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                     );
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = JRoute::_('index.php?' . $query, false);
+                    $link = Route::::_('index.php?' . $query, false);
                     $this->setRedirect($link);
                 }
 
@@ -240,7 +240,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                     );
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = JRoute::_('index.php?' . $query, false);
+                    $link = Route::::_('index.php?' . $query, false);
                     $this->setRedirect($link);
                 }
 

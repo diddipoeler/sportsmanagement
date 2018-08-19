@@ -77,9 +77,6 @@ class sportsmanagementViewResults extends JViewLegacy
 
 		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($this->getLayout(),true).'</pre>' ),'');
         
-        // add the links
-		//$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-
 		parent::display($tpl);
 	}
 

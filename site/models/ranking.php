@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -531,7 +532,7 @@ catch (Exception $e){
 		}
 		if ( $input->getInt( 'sef', 0) == 1 )
 		{
-			$app->redirect( JRoute::_( $url ) );
+			$app->redirect( Route::::_( $url ) );
 		}
 
 		/**

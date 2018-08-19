@@ -39,6 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 //JHtml::_('behavior.tooltip');
 //JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -47,7 +48,7 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 
-<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
+<form  action="<?php echo Route::::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 	<div id="jlstatsform">
 	<fieldset>
 		<div class="fltrt">

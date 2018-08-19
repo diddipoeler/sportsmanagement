@@ -11,11 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
-$savenewcomment[] = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
-$baseurl = "'".JRoute::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$savenewcomment[] = "'".Route::::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$baseurl = "'".Route::::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
 
 ?>
 <script>

@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Router\Route;
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
 
 /**
@@ -142,7 +142,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 		$rss = array('type' => 'application/rss+xml','title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
 		// add the links
-		$this->document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
+		$this->document->addHeadLink(Route::::_($feed.'&type=rss'),'alternate','rel',$rss);
         
 /**
  *         das brauchen wir nicht mehr, da wir bootsrap benutzen

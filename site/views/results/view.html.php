@@ -11,8 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
-jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
 /**
@@ -136,7 +136,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
 		// add the links
-		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
+		$document->addHeadLink(Route::::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
         $view = $jinput->getVar( "view") ;
         //$stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
         

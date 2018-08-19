@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Router\Route;
 // Component Helper
 jimport('joomla.application.component.helper');
 
@@ -233,7 +233,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
   }
   
   $query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 	
 		return $link;
   }
@@ -264,11 +264,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 		unset($query['cid']);
 	}
     
-    //$link = JRoute::_( "index.php?" . $segments, false );
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link<br><pre>'.print_r($link,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'),'');
-
 	return $segments;
 }
   
@@ -288,7 +283,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 				"filter_search_leagues" => $league_id );
 	
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 	
 		return $link;
 	}
@@ -306,7 +301,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 				"catid" => $sb_catid );
 	
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 	
 		return $link;
 	}
@@ -334,7 +329,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
     
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}	
@@ -372,12 +367,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 	$query = self::buildQuery( $params );
             // diddipoeler
             // nicht im backend, sondern im frontend
-	$link = JRoute::_( "index.php?" . $query. '&tmpl=component', false );
+	$link = Route::::_( "index.php?" . $query. '&tmpl=component', false );
 		} 
         else 
         {
 			$query = self::buildQuery( $params );
-			$link = JRoute::_( "index.php?" . $query, false );
+			$link = Route::::_( "index.php?" . $query, false );
 		}
         self::sportsmanagementBuildRoute($params);
         
@@ -405,7 +400,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
                       
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }					
   $query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
   }
@@ -441,7 +436,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
         
 //        if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
         $query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;			
 	}
@@ -465,7 +460,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 					"tid" => $teamid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -486,7 +481,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"did" => $divisionid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -505,7 +500,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"p" => $projectid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -533,7 +528,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		$params["division"] = $division; 
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -559,7 +554,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
         
         $query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -581,7 +576,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"p" => $projectid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -606,7 +601,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -630,7 +625,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -656,7 +651,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"pt" => $showType );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -716,8 +711,8 @@ $params = array("option" => "com_sportsmanagement",
 
 
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query , false );
-        //$link = JRoute::_( 'index2.php?' . $query , false );
+		$link = Route::::_( 'index.php?' . $query , false );
+        //$link = Route::::_( 'index2.php?' . $query , false );
 
 		return $link;
     }
@@ -746,7 +741,7 @@ $params = array("option" => "com_sportsmanagement",
 					"id" => $contactid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -772,7 +767,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"jlpid" => $pl_id );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -793,52 +788,11 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"user" => $userid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+		$link = Route::::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
-
-    ///**
-//	 * sportsmanagementHelperRoute::getNextMatchRoute()
-//	 *
-//     * @param mixed $project_id
-//     * @param mixed $match_id
-//     * @return string
-//     */
-//    public static function getNextMatchRoute($project_id, $match_id) {
-//        $params = array();
-//        $params['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-//        $params['s'] = JFactory::getApplication()->input->getInt('s',0);
-//        $params['p'] = $project_id;
-//        $params['mid'] = $match_id;
-//        return sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$params);
-//    }
-
-//    /**
-//     * sportsmanagementHelperRoute::getIcalRoute()
-//     *
-//     * @param mixed $projectid
-//     * @param mixed $teamid
-//     * @param mixed $pgid
-//     * @param int   $cfg_which_database
-//     * @param int   $s
-//     *
-//     * @return string
-//     */
-//	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null ,$cfg_which_database = 0,$s = 0)
-//	{
-//		$params = array(	"option" => "com_sportsmanagement",
-//					"view" => "ical",
-//					"p" => $projectid );
-//
-//		if ( !is_null( $pgid ) ) { $params["pgid"] = $pgid; }
-//		if ( !is_null( $teamid ) ) { $params["teamid"] = $teamid; }
-//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-//		$query = self::buildQuery( $params );
-//		$link = JRoute::_( "index.php?" . $query, false );
-//
-//		return $link;
-//	}
+   
 
     /**
      * sportsmanagementHelperRoute::buildQuery()

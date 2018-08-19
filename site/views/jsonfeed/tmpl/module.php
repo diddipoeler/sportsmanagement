@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 $document = JFactory::getDocument();
 $document->setMimeEncoding('application/json');
 
@@ -64,7 +65,7 @@ foreach ($tmp as $date => $events){
 	$day = $parts[2];
 	$month = $parts[1];
 	$year = $parts[0];
-	$url = JRoute::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
+	$url = Route::::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
 
 	$data[] = array(
 			'id' => $date,

@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Router\Route;
 // Component Helper
 jimport('joomla.application.component.helper');
 
@@ -66,7 +66,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
         
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		//echo $query; die();
-		$link = JRoute::_('index.php?' . $query . $anchor, false);
+		$link = Route::::_('index.php?' . $query . $anchor, false);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
@@ -112,7 +112,7 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
-		$link = JRoute::_('index.php?' . $query, false);
+		$link = Route::::_('index.php?' . $query, false);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
@@ -133,7 +133,7 @@ public static function getPredictionRulesRoute($predictionID,$cfg_which_database
 						'prediction_id' => $predictionID);
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
-		$link = JRoute::_('index.php?' . $query, false);
+		$link = Route::::_('index.php?' . $query, false);
 
 		return $link;
 	}
@@ -169,7 +169,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=0,$roun
         $params['uid'] = $userID;
         
 		$query = JSMPredictionHelperRoute::buildQuery($params);
-		$link = JRoute::_('index.php?' . $query, false);
+		$link = Route::::_('index.php?' . $query, false);
 		return $link;
 	}
 
@@ -227,7 +227,7 @@ public static function getPredictionMemberRoute($predictionID,$userID=0,$task=0,
   }
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
-		$link = JRoute::_('index.php?' . $query, false);
+		$link = Route::::_('index.php?' . $query, false);
 
 		return $link;
 	}

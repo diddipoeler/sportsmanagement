@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
@@ -30,7 +31,7 @@ $fieldsets = $this->form->getFieldsets();
 		}
 	}
 </script>
-<form name="editperson" id="editperson" method="post" action="<?php echo JRoute::_('index.php'); ?>">
+<form name="editperson" id="editperson" method="post" action="<?php echo Route::::_('index.php'); ?>">
 <?php
 
 		?>

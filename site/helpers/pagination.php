@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Router\Route;
 jimport('joomla.application.component.model');
 
 /**
@@ -114,7 +114,7 @@ $option = $app->input->getCmd('option');
 	
        
 		$query = JURI::buildQuery($params);
-		$link = JRoute::_('index.php?' . $query);
+		$link = Route::::_('index.php?' . $query);
 		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id,$cfg_which_database);
 		$forward = sportsmanagementModelRound::getRoundId($currentRoundcode+1, $project->id,$cfg_which_database);
 
@@ -126,7 +126,7 @@ $option = $app->input->getCmd('option');
             $params['order'] = 0;
             
 			$query = JURI::buildQuery($params);
-			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
+			$link = Route::::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
@@ -145,7 +145,7 @@ $option = $app->input->getCmd('option');
             $params['order'] = 0;
 
 			$query = JURI::buildQuery($params);
-			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
+			$link = Route::::_('index.php?' . $query . '#'.$option.'_top');
 			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
 		else
@@ -162,7 +162,7 @@ $option = $app->input->getCmd('option');
             $params['order'] = 0;
 
 			$query = JURI::buildQuery($params);
-			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
+			$link = Route::::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -184,7 +184,7 @@ $option = $app->input->getCmd('option');
             $params['order'] = 0;
 
 			$query = JURI::buildQuery($params);
-			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
+			$link = Route::::_('index.php?' . $query . '#'.$option.'_top');
 			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
 		else
@@ -217,7 +217,7 @@ $option = $app->input->getCmd('option');
             $params['order'] = 0;
 
 					$query		= JURI::buildQuery($params);
-					$link		= JRoute::_('index.php?' . $query . '#'.$option.'_top');
+					$link		= Route::::_('index.php?' . $query . '#'.$option.'_top');
 					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);
 				}
 				else
@@ -276,7 +276,7 @@ $option = $app->input->getCmd('option');
 			{
 				$params['r'] = $counter;
 				$query = JURI::buildQuery($params);
-				$link  = JRoute::_('index.php?' . $query);
+				$link  = Route::::_('index.php?' . $query);
 
 				$pageNav2 .= "<option value='".$link."'";
 				if ($counter==$currentRoundcode)

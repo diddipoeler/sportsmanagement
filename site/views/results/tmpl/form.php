@@ -46,23 +46,17 @@ $document = JFactory::getDocument();
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-//JHtml::_('behavior.framework', true);
-//load data for editor
-//require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );
+
 }
 else
 {
-//JHtml::_( 'behavior.mootools' );  
-//load data for editor
-//require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );    
+
   
 }
-//$version = urlencode(JoomleagueHelper::getVersion());
-//$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/editmatch.js');
+
 ?>
 <script>
-//var str_delete = '<?php echo Text::_('JACTION_DELETE'); ?>';
-//var baseajaxurl = '<?php echo JRoute::_(JURI::base().'index.php?option=com_sportsmanagement') ;?>';	
+
 </script>
 <div class="row-fluid" style="overflow:auto;">
 	<!-- edit results start -->

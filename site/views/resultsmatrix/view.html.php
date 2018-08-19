@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Router\Route;
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
@@ -129,15 +129,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
-		/*
-		 //build feed links
-		 $feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
-		 $rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
-
-		 // add the links
-		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-		 */
-         
          sportsmanagementHelperHtml::$project = $project;
          sportsmanagementHelperHtml::$teams = $this->teams;
          

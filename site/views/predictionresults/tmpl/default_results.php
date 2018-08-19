@@ -11,17 +11,8 @@
 
 defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 JHTML::_('behavior.tooltip');
-
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
-echo 'this->items<br /><pre>~' . print_r($this->items,true) . '~</pre><br />';
-echo 'this->pagination<br /><pre>~' . print_r($this->pagination,true) . '~</pre><br />';
-echo 'this->limit<br /><pre>~' . print_r($this->limit,true) . '~</pre><br />';
-echo 'this->limitstart<br /><pre>~' . print_r($this->limitstart,true) . '~</pre><br />';
-echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br />';
-}
 
 ?>
 
@@ -60,7 +51,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         }
         $this->roundID = sportsmanagementModelPrediction::$roundID;
 		?>
-		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
+		<form action="<?php echo Route::::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='view' value='predictionresults' />
 			<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />

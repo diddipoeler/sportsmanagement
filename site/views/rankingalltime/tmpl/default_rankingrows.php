@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 JHTML::_('behavior.tooltip');
 
 $current  = &$this->current;
@@ -605,7 +606,7 @@ foreach( $current as $ptid => $team )
 							break;
 					}
 
-					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
+					$url = Route::::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
 					echo JHTML::link($url, $img, $attr);
 				}
 				echo '</td>';

@@ -1,5 +1,6 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
-
+<?php 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
 
 jimport( 'joomla.application.component.view' );
 
@@ -10,7 +11,7 @@ class JoomleagueViewClubplan extends JLGView
 	{
 
 		$document = JFactory::getDocument();
-		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
+		$document->link = Route::::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$config = $model->getTemplateConfig($this->getName());
 		$this->config = $config;
@@ -38,7 +39,7 @@ class JoomleagueViewClubplan extends JLGView
 			}
 
 			$item->title 		= $team1. " - ".$team2. " : ".$result;
-			$item->link 		= JRoute::_( $link . $game->project_id . '&mid=' . $game->id);
+			$item->link 		= Route::::_( $link . $game->project_id . '&mid=' . $game->id);
 			$item->description 	= $game->summary;
 			$item->date			= $date;
 			$item->category   	= "clubplan";
