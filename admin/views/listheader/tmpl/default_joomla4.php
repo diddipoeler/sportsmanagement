@@ -71,8 +71,6 @@ default:
    
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
-			
-            //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
 			}
                 

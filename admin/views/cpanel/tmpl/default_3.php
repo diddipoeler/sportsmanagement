@@ -8,9 +8,11 @@
  * @package   sportsmanagement
  * @subpackage cpanel
  */
+ 
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.html.bootstrap');
 ?> 
 <div id="jsm" class="admin override">
@@ -237,25 +239,25 @@ jimport('joomla.html.html.bootstrap');
                                 "active" => "tab1_id" // It is the ID of the active tab.
                             );
 
-                            echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+                            echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
 
                             if (is_array($this->importData)) {
                                 foreach ($this->importData as $key => $value) {
-                                    echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_($key), 'slide' . $start . '_id');
+                                    echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_($key), 'slide' . $start . '_id');
                                     echo $value;
-                                    echo JHtml::_('bootstrap.endSlide');
+                                    echo HTMLHelper::_('bootstrap.endSlide');
                                     $start++;
                                 }
                             }
                             if (is_array($this->importData2)) {
                                 foreach ($this->importData2 as $key => $value) {
-                                    echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_($key), 'slide' . $start . '_id');
+                                    echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_($key), 'slide' . $start . '_id');
                                     echo $value;
-                                    echo JHtml::_('bootstrap.endSlide');
+                                    echo HTMLHelper::_('bootstrap.endSlide');
                                     $start++;
                                 }
                             }
-                            echo JHtml::_('bootstrap.endAccordion');
+                            echo HTMLHelper::_('bootstrap.endAccordion');
                             ?>
                         </div>                         
                     </div>                   
