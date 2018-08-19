@@ -209,20 +209,21 @@ class sportsmanagementModelPositions extends JSMModelList
         $query->where('ppos.project_id = '.(int)$project_id);  
         $query->where('pos.persontype = '.(int)$persontype);  
         $query->order('pos.ordering');  
-        		
+        try{		
 		JFactory::getDbo()->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-		if (!$result=JFactory::getDbo()->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			return false;
-		}
+       $result = JFactory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
 			$position->text = JText::_($position->text);
 		}
+        }
+catch (Exception $e){
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+        
+        
 		return $result;
 	}
     

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * HTML View class for the Sportsmanagement Component
@@ -30,11 +31,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $app = JFactory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
+        //if (version_compare(JSM_JVERSION, '4', 'eq')) {
+//            $uri = JUri::getInstance();
+//        } else {
+//            $uri = JFactory::getURI();
+//        }
         $model = $this->getModel();
 
         $this->state = $this->get('State');
@@ -59,7 +60,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
 /**
  * build the html options for position
  */
-        $position_id[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
+        $position_id[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
         $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
         if ($project_ref_positions) {
@@ -74,7 +75,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $this->lists = $lists;
         $this->items = $items;
         $this->pagination = $pagination;
-        $this->request_url = $uri->toString();
+        //$this->request_url = $uri->toString();
         $this->project = $project;
     }
 
@@ -90,12 +91,10 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $option = $jinput->getCmd('option');
         $app->setUserState("$option.persontype", $this->_persontype);
 
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 
-        JToolbarHelper::apply('projectreferees.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
-        //JToolbarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
-        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'persons', 3);
-        //JToolbarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
+        JToolbarHelper::apply('projectreferees.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
+        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'persons', 3);
         JToolbarHelper::deleteList('', 'projectreferees.delete');
         JToolbarHelper::checkin('projectreferees.checkin');
         parent::addToolbar();

@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
@@ -76,16 +77,16 @@ echo $this->loadTemplate('joomla2');
 <!-- <fieldset class="adminform"> -->
 	<legend>
 	<?php
-	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
+	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 	?>
 	</legend>
 	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>
-			<td><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_DESCR');?>:</td>
+			<td><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_DESCR');?>:</td>
 			<td><input type="text" name="quickadd" id="quickadd"  size="50" /></td>
-			<td><input type="submit" name="submit" id="submit" value="<?php echo JText::_('Add');?>" /></td>
+			<td><input type="submit" name="submit" id="submit" value="<?php echo Text::_('Add');?>" /></td>
 		</tr>
 	</table>
 	<?php echo JHtml::_('form.token'); ?>
@@ -100,7 +101,7 @@ echo $this->loadTemplate('data');
 else
 {
 echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
 

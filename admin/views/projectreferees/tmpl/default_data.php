@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
@@ -26,7 +27,7 @@ JHtml::_( 'behavior.mootools' );
 <!-- 	<fieldset class="adminform"> -->
 		<legend>
 			<?php
-			echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->project->name.'</i>');
+			echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE2','<i>'.$this->project->name.'</i>');
 			?>
 		</legend>
 		
@@ -36,7 +37,7 @@ JHtml::_( 'behavior.mootools' );
 					<tr>
 						<th width="5">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM');
+							echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM');
 							?>
 						</th>
 						<th width="20">
@@ -52,17 +53,17 @@ JHtml::_( 'behavior.mootools' );
 						</th>
 						<th width="20">
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_PID');
+							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_PID');
 							?>
 						</th>
 						<th>
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_IMAGE');
+							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_IMAGE');
 							?>
 						</th>
 						<th>
 							<?php
-							echo JHtml::_('grid.sort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->sortDirection,$this->sortColumn);
+							echo JHtml::_('grid.sort',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_POS'),'pref.project_position_id',$this->sortDirection,$this->sortColumn);
 							?>
 						</th>
 						<th>
@@ -72,7 +73,7 @@ JHtml::_( 'behavior.mootools' );
 						</th>
 						<th width="10%">
 							<?php
-							echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->sortDirection,$this->sortColumn);
+							echo JHtml::_('grid.sort',Text::_('JGRID_HEADING_ORDERING'),'pref.ordering',$this->sortDirection,$this->sortColumn);
 							echo JHtml::_('grid.order',$this->items, 'filesave.png', 'projectreferees.saveorder');
 							?>
 						</th>
@@ -129,7 +130,7 @@ JHtml::_( 'behavior.mootools' );
                                     ?>	
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
+										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
 										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "'.$imageTitle.'"');
@@ -154,7 +155,7 @@ JHtml::_( 'behavior.mootools' );
 								<?php
 								if ($row->picture == '')
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_NO_IMAGE');
 									echo JHtml::_(	'image',
 													'administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,
@@ -163,7 +164,7 @@ JHtml::_( 'behavior.mootools' );
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
+										$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_DEFAULT_IMAGE');
 										echo JHtml::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,
