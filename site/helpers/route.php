@@ -233,7 +233,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
   }
   
   $query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 	
 		return $link;
   }
@@ -283,7 +283,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 				"filter_search_leagues" => $league_id );
 	
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 	
 		return $link;
 	}
@@ -301,7 +301,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 				"catid" => $sb_catid );
 	
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 	
 		return $link;
 	}
@@ -329,7 +329,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
     
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}	
@@ -367,12 +367,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 	$query = self::buildQuery( $params );
             // diddipoeler
             // nicht im backend, sondern im frontend
-	$link = Route::::_( "index.php?" . $query. '&tmpl=component', false );
+	$link = Route::_( "index.php?" . $query. '&tmpl=component', false );
 		} 
         else 
         {
 			$query = self::buildQuery( $params );
-			$link = Route::::_( "index.php?" . $query, false );
+			$link = Route::_( "index.php?" . $query, false );
 		}
         self::sportsmanagementBuildRoute($params);
         
@@ -400,7 +400,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
                       
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }					
   $query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
   }
@@ -436,7 +436,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
         
 //        if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
         $query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;			
 	}
@@ -460,7 +460,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 					"tid" => $teamid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -481,7 +481,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"did" => $divisionid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -500,7 +500,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"p" => $projectid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -528,7 +528,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		$params["division"] = $division; 
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -554,7 +554,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
         
         $query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -576,7 +576,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"p" => $projectid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -601,7 +601,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -625,7 +625,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		if ( isset( $divisionid ) ) { $params["division"] = $divisionid; }
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -651,7 +651,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"pt" => $showType );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -711,7 +711,7 @@ $params = array("option" => "com_sportsmanagement",
 
 
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query , false );
+		$link = Route::_( 'index.php?' . $query , false );
         //$link = Route::::_( 'index2.php?' . $query , false );
 
 		return $link;
@@ -741,7 +741,7 @@ $params = array("option" => "com_sportsmanagement",
 					"id" => $contactid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -767,7 +767,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"jlpid" => $pl_id );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
@@ -788,7 +788,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 					"user" => $userid );
 if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = Route::::_( 'index.php?' . $query, false );
+		$link = Route::_( 'index.php?' . $query, false );
 
 		return $link;
 	}
