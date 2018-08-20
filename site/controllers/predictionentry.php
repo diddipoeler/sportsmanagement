@@ -112,7 +112,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                         's' => '1');
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = Route::::_('index.php?' . $query, false);
+                    $link = Route::_('index.php?' . $query, false);
                 }
             }
         }
@@ -227,7 +227,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                     );
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = Route::::_('index.php?' . $query, false);
+                    $link = Route::_('index.php?' . $query, false);
                     $this->setRedirect($link);
                 }
 
@@ -240,7 +240,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                     );
 
                     $query = sportsmanagementHelperRoute::buildQuery($params);
-                    $link = Route::::_('index.php?' . $query, false);
+                    $link = Route::_('index.php?' . $query, false);
                     $this->setRedirect($link);
                 }
 

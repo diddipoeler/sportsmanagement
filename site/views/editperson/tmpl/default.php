@@ -31,7 +31,7 @@ $fieldsets = $this->form->getFieldsets();
 		}
 	}
 </script>
-<form name="editperson" id="editperson" method="post" action="<?php echo Route::::_('index.php'); ?>">
+<form name="editperson" id="editperson" method="post" action="<?php echo Route::_('index.php'); ?>">
 <?php
 
 		?>

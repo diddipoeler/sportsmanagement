@@ -141,7 +141,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
             $from_matchday = $this->model->createMatchdayList($predictionProject->project_id,$round_ids);
 			$to_matchday = $this->model->createMatchdayList($predictionProject->project_id,$round_ids);
 			?>
-			<form action="<?php echo Route::::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
+			<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
             <input type="hidden" name="view" value="predictionranking" />
             <input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
 			<input type='hidden' name='pj' value='<?php echo $predictionProject->project_slug; ?>' />

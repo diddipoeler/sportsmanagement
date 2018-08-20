@@ -13,7 +13,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		$document	= JFactory::getDocument();
 		$option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
-		$document->link = Route::::_('index.php?option=com_sportsmanagement');
+		$document->link = Route::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$matches = $model->getMatches();
 		sportsmanagementModelProject::setProjectID(JFactory::getApplication()->input->getInt('p',0));
@@ -36,7 +36,7 @@ class sportsmanagementViewResults extends JViewLegacy
 				$date = ( $game->match_date ? date( 'r', strtotime($game->match_date) ) : '' );
 				$result = $game->cancel>0 ?$game->cancel_reason : $game->team1_result . "-" . $game->team2_result;
 				$item->title 		= $team1->name. " - ".$team2->name." : ".$result;
-				$item->link 		= Route::::_( 'index.php?option=com_sportsmanagement&view=matchreport&p=' .
+				$item->link 		= Route::_( 'index.php?option=com_sportsmanagement&view=matchreport&p=' .
 				$game->project_id . '&mid=' . $game->id);
 				$item->description 	= $game->summary;
 				$item->date			= $date;

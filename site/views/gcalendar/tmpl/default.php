@@ -48,7 +48,7 @@ $allCalendars = jsmGCalendarDBUtil::getAllCalendars();
 $calsSources = "		eventSources: [\n";
 foreach($allCalendars as $calendar) {
 	if(empty($calendarids) || in_array($calendar->id, $calendarids)){
-		$value = html_entity_decode(Route::::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JFactory::getApplication()->input->getInt('Itemid')));
+		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JFactory::getApplication()->input->getInt('Itemid')));
 		$calsSources .= "				'".$value."',\n";
 	}
 }
@@ -290,7 +290,7 @@ echo JHTML::_('content.prepare', $params->get('textbefore'));
 if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) == 3){?>
 <dl id="gcalendar_view_list">
 <?php foreach($allCalendars as $calendar) {
-		$value = html_entity_decode(Route::::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id));
+		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id));
 		$checked = '';
 		if(empty($calendarids) || in_array($calendar->id, $calendarids)){
 			$checked = 'checked="checked"';

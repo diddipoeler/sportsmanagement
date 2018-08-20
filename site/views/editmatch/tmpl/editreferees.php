@@ -29,7 +29,7 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 <div id="lineup">
-	<form  action="<?php echo Route::::_('index.php?option=com_sportsmanagement');?>" id='editreferees' method='post' style='display:inline' name='editreferees' >
+	<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='editreferees' method='post' style='display:inline' name='editreferees' >
 	<fieldset>
 		<div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">

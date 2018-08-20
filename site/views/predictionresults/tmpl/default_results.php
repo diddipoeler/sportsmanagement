@@ -51,7 +51,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         }
         $this->roundID = sportsmanagementModelPrediction::$roundID;
 		?>
-		<form action="<?php echo Route::::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
+		<form action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='view' value='predictionresults' />
 			<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />

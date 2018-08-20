@@ -45,7 +45,7 @@ $visible = 'hidden';
       // <form name="adminForm" id="adminForm" method="post" action="index.php"> 
       ?>
       
-      <form name='predictionRegisterForm' id='predictionRegisterForm' method='post' action="<?php echo Route::::_('index.php?option=com_sportsmanagement&task=predictionentry.register'); ?>" >
+      <form name='predictionRegisterForm' id='predictionRegisterForm' method='post' action="<?php echo Route::_('index.php?option=com_sportsmanagement&task=predictionentry.register'); ?>" >
 			<input type='submit' name='register' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NOT_MEMBER_INFO_07') ; ?>' class='button' />
 			<input type='<?php echo $visible; ?>' name='prediction_id' value='<?php echo $this->predictionGame->id; ?>' />
 			<input type='<?php echo $visible; ?>' name='user_id' value='<?php echo $this->actJoomlaUser->id; ?>' />

@@ -712,7 +712,6 @@ $params = array("option" => "com_sportsmanagement",
 
 		$query = self::buildQuery( $params );
 		$link = Route::_( 'index.php?' . $query , false );
-        //$link = Route::::_( 'index2.php?' . $query , false );
 
 		return $link;
     }

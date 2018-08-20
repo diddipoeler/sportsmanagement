@@ -65,7 +65,7 @@ foreach ($tmp as $date => $events){
 	$day = $parts[2];
 	$month = $parts[1];
 	$year = $parts[0];
-	$url = Route::::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
+	$url = Route::_('index.php?option=com_sportsmanagement&view=gcalendar&gcids='.implode(',', $linkIDs).$itemId.'#year='.$year.'&month='.$month.'&day='.$day.'&view=agendaDay');
 
 	$data[] = array(
 			'id' => $date,
