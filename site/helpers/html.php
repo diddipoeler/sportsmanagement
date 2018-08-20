@@ -652,7 +652,7 @@ catch (Exception $e)
         if (is_array($attributes)) {
             $attribs = array_merge($attributes, $attribs);
         }
-        $url = Route::::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
+        $url = Route::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
         return JHtml::link($url, $img);
     }
 
@@ -747,7 +747,7 @@ catch (Exception $e)
 
             $query = JURI::buildQuery($params);
             echo JHtml::link(
-                    Route::::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                    Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
             echo JText::_($columnTitle);
         }
@@ -819,7 +819,7 @@ catch (Exception $e)
 
             $query = JURI::buildQuery($params);
             echo JHtml::link(
-                    Route::::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                    Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
             echo JText::_($columnTitle);
         }
