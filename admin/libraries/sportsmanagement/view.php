@@ -11,6 +11,9 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // welche joomla version ?
 
@@ -87,16 +90,16 @@ class sportsmanagementView extends HtmlView
     }
     else
     {
-    $this->uri = JFactory::getURI();
+    $this->uri = Factory::getURI();
     $this->toolbarhelper = 'JToolbarHelper';    
     }
 /**
  * alles aufrufen was für die views benötigt wird
  */
         
-        $this->document	= JFactory::getDocument();
+        $this->document	= Factory::getDocument();
         $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->format = $this->jinput->getCmd('format');
@@ -111,7 +114,7 @@ class sportsmanagementView extends HtmlView
             $this->sortColumn = $this->state->get('list.ordering');
         }
 
-if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
+if ( ComponentHelper::getParams($this->option)->get('cfg_which_database') )
 {
 $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
 }
@@ -120,7 +123,7 @@ $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
 	{
 	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );	
 	}	
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->request_url	= $this->uri->toString();
         
         switch ( $this->view )
@@ -135,7 +138,7 @@ $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
             }  
         
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
 
 /**
  * bei der einzelverarbeitung
@@ -203,21 +206,21 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 		    $this->pagination = $this->get('Pagination');    
             break;    
             }    
-            $this->user	= JFactory::getUser();
-		    $this->config = JFactory::getConfig();
+            $this->user	= Factory::getUser();
+		    $this->config = Factory::getConfig();
             $this->request_url = $this->uri->toString();
         }
         
-        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+        if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
         if(isset($this->sortDirection)) {
-            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
+            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
         }
         if(isset($this->sortColumn)) {
-            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
         }
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         }
         
         if( version_compare(JSM_JVERSION,'4','eq') ) 
@@ -252,13 +255,13 @@ else
 
         
         
-        //$this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$this->app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 		$this->init();
 
 		$this->addToolbar();
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
         
         // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -310,9 +313,9 @@ else
 	 */
 	protected function addToolbar ()
 	{
-	   //$option = JFactory::getApplication()->input->getCmd('option');
-		//$app = JFactory::getApplication();
-        //$view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
+	   //$option = Factory::getApplication()->input->getCmd('option');
+		//$app = Factory::getApplication();
+        //$view = Factory::getApplication()->input->getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
@@ -343,23 +346,23 @@ else
     case 'extrafields':				
 case 'teampersons':				
         JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
+			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
         break; 
          case 'clubs':
         JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
+			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
 
-$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JNO' ) );
-$myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) ); 
+$myoptions[] = JHtml::_( 'select.option', '1', Text::_( 'JNO' ) );
+$myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) ); 
 
 	JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
 			'filter_geo_daten',
 			JHtml::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 		);
@@ -367,12 +370,12 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         break;    
         case 'smquotes':
         JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
+			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
         JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
+			Text::_('JOPTION_SELECT_CATEGORY'),
 			'filter_category_id',
 			JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
 		);        
@@ -382,7 +385,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->search_nation) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
 			'filter_search_nation',
 			JHtml::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 		);
@@ -391,7 +394,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->federation) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
 			'filter_federation',
 			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
 		);
@@ -400,7 +403,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 	if ( isset($this->unique_id) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
 			'filter_unique_id',
 			JHtml::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
 		);
@@ -411,7 +414,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->userfields) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
+			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
 			'filter_userfields',
 			JHtml::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 		);
@@ -419,7 +422,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->league) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
+			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
 			'filter_league',
 			JHtml::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 		);
@@ -427,7 +430,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->sports_type) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
+			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
 			'filter_sports_type',
 			JHtml::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
 		);
@@ -435,7 +438,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->season) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
+			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
 			'filter_season',
 			JHtml::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
 		);
@@ -444,7 +447,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->prediction_ids) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
 			'filter_prediction_id',
 			JHtml::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
 		);
@@ -453,7 +456,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         if ( isset($this->project_position_id) )
         {
         JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
+			Text::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
 			'filter_project_position_id',
 			JHtml::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
 		);
@@ -461,7 +464,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 
         if ( isset($this->search_agegroup) ) {
             JHtmlSidebar::addFilter(
-                JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
+                Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
                 'filter_search_agegroup',
                 JHtml::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
             );
@@ -469,7 +472,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
          
         }    
         
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
         
         if ( $this->layout == 'edit' 
         || $this->layout == 'edit_3' 
@@ -477,7 +480,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
-        //$view = JFactory::getApplication()->input->getCmd('view', 'edit');
+        //$view = Factory::getApplication()->input->getCmd('view', 'edit');
             if (empty($this->title))
 		    {
             if ( $isNew )
@@ -582,10 +585,10 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			$this->icon = strtolower($this->getName());
 		}
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
-        //JToolbarHelper::title(JText::_($this->title), $this->icon);
-		$document = JFactory::getDocument();
+        //JToolbarHelper::title(Text::_($this->title), $this->icon);
+		$document = Factory::getDocument();
         $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         if(version_compare(JVERSION,'4.0.0-dev','ge')) 
         {
@@ -620,22 +623,22 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         {
         if ($isNew) 
 		{
-        JToolbarHelper::title(JText::_($this->title), $this->icon);
+        JToolbarHelper::title(Text::_($this->title), $this->icon);
         }
         else
         {
-        JToolbarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
+        JToolbarHelper::title( sprintf(Text::_($this->title),$this->item->name), $this->icon);    
         }
         }
         else
         {
             if(version_compare(JVERSION,'3.0.0','ge')) 
             {
-            JToolbarHelper::title(JText::_($this->title) );    
+            JToolbarHelper::title(Text::_($this->title) );    
             }
             else
             {
-            JToolbarHelper::title(JText::_($this->title), $this->icon);
+            JToolbarHelper::title(Text::_($this->title), $this->icon);
             }
 
 /**
@@ -671,7 +674,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         
         }
         
-        sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
