@@ -77,7 +77,6 @@ class JFormFieldJLGColor extends JFormField
 		$classes = (string) $this->element['class'];
 		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' size<br><pre>'.print_r($size,true).'</pre>'),'Notice');
 
 		// Initialize JavaScript field attributes.
 		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';

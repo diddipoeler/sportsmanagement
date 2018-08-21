@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
@@ -41,7 +41,7 @@ class JFormFieldExtensionVersion extends JFormField {
         $reload = true;
         $lang->load($extension, $base_dir, $language_tag, $reload);
 		$html = '';
-		$html .= '<div style="clear: both;">'.JText::_('COM_SPORTSMANAGEMENT_VERSION_LABEL').'</div>';
+		$html .= '<div style="clear: both;">'.Text::_('COM_SPORTSMANAGEMENT_VERSION_LABEL').'</div>';
 		return $html;
 	}
 

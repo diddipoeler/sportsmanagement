@@ -229,11 +229,15 @@ use Joomla\CMS\HTML\HTMLHelper;
             <div class="center">
                 <?PHP
                 $start = 1;
-// Define slides options
+/**
+ * Define slides options
+ */
                 $slidesOptions = array(
                     "active" => "slide1_id" // It is the ID of the active tab.
                 );
-// Define tabs options for version of Joomla! 3.0
+/**
+ * Define tabs options for version of Joomla! 3.0
+ */
                 $tabsOptions = array(
                     "active" => "tab1_id" // It is the ID of the active tab.
                 );

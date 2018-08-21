@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
@@ -73,7 +73,7 @@ catch (Exception $e) {
             
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

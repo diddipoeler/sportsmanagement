@@ -74,7 +74,7 @@ class JFormFieldFederationsList extends JFormFieldList
 		$app = JFactory::getApplication();
         //$option = JFactory::getApplication()->input->getCmd('option');
         $selected = 0;
-        //$app->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
+
         // Initialize variables.
 		$options = array();
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
@@ -111,7 +111,7 @@ class JFormFieldFederationsList extends JFormFieldList
 			
 			$sections = $db->loadObjectList ();
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+
             
   //$categoryparent = empty($sections) ? 0 : $sections->id;
   //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
