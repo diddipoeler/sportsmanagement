@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\View\HtmlView;
 
 // welche joomla version ?
 
@@ -52,7 +53,7 @@ else
  * @version $Id$
  * @access public
  */
-class sportsmanagementView extends JViewLegacy
+class sportsmanagementView extends HtmlView
 {
 
 	protected $icon = '';
