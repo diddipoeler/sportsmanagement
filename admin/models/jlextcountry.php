@@ -75,11 +75,11 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_S
 
 $file = $base_Dir.$alpha2.'.txt';
 
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file, true).'</pre><br>','Notice');
+
 
 $source	= JFile::read($file);
 
-//$app->enqueueMessage(JText::_('source <br><pre>'.print_r($source,true).'</pre>'   ),'');
+
 
 //# tab delimited, and encoding conversion
 	$csv = new JSMparseCSV();
@@ -97,7 +97,7 @@ $source	= JFile::read($file);
 	    
         if ( !$diddipoeler )
         {
-        //$app->enqueueMessage(JText::_('row <br><pre>'.print_r($row,true).'</pre>'   ),'');
+
         }
 		
         for ($a=0; $a < count($row); $a++)

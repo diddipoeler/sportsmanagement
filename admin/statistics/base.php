@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 /**
  * SMStatistic
@@ -371,13 +372,13 @@ class SMStatistic extends JObject
 	   $app = JFactory::getApplication();
 		$params = self::getParams();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
         
         $stat_ids = $params->get($id_field);
        
 		if (!count($stat_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -401,21 +402,21 @@ class SMStatistic extends JObject
 	   $app = JFactory::getApplication();
 		$params = self::getParams();
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id_field<br><pre>'.print_r($id_field,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' get<br><pre>'.print_r($params->get($id_field),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' id_field<br><pre>'.print_r($id_field,true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' get<br><pre>'.print_r($params->get($id_field),true).'</pre>'),'');
         
 		//$event_ids = explode(',', $params->get($id_field));
         $event_ids = $params->get($id_field);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' event_ids<br><pre>'.print_r($event_ids,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' event_ids<br><pre>'.print_r($event_ids,true).'</pre>'),'');
  }
         
 		if (!count($event_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -446,7 +447,7 @@ class SMStatistic extends JObject
 		{
 			$file = 'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
 			if (!file_exists($file)) {
-				JError::raiseError(0, $classname .': '. JText::_('STATISTIC CLASS NOT DEFINED'));
+				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
 			require_once($file);
 		}
@@ -502,7 +503,7 @@ class SMStatistic extends JObject
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' baseparams<br><pre>'.print_r($this->baseparams,true).'</pre>'),'');
+       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' baseparams<br><pre>'.print_r($this->baseparams,true).'</pre>'),'');
  }
        
 		$paramsdata = $this->baseparams;
@@ -567,7 +568,7 @@ class SMStatistic extends JObject
 {
     $my_text = ' <br><pre>'.print_r($this->_params,true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
  }
         
 		return $this->_params;
@@ -627,7 +628,7 @@ class SMStatistic extends JObject
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -650,7 +651,7 @@ class SMStatistic extends JObject
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) 
         {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -675,7 +676,7 @@ class SMStatistic extends JObject
 		//$statistic_views = explode(',', $params->get('statistic_views'));
         $statistic_views = $params->get('statistic_views');
 		if (!count($statistic_views)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -702,9 +703,9 @@ class SMStatistic extends JObject
 			{
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
-			return JHtml::image($iconPath, JText::_($this->name),	array( "title" => JText::_($this->name) ));
+			return JHtml::image($iconPath, Text::_($this->name),	array( "title" => Text::_($this->name) ));
 		}
-		return '<span class="stat-alternate hasTip" title="'.JText::_($this->name).'">'.JText::_($this->short).'</span>';
+		return '<span class="stat-alternate hasTip" title="'.Text::_($this->name).'">'.Text::_($this->short).'</span>';
 	}
 
 	/**
@@ -715,7 +716,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 	
@@ -726,7 +727,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchPlayersStats($match_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 
@@ -737,7 +738,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByGame($teamplayer_id, $project_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 	
@@ -748,7 +749,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 	
@@ -761,7 +762,7 @@ class SMStatistic extends JObject
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 	
@@ -775,7 +776,7 @@ class SMStatistic extends JObject
 	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return array();
 	}
 
@@ -809,7 +810,7 @@ class SMStatistic extends JObject
             return $query_core;
             break;
             default:
-            JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+            JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
             return array();
             break;
         }
@@ -824,7 +825,7 @@ class SMStatistic extends JObject
 	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{		
-		JError::raiseWarning(0,$this->_name .': '.  JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0,$this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 	
@@ -836,7 +837,7 @@ class SMStatistic extends JObject
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		JError::raiseWarning(0,$this->_name .': '.  JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0,$this->_name .': '.  Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 
@@ -848,7 +849,7 @@ class SMStatistic extends JObject
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+		JError::raiseWarning(0, $this->_name .': '. Text::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
 		return 0;
 	}
 
@@ -901,7 +902,7 @@ class SMStatistic extends JObject
 
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         if (isset($factors))
@@ -1019,7 +1020,7 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
 		if (isset($factors))
@@ -1157,11 +1158,11 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
         }
 
 		if ( $sids )
@@ -1213,7 +1214,7 @@ $res = $db->loadResult();
 {
     $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  }       
         
         
@@ -1273,7 +1274,7 @@ $res = $db->loadResult();
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
 try {
@@ -1318,7 +1319,7 @@ $stats = $db->loadObjectList();
 {
     $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         //sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
 try{
@@ -1338,7 +1339,7 @@ try{
 {
     $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
 
 try{            
@@ -1392,7 +1393,7 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
  }
 
 		$query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
@@ -1406,7 +1407,7 @@ try{
  
  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {       
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
  }
         
 		$query_me->select('DISTINCT m.id AS mid, tp.id AS tpid');
@@ -1420,7 +1421,7 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
  }
         
 
@@ -1447,8 +1448,8 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  }       
                 
 		$db->setQuery($query);
@@ -1507,7 +1508,7 @@ try{
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  }
         
 		$res = $db->loadObjectList('person_id');
@@ -1521,7 +1522,7 @@ try{
  
  if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {       
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  }
         
 		$res['totals'] = new stdclass;

@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 $option = JFactory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -87,17 +89,17 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			}
 			else
 			{
-				JFactory::getApplication()->enqueueMessage(JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), 'error');
-                //JError::raiseWarning(500,JText::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
+				JFactory::getApplication()->enqueueMessage(Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'), 'error');
+                //JError::raiseWarning(500,Text::_('<a href="http://php.net/manual/en/book.simplexml.php" target="_blank">SimpleXML</a> does not exist on your system!'));
 			}
             
             }
 		}
 		else
 		{
-			JFactory::getApplication()->enqueueMessage(JText::_sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
-//            JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'));
-//			echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file')."'); window.history.go(-1); </script>\n";
+			JFactory::getApplication()->enqueueMessage(Text::_sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'), 'error');
+//            JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file'));
+//			echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Missing import file')."'); window.history.go(-1); </script>\n";
 		}
 	}
     
@@ -155,7 +157,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			JFactory::getDbo()->setQuery($query);
 			$match_data = JFactory::getDbo()->loadObject();
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Update Match: %1$s / Match: %2$s - %3$s / Result: %4$s - %5$s',
+					$my_text .= Text::sprintf(	'Update Match: %1$s / Match: %2$s - %3$s / Result: %4$s - %5$s',
 									'</span><strong>'.$match_data->id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$match_data->hometeam</strong>",
 									"<strong>$match_data->awayteam</strong>",
@@ -212,18 +214,18 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		if ( !$xmlData = $this->_getXml() )
 		{
 			$errorFound = false;
-            JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'), 'error');
-            //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
+            JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'), 'error');
+            //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Load of the importfile failed:'));
 			foreach(libxml_get_errors() as $error)
 			{
-                JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
-                //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
+                JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message), 'error');
+                //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', $error->message));
 				$errorFound = true;
 			}
 			if (!$errorFound)
             {
-                JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('), 'error');
-                //JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
+                JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('), 'error');
+                //JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Unknown error :-('));
             }
 		}
         
@@ -276,8 +278,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'OLD';
                     //$this->import_version='NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), '');
-					//JError::raiseNotice(0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
+                    JFactory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'), '');
+					//JError::raiseNotice(0,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
@@ -285,8 +287,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), '');
-					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
+                    JFactory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'), '');
+					//JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_15'));
 				}
 
 				// collect the project data of a .jlg file of JoomLeague 1.5x
@@ -294,8 +296,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$this->_datas['project'] = $xmlData->record[$i];
 					$this->import_version = 'NEW';
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), '');
-					//JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
+                    JFactory::getApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'), '');
+					//JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_20'));
 				}
 
 				// collect the division data
@@ -367,7 +369,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($xmlData->record[$i]['object']=='EventType')
 				{
 					$this->_datas['event'][$et]=$xmlData->record[$i];
-//                    $app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
+//                    $app->enqueueMessage(Text::_('sportsmanagementModelJLXMLImport event<br><pre>'.print_r($this->_datas['event'],true).'</pre>'   ),'');
 					$et++;
 				}
 
@@ -697,7 +699,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 {
                     foreach ( $result as $pos )
                     {
-                        if ( $position->name == JText::_($pos->name) )
+                        if ( $position->name == Text::_($pos->name) )
                         {
                             $position->name = $pos->name;
                             $position->alias = $pos->alias;
@@ -716,7 +718,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 {
                     foreach ( $result as $pos )
                     {
-                        if ( $position->name == JText::_($pos->name) )
+                        if ( $position->name == Text::_($pos->name) )
                         {
                             $position->name = $pos->name;
                             $position->alias = $pos->alias;
@@ -758,7 +760,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 
                 if ( $pos_error )
                 {
-                    //$app->enqueueMessage(JText::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
+                    //$app->enqueueMessage(Text::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
                 } 
                         
             }
@@ -805,8 +807,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		}
 		else
 		{
-		  JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'), 'error');
-			//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'));
+		  JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'), 'error');
+			//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR', 'Something is wrong inside the import file'));
 			return false;
 		}
 	}
@@ -1554,7 +1556,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         {
             return $result;
         }
-		return JText::sprintf('Item with ID [%1$s] not found inside [#__'.COM_SPORTSMANAGEMENT_TABLE.'_%2$s]',$id,$tableName);
+		return Text::sprintf('Item with ID [%1$s] not found inside [#__'.COM_SPORTSMANAGEMENT_TABLE.'_%2$s]',$id,$tableName);
 	}
 
 	/**
@@ -1584,7 +1586,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			{
 				$this->_sportstype_id = $sportstypeObject->id;
 				$my_text .= '<span style="color:orange">';
-				$my_text .= JText::sprintf('Using existing sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
+				$my_text .= Text::sprintf('Using existing sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
 				$my_text .= '<br />';
 			}
 			else
@@ -1598,11 +1600,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				if ($p_sportstype->store()===false)
 				{
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= JText::sprintf('Sportstypename: %1$s',JText::_($this->_sportstype_new)).'<br />';
-					//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
+					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+					$my_text .= Text::sprintf('Sportstypename: %1$s',Text::_($this->_sportstype_new)).'<br />';
+					//$my_text .= Text::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 					//$my_text .= '<pre>'.print_r($p_sportstype,true).'</pre>';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
@@ -1611,7 +1613,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 					$insertID = JFactory::getDbo()->insertid();
 					$this->_sportstype_id = $insertID;
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
+					$my_text .= Text::sprintf('Created new sportstype data: %1$s',"</span><strong>$this->_sportstype_new</strong>");
 					$my_text .= '<br />';
 				}
 			}
@@ -1619,11 +1621,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		else
 		{
 			$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-			$my_text .= JText::sprintf(	'Using existing sportstype data: %1$s',
-										'</span><strong>'.JText::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
+			$my_text .= Text::sprintf(	'Using existing sportstype data: %1$s',
+										'</span><strong>'.Text::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -1653,7 +1655,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 			{
 				$this->_league_id = $leagueObject->id;
 				$my_text .= '<span style="color:orange">';
-				$my_text .= JText::sprintf('Using existing league data: %1$s',"</span><strong>$this->_league_new</strong>");
+				$my_text .= Text::sprintf('Using existing league data: %1$s',"</span><strong>$this->_league_new</strong>");
 				$my_text .= '<br />';
 			}
 			else
@@ -1672,15 +1674,15 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_league', $p_leag
 $insertID = JFactory::getDbo()->insertid();
 					$this->_league_id = $insertID;
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
+					$my_text .= Text::sprintf('Created new league data: %1$s',"</span><strong>$this->_league_new</strong>");
 					$my_text .= '<br />';                    
                     }
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= JText::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
+					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+					$my_text .= Text::sprintf('Leaguenname: %1$s',$this->_league_new).'<br />';
                     $my_text .= $e->getMessage().'<br />';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }
 
 				
@@ -1689,11 +1691,11 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 		else
 		{
 			$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-			$my_text .= JText::sprintf(	'Using existing league data: %1$s',
+			$my_text .= Text::sprintf(	'Using existing league data: %1$s',
 										'</span><strong>'.$this->_getObjectName('league',$this->_league_id).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -1723,7 +1725,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 			{
 				$this->_season_id=$seasonObject->id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf('Using existing season data: %1$s',"</span><strong>$this->_season_new</strong>");
+				$my_text .= Text::sprintf('Using existing season data: %1$s',"</span><strong>$this->_season_new</strong>");
 				$my_text .= '<br />';
 			}
 			else
@@ -1738,9 +1740,9 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				if ($p_season->store()===false)
 				{
 					$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-					$my_text .= JText::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+					$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+					$my_text .= Text::sprintf('Seasonname: %1$s',$this->_season_new).'<br />';
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
                     //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
@@ -1748,7 +1750,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$insertID=JFactory::getDbo()->insertid();
 					$this->_season_id=$insertID;
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new season data: %1$s',"</span><strong>$this->_season_new</strong>");
+					$my_text .= Text::sprintf('Created new season data: %1$s',"</span><strong>$this->_season_new</strong>");
 					$my_text .= '<br />';
 				}
 			}
@@ -1756,11 +1758,11 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 		else
 		{
 			$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-			$my_text .= JText::sprintf(	'Using existing season data: %1$s',
+			$my_text .= Text::sprintf(	'Using existing season data: %1$s',
 										'</span><strong>'.$this->_getObjectName('season',$this->_season_id).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -1785,8 +1787,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$oldID=$this->_getDataFromObject($this->_datas['event'][$key],'id');
 				$this->_convertEventID[$oldID]=$id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing event data: %1$s',
-											'</span><strong>'.JText::_($this->_getObjectName('eventtype',$id)).'</strong>');
+				$my_text .= Text::sprintf(	'Using existing event data: %1$s',
+											'</span><strong>'.Text::_($this->_getObjectName('eventtype',$id)).'</strong>');
 				$my_text .= '<br />';
 			}
 		}
@@ -1831,7 +1833,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				{
 					$this->_convertEventID[$oldID]=$object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing eventtype data: %1$s','</span><strong>'.JText::_($object->name).'</strong>');
+					$my_text .= Text::sprintf('Using existing eventtype data: %1$s','</span><strong>'.Text::_($object->name).'</strong>');
 					$my_text .= '<br />';
 				}
 				else
@@ -1840,7 +1842,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					{
 						$my_text .= 'error on event import: ';
 						$my_text .= $oldID;
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
                         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
 					else
@@ -1848,13 +1850,13 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$insertID=JFactory::getDbo()->insertid();
 						$this->_convertEventID[$oldID]=$insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new eventtype data: %1$s','</span><strong>'.JText::_($p_eventtype->name).'</strong>');
+						$my_text .= Text::sprintf('Created new eventtype data: %1$s','</span><strong>'.Text::_($p_eventtype->name).'</strong>');
 						$my_text .= '<br />';
 					}
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -1879,8 +1881,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$oldID=$this->_getDataFromObject($this->_datas['statistic'][$key],'id');
 				$this->_convertStatisticID[$oldID]=$id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing statistic data: %1$s',
-											'</span><strong>'.JText::_($this->_getObjectName('statistic',$id)).'</strong>');
+				$my_text .= Text::sprintf(	'Using existing statistic data: %1$s',
+											'</span><strong>'.Text::_($this->_getObjectName('statistic',$id)).'</strong>');
 				$my_text .= '<br />';
 			}
 		}
@@ -1919,7 +1921,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				{
 					$this->_convertStatisticID[$oldID]=$object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing statistic data: %1$s','</span><strong>'.JText::_($object->name).'</strong>');
+					$my_text .= Text::sprintf('Using existing statistic data: %1$s','</span><strong>'.Text::_($object->name).'</strong>');
 					$my_text .= '<br />';
 				}
 				else
@@ -1936,7 +1938,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$insertID=JFactory::getDbo()->insertid();
 						$this->_convertStatisticID[$oldID]=$insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new statistic data: %1$s','</span><strong>'.JText::_($p_statistic->name).'</strong>');
+						$my_text .= Text::sprintf('Created new statistic data: %1$s','</span><strong>'.Text::_($p_statistic->name).'</strong>');
 						$my_text .= '<br />';
 					}
 				}
@@ -1957,10 +1959,10 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newparentpositionsid<br><pre>'.print_r($this->_newparentpositionsid,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbparentpositionsid<br><pre>'.print_r($this->_dbparentpositionsid,true).'</pre>'),'');
+       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _newparentpositionsid<br><pre>'.print_r($this->_newparentpositionsid,true).'</pre>'),'');
+//       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' _dbparentpositionsid<br><pre>'.print_r($this->_dbparentpositionsid,true).'</pre>'),'');
        
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
+       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
        
 //$this->dump_header("function _importParentPositions");
 		$my_text='';
@@ -1975,8 +1977,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$oldID=$this->_getDataFromObject($this->_datas['parentposition'][$key],'id');
 				$this->_convertParentPositionID[$oldID]=$id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing parentposition data: %1$s',
-											'</span><strong>'.JText::_($this->_getObjectName('position',$id)).'</strong>');
+				$my_text .= Text::sprintf(	'Using existing parentposition data: %1$s',
+											'</span><strong>'.Text::_($this->_getObjectName('position',$id)).'</strong>');
 				$my_text .= '<br />';
 			}
 		}
@@ -2023,7 +2025,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$p_position->load(JFactory::getDbo()->loadResult());
 					$this->_convertParentPositionID[$oldID]=$p_position->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing parent-position data: %1$s','</span><strong>'.JText::_($p_position->name).'</strong>');
+					$my_text .= Text::sprintf('Using existing parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
 					$my_text .= '<br />';
 				}
 				else
@@ -2033,7 +2035,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$my_text .= 'error on parent-position import: ';
 						$my_text .= $oldID;
 						//$my_text .= "<br />Error: _importParentPositions<br />#$my_text#<br />#<pre>".print_r($p_position,true).'</pre>#';
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 						//return false;
                         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -2042,7 +2044,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$insertID = JFactory::getDbo()->insertid();
 						$this->_convertParentPositionID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new parent-position data: %1$s','</span><strong>'.JText::_($p_position->name).'</strong>');
+						$my_text .= Text::sprintf('Created new parent-position data: %1$s','</span><strong>'.Text::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
 					}
 				}
@@ -2050,7 +2052,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 			}
 		}
 //$this->dump_variable("this->_convertParentPositionID", $this->_convertParentPositionID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2076,8 +2078,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$oldID = $this->_getDataFromObject($this->_datas['position'][$key],'id');
 				$this->_convertPositionID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
-											'</span><strong>'.JText::_($this->_getObjectName('position',$id)).'</strong>');
+				$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
+											'</span><strong>'.Text::_($this->_getObjectName('position',$id)).'</strong>');
 				$my_text .= '<br />';
 			}
 		}
@@ -2133,7 +2135,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					{
 						$this->_convertPositionID[$oldID]=$p_position->id;
 						$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1','</span><strong>'.JText::_($p_position->name).'</strong>');
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1','</span><strong>'.Text::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
 					}
                     }
@@ -2144,7 +2146,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					{
 						$my_text .= 'error on position import: ';
 						$my_text .= $oldID;
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
                         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
 					else
@@ -2152,13 +2154,13 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 						$insertID = JFactory::getDbo()->insertid();
 						$this->_convertPositionID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.JText::_($p_position->name).'</strong>');
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2','</span><strong>'.Text::_($p_position->name).'</strong>');
 						$my_text .= '<br />';
 					}
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2193,7 +2195,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				!isset($this->_convertPositionID[$oldPositionID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of PositionEventtype-ID %1$s. Old-EventID: %2$s - Old-PositionID: %3$s',
+				$my_text .= Text::sprintf(	'Skipping import of PositionEventtype-ID %1$s. Old-EventID: %2$s - Old-PositionID: %3$s',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldEventID</strong><span style='color:red'>",
 								"</span><strong>$oldPositionID</strong>").'<br />';
@@ -2210,9 +2212,9 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 			if ($object=JFactory::getDbo()->loadObject())
 			{
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing positioneventtype data - Position: %1$s - Event: %2$s',
-								'</span><strong>'.JText::_($this->_getObjectName('position',$p_positioneventtype->position_id)).'</strong><span style="color:'.$this->existingInDbColor.'">',
-								'</span><strong>'.JText::_($this->_getObjectName('eventtype',$p_positioneventtype->eventtype_id)).'</strong>');
+				$my_text .= Text::sprintf(	'Using existing positioneventtype data - Position: %1$s - Event: %2$s',
+								'</span><strong>'.Text::_($this->_getObjectName('position',$p_positioneventtype->position_id)).'</strong><span style="color:'.$this->existingInDbColor.'">',
+								'</span><strong>'.Text::_($this->_getObjectName('eventtype',$p_positioneventtype->eventtype_id)).'</strong>');
 				$my_text .= '<br />';
 			}
 			else
@@ -2222,21 +2224,21 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$my_text .= 'error on PositionEventType import: ';
 					$my_text .= '#'.$oldID.'#';
 					//$my_text .= "<br />Error: _importPositionEventType<br />#$my_text#<br />#<pre>".print_r($p_positioneventtype,true).'</pre>#';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Created new positioneventtype data. Position: %1$s - Event: %2$s',
-									'</span><strong>'.JText::_($this->_getObjectName('position',$p_positioneventtype->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
-									'</span><strong>'.JText::_($this->_getObjectName('eventtype',$p_positioneventtype->eventtype_id)).'</strong>');
+					$my_text .= Text::sprintf(	'Created new positioneventtype data. Position: %1$s - Event: %2$s',
+									'</span><strong>'.Text::_($this->_getObjectName('position',$p_positioneventtype->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+									'</span><strong>'.Text::_($this->_getObjectName('eventtype',$p_positioneventtype->eventtype_id)).'</strong>');
 					$my_text .= '<br />';
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2263,7 +2265,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				$oldID = $this->_getDataFromObject($this->_datas['playground'][$key],'id');
 				$this->_convertPlaygroundID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing playground data: %1$s - %2$s',
+				$my_text .= Text::sprintf(	'Using existing playground data: %1$s - %2$s',
 											'</span><strong>'.$this->_getObjectName('playground',$id).'</strong>',
                                             ''.$id.''
                                             );
@@ -2358,7 +2360,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				{
 					$this->_convertPlaygroundID[$oldID] = $object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing playground data: %1$s',"</span><strong>$object->name</strong>");
+					$my_text .= Text::sprintf('Using existing playground data: %1$s',"</span><strong>$object->name</strong>");
 					$my_text .= '<br />';
 				}
 				else
@@ -2368,21 +2370,21 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $p_
 $insertID = JFactory::getDbo()->insertid();
 						$this->_convertPlaygroundID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
+						$my_text .= Text::sprintf('Created new playground data: %1$s (%2$s)',"</span><strong>$p_playground->name</strong>","<strong>$p_playground->country</strong>");
 						$my_text .= '<br />';                   
                     }
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= JText::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+						$my_text .= Text::sprintf('Playgroundname: %1$s',$p_playground->name).'<br />';
                     $my_text .= $e->getMessage().'<br />';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 }					
 
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -2437,8 +2439,8 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
                     $oldID = $this->_getDataFromObject($this->_datas['team'][$key],'club_id');
 					$this->_convertClubID[$oldID] = $id;
                     
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
-//                    $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
+                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
+//                    $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
 
 if ( $this->show_debug_info )
 {
@@ -2448,7 +2450,7 @@ $this->dump_variable("this->_dbclubsid oldID", $oldID);
 }                    
                     
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
+					$my_text .= Text::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
 												'</span><strong>'.$dbClubs[$id]->name.'</strong>',
 												''.$dbClubs[$id]->id.''
 												);
@@ -2589,7 +2591,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 				{
 					$this->_convertClubID[$oldID] = $object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing club data: %1$s',"</span><strong>$object->name</strong>");
+					$my_text .= Text::sprintf('Using existing club data: %1$s',"</span><strong>$object->name</strong>");
 					$my_text .= '<br />';
 				}
 				else
@@ -2597,11 +2599,11 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 					if ($p_club->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= JText::sprintf('Clubname: %1$s',$p_club->name).'<br />';
-						//$my_text .= JText::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+						$my_text .= Text::sprintf('Clubname: %1$s',$p_club->name).'<br />';
+						//$my_text .= Text::sprintf('Error-Text #%1$s#',JFactory::getDbo()->getErrorMsg()).'<br />';
 						//$my_text .= '<pre>'.print_r($p_club,true).'</pre>';
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 						//return false; 
                         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
@@ -2610,7 +2612,7 @@ $this->dump_variable("this->_newclubs", $this->_newclubs);
 						$insertID = JFactory::getDbo()->insertid();
 						$this->_convertClubID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'Created new club data: %1$s - %2$s',
+						$my_text .= Text::sprintf(	'Created new club data: %1$s - %2$s',
 													"</span><strong>$p_club->name</strong>",
 													"".$p_club->country.""
 													);
@@ -2631,7 +2633,7 @@ if ( $this->show_debug_info )
 $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 }
 
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2666,7 +2668,7 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 				$oldID = $this->_getDataFromObject($import_playground,'id');
 				$club_id = $this->_getDataFromObject($import_playground,'club_id');
                 
-                //$app->enqueueMessage(JText::_('result<br><pre>'.print_r($key,true).'</pre>'   ),'');
+                //$app->enqueueMessage(Text::_('result<br><pre>'.print_r($key,true).'</pre>'   ),'');
                 
                 $new_pg_id = $this->_convertPlaygroundID[$oldID];
                 if ( isset($this->_convertClubID[$club_id]) )
@@ -2684,7 +2686,7 @@ $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 						{
 							$converted=true;
 							$my_text .= '<span style="color:green">';
-							$my_text .= JText::sprintf(	'Converted club-info %1$s in imported playground %2$s - [club_id: %3$s] [playground-id: %4$s]',
+							$my_text .= Text::sprintf(	'Converted club-info %1$s in imported playground %2$s - [club_id: %3$s] [playground-id: %4$s]',
 														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
 														"</span><strong>$p_playground->name</strong>",
                                                         "".$new_club_id."",
@@ -2724,7 +2726,7 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 						{
 							$converted=true;
 							$my_text .= '<span style="color:green">';
-							$my_text .= JText::sprintf(	'Converted club-info %1$s in imported playground %2$s',
+							$my_text .= Text::sprintf(	'Converted club-info %1$s in imported playground %2$s',
 														'</span><strong>'.$this->_getClubName($new_club_id).'</strong><span style="color:green">',
 														"</span><strong>$p_playground->name</strong>");
 							$my_text .= '<br />';
@@ -2734,7 +2736,7 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 				}
 			}
             */
-			if (!$converted){$my_text .= '<span style="color:green">'.JText::_('Nothing needed to be converted').'<br />';}
+			if (!$converted){$my_text .= '<span style="color:green">'.Text::_('Nothing needed to be converted').'<br />';}
 			$this->_success_text['Converting new playground club-IDs of new playground data:']=$my_text;
 		}
 		return true;
@@ -2776,11 +2778,11 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 					$oldID = $this->_getDataFromObject($this->_datas['team'][$key],'id');
 					$this->_convertTeamID[$oldID] = $id;
                     
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
-//                    $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
+                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' oldID -> '.$oldID.''),'');
+//                    $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' id -> '.$id.''),'');
                     
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf(	'Using existing team data: %1$s - %2$s - %3$s - %4$s <- %5$s',
+					$my_text .= Text::sprintf(	'Using existing team data: %1$s - %2$s - %3$s - %4$s <- %5$s',
 												'</span><strong>'.$dbTeams[$id]->name.'</strong>',
 												'<strong>'.$dbTeams[$id]->short_name.'</strong>',
 												'<strong>'.$dbTeams[$id]->middle_name.'</strong>',
@@ -2865,7 +2867,7 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 				{
 					$this->_convertTeamID[$oldID]=$object->id;
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf('Using existing team data: %1$s',"</span><strong>$object->name</strong>");
+					$my_text .= Text::sprintf('Using existing team data: %1$s',"</span><strong>$object->name</strong>");
 					$my_text .= '<br />';
 				}
 				else
@@ -2876,7 +2878,7 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $p_team);
 $insertID = JFactory::getDbo()->insertid();
 $this->_convertTeamID[$oldID] = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= JText::sprintf('Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
+$my_text .= Text::sprintf('Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
 	"</span><strong>$p_team->name</strong>",
 	"<strong>$p_team->short_name</strong>",
 	"<strong>$p_team->middle_name</strong>",
@@ -2887,25 +2889,25 @@ $my_text .= '<br />';
 }	
 catch (Exception $e){
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
-$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;	
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;	
 }	
 					/*
 					if ($p_team->store()===false)
 					{
 						$my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-						$my_text .= JText::sprintf('Teamname: %1$s',$p_team->name).'<br />';
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+						$my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					}
 					else
 					{
 						$insertID = JFactory::getDbo()->insertid();
 						$this->_convertTeamID[$oldID] = $insertID;
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
+						$my_text .= Text::sprintf(	'Created new team data: %1$s - %2$s - %3$s - %4$s - club_id [%5$s]',
 													"</span><strong>$p_team->name</strong>",
 													"<strong>$p_team->short_name</strong>",
 													"<strong>$p_team->middle_name</strong>",
@@ -2918,7 +2920,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -2944,7 +2946,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$oldID = $this->_getDataFromObject($this->_datas['person'][$key],'id');
 				$this->_convertPersonID[$oldID] = $id;
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing person data: %1$s',
+				$my_text .= Text::sprintf(	'Using existing person data: %1$s',
 											'</span><strong>'.$this->_getObjectName('person',$id,"CONCAT(id,' -> ',lastname,',',firstname,' - ',nickname,' - ',birthday) AS name").'</strong>');
 				$my_text .= '<br />';
                 
@@ -2970,7 +2972,7 @@ $newseasonperson->persontype = 1;
 // Insert the object
 $resultperson = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);	
 } catch (Exception $e) {
-$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+$app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }
 }						
 					}
@@ -3090,7 +3092,7 @@ $app->enqueueMessage(JText::_($e->getMessage()), 'error');
 					$this->_convertPersonID[$oldID]=$object->id;
 					$nameStr=!empty($object->nickname) ? '['.$object->nickname.']' : '';
 					$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-					$my_text .= JText::sprintf(	'Using existing person data: %1$s %2$s [%3$s] - %4$s',
+					$my_text .= Text::sprintf(	'Using existing person data: %1$s %2$s [%3$s] - %4$s',
 												"</span><strong>$object->lastname</strong>",
 												"<strong>$object->firstname</strong>",
 												"<strong>$nameStr</strong>",
@@ -3106,7 +3108,7 @@ $app->enqueueMessage(JText::_($e->getMessage()), 'error');
 						$my_text .= $p_person->firstname.'-';
 						$my_text .= $p_person->nickname.'-';
 						$my_text .= $p_person->birthday;
-						$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+						$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
                         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 					}
 					else
@@ -3115,16 +3117,16 @@ $app->enqueueMessage(JText::_($e->getMessage()), 'error');
 						$this->_convertPersonID[$oldID] = $insertID;
 						$dNameStr=((!empty($p_person->lastname)) ?
 									$p_person->lastname :
-									'<span style="color:orange">'.JText::_('Has no lastname').'</span>');
+									'<span style="color:orange">'.Text::_('Has no lastname').'</span>');
 						$dNameStr .= ','.((!empty($p_person->firstname)) ?
 									$p_person->firstname.' - ' :
-									'<span style="color:orange">'.JText::_('Has no firstname').' - </span>');
+									'<span style="color:orange">'.Text::_('Has no firstname').' - </span>');
 						$dNameStr .= ((!empty($p_person->nickname)) ? "'".$p_person->nickname."' - " : '');
 						$dNameStr .= $p_person->birthday;
                         $dNameStr .= '<span style="color:blue"> PositionId old/new->'.$import_person->position_id.' - '.$p_person->position_id.' - </span>';
 
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$dNameStr</strong>" );
+						$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$dNameStr</strong>" );
 						$my_text .= '<br />';
 
 if ( $this->_season_id )
@@ -3138,14 +3140,14 @@ $newseasonperson->persontype = 1;
 // Insert the object
 $resultperson = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);												
 } catch (Exception $e) {
-$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+$app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }	
 }						
 					}
 				}
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -3212,16 +3214,16 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project', $p_pro
 $insertID = JFactory::getDbo()->insertid();
 $this->_project_id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$this->_name</strong>");
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$this->_name</strong>");
 $my_text .= '<br />';
-$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 return true;		
 } catch (Exception $e) {
 $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
-$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
-$my_text .= JText::sprintf('Projectname: %1$s',$p_project->name).'<br />';
+$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
+$my_text .= Text::sprintf('Projectname: %1$s',$p_project->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
-$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 }		
 		
 	}
@@ -3330,7 +3332,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							JFactory::getDbo()->setQuery($query);
                             
                             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-                            $my_text .= JText::sprintf('Created new template data for empty Projectdata: %1$s %2$s',"</span><strong>$template</strong>","<br><strong>".$defaultvalues."</strong>" );
+                            $my_text .= Text::sprintf('Created new template data for empty Projectdata: %1$s %2$s',"</span><strong>$template</strong>","<br><strong>".$defaultvalues."</strong>" );
 			                $my_text .= '<br />';
                             
 							//echo error,allows to check if there is a mistake in the template file
@@ -3405,14 +3407,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 				{
 					$my_text .= 'error on master template import: ';
 					//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
 				{
 					$my_text .= $p_template->template;
-					$my_text .= ' <font color="'.$this->storeSuccessColor.'">'.JText::_('...created new data').'</font><br />';
+					$my_text .= ' <font color="'.$this->storeSuccessColor.'">'.Text::_('...created new data').'</font><br />';
 					$my_text .= '<br />';
 				}
 			}
@@ -3453,16 +3455,16 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             $ini = $parameter->loadINI($defaultvalues[0]);
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ini -> '.'<pre>'.print_r($ini,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ini -> '.'<pre>'.print_r($ini,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>'),'');
         
 			// beim import kann es vorkommen, das wir in der neuen komponente
                     // zusätzliche felder haben, die mit abgespeichert werden müssen
                     $xmlfile = $defaultpath.DS.$template.'.xml';
 
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile -> '.'<pre>'.print_r($xmlfile,true).'</pre>'),'');
+                            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xmlfile -> '.'<pre>'.print_r($xmlfile,true).'</pre>'),'');
 							
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'');
+                            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'');
                             
                             //if( file_exists($xmlfile) && $template == 'ranking' ) 
                             if( file_exists($xmlfile) )
@@ -3472,18 +3474,18 @@ $newparams = array();
 $xml = JFactory::getXML($xmlfile,true);
 foreach ($xml->fieldset as $paramGroup)
 		{
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
+		//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
 		foreach ($paramGroup->field as $param)
 			{
-				//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
+				//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
                 $newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
 			}
         } 
 
 foreach ( $newparams as $key => $value )
 {
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -3499,12 +3501,12 @@ foreach ( $newparams as $key => $value )
     }
 } 
    
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ini -> '.$template.' <pre>'.print_r($ini,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newparams -> '.$template.' <pre>'.print_r($newparams,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ini -> '.$template.' <pre>'.print_r($ini,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' newparams -> '.$template.' <pre>'.print_r($newparams,true).'</pre>'),'');
 
 $t_params = json_encode( $newparams ); 
       
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' t_params -> '.$template.' <pre>'.print_r($t_params,true).'</pre>'),'');              
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' t_params -> '.$template.' <pre>'.print_r($t_params,true).'</pre>'),'');              
                             
                             }
 else
@@ -3512,14 +3514,14 @@ else
 $ini = $parameter->toArray($ini);
 $t_params = json_encode( $ini ); 
             }
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' import t_params -> '.'<pre>'.print_r($t_params,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' import t_params -> '.'<pre>'.print_r($t_params,true).'</pre>'),'');
 					
 					$p_template->set('params',$t_params);
                     
              unset($t_params);
                   
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' template -> '.'<pre>'.print_r($p_template->template,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params -> '.'<pre>'.print_r($p_template->params,true).'</pre>'),'');
                     
 					if	((strtolower(substr($template,0,strlen($predictionTemplatePrefix)))!=$predictionTemplatePrefix) &&
 						($template!='do_tipsl') &&
@@ -3533,15 +3535,15 @@ $t_params = json_encode( $ini );
 						{
 							$my_text .= 'error on own template import: ';
 							//$my_text .= "<br />Error: _importTemplate<br />#$my_text#<br />#<pre>".print_r($p_template,true).'</pre>#';
-							$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+							$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 							//return false;
                             //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 						}
 						else
 						{
-							$dTitle = (!empty($p_template->title)) ? JText::_($p_template->title) : $p_template->template;
+							$dTitle = (!empty($p_template->title)) ? Text::_($p_template->title) : $p_template->template;
 							$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-							$my_text .= JText::sprintf('Created new template data from Import-Project: %1$ [%2$]',"</span><strong>".$p_template->template."</strong>","<strong>".$p_template->params."</strong>");
+							$my_text .= Text::sprintf('Created new template data from Import-Project: %1$ [%2$]',"</span><strong>".$p_template->template."</strong>","<strong>".$p_template->params."</strong>");
 							$my_text .= '<br />';
 						}
 					}
@@ -3561,15 +3563,15 @@ $t_params = json_encode( $ini );
 //        JFactory::getDbo()->setQuery($query);
 //		sportsmanagementModeldatabasetool::runJoomlaQuery();
         
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		if ( $this->_master_template == 0 )
 		{
 			// check and create missing templates if needed
 			//$this->_checklist();
 			$my_text='<span style="color:green">';
-			$my_text .= JText::_('Checked and created missing template data if needed');
+			$my_text .= Text::_('Checked and created missing template data if needed');
 			$my_text .= '</span><br />';
-			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] .= $my_text;
+			$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] .= $my_text;
 		}
 		return true;
 	}
@@ -3614,20 +3616,20 @@ $t_params = json_encode( $ini );
 					$my_text .= 'error on division import: ';
 					$my_text .= '#'.$oldID.'#';
 					//$my_text .= "<br />Error: _importDivisions<br />#$my_text#<br />#<pre>".print_r($p_division,true).'</pre>#';
-					$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+					$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 					//return false;
                     //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				}
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new division data: %1$s',"</span><strong>$name</strong>");
+					$my_text .= Text::sprintf('Created new division data: %1$s',"</span><strong>$name</strong>");
 					$my_text .= '<br />';
 				}
 				$insertID = JFactory::getDbo()->insertid();
 				$this->_convertDivisionID[$oldId] = $insertID;
 			}
-			$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+			$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 			return true;
 		}
 	}
@@ -3798,7 +3800,7 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $
 $insertID = JFactory::getDbo()->insertid();
 $p_projectteam->id = $insertID;
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= JText::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
+$my_text .= Text::sprintf(	'Created new projectteam data: %1$s - Team ID : %2$s',
 			'</span><strong>'.$this->_getTeamName2($p_projectteam->team_id).'</strong>',
             '<strong>'.$team_id.'</strong>');
 $my_text .= '<br />';
@@ -3809,7 +3811,7 @@ $my_text .= 'error on projectteam import: ';
 $my_text .= $oldID;
 $my_text .= '<br />';
 $my_text .= $e->getMessage().'<br />';
-$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
            
 			$insertID = $p_projectteam->id;//JFactory::getDbo()->insertid();
@@ -3825,7 +3827,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 
 		}
 
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -3865,21 +3867,21 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on projectreferee import: ';
 				$my_text .= $oldID;
 				$my_text .= '<br />Error: _importProjectReferees<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectreferee,true).'</pre>~';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				return false;
 			}
 			else
 			{
 				$dPerson=$this->_getPersonName($p_projectreferee->person_id);
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new projectreferee data: %1$s,%2$s',"</span><strong>$dPerson->lastname","$dPerson->firstname</strong>");
+				$my_text .= Text::sprintf(	'Created new projectreferee data: %1$s,%2$s',"</span><strong>$dPerson->lastname","$dPerson->firstname</strong>");
 				$my_text .= '<br />';
 			}
 			$insertID=$p_projectreferee->id;//JFactory::getDbo()->insertid();
 			$this->_convertProjectRefereeID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertProjectRefereeID", $this->_convertProjectRefereeID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -3921,7 +3923,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
             if (!isset($this->_convertPositionID[$oldPositionID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of ProjectPosition-ID %1$s. Old-PositionID: %2$s',
+				$my_text .= Text::sprintf(	'Skipping import of ProjectPosition-ID %1$s. Old-PositionID: %2$s',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldPositionID</strong>").'<br />';
 				continue;
@@ -3951,15 +3953,15 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on ProjectPosition import: ';
 				$my_text .= '#'.$oldID.'#';
 				//$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
 			else
 			{
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new projectposition data: %1$s - %2$s',
-								"</span><strong>".JText::_($this->_getObjectName('position',$p_projectposition->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
+				$my_text .= Text::sprintf(	'Created new projectposition data: %1$s - %2$s',
+								"</span><strong>".Text::_($this->_getObjectName('position',$p_projectposition->position_id)).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								"</span><strong>".$p_projectposition->position_id.'</strong>');
 				$my_text .= '<br />';
 			}
@@ -3969,7 +3971,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			$this->_convertProjectPositionID[$oldID] = $insertID;
 		}
 //$this->dump_variable("this->_convertProjectPositionID", $this->_convertProjectPositionID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4002,7 +4004,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				!isset($this->_convertPersonID[$oldPersonID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
+				$my_text .= Text::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldTeamID</strong><span style='color:red'>",
 								"</span><strong>$oldPersonID</strong>").'<br />';
@@ -4044,7 +4046,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			{
 				$my_text .= 'error on teamplayer import: ';
 				$my_text .= $oldID;
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
 			else
@@ -4059,17 +4061,17 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 					sportsmanagementModeldatabasetool::runJoomlaQuery();
 					$object = JFactory::getDbo()->loadObject();
 					$position_id = $object->position_id;
-					$dPosName = JText::_($this->_getObjectName('position',$position_id));
+					$dPosName = Text::_($this->_getObjectName('position',$position_id));
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2',
+					$my_text .= Text::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2',
 									'</span><strong>'.$this->_getTeamName($p_teamplayer->projectteam_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									'</span><strong>'.$dPerson->lastname,$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$dPosName</strong>");
 					$my_text .= '<br />';
 				} else {
-					$dPosName='<span style="color:orange">'.JText::_('Has no position').'</span>';
+					$dPosName='<span style="color:orange">'.Text::_('Has no position').'</span>';
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2',
+					$my_text .= Text::sprintf(	'COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_2',
 									'</span><strong>'.$this->_getTeamName($p_teamplayer->projectteam_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									'</span><strong>'.$dPerson->lastname,$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$dPosName</strong>");
@@ -4080,7 +4082,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			$this->_convertTeamPlayerID[$oldID]=$insertID;
 		}
 
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4115,7 +4117,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				!isset($this->_convertPersonID[$oldPersonID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of TeamStaff-ID %1$s. Old-ProjectTeamID: %2$s - Old-PersonID: %3$s',
+				$my_text .= Text::sprintf(	'Skipping import of TeamStaff-ID %1$s. Old-ProjectTeamID: %2$s - Old-PersonID: %3$s',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldProjectTeamID</strong><span style='color:red'>",
 								"</span><strong>$oldPersonID</strong>").'<br />';
@@ -4157,7 +4159,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on teamstaff import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importTeamStaff<br />#$my_text#<br />#<pre>".print_r($p_teamstaff,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4172,9 +4174,9 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 					sportsmanagementModeldatabasetool::runJoomlaQuery();
 					$object=JFactory::getDbo()->loadObject();
 					$position_id = $object->position_id;
-					$dPosName=JText::_($this->_getObjectName('position',$position_id));
+					$dPosName=Text::_($this->_getObjectName('position',$position_id));
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Created new teamstaff data. Team: %1$s - Person: %2$s,%3$s - Position: %4$s',
+					$my_text .= Text::sprintf(	'Created new teamstaff data. Team: %1$s - Person: %2$s,%3$s - Position: %4$s',
 									'</span><strong>'.$this->_getTeamName($p_teamstaff->projectteam_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									'</span><strong>'.$dPerson->lastname,
 									$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -4183,9 +4185,9 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				} 
                 else 
                 {
-					$dPosName='<span style="color:orange">'.JText::_('Has no position').'</span>';
+					$dPosName='<span style="color:orange">'.Text::_('Has no position').'</span>';
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Created new teamstaff data. Team: %1$s - Person: %2$s,%3$s - Position: %4$s',
+					$my_text .= Text::sprintf(	'Created new teamstaff data. Team: %1$s - Person: %2$s,%3$s - Position: %4$s',
 									'</span><strong>'.$this->_getTeamName($p_teamstaff->projectteam_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									'</span><strong>'.$dPerson->lastname,$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									"</span><strong>$dPosName</strong>");
@@ -4197,7 +4199,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			$this->_convertTeamStaffID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertTeamStaffID", $this->_convertTeamStaffID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4226,7 +4228,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			$import_teamtraining = $this->_datas['teamtraining'][$key];
 			$oldID = $this->_getDataFromObject($import_teamtraining,'id');
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' teamtraining<br><pre>'.print_r($import_teamtraining,true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' teamtraining<br><pre>'.print_r($import_teamtraining,true).'</pre>'),'');
 
 			$p_teamtraining->set('project_team_id',$this->_convertProjectTeamID[$this->_getDataFromObject($import_teamtraining,'project_team_id')]);
 			$p_teamtraining->set('project_id',$this->_project_id);
@@ -4271,20 +4273,20 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on teamtraining import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importTeamTraining<br />#$my_text#<br />#<pre>".print_r($p_teamtraining,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_TEAMTRAINING_0')] = $my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML_IMPORT_TEAMTRAINING_0')] = $my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
 			else
 			{
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new teamtraining data. Team: [%1$s]',
+				$my_text .= Text::sprintf(	'Created new teamtraining data. Team: [%1$s]',
 								'</span><strong>'.$this-> _getTeamName($p_teamtraining->project_team_id).'</strong>');
 				$my_text .= '<br />';
 			}
             }
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4346,20 +4348,20 @@ $my_text .= ' table_info round<pre>'.print_r($table_info,true).'</pre>';
 			{
 				$my_text .= 'error on round import: ';
 				$my_text .= $oldID;
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
 			else
 			{
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
+				$my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1',"</span><strong>$name</strong>");
 				$my_text .= '<br />';
 			}
 			
             $insertID = JFactory::getDbo()->insertid();
 			$this->_convertRoundID[$oldId]=$insertID;
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4621,7 +4623,7 @@ $teamname1 = $this->_getTeamName($p_match->projectteam1_id);
 }
 else
 {
-$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+$teamname1 = '<span style="color:orange">'.Text::_('Home-Team not asigned').'</span>';
 }
 if ($match->projectteam2_id > 0)
 {
@@ -4629,10 +4631,10 @@ $teamname2 = $this->_getTeamName($p_match->projectteam2_id);
 }
 else
 {
-$teamname2='<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
+$teamname2='<span style="color:orange">'.Text::_('Guest-Team not asigned').'</span>';
 }
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
+$my_text .= Text::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s / ProjectTeamID Old: %4$s - %5$s / ProjectTeamID New: %6$s - %7$s',
 			'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 			"</span><strong>$teamname1</strong>",
             "<strong>$teamname2</strong>",
@@ -4652,7 +4654,7 @@ $teamname1 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart
 }
 else
 {
-$teamname1 = '<span style="color:orange">'.JText::_('Home-Team not asigned').'</span>';
+$teamname1 = '<span style="color:orange">'.Text::_('Home-Team not asigned').'</span>';
 }
 if ($match->matchpart2 > 0)
 {
@@ -4660,10 +4662,10 @@ $teamname2 = $this->_getTeamName2($this->_convertTeamID[intval($match->matchpart
 }
 else
 {
-$teamname2 = '<span style="color:orange">'.JText::_('Guest-Team not asigned').'</span>';
+$teamname2 = '<span style="color:orange">'.Text::_('Guest-Team not asigned').'</span>';
 }
 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-$my_text .= JText::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s',
+$my_text .= Text::sprintf(	'Added to round: %1$s / Match: %2$s - %3$s',
 			'</span><strong>'.$this->_getRoundName($this->_convertRoundID[$this->_getDataFromObject($match,'round_id')]).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 			"</span><strong>$teamname1</strong>",
 			"<strong>$teamname2</strong>");
@@ -4676,13 +4678,13 @@ $p_match->id = 0;
 $my_text .= 'error on match import: ';
 $my_text .= $oldID;
 $my_text .= $e->getMessage().'<br />';
-$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
 
 			$insertID = $p_match->id;//JFactory::getDbo()->insertid();
 			$this->_convertMatchID[$oldId] = $insertID;
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4731,7 +4733,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				!isset($this->_convertTeamPlayerID[$oldTeamPlayerID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of MatchPlayer-ID [%1$s]. Old-MatchID: [%2$s] - Old-TeamPlayerID: [%3$s]',
+				$my_text .= Text::sprintf(	'Skipping import of MatchPlayer-ID [%1$s]. Old-MatchID: [%2$s] - Old-TeamPlayerID: [%3$s]',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldMatchID</strong><span style='color:red'>",
 								"</span><strong>$oldTeamPlayerID</strong>").'<br />';
@@ -4764,7 +4766,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on matchplayer import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchPlayer<br />#$my_text#<br />#<pre>".print_r($p_matchplayer,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4772,10 +4774,10 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			{
 				$dPerson = $this->_getPersonFromTeamPlayer($p_matchplayer->teamplayer_id);
 				$dPosName = (($p_matchplayer->project_position_id==0) ?
-							'<span style="color:orange">'.JText::_('Has no position').'</span>' :
+							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
 							$this->_getProjectPositionName($p_matchplayer->project_position_id));
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s - oldTeamPlayerID : %5$s - newTeamPlayerID : %6$s',
+				$my_text .= Text::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s - oldTeamPlayerID : %5$s - newTeamPlayerID : %6$s',
 								'</span><strong>'.$p_matchplayer->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -4786,7 +4788,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			}
 //$this->dump_variable("p_matchplayer", $p_matchplayer);
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4835,7 +4837,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				!isset($this->_convertTeamStaffID[$oldTeamStaffID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of MatchStaff-ID [%1$s]. Old-MatchID: [%2$s] - Old-StaffID: [%3$s]',
+				$my_text .= Text::sprintf(	'Skipping import of MatchStaff-ID [%1$s]. Old-MatchID: [%2$s] - Old-StaffID: [%3$s]',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldMatchID</strong><span style='color:red'>",
 								"</span><strong>$oldTeamStaffID</strong>").'<br />';
@@ -4854,7 +4856,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on matchstaff import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchStaff<br />#$my_text#<br />#<pre>".print_r($p_matchstaff,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4862,10 +4864,10 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			{
 				$dPerson=$this->_getPersonFromTeamStaff($p_matchstaff->team_staff_id);
 				$dPosName=(($p_matchstaff->project_position_id==0) ?
-							'<span style="color:orange">'.JText::_('Has no position').'</span>' :
+							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
 							$this->_getProjectPositionName($p_matchstaff->project_position_id));
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new matchstaff data. MatchID: %1$s - Staff: %2$s,%3$s - Position: %4$s',
+				$my_text .= Text::sprintf(	'Created new matchstaff data. MatchID: %1$s - Staff: %2$s,%3$s - Position: %4$s',
 								'</span><strong>'.$p_matchstaff->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -4874,7 +4876,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			}
 //$this->dump_variable("p_matchstaff", $p_matchstaff);
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -4923,7 +4925,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				!isset($this->_convertProjectRefereeID[$oldProjectRefereeID]))
 			{
 				$my_text .= '<span style="color:red">';
-				$my_text .= JText::sprintf(	'Skipping import of MatchReferee-ID [%1$s]. Old-MatchID: [%2$s] - Old-RefereeID: [%3$s]',
+				$my_text .= Text::sprintf(	'Skipping import of MatchReferee-ID [%1$s]. Old-MatchID: [%2$s] - Old-RefereeID: [%3$s]',
 								"</span><strong>$oldID</strong><span style='color:red'>",
 								"</span><strong>$oldMatchID</strong><span style='color:red'>",
 								"</span><strong>$oldProjectRefereeID</strong>").'<br />';
@@ -4942,7 +4944,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on matchreferee import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchReferee<br />#$my_text#<br />#<pre>".print_r($p_matchreferee,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4950,10 +4952,10 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			{
 				$dPerson=$this->_getPersonFromProjectReferee($p_matchreferee->project_referee_id);
 				$dPosName=(($p_matchreferee->project_position_id==0) ?
-							'<span style="color:orange">'.JText::_('Has no position').'</span>' :
+							'<span style="color:orange">'.Text::_('Has no position').'</span>' :
 							$this->_getProjectPositionName($p_matchreferee->project_position_id));
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new matchreferee data. MatchID: %1$s - Referee: %2$s,%3$s - Position: %4$s',
+				$my_text .= Text::sprintf(	'Created new matchreferee data. MatchID: %1$s - Referee: %2$s,%3$s - Position: %4$s',
 								'</span><strong>'.$p_matchreferee->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -4962,7 +4964,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			}
 //$this->dump_variable("p_matchreferee", $p_matchreferee);
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -5039,7 +5041,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= 'error on matchevent import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importMatchEvent<br />#$my_text#<br />#<pre>".print_r($p_matchevent,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 				//return false;
                 //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -5047,10 +5049,10 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 			{
 				$dPerson=$this->_getPersonFromTeamPlayer($p_matchevent->teamplayer_id);
 				$dEventName=(($p_matchevent->event_type_id==0) ?
-							'<span style="color:orange">'.JText::_('Has no event').'</span>' :
-							JText::_($this->_getObjectName('eventtype',$p_matchevent->event_type_id)));
+							'<span style="color:orange">'.Text::_('Has no event').'</span>' :
+							Text::_($this->_getObjectName('eventtype',$p_matchevent->event_type_id)));
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new matchevent data. MatchID: %1$s - Player: %2$s,%3$s - Eventtime: %4$s - Event: %5$s',
+				$my_text .= Text::sprintf(	'Created new matchevent data. MatchID: %1$s - Player: %2$s,%3$s - Eventtime: %4$s - Event: %5$s',
 								'</span><strong>'.$p_matchevent->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
@@ -5059,7 +5061,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 				$my_text .= '<br />';
 			}
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
 		return true;
 	}
 
@@ -5093,7 +5095,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 		if (!isset($this->_datas['statistic']) || count($this->_datas['statistic'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for position statistic data because there is no statistic data included!',count($this->_datas['positionstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for position statistic data because there is no statistic data included!',count($this->_datas['positionstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing position statistic data:']=$my_text;
 			return true;
@@ -5102,7 +5104,7 @@ $this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__
 		if (!isset($this->_datas['position']) || count($this->_datas['position'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for position statistic data because there is no position data included!',count($this->_datas['positionstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for position statistic data because there is no position data included!',count($this->_datas['positionstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing position statistic data:']=$my_text;
 			return true;
@@ -5134,7 +5136,7 @@ $query->clear();
 			if ($object=JFactory::getDbo()->loadObject())
 			{
 				$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-				$my_text .= JText::sprintf(	'Using existing positionstatistic data. Position: %1$s - Statistic: %2$s',
+				$my_text .= Text::sprintf(	'Using existing positionstatistic data. Position: %1$s - Statistic: %2$s',
 								'</span><strong>'.$this->_getObjectName('position',$p_positionstatistic->position_id).'</strong><span style="color:'.$this->existingInDbColor.'">',
 								'</span><strong>'.$this->_getObjectName('statistic',$p_positionstatistic->statistic_id).'</strong>');
 				$my_text .= '<br />';
@@ -5153,7 +5155,7 @@ $query->clear();
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf(	'Created new position statistic data. Position: %1$s - Statistic: %2$s',
+					$my_text .= Text::sprintf(	'Created new position statistic data. Position: %1$s - Statistic: %2$s',
 									'</span><strong>'.$this->_getObjectName('position',$p_positionstatistic->position_id).'</strong><span style="color:'.$this->storeSuccessColor.'">',
 									'</span><strong>'.$this->_getObjectName('statistic',$p_positionstatistic->statistic_id).'</strong>');
 					$my_text .= '<br />';
@@ -5183,7 +5185,7 @@ $query->clear();
 		if (!isset($this->_datas['statistic']) || count($this->_datas['statistic'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match staff statistic data because there is no statistic data included!',count($this->_datas['matchstaffstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match staff statistic data because there is no statistic data included!',count($this->_datas['matchstaffstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match staff statistic data:']=$my_text;
 			return true;
@@ -5191,7 +5193,7 @@ $query->clear();
 		if (!isset($this->_datas['match']) || count($this->_datas['match'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no match data included!',count($this->_datas['matchstaffstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no match data included!',count($this->_datas['matchstaffstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match staff statistic data:']=$my_text;
 			return true;
@@ -5199,7 +5201,7 @@ $query->clear();
 		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no projectteam data included!',count($this->_datas['matchstaffstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no projectteam data included!',count($this->_datas['matchstaffstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match staff statistic data:']=$my_text;
 			return true;
@@ -5207,7 +5209,7 @@ $query->clear();
 		if (!isset($this->_datas['teamstaff']) || count($this->_datas['teamstaff'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no teamstaff data included!',count($this->_datas['matchstaffstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no teamstaff data included!',count($this->_datas['matchstaffstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match staff statistic data:']=$my_text;
 			return true;
@@ -5240,7 +5242,7 @@ $query->clear();
 			{
 				$dPerson=$this->_getPersonFromTeamStaff($p_matchstaffstatistic->team_staff_id);
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new match staff statistic data. StatisticID: %1$s - MatchID: %2$s - Player: %3$s,%4$s - Team: %5$s - Value: %6$s',
+				$my_text .= Text::sprintf(	'Created new match staff statistic data. StatisticID: %1$s - MatchID: %2$s - Player: %3$s,%4$s - Team: %5$s - Value: %6$s',
 								'</span><strong>'.$p_matchstaffstatistic->statistic_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$p_matchstaffstatistic->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
@@ -5266,7 +5268,7 @@ $query->clear();
 		if (!isset($this->_datas['statistic']) || count($this->_datas['statistic'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no statistic data included!',count($this->_datas['matchstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no statistic data included!',count($this->_datas['matchstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match statistic data:']=$my_text;
 			return true;
@@ -5274,7 +5276,7 @@ $query->clear();
 		if (!isset($this->_datas['match']) || count($this->_datas['match'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no match data included!',count($this->_datas['matchstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no match data included!',count($this->_datas['matchstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match statistic data:']=$my_text;
 			return true;
@@ -5282,7 +5284,7 @@ $query->clear();
 		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no projectteam data included!',count($this->_datas['matchstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no projectteam data included!',count($this->_datas['matchstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match statistic data:']=$my_text;
 			return true;
@@ -5290,7 +5292,7 @@ $query->clear();
 		if (!isset($this->_datas['teamplayer']) || count($this->_datas['teamplayer'])==0)
 		{
 			$my_text .= '<span style="color:red">';
-			$my_text .= JText::sprintf('Warning: Skipped %1$s records for match statistic data because there is no teamplayer data included!',count($this->_datas['matchstatistic']));
+			$my_text .= Text::sprintf('Warning: Skipped %1$s records for match statistic data because there is no teamplayer data included!',count($this->_datas['matchstatistic']));
 			$my_text .= '</span>';
 			$this->_success_text['Importing match statistic data:']=$my_text;
 			return true;
@@ -5324,7 +5326,7 @@ $query->clear();
 			{
 				$dPerson=$this->_getPersonFromTeamPlayer($p_matchstatistic->teamplayer_id);
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new match statistic data. StatisticID: %1$s - MatchID: %2$s - Player: %3$s,%4$s - Team: %5$s - Value: %6$s',
+				$my_text .= Text::sprintf(	'Created new match statistic data. StatisticID: %1$s - MatchID: %2$s - Player: %3$s,%4$s - Team: %5$s - Value: %6$s',
 								'</span><strong>'.$p_matchstatistic->statistic_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$p_matchstatistic->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
@@ -5389,7 +5391,7 @@ $query->clear();
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new treeto data: %1$s','</span><strong>'.$p_treeto->name.'</strong>');
+					$my_text .= Text::sprintf('Created new treeto data: %1$s','</span><strong>'.$p_treeto->name.'</strong>');
 					$my_text .= '<br />';
 				}
 				$insertID=JFactory::getDbo()->insertid();
@@ -5441,7 +5443,7 @@ $query->clear();
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new treetonode data: %1$s','</span><strong>'.$p_treetonode->id.'</strong>');
+					$my_text .= Text::sprintf('Created new treetonode data: %1$s','</span><strong>'.$p_treetonode->id.'</strong>');
 					$my_text .= '<br />';
 				}
 				$insertID=JFactory::getDbo()->insertid();
@@ -5487,7 +5489,7 @@ $query->clear();
 				else
 				{
 					$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-					$my_text .= JText::sprintf('Created new treetomatch data: %1$s','</span><strong>'.$p_treetomatch->id.'</strong>');
+					$my_text .= Text::sprintf('Created new treetomatch data: %1$s','</span><strong>'.$p_treetomatch->id.'</strong>');
 					$my_text .= '<br />';
 				}
 				$insertID=JFactory::getDbo()->insertid();
@@ -5531,7 +5533,7 @@ $query->clear();
 	public function importData($post)
 	{
 	   $app = JFactory::getApplication();
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
+//       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
        
 		$option = JFactory::getApplication()->input->getCmd('option');
         $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
@@ -5812,21 +5814,21 @@ $query->clear();
 				}
 				else
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname'));
-					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname')."'); window.history.go(-1); </script>\n";
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname'));
+					echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing projectname')."'); window.history.go(-1); </script>\n";
 				}
 
 				if (empty($this->_datas['project']))
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!'));
-					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!')."'); window.history.go(-1); </script>\n";
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!'));
+					echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Project object is missing inside import file!!!')."'); window.history.go(-1); </script>\n";
 					return false;
 				}
 
 				if ($this->_checkProject()===false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists'));
-					echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists')."'); window.history.go(-1); </script>\n";
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists'));
+					echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Projectname already exists')."'); window.history.go(-1); </script>\n";
 					return false;
 				}
 			}
@@ -5844,8 +5846,8 @@ $query->clear();
 					}
 					else
 					{
-						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype'));
-						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype')."'); window.history.go(-1); </script>\n";
+						//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype'));
+						echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing sportstype')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
 			}
@@ -5863,8 +5865,8 @@ $query->clear();
 					}
 					else
 					{
-						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league'));
-						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league')."'); window.history.go(-1); </script>\n";
+						//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league'));
+						echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing league')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
 
@@ -5878,8 +5880,8 @@ $query->clear();
 					}
 					else
 					{
-						//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season'));
-						echo "<script> alert('".JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season')."'); window.history.go(-1); </script>\n";
+						//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season'));
+						echo "<script> alert('".Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing season')."'); window.history.go(-1); </script>\n";
 						return false;
 					}
 
@@ -5925,7 +5927,7 @@ $query->clear();
         {
 				if ( $this->_importSportsType() === false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','sports-type'));
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','sports-type'));
 					return $this->_success_text;
 				}
                 }
@@ -5938,7 +5940,7 @@ $query->clear();
         {
 				if ( $this->_importLeague()===false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','league'));
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','league'));
 					return $this->_success_text;
 				}
 }
@@ -5947,7 +5949,7 @@ $query->clear();
         {
 				if ( $this->_importSeason()===false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','season'));
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','season'));
 					return $this->_success_text;
 				}
                 }
@@ -5958,7 +5960,7 @@ $query->clear();
         {
 			if ( $this->_importEvents() === false )
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','event'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','event'));
 				return $this->_success_text;
 			}
 }
@@ -5967,7 +5969,7 @@ $query->clear();
         {
 			if ($this->_importStatistics()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','statistic'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','statistic'));
 				return $this->_success_text;
 			}
 }
@@ -5976,7 +5978,7 @@ $query->clear();
         {
 			if ($this->_importParentPositions()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','parent-position'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','parent-position'));
 				return $this->_success_text;
 			}
 }
@@ -5985,7 +5987,7 @@ $query->clear();
         {
 			if ($this->_importPositions()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position'));
 				return $this->_success_text;
 			}
 }
@@ -5994,7 +5996,7 @@ $query->clear();
         {
 			if ($this->_importPositionEventType()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position-eventtype'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','position-eventtype'));
 				return $this->_success_text;
 			}
 }
@@ -6003,7 +6005,7 @@ $query->clear();
         {
 			if ($this->_importPlayground()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','playground'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','playground'));
 				return $this->_success_text;
 			}
 }
@@ -6012,7 +6014,7 @@ $query->clear();
         {
 			if ($this->_importClubs()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','club'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','club'));
 				return $this->_success_text;
 			}
 }
@@ -6023,7 +6025,7 @@ $query->clear();
         {
 				if ($this->_convertNewPlaygroundIDs()===false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','conversion of playground club-id'));
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','conversion of playground club-id'));
 					return $this->_success_text;
 				}
                 }
@@ -6034,7 +6036,7 @@ $query->clear();
         {
 			if ($this->_importTeams()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','team'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','team'));
 				return $this->_success_text;
 			}
 }
@@ -6043,7 +6045,7 @@ $query->clear();
         {
 			if ($this->_importPersons()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','person'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','person'));
 				return $this->_success_text;
 			}
 }
@@ -6055,7 +6057,7 @@ $query->clear();
         {
 				if ($this->_importProject()===false)
 				{
-					//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','project'));
+					//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','project'));
 					return $this->_success_text;
 				}
 }
@@ -6065,7 +6067,7 @@ $query->clear();
 //        {
 //				if ($this->_importTemplate()===false)
 //				{
-//					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','template'));
+//					JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','template'));
 //					return $this->_success_text;
 //				}
 //                }
@@ -6077,7 +6079,7 @@ $query->clear();
         {
 			if ($this->_importDivisions()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','division'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','division'));
 				return $this->_success_text;
 			}
 }
@@ -6086,7 +6088,7 @@ $query->clear();
         {
 			if ($this->_importProjectPositions()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectpositions'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectpositions'));
 				return $this->_success_text;
 			}
 }
@@ -6095,7 +6097,7 @@ $query->clear();
         {
 			if ($this->_importProjectReferees()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectreferees'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectreferees'));
 				return $this->_success_text;
 			}
 }
@@ -6105,7 +6107,7 @@ $query->clear();
         {
 			if ($this->_importProjectTeam()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectteam'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','projectteam'));
 				return $this->_success_text;
 			}
 }
@@ -6114,7 +6116,7 @@ $query->clear();
         {
 			if ($this->_importTeamPlayer()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamplayer'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamplayer'));
 				return $this->_success_text;
 			}
 }
@@ -6123,7 +6125,7 @@ $query->clear();
         {
 			if ($this->_importTeamStaff()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamstaff'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamstaff'));
 				return $this->_success_text;
 			}
 }
@@ -6132,7 +6134,7 @@ $query->clear();
         {
 			if ($this->_importTeamTraining()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamtraining'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','teamtraining'));
 				return $this->_success_text;
 			}
 }
@@ -6141,7 +6143,7 @@ $query->clear();
         {
 			if ( $this->_importRounds() === false )
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','round'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','round'));
 				return $this->_success_text;
 			}
 }
@@ -6156,7 +6158,7 @@ $query->clear();
         {
 			if ($this->_importMatches()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','match'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','match'));
 				return $this->_success_text;
 			}
 }
@@ -6165,7 +6167,7 @@ $query->clear();
         {
 			if ($this->_importMatchPlayer()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchplayer'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchplayer'));
 				return $this->_success_text;
 			}
 }
@@ -6174,7 +6176,7 @@ $query->clear();
         {
 			if ($this->_importMatchStaff()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaff'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaff'));
 				return $this->_success_text;
 			}
 }
@@ -6183,7 +6185,7 @@ $query->clear();
         {
 			if ($this->_importMatchReferee()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchreferee'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchreferee'));
 				return $this->_success_text;
 			}
 }
@@ -6192,7 +6194,7 @@ $query->clear();
         {
 			if ($this->_importMatchEvent()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchevent'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchevent'));
 				return $this->_success_text;
 			}
 }
@@ -6201,7 +6203,7 @@ $query->clear();
         {
 			if ($this->_importPositionStatistic()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','positionstatistic'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','positionstatistic'));
 				return $this->_success_text;
 			}
 }
@@ -6210,7 +6212,7 @@ $query->clear();
         {
 			if ($this->_importMatchStaffStatistic()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaffstatistic'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstaffstatistic'));
 				return $this->_success_text;
 			}
 }
@@ -6219,7 +6221,7 @@ $query->clear();
         {
 			if ($this->_importMatchStatistic()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstatistic'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','matchstatistic'));
 				return $this->_success_text;
 			}
             }
@@ -6228,7 +6230,7 @@ $query->clear();
         {
 			if ($this->_importTreetos()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treeto'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treeto'));
 				return $this->_success_text;
 			}
 }
@@ -6237,7 +6239,7 @@ $query->clear();
         {
 			if ($this->_importTreetonode()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetonode'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetonode'));
 				return $this->_success_text;
 			}
 }
@@ -6246,7 +6248,7 @@ $query->clear();
         {
 			if ($this->_importTreetomatch()===false)
 			{
-				//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetomatch'));
+				//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','treetomatch'));
 				return $this->_success_text;
 			}
 }
@@ -6270,7 +6272,7 @@ $mdl->setNewPicturePath();
 		else
 		{
 			$this->_deleteImportFile();
-			//JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing import data'));
+			//JError::raiseWarning(500,Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_ERROR','Missing import data'));
 			return false;
 		}
 	}
@@ -6437,7 +6439,7 @@ $mdl->setNewPicturePath();
             if ( $new_team_id )
             {
                 $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'mannschaft vorhanden alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= Text::sprintf(	'mannschaft vorhanden alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$proteam->team_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_team_id</strong>"
@@ -6473,7 +6475,7 @@ $mdl->setNewPicturePath();
 			}
             
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'mannschaft nicht vorhanden und angelegt alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= Text::sprintf(	'mannschaft nicht vorhanden und angelegt alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$proteam->team_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_team_id</strong>"
@@ -6492,12 +6494,12 @@ $mdl->setNewPicturePath();
 
             if ( !$row->store() )
             {
-            $app->enqueueMessage(JText::_(get_class($this).__FUNCTION__.' -> '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');    
+            $app->enqueueMessage(Text::_(get_class($this).__FUNCTION__.' -> '.'<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');    
             }
             else
             {
             $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'mannschaft updaten _project_team new_team_id: %1$s - proteam->team_id: %2$s - projekt: %3$s',
+						$my_text .= Text::sprintf(	'mannschaft updaten _project_team new_team_id: %1$s - proteam->team_id: %2$s - projekt: %3$s',
 													"</span><strong>$new_team_id</strong>",
 													"<strong>$proteam->team_id</strong>",
                                                     "<strong>$this->_project_id</strong>"
@@ -6544,7 +6546,7 @@ $mdl->setNewPicturePath();
                 {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'spieler vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= Text::sprintf(	'spieler vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_player_id</strong>"
@@ -6592,7 +6594,7 @@ $mdl->setNewPicturePath();
                 {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'spieler vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+						$my_text .= Text::sprintf(	'spieler vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_match_player_id</strong>",
@@ -6625,7 +6627,7 @@ $mdl->setNewPicturePath();
 			    // die match player tabelle updaten
                 $new_match_player_id = $db->insertid();
                 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'spieler nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+						$my_text .= Text::sprintf(	'spieler nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_match_player_id</strong>",
@@ -6673,7 +6675,7 @@ $mdl->setNewPicturePath();
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
 			    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'spieler vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+						$my_text .= Text::sprintf(	'spieler vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_project_id</strong>",
                                                     "<strong>$team_member->project_position_id</strong>"
@@ -6683,7 +6685,7 @@ $mdl->setNewPicturePath();
 			    else
 			    {
                 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'spieler nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+						$my_text .= Text::sprintf(	'spieler nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_project_id</strong>",
                                                     "<strong>$team_member->project_position_id</strong>"
@@ -6746,7 +6748,7 @@ $mdl->setNewPicturePath();
             //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
             JFactory::getDbo()->setQuery($query);
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 		    $result_tp = JFactory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
@@ -6769,7 +6771,7 @@ $mdl->setNewPicturePath();
                 {
                     // vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'trainer vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
+						$my_text .= Text::sprintf(	'trainer vorhanden season_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_staff_id</strong>"
@@ -6794,7 +6796,7 @@ $mdl->setNewPicturePath();
                 
 	            if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
-			    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice');  
+			    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice');  
 			    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -6817,7 +6819,7 @@ $mdl->setNewPicturePath();
                 {
                     //vorhanden
                     $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-						$my_text .= JText::sprintf(	'trainer vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+						$my_text .= Text::sprintf(	'trainer vorhanden season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_match_staff_id</strong>",
@@ -6843,7 +6845,7 @@ $mdl->setNewPicturePath();
                 
 	            if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
-			    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice'); 
+			    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice'); 
 			    //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -6851,7 +6853,7 @@ $mdl->setNewPicturePath();
 			    // die match staff tabelle updaten
                 $new_match_staff_id = $db->insertid();
                 $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-						$my_text .= JText::sprintf(	'trainer nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
+						$my_text .= Text::sprintf(	'trainer nicht vorhanden und angelegt season_team_person_id: alte id: %1$s - saison: %2$s - neue id: %3$s - team id: %4$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_season_id</strong>",
                                                     "<strong>$new_match_staff_id</strong>",
@@ -6898,7 +6900,7 @@ $mdl->setNewPicturePath();
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
 			    $my_text .= '<span style="color:'.$this->existingStaff.'">';
-						$my_text .= JText::sprintf(	'trainer vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+						$my_text .= Text::sprintf(	'trainer vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_project_id</strong>",
                                                     "<strong>$team_member->project_position_id</strong>"
@@ -6908,7 +6910,7 @@ $mdl->setNewPicturePath();
 			    else
 			    {
                 $my_text .= '<span style="color:'.$this->existingStaff.'">';
-						$my_text .= JText::sprintf(	'trainer nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+						$my_text .= Text::sprintf(	'trainer nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
 													"</span><strong>$team_member->person_id</strong>",
 													"<strong>$this->_project_id</strong>",
                                                     "<strong>$team_member->project_position_id</strong>"
@@ -7017,11 +7019,11 @@ $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_ro
 
 if (!$result)
 		{
-		    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' update round<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+		    //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' update round<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         else
         {
-//            $app->enqueueMessage(JText::_('update round<br><pre>'.print_r($rounddate->round_id,true).'</pre>'),'');
+//            $app->enqueueMessage(Text::_('update round<br><pre>'.print_r($rounddate->round_id,true).'</pre>'),'');
         }
         
         
@@ -7052,8 +7054,8 @@ if ( empty($current_round) )
     $current_round = $current_round_old;
 }
 
-//$app->enqueueMessage(JText::_('current_round<br><pre>'.print_r($current_round,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_('_project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_('current_round<br><pre>'.print_r($current_round,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_('_project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');        
 
 
 // Create an object for the record we are going to update.
@@ -7068,11 +7070,11 @@ $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pr
 
 if (!$result)
 		{
-		    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' update projekt<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+		    //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' update projekt<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         else
         {
-//            $app->enqueueMessage(JText::_('update _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
+//            $app->enqueueMessage(Text::_('update _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
         }
                 
         

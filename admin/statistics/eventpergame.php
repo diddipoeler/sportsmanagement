@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -68,7 +69,7 @@ class SMStatisticEventPergame extends SMStatistic
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
 }
 
 		return self::formatValue($num, $den, SMStatistic::getPrecision());
@@ -285,7 +286,7 @@ class SMStatisticEventPergame extends SMStatistic
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids,$select,FALSE);
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$num = $db->loadResult();
 		
@@ -294,7 +295,7 @@ class SMStatisticEventPergame extends SMStatistic
         
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$den = $db->loadResult();
 	

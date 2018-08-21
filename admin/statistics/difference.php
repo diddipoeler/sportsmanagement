@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -51,7 +52,7 @@ class SMStatisticDifference extends SMStatistic
         $add_ids = $params->get('add_ids');
 		if (!count($add_ids)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id));
+			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION ADD_IDS', $this->_name, $this->id));
 			return(array(0));
 		}
 		
@@ -59,7 +60,7 @@ class SMStatisticDifference extends SMStatistic
 
 		if (!count($sub_ids)) 
         {
-			JError::raiseError(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id));
+			JError::raiseError(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION SUB_IDS', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -210,8 +211,8 @@ class SMStatisticDifference extends SMStatistic
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['add'],'SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['sub'],'SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_add<br><pre>'.print_r($query_add->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_sub<br><pre>'.print_r($query_sub->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_add<br><pre>'.print_r($query_add->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_sub<br><pre>'.print_r($query_sub->dump(),true).'</pre>'),'');
         $select = 'COUNT(DISTINCT tp.id) as count';
 		$query_select_details	= 'n.num - d.den AS total, n.person_id, 1 as rank,'
 								. ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
@@ -224,7 +225,7 @@ class SMStatisticDifference extends SMStatistic
 		$res = new stdclass;
 		$db->setQuery($query_core);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
         
@@ -234,7 +235,7 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->ranking = $db->loadObjectList();
 
@@ -363,7 +364,7 @@ class SMStatisticDifference extends SMStatistic
         
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$add = $db->loadResult();
 		$add = isset($add->value) ? $add->value : 0;
@@ -373,7 +374,7 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$sub = $db->loadResult();
 		$sub = isset($sub->value) ? $sub->value : 0;
@@ -400,7 +401,7 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$add = $db->loadResult();
 		$add = isset($add->value) ? $add->value : 0;
@@ -410,7 +411,7 @@ class SMStatisticDifference extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$sub = $db->loadResult();
 		$sub = isset($sub->value) ? $sub->value : 0;

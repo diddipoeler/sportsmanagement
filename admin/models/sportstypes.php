@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if ( !class_exists('sportsmanagementHelper') ) 
 {
@@ -69,8 +70,8 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }    
         
 		// Load the filter state.
@@ -129,7 +130,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
                 
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         }
         
 		return $this->jsmquery;
@@ -155,11 +156,11 @@ class sportsmanagementModelSportsTypes extends JSMModelList
 		$this->jsmdb->setQuery($this->jsmquery);
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-            $this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
+            $this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
 		foreach ($result as $sportstype){
-			$sportstype->name = JText::_($sportstype->name);
+			$sportstype->name = Text::_($sportstype->name);
 		}
 		return $result;
 	}

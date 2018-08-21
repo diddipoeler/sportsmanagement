@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -49,7 +50,7 @@ class SMStatisticSumstats extends SMStatistic
 //		$params = &$this->getParams();
 //		$stat_ids = explode(',', $params->get('stat_ids'));
 //		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+//			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 //			return(array(0));
 //		}
 //				
@@ -66,7 +67,7 @@ class SMStatisticSumstats extends SMStatistic
 //		$params = &$this->getParams();
 //		$stat_ids = explode(',', $params->get('stat_ids'));
 //		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+//			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
 //			return(array(0));
 //		}
 //				
@@ -214,7 +215,7 @@ class SMStatisticSumstats extends SMStatistic
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         }
         
 		$res->pagination_total = $db->loadResult();
@@ -228,7 +229,7 @@ class SMStatisticSumstats extends SMStatistic
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         }
         
 		$res->ranking = $db->loadObjectList();

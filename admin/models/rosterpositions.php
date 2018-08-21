@@ -91,7 +91,7 @@ class sportsmanagementModelrosterpositions extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -103,7 +103,7 @@ class sportsmanagementModelrosterpositions extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+
 
 
 //		// Load the parameters.
@@ -139,7 +139,7 @@ class sportsmanagementModelrosterpositions extends JModelList
  $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
 
         return $query;
         

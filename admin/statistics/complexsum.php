@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -59,7 +60,7 @@ class SMStatisticComplexsum extends SMStatistic
 		
 		if (count($stat_ids) != count($factors)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
+			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
 			return(array(0));
 		}
 		
@@ -254,7 +255,7 @@ class SMStatisticComplexsum extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$details = $db->loadObjectList('teamplayer_id');
 
@@ -419,7 +420,7 @@ $stats = $db->loadObjectList();
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		
@@ -454,7 +455,7 @@ $stats = $db->loadObjectList();
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		

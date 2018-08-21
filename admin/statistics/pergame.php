@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -126,7 +127,7 @@ class SMStatisticPergame extends SMStatistic
 		$query_core = SMStatistic::getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den);
         $db->setQuery($query_core);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
         
@@ -137,7 +138,7 @@ class SMStatisticPergame extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->ranking = $db->loadObjectList();
 

@@ -77,8 +77,6 @@ class JFormFieldprojectteamlist extends JFormFieldList
         
     $project_id = $app->getUserState( "$option.pid", '0' );
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-    
     if ($project_id)
 		{
     $db = JFactory::getDbo();
@@ -90,9 +88,6 @@ class JFormFieldprojectteamlist extends JFormFieldList
 			$query->where('pt.project_id = '.$project_id);
 			$query->order('t.name');
 			$db->setQuery($query);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
 			$options = $db->loadObjectList();
     }
 		// Merge any additional options in the XML definition.

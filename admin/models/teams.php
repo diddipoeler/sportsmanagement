@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTeams
@@ -77,8 +78,8 @@ class sportsmanagementModelTeams extends JSMModelList {
     protected function populateState($ordering = 't.name', $direction = 'asc') {
 
         if (JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
         }
 
         // Load the filter state.
@@ -171,7 +172,7 @@ class sportsmanagementModelTeams extends JSMModelList {
         $this->jsmdb->setQuery($this->query);
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         if ($results = $this->jsmdb->loadObjectList()) {
@@ -208,7 +209,7 @@ class sportsmanagementModelTeams extends JSMModelList {
 
             $this->jsmdb->setQuery($this->jsmquery);
             if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+                $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
             }
 
             $rows = $this->jsmdb->loadObjectList();
@@ -225,7 +226,7 @@ class sportsmanagementModelTeams extends JSMModelList {
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
                 if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+                    $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
                 }
 
                 $teams[$row->id]->teaminfo[] = $this->jsmdb->loadObjectList();
@@ -239,7 +240,7 @@ class sportsmanagementModelTeams extends JSMModelList {
                 $starttime = microtime();
                 $this->jsmdb->setQuery($this->jsmquery);
                 if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $this->app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+                    $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
                 }
                 $teams[$row->id]->project = $this->jsmdb->loadResult();
             }

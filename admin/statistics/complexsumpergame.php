@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -58,7 +59,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		
 		if (count($stat_ids) != count($factors)) 
         {
-			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
+			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
 			return(array(0));
 		}
 				
@@ -160,12 +161,12 @@ class SMStatisticComplexsumpergame extends SMStatistic
         $query->where('m.published = 1');
         
         $db->setQuery($query);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$stats = $db->loadObjectList();
 		
 		$query = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		$db->setQuery($query);
 		$gp = $db->loadObjectList('tpid');
@@ -230,7 +231,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 
 		$db->setQuery($query);
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$details = $db->loadObjectList('teamplayer_id');
 

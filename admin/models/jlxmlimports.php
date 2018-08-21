@@ -25,10 +25,14 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementModelJLXMLImports extends JModelLegacy
 {
     
+        /**
+         * sportsmanagementModelJLXMLImports::__construct()
+         * 
+         * @param mixed $config
+         * @return void
+         */
         public function __construct($config = array())
         {   
-////            $app = JFactory::getApplication();
-////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);

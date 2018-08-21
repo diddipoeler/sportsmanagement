@@ -60,10 +60,7 @@ class JFormFieldprojectlist extends JFormFieldList
             }
 			
 			$query->order('l.name');
-            
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'Notice');
-            
+           
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     

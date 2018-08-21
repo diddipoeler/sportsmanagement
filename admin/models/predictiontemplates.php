@@ -230,7 +230,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					{
 						$template = substr($file,0,(strlen($file)-4));
                         
-                        //$app->enqueueMessage(JText::_('PredictionGame template -> '.$template),'');
+
                         
 						// Determine if a metadata file exists for the view.
 				        //$metafile = $path.'/'.$template.'/metadata.xml';
@@ -241,15 +241,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                         // Attempt to load the xml file.
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
-                        //$app->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
+
                         // This will save the value of the attribute, and not the objet
                         //$attributetitle = (string)$metaxml->view->attributes()->title;
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        //$app->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
+
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
-                            //$app->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
                             }
                         }
                         }
@@ -259,25 +258,19 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						  $jRegistry = new JRegistry();
 							$form = JForm::getInstance($file, $xmldir.DS.$file);
 							$fieldsets = $form->getFieldsets();
-							
-							//echo 'fieldsets<br /><pre>~' . print_r($fieldsets,true) . '~</pre><br />';
-							//echo 'form<br /><pre>~' . print_r($form,true) . '~</pre><br />';
-							
+						
 							$defaultvalues = array();
 							foreach ($fieldsets as $fieldset) 
               {
 								foreach($form->getFieldset($fieldset->name) as $field) 
                 {
-									//echo 'field<br /><pre>~' . print_r($field,true) . '~</pre><br />';
                   $jRegistry->set($field->name, $field->value);
                   $defaultvalues[] = $field->name.'='.$field->value;
 								}				
 							}
 							
                             $defaultvalues = $jRegistry->toString('ini');
-                            
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
-                            
+                           
                             $parameter = new JRegistry;
 			                if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -290,8 +283,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	
-                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
-
                             
 							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
                             //$defaultvalues = preg_replace('"', '', $defaultvalues);
@@ -308,13 +299,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
         $query->where('template LIKE '.$db->Quote(''.$template.''));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        
-//		$query = 'SELECT template 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
-//					WHERE prediction_id = ' . (int) $prediction_id;
-
 		$db->setQuery($query);
 		$record_tpl = $db->loadResult();
         if( !$record_tpl )

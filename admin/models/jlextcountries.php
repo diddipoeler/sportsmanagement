@@ -174,7 +174,6 @@ class sportsmanagementModeljlextcountries extends JSMModelList
         
         if (!$results)
 		{
-          //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
           $this->jsmmessage .= '<br>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL');
 		}  
         

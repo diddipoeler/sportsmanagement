@@ -224,12 +224,9 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
         $github_user = JComponentHelper::getParams($option)->get('cfg_github_username','');
         $github_repo = JComponentHelper::getParams($option)->get('cfg_github_repository','');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($this->client,true).'</pre>'),'');
-        //JGithubIssues::$client = $this->client;
-        //$GithubList = JGithubPackageIssues->getListByRepository($github_user,$github_repo);
         
         $params = \JComponentHelper::getParams($option);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($params ,true).'</pre>'),'');
+
 
 $gh_options = new JRegistry();
 // If an API token is set in the params, use it for authentication 
