@@ -44,7 +44,7 @@ abstract class ModSportsmanagementQuickIconHelper
 	$query = Factory::getDBO()->getQuery(true);
     $query->select('position');
     $query->from('#__modules');
-    $query->where('module LIKE '.FactorygetDbo()->Quote(''.'mod_sportsmanagement_quickicon'.'') );
+    $query->where('module LIKE '.Factory::getDbo()->Quote(''.'mod_sportsmanagement_quickicon'.'') );
         
 	Factory::getDBO()->setQuery($query);
 	$res = Factory::getDBO()->loadResult();
