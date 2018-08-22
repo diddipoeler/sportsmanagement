@@ -41,13 +41,13 @@ abstract class ModSportsmanagementQuickIconHelper
      */
     public static function getModPosition()
 	{
-	$query = FactorygetDBO()->getQuery(true);
+	$query = Factory::getDBO()->getQuery(true);
     $query->select('position');
     $query->from('#__modules');
     $query->where('module LIKE '.FactorygetDbo()->Quote(''.'mod_sportsmanagement_quickicon'.'') );
         
-	FactorygetDBO()->setQuery($query);
-	$res = FactorygetDBO()->loadResult();
+	Factory::getDBO()->setQuery($query);
+	$res = Factory::getDBO()->loadResult();
     
     return $res;   
     }   
@@ -75,7 +75,7 @@ abstract class ModSportsmanagementQuickIconHelper
 			if ($context == 'mod_sportsmanagement_quickicon')
 			{
 				// Load mod_quickicon language file in case this method is called before rendering the module
-				FactorygetLanguage()->load('mod_sportsmanagement_quickicon');
+				Factory::getLanguage()->load('mod_sportsmanagement_quickicon');
 
 				self::$buttons[$key] = array(
 					array(
@@ -131,7 +131,7 @@ abstract class ModSportsmanagementQuickIconHelper
 
 			// Include buttons defined by published quickicon plugins
 			PluginHelper::importPlugin('quickicon');
-			$app = FactorygetApplication();
+			$app = Factory::getApplication();
 			$arrays = (array) $app->triggerEvent('onGetIcons', array($context));
 
 			foreach ($arrays as $response)
@@ -190,7 +190,7 @@ abstract class ModSportsmanagementQuickIconHelper
 	{
 		$key = $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
 
-		if (FactorygetLanguage()->hasKey($key))
+		if (Factory::getLanguage()->hasKey($key))
 		{
 			return Text::_($key);
 		}
