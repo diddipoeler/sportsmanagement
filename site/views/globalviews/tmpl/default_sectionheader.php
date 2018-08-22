@@ -72,8 +72,8 @@ $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $this->teamPlayer->team_id;
 $routeparameter['pid'] = $this->person->id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter,'person.edit');
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('editperson',$routeparameter,'person.edit');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('editperson'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
 '20',
