@@ -224,11 +224,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
   
   switch ( $task )
   {
-    case 'person.edit':
-    $params["layout"] = 'edit'; 
-    $params["view"] = 'person';
-	$params["id"] = $params['pid'];
-    break;
+//    case 'person.edit':
+//    $params["layout"] = 'edit'; 
+//    $params["view"] = 'person';
+//	$params["id"] = $params['pid'];
+//    break;
     
   }
   
