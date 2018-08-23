@@ -15,6 +15,19 @@ use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row-fluid" id="show_tabs">
 <?php
+   
+switch ($this->view)
+{
+case 'player':
+foreach ($this->output as $key => $templ) 
+{
+$this->outputnew[$templ['text']] = $templ['template'];
+}
+$this->output = $this->outputnew;
+break;
+}   
+   
+   
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 $idxTab = 0;    
