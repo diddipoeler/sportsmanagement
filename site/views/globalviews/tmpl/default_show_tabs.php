@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_show_tabs.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage globalviews
@@ -11,20 +11,21 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row-fluid" id="show_tabs">
 <?php
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 $idxTab = 0;    
-echo JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
 foreach ($this->output as $key => $templ) 
 {
 $template = $templ;
 $text = $key;
-$active = ($idxTab==0) ? JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
+$active = ($idxTab==0) ? HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
 
-echo JHtml::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
 <div class="container">
 <div class="row">
@@ -34,23 +35,23 @@ echo $this->loadTemplate($template);
 </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTab');
 $idxTab++;
 }    
-echo JHtml::_('bootstrap.endTabSet');    
+echo HTMLHelper::_('bootstrap.endTabSet');    
 }
 elseif(version_compare(JSM_JVERSION,'3','eq')) 
 {
 // Joomla! 3.0 code here
 $idxTab = 0;    
-echo JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array('active' => 'name'));
 foreach ($this->output as $key => $templ) 
 {
 $template = $templ;
 $text = $key;
-$active = ($idxTab==0) ? JHtml::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
+$active = ($idxTab==0) ? HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array('active' => $text)) : ''; 
 
-echo JHtml::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
 <div class="container">
 <div class="row">
@@ -60,10 +61,10 @@ echo $this->loadTemplate($template);
 </div>
 </div>
 <?PHP
-echo JHtml::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTab');
 $idxTab++;
 }    
-echo JHtml::_('bootstrap.endTabSet');  
+echo HTMLHelper::_('bootstrap.endTabSet');  
 
 
 
