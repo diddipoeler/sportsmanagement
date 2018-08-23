@@ -51,14 +51,14 @@ $fieldsets = $this->form->getFieldsets();
   ?>
   </legend>
   </fieldset>
-    
+<?php echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>    
 <div class="width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php 
             foreach($this->form->getFieldset('details') as $field) :
-            
+            echo HTMLHelper::_('bootstrap.addTab', 'myTab', $field->name, Text::_($field->label, true)); 
             //echo '<pre>'.print_r($field,true).'</pre>';
             ?>
 				<li><?php echo $field->label; ?>
@@ -127,7 +127,7 @@ $fieldsets = $this->form->getFieldsets();
 			<?php 
             
             //echo $field->type;
-            
+            echo HTMLHelper::_('bootstrap.endTab');
             endforeach; 
             ?>
 			</ul>
@@ -136,8 +136,9 @@ $fieldsets = $this->form->getFieldsets();
 
 <div class="width-40 fltrt">
 		<?php
-		echo HTMLHelper::_('sliders.start');
+		
 		foreach ($fieldsets as $fieldset) :
+	echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));  
 			if ( $fieldset->name == 'details' ||  $fieldset->name == 'seasons' ) :
 				continue;
 			endif;
@@ -148,13 +149,14 @@ $fieldsets = $this->form->getFieldsets();
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
+	echo HTMLHelper::_('bootstrap.endTab');
 		endforeach; ?>
-		<?php echo HTMLHelper::_('sliders.end'); ?>
+		<?php   ?>
 
 	
 	</div>
 
-
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 <div class="clr"></div>
 
     
