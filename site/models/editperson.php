@@ -109,7 +109,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	function getData()
 	{
-	   $this->_id = JFactory::getApplication()->input->getInt('id',0);
+	   $this->_id = JFactory::getApplication()->input->getInt('pid',0);
 //		// Lets load the content if it doesn't already exist
 //		if (empty($this->_data))
 //		{
