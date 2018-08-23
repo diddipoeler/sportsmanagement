@@ -48,7 +48,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView {
 
         // Get some data from the models
         $state = $this->get('State');
-        $this->item = $this->get('Item');
+        $this->item = $this->model->getData();
         $this->form = $this->get('Form');
 
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
