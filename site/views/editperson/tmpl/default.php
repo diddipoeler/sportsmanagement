@@ -142,7 +142,7 @@ $fieldsets = $this->form->getFieldsets();
 			if ( $fieldset->name == 'details' ||  $fieldset->name == 'seasons' ) :
 				continue;
 			endif;
-			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
+			//echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
