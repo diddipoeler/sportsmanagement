@@ -11,8 +11,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 
 //echo '<pre>'.print_r($this->items,true).'</pre><br>';
 
@@ -91,11 +93,9 @@ if($close == 1) {
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 					   $row		=& $this->items[$i];
-					//	$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
-                        
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'seasons.', $canCheckin);
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'seasons.', $canCheckin);
                     
 					   ?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -106,7 +106,7 @@ if($close == 1) {
 							</td>
 							<td style="text-align:center; ">
 								<?php
-								echo JHtml::_('grid.id', $i, $row->id);  
+								echo HTMLHelper::_('grid.id', $i, $row->id);  
 								?>
 							</td>
                             <td style="text-align:center; ">
@@ -121,17 +121,13 @@ if($close == 1) {
                         $k=1 - $k;
                     }
 ?>                       
-    </tbody>
-    </table>    
-        
-    <input type="hidden" name="close" id="close" value="0" />   
-    <input type='hidden' name='season_id' value='<?php echo $this->season_id; ?>' /> 
-    <input type='hidden' name='act' value='' />
-	<input type='hidden' name='task' value='' id='task' />
-			<?php echo JHTML::_('form.token')."\n"; ?>
-    
-    
-    </form>
+</tbody>
+</table>    
+<input type="hidden" name="close" id="close" value="0" />   
+<input type='hidden' name='season_id' value='<?php echo $this->season_id; ?>' /> 
+<input type='hidden' name='act' value='' />
+<input type='hidden' name='task' value='' id='task' />
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
+</form>
 </fieldset>
-
 </div>
