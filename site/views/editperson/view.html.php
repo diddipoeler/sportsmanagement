@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewEditPerson
@@ -23,7 +23,7 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewEditPerson extends JViewLegacy {
+class sportsmanagementViewEditPerson extends sportsmanagementView {
 
     /**
      * sportsmanagementViewEditPerson::display()
@@ -31,7 +31,7 @@ class sportsmanagementViewEditPerson extends JViewLegacy {
      * @param mixed $tpl
      * @return void
      */
-    function display($tpl = null) {
+    function init() {
 
         $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
@@ -62,9 +62,9 @@ class sportsmanagementViewEditPerson extends JViewLegacy {
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
         $this->extended = $extended;
 
-        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $model::$cfg_which_database);
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend', $this->cfg_which_database);
         if ($this->checkextrafields) {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $model::$cfg_which_database);
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $this->cfg_which_database);
         }
 
 
@@ -75,7 +75,7 @@ class sportsmanagementViewEditPerson extends JViewLegacy {
         }
 
 
-        parent::display($tpl);
+        //parent::display($tpl);
     }
 
 }
