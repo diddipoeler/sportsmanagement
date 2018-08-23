@@ -12,7 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-jimport('joomla.html.pane');
+use Joomla\CMS\HTML\HTMLHelper;
+//jimport('joomla.html.pane');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -111,7 +112,7 @@ $fieldsets = $this->form->getFieldsets();
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
@@ -135,12 +136,12 @@ $fieldsets = $this->form->getFieldsets();
 
 <div class="width-40 fltrt">
 		<?php
-		echo JHtml::_('sliders.start');
+		echo HTMLHelper::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
 			if ( $fieldset->name == 'details' ||  $fieldset->name == 'seasons' ) :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
+			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
@@ -148,7 +149,7 @@ $fieldsets = $this->form->getFieldsets();
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo HTMLHelper::_('sliders.end'); ?>
 
 	
 	</div>
@@ -161,6 +162,6 @@ $fieldsets = $this->form->getFieldsets();
 	<input type="hidden" name="option" value="com_sportsmanagement" /> 
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	
 </form>
