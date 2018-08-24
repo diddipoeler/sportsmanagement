@@ -17,6 +17,14 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+if ( $this->assign )
+{
+$this->readonly = ' readonly ';	
+}
+else
+{
+$this->readonly = '';		
+}
 ?>
 <!--	<div id="editcell"> -->
 <div class="table-responsive">
