@@ -717,6 +717,7 @@ $result = $this->jsmdb->execute();
  * mannschaft 
  */        
 		case 'team':
+		$delete_season = array();
 		if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		foreach( $data['season_ids'] as $key => $value )
@@ -729,6 +730,7 @@ $result = $this->jsmdb->execute();
 		//JFactory::getDbo()->setQuery($query);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
+		$delete_season[] = $value;
 
 		if ( !$result )
 		{
@@ -753,6 +755,11 @@ $result = $this->jsmdb->execute();
         }
 		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
 		}
+// delete all custom keys
+$this->jsmquery->clear();    
+$this->jsmquery->delete()->from('#__sportsmanagement_season_team_id')->where('season_id NOT IN (' . implode(",",$delete_season) . ') AND team_id = '.$data['id']);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();			
         }
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
         $this->jsmapp->setUserState( "$this->jsmoption.team_id", $data['id'] );	
