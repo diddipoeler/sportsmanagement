@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.modal');
 $user		= JFactory::getUser();
@@ -31,6 +33,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?PHP
 	if ( $this->assign )
 	{
+?>
+<button type="button" onclick="Joomla.submitform('seasons.applypersons', this.form);">
+<?php echo Text::_('JAPPLY');?></button>	
+<?php	
 echo $this->loadTemplate('data');
 	}
 	else
