@@ -143,13 +143,20 @@ class sportsmanagementModelTeams extends JSMModelList {
             $this->app->setUserState("$this->option.club_id", '0');
         }
 
+        if ( $this->jsmapp->input->getVar('layout') == 'assignteams')
+        {
+	$this->_season_id = $this->jsmapp->input->get('season_id');
+        $this->jsmsubquery1->select('stp.team_id');
+                $this->jsmsubquery1->from('#__sportsmanagement_season_team_id AS stp ');
+                $this->jsmsubquery1->where('stp.season_id = '.$this->_season_id);
+                $this->query->where('t.id NOT IN ('.$this->jsmsubquery1.')');
+        
+        } 
+        
         $this->query->order($this->jsmdb->escape($this->getState('list.ordering', 't.name')) . ' ' .
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = ' <br><pre>' . print_r($this->query->dump(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
+       
 
         return $this->query;
     }
