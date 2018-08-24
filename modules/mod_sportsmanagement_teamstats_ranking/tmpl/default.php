@@ -13,6 +13,7 @@
  * no direct access
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * check if any results returned
@@ -80,7 +81,7 @@ $teamnametype = $params->get('teamnametype', 'short_name');
 			</td>
 			<td class="team">
 				<?php if ($params->get('teamlink', '')): ?>
-				<?php echo JHTML::link(modSportsmanagementTeamStatHelper::getTeamLink($team, $params, $list['project']), $team->$teamnametype); ?>
+				<?php echo HTMLHelper::link(modSportsmanagementTeamStatHelper::getTeamLink($team, $params, $list['project']), $team->$teamnametype); ?>
 				<?php else: ?>
 				<?php echo $team->$nametype; ?>
 				<?php endif; ?>

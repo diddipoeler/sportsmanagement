@@ -41,8 +41,6 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-//JHtml::_( 'behavior.framework' );
-//JHTML::_('behavior.modal');
 
 // Reference global application object
 $app = JFactory::getApplication();
@@ -51,10 +49,6 @@ $jinput = $app->input;
         
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
-
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.framework');
-//JHtml::_('behavior.modal');
 
 $ajax= $jinput->getVar('ajaxCalMod',0,'default','POST');
 $ajaxmod= $jinput->getVar('ajaxmodid',0,'default','POST');

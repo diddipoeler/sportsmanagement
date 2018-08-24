@@ -1,15 +1,12 @@
 <?php
-/**
- * @ version   1.0.0 2018-07-31
- * @package    Joomla.Tutorials
- * @subpackage Modules
- * @developer  llambion 
- * @license    GNU/GPL, see LICENSE.php
- * @link       http://docs.joomla.org/J3.x:Creating_a_simple_module/Developing_a_Basic_Module
- * mod_helloworld is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      mod_sportsmanagement_eventsranking.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_eventsranking
  */
 
 // No direct access

@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * modJSMRankingHelper
@@ -245,21 +246,21 @@ class modJSMRankingHelper
 		{
 			if (!empty($item->team->logo_small))
 			{
-				return JHtml::image($item->team->logo_small, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_small, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
         elseif ($type == 3) // club small logo
 		{
 			if (!empty($item->team->logo_middle))
 			{
-				return JHtml::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_middle, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
         elseif ($type == 4) // club small logo
 		{
 			if (!empty($item->team->logo_big))
 			{
-				return JHtml::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
+				return HTMLHelper::image($item->team->logo_big, $item->team->short_name, 'class="teamlogo" width="20" ');
 			}
 		}
 		else if ($type == 2 && !empty($item->team->country))

@@ -1,23 +1,34 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_eventsranking
+ */
+
+defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\HTML\HTMLHelper; 
+ 
 /**
- * Helper class for Hello World! module
+ * modSMEventsrankingHelper
  * 
- * @package    Joomla.Tutorials
- * @subpackage Modules
- * @link http://docs.joomla.org/J3.x:Creating_a_simple_module/Developing_a_Basic_Module
- * @license        GNU/GPL, see LICENSE.php
- * mod_helloworld is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
  */
 class modSMEventsrankingHelper
 {
+	
 	/**
-	 * Method to get the list
-	 *
-	 * @access public
-	 * @return array
+	 * modSMEventsrankingHelper::getData()
+	 * 
+	 * @param mixed $params
+	 * @return
 	 */
 	function getData(&$params)
 	{ 
@@ -89,7 +100,7 @@ class modSMEventsrankingHelper
 		{
 			if (!empty($item->logo_big))
 			{
-				return JHtml::_('image',$item->logo_big, $item->short_name, array('width' => '20', 'class' => 'teamlogo') );
+				return HTMLHelper::_('image',$item->logo_big, $item->short_name, array('width' => '20', 'class' => 'teamlogo') );
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))
@@ -167,7 +178,7 @@ $routeparameter['p'] = $project->slug;
 									
 					$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 
-					echo JHTML::link($link, $name);
+					echo HTMLHelper::link($link, $name);
 					
 				}
 				else
@@ -194,7 +205,7 @@ $routeparameter['p'] = $project->slug;
 		{
 			$imgTitle=JText::_($event->name);
 			$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle);
-			$txt=JHTML::image($event->icon, $imgTitle, $imgTitle2);
+			$txt=HTMLHelper::image($event->icon, $imgTitle, $imgTitle2);
 		}
 		return $txt;
 	}

@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\HTML\HTMLHelper;
 
 $refresh = $params->def("refresh");
 $minute = $params->def("minute");
@@ -290,7 +291,7 @@ $a++;
         $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,
 																$club->id);
 		
-		$showname = JHTML::link( $club_link, $usedname );
+		$showname = HTMLHelper::link( $club_link, $usedname );
 		
         $birthdaytext .= '<div class="qslide">';
 			

@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 $teamformat = $params->get('teamformat', 'name');
 $dateformat = $params->get('dateformat');
@@ -67,7 +68,7 @@ $routeparameter['p'] = $match->project_slug;
 $routeparameter['pgid'] = $playground_id ;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    
   
-$playgroundname= JHTML::link($link, JText::sprintf( '%1$s', $playgroundname ) );
+$playgroundname= HTMLHelper::link($link, JText::sprintf( '%1$s', $playgroundname ) );
 }
 else
 {
@@ -95,14 +96,14 @@ $picture = $match->playground_club_picture;
 
 if ( $picture )
 {
-$textdiv .= '<p>'.JHtml::image( $picture,"","width=".$params->get('picture_playground_width')).'</p>';
+$textdiv .= '<p>'.HTMLHelper::image( $picture,"","width=".$params->get('picture_playground_width')).'</p>';
 }
 
 $textdiv.= '</div>';    
 }
     
 $textdiv .= '<div class="jlplplanedate">';
-$textdiv .= JHtml::date( $match->match_date,$dateformat );
+$textdiv .= HTMLHelper::date( $match->match_date,$dateformat );
 $textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
 list($date,$time) = explode(" ",$match->match_date);
 $time = strftime("%H:%M",strtotime($time));
@@ -133,11 +134,11 @@ $team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.HTMLHelper::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team1logo,"").'</p>';    
+$textdiv .= '<p>'.HTMLHelper::image( $team1logo,"").'</p>';    
 }
 
 }
@@ -153,11 +154,11 @@ $team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.HTMLHelper::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team2logo,"").'</p>';    
+$textdiv .= '<p>'.HTMLHelper::image( $team2logo,"").'</p>';    
 }
 
 

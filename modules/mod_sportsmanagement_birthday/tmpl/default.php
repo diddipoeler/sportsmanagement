@@ -11,7 +11,7 @@
  
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 switch ($mode) {
     // bootstrap mode template
@@ -224,7 +224,7 @@ switch ($mode) {
                         $routeparameter['pid'] = $person['person_slug'];
                         $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
                     }
-                    $showname = JHTML::link($person_link, $usedname);
+                    $showname = HTMLHelper::link($person_link, $usedname);
                     ?>
                     <tr class="<?php echo $params->get('heading_style'); ?>">
                         <td class="birthday"><?php echo $showname; ?></td>

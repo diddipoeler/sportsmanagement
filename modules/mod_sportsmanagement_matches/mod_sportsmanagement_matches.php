@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 $app = JFactory::getApplication();
 
 if (! defined('DS'))
@@ -99,7 +101,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 } 
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
 $doc = JFactory::getDocument();
@@ -129,7 +131,7 @@ div.tool-tip div.tool-title a.sticky_close{
 	height:16px;
 }
 ');
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 $doc->addScriptDeclaration('
   window.addEvent(\'domready\', function() {
     if ($$(\'#modJLML'.$module->id.'holder .jlmlTeamname\')) addJLMLtips(\'#modJLML'.$module->id.'holder .jlmlTeamname\', \'over\');

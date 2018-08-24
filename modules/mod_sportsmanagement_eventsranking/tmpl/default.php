@@ -1,23 +1,19 @@
 <?php 
-
-/**
- * @version	 $Id: default.php 4971 2018-07-31 05:00:49Z timoline $
- * @package	 Joomla
- * @subpackage  Sportmanagement eventsranking module
- * @developer  llambion 
- * @copyright   Copyright (C) 2008 Open Source Matters. All rights reserved.
- * @license	 GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant to the
- * GNU General Public License, and as distributed it includes or is derivative
- * of works licensed under the GNU General Public License or other free or open
- * source software licenses. See COPYRIGHT.php for copyright notices and
- * details.
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_eventsranking
  */
 
-
-
-// No direct access
+/**
+ * No direct access
+ */
 defined('_JEXEC') or die; 
+use Joomla\CMS\HTML\HTMLHelper; 
 ?>
 
 <div class="row-fluid">
@@ -144,7 +140,7 @@ if (count($list['eventtypes']) > 0)
 						}
 						if ($teamLink)
 						{
-							echo JHTML::link(modSMEventsrankingHelper::getTeamLink($team, $params, $list['project']), $team->$teamnametype);
+							echo HTMLHelper::link(modSMEventsrankingHelper::getTeamLink($team, $params, $list['project']), $team->$teamnametype);
 						}
 						else
 						{
@@ -191,7 +187,7 @@ else
 ?>
 <?php if ($params->get('show_full_link', 1)):?>
 <p class="fulltablelink">
-	<?php //echo JHTML::link(	sportsmanagementHelperRoute::getEventsRankingRoute($list['project']->slug, $params->get('divisionid',0) , $params->get('tid',0), $params->get('evid',0), $params->get('mid',0)), 
+	<?php //echo HTMLHelper::link(	sportsmanagementHelperRoute::getEventsRankingRoute($list['project']->slug, $params->get('divisionid',0) , $params->get('tid',0), $params->get('evid',0), $params->get('mid',0)), 
 							//JText::_('MOD_JOOMLEAGUE_EVENTSRANKING_VIEW_FULL_TABLE')); ?>
 </p>
 <?php endif; ?>

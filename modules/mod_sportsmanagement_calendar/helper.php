@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
@@ -733,10 +734,10 @@ class JSMCalendar extends PHPCalendar
 		$teamslist = array();
 		if(count(JSMCalendar::$teams) > 0 && JSMCalendar::$params->get('show_teamslist', 0) == 1) {
 			$teams = JSMCalendar::sortObject(JSMCalendar::$teamslist, 'asc', 'name');
-			$teamslist[] = JHtml::_('select.option', 0, JText::_(JSMCalendar::$params->get('teamslist_option')));
+			$teamslist[] = HTMLHelper::_('select.option', 0, JText::_(JSMCalendar::$params->get('teamslist_option')));
 			foreach ($teams AS $id => $obj) 
             {
-				$teamslist[] = JHtml::_('select.option', $obj->value, JText::_($obj->name));
+				$teamslist[] = HTMLHelper::_('select.option', $obj->value, JText::_($obj->name));
 			}
 		}
 		return $teamslist;

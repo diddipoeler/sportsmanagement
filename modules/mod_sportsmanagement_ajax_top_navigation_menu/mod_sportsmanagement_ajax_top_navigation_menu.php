@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('DS'))
 {
@@ -79,7 +80,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 $helper = new modSportsmanagementAjaxTopNavigationMenuHelper($params);
 
@@ -239,14 +240,14 @@ $sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHTML::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
-JHTML::_('behavior.modal');
+HTMLHelper::_('behavior.modal');
 
 if ( $params->get('show_favteams_nav_links') )
 {

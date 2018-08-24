@@ -13,7 +13,7 @@
  * no direct access
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * modSportsmanagementTeamPlayersHelper
@@ -112,7 +112,7 @@ $routeparameter['tid'] = $item->team_slug;
 $routeparameter['pid'] = $item->person_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 
-			echo $flag . JHTML::link($link, $text);
+			echo $flag . HTMLHelper::link($link, $text);
 		}
 		else
 		{

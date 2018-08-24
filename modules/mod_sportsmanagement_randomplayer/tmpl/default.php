@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // check if any player returned
 $items = count($list['player']);
@@ -77,7 +78,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 //		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug, 
 //														$list['infoteam']->team_id, 
 //														$person->slug );
-		echo JHTML::link($link, $text);
+		echo HTMLHelper::link($link, $text);
 	}
 	else
 	{
@@ -105,7 +106,7 @@ $routeparameter['ptid'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 //		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug, 
 //														$list['infoteam']->team_id);
-		echo JHTML::link($link, $text);
+		echo HTMLHelper::link($link, $text);
 	}
 	else
 	{

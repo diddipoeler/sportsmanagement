@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JElementProjectsmultiple
@@ -67,14 +68,14 @@ class JElementProjectsmultiple extends JElement
     $query = 'SELECT p.id, p.name FROM #__sportsmanagement_project p WHERE published=1 ORDER BY id DESC';
     $db->setQuery( $query );
     $projects = $db->loadObjectList();
-    $mitems = array(JHTML::_('select.option', '', '- '.JText::_('Do not use').' -'));
+    $mitems = array(HTMLHelper::_('select.option', '', '- '.JText::_('Do not use').' -'));
 
     foreach ( $projects as $project ) {
-      $mitems[] = JHTML::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
+      $mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
     }
     
 
-    $output= JHTML::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $value );
+    $output= HTMLHelper::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $value );
     return $output;
   }
 }

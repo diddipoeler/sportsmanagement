@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * modSportsmanagementAjaxTopNavigationMenuHelper
@@ -141,7 +142,7 @@ $query->order('s.name');
 		$res = $db->loadObjectList();
 		if ($res) 
         {
-		$options = array(JHTML::_('select.option', 0, JText::_('-- Kreisverbände -- ')));
+		$options = array(HTMLHelper::_('select.option', 0, JText::_('-- Kreisverbände -- ')));
 			$options = array_merge($options, $res);
 		}
 
@@ -173,12 +174,12 @@ $query->order('s.name');
         
 		$res = $db->loadObjectList();
 		if ($res) {
-		$options = array(JHTML::_('select.option', 0, JText::_('-- Landesverbände -- ')));
+		$options = array(HTMLHelper::_('select.option', 0, JText::_('-- Landesverbände -- ')));
 			$options = array_merge($options, $res);
 		}
         else
         {
-            $options = array(JHTML::_('select.option', 0, JText::_('-- Landesverbände -- ')));
+            $options = array(HTMLHelper::_('select.option', 0, JText::_('-- Landesverbände -- ')));
         }
 
 		return $options;
@@ -210,12 +211,12 @@ $query->order('s.name');
         
 		$res = $db->loadObjectList();
 		if ($res) {
-		  $options = array(JHTML::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
+		  $options = array(HTMLHelper::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
 			$options = array_merge($options, $res);
 		}
         else
         {
-            $options = array(JHTML::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
+            $options = array(HTMLHelper::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
         }
 
 		return $options;
@@ -259,7 +260,7 @@ if ($res)
       
       $res = ArrayHelper::sortObjects($res,'text',1);
       
-		  $options = array(JHTML::_('select.option', 0, JText::_($fedtext)));
+		  $options = array(HTMLHelper::_('select.option', 0, JText::_($fedtext)));
 			$options = array_merge($options, $res);
 			
 			foreach ( $res as $row )
@@ -650,7 +651,7 @@ return $user->username ;
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
-		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
+		$options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
         
         $query->select('s.id AS value, s.name AS text');
         $query->from('#__sportsmanagement_season AS s');
@@ -687,7 +688,7 @@ $options = array();
 		$res = $this->_db->loadObjectList();
 		if ($res) 
     {
-    $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
+    $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
 		$options = array_merge($options, $res);
 		}
 
@@ -721,7 +722,7 @@ $app = JFactory::getApplication();
 		$res = $db->loadObjectList();
 		if ($res) 
         {
-        $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
 			$options = array_merge($options, $res);
 		}
 
@@ -790,7 +791,7 @@ $app = JFactory::getApplication();
 		$res = $db->loadObjectList();
 		if ($res) 
         {
-        $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
 			$options = array_merge($options, $res);
 		}
 
@@ -825,7 +826,7 @@ $app = JFactory::getApplication();
 		if ($res) 
 		{
 
-$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_project_dropdown'))));
+$options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('text_project_dropdown'))));
 					$options = array_merge($options, $res);
 
 		}
@@ -843,7 +844,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 		$res = $this->getTeamsOptions($project_id);
 		if ($res) 
 		{
-		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
+		$options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
 			$options = array_merge($options, $res);
 		}
         return $options;		

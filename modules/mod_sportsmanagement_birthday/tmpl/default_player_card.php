@@ -9,6 +9,7 @@
  * @subpackage mod_sportsmanagement_birthday
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
@@ -68,7 +69,7 @@ $usedname = $flag . $text;
 $params_com = JComponentHelper::getParams('com_sportsmanagement');
 $usefontawesome = $params_com->get('use_fontawesome');
     
-    $showname = JHTML::link($person_link, $usedname);
+    $showname = HTMLHelper::link($person_link, $usedname);
 //echo 'birthdaytext<pre>'.print_r($birthdaytext,true).'</pre>';
 //echo 'birthdayformat<pre>'.print_r($birthdayformat,true).'</pre>';
     ?>

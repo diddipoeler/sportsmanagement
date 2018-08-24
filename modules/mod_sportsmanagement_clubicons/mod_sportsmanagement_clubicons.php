@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('DS'))
 {
@@ -86,11 +87,11 @@ $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHTML::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
 $doc = JFactory::getDocument();

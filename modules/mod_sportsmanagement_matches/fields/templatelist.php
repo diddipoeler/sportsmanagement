@@ -12,6 +12,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
  
 jimport('joomla.form.formfield');
  
@@ -40,19 +41,19 @@ class JFormFieldTemplatelist extends JFormField
 					continue;
 				}
 			}
-			$options[] = JHTML::_('select.option', $folder, $folder);
+			$options[] = HTMLHelper::_('select.option', $folder, $folder);
 		}
 		
 		$lang = JFactory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 		if (!$this->element['hide_none'])
 		{
-			array_unshift($options, JHTML::_('select.option', '-1', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
+			array_unshift($options, HTMLHelper::_('select.option', '-1', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
 		}
 		
 		if (!$this->element['hide_default'])
 		{
-			array_unshift($options, JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
+			array_unshift($options, HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
 		}
 		
 		$doc = JFactory::getDocument();
@@ -90,7 +91,7 @@ class JFormFieldTemplatelist extends JFormField
 		$select = '<table>'
 				. '<tr>'
 				. '<td>'
-				. JHTML::_('select.genericlist',  $options, $this->name,
+				. HTMLHelper::_('select.genericlist',  $options, $this->name,
 						   'class="inputbox" onchange="$(\'TemplateImage\').src=\''
 				           .$mainframe->getCfg('live_site')
 						   .'/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"', 
@@ -101,7 +102,7 @@ class JFormFieldTemplatelist extends JFormField
 				. '</tr>'
 				. '<tr>'
 				. '<td style="text-align:right;background-color:grey;padding:4px;margin:20px;width:200px;height:150px;">'
-				. JHTML::_('image','modules/mod_sportsmanagement_matches/tmpl/'.$this->value.'/template.png', 
+				. HTMLHelper::_('image','modules/mod_sportsmanagement_matches/tmpl/'.$this->value.'/template.png', 
 						   'TemplateImage', 'id="TemplateImage" width="200"')
 			    . '</td>'
 			    . '</tr>'

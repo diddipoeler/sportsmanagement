@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -137,7 +138,7 @@ switch ($mode) {
                     $routeparameter['pid'] = $person['person_slug'];
                     $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee', $routeparameter);
                 }
-                $showname = JHTML::link($person_link, $usedname);
+                $showname = HTMLHelper::link($person_link, $usedname);
                 ?>
 
                 <?php

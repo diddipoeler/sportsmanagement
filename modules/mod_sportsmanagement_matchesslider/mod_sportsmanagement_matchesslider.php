@@ -9,6 +9,8 @@
  */ 
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -49,11 +51,11 @@ require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHTML::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHTML::_('behavior.mootools');
+HTMLHelper::_('behavior.mootools');
 }
 
 $app = JFactory::getApplication();
@@ -64,7 +66,7 @@ $doc->addScript( _JLMATCHLISTSLIDERMODURL.'assets/js/jquery.simplyscroll.js' );
 $doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL.'assets/css/'.$module->module.'.css');
 
 
-JHTML::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 //$doc->addScriptDeclaration('
 //(function($) {
 //	$(function() { //on DOM ready

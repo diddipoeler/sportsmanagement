@@ -2,6 +2,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+
 class JElementJLMLItemid extends JElement
 {
 
@@ -11,7 +13,7 @@ class JElementJLMLItemid extends JElement
 	{
 		$db = JFactory::getDBO();
 
-		$options 	= array(JHTML::_('select.option', '', '- '.JText::_('Select Item').' -'));
+		$options 	= array(HTMLHelper::_('select.option', '', '- '.JText::_('Select Item').' -'));
 
 		$query = "SELECT menutype, title FROM #__menu_types ORDER BY title";
 		$db->setQuery( $query );
@@ -41,7 +43,7 @@ class JElementJLMLItemid extends JElement
 			}
 		}
 
-		$list = JHTML::_('menu.treerecurse', 0, '', array(), $childs, true, 0, 0 );
+		$list = HTMLHelper::_('menu.treerecurse', 0, '', array(), $childs, true, 0, 0 );
 
 		$cnt = count( $list );
 		$olist = array();
@@ -51,7 +53,7 @@ class JElementJLMLItemid extends JElement
 
 		foreach ($mtypes as $type)
 		{
-			$options[]	= JHTML::_('select.option',  $type->menutype, $type->title , 'value', 'text', true );
+			$options[]	= HTMLHelper::_('select.option',  $type->menutype, $type->title , 'value', 'text', true );
 			if (isset( $olist[$type->menutype] ))
 			{
 				$cnt = count( $olist[$type->menutype] );
@@ -70,13 +72,13 @@ class JElementJLMLItemid extends JElement
 					}
 					
 					$disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-					$options[] = JHTML::_('select.option',  $item->id, $item->id.'&nbsp;&nbsp;&nbsp;' .$item->treename, 'value', 'text', $disable );
+					$options[] = HTMLHelper::_('select.option',  $item->id, $item->id.'&nbsp;&nbsp;&nbsp;' .$item->treename, 'value', 'text', $disable );
 
 				}
 			}
 		}
 
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
+		return HTMLHelper::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', 'class="inputbox"', 'value', 'text', $value, $control_name.$name);
 	}
 	
 	function fetchElementOLD($name, $value, &$node, $control_name)
@@ -101,6 +103,6 @@ class JElementJLMLItemid extends JElement
 			}
 		}
 
-		return JHTML::_('select.genericlist',  $items2, ''.$control_name.'['.$name.']', '', 'id', 'title', $value, $control_name.$name );
+		return HTMLHelper::_('select.genericlist',  $items2, ''.$control_name.'['.$name.']', '', 'id', 'title', $value, $control_name.$name );
 	}
 }

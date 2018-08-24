@@ -10,7 +10,8 @@
  */
 
 defined('_JEXEC') or die(JText::_('Restricted access'));
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 $mainframe = JFactory::getApplication();
 
@@ -73,9 +74,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
 
                                 $imgTitle = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_ROUND_RESULTS_TITLE');
-                                $desc     = JHtml::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
-                                //echo JHtml::link($link,$desc,array('target' => '_blank'));
-                                echo JHtml::link($link, $desc, array('target' => ''));
+                                $desc     = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
+                                echo HTMLHelper::link($link, $desc, array('target' => ''));
                             }
                             if ( $config['show_tip_ranking'] )
                             {
@@ -98,8 +98,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 
                                 $imgTitle = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_HEAD_RANKING_IMAGE_TITLE');
-                                $desc     = JHtml::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
-                                echo JHtml::link($link, $desc, array('target' => ''));
+                                $desc     = HTMLHelper::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
+                                echo HTMLHelper::link($link, $desc, array('target' => ''));
                             }
 
                         }
@@ -107,7 +107,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 </tr>
             </table>
             <br/>
-            <?php echo JHtml::_('form.token'); ?>
+            <?php echo HTMLHelper::_('form.token'); ?>
         </form>
 
         <?php
@@ -119,20 +119,20 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <form name='adminForm' id='adminForm' method='post'>
                 <table class="table">
                     <tr>
-                        <td><?php echo JHtml::_('select.genericlist', $lists['type'], 'type', 'class="inputbox" size="1"', 'value', 'text', $modelpg->type); ?></td>
+                        <td><?php echo HTMLHelper::_('select.genericlist', $lists['type'], 'type', 'class="inputbox" size="1"', 'value', 'text', $modelpg->type); ?></td>
                     </tr>
                     <tr>
-                        <td><?php echo JHtml::_('select.genericlist', $from_matchday, 'from', 'class="inputbox" size="1"', 'value', 'text', $modelpg->from); ?></td>
+                        <td><?php echo HTMLHelper::_('select.genericlist', $from_matchday, 'from', 'class="inputbox" size="1"', 'value', 'text', $modelpg->from); ?></td>
                     </tr>
                     <tr>
-                        <td><?php echo JHtml::_('select.genericlist', $to_matchday, 'to', 'class="inputbox" size="1"', 'value', 'text', $modelpg->to); ?></td>
+                        <td><?php echo HTMLHelper::_('select.genericlist', $to_matchday, 'to', 'class="inputbox" size="1"', 'value', 'text', $modelpg->to); ?></td>
                     </tr>
                     <tr>
                         <td><input type='submit' class='button' name='reload View'
                                    value='<?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_FILTER'); ?>'/></td>
                     </tr>
                 </table>
-                <?php echo JHtml::_('form.token'); ?>
+                <?php echo HTMLHelper::_('form.token'); ?>
             </form><br/>
             <?php
         }
@@ -339,7 +339,7 @@ sportsmanagementModelPrediction::$type);
                 if ( ( $config['show_user_link'] ) && ( ( $member->show_profile ) || ( $predictionMember[0]->pmID == $member->pmID ) ) )
                 {
                     $link   = JSMPredictionHelperRoute::getPredictionMemberRoute($predictionGame[0]->id, $member->pmID);
-                    $output = JHtml::link($link, $member->name);
+                    $output = HTMLHelper::link($link, $member->name);
                 }
                 else
                 {
@@ -348,11 +348,11 @@ sportsmanagementModelPrediction::$type);
                 $membersDataArray[$member->pmID]['name'] = $output;
 
                 $imgTitle = JText::sprintf('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_SHOW_DETAILS_OF', $member->name);
-                $imgFile  = JHtml::image("media/com_sportsmanagement/jl_images/zoom.png", $imgTitle, array(' title' => $imgTitle));
+                $imgFile  = HTMLHelper::image("media/com_sportsmanagement/jl_images/zoom.png", $imgTitle, array(' title' => $imgTitle));
                 $link     = JSMPredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id, $actualProjectCurrentRound, sportsmanagementModelPrediction::$pjID);
                 if ( ( $member->show_profile ) || ( $predictionMember[0]->pmID == $member->pmID ) )
                 {
-                    $output = JHtml::link($link, $imgFile);
+                    $output = HTMLHelper::link($link, $imgFile);
                 }
                 else
                 {
@@ -514,7 +514,7 @@ $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->
 }
 
 $desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
-echo JHtml::link($link, $desc, array('target' => ''));
+echo HTMLHelper::link($link, $desc, array('target' => ''));
 }              
 ?>
 </td>

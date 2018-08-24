@@ -11,6 +11,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 if ( !defined('DS') )
 {
     define('DS', DIRECTORY_SEPARATOR);
@@ -113,9 +115,9 @@ $actJoomlaUser[]      = JFactory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
 $type_array    = array();
-$type_array[]  = JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-$type_array[]  = JHTML::_('select.option', '1', JText::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
-$type_array[]  = JHTML::_('select.option', '2', JText::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '1', JText::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '2', JText::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
 $lists['type'] = $type_array;
 unset($type_array);
 

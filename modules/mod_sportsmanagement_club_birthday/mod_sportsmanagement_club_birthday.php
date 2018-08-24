@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -158,7 +159,7 @@ $html_li = '';
     $usedname = $flag.$text;
 	$club_link = "";
     $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,$club->id);
-	$showname = JHTML::link( $club_link, $usedname );
+	$showname = HTMLHelper::link( $club_link, $usedname );
     
     if ($params->get('show_picture')==1) 
         {
@@ -251,7 +252,7 @@ $html_li = '';
     $usedname = $flag.$text;
 	$club_link = "";
     $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,$club->id);
-	$showname = JHTML::link( $club_link, $usedname );
+	$showname = HTMLHelper::link( $club_link, $usedname );
     
     if ($params->get('show_picture')==1) 
         {
