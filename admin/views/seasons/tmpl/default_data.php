@@ -66,8 +66,8 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
     $row = & $this->items[$i];
     $link = JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $row->id);
 
-    $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id=' . $row->id);
-    $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id=' . $row->id);
+    $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&id=' . $row->id);
+    $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=persons&layout=assignpersons&id=' . $row->id);
     $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
     $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
