@@ -31,6 +31,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?PHP
 	if ( $this->assign )
 	{
+echo $this->loadTemplate('data');
 	}
 	else
 	{
