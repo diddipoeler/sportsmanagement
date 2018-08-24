@@ -35,6 +35,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?PHP
 if ( $this->assign )
 	{
+?>	
+ <button type="button" onclick="Joomla.submitform('seasons.applyteams', this.form);">
+<?php echo Text::_('JAPPLY');?></button>
+<?php
 echo $this->loadTemplate('data');
 	}
 	else
