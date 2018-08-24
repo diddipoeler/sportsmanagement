@@ -32,14 +32,11 @@ class sportsmanagementViewTeams extends sportsmanagementView {
     public function init() {
 
         $starttime = microtime();
-
+$this->assign = false;
         if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
 		{
 			$this->season_id = $this->jinput->get('season_id');
 			$this->assign = true;
-			//$this->state = $this->get('State'); 
-            //$this->_displayAssignPlayers($tpl);
-			//return;
 		}
 
         $this->table = JTable::getInstance('team', 'sportsmanagementTable');
