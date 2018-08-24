@@ -36,6 +36,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <button type="button" onclick="Joomla.submitform('seasons.applypersons', this.form);">
 <?php echo Text::_('JAPPLY');?></button>	
+<input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
+				<button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+					<?php
+					echo Text::_('JSEARCH_FILTER_CLEAR');
+					?>
+</button>	
+	
+	
 <?php	
 echo $this->loadTemplate('data');
 	}
