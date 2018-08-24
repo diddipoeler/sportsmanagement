@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 switch($this->fieldset)
 {
 case 'training':
@@ -206,7 +207,7 @@ default:
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>

@@ -11,6 +11,7 @@
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $this->divclass = '';
 $this->divclassrest = '';
@@ -62,9 +63,9 @@ $routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);
+						echo HTMLHelper::link($link, $desc);
 					}
 				}
 
@@ -162,7 +163,7 @@ $this->divclassrest = "span3";
 <input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 <input type='hidden' name='save_data' value='1' class='button' />
 <input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 <!-- Main END -->
 </form>
 

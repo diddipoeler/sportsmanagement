@@ -12,7 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 $current  = &$this->current;
 $previous = &$this->previousRanking[$this->division];
@@ -155,13 +156,13 @@ foreach( $current as $ptid => $team )
             switch ($pic)
             {
                 case 'logo_small';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 case 'logo_middle';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 case 'logo_big';
-                echo JHTML::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
+                echo HTMLHelper::image($team->team->$pic, $imgTitle, array('title' => $team->team->name,'width' => '20' ));
                 break;
                 
             }
@@ -213,7 +214,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 1;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 1);
-					echo JHTML::link($teamplan_link, $team->cnt_won);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_won);
 				}
 				else
 				{
@@ -234,7 +235,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 2;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 2);
-					echo JHTML::link($teamplan_link, $team->cnt_draw);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
 				}
 				else
 				{
@@ -255,7 +256,7 @@ foreach( $current as $ptid => $team )
 				    $routeparameter['mode'] = 3;
                     $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 3);
-					echo JHTML::link($teamplan_link, $team->cnt_lost);
+					echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
 				}
 				else
 				{
@@ -607,7 +608,7 @@ foreach( $current as $ptid => $team )
 					}
 
 					$url = Route::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
-					echo JHTML::link($url, $img, $attr);
+					echo HTMLHelper::link($url, $img, $attr);
 				}
 				echo '</td>';
 				echo "\n";

@@ -16,7 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::('joomla.application.component.view');
 HTMLHelper::('joomla.html.pane');
 HTMLHelper::('joomla.functions');
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 /**
  * sportsmanagementViewTeamPlan
@@ -187,9 +187,9 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
 				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
 				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
-				$imgTime = JHtml::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
-				$imgOut  = JHtml::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
-				$imgIn   = JHtml::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
+				$imgTime = HTMLHelper::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
+				$imgOut  = HTMLHelper::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
+				$imgIn   = HTMLHelper::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
 				$output .= $result->startPanel($tab_content,'0');
 				$output .= '<table class="matchreport" border="0">';

@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//echo '<pre>'.print_r($this->items,true).'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <div class="table-responsive">        
@@ -55,7 +55,7 @@ foreach( $this->columns as $key => $value )
 {
 ?>
 <th class="" id="">
-<?php  echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_FES_ALLPERSONS_'.strtoupper($value), 'v.'.$value, $this->sortDirection, $this->sortColumn) ; ?>
+<?php  echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_FES_ALLPERSONS_'.strtoupper($value), 'v.'.$value, $this->sortDirection, $this->sortColumn) ; ?>
 </th>
 <?PHP    
 }
@@ -87,7 +87,7 @@ $routeparameter['p'] = $item->projectslug;
 $routeparameter['tid'] = $item->teamslug;
 $routeparameter['pid'] = $item->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);    
-    echo JHtml::link( $link, $item->$value );
+    echo HTMLHelper::link( $link, $item->$value );
     }
     else
     {
@@ -101,7 +101,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
     echo sportsmanagementHelperHtml::getBootstrapModalImage('allperson'.$item->id,$item->$value,$item->lastname,'20');
     break;
     case 'website':
-    echo JHtml::link( $item->$value, $item->$value, array( 'target' => '_blank' ) );
+    echo HTMLHelper::link( $item->$value, $item->$value, array( 'target' => '_blank' ) );
     break;
     case 'birthday':
     case 'deathday':

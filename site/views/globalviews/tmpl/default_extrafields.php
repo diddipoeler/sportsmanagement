@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <div class="row-fluid">
@@ -45,7 +46,7 @@ switch (JFactory::getApplication()->input->getVar('view'))
 switch ($field_type)
 {
     case 'link':
-    echo JHtml::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
+    echo HTMLHelper::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
     break;
     default:
     echo Text::_( $field->fvalue); 

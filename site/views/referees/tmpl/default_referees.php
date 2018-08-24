@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-//echo 'rows <pre>',print_r($this->rows,true),'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Show referees as defined
 if ( !empty( $this->rows  ) )
@@ -69,7 +69,7 @@ if ( !empty( $this->rows  ) )
 								<td style="text-align:center; ">
 									<?php
 									$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_REFEREES_GAMES' );
-									echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/refereed.png',
+									echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/refereed.png',
 														$imageTitle, array( 'title' => $imageTitle, 'height' => 20 ) );
 									?>
 								</td>
@@ -105,7 +105,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['pid'] = $row->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
 
-						echo JHtml::link( $link, '<i>' . $refereeName . '</i>' );
+						echo HTMLHelper::link( $link, '<i>' . $refereeName . '</i>' );
 					}
 					else
 					{
@@ -128,14 +128,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routepa
 						switch ( $this->config['show_birthday'] )
 						{
 							case 1:	 // show Birthday and Age
-										$birthdateStr  = $row->birthday != "0000-00-00" ? JHtml::date($row->birthday .' UTC', 
+										$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC', 
 																										Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
 																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
 										$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $row->birthday,$row->deathday ) . ")";
 										break;
 
 							case 2:	 // show Only Birthday
-										$birthdateStr = $row->birthday != "0000-00-00" ? JHtml::date($row->birthday .' UTC',
+										$birthdateStr = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
 																										Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
 																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
 										break;
@@ -145,7 +145,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routepa
 										break;
 
 							case 4:	 // show Only Year of birth
-										$birthdateStr  = $row->birthday != "0000-00-00" ? JHtml::date($row->birthday .' UTC',
+										$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
 																										Text::_( '%Y' ), 
 																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig) ) : "-";
 										break;

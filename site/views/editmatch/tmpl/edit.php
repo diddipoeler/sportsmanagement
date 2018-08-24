@@ -39,10 +39,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+//HTMLHelper::_('behavior.formvalidation');
 
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -195,7 +196,7 @@ echo $this->loadTemplate('matchextended');
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />
-	<?php //echo JHTML::_('form.token')."\n"; ?>
+	<?php //echo HTMLHelper::_('form.token')."\n"; ?>
 
 <input type="hidden" id="token" name="token" value="
 <?php 

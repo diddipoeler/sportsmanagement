@@ -14,6 +14,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm">
@@ -155,5 +156,5 @@ use Joomla\CMS\Language\Text;
 <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="task" value="imagehandler.upload" />
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>

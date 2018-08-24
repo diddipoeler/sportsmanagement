@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport( 'joomla.filesystem.file' );
 
@@ -55,12 +56,12 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 
-      $predictionRounds[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
+      $predictionRounds[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = sportsmanagementModelPrediction::getRoundNames($this->predictionGame->id) )
       {
         $predictionRounds = array_merge($predictionRounds,$res);
         }
-			$lists['predictionRounds'] = JHTML::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
+			$lists['predictionRounds'] = HTMLHelper::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
 			unset($res);
 			unset($predictionRounds);
 			

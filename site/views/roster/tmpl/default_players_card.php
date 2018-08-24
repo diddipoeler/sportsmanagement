@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 foreach ( $this->rows as $position_id => $players ): ?>
 <div style="margin:auto; width:100%;">
@@ -79,7 +80,7 @@ $routeparameter['tid'] = $this->team->slug;
 $routeparameter['pid'] = $row->person_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 
-						echo JHtml::link($link,'<i>'.$playerName.'</i>');
+						echo HTMLHelper::link($link,'<i>'.$playerName.'</i>');
 					}
 					else
 					{

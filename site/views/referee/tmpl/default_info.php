@@ -11,8 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
-//echo 'referee <pre>',print_r($this->referee,true),'</pre>';
-//echo 'person <pre>',print_r($this->person,true),'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- person data START -->
@@ -77,14 +76,14 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute( $this->referee->user_id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->referee->user_id,
 																									$this->project->id,
 																									$this->referee->id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								default:	break;
@@ -152,13 +151,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -167,7 +166,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															JHtml::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
+															HTMLHelper::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -249,7 +248,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 							}
 							else
 							{
-								echo JHtml::_('email.cloak', $this->referee->email );
+								echo HTMLHelper::_('email.cloak', $this->referee->email );
 							}
 							?>
             </address>
@@ -264,7 +263,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					                    
                     <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
-			<?php echo JHtml::_(	'link',
+			<?php echo HTMLHelper::_(	'link',
 											$this->referee->website,
 											$this->referee->website,
 											array( 'target' => '_blank' ) ); ?>

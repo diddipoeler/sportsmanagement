@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.view');
 
 
@@ -103,13 +104,13 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 			{
 				$userID = null;
 			}
-			$predictionMembers[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
+			$predictionMembers[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
 
 			if ( $res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID) )
 			{
 				$predictionMembers = array_merge($predictionMembers,$res);
 			}
-			$lists['predictionMembers'] = JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
+			$lists['predictionMembers'] = HTMLHelper::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 			unset($res);
 			unset($predictionMembers);
 		
@@ -144,14 +145,14 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 
 			if ($this->getLayout()=='edit')
 			{
-				$dArray[] = JHTML::_('select.option',0,Text::_('JNO'));
-				$dArray[] = JHTML::_('select.option',1,Text::_('JYES'));
+				$dArray[] = HTMLHelper::_('select.option',0,Text::_('JNO'));
+				$dArray[] = HTMLHelper::_('select.option',1,Text::_('JYES'));
 
-				$lists['show_profile'] = JHTML::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
-				$lists['reminder'] = JHTML::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
-				$lists['receipt'] = JHTML::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
-				$lists['admintipp'] = JHTML::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
-				$lists['approvedForGame'] = JHTML::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
+				$lists['show_profile'] = HTMLHelper::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
+				$lists['reminder'] = HTMLHelper::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
+				$lists['receipt'] = HTMLHelper::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
+				$lists['admintipp'] = HTMLHelper::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
+				$lists['approvedForGame'] = HTMLHelper::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
 				unset($dArray);
 
 				foreach ($this->predictionProjectS AS $predictionProject)
@@ -162,7 +163,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
           echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
           }
           
-					$projectteams[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
+					$projectteams[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
 					if ( $res = $model->getPredictionProjectTeams($predictionProject->project_id) )
 					{
 						$projectteams = array_merge($projectteams,$res);
@@ -172,7 +173,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
           $favTeamsList[$predictionProject->project_id]=0;
           }
           
-					$lists['fav_team'][$predictionProject->project_id] = JHTML::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
+					$lists['fav_team'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
 
 					// kann champion ausgewaehlt werden ?
 					if ( $predictionProject->champ )
@@ -219,8 +220,8 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           $champTeamsList[$predictionProject->project_id]=0;
           }
           
-					$lists['champ_tipp_disabled'][$predictionProject->project_id] = JHTML::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
-					$lists['champ_tipp_enabled'][$predictionProject->project_id] = JHTML::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
+					$lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
+					$lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
 					unset($projectteams);
 				}
 

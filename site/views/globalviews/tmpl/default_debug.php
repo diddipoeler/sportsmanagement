@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
 
@@ -53,8 +54,8 @@ if(version_compare(JVERSION,'3.0.0','ge'))
         $slidesOptions = array(
             "active" => "slide2_id" // It is the ID of the active tab.
         );    
-echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
-echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
+echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
 foreach (sportsmanagementHelper::$_success_text as $key => $value)
 		{
 			?>
@@ -64,8 +65,8 @@ foreach (sportsmanagementHelper::$_success_text as $key => $value)
 			</fieldset>
 			<?php
 		}
-echo JHtml::_('bootstrap.endSlide');
-echo JHtml::_('bootstrap.endAccordion');
+echo HTMLHelper::_('bootstrap.endSlide');
+echo HTMLHelper::_('bootstrap.endAccordion');
 }
 else
 {   

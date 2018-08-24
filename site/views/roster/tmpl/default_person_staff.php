@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //echo 'getTeamPlayers staff<br><pre>'.print_r($this->row,true).'</pre><br>';
 
@@ -62,7 +63,7 @@ $this->overallconfig['use_jquery_modal']);
 	$routeparameter['pid'] = $this->row->person_slug;
 										
 		echo ($this->config['link_staff']==1) ? 
-			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter),$personName)
+			HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;
@@ -162,7 +163,7 @@ $this->overallconfig['use_jquery_modal']);
 							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY");?>
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHtml::date($this->row->birthday,$birthdayformat);?>
+							<?php echo HTMLHelper::date($this->row->birthday,$birthdayformat);?>
 						</span>
 					</div>
 <?php
@@ -176,7 +177,7 @@ $this->overallconfig['use_jquery_modal']);
 							<?php echo Text::_("COM_SPORTSMANAGEMENT_PERSON_DEATHDAY");?>[ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHtml::date($this->row->deathday,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
+							<?php echo HTMLHelper::date($this->row->deathday,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));?>
 						</span>
 					</div>
 <?php

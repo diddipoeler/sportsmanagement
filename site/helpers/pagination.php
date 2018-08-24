@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.model');
 
 /**
@@ -128,7 +129,7 @@ $option = $app->input->getCmd('option');
 			$query = JURI::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
-			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
+			$prevlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
 //            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 //            {
@@ -146,7 +147,7 @@ $option = $app->input->getCmd('option');
 
 			$query = JURI::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
-			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
+			$firstlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
 		else
 		{
@@ -176,7 +177,7 @@ $option = $app->input->getCmd('option');
             }
             
 			$nextlink = $spacer4;
-			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
+			$nextlink .= HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
 			$params['r'] = $lastRound['id'];
             $params['division'] = $division;
@@ -185,7 +186,7 @@ $option = $app->input->getCmd('option');
 
 			$query = JURI::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
-			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
+			$lastlink = $spacer4 . HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
 		else
 		{
@@ -218,7 +219,7 @@ $option = $app->input->getCmd('option');
 
 					$query		= JURI::buildQuery($params);
 					$link		= Route::_('index.php?' . $query . '#'.$option.'_top');
-					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);
+					$pageNav   .= $spacer4 . HTMLHelper::link($link,$pagenumber);
 				}
 				else
 				{

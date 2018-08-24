@@ -54,7 +54,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				<table class="<?php echo $this->config['table_class']; ?>">
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
-							<?php echo JHtml::date($match->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo HTMLHelper::date($match->match_date,Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<h3><?php echo $match->name;?></h3>
@@ -165,10 +165,10 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+				$img = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
-				echo JHtml::link($link,$img,$params);
+				echo HTMLHelper::link($link,$img,$params);
 			}
 		?>
 		</td>
@@ -435,7 +435,7 @@ $routeparameter['mid'] = $match->match_slug;
                 }
             
             $ResultsTooltipTitle = $result;
-            $result = JHtml::link($link,$result);
+            $result = HTMLHelper::link($link,$result);
             
             $ResultsTooltipTp = '( ';
             $PartResult = '';
@@ -577,7 +577,7 @@ $routeparameter['mid'] = $match->match_slug;
 						if ($this->config['show_referee_link'])
 						{
 							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=JHtml::link($link,$ref);
+							$ref=HTMLHelper::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
@@ -634,24 +634,24 @@ $routeparameter['mid'] = $match->match_slug;
 			if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = HTMLHelper::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
 					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
 				
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
-				$viewReport=JHtml::link($link, $href_text);
+				$viewReport=HTMLHelper::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
 			{	
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = HTMLHelper::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
 					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}		
 				$link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-				$viewPreview=JHtml::link($link, $href_text);
+				$viewPreview=HTMLHelper::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}

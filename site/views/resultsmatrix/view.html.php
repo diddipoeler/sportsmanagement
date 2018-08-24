@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
@@ -165,7 +166,7 @@ $routeparameter['layout'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$routeparameter);
 
 
-			$options[] = JHTML::_('select.option', $link, $r->text);
+			$options[] = HTMLHelper::_('select.option', $link, $r->text);
 		}
 		return $options;
 	}

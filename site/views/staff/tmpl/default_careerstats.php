@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- Player stats History START -->
@@ -54,7 +55,7 @@ use Joomla\CMS\Language\Text;
                      <th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
 					<th class="td_c"><?php
 						$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
-						echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+						echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 											$imageTitle,array(' title' => $imageTitle,' width' => 20,' height' => 20));
 						?></th>
 					<?php

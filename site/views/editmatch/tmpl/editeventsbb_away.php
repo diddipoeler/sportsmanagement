@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 		<fieldset class="adminform">
 			<legend>
@@ -61,7 +62,7 @@ use Joomla\CMS\Language\Text;
 					{
 						$imageTitle = Text::sprintf( '%1$s', Text::_( $ev->text ) );
 						$iconFileName = $ev->icon;
-						echo JHtml::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
+						echo HTMLHelper::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
 					} else {
 						echo Text::_( $ev->text ) ;
 					}

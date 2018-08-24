@@ -10,7 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.modal'); 
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.modal'); 
 require_once('components'.DS.'com_sportsmanagement'.DS.'lib'.DS.'xshv2.lib.core.php');
 $modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
@@ -20,7 +21,7 @@ $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel=
 //$app->addCustomHeadTag( $cssHTML );
 $document->addCustomTag( $cssHTML );
 
-echo JHtml::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
+echo HTMLHelper::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));
 
 // Anzeige Titel
 if ($this->params->get('show_page_title', 1) && $this->params->get('page_title') != $this->article->title) : ?>

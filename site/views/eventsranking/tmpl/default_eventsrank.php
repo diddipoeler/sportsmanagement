@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $colspan	= 4;
 $show_icons	= 0;
@@ -49,7 +50,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			<?php
 				$iconPath=$rows->icon;
 				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
-				echo JHtml::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','hspace'=> '2'));
+				echo HTMLHelper::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','hspace'=> '2'));
 			?>
 			</th>
 		<?php else: ?>
@@ -129,7 +130,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $row->team_slug;
 $routeparameter['pid'] = $row->person_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-				echo JHtml::link($link, $playerName);
+				echo HTMLHelper::link($link, $playerName);
 			}
 			else
 			{
@@ -187,7 +188,7 @@ $routeparameter['tid'] = $this->teamid;
 $routeparameter['evid'] = $rows->event_slug;
 $routeparameter['mid'] = (isset($this->matchid) ? $this->matchid : 0);
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
-echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
+echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 </div>
 <?php else: ?>
 <div class="pageslinks">

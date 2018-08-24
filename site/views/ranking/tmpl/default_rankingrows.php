@@ -11,7 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 $current = &$this->current;
 //$current  = &$this->currentRanking;
@@ -220,7 +221,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 1;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_won);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_won);
                 } else {
                     printf($format, $team->cnt_won);
                 }
@@ -237,7 +238,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 2;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_draw);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_draw);
                 } else {
                     printf($format, $team->cnt_draw);
                 }
@@ -254,7 +255,7 @@ $this->overallconfig['use_jquery_modal']);
                 if (( $config['show_wdl_teamplan_link']) == 1) {
                     $routeparameter['mode'] = 3;
                     $teamplan_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
-                    echo JHtml::link($teamplan_link, $team->cnt_lost);
+                    echo HTMLHelper::link($teamplan_link, $team->cnt_lost);
                 } else {
                     printf($format, $team->cnt_lost);
                 }
@@ -688,7 +689,7 @@ $this->overallconfig['use_jquery_modal']);
                         ?>
                         <li class="list-inline-item">
                         <?php
-                        echo JHtml::link($url, $img, $attr);
+                        echo HTMLHelper::link($url, $img, $attr);
                         ?>
                         </li>
                         <?php

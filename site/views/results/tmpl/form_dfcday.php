@@ -11,6 +11,7 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = JUri::getInstance();   
@@ -42,11 +43,11 @@ $document = JFactory::getDocument();
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );   
+HTMLHelper::_( 'behavior.mootools' );   
 require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
 }
 */
@@ -75,9 +76,9 @@ $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
 						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);
+						echo HTMLHelper::link($link, $desc);
 					}
 				}
 				?>
@@ -183,7 +184,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' onclick="$('checkmycontainers').value=0; " />
 		-->
 		<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 		<!-- Main END -->
 	</form>
 </div>

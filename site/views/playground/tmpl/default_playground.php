@@ -10,6 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row-fluid">
 <table class="table">
@@ -70,7 +71,7 @@ use Joomla\CMS\Language\Text;
 			</th>
 			<td>
 				<?php
-				echo JHtml::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
+				echo HTMLHelper::link( $this->playground->website, $this->playground->website, array( 'target' => '_blank' ) );
 				?>
 			</td>
 		</tr>

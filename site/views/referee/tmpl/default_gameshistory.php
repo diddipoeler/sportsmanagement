@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- Player stats History START -->
 
@@ -46,7 +47,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 
 					<tr class="">
 						<td><?php
-						echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
+						echo HTMLHelper::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 						?>
 						</td>
 						<td class="td_r">

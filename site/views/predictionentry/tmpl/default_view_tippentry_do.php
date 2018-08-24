@@ -10,6 +10,7 @@
      */
     defined('_JEXEC') or die('Restricted access');
 	use Joomla\CMS\Language\Text;
+	use Joomla\CMS\HTML\HTMLHelper;
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
         $visible = 'text';
@@ -130,7 +131,7 @@
 <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
 <input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
 <input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
-<?php echo JHTML::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 <!--
 Responsive tables
 Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px).
@@ -147,16 +148,10 @@ When viewing on anything larger than 768px wide, you will not see any difference
         $round_ids = $this->config['predictionroundid'];
     }
     
-    /*$rounds = sportsmanagementHelper::getRoundsOptions((int)sportsmanagementModelPrediction::$pjID,'ASC',FALSE,$round_ids);
-    //                            $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
-    $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
-    echo Text::sprintf(    'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
-                        '<td>'.$htmlRoundsOptions.'</td>',
-                        '<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td>');*/
     
     $rounds = sportsmanagementHelper::getRoundsOptions((int)sportsmanagementModelPrediction::$pjID,'ASC',FALSE,$round_ids);
-    //                            $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
-    $htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
+
+    $htmlRoundsOptions = HTMLHelper::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
     echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
                         '<tr><td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td></tr>',
                         '<tr> <td>'.$htmlRoundsOptions.'</td></tr>');
@@ -166,7 +161,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
 </table>
 </div>
 <!-- br /> -->
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?php $formName = 'predictionDoTipp'.(int)sportsmanagementModelPrediction::$pjID; ?>
 <form    name='<?php echo $formName; ?>'
@@ -186,7 +181,7 @@ method='post' onsubmit='return chkFormular()' >
 <input type='hidden' name='ptippmode[<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>]' value='<?php echo $predictionProject->mode; ?>' />
 <input type='hidden' name='jokerCount' value='<?php echo $memberProjectJokersCount; ?>' />
 <input type='hidden' name='maxJokerCount' value='<?php echo $predictionProject->joker_limit; ?>' />
-<?php echo JHTML::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 
 <?php
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -327,7 +322,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
                 echo '<br />resultHome<pre>~'.print_r($resultHome,true).'~</pre><br />';
                 echo '<br />resultAway<pre>~'.print_r($resultAway,true).'~</pre><br />';
                 echo '<br />tippAllowed<pre>~'.print_r($tippAllowed,true).'~</pre><br />';
-                echo '<br />date<pre>~' . print_r( JHTML::_('date',date('Y-m-d H:i:s', $thisTimeDate), "%Y-%m-%d %H:%M:%S"), true ) . '~</pre><br />';
+                echo '<br />date<pre>~' . print_r( HTMLHelper::_('date',date('Y-m-d H:i:s', $thisTimeDate), "%Y-%m-%d %H:%M:%S"), true ) . '~</pre><br />';
                 echo '<br />predictionProjectSettings<pre>~' . print_r($predictionProjectSettings->timezone, true ) . '~</pre><br />';
             }
             
@@ -386,7 +381,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
                 $logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
             }
             $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
-            //echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
+
             
             echo sportsmanagementHelperHtml::getBootstrapModalImage('tippteaminfohome' . $result->projectteam1_id,
                                                                     $logo_home,
@@ -475,12 +470,12 @@ case 'country_flag':
 <!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
 <!-- </div> -->
 <?PHP
-   // echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));
+
     ?>
 <!-- </div> -->
 
 <?PHP
-    //echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
+
     break;
     //}
 case 'country_flag':
@@ -683,7 +678,7 @@ if ((!empty($disabled)) && (!empty($result->joker)))
 </tr>
 </table>
 </div>
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <br />
 <?php

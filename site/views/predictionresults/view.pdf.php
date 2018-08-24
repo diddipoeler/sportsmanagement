@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
@@ -56,9 +57,9 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 			$this->predictionProjectS = $model->getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 
-      $predictionRounds[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
+      $predictionRounds[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = &$model->getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}
-			$lists['predictionRounds']=JHTML::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->roundID);
+			$lists['predictionRounds']=HTMLHelper::_('select.genericList',$predictionRounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->roundID);
 			unset($res);
 			unset($predictionRounds);
 			

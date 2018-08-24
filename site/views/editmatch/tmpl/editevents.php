@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
@@ -239,7 +240,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 		</fieldset>
 </div>
 <div style="clear: both"></div>
-<?php //echo JHtml::_('form.token')."\n"; ?>
+<?php //echo HTMLHelper::_('form.token')."\n"; ?>
 
 <input type="hidden" id="token" name="token" value="
 <?php 

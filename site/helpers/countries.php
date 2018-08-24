@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.utilities.arrayhelper');
 
 if (!defined('JSM_PATH')) {
@@ -87,7 +88,7 @@ class JSMCountries {
 
         $options = array();
         foreach ($countries AS $k) {
-            $options[] = JHtml::_('select.option', $k['alpha3'], JText::_($k['name']), $value_tag, $text_tag);
+            $options[] = HTMLHelper::_('select.option', $k['alpha3'], JText::_($k['name']), $value_tag, $text_tag);
         }
 
         //Now Sort the countries

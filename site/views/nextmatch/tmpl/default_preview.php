@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
 use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match preview -->
 <?php
@@ -36,7 +37,7 @@ if (!empty($this->match->preview))
 	<tr>
 		<td><?php
 		$preview = $this->match->preview;
-		$preview = JHtml::_('content.prepare', $preview);
+		$preview = HTMLHelper::_('content.prepare', $preview);
 
 		if ($commentsDisabled) {
 			$preview = preg_replace('#{jcomments\s+(off|lock)}#is', '', $preview);

@@ -12,7 +12,8 @@
 defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 
@@ -65,7 +66,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
 			<input type='hidden' name='task' value='predictionresults.selectprojectround' />
 			
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 <!--
 Responsive tables
 Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
@@ -90,12 +91,12 @@ When viewing on anything larger than 768px wide, you will not see any difference
 						$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
                         
                         $groups = sportsmanagementModelPrediction::getPredictionGroupList();
-						//$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->roundID);
-						$htmlRoundsOptions = JHTML::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
+
+						$htmlRoundsOptions = HTMLHelper::_('select.genericList',$rounds,'r','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$roundID);
                         
-                        $predictionGroups[] = JHTML::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
+                        $predictionGroups[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
-                        $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
+                        $htmlGroupOptions = HTMLHelper::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
             
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
             
@@ -120,8 +121,8 @@ $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
 
 						$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
-						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
-						echo JHTML::link($link,$desc,array('target' => ''));
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
+						echo HTMLHelper::link($link,$desc,array('target' => ''));
 						?>
                         </td>
 				</tr>
@@ -518,17 +519,14 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 					{
 						$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 					}
-				//tobe removed
-				//$imgTitle = Text::sprintf('JL_PRED_AVATAR_OF',$member->name);
-				//$output = JHTML::image($member->avatar,$imgTitle,array(' width' => 20, ' title' => $imgTitle));
-				
+			
 					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
 				
 					if ( ( $this->config['link_name_to'] ) && (($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
 						$link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID,$member->pmID);
-						$output = JHTML::link($link,$member->name);
+						$output = HTMLHelper::link($link,$member->name);
 					}
 					else
 					{

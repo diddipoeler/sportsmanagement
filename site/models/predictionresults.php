@@ -10,6 +10,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
@@ -362,7 +363,7 @@ function getLimit()
             $clubLogo = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
         }
         $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
-        $output .= JHTML::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
+        $output .= HTMLHelper::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
         return $output;
     }
 

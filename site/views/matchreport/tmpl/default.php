@@ -10,7 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 /*
 echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';

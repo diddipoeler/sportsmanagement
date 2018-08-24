@@ -11,6 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 //jimport( 'joomla.application.component.model' );
 //jimport('joomla.application.component.modelitem');
@@ -329,7 +330,7 @@ if ( isset($champTeamsList[(int)$ProjectID]) )
 	function createMatchdayList($project_id, $round_ids = NULL,$text = 'FROM')
 	{
 		$from_matchday = array();
-		$from_matchday[]= JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_'.$text.'_MATCHDAY'));
+		$from_matchday[]= HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_'.$text.'_MATCHDAY'));
 		$from_matchday = array_merge($from_matchday,sportsmanagementModelPrediction::getRoundNames($project_id,'ASC', $round_ids));
 		return $from_matchday;
 	}

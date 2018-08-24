@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if ((!isset($this->actJoomlaUser)) || ($this->actJoomlaUser->id==0))
 {
@@ -40,7 +41,7 @@ else
 				<input type='hidden' name='task' 				value='register' />
 				<input type='hidden' name='option'				value='com_sportsmanagement' />
 				<input type='hidden' name='controller'			value='predictionentry' />
-				<?php echo JHTML::_( 'form.token' ); ?>
+				<?php echo HTMLHelper::_( 'form.token' ); ?>
 			</form><p><?php
 		echo Text::_( 'After approval you will be able to enter your first predictions!' );
 		?></p><?php

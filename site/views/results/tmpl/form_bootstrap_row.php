@@ -11,6 +11,7 @@
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $match = $this->game;
 $i = $this->i;
@@ -37,10 +38,10 @@ else
 $userIsTeamAdmin = $this->isAllowed;
 }
 $teams = $this->teams;
-$teamsoptions[] = JHtml::_('select.option','0','- '.Text::_('Select Team').' -');
+$teamsoptions[] = HTMLHelper::_('select.option','0','- '.Text::_('Select Team').' -');
 foreach ($teams AS $team)
 {
-$teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');
+$teamsoptions[] = HTMLHelper::_('select.option',$team->projectteamid,$team->name,'value','text');
 }
 
 
@@ -69,7 +70,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('edit'.$thismatch->id,'a
 <div class="<?php echo $this->divclass; ?>" style="">
 <?PHP
 $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
-echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
+echo HTMLHelper::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
  ?>
 
 </div>
@@ -97,7 +98,7 @@ jQuery('#<?php echo 'match_date'.$thismatch->id;?>').datepicker();
 }
 else
 {     
-    echo JHtml::calendar(sportsmanagementHelper::convertDate($datum,1),
+    echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($datum,1),
 					'match_date'.$thismatch->id,
 					'match_date'.$thismatch->id,
 					'%d-%m-%Y',
@@ -129,7 +130,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->pr
 $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
 if ((!$userIsTeamAdmin) and (!$match->allowed)){$append .= ' disabled="disabled"';}
 if (!isset($team1->projectteamid)){$team1->projectteamid=0;}
-echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch->id, $append, 'value', 'text', $team1->projectteamid);
+echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch->id, $append, 'value', 'text', $team1->projectteamid);
 ?>
 
 </div>
@@ -137,7 +138,7 @@ echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch-
 <div class="<?php echo $this->divclass; ?>" style="">
 <?php
 if (!isset($team2->projectteamid)){$team2->projectteamid=0;}
-echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam2_id'.$thismatch->id, $append, 'value', 'text', $team2->projectteamid);
+echo HTMLHelper::_('select.genericlist', $teamsoptions, 'projectteam2_id'.$thismatch->id, $append, 'value', 'text', $team2->projectteamid);
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editlineup',$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 ?>
 <!-- Button HTML (to Trigger Modal) -->

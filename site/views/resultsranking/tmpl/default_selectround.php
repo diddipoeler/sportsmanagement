@@ -10,9 +10,10 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row" id="selectround">
 <?php
-echo JHTML::_('select.genericlist', $this->matchdaysoptions, 'select-round', 'onchange="joomleague_changedoc(this);" style="float:right;"', 'value', 'text', $this->currenturl);
+echo HTMLHelper::_('select.genericlist', $this->matchdaysoptions, 'select-round', 'onchange="joomleague_changedoc(this);" style="float:right;"', 'value', 'text', $this->currenturl);
 ?>
 </div>

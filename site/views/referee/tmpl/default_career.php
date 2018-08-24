@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (count($this->history) > 0)
 {
@@ -41,7 +42,7 @@ $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routep
 
 						?>
 						<tr class="">
-							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
+							<td class="td_l"><?php echo HTMLHelper::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l"><?php echo ($station->position_name ? Text::_($station->position_name) : ""); ?></td>
 						</tr>

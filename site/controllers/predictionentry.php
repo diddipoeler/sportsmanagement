@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementControllerPredictionEntry
  * 
@@ -89,7 +90,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
                 $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_4');
                 $link = JFactory::getURI()->toString();
             } else {
-                $post['registerDate'] = JHtml::date($input = 'now', 'Y-m-d h:i:s', false);
+                $post['registerDate'] = HTMLHelper::date($input = 'now', 'Y-m-d h:i:s', false);
                 if (!$mdlPredictionEntry->store($post)) {
                     $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5');
                     $link = JFactory::getURI()->toString();

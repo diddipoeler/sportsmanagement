@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 	<?php
@@ -43,7 +44,7 @@ use Joomla\CMS\Language\Text;
 			<tr>
 				<td>
 					<?php
-					$description = JHtml::_('content.prepare', $description);
+					$description = HTMLHelper::_('content.prepare', $description);
 					echo stripslashes( $description );
 					?>
 				</td>

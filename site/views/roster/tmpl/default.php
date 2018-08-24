@@ -11,7 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.modal');
 
 //echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
 //echo ' positioneventtypes<br><pre>'.print_r($this->positioneventtypes,true).'</pre>';

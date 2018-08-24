@@ -39,7 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 //echo '<pre>',print_r($this->project,true),'</pre><br>';
 //echo 'matchreport<pre>',print_r($this->matchsingle,true),'</pre><br>';

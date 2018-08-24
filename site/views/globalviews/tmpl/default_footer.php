@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $option = JFactory::getApplication()->input->getCmd('option');
 $view = JFactory::getApplication()->input->getVar( "view") ;
@@ -78,7 +79,7 @@ SqueezeBox.open(url, {
 	<br />      
 	<?php echo Text::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
-	echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
+	echo HTMLHelper::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
 	?>
 	<br />    
       

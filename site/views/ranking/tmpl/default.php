@@ -11,9 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-//  JHtml::_('behavior.switcher');
-//  JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
 
   // Make sure that in case extensions are written for mentioned (common) views,
   // that they are loaded i.s.o. of the template of this view
@@ -73,34 +71,34 @@ if ($this->config['show_table_1'] ||
         $this->config['show_table_3'] ||
         $this->config['show_table_4'] ||
         $this->config['show_table_5']) {
-echo JHtml::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'show_table_1' )); //start tab set    
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'show_table_1' )); //start tab set    
 
 if ($this->config['show_table_1']) {
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_1', Text::_($this->config['table_text_1']));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_1', Text::_($this->config['table_text_1']));
 echo $this->loadTemplate('ranking');  
-echo JHtml::_('bootstrap.endTab');  
+echo HTMLHelper::_('bootstrap.endTab');  
 }  
 if ($this->config['show_table_2']) {
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_2', Text::_($this->config['table_text_2']));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_2', Text::_($this->config['table_text_2']));
 echo $this->loadTemplate('ranking_home');  
-echo JHtml::_('bootstrap.endTab');   
+echo HTMLHelper::_('bootstrap.endTab');   
 } 
 if ($this->config['show_table_3']) {
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_3', Text::_($this->config['table_text_3']));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_3', Text::_($this->config['table_text_3']));
 echo $this->loadTemplate('ranking_away');  
-echo JHtml::_('bootstrap.endTab');   
+echo HTMLHelper::_('bootstrap.endTab');   
 } 
 if ($this->config['show_table_4']) {
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_4', Text::_($this->config['table_text_4']));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_4', Text::_($this->config['table_text_4']));
 echo $this->loadTemplate('ranking_first');  
-echo JHtml::_('bootstrap.endTab');   
+echo HTMLHelper::_('bootstrap.endTab');   
 } 
 if ($this->config['show_table_5']) {
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_5', Text::_($this->config['table_text_5']));
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'show_table_5', Text::_($this->config['table_text_5']));
 echo $this->loadTemplate('ranking_second');  
-echo JHtml::_('bootstrap.endTab');   
+echo HTMLHelper::_('bootstrap.endTab');   
 }       
-echo JHtml::_('bootstrap.endTabSet'); //end tab set     
+echo HTMLHelper::_('bootstrap.endTabSet'); //end tab set     
     
     
     
@@ -109,11 +107,11 @@ echo JHtml::_('bootstrap.endTabSet'); //end tab set
 
                     <?PHP
                 } else {
-echo JHtml::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'ranking' )); //start tab set  					
-echo JHtml::_('bootstrap.addTab', 'defaulttabsranking', 'ranking', Text::_('COM_SPORTSMANAGEMENT_XML_RANKING_LAYOUT_TITLE'));					
+echo HTMLHelper::_('bootstrap.startTabSet', 'defaulttabsranking', array('active' => 'ranking' )); //start tab set  					
+echo HTMLHelper::_('bootstrap.addTab', 'defaulttabsranking', 'ranking', Text::_('COM_SPORTSMANAGEMENT_XML_RANKING_LAYOUT_TITLE'));					
 echo $this->loadTemplate('ranking');
-echo JHtml::_('bootstrap.endTab');  					
-echo JHtml::_('bootstrap.endTabSet'); //end tab set 					
+echo HTMLHelper::_('bootstrap.endTab');  					
+echo HTMLHelper::_('bootstrap.endTabSet'); //end tab set 					
                 }
 
                 }

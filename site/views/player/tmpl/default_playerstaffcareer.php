@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // player staff start
 if (count($this->historyPlayerStaff) > 0)
@@ -51,12 +52,12 @@ if (count($this->historyPlayerStaff) > 0)
 						
 						?>
 						<tr class="">
-							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
+							<td class="td_l"><?php echo HTMLHelper::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l">
 							<?php 
 							if ($this->config['show_staffcareer_teamlink'] == 1) {
-								echo JHtml::link($link2,$station->team_name); 
+								echo HTMLHelper::link($link2,$station->team_name); 
 							} else {
 								echo $station->team_name;
 							}

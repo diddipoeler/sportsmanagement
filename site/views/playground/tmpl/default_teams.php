@@ -10,6 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
@@ -32,7 +33,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 			<div class="clubteaminfo">
         	<?php
         	$description = $teaminfo->notes;
-        	echo (!empty($description) ? Text :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . JHtml::_('content.prepare', $description) : ''); ?>
+        	echo (!empty($description) ? Text :: _('COM_SPORTSMANAGEMENT_PLAYGROUND_TEAMINFO') . " " . HTMLHelper::_('content.prepare', $description) : ''); ?>
 			</div>
 		<?php endforeach; ?>
 	<?php endforeach; ?>

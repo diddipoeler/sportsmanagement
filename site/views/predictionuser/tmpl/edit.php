@@ -39,7 +39,8 @@
 
 defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
-JHTML::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -98,7 +99,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 				if ($this->allowedAdmin)
 				{
 					echo Text::sprintf(	'%1$s - %2$s',
-											JHTML::calendar(sportsmanagementHelper::convertDate($regDate),'registerDate','date','%d-%m-%Y','size="10"'),
+											HTMLHelper::calendar(sportsmanagementHelper::convertDate($regDate),'registerDate','date','%d-%m-%Y','size="10"'),
 											'<input class="inputbox" type="text" name="registerTime" size="4" maxlength="5" value="'.$regTime.'" />');
 				}
 				else
@@ -106,7 +107,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 					echo '<input type="hidden" name="registerDate" value="'.sportsmanagementHelper::convertDate($regDate).'" />';
 					echo '<input type="hidden" name="registerTime" value="'.$regTime.'" />';
 					echo	$this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
-							JHTML::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
+							HTMLHelper::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_REGDATE_FORMAT')) :
 							Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN');
 				}
 				?></td>
@@ -325,5 +326,5 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 	<input type='hidden' name='member_id' value='<?php echo $this->predictionMember->pmID; ?>' />
 	<input type='hidden' name='option' value='com_sportsmanagement' />
 	<input type='hidden' name='task' value='predictionusers.savememberdata' />
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form><br />

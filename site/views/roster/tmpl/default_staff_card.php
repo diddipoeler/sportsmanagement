@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <div class="mini-team clear">
@@ -87,7 +87,7 @@ use Joomla\CMS\Language\Text;
        
 					$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
 							
-							echo JHtml::link($link,'<i>'.$playerName.'</i>');
+							echo HTMLHelper::link($link,'<i>'.$playerName.'</i>');
 						}
 						else
 						{
@@ -198,7 +198,7 @@ $this->overallconfig['use_jquery_modal']);
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['pid'] = $row->slug;
 							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
-							echo JHtml::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
+							echo HTMLHelper::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
 					</td>
 				  </tr>
 				</tbody></table>

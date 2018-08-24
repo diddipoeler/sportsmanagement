@@ -39,6 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <?php
 if ( $this->config['show_sectionheader'] == 1 )
@@ -62,9 +63,9 @@ if ( $this->config['show_sectionheader'] == 1 )
 						{
 							$link = sportsmanagementHelperRoute::getResultsRoute( $this->project->id, $this->roundid);
 							$imgTitle = Text::_( 'COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS' );
-							$desc = JHTML::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
+							$desc = HTMLHelper::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
 							echo ' ';
-							echo JHTML::link( $link, $desc );
+							echo HTMLHelper::link( $link, $desc );
 						}
 
 				}

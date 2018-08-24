@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 $params = $this->params;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -228,7 +229,7 @@ if ($params->get('show_page_heading', 1)) { ?>
 	</h1>
 <?php }
 
-echo JHTML::_('content.prepare', $params->get('textbefore'));
+echo HTMLHelper::_('content.prepare', $params->get('textbefore'));
 if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) == 3){
 	$calendar_list = '<div id="gcalendar_view_list"><table class="gcalendar-table">';
 	foreach($allCalendars as $calendar) {
@@ -252,7 +253,7 @@ if($params->get('show_selection', 1) == 1 || $params->get('show_selection', 1) =
 }
 
 echo "<div id='gcalendar_component'></div><div id='gcalendar_component_popup' style=\"visibility:hidden\" ></div>";
-echo JHTML::_('content.prepare', $params->get('textafter'));
+echo HTMLHelper::_('content.prepare', $params->get('textafter'));
 
 $dispatcher = JDispatcher::getInstance();
 //JPluginHelper::importPlugin('gcalendar');

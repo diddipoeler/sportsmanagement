@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match events -->
 
@@ -33,7 +34,7 @@ echo $this->loadTemplate('timeline');
 				?>
 				<tr>
 					<td colspan="2" class="eventid">
-						<?php echo JHtml::_( 'image', $event->icon, Text::_($event->icon ), NULL ) . Text::_($event->name); ?>
+						<?php echo HTMLHelper::_( 'image', $event->icon, Text::_($event->icon ), NULL ) . Text::_($event->name); ?>
 					</td>
 				</tr>
 				<tr>

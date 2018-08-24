@@ -8,7 +8,9 @@
  */ 
 
 // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\HTML\HTMLHelper;
+?>
 
 <?php
 //$rssitems_colums = $this->overallconfig['rssitems_colums'] ;
@@ -58,7 +60,7 @@ $this->rssDoc = $this->rssfeeditems;
                                 
                                     <?php $text = JFilterOutput::stripImages($text); ?>
                                 
-                                <?php $text = JHtml::_('string.truncate', $text, 200); ?>
+                                <?php $text = HTMLHelper::_('string.truncate', $text, 200); ?>
                                 <?php echo str_replace('&apos;', "'", $text); ?>
                             </div>
                         <?php endif; ?>

@@ -9,9 +9,10 @@
  */
 
 defined('_JEXEC') or die(JText('Restricted access'));
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 /**
  * sportsmanagementModelResults

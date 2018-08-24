@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <script>
 function findSWF(movieName) {
@@ -85,7 +85,7 @@ foreach ($this->divisions as $division)
 			<input type="hidden" name="division" value="<?php echo $division->id; ?>" /> 
 			<input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
 				value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
-			<?php echo JHtml::_( 'form.token' ); ?>
+			<?php echo HTMLHelper::_( 'form.token' ); ?>
 		</form>
 	</td>
 	</tr>

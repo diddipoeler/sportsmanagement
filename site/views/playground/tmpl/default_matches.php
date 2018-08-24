@@ -10,6 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <?php
@@ -40,7 +41,7 @@ if ( $this->games )
 							<tr>
 								<td align="left" colspan="<?php echo $colspan; ?>" class="">
 									<?php
-									echo JHtml::date($date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+									echo HTMLHelper::date($date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 									?>
 								</td>
 							</tr>
