@@ -11,8 +11,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormField;
 
-jimport('joomla.form.formfield');
 jimport( 'joomla.filesystem.folder' );
 
 /**
@@ -24,7 +24,7 @@ jimport( 'joomla.filesystem.folder' );
  * @version $Id$
  * @access public
  */
-class JFormFieldFlagsFolder extends JFormField
+class JFormFieldFlagsFolder extends FormField
 {
 	protected $type = 'FlagsFolder';
 
