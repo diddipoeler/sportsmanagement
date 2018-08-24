@@ -16,6 +16,10 @@ $user		= JFactory::getUser();
 $userId		= $user->get('id');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+if ( $this->assign )
+{
+$this->readonly = 'readonly';	
+}
 ?>
 	<div id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">
