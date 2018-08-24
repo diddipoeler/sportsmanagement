@@ -33,14 +33,11 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	public function init ()
 	{
 	   $tpl = '';
-       
+       $this->assign = false;
 		if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
 			$this->season_id = $this->jinput->get('season_id');
 			$this->assign = true;
-			//$this->state = $this->get('State'); 
-            //$this->_displayAssignPlayers($tpl);
-			//return;
 		}
         
 		        
