@@ -183,6 +183,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
                                 
                                 $attribs = array(
 			'onChange' => "document.getElementById('cb".$i."').checked=true",
+			'readonly' => trim($this->readonly),
 		);                          
                 echo JHtml::calendar($date1,
 				'birthday'.$row->id,
