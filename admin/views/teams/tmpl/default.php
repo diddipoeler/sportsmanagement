@@ -10,6 +10,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
