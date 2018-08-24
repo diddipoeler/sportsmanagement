@@ -161,8 +161,9 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->jsmquery->where('pl.published = '.$this->getState('filter.state'));	
 		}
         
-        if ( $this->jsmapp->input->getVar('layout') == 'assignplayers')
+        if ( $this->jsmapp->input->getVar('layout') == 'assignpersons')
         {
+	$this->_season_id = $this->jsmapp->input->get('season_id');
             switch ($this->_type)
             {
                 case 1:
@@ -201,9 +202,15 @@ class sportsmanagementModelPersons extends JSMModelList
                 $this->jsmsubquery1->where('prof.project_id = '.$this->_project_id);
                 $this->jsmquery->where('pl.id NOT IN ('.$this->jsmsubquery1.')');
                 $this->jsmquery->group('pl.id');
-
                 break;
-                
+		    default:
+		$this->jsmsubquery1->select('stp.person_id');
+                $this->jsmsubquery1->from('#__sportsmanagement_season_person_id AS stp ');
+                $this->jsmsubquery1->where('stp.season_id = '.$this->_season_id);
+                $this->jsmquery->where('pl.id NOT IN ('.$this->jsmsubquery1.')');
+                $this->jsmquery->group('pl.id');	    
+			    
+			    break;
             }
             
             
