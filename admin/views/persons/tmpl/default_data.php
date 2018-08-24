@@ -18,7 +18,7 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ( $this->assign )
 {
-$this->readonly = 'readonly';	
+$this->readonly = ' readonly ';	
 }
 ?>
 	<div id="editcell">
@@ -113,7 +113,7 @@ $this->readonly = 'readonly';
                         ?>
                         </td>
 							<?php
-								$inputappend='';
+								$inputappend = $this->readonly;
 								?>
 								<td class="center">
                                 <?php if ($row->checked_out) : ?>
@@ -192,14 +192,14 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
                             <td class="center">
                         <?php 
                         //echo JText::_($row->agegroup); 
-                        $inputappend = '';
+                        $inputappend = $this->readonly;
                         $append = ' style="background-color:#bbffff"';
-									echo JHtml::_('select.genericlist',
-												$this->lists['agegroup'],
-												'agegroup'.$row->id,
-												$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-												$i.'\').checked=true"'.$append,
-												'value','text',$row->agegroup_id);
+			echo JHtml::_('select.genericlist',
+			$this->lists['agegroup'],
+			'agegroup'.$row->id,
+			$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+			$i.'\').checked=true"'.$append,
+			'value','text',$row->agegroup_id);
                         ?>
                         </td>
                         
@@ -210,24 +210,24 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
                                 {
                                     $append=' background-color:#FFCCCC;';
                                     }
-								echo JHtmlSelect::genericlist($this->lists['nation'],
-															'country'.$row->id,
-															$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
-															'value',
-															'text',
-															$row->country);
-								?>
-							</td>
-							<td class="nowrap" class="center">
-								<?php
-								$append='';
-								if (empty($row->position_id)){$append=' background-color:#FFCCCC;';}
-								echo JHtmlSelect::genericlist($this->lists['positions'],
-															'position'.$row->id,
-															$inputappend.'class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
-															'value',
-															'text',
-															$row->position_id);
+				echo JHtmlSelect::genericlist($this->lists['nation'],
+				'country'.$row->id,
+				$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+				'value',
+				'text',
+				$row->country);
+				?>
+				</td>
+				<td class="nowrap" class="center">
+				<?php
+				$append='';
+				if (empty($row->position_id)){$append=' background-color:#FFCCCC;';}
+				echo JHtmlSelect::genericlist($this->lists['positions'],
+				'position'.$row->id,
+				$inputappend.'class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+				'value',
+				'text',
+				$row->position_id);
                                 ?>
 							</td>
 							<td class="center">
