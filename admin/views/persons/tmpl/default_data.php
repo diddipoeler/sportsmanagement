@@ -238,13 +238,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
                             <div class="btn-group">
             <?php echo JHtml::_('jgrid.published', $row->published, $i, 'persons.', $canChange, 'cb'); ?>
             <?php // Create dropdown items and render the dropdown list.
-								if ($canChange)
-								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'persons');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'persons');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
-								}
-								?>
+		if ( $canChange && !$this->assign )
+		{
+		JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'persons');
+		JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'persons');
+		echo JHtml::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));
+		}
+		?>
             </div>	
                             
                             
