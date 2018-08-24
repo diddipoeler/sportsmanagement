@@ -33,9 +33,14 @@ class sportsmanagementViewTeams extends sportsmanagementView {
 
         $starttime = microtime();
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
+        if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
+		{
+			$this->season_id = $this->jinput->get('season_id');
+			$this->assign = true;
+			//$this->state = $this->get('State'); 
+            //$this->_displayAssignPlayers($tpl);
+			//return;
+		}
 
         $this->table = JTable::getInstance('team', 'sportsmanagementTable');
 
