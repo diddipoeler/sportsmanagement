@@ -20,6 +20,10 @@ if ( $this->assign )
 {
 $this->readonly = ' readonly ';	
 }
+else
+{
+$this->readonly = '';		
+}
 ?>
 	<div id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">
@@ -122,7 +126,7 @@ $this->readonly = ' readonly ';
 					<?php if ( $canEdit && !$this->assign ) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?></a>
-					<?php else : ?>
+					<?php elseif ( !$this->assign ) : ?>
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?>
 					<?php endif; ?>
 							
