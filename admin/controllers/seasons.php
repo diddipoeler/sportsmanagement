@@ -49,7 +49,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
        $model->saveshortpersons();
        
        $msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id='.$post['season_id'],$msg);
+        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=persons&layout=assignpersons&season_id='.$post['season_id'],$msg);
         
     }
     
@@ -85,7 +85,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
        $model->saveshortteams();
        
        $msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id='.$post['season_id'],$msg);
+        $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id='.$post['season_id'],$msg);
         
     }
     
