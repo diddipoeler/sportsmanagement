@@ -37,12 +37,12 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'obj.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -57,29 +57,29 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NAME', 'obj.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NAME', 'obj.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
 
 
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM', 'obj.age_from', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_FROM', 'obj.age_from', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO', 'obj.age_to', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_AGE_TO', 'obj.age_to', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY', 'obj.deadline_day', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SHORT_DEADLINE_DAY', 'obj.deadline_day', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
 
@@ -88,22 +88,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                 <th class="title">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SPORTSTYPE', 'obj.sportstype_id', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SPORTSTYPE', 'obj.sportstype_id', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="" class="nowrap center">
                     <?php
-                    echo JHtml::_('grid.sort', 'JSTATUS', 'obj.published', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'JSTATUS', 'obj.published', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
-                    echo JHtml::_('grid.order', $this->items, 'filesave.png', 'agegroups.saveorder');
+                    echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'agegroups.saveorder');
                     ?>
                 </th>
                 <th width="20">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'obj.id', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'obj.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -122,7 +122,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 $link = JRoute::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'agegroups.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'agegroups.', $canCheckin);
                 $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $row->id) && $canCheckin;
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
@@ -133,7 +133,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     <td class="center">
     <?php
-    echo JHtml::_('grid.id', $i, $row->id);
+    echo HTMLHelper::_('grid.id', $i, $row->id);
     ?>
                     </td>
                         <?php
@@ -141,7 +141,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                     <td class="center">
                     <?php if ($row->checked_out) : ?>
-                        <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'agegroups.', $canCheckin); ?>
+                        <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'agegroups.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=agegroup.edit&id=' . (int) $row->id); ?>">
@@ -171,10 +171,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <?php
     if (empty($row->picture) || !JFile::exists(JPATH_SITE . DS . $row->picture)) {
         $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
-        echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
+        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
     } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) {
         $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-        echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
+        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
     } else {
         //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
         //echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
@@ -190,13 +190,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class=""><?php echo JText::_($row->sportstype); ?></td>
                     <td class="center">
                         <div class="btn-group">
-                        <?php echo JHtml::_('jgrid.published', $row->published, $i, 'agegroups.', $canChange, 'cb'); ?>
+                        <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'agegroups.', $canChange, 'cb'); ?>
     <?php
     // Create dropdown items and render the dropdown list.
     if ($canChange) {
-        JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'agegroups');
-        JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'agegroups');
-        echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+        HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'agegroups');
+        HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'agegroups');
+        echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
     }
     ?>
                         </div>
