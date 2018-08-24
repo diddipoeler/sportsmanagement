@@ -242,7 +242,7 @@ $this->readonly = '';
                             <?php $disabled = true ? '' : 'disabled="disabled"'; ?>
                         </span>
                         <input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
-                               class="form-control form-control-inline" style="text-align: center" />
+                               class="form-control form-control-inline" style="text-align: center" <?php echo $this->readonly; ?> />
                     </td>
                     <td class="center"><?php echo $row->id; ?></td>
                 </tr>
