@@ -604,6 +604,7 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		$message = '';  
+		$delete_season = array();
 		foreach( $data['season_ids'] as $key => $value )
         {
         $this->jsmquery->clear();  
@@ -613,7 +614,8 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
         $this->jsmquery->where('spi.person_id ='. $data['id'] );
         $this->jsmquery->where('spi.season_id ='. $value );
         $this->jsmdb->setQuery($this->jsmquery);
-		$res = $this->jsmdb->loadObject();
+	$res = $this->jsmdb->loadObject();
+	$delete_season[] = $value;
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
         if ( !$res )
         {
@@ -648,6 +650,12 @@ catch (Exception $e) {
         }
           
         }
+// delete all custom keys
+$this->jsmquery->clear();    
+$this->jsmquery->delete()->from('#__sportsmanagement_season_person_id')->where('season_id NOT IN (' . implode(",",$delete_season) . ') AND person_id = '.$data['id']);
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->execute();		
+		
         $this->jsmapp->enqueueMessage($message, 'message');
 
 		}
