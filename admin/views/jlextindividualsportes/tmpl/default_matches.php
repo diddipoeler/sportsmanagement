@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //save and close 
 $close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
@@ -113,7 +113,7 @@ if($close == 1) {
 						
 						<th width="1%" nowrap="nowrap" ><?php echo JTEXT::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" nowrap="nowrap" >
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -126,8 +126,8 @@ if($close == 1) {
 					for ($i=0,$n=count($this->matches); $i < $n; $i++)
 					{
 						$row		=& $this->matches[$i];
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
-						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','jlextindividualsportes.');
+						$checked	= HTMLHelper::_('grid.checkedout',$row,$i,'id');
+						$published	= HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','jlextindividualsportes.');
 
 						list($date,$time)=explode(" ",$row->match_date);
 						$time=strftime("%H:%M",strtotime($time));
@@ -178,7 +178,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'teamplayer1_id'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['homeplayer'],'teamplayer1_id'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->teamplayer1_id);
                                 } 
                                 elseif ( $row->match_type == 'DOUBLE')
@@ -189,7 +189,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player1'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player1'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team1_player1);
                                 echo '<br />';   
                                 
@@ -199,7 +199,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player2'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['homeplayer'],'double_team1_player2'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team1_player2);
                                              
                                 } 
@@ -217,7 +217,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'teamplayer2_id'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['awayplayer'],'teamplayer2_id'.$row->id,
 												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->teamplayer2_id);
 								}
                                 elseif ( $row->match_type == 'DOUBLE')
@@ -228,7 +228,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player1'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player1'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team2_player1);
                                 echo '<br />';   
                                 
@@ -238,7 +238,7 @@ if($close == 1) {
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHTML::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player2'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['awayplayer'],'double_team2_player2'.$row->id,
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->double_team2_player2);
                                              
                                 } 
@@ -324,7 +324,7 @@ if($close == 1) {
 								?>
 								<td nowrap="nowrap">
 									<?php
-									echo JHTML::_(	'select.genericlist',$this->lists['match_result_type'],
+									echo HTMLHelper::_(	'select.genericlist',$this->lists['match_result_type'],
 													'match_result_type'.$row->id,'class="inputbox" size="1"','value','text',
 													$row->match_result_type);
 									?>
@@ -372,7 +372,7 @@ if($close == 1) {
 			
 			<input type='hidden' name='act' value='' />
 			<input type='hidden' name='task' value='' id='task' />
-			<?php echo JHTML::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 		</form>
 	</fieldset>
 </div>

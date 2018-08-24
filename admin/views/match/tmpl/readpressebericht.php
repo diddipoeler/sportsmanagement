@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 if ( $this->matchnumber )
 {
 
@@ -46,20 +47,20 @@ $lfdnummer = 0;
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         ?>
@@ -82,12 +83,12 @@ $lfdnummer = 0;
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+	echo HTMLHelper::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
 	<td>
         <?php 	
-	echo JHtml::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
+	echo HTMLHelper::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
 	?>
 	</td>	
         </tr>
@@ -123,20 +124,20 @@ $lfdnummer = 0;
         <?PHP
         if ( $value->person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         if ( $value->project_person_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         
         ?>
@@ -159,7 +160,7 @@ $lfdnummer = 0;
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-	echo JHtml::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+	echo HTMLHelper::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -195,7 +196,7 @@ $lfdnummer = 0;
 	$selectedvalue = 0;
 	//$append = ' style="background-color:#FFFFFF"';
     $append = '';
-	echo JHtml::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+	echo HTMLHelper::_( 'select.genericlist', $this->lists['inout_position_id'], 'inout_position_id[' . $value->in.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
         </tr>
@@ -226,11 +227,11 @@ $lfdnummer = 0;
         <?PHP
         if ( $value->event_type_id )
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png','','title= "'.''.'"').'</td>';
         }
         else
         {
-            echo '<td>'.JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
+            echo '<td>'.HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png','','title= "'.''.'"').'</td>';
         }
         ?>
                 
@@ -252,7 +253,7 @@ $lfdnummer = 0;
 	{
 	//$append=' style="background-color:#FFFFFF"';
 	}
-        echo JHtml::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+        echo HTMLHelper::_( 'select.genericlist', $this->lists['events'], 'project_events_id[' . $value->project_person_id.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
         ?>
         </td>
 	<?php endforeach; ?>

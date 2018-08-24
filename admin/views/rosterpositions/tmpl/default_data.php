@@ -37,14 +37,14 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 $user = JFactory::getUser();
 
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'obj.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 <div id="editcell">
     <table class="<?php echo $this->table_data_class; ?>">
@@ -57,28 +57,27 @@ JHtml::_('behavior.modal');
 
                 <th width="10%" class="nowrap">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME', 'obj.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_NAME', 'obj.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="5%" class="nowrap">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME', 'obj.alias', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_SHORT_NAME', 'obj.alias', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>					
                 <th width="1%" class="nowrap center hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_COUNTRY', 'obj.country', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="5%" class="nowrap center hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
-                    //echo JHtml::_('grid.order',$this->items);
-                    echo JHtml::_('grid.order', $this->items, 'filesave.png', 'rosterpositions.saveorder');
+                    echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'obj.ordering', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'rosterpositions.saveorder');
                     ?>
                 </th>
                 <th width="1%" class="nowrap center hidden-phone">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'obj.id', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'obj.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -91,7 +90,7 @@ JHtml::_('behavior.modal');
                 $link = JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rosterpositions.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rosterpositions.', $canCheckin);
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td class="center hidden-phone">
@@ -101,7 +100,7 @@ JHtml::_('behavior.modal');
                     </td>
                     <td class="center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
                     <?php
@@ -109,7 +108,7 @@ JHtml::_('behavior.modal');
                     ?>
                     <td >
                         <?php if ($row->checked_out) : ?>
-                            <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'rosterpositions.', $canCheckin); ?>
+                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'rosterpositions.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . (int) $row->id); ?>">

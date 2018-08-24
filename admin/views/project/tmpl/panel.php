@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -41,17 +42,17 @@ JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL
 							$text = Text::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS');
 							$imageFile = 'projekte.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>									
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>									
 							<?php
 	 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=templates&pid='.$this->project->id);
 							$text = Text::_('COM_SPORTSMANAGEMENT_P_PANEL_FES');
 							$imageFile = 'templates.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
 							if ((isset($this->project->project_type)) &&
 								 (($this->project->project_type == 'PROJECT_DIVISIONS') ||
@@ -61,9 +62,9 @@ JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL
 								$text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_DIVISIONS', $this->count_projectdivisions);
 								$imageFile = 'divisionen.png';
 								$linkParams = "<span>$text</span>&nbsp;";
-								$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+								$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 								?>
-								<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+								<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 								<?php
 							}
 							if ((isset($this->project->project_type)) &&
@@ -74,9 +75,9 @@ JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL
 								$text = Text::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE');
 								$imageFile = 'turnierbaum.png';
 								$linkParams = "<span>$text</span>&nbsp;";
-								$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+								$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 								?>
-								<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+								<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
 							}
                             
@@ -86,42 +87,42 @@ JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL
 							$text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_POSITIONS', $this->count_projectpositions);
 							$imageFile = 'positionen.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
                             }
 							$link = JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid='.$this->project->id);
 							$text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_REFEREES', $this->count_projectreferees);
 							$imageFile = 'projektschiedsrichter.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
 	 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$this->project->id);
 							$text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_TEAMS', $this->count_projectteams);
 							$imageFile = 'mannschaften.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
 	 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$this->project->id);
 							$text = Text::plural('COM_SPORTSMANAGEMENT_P_PANEL_MATCHDAYS', $this->count_matchdays);
 							$imageFile = 'spieltage.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 							<?php
 	 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=jlxmlexports&pid='.$this->project->id);
 							$text = Text::_('COM_SPORTSMANAGEMENT_P_PANEL_XML_EXPORT');
 							$imageFile = 'xmlexport.png';
 							$linkParams = "<span>$text</span>&nbsp;";
-							$image = JHtml::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
+							$image = HTMLHelper::_('image.administrator',$imageFile,$path,NULL,NULL,$text).$linkParams;
 							?>
-							<div class="icon-wrapper"><div class="icon"><?php echo JHtml::link($link,$image); ?></div></div>
+							<div class="icon-wrapper"><div class="icon"><?php echo HTMLHelper::link($link,$image); ?></div></div>
 						</div>
 					</div>
 				</div>

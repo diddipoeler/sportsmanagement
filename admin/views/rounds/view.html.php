@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewRounds
@@ -97,8 +98,8 @@ class sportsmanagementViewRounds extends sportsmanagementView {
         $project = $mdlProject->getProject($this->project_id);
         //$massadd=JFactory::getApplication()->input->getVar('massadd');
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option', '0', JText::_('JNO'));
-        $myoptions[] = JHtml::_('select.option', '1', JText::_('JYES'));
+        $myoptions[] = HTMLHelper::_('select.option', '0', JText::_('JNO'));
+        $myoptions[] = HTMLHelper::_('select.option', '1', JText::_('JYES'));
         $lists['tournementround'] = $myoptions;
 
         $this->lists = $lists;
@@ -125,11 +126,11 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
         $lists = array();
 
-        $options = array(JHtml::_('select.option', 0, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
-            JHtml::_('select.option', 1, Jtext::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
-            JHtml::_('select.option', 2, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN'))
+        $options = array(HTMLHelper::_('select.option', 0, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_SINGLE_ROUND_ROBIN')),
+            HTMLHelper::_('select.option', 1, Jtext::_('COM_SPORTSMANAGEMENTADMIN_ROUNDS_POPULATE_TYPE_DOUBLE_ROUND_ROBIN')),
+            HTMLHelper::_('select.option', 2, Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TYPE_TOURNAMENT_ROUND_ROBIN'))
         );
-        $lists['scheduling'] = JHtml::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
+        $lists['scheduling'] = HTMLHelper::_('select.genericlist', $options, 'scheduling', '', 'value', 'text');
 
         //TODO-add error message - what if there are no teams assigned to the project
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -139,9 +140,9 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
         $options = array();
         foreach ($teams as $t) {
-            $options[] = JHtml::_('select.option', $t->value, $t->text);
+            $options[] = HTMLHelper::_('select.option', $t->value, $t->text);
         }
-        $lists['teamsorder'] = JHtml::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
+        $lists['teamsorder'] = HTMLHelper::_('select.genericlist', $options, 'teamsorder[]', 'multiple="multiple" size="20"');
 
         $this->projectws = $projectws;
         $this->request_url = $uri->toString();

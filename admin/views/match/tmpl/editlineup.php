@@ -10,15 +10,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 }
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 ?>
@@ -58,39 +58,39 @@ $tabsOptionsJ31 = array(
             "active" => "panel1" // It is the ID of the active tab.
         );
 
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
 echo $this->loadTemplate('players');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
 echo $this->loadTemplate('substitutions');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
 echo $this->loadTemplate('staff');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
 echo $this->loadTemplate('players_trikot_numbers');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.endTabSet');    
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet');    
     }
         else
     {
 		// focus on players tab 
 		$startOffset = 1;
-		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
+		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
+		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
 		echo $this->loadTemplate('players');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
+		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
 		echo $this->loadTemplate('substitutions');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
+		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
-		echo JHtml::_('tabs.end');
+		echo HTMLHelper::_('tabs.end');
         }
 		?>
 		<input type="hidden" name="task" value="" />
@@ -104,6 +104,6 @@ echo JHtml::_('bootstrap.endTabSet');
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
         
         
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</div>
 </form>

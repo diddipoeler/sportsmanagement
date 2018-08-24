@@ -37,12 +37,12 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'v.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -56,27 +56,27 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </th>
                 <th width="10%" class="nowrap">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NAME', 'v.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NAME', 'v.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="1%" class="hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_S_NAME', 'v.short_name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_S_NAME', 'v.short_name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="1%" class="hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CLUBNAME', 'club', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CLUBNAME', 'club', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="1%" class="center hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CAPACITY', 'v.max_visitors', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CAPACITY', 'v.max_visitors', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="1%" class="hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="1%" class="nowrap hidden-phone">
@@ -89,16 +89,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <?php //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LONGITUDE'); ?>
                 </th>-->
                 <th width="1%" class="hidden-phone">
-                    <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th width="5%" class="nowrap center hidden-phone">
                     <?php
-                    echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'v.ordering', $this->sortDirection, $this->sortColumn);
-                    echo JHtml::_('grid.order', $this->items, 'filesave.png', 'playgrounds.saveorder');
+                    echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'v.ordering', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'playgrounds.saveorder');
                     ?>
                 </th>
                 <th width="1%" class="nowrap center hidden-phone">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'v.id', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'v.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -118,7 +118,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 $link = JRoute::_('index.php?option=com_sportsmanagement&task=playground.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'playgrounds.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'playgrounds.', $canCheckin);
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td class="center hidden-phone">
@@ -128,7 +128,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     <td class="center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
                     <?php
@@ -136,7 +136,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                     <td class="">
                         <?php if ($row->checked_out) : ?>
-                            <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'playgrounds.', $canCheckin); ?>
+                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'playgrounds.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=playground.edit&id=' . (int) $row->id); ?>">
@@ -158,10 +158,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php
                         if ($row->picture == '') {
                             $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
-                            echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
+                            echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team")) {
                             $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
-                            echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
+                            echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
                                 <img src="<?php echo JURI::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />
@@ -169,7 +169,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?PHP
                         } elseif ($row->picture !== '') {
                             $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
-                            echo JHtml::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
+                            echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
                                 <img src="<?php echo JURI::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />

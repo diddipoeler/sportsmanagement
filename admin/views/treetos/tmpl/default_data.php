@@ -3,7 +3,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 ?>
 <div id="table-responsive">
 <!--	<fieldset class="adminform"> -->
@@ -28,7 +29,7 @@ JHtml::_('behavior.tooltip');
 							$colspan++;
 							?><th class="title" style="vertical-align:top; " nowrap="nowrap">
 								<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_DIVISION');
-									echo '<br>'.JHtml::_(	'select.genericlist',
+									echo '<br>'.HTMLHelper::_(	'select.genericlist',
 														$this->lists['divisions'],
 														'division',
 														'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
@@ -51,9 +52,8 @@ JHtml::_('behavior.tooltip');
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 						$row		= $this->items[$i];
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
-						//$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','treeto.');
-                        $published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','treetos.');
+						$checked	= HTMLHelper::_('grid.checkedout',$row,$i,'id');
+                        $published = HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','treetos.');
 					?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td style="text-align:center; ">
@@ -70,7 +70,7 @@ JHtml::_('behavior.tooltip');
 								<a
 									href="index.php?option=com_sportsmanagement&task=treeto.edit&id=<?php echo $row->id; ?>&pid=<?php echo $this->project_id; ?>">
 									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_EDIT_DETAILS'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_EDIT_DETAILS').'"');
 									?>
@@ -83,7 +83,7 @@ JHtml::_('behavior.tooltip');
 								<a
 									href="index.php?option=com_sportsmanagement&task=treetos.genNode&id=<?php echo $row->id; ?>&pid=<?php echo $this->project_id; ?>">
 								<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/update.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/update.png',
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_GENERATE'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_GENERATE').'"');
 									?>
@@ -94,7 +94,7 @@ JHtml::_('behavior.tooltip');
 								<a
 									href="index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid=<?php echo $row->id; ?>&pid=<?php echo $this->project_id; ?>">
 									<?php
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/icon-16-Tree.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/icon-16-Tree.png',
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_EDIT_TREE'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_EDIT_TREE').'"');
 									?>
@@ -119,7 +119,7 @@ JHtml::_('behavior.tooltip');
 									{
 										$append=' style="background-color:#bbffff"';
 									}
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'division_id'.$row->id,
 													$append.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .

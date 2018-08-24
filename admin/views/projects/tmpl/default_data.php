@@ -10,10 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 
 ?>
 <div class="table-responsive">
@@ -27,39 +28,39 @@ JHtml::_('behavior.modal');
 					
 					<th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     <th width="">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON','s.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     
                     <th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     
 					<th class="title">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
@@ -93,18 +94,18 @@ JHtml::_('behavior.modal');
                     
 					<th width="" class="title">
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="" class="title">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->sortDirection,$this->sortColumn);
-						echo JHtml::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
+						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
 						?>
 					</th>
 					<th width="" class="title">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     
@@ -147,12 +148,12 @@ JHtml::_('behavior.modal');
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 
-					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
+					$checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
 					$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.project.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td width="40" class=""><?php echo JHtml::_('grid.id', $i, $row->id); ?>
+						<td width="40" class=""><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
 						<?php
                         						
 							$inputappend = '';
@@ -160,12 +161,12 @@ JHtml::_('behavior.modal');
 							
                             <?php
                             if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
 									<?php else: ?>
 								<a href="<?php echo $link; ?>">
                                 <?php
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
                                 
@@ -193,7 +194,7 @@ if ( $this->state->get('filter.search_nation') )
 //echo $this->state->get('filter.search_nation').'<br>';	
 //echo $this->league.'<br>'; 
 $append = ' style="background-color:#bbffff"';
-echo JHtml::_(	'select.genericlist',
+echo HTMLHelper::_(	'select.genericlist',
 		$this->league,
 		'league'.$row->id,
 		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -221,7 +222,7 @@ echo $row->league.'<br>';
                         <?php 
                         $inputappend = '';
                         $append = ' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup'.$row->id,
 													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -233,7 +234,7 @@ echo $row->league.'<br>';
                         <?php 
                         $inputappend = '';
                         $append = ' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['project_type'],
 													'project_type'.$row->id,
 													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -247,13 +248,13 @@ echo $row->league.'<br>';
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
@@ -272,8 +273,8 @@ echo $row->league.'<br>';
                         
                         <td class="center">
 							<?php if ($row->current_round): ?>
-								<?php echo JHtml::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
-								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
+								<?php echo HTMLHelper::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
+								                       HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
 						<td class="center">
@@ -297,8 +298,8 @@ echo $row->league.'<br>';
                         //echo '<pre>'.print_r($teile,true).'</pre>';
                         for ($a=0; $a < sizeof($teile); $a++ )
                         {
-                        echo JHtml::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,
-			JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($teile[$a]))).'<br>';
+                        echo HTMLHelper::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,
+			HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($teile[$a]))).'<br>';
 			}
                         if ( $this->state->get('filter.userfields') )
                         {
@@ -318,14 +319,14 @@ onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
                         <td class="center">
                         
                         <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'projects.', $canChange, 'cb'); ?>
+            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'projects.', $canChange, 'cb'); ?>
             <?php 
             // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'projects');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'projects');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'projects');
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'projects');
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
             </div>

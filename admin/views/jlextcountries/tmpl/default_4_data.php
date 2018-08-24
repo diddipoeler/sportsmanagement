@@ -37,6 +37,7 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 
@@ -51,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
@@ -61,58 +62,58 @@ defined('_JEXEC') or die('Restricted access');
 
                 <th>
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2', 'objcountry.alpha2', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA2', 'objcountry.alpha2', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3', 'objcountry.alpha3', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ALPHA3', 'objcountry.alpha3', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
 
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU', 'objcountry.itu', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_ITU', 'objcountry.itu', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS', 'objcountry.fips', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIPS', 'objcountry.fips', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC', 'objcountry.ioc', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_IOC', 'objcountry.ioc', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA', 'objcountry.fifa', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_FIFA', 'objcountry.fifa', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS', 'objcountry.ds', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_DS', 'objcountry.ds', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO', 'objcountry.wmo', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO', 'objcountry.wmo', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="" class="nowrap center">
                     <?php
-                    echo JHtml::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'objcountry.ordering', $this->sortDirection, $this->sortColumn);
-                    echo JHtml::_('grid.order', $this->items, 'filesave.png', 'jlextcountries.saveorder');
+                    echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 'objcountry.ordering', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'jlextcountries.saveorder');
                     ?>
                 </th>
                 <th width="20">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'objcountry.id', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'objcountry.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -131,7 +132,7 @@ defined('_JEXEC') or die('Restricted access');
                 $link = JRoute::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'jlextcountries.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'jlextcountries.', $canCheckin);
                 $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextcountry.' . $row->id) && $canCheckin;
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
@@ -142,12 +143,12 @@ defined('_JEXEC') or die('Restricted access');
                     </td>
                     <td class="center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
                     <td class="center">
                         <?php if ($row->checked_out) : ?>
-                            <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextcountries.', $canCheckin); ?>
+                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextcountries.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id=' . (int) $row->id); ?>">
@@ -171,13 +172,13 @@ defined('_JEXEC') or die('Restricted access');
                     <td><?php echo $row->wmo; ?></td>
                     <td class="center">
                         <div class="btn-group">
-                            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'jlextcountries.', $canChange, 'cb'); ?>
+                            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'jlextcountries.', $canChange, 'cb'); ?>
                             <?php
                             // Create dropdown items and render the dropdown list.
                             if ($canChange) {
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextcountries');
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextcountries');
-                                echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextcountries');
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextcountries');
+                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
                             }
                             ?>
                         </div>

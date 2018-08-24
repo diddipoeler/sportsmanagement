@@ -11,11 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 $ordering=($this->sortColumn == 'obj.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 
 	<div id="editcell">
@@ -29,38 +30,38 @@ JHtml::_('behavior.modal');
 
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="20">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ABBREV','obj.short',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ABBREV','obj.short',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ICON','obj.icon',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_ICON','obj.icon',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_SPORTSTYPE','obj.sports_type_id',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_SPORTSTYPE','obj.sports_type_id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_NOTE'); ?></th>
 					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TYPE'); ?></th>
 					<th width="1%">
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','obj.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','obj.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn); ?>
-						<?php echo JHtml::_('grid.order',$this->items, 'filesave.png', 'statistics.saveorder'); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'statistics.saveorder'); ?>
 					</th>
 
 					<th width="5%">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -74,8 +75,8 @@ JHtml::_('behavior.modal');
 					$link=JRoute::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'statistics.', $canCheckin);
-					$published=JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','statistics.');
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'statistics.', $canCheckin);
+					$published=HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','statistics.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -85,13 +86,13 @@ JHtml::_('behavior.modal');
                         </td>
                         <td class="center">
                         <?php 
-                        echo JHtml::_('grid.id', $i, $row->id);  
+                        echo HTMLHelper::_('grid.id', $i, $row->id);  
                         ?>
                         </td>
 						
 						<td class="center">
                             <?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'statistics.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=statistic.edit&id='.(int) $row->id); ?>">

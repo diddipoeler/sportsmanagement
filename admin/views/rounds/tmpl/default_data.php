@@ -39,8 +39,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -55,13 +56,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<th width="1%"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 					<!--	<th width="20">&nbsp;</th> -->
- 						<th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn ); ?></th>
-                        <th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'r.name', $this->sortDirection, $this->sortColumn ); ?></th>
+ 						<th width="20"><?php echo HTMLHelper::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn ); ?></th>
+                        <th width="20"><?php echo HTMLHelper::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'r.name', $this->sortDirection, $this->sortColumn ); ?></th>
                         
-                        <th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_STARTDATE', 'r.round_date_first', $this->sortDirection, $this->sortColumn ); ?></th>
+                        <th width="20"><?php echo HTMLHelper::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_STARTDATE', 'r.round_date_first', $this->sortDirection, $this->sortColumn ); ?></th>
                         
 						<th width="1%">&nbsp;</th>
-                        <th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ENDDATE', 'r.round_date_last', $this->sortDirection, $this->sortColumn ); ?></th>
+                        <th width="20"><?php echo HTMLHelper::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ENDDATE', 'r.round_date_last', $this->sortDirection, $this->sortColumn ); ?></th>
                         
 						<th width="10%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES'); ?></th>
 						<th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_PUBLISHED_CHECK'); ?></th>
@@ -69,10 +70,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <th width="20"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TOURNEMENT'); ?></th>
 						<th width="5%" class="title">
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','r.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','r.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-            <th width="5%"><?php echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn ); ?></th>
+            <th width="5%"><?php echo HTMLHelper::_( 'grid.sort', 'JGRID_HEADING_ID', 'r.id', $this->sortDirection, $this->sortColumn ); ?></th>
 					</tr>
 				</thead>
                 
@@ -93,7 +94,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=matches&rid='.$row->id.'&pid='.$this->project->id);
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin);
+                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin);
                         $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.round.' . $row->id) && $canCheckin;
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -102,20 +103,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             echo $this->pagination->getRowOffset($i); ?>
                             </td>
 							<td class="center">
-                            <?php echo JHtml::_('grid.id', $i, $row->id); ?>
+                            <?php echo HTMLHelper::_('grid.id', $i, $row->id); ?>
                           <!--  </td> -->
 						<!--	<td class="center"> -->
                             
                             <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
 									<?php endif; ?>
                             <?php
                             if ($canEdit && !$row->checked_out ) :
 								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageParams = "title='$imageTitle'";
-								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
+								echo HTMLHelper::link($link1,HTMLHelper::image($imageFile,$imageTitle,$imageParams));
                             endif;    
 							?>
                             </td>
@@ -140,7 +141,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			"fillTable" => 'true',
 			"singleHeader" => 'false',
 		);
-	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+	echo HTMLHelper::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 
@@ -154,7 +155,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$append = ' style="background-color:#FFCCCC;" ';
                                     $date1 = '';
 								}
-								echo JHtml::calendar($date1,
+								echo HTMLHelper::calendar($date1,
 													'round_date_first'.$row->id,
 													'round_date_first'.$row->id,
 													'%d-%m-%Y', 
@@ -171,7 +172,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$append = ' style="background-color:#FFCCCC;"';
                                     $date2 = '';
 								}
-								echo JHtml::calendar($date2,
+								echo HTMLHelper::calendar($date2,
 													'round_date_last'.$row->id,
 													'round_date_last'.$row->id,
 													'%d-%m-%Y',
@@ -182,7 +183,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php
 								$link2Title=Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES_LINK');
 								$link2Params="title='$link2Title'";
-								echo JHtml::link($link2,$link2Title,$link2Params);
+								echo HTMLHelper::link($link2,$link2Title,$link2Params);
 					  			?>
                                   </td>
 							<td class="center" class="nowrap">
@@ -192,7 +193,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
@@ -206,7 +207,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								?>
                                 </td>
@@ -217,7 +218,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/ok.png';
 									$imageParams="title='$imageTitle'";
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
@@ -231,7 +232,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									}
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageParams="title='$imageTitle'";
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								?>
                                 </td>
@@ -239,7 +240,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['tournementround'],
 													'tournementround'.$row->id,
 													'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -250,14 +251,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 
                 <td class="center">
 <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'rounds.', $canChange, 'cb'); ?>
+            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'rounds.', $canChange, 'cb'); ?>
             <?php 
             // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'rounds');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'rounds');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'rounds');
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'rounds');
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
             </div>

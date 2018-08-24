@@ -39,10 +39,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 
 
@@ -54,29 +55,29 @@ JHtml::_('behavior.modal');
 					<tr>
 						<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STANDARD_NAME_OF_POSITION','po.name',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STANDARD_NAME_OF_POSITION','po.name',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TRANSLATION'); ?></th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PARENTNAME','po.parent_id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PARENTNAME','po.parent_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="20">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PLAYER_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PLAYER_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="20">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STAFF_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STAFF_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="20">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_REFEREE_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_REFEREE_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="20">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_CLUBSTAFF_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_CLUBSTAFF_POSITION','persontype',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<?php
 						/*
 						?>
 						<th class="title">
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_SPORTSTYPE','po.sports_type_id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_SPORTSTYPE','po.sports_type_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<?php
 						*/
@@ -84,10 +85,10 @@ JHtml::_('behavior.modal');
 						<th width="5%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_HAS_EVENTS'); ?></th>
 						<th width="5%"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_HAS_STATS'); ?></th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','PID','po.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','PID','po.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','pt.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','pt.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -111,7 +112,7 @@ JHtml::_('behavior.modal');
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_PLAYER_POSITION');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -121,7 +122,7 @@ JHtml::_('behavior.modal');
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_STAFF_POSITION');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -131,7 +132,7 @@ JHtml::_('behavior.modal');
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_REFEREE_POSITION');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -141,7 +142,7 @@ JHtml::_('behavior.modal');
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_CLUBSTAFF_POSITION');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -159,13 +160,13 @@ JHtml::_('behavior.modal');
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_EVENTS');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
 									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NR_EVENTS',$row->countEvents);
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -176,13 +177,13 @@ JHtml::_('behavior.modal');
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/error.png';
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NO_STATISTICS');
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFile,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								}
 								else
 								{
 									$imageTitle=Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_NR_STATISTICS',$row->countStats);
 									$imageParams='title= "'.$imageTitle.'"';
-									echo JHtml::image($imageFileOk,$imageTitle,$imageParams);
+									echo HTMLHelper::image($imageFileOk,$imageTitle,$imageParams);
 								}
 								?>
 							</td>

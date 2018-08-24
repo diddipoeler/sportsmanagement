@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport( 'joomla.application.component.view' );
 
 
@@ -91,20 +92,20 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	{
 	// build the html select
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option', 'bug', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_BUG'));
-        $myoptions[] = JHtml::_('select.option', 'duplicate', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_DUPLICATE'));
-        $myoptions[] = JHtml::_('select.option', 'enhancement', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_ENHANCEMENT'));
-        $myoptions[] = JHtml::_('select.option', 'invalid', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_INVALID'));
-        $myoptions[] = JHtml::_('select.option', 'question', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_QUESTION'));
-        $myoptions[] = JHtml::_('select.option', 'wontfix', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_WONTFIX'));
-        $lists['labels'] = JHtml::_('select.genericlist', $myoptions, 'labels', 'class="form-control form-control-inline" size="6"', 'value', 'text', 'bug');
+        $myoptions[] = HTMLHelper::_('select.option', 'bug', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_BUG'));
+        $myoptions[] = HTMLHelper::_('select.option', 'duplicate', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_DUPLICATE'));
+        $myoptions[] = HTMLHelper::_('select.option', 'enhancement', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_ENHANCEMENT'));
+        $myoptions[] = HTMLHelper::_('select.option', 'invalid', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_INVALID'));
+        $myoptions[] = HTMLHelper::_('select.option', 'question', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_QUESTION'));
+        $myoptions[] = HTMLHelper::_('select.option', 'wontfix', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NI_WONTFIX'));
+        $lists['labels'] = HTMLHelper::_('select.genericlist', $myoptions, 'labels', 'class="form-control form-control-inline" size="6"', 'value', 'text', 'bug');
         
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option', '2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_FRONTEND'));
-        $myoptions[] = JHtml::_('select.option', '3', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_MODULES'));
-        $myoptions[] = JHtml::_('select.option', '4', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_EXTENSIONS'));
-        $myoptions[] = JHtml::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_BACKEND'));
-        $lists['milestones'] = JHtml::_('select.genericlist', $myoptions, 'milestones', 'class="form-control form-control-inline" size="4"', 'value', 'text', $this->milestone);
+        $myoptions[] = HTMLHelper::_('select.option', '2', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_FRONTEND'));
+        $myoptions[] = HTMLHelper::_('select.option', '3', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_MODULES'));
+        $myoptions[] = HTMLHelper::_('select.option', '4', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_EXTENSIONS'));
+        $myoptions[] = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_MI_BACKEND'));
+        $lists['milestones'] = HTMLHelper::_('select.genericlist', $myoptions, 'milestones', 'class="form-control form-control-inline" size="4"', 'value', 'text', $this->milestone);
         
         $this->lists = $lists;   
         

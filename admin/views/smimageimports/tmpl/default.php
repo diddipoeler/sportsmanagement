@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -89,7 +90,7 @@ echo $this->loadTemplate('joomla2');
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
-                echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
 			</select>
             </td>
@@ -105,23 +106,23 @@ echo $this->loadTemplate('joomla2');
                     <th>
                     <?php 
                     //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'); 
-                    echo JHTML::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'), 'name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_IMAGE'), 'name', $this->sortDirection, $this->sortColumn);
                     
                     ?>
                     </th>
                     <th><?php 
                     //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'); 
-                    echo JHTML::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'), 'folder', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_PATH'), 'folder', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
                     <th><?php 
                     //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'); 
-                    echo JHTML::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'), 'directory', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_DIRECTORY'), 'directory', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
                     <th><?php 
                     //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'); 
-                    echo JHTML::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'), 'file', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_( 'grid.sort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_FILE'), 'file', $this->sortDirection, $this->sortColumn);
                     ?>
                     </th>
 <th><?php echo Text::_('JSTATUS'); ?></th>
@@ -135,8 +136,8 @@ $k=0;
 for ($i=0,$n=count($this->items); $i < $n; $i++)
 {
 $row =& $this->items[$i];
-$checked = JHtml::_('grid.checkedout',$row,$i);
-$published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','smimageimports.');
+$checked = HTMLHelper::_('grid.checkedout',$row,$i);
+$published  = HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','smimageimports.');
 ?>
 <tr class="<?php echo "row$k"; ?>">
 <td class="center"><?php echo ($i +1); ?></td>
@@ -154,13 +155,13 @@ $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','smim
 if ( $row->published )
 {
 $imageTitle = Text::_('bereits installiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 $imageTitle,'title= "'.$imageTitle.'"');    
 }
 else
 {
 $imageTitle = Text::_('noch nicht installiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
+echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
 $imageTitle,'title= "'.$imageTitle.'"');      
 }
  
@@ -182,7 +183,7 @@ $k=1 - $k;
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

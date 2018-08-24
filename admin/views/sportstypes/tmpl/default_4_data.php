@@ -37,12 +37,12 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 's.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -58,7 +58,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                 <th class="title">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME', 's.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME', 's.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th>
@@ -73,18 +73,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                 <th width="1%" class="nowrap center">
                     <?php
-                    echo JHtml::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
 
                 <th width="10%">
                     <?php
-                    echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
-                    echo JHtml::_('grid.order', $this->items, 'filesave.png', 'sportstypes.saveorder');
+                    echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'sportstypes.saveorder');
                     ?>
                 </th>
                 <th width='1%' class="text-center">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -106,7 +106,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 $link = JRoute::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'sportstypes.', $canCheckin);
+                $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'sportstypes.', $canCheckin);
                 $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.sportstype.' . $row->id) && $canCheckin;
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
@@ -117,7 +117,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     <td class="text-center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
 
@@ -126,7 +126,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                     <td class="has-context">
                         <?php if ($row->checked_out) : ?>
-                            <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'sportstypes.', $canCheckin); ?>
+                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'sportstypes.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id=' . (int) $row->id); ?>">
@@ -159,19 +159,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td>
                         <?php
                         $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-                        echo JHtml::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $row->id, 'class="custom-select form-control" size="1"' . $append, 'value', 'text', $row->sportsart);
+                        echo HTMLHelper::_('select.genericlist', $this->lists['sportart'], 'sportstype_id' . $row->id, 'class="custom-select form-control" size="1"' . $append, 'value', 'text', $row->sportsart);
                         //echo $row->sportsart; 
                         ?>
                     </td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'sportstypes.', $canChange, 'cb'); ?>
+                            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'sportstypes.', $canChange, 'cb'); ?>
                             <?php
                             // Create dropdown items and render the dropdown list.
                             if ($canChange) {
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'sportstypes');
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'sportstypes');
-                                echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'sportstypes');
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'sportstypes');
+                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
                             }
                             ?>
                         </div>

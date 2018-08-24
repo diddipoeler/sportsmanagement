@@ -39,11 +39,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'obj.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 
 	<div id="editcell">
@@ -57,34 +58,34 @@ JHtml::_('behavior.modal');
 					<th width="20">&nbsp;</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JAUTHOR','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
 					<th>
 						<?php
-						echo JHtml::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 						<th>
 						<?php
-						echo JHtml::_('grid.sort','JCATEGORY','obj.catid',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JCATEGORY','obj.catid',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
-						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'smquotes.saveorder');
+						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'smquotes.saveorder');
 						?>
 					</th>
                     <th>
 					<?php
-						echo JHtml::_('grid.sort','JSTATUS','pl.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','pl.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th width="20">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','obj.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -104,12 +105,12 @@ JHtml::_('behavior.modal');
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=smquote.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin);
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin);
                     $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.smquote.' . $row->id) && $canCheckin;
                     ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
+						<td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
 						<?php
 						
 							$inputappend='';
@@ -117,7 +118,7 @@ JHtml::_('behavior.modal');
 							<td class="center">
                             <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
 									<?php endif; 
                                     
                                     if ($canEdit && !$row->checked_out ) :
@@ -125,7 +126,7 @@ JHtml::_('behavior.modal');
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
@@ -145,13 +146,13 @@ JHtml::_('behavior.modal');
                                 if (empty($row->picture) )
 								{
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
@@ -184,14 +185,14 @@ JHtml::_('behavior.modal');
 						</td>
 						<td class="center">
 <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'smquotes.', $canChange, 'cb'); ?>
+            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'smquotes.', $canChange, 'cb'); ?>
             <?php 
             // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'smquotes');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'smquotes');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'smquotes');
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'smquotes');
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
             </div>                        
