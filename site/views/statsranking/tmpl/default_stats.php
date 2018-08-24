@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-//echo 'stats <pre>',print_r($this->stats,true),'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
@@ -135,7 +135,7 @@ $routeparameter['tid'] = $row->team_id;
 $routeparameter['pid'] = $row->person_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			
 //$link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $row->team_id, $row->person_id );
-echo JHtml::link( $link, $playerName );
+echo HTMLHelper::link( $link, $playerName );
 		}
 		else {
 			echo $playerName;
@@ -194,7 +194,7 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['division'] = $this->division->id;
 $routeparameter['tid'] = $this->teamid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking',$routeparameter);	 
-echo JHtml::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); 
+echo HTMLHelper::link($link, Text::_('COM_SPORTSMANAGEMENT_STATSRANKING_VIEW_FULL_TABLE')); 
 ?>
 </div>
 <?php

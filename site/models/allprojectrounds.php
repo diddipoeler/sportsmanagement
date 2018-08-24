@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport( 'joomla.application.component.model' );
 
@@ -307,7 +308,7 @@ if ( !$res )
         
 		foreach ( $res as $row )
 		{
-    $playersevents[] = JHTML::_( 'image', $row->eticon, JText::_($row->eticon ), NULL ) . JText::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
+    $playersevents[] = HTMLHelper::_( 'image', $row->eticon, JText::_($row->eticon ), NULL ) . JText::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
     }
     
 // 			$this->_playersevents = $events;

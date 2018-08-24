@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
@@ -65,8 +66,7 @@ $fieldsets = $this->form->getFieldsets();
                 //echo sportsmanagementHelper::getPicturePlayground($field->value);
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
                 //echo $picture;
-                //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
-                //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+
 ?>
 <a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
 <img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
@@ -103,7 +103,7 @@ $fieldsets = $this->form->getFieldsets();
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>

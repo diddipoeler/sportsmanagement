@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (count($this->historyPlayer) > 0)
 {
@@ -103,7 +104,7 @@ $station->project_picture = ($station->project_picture != '') ? $station->projec
             $this->overallconfig['use_jquery_modal']); 
 							
                             }	
-                                echo JHtml::link($link1,$station->project_name);
+                                echo HTMLHelper::link($link1,$station->project_name);
 							?></td>
 							<td class="td_l">
                             <?php 
@@ -149,7 +150,7 @@ $this->overallconfig['use_jquery_modal']);
 			
 							if ( $this->config['show_playercareer_teamlink'] ) 
                             {
-								echo JHtml::link($link2,$station->team_name);
+								echo HTMLHelper::link($link2,$station->team_name);
 							} 
                             else 
                             {

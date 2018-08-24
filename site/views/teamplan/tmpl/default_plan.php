@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if ( $this->config['show_comments_count'] == 1 || $this->config['show_comments_count'] == 2 )
 {
@@ -397,10 +398,10 @@ $nbcols = 0;
 			if ($hasEvents)
 			{
 				$link = "javascript:void(0);";
-				$img = JHtml::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
+				$img = HTMLHelper::image('media/com_sportsmanagement/jl_images/events.png', 'events.png');
 				$params = array("title"   => Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_EVENTS'),
 								"onclick" => 'switchMenu(\'info'.$match->id.'\');return false;');
-				echo JHtml::link($link,$img,$params);
+				echo HTMLHelper::link($link,$img,$params);
 			}
 		?>
 		</td>
@@ -432,7 +433,7 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 			
-			echo JHtml::link($link,$match->roundcode);
+			echo HTMLHelper::link($link,$match->roundcode);
 			?>
 			</td>
 		<?php
@@ -494,7 +495,7 @@ $temp3 = $jdate->format('D');
         {
         if ( !strstr($match->match_date,"0000-00-00") )
 			{
-				echo JHtml::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
+				echo HTMLHelper::date($match->match_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE'));
 			}
 			else
 			{
@@ -814,7 +815,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
                 }
 
             $ResultsTooltipTitle = $result;
-            $result = JHtml::link($link,$result);
+            $result = HTMLHelper::link($link,$result);
 
             $ResultsTooltipTp = '( ';
             $PartResult = '';
@@ -956,7 +957,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						if ($this->config['show_referee_link'])
 						{
 							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=JHtml::link($link,$ref);
+							$ref=HTMLHelper::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
@@ -1009,7 +1010,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
             if (isset($match->team1_result))
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
+					$href_text = HTMLHelper::image($this->config['matchreport_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT'));
 				} else {
 					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
@@ -1018,13 +1019,13 @@ $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);				
-				$viewReport = JHtml::link($link, $href_text);
+				$viewReport = HTMLHelper::link($link, $href_text);
 				echo $viewReport;
 			}
 			else
 			{
 				if ($this->config['show_matchreport_image']) {
-					$href_text = JHtml::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
+					$href_text = HTMLHelper::image($this->config['matchpreview_image'], Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW'));
 				} else {
 					$href_text = Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHPREVIEW');
 				}
@@ -1033,7 +1034,7 @@ $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-				$viewPreview = JHtml::link($link, $href_text);
+				$viewPreview = HTMLHelper::link($link, $href_text);
 				echo $viewPreview;
 			}
 		}
@@ -1083,7 +1084,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 			if ($count == 1) {
 				$imgTitle		= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -1099,13 +1100,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment	= HTMLHelper::link($link, $href_text);
 				echo $viewComment;
 			}
 			elseif ($count > 1) {
 				$imgTitle	= $count.' '.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -1121,13 +1122,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment	= HTMLHelper::link($link, $href_text);
 				echo $viewComment;
 			}
 			else {
 				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
@@ -1144,7 +1145,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment	= HTMLHelper::link($link, $href_text);
 				echo $viewComment;
 			}
 		?></td>

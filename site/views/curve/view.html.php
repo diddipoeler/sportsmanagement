@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
 
@@ -49,7 +50,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 		{
 			$teamid1 = sportsmanagementModelCurve::$teamid1;
 			$teamid2 = sportsmanagementModelCurve::$teamid2;
-			$options = array(	JHtml::_( 'select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
+			$options = array(	HTMLHelper::_( 'select.option', '0', Text::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
 			$divisions = sportsmanagementModelProject::getDivisions(0,sportsmanagementModelCurve::$cfg_which_database);
 			if (count($divisions)>0 && $division == 0)
 			{
@@ -59,7 +60,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 					$teams = sportsmanagementModelProject::getTeams($d->id,'name',sportsmanagementModelCurve::$cfg_which_database);
 					$i=0;
 					foreach ((array) $teams as $t) {
-						$options[] = JHtml::_( 'select.option', $t->id, $t->name );
+						$options[] = HTMLHelper::_( 'select.option', $t->id, $t->name );
 						if($i==0) {
 							$teamid1 = $t->id;
 						}
@@ -68,8 +69,8 @@ class sportsmanagementViewCurve extends sportsmanagementView
 						}
 						$i++;
 					}
-					$team1select[$d->id] = JHtml::_('select.genericlist', $options, 'tid1_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
-					$team2select[$d->id] = JHtml::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);
+					$team1select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
+					$team2select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);
 				}
 			}
 			else
@@ -88,7 +89,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
                 
 				$i=0;
 				foreach ((array) $teams as $t) {
-					$options[] = JHtml::_( 'select.option', $t->id, $t->name );
+					$options[] = HTMLHelper::_( 'select.option', $t->id, $t->name );
 					if( $i == 0 && $teamid1 == 0 ) 
                     {
 						//$teamid1 = $t->id;
@@ -100,8 +101,8 @@ class sportsmanagementViewCurve extends sportsmanagementView
 					}
 					$i++;
 				}
-				$team1select[$div->id] = JHtml::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
-				$team2select[$div->id] = JHtml::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
+				$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
+				$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
 			}
 
 			if ( !isset( $this->overallconfig['seperator'] ) )

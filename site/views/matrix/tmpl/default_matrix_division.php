@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row" id="defaultmatrixdivision">
  <?php
@@ -269,13 +270,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$picture = 'media/com_sportsmanagement/event_icons/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHtml::link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
 									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-									$new_match = JHtml::link($link, $desc);
+									$new_match = HTMLHelper::link($link, $desc);
 								} 
 								$match_result .= $new_match;
 							} else {
@@ -567,13 +568,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$picture = 'media/com_sportsmanagement/event_icons/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHtml::link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
 									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-									$new_match = JHtml::link($link, $desc);
+									$new_match = HTMLHelper::link($link, $desc);
 								} 
 								$match_result .= $new_match;
 							} else {

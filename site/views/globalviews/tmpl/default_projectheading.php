@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $document = JFactory::getDocument();
 
 ?>
@@ -169,9 +170,9 @@ echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>'
                     {
 						$link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
 						$imgTitle = Text::_($this->project->name.' Forum');
-						$desc = JHtml::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
+						$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 						echo '&nbsp;';
-						echo JHtml::link($link, $desc);    
+						echo HTMLHelper::link($link, $desc);    
                     }
 					?>
 					&nbsp;

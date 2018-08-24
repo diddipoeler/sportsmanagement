@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 $savenewsubst = array();
 $savenewsubst[] = $this->match->id;
 $savenewsubst[] = $this->tid;
@@ -32,14 +33,14 @@ $baseurl = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'
 					<tr>
 						<th>
 							<?php
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',Text::_('Out'));
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',Text::_('Out'));
 							echo '&nbsp;'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
 							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',Text::_('In'));
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',Text::_('In'));
 							?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
@@ -93,8 +94,8 @@ $baseurl = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'
                     }
 					?>
 					<tr id="row-new">
-						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
-						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
 						<td>
 						<?php 
 						if ( isset($this->lists['projectpositions']) )

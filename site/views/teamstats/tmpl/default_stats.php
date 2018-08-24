@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <div id="jl_teamstats">
@@ -120,7 +121,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highest_home->team2_slug;
        $routeparameter['ptid'] = $this->highest_home->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highest_home_result) . " -  " . JHTML::link($team2,$this->highest_home->guestteam);
+							$match	= HTMLHelper::::link($link,$highest_home_result) . " -  " . HTMLHelper::::link($team2,$this->highest_home->guestteam);
 							echo $match;
 						?>
 					</td>
@@ -150,7 +151,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highest_away->team2_slug;
        $routeparameter['ptid'] = $this->highest_away->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highest_away_result) . " - " . JHTML::link($team1,$this->highest_away->hometeam) ;
+							$match	= HTMLHelper::::link($link,$highest_away_result) . " - " . HTMLHelper::::link($team1,$this->highest_away->hometeam) ;
 							echo $match;
 						?>
 					</td>
@@ -193,7 +194,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highestdef_home->team2_slug;
        $routeparameter['ptid'] = $this->highestdef_home->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highestdef_home_result) . " - " . JHTML::link($team2,$this->highestdef_home->guestteam);
+							$match	= HTMLHelper::::link($link,$highestdef_home_result) . " - " . HTMLHelper::::link($team2,$this->highestdef_home->guestteam);
 							echo $match;
 						?>
 					</td>
@@ -223,7 +224,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highestdef_away->team2_slug;
        $routeparameter['ptid'] = $this->highestdef_away->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highestdef_away_result) . " - " . JHTML::link($team1,$this->highestdef_away->hometeam);
+							$match	= HTMLHelper::::link($link,$highestdef_away_result) . " - " . HTMLHelper::::link($team1,$this->highestdef_away->hometeam);
 							echo $match;
 						?>
 					</td>
@@ -264,7 +265,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highestdraw_home->team2_slug;
        $routeparameter['ptid'] = $this->highestdraw_home->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highestdef_home_result) . " - " . JHTML::link($team2,$this->highestdraw_home->guestteam);
+							$match	= HTMLHelper::::link($link,$highestdef_home_result) . " - " . HTMLHelper::::link($team2,$this->highestdraw_home->guestteam);
 							echo $match;
 						?>
 					</td>
@@ -294,7 +295,7 @@ use Joomla\CMS\Language\Text;
                             $routeparameter['tid'] = $this->highestdraw_away->team2_slug;
        $routeparameter['ptid'] = $this->highestdraw_away->pt2_id;
 							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
-							$match	= JHTML::link($link,$highestdef_away_result) . " - " . JHTML::link($team1,$this->highestdraw_away->hometeam);
+							$match	= HTMLHelper::::link($link,$highestdef_away_result) . " - " . HTMLHelper::::link($team1,$this->highestdraw_away->hometeam);
 							echo $match;
 						?>
 					</td>

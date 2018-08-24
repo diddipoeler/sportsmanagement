@@ -40,11 +40,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-//JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
-$params = $this->form->getFieldsets('params');
+use Joomla\CMS\HTML\HTMLHelper;
 
-//echo 'sportsmanagementViewMatch _displayEditStats teams<br><pre>'.print_r($this->teams,true).'</pre>';
+$params = $this->form->getFieldsets('params');
 
 ?>
 
@@ -91,14 +89,14 @@ echo $this->loadTemplate('away');
 }
 else
 {        
-		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
-		echo JHtml::_('tabs.panel',Text::_($this->teams->team1), 'panel1');
+		echo HTMLHelper::_('tabs.start','tabs', array('useCookie'=>1));
+		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team1), 'panel1');
 		echo $this->loadTemplate('home');
 		
-		echo JHtml::_('tabs.panel',Text::_($this->teams->team2), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team2), 'panel2');
 		echo $this->loadTemplate('away');
 		
-		echo JHtml::_('tabs.end');
+		echo HTMLHelper::_('tabs.end');
 }        
 		?>
 		
@@ -111,7 +109,7 @@ else
         <input type="hidden" name="match_id"	value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		
-		<?php echo JHtml::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</div>
 </form>
 <div style="clear: both"></div>

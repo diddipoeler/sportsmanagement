@@ -11,6 +11,7 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 		( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) ||
@@ -26,12 +27,12 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 			$injury_date = "";
 			$injury_end  = "";
 
-			$injury_date = JHtml::date($this->teamPlayer->injury_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$injury_date = HTMLHelper::date($this->teamPlayer->injury_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->rinjury_from))
 			$injury_date .= " - ".$this->teamPlayer->rinjury_from;
 
 			//injury end
-			$injury_end = JHtml::date($this->teamPlayer->injury_end, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$injury_end = HTMLHelper::date($this->teamPlayer->injury_end, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->rinjury_to))
 			$injury_end .= " - ".$this->teamPlayer->rinjury_to;
 
@@ -42,7 +43,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
@@ -63,7 +64,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -117,11 +118,11 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 			$suspension_end  = "";
 
 			//suspension start
-			$suspension_date = JHtml::date($this->teamPlayer->suspension_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$suspension_date = HTMLHelper::date($this->teamPlayer->suspension_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->rsusp_from))
 			$suspension_date .= " - ".$this->teamPlayer->rsusp_from;
 			
-			$suspension_end = JHtml::date($this->teamPlayer->suspension_end	, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$suspension_end = HTMLHelper::date($this->teamPlayer->suspension_end	, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->rsusp_to))
 			$suspension_end .= " - ".$this->teamPlayer->rsusp_to;
 			
@@ -133,7 +134,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'Suspended' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
@@ -154,7 +155,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'Suspended' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>
@@ -210,11 +211,11 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 			$away_end  = "";
 
 			//suspension start
-			$away_date = JHtml::date($this->teamPlayer->away_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$away_date = HTMLHelper::date($this->teamPlayer->away_date, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->raway_from))
 			$away_date .= " - ".$this->teamPlayer->raway_from;
 
-			$away_end = JHtml::date($this->teamPlayer->away_end, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
+			$away_end = HTMLHelper::date($this->teamPlayer->away_end, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE'));
 			if(isset($this->teamPlayer->raway_to))
 			$away_end .= " - ".$this->teamPlayer->raway_to;
 
@@ -225,7 +226,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'Away' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
@@ -246,7 +247,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 					<td class="label">
 							<?php
 							$imageTitle = Text::_( 'Away' );
-							echo "&nbsp;&nbsp;" . JHtml::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							echo "&nbsp;&nbsp;" . HTMLHelper::image(	'media/com_sportsmanagement/events/'.$this->project->fs_sport_type_name.'/away.gif',
 																$imageTitle,
 																array( 'title' => $imageTitle ) );
 							?>

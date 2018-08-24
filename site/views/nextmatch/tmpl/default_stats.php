@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
-//echo 'homeranked <br><pre>'.print_r($this->homeranked,true).'</pre>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
@@ -264,7 +264,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->home_highest_home_win->project_slug;
                 $routeparameter['mid'] = $this->home_highest_home_win->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -275,7 +275,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php  
                 $routeparameter['p'] = $this->away_highest_away_win->project_slug;
                 $routeparameter['mid'] = $this->away_highest_away_win->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -291,7 +291,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->home_highest_home_def->project_slug;
                 $routeparameter['mid'] = $this->home_highest_home_def->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -302,7 +302,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->away_highest_away_def->project_slug;
                 $routeparameter['mid'] = $this->away_highest_away_def->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -318,7 +318,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->home_highest_away_win->project_slug;
                 $routeparameter['mid'] = $this->home_highest_away_win->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -329,7 +329,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->away_highest_home_win->project_slug;
                 $routeparameter['mid'] = $this->away_highest_home_win->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -344,7 +344,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->home_highest_away_def->project_slug;
                 $routeparameter['mid'] = $this->home_highest_away_def->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>
@@ -355,7 +355,7 @@ if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	        	<?php 
                 $routeparameter['p'] = $this->away_highest_home_def->project_slug;
                 $routeparameter['mid'] = $this->away_highest_home_def->match_slug;
-                echo JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
+                echo HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter),sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
 	      <?php endif; ?>

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
@@ -48,7 +49,7 @@ $colspan = 1;
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
 
-				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+				echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<?php
 				if ($this->config['show_substitution_stats'])
@@ -63,7 +64,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
-				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+				echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
@@ -72,7 +73,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
-				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+				echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
@@ -81,7 +82,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
-				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+				echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
                 
                 <?PHP
@@ -94,7 +95,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
+				echo HTMLHelper::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
 				<?php
@@ -118,7 +119,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
                     
-				echo JHtml::image($iconPath,
+				echo HTMLHelper::image($iconPath,
 					Text::_($eventtype->name),
 					array(	"title" => Text::_($eventtype->name),
 						"align" => "top",
@@ -207,7 +208,7 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 
                 }
-                echo JHtml::link($link1,$player_hist->project_name); 
+                echo HTMLHelper::link($link1,$player_hist->project_name); 
                 ?>
 				</td>
      <?PHP           
@@ -249,7 +250,7 @@ $this->overallconfig['use_jquery_modal']);
 			
                     if ( $this->config['show_playerstats_teamlink'] ) 
                     {
-						echo JHtml::link($link2,$player_hist->team_name);
+						echo HTMLHelper::link($link2,$player_hist->team_name);
 					} 
                     else 
                     {

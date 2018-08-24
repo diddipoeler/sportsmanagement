@@ -40,6 +40,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="table-responsive">
 <table class="<?php echo $this->config['table_class']; ?>">
@@ -70,24 +71,24 @@ use Joomla\CMS\Language\Text;
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 		}
-		$image = JHTML::image( $picture, $title, array( 'height'=>21, 'title' => $title, ' border' => 0  ) );
-		$smallClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array( 'height'=>21, 'title' => $title, ' border' => 0  ) );
+		$smallClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 
 		$picture = $club->logo_middle;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
 		}
-		$image = JHTML::image( $picture, $title, array('height'=>50, 'title' => $title, ' border' => 0  ) );
-		$mediumClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array('height'=>50, 'title' => $title, ' border' => 0  ) );
+		$mediumClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 
 		$picture = $club->logo_big;
 		if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 		}
-		$image = JHTML::image( $picture, $title, array( 'height'=>150, 'title' => $title, ' border' => 0  ) );
-		$bigClubLogoLink = JHTML::link( $clubinfo_link, $image );
+		$image = HTMLHelper::image( $picture, $title, array( 'height'=>150, 'title' => $title, ' border' => 0  ) );
+		$bigClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 		?>
 		<tr class="">
 			<?php if ($this->config['show_small_logo'])		{ ?><td><?php echo $smallClubLogoLink;	?></td><?php } ?>
@@ -97,7 +98,7 @@ use Joomla\CMS\Language\Text;
 				<?php
 					if ( !empty( $club->website ) )
 					{
-						echo JHTML::link	(	$club->website,
+						echo HTMLHelper::link	(	$club->website,
 												$club->name,
 												array( "target" => "_blank")
 											);
@@ -134,7 +135,7 @@ $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;
 $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);                                            
 
-							echo JHTML::link( $teaminfo_link, $team->name );
+							echo HTMLHelper::link( $teaminfo_link, $team->name );
 							echo '<br />';
 						}
 					?>

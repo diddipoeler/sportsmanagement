@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="row-fluid" id="show_slider">
     <?php
@@ -31,15 +32,15 @@ use Joomla\CMS\Language\Text;
             }
 
             if ($idxTab == 1) {
-                echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
+                echo HTMLHelper::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
+            echo HTMLHelper::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
-            echo JHtml::_('bootstrap.endSlide');
+            echo HTMLHelper::_('bootstrap.endSlide');
             $idxTab++;
         }
 
-        echo JHtml::_('bootstrap.endAccordion');
+        echo HTMLHelper::_('bootstrap.endAccordion');
     } elseif (version_compare(JSM_JVERSION, '3', 'eq')) {
 // Joomla! 3.0 code here
         $idxTab = 1;
@@ -58,15 +59,15 @@ use Joomla\CMS\Language\Text;
             }
 
             if ($idxTab == 1) {
-                echo JHtml::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
+                echo HTMLHelper::_('bootstrap.startAccordion', $view, array('active' => 'slide' . $idxTab, 'parent' => $view));
             }
-            echo JHtml::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
+            echo HTMLHelper::_('bootstrap.addSlide', $view, Text::_($text), 'slide' . $idxTab);
             echo $this->loadTemplate($template);
-            echo JHtml::_('bootstrap.endSlide');
+            echo HTMLHelper::_('bootstrap.endSlide');
             $idxTab++;
         }
 
-        echo JHtml::_('bootstrap.endAccordion');
+        echo HTMLHelper::_('bootstrap.endAccordion');
     } elseif (version_compare(JSM_JVERSION, '2', 'eq')) {
 // Joomla! 2.5 code here    
         ?>

@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- START: game stats -->
@@ -50,14 +51,14 @@ if (!empty($this->matchplayerpositions ))
 $tabsOptions = array(
     "active" => "tabstats1_id" // It is the ID of the active tab.
 );
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', Text::_($this->team1->name));
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group-Stats', $tabsOptions);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats1_id', Text::_($this->team1->name));
 echo $this->loadTemplate('stats_home');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats2_id', Text::_($this->team2->name));
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group-Stats', 'tabstats2_id', Text::_($this->team2->name));
 echo $this->loadTemplate('stats_away');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.endTabSet', 'ID-Tabs-Group-Stats');
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.endTabSet', 'ID-Tabs-Group-Stats');
     
 	endif;
 }

@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- Details-->
@@ -62,7 +63,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
             ?>
             <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
-			<?php echo JHtml::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
+			<?php echo HTMLHelper::date($this->match->match_date, Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
             </address>
             <?php
         }
@@ -151,7 +152,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			<?php 
                 if ( isset($this->playground->name) )
                     { 
-                    echo JHtml::link ($playground_link, $this->playground->name);
+                    echo HTMLHelper::link ($playground_link, $this->playground->name);
                     }
                     else
                     {
@@ -199,7 +200,7 @@ $referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',
                             echo ', ';
                         }
                         $referee_name = sportsmanagementHelper::formatName(null,$referee->firstname,$referee->nickname,$referee->lastname, $this->config["name_format"]);
-                        $link = JHtml::link( $referee_link, $referee_name);
+                        $link = HTMLHelper::link( $referee_link, $referee_name);
                         if ($this->config["show_referee_position"] == 1) $link .= ' ('.$referee->position_name.')';
                         echo $link; 
                         $first = false;

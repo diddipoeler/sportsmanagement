@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $this->view = JFactory::getApplication()->input->getCmd('view');
 //echo $this->kmlfile.'<br>';
 //echo JURI::root(true).'<br>';
@@ -288,7 +289,7 @@ $paramsPlugin = new JRegistry($plugin->params);
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
 
 $params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
-echo JHtml::_('content.prepare', $params);
+echo HTMLHelper::_('content.prepare', $params);
   
 }
             

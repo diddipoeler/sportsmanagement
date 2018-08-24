@@ -11,10 +11,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
-//JHTML::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+
+HTMLHelper::_('behavior.modal');
 jimport('joomla.html.pane');
 jimport('joomla.html.html.tabs' );
 
@@ -73,52 +74,45 @@ $options = array(
     'useCookie' => true, // this must not be a string. Don't use quotes.
 );
  
-echo JHtml::_('tabs.start', 'tab_group_id', $options);
+echo HTMLHelper::_('tabs.start', 'tab_group_id', $options);
  
-echo JHtml::_('tabs.panel', Text::_('PANEL_1_TITLE'), 'panel_1_id');
+echo HTMLHelper::_('tabs.panel', Text::_('PANEL_1_TITLE'), 'panel_1_id');
 //echo 'Panel 1 content can go here.';
 echo $this->loadTemplate('details');
  
-echo JHtml::_('tabs.panel', Text::_('PANEL_2_TITLE'), 'panel_2_id');
+echo HTMLHelper::_('tabs.panel', Text::_('PANEL_2_TITLE'), 'panel_2_id');
 //echo 'Panel 2 content can go here.';
 echo $this->loadTemplate('picture');
 
-echo JHtml::_('tabs.panel', Text::_('PANEL_3_TITLE'), 'panel_3_id');
+echo HTMLHelper::_('tabs.panel', Text::_('PANEL_3_TITLE'), 'panel_3_id');
 //echo 'Panel 3 content can go here.';
 //echo $this->loadTemplate('extended');
  
-echo JHtml::_('tabs.end');
+echo HTMLHelper::_('tabs.end');
 
 /*
-echo JHtml::_('sliders.start');
+echo HTMLHelper::_('sliders.start');
 foreach ($fieldsets as $fieldset) :
 if ($fieldset->name == 'details')
 {
-    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
+    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('details');
 }
 if ($fieldset->name == 'picture')
 {
-    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
+    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('picture');
 }
 if ($fieldset->name == 'extended')
 {
-    echo JHtml::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
+    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
     echo $this->loadTemplate('extended');
 }
 endforeach;
-echo JHtml::_('sliders.end');
+echo HTMLHelper::_('sliders.end');
 */
 
-//echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));    
-//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'), 'panel1');
-//echo $this->loadTemplate('details');
-//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel2');
-//echo $this->loadTemplate('picture');
-//echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED'), 'panel3');
-//echo $this->loadTemplate('extended');
-//echo JHtml::_('tabs.end');
+
 
 
 ?>
@@ -128,6 +122,6 @@ echo JHtml::_('sliders.end');
 	<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
     <input type="hidden" name="task" value="editclub.save" />	
 
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	
 </form>

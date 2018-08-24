@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 /*
 echo 'starters<pre>'.print_r($this->starters,true).'</pre><br>';
 echo 'positions<pre>'.print_r($this->positions,true).'</pre><br>';
@@ -79,7 +80,7 @@ foreach ($this->positions AS $position_id => $pos)
 <td>
 <?PHP    
     $append=' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['captain'],
 													'captain['.$player->value.']',
 													'class="inputbox" size="1" '.$append,

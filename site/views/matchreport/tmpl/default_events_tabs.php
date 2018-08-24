@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match events -->
 
@@ -62,7 +63,7 @@ else
 {
 $imgTitle = Text::_($event->name);
 $imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-$text_bild = JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+$text_bild = HTMLHelper::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
 $text = Text::_($event->name);
 }
 
@@ -122,7 +123,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 
-$match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
                         }
                         echo $match_player;
 
@@ -194,7 +195,7 @@ else
 				{
 					$imgTitle=Text::_($event->name);
 					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-					$txt_tab=JHtml::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+					$txt_tab=HTMLHelper::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
 				}
 
 				echo $result->startPanel($txt_tab,$event->id);
@@ -225,7 +226,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 				
-$match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
                         }
                         echo $match_player;
 
@@ -283,7 +284,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter); 							
-$match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
 						}
 						echo $match_player;
 

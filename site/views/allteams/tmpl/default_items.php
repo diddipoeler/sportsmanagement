@@ -37,7 +37,7 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 //echo '<pre>'.print_r($this->items,true).'</pre>';
 ?>
 <div class="table-responsive">        
@@ -46,43 +46,43 @@ defined('_JEXEC') or die('Restricted access');
         <thead>
             <tr>
                 <th class="" id="">
-                    <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS', 'v.name', $this->sortDirection, $this->sortColumn); ?>
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS', 'v.name', $this->sortDirection, $this->sortColumn); ?>
                 </th>
 
                 <?php
                 if ($this->params->get('picture')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
 
                 if ($this->params->get('website')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_INTERNET', 'v.website', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
 
                 if ($this->params->get('address')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'c.address', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_ADDRESS', 'c.address', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
 
                 if ($this->params->get('zip_code')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'c.zipcode', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_POSTAL_CODE', 'c.zipcode', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
 
                 if ($this->params->get('city')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'c.location', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_TOWN', 'c.location', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
 
                 if ($this->params->get('country')) {
                     echo '<th class="" id="">';
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'c.country', $this->sortDirection, $this->sortColumn);
                     echo '</th>';
                 }
                 ?>
@@ -101,7 +101,7 @@ defined('_JEXEC') or die('Restricted access');
                         $routeparameter['tid'] = $item->slug;
                         $routeparameter['ptid'] = 0;
                         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
-                        echo JHtml::link($link, $item->name);
+                        echo HTMLHelper::link($link, $item->name);
                     } else {
                         echo $item->name;
                     }
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
                 if ($this->params->get('website')) {
                     echo '<td>';
                     if($item->website){
-                    echo JHtml::link($item->website, $item->website, array('target' => '_blank'));
+                    echo HTMLHelper::link($item->website, $item->website, array('target' => '_blank'));
                     }
                     echo '</td>';
                 }

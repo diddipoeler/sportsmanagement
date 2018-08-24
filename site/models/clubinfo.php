@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.model');
 
 /**
@@ -121,11 +122,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
             foreach (self::$arrPCat[$parent] as $arrC) {
 
                 if (!$tree) {
-                    $treespan = '<span><i class="icon-minus-sign"></i>'.JHTML::_('image', 'media/com_sportsmanagement/jl_images/arrow_left.png').'</span>';
+                    $treespan = '<span><i class="icon-minus-sign"></i>'.HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/arrow_left.png').'</span>';
                 } else {
                     $treespan = '';
                 }
-                self::$historyhtmltree .= '<li>' . $treespan . '<span style="background-color:' . $arrC['color'] . '"><a href="' . $arrC['clublink'] . '">' . JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a></span>';
+                self::$historyhtmltree .= '<li>' . $treespan . '<span style="background-color:' . $arrC['color'] . '"><a href="' . $arrC['clublink'] . '">' . HTMLHelper::image($arrC['logo_big'], $arrC['name'], 'width="30"') . ' ' . $arrC['name'] . '</a></span>';
                 self::generateTree($arrC['id'], $tree);
 
                 self::$historyhtmltree .= '</li>';
@@ -689,9 +690,9 @@ $color = '';
             $link = sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug, null, self::$cfg_which_database);
             $imageTitle = JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
 
-            $temp .= JHTML::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
+            $temp .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
             $temp .= "&nbsp;";
-            $temp .= JHTML::link($link, $row->name);
+            $temp .= HTMLHelper::link($link, $row->name);
             $temp .= '</li>';
             self::$historyhtml .= $temp;
 

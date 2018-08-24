@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- START of match details -->
@@ -60,7 +61,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 		if ($this->match->match_date > 0): ?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_DATE' ); ?></span>
-					<span><?php echo JHtml::date($this->match->match_date, Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
+					<span><?php echo HTMLHelper::date($this->match->match_date, Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ); ?></span>
 				</td>
 			</tr>
 			<?php endif;
@@ -135,7 +136,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                     <?php
                     if ( isset($this->playground->name) )
                     { 
-                    echo JHtml::link ($playground_link, $this->playground->name);
+                    echo HTMLHelper::link ($playground_link, $this->playground->name);
                     }
                     else
                     {
@@ -167,7 +168,7 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['pid'] = $ref->person_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
 				?>
-				<?php $html[] = JHtml::link ($link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
+				<?php $html[] = HTMLHelper::link ($link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
 				<?php endforeach;?> <span><?php echo implode('</span>, <span>', $html); ?></span>
 				</td>
 			</tr>

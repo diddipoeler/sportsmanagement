@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
-//echo '<pre>',print_r($this->teams,true),'</pre><br>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
@@ -142,7 +142,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			<div class="notice">
 			<?php 
                 $text = Text::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_ALREADYPLAYED" );
-                echo JHtml::link( $report_link, $text );
+                echo HTMLHelper::link( $report_link, $text );
 			?>
 			</div>
 			<?php 

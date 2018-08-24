@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- Start of show matches through all projects -->
@@ -77,10 +78,10 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 					?>
 			<tr class="">
 				<td><?php
-				echo JHtml::link( $result_link, $game->roundcode );
+				echo HTMLHelper::link( $result_link, $game->roundcode );
 				?></td>
 				<td class="nowrap"><?php
-				echo JHtml::date( $date, Text::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
+				echo HTMLHelper::date( $date, Text::_( 'COM_SPORTSMANAGEMENT_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -140,10 +141,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game
 				<td class="nowrap"><?php
 				if ( $game->show_report == 1 )
 				{
-					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = HTMLHelper::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					Text::_( 'Match Report' ),
 					array( "title" => Text::_( 'Match Report' ) ) );
-					echo JHtml::link( $report_link, $desc);
+					echo HTMLHelper::link( $report_link, $desc);
 				}
 				$k = 1 - $k;
 				?></td>

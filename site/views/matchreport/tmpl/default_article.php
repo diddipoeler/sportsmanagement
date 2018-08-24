@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!-- START of match summary -->
@@ -33,7 +34,7 @@ if (!empty($this->match_article->introtext))
 			<td>
 			<?php
 			$summary = $this->match_article->introtext;
-			$summary = JHtml::_('content.prepare', $summary);
+			$summary = HTMLHelper::_('content.prepare', $summary);
 
 			echo $summary;
 

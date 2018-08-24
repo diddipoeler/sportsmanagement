@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_results'] )
 {
@@ -92,7 +93,7 @@ echo $this->loadTemplate('timeline');
                         {
                             $imgTitle = $eventname;
                             $imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-                            $txt_tab = JHtml::image($pic_tab,$imgTitle,$imgTitle2);
+                            $txt_tab = HTMLHelper::image($pic_tab,$imgTitle,$imgTitle2);
                         }
                         echo  '<td class="ecenter">' . $txt_tab . '</td>';
                         
@@ -151,7 +152,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id;
 $routeparameter['pid'] = $me->playerid;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);                            
-$match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
                         }                         
                         
                         echo '<td>' . $eventname . $sum_notice . ' - ' . $match_player . $teamname . '</td>';
@@ -159,7 +160,7 @@ $match_player = JHtml::link($player_link,$match_player);
                     else
                     {
                         //EventType 0, therefore text comment
-                        $txt_tab = JHtml::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
+                        $txt_tab = HTMLHelper::image('media/com_sportsmanagement/jl_images/discuss.gif','','');
                         echo '<td colspan="" style="text-align:center">'.$txt_tab.'</td>';
                         echo '<td colspan= style="text-align:center">...</td>';
                         
@@ -213,8 +214,8 @@ $match_player = JHtml::link($player_link,$match_player);
 		    $imgTitle_in2 = array(' title' => $imgTitle_in);
 		    $imgTitle_out = Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 		    $imgTitle_out2 = array(' title' => $imgTitle_out);
-		    $txt_tab_out = JHtml::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
-		    $txt_tab_in = JHtml::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
+		    $txt_tab_out = HTMLHelper::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
+		    $txt_tab_in = HTMLHelper::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
                         
 		    echo  '<td class="ecenter">' . $txt_tab_out . '</td>';
                         
@@ -253,7 +254,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->ptid;
 $routeparameter['pid'] = $me->out_person_id;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
-				    $outName = JHtml::link($player_link,$outName);
+				    $outName = HTMLHelper::link($player_link,$outName);
 				} else {
 				    $outName = $outName;
 				}
@@ -289,7 +290,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->ptid;
 $routeparameter['pid'] = $me->out_person_id;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
-				    $inName = JHtml::link($player_link,$inName);
+				    $inName = HTMLHelper::link($player_link,$inName);
 				} else {
 				    $inName = $inName;
 				}

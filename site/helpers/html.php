@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementHelperHtml
  * 
@@ -110,7 +111,7 @@ $modaltext .= '</a>';
         }
 
         if (strtotime($game->match_date)) {
-            $matchTime = JHtml::date($game->match_date, $overallconfig['time_format'], 'UTC');
+            $matchTime = HTMLHelper::date($game->match_date, $overallconfig['time_format'], 'UTC');
 
             if ($config['show_time_suffix'] == 1) {
                 $output .= sprintf($timeSuffix, $matchTime);
@@ -216,7 +217,7 @@ $modaltext .= '</a>';
                 $routeparameter['division'] = $hometeam->division_slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
-                $output .= JHtml::link($link, $hometeam->$nametype);
+                $output .= HTMLHelper::link($link, $hometeam->$nametype);
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam->nametype'.'<pre>'.print_r($hometeam->$nametype,true).'</pre>' ),'');
@@ -243,7 +244,7 @@ $modaltext .= '</a>';
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
 
-                    $output .= JHtml::link($link, $guestteam->$nametype);
+                    $output .= HTMLHelper::link($link, $guestteam->$nametype);
                     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
                 } else {
                     $output .= $guestteam->$nametype;
@@ -328,7 +329,7 @@ $modaltext .= '</a>';
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
 
-                    echo JHtml::link($link, $thisround->name);
+                    echo HTMLHelper::link($link, $thisround->name);
                 } else {
                     echo $thisround->name;
                 }
@@ -339,11 +340,11 @@ $modaltext .= '</a>';
             if ($config['show_rounds_dates'] == 1) {
                 echo " (";
                 if (!strstr($thisround->round_date_first, "0000-00-00")) {
-                    echo JHtml::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
+                    echo HTMLHelper::date($thisround->round_date_first, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
                 if (($thisround->round_date_last != $thisround->round_date_first) &&
                         (!strstr($thisround->round_date_last, "0000-00-00"))) {
-                    echo " - " . JHtml::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
+                    echo " - " . HTMLHelper::date($thisround->round_date_last, 'COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE');
                 }
                 echo ")";
             }
@@ -394,7 +395,7 @@ $modaltext .= '</a>';
             foreach ($rounds as $r) {
                 $routeparameter['r'] = $r->slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                $options[] = JHtml::_('select.option', $link, $r->text);
+                $options[] = HTMLHelper::_('select.option', $link, $r->text);
             }
         } else {
             $routeparameter['r'] = $roundid;
@@ -403,7 +404,7 @@ $modaltext .= '</a>';
             foreach ($rounds as $r) {
                 $routeparameter['r'] = $r->slug;
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                $options[] = JHtml::_('select.option', $link, $r->text);
+                $options[] = HTMLHelper::_('select.option', $link, $r->text);
             }
         }
 
@@ -413,7 +414,7 @@ $modaltext .= '</a>';
         }
 
 
-        return JHtml::_('select.genericlist', $options, 'select-round', 'onchange="top.location.href=this.options[this.selectedIndex].value;"', 'value', 'text', $currenturl);
+        return HTMLHelper::_('select.genericlist', $options, 'select-round', 'onchange="top.location.href=this.options[this.selectedIndex].value;"', 'value', 'text', $currenturl);
     }
 
     /**
@@ -522,7 +523,7 @@ catch (Exception $e)
             ?>
             <span class='hasTip'
                   title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 
-                <?php echo JHtml::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
+                <?php echo HTMLHelper::link($link, $boldStart . $playgroundName . $boldEnd); ?> </span>
 
             <?php
         }
@@ -630,7 +631,7 @@ catch (Exception $e)
                     <i class="fa '. $icon . ' fa-stack-1x fa-inverse" title="'.implode("|",$attributes).'"></i>
                     </span>';
             }else{
-            return JHtml::image($img, $alt, $attributes);
+            return HTMLHelper::image($img, $alt, $attributes);
         }
     }
 
@@ -653,7 +654,7 @@ catch (Exception $e)
             $attribs = array_merge($attributes, $attribs);
         }
         $url = Route::_(sportsmanagementHelperRoute::getMatchReportRoute($game->project_slug, $game->slug));
-        return JHtml::link($url, $img);
+        return HTMLHelper::link($url, $img);
     }
 
     /**
@@ -702,7 +703,7 @@ catch (Exception $e)
                 } else {
                     $attributes = $def_attribs;
                 }
-                return JHtml::image($imgsrc, $alt, $attributes);
+                return HTMLHelper::image($imgsrc, $alt, $attributes);
             }
         }
     }
@@ -736,7 +737,7 @@ catch (Exception $e)
                 $params["order"] = $paramName;
                 $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
                 $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
-                $img = JHtml::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
+                $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;
                 $params["dir"] = $default;
@@ -746,7 +747,7 @@ catch (Exception $e)
 
 
             $query = JURI::buildQuery($params);
-            echo JHtml::link(
+            echo HTMLHelper::link(
                     Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
             echo JText::_($columnTitle);
@@ -811,14 +812,14 @@ catch (Exception $e)
                 $params["order"] = $paramName;
                 $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
                 $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
-                $img = JHtml::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
+                $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;
                 $params["dir"] = $default;
             }
 
             $query = JURI::buildQuery($params);
-            echo JHtml::link(
+            echo HTMLHelper::link(
                     Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
             echo JText::_($columnTitle);
@@ -858,13 +859,13 @@ catch (Exception $e)
                             array(
                                 "limit" => $limit,
                                 "limitstart" => 0));
-            echo JHtml::link($url . $query, '&lt;&lt;&lt;');
+            echo HTMLHelper::link($url . $query, '&lt;&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp';
             $query = JURI::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $latestlimitstart));
-            echo JHtml::link($url . $query, '&lt;&lt;');
+            echo HTMLHelper::link($url . $query, '&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp;';
         }
         echo '</td>';
@@ -882,13 +883,13 @@ catch (Exception $e)
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $nextlimitstart));
-            echo JHtml::link($url . $query, '&gt;&gt;');
+            echo HTMLHelper::link($url . $query, '&gt;&gt;');
             echo '&nbsp;&nbsp;&nbsp';
             $query = JURI::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $lastlimitstart));
-            echo JHtml::link($url . $query, '&gt;&gt;&gt;');
+            echo HTMLHelper::link($url . $query, '&gt;&gt;&gt;');
         }
         echo '</td>';
         echo '</tr>';

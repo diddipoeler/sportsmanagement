@@ -191,7 +191,7 @@ if ( $schemahome )
 
 
 <?PHP
-//echo JHtml::image($this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
+
 echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',
 $this->team1_club->logo_big,
 $this->team1_club->name,
@@ -216,7 +216,7 @@ if ( $schemaguest )
 
 
 <?PHP
-//echo JHtml::image($this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
+
 echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',
 $this->team2_club->logo_big,
 $this->team2_club->name,
@@ -354,7 +354,7 @@ $picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">
 
 <?PHP
-//echo JHtml::image($picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
+
 echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
 $picture,
 $player->lastname,

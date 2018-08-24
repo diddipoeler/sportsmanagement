@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
-//echo '<pre>',print_r($this->matches,true),'</pre><br>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <!-- START: matches -->
@@ -73,7 +73,7 @@ if ($this->config['type_matches'] != 0) {
 				?>
 					<tr class="sectiontableheader">
 						<th colspan="16">
-							<?php echo JHtml::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
+							<?php echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
 						</th>
 					</tr>
 				<?php
@@ -203,12 +203,12 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 					?>
 					<?php if ($this->config['which_link']==1) { ?>
 					<?php
-					echo JHtml::link($result_link,$game->roundcode);
+					echo HTMLHelper::link($result_link,$game->roundcode);
 					}
 					?>
 					<?php if ($this->config['which_link']==2) { ?>
 					<?php
-					echo JHtml::link($nextmatch_link,$game->roundcode);
+					echo HTMLHelper::link($nextmatch_link,$game->roundcode);
 					}
 					?>
 				</td>
@@ -223,7 +223,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				<?php if ( $this->config['show_match_date'] ) { ?>
 				<td>
 					<?php
-					echo JHtml::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
+					echo HTMLHelper::date($game->match_date, Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
 					?>
 				</td>
 					<?php } ;?>
@@ -309,7 +309,7 @@ $this->overallconfig['use_jquery_modal']);
 					foreach ($matchReferees AS $matchReferee)
 					{
 						$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
-						echo JHtml::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
+						echo HTMLHelper::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
 					?>
@@ -318,7 +318,7 @@ $this->overallconfig['use_jquery_modal']);
 					<?php if ( $this->config['show_playground'] ) { ?>
 				<td>
 					<?php
-					echo JHtml::link($playground_link,$game->pl_name);
+					echo HTMLHelper::link($playground_link,$game->pl_name);
 					?>
 				</td>
 					<?php } ;?>
@@ -368,20 +368,20 @@ $this->overallconfig['use_jquery_modal']);
 					   }
 						if(isset($team1) && isset($team2) && ($team1==$team2)) {
 							echo '<td align="center" valign="middle">' .
-							JHtml::image("media/com_sportsmanagement/jl_images/draw.png",
+							HTMLHelper::image("media/com_sportsmanagement/jl_images/draw.png",
 							"draw.png",
 							array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_DRAW'))
 							)."&nbsp;</td>";
 						} else {
 							if($team1 > $team2) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_up.png",
 								"thumbs_up.png",
 								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_WON'))
 								)."&nbsp;</td>";
 							} elseif($team2 > $team1) {
 								echo '<td align="center" valign="middle">' .
-								JHtml::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
+								HTMLHelper::image("media/com_sportsmanagement/jl_images/thumbs_down.png",
 								"thumbs_down.png",
 								array("title" => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_LOST'))
 								)."&nbsp;</td>";

@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 //echo 'previousx <br><pre>'.print_r($this->previousx,true).'</pre>';
 //echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre>';
 //echo 'teams <br><pre>'.print_r($this->teams,true).'</pre>';
@@ -56,10 +57,10 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				?>
 			<tr class="">
 				<td><?php
-				echo JHtml::link( $result_link, $game->roundcode );
+				echo HTMLHelper::link( $result_link, $game->roundcode );
 				?></td>
 				<td nowrap="nowrap"><?php
-				echo JHtml::date( $game->match_date, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
+				echo HTMLHelper::date( $game->match_date, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAYDATE' ) );
 				?></td>
 				<td><?php
 				echo substr( $game->match_date, 11, 5 );
@@ -107,10 +108,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game-
 				<td nowrap="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = JHtml::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = HTMLHelper::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					Text::_( 'Match Report' ),
 					array( "title" => Text::_( 'Match Report' ) ) );
-					echo JHtml::link( $report_link, $desc);
+					echo HTMLHelper::link( $report_link, $desc);
 				}
 				$k = 1 - $k;
 				?></td>

@@ -1418,9 +1418,6 @@ $body .= "</table>";
 	$jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
 	$body .= $jdate->format('d.m.Y H:i'); 
 
-	//$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
-	//$body .= " - ";
-	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
 	$body .= "</td>";
 
   $homeName = self::getMatchTeam($result->projectteam1_id);

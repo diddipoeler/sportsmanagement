@@ -11,10 +11,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-jimport('joomla.application.component.view');
-jimport('joomla.html.pane');
-jimport('joomla.functions');
+HTMLHelper::('joomla.application.component.view');
+HTMLHelper::('joomla.html.pane');
+HTMLHelper::('joomla.functions');
 JHtml::_('behavior.tooltip');
 
 /**

@@ -105,8 +105,6 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_ENTRY_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_entry.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$predictionMemberID,sportsmanagementModelPrediction::$roundID,sportsmanagementModelPrediction::$pjID,'',0,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
-//				$output .= '&nbsp;';
 				
                 ?>
                 <li class="list-inline-item">
@@ -127,8 +125,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 }
                         
 				$link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID,$pmVar,'',sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$pggroup,sportsmanagementModelPrediction::$roundID,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
-//				$output .= '&nbsp;';
+
 				?>
                 <li class="list-inline-item">
                 <?php
@@ -140,8 +137,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RESULTS_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_results.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$roundID,sportsmanagementModelPrediction::$pjID,$pmVar,'',sportsmanagementModelPrediction::$pggroup,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
-//				$output .= '&nbsp;';
+
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -152,8 +148,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 				$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,0,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
-//				$output .= '&nbsp;';
+
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -166,8 +161,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
                 $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RANKING_GROUP_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/teaminfo_icon.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				$link = JSMPredictionHelperRoute::getPredictionRankingRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID,'',sportsmanagementModelPrediction::$pggroup,1,0,0,0,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
-//				$output .= '&nbsp;';
+
                 ?>
                 <li class="list-inline-item">
                 <?php
@@ -180,7 +174,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 				$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_HEAD_RULES_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_rules.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
 				$link = JSMPredictionHelperRoute::getPredictionRulesRoute(sportsmanagementModelPrediction::$predictionGameID,sportsmanagementModelPrediction::$cfg_which_database);
-//				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
+
                 ?>
                 <li class="list-inline-item">
                 <?php

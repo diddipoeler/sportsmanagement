@@ -60,7 +60,7 @@ if ($this->config['show_player_numbers'])
 				<span class="jl_rosterperson_position_number">
 				<?php
 				$playerNumber = ( $this->config['player_numbers_pictures'] && function_exists( 'imagecreatefrompng' ) ) ? 
-					JHtml::image( JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
+					HTMLHelper::image( JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
 					: $pnr;
 					echo $playerNumber;
 				
@@ -78,7 +78,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $this->team->slug;
 $routeparameter['pid'] = $this->row->person_slug;
 		echo ($this->config['link_player']==1) ? 
-			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter),$personName)
+			HTMLHelper::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;
@@ -100,19 +100,19 @@ $routeparameter['pid'] = $this->row->person_slug;
 		if (!empty($this->playertool[0]->injury))
 		{
 			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');
-			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+			echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->suspension))
 		{
 			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_SUSPENDED');
-			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+			echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 		if (!empty($this->playertool[0]->away))
 		{
 			$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PERSON_AWAY');
-			echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
+			echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
 			$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		}
 ?>
@@ -175,7 +175,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 							<?php echo Text::_( "COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY" );?>
 						</span>
 						<span class="jl_roster_persondetails_data">
-							<?php echo JHtml::date( $this->row->birthday,$birthdayformat );?>
+							<?php echo HTMLHelper::date( $this->row->birthday,$birthdayformat );?>
 						</span>
 					</div>
 <?php
@@ -192,7 +192,7 @@ $routeparameter['pid'] = $this->row->person_slug;
  [ &dagger; ]
 						</span>
 						<span class="jl_roster_persondetails_data">
-<?php echo JHtml::date( $this->row->deathday,Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) );?>
+<?php echo HTMLHelper::date( $this->row->deathday,Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) );?>
 						</span>
 					</div>
 <?php

@@ -12,7 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-JHtml::_('behavior.framework'); 
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.framework'); 
 $params = $this->form->getFieldsets('params');
 ?>
 <script type="text/javascript">
@@ -76,20 +77,20 @@ echo $this->loadTemplate('players_trikot_numbers');
     {
 		// focus on players tab 
 		$startOffset = 1;
-		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
+		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
 		echo $this->loadTemplate('substitutions');
 		
-		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
 		echo $this->loadTemplate('players');
 		
-		echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo JHtml::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
-		echo JHtml::_('tabs.end');
+		echo HTMLHelper::_('tabs.end');
         }
 		?>
 		<input type="hidden" name="task" value="" />
@@ -108,7 +109,7 @@ echo $this->loadTemplate('players_trikot_numbers');
 		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
                 
-		<?php //echo JHtml::_('form.token')."\n"; ?>
+		<?php //echo HTMLHelper::_('form.token')."\n"; ?>
         
 <input type="hidden" id="token" name="token" value="
 <?php 

@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if ($this->familyteamstree) {
                     $class_collapse = 'collapse in';
@@ -39,7 +40,7 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
   $color = array_key_exists($rowclub, $this->findclub) ? 'lawngreen' : '';
                                 ?>	
                               <span style="background-color:<?php echo $color;?>;">
-                                <a href="<?php echo $this->familyclub[$rowclub]->clublink;?>"><?PHP echo JHTML::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->club_name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->club_name; ?></a>
+                                <a href="<?php echo $this->familyclub[$rowclub]->clublink;?>"><?PHP echo HTMLHelper::::image($this->familyclub[$rowclub]->logo_big, $this->familyclub[$rowclub]->club_name, 'width="30"') . ' ' . $this->familyclub[$rowclub]->club_name; ?></a>
                                 </span>	
                               <?php
                                 echo $rowvalue;

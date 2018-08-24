@@ -9,6 +9,7 @@
  * @subpackage allleagues
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <div class="table-responsive">        
@@ -18,16 +19,16 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <th class="" id="">
                     <?php
-                    echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_LEAGUES', 'v.name', $this->sortDirection, $this->sortColumn);
+                    echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ALL_LEAGUES', 'v.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
                 <th class="" id="">
-                    <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_IMAGE', 'v.picture', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
 
                 <th class="" id="">
-                    <?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn);
+                    <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_EDIT_CLUBINFO_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>                                 
 
@@ -41,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
                     if ($item->country) {
                         $link = sportsmanagementHelperRoute::getAllProjectsRoute($item->country, $item->
                                         id);
-                        echo JHtml::link($link, $item->name);
+                        echo HTMLHelper::link($link, $item->name);
                     } else {
                         echo $item->name;
                     }

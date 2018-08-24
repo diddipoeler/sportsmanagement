@@ -11,6 +11,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * ImageSelectSM
@@ -57,7 +58,7 @@ static $_foldertype = '';
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<pre>'.print_r($type,true).'</pre>'),'Error');
     
-		JHtml::_( 'behavior.modal' );
+		HTMLHelper::_( 'behavior.modal' );
 
 		$baseFolder = JURI::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
@@ -112,7 +113,7 @@ static $_foldertype = '';
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
 		$document->addScriptDeclaration( $js );
 
-		JHtml::_( 'behavior.modal', 'a.modal' );
+		HTMLHelper::_( 'behavior.modal', 'a.modal' );
 
 		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";

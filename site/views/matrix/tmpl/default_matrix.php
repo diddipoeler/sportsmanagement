@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!--[if IE]>
@@ -342,13 +343,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$picture = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif';
 								$title = $result->cancel_reason;
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHTML::link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
 									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-									$new_match = JHTML::link($link, $desc);
+									$new_match = HTMLHelper::link($link, $desc);
 								} 
 								$match_result .= $new_match;
 							} else {

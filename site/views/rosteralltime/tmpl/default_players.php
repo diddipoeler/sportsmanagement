@@ -40,6 +40,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Show team-players as defined
 if (!empty($this->rows))
@@ -152,7 +153,7 @@ foreach ($this->playerposition as $position_id )
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php 
@@ -161,17 +162,17 @@ foreach ($this->playerposition as $position_id )
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-				echo JHTML::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
+				echo HTMLHelper::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
 				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php
@@ -199,7 +200,7 @@ foreach ($this->playerposition as $position_id )
 							{
 								$iconPath='images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-							$eventtype_header = JHTML::image(	$iconPath,
+							$eventtype_header = HTMLHelper::image(	$iconPath,
 																Text::_($eventtype->name),
 																array(	'title'=> Text::_($eventtype->name),
 																		  'align'=> 'top',
@@ -279,7 +280,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
        $routeparameter['pid'] = $players->person_slug;
 		
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
-			echo JHTML::link($link,'<span class="playername">'.$playerName.'</span>');
+			echo HTMLHelper::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else
 		{
@@ -298,17 +299,17 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 				switch ($this->config['show_birthday'])
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr = JHTML::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($players->birthday,$players->deathday).")";
 						break;
 					case 2:	 // show Only Birthday
-						$birthdateStr = JHTML::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+						$birthdateStr = HTMLHelper::date($players->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 						break;
 					case 3:	 // show Only Age
 						$birthdateStr = "(".sportsmanagementHelper::getAge($players->birthday,$players->deathday).")";
 						break;
 					case 4:	 // show Only Year of birth
-						$birthdateStr = JHTML::date($players->birthday, 'Y');
+						$birthdateStr = HTMLHelper::date($players->birthday, 'Y');
 						break;
 					default:
 						$birthdateStr = "";
@@ -326,7 +327,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pi
 			// deathday
 			if ( $players->deathday !="0000-00-00" )
 			{
-				$birthdateStr .= ' [&dagger; '.JHTML::date($players->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+				$birthdateStr .= ' [&dagger; '.HTMLHelper::date($players->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}
 					
 			echo $birthdateStr;

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
@@ -265,7 +266,7 @@ if ( $this->config['show_pictures'] )
 		if($outName != '') {
 			$imgTitle=Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
 			$imgTitle2=array(' title' => $imgTitle);
-			$result .= JHtml::image($pic_out,$imgTitle,$imgTitle2).'&nbsp;';
+			$result .= HTMLHelper::image($pic_out,$imgTitle,$imgTitle2).'&nbsp;';
 
 			$isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team));
 
@@ -278,7 +279,7 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $sub->team_id;
 $routeparameter['pid'] = $sub->out_person_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			
-                $result .= JHtml::link($link,$outName);
+                $result .= HTMLHelper::link($link,$outName);
 			} 
             else 
             {
@@ -294,7 +295,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 		if($inName!='') {
 			$imgTitle=Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
 			$imgTitle2=array(' title' => $imgTitle);
-			$result .= JHtml::image($pic_in,$imgTitle,$imgTitle2).'&nbsp;';
+			$result .= HTMLHelper::image($pic_in,$imgTitle,$imgTitle2).'&nbsp;';
 
 			$isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team));
 
@@ -307,7 +308,7 @@ $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $sub->team_id;
 $routeparameter['pid'] = $sub->person_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			    
-                $result .= JHtml::link($link,$inName);
+                $result .= HTMLHelper::link($link,$inName);
 			} 
             else 
             {
@@ -357,7 +358,7 @@ $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $me->team_id;
 $routeparameter['pid'] = $me->playerid;
 $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  							
-$match_player = JHtml::link($player_link,$match_player);
+$match_player = HTMLHelper::link($player_link,$match_player);
                         }
 					$result .= $match_player;
 

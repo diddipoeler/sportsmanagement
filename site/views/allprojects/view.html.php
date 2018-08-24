@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('JSM_PATH'))
 {
@@ -66,7 +67,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 		$this->pagination	= $this->get('Pagination');
 		
         //build the html options for nation
-		$temp[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$temp[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $temp = array_merge($temp,$res);
@@ -82,7 +83,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
+        $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
         $modeltemp = JModelLegacy::getInstance("Leagues", "sportsmanagementModel");
 		if ($res = $modeltemp->getLeagues())
         {
@@ -99,7 +100,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
                                                                 
         unset($temp);
         
-        $temp[] = JHtml::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
+        $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
         $modeltemp = JModelLegacy::getInstance("Seasons", "sportsmanagementModel");
 		if ($res = $modeltemp->getSeasons())
         {

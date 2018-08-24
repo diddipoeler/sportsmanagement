@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewNextMatch
@@ -56,7 +57,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			{
 				$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHtml::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = HTMLHelper::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
 			$this->newmatchtext = $newmatchtext;
@@ -65,7 +66,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 			{
 				$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
 				$matchTime = sportsmanagementHelperHtml::showMatchTime($ret, $this->config, $this->overallconfig, $this->project);
-				$matchDate = JHtml::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
+				$matchDate = HTMLHelper::date($ret->match_date,Text::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
             

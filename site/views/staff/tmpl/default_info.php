@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //echo ' config<pre>'.print_r($this->config,true).'</pre>';
 //echo ' person<pre>'.print_r($this->person,true).'</pre>';
@@ -84,14 +85,14 @@ use Joomla\CMS\Language\Text;
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute( $this->person->user_id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->person->user_id,
 																									$this->project->id,
 																									$this->person->id );
-											$outputName = JHtml::link( $link, $outputName );
+											$outputName = HTMLHelper::link( $link, $outputName );
 											break;
 
 								default:	break;
@@ -156,13 +157,13 @@ use Joomla\CMS\Language\Text;
 							{
 								case 1:	 // show Birthday and Age
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday ) . ")";
 											break;
 
 								case 2:	 // show Only Birthday
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 											break;
 
 								case 3:	 // show Only Age
@@ -171,7 +172,7 @@ use Joomla\CMS\Language\Text;
 
 								case 4:	 // show Only Year of birth
 											$birthdateStr =	$this->person->birthday != "0000-00-00" ?
-															JHtml::date( $this->person->birthday, Text::_( '%Y' ) ) : "-";
+															HTMLHelper::date( $this->person->birthday, Text::_( '%Y' ) ) : "-";
 											break;
 
 								default:	$birthdateStr = "";
@@ -196,7 +197,7 @@ use Joomla\CMS\Language\Text;
 						
 						<?php
 						$deathdateStr =	$this->person->deathday != "0000-00-00" ?
-							JHtml::date( $this->person->deathday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+							HTMLHelper::date( $this->person->deathday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 							echo '&dagger; '.$deathdateStr;
 						?>
 						<address>
@@ -264,7 +265,7 @@ use Joomla\CMS\Language\Text;
 				}
 				else
 				{
-					echo JHtml::_('email.cloak', $this->person->email );
+					echo HTMLHelper::_('email.cloak', $this->person->email );
 				}
             ?>
             </address>
@@ -276,7 +277,7 @@ use Joomla\CMS\Language\Text;
 					?>
 					<address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
-			<?php echo JHtml::_(	'link',
+			<?php echo HTMLHelper::_(	'link',
 				$this->person->website,
 				$this->person->website,
 				array( 'target' => '_blank' ) );

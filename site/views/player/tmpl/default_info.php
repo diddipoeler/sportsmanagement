@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
@@ -66,12 +67,12 @@ use Joomla\CMS\Language\Text;
             switch ($this->config['show_user_profile']) {
                 case 1:  // Link to Joomla Contact Page
                     $link = sportsmanagementHelperRoute::getContactRoute($this->person->user_id);
-                    $outputName = JHtml::link($link, $outputName);
+                    $outputName = HTMLHelper::link($link, $outputName);
                     break;
 
                 case 2:  // Link to CBE User Page with support for JoomLeague Tab
                     $link = sportsmanagementHelperRoute::getUserProfileRouteCBE($this->person->user_id, $this->project->id, $this->person->id);
-                    $outputName = JHtml::link($link, $outputName);
+                    $outputName = HTMLHelper::link($link, $outputName);
                     break;
 
                 default: break;
@@ -122,13 +123,13 @@ use Joomla\CMS\Language\Text;
             switch ($this->config['show_birthday']) {
                 case 1:  // show Birthday and Age
                     $birthdateStr = $timestamp_birth ?
-                            JHtml::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+                            HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
                     $birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge($this->person->birthday, $this->person->deathday) . ")";
                     break;
 
                 case 2:  // show Only Birthday
                     $birthdateStr = $timestamp_birth ?
-                            JHtml::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
+                            HTMLHelper::date($this->person->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
                     break;
 
                 case 3:  // show Only Age
@@ -139,7 +140,7 @@ use Joomla\CMS\Language\Text;
 
                 case 4:  // show Only Year of birth
                     $birthdateStr = $timestamp_birth ?
-                            JHtml::date($this->person->birthday, Text::_('%Y')) : "-";
+                            HTMLHelper::date($this->person->birthday, Text::_('%Y')) : "-";
                     break;
 
                 default: $birthdateStr = "";
@@ -157,7 +158,7 @@ use Joomla\CMS\Language\Text;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_DEATHDAY'); ?></strong>
                 <?php
-                $deathdateStr = JHtml::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE'));
+                $deathdateStr = HTMLHelper::date($this->person->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE'));
                 echo '&dagger; ' . $deathdateStr;
                 ?>
             </address>	
@@ -200,7 +201,7 @@ use Joomla\CMS\Language\Text;
                         echo $this->person->email;
                         ?> </a> <?php
                 } else {
-                    echo JHtml::_('email.cloak', $this->person->email);
+                    echo HTMLHelper::_('email.cloak', $this->person->email);
                 }
                 ?>
             </address>
@@ -211,7 +212,7 @@ use Joomla\CMS\Language\Text;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_WEBSITE'); ?></strong>
                 <?php
-                echo JHtml::_('link', $this->person->website, $this->person->website, array('target' => '_blank'));
+                echo HTMLHelper::_('link', $this->person->website, $this->person->website, array('target' => '_blank'));
                 ?>
             </address>
             <?php
@@ -244,7 +245,7 @@ use Joomla\CMS\Language\Text;
                 <?php
                 if ($this->config['player_number_picture']) {
                     $posnumber = $this->teamPlayer->jerseynumber;
-                    echo JHtml::image(JURI::root() . 'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
+                    echo HTMLHelper::image(JURI::root() . 'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
                 } else {
                     echo $this->teamPlayer->jerseynumber;
                 }

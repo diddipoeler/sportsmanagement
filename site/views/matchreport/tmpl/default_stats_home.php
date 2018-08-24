@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 	<table class="table table-responsive" >
 		<?php
@@ -62,7 +63,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -94,7 +95,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 
@@ -159,7 +160,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 										    {
-											echo JHtml::link( $player_link, $match_player );
+											echo HTMLHelper::link( $player_link, $match_player );
 										    } else {
 										        echo $match_player;
 										    } 

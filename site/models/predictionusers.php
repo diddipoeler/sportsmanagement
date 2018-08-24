@@ -265,7 +265,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
         //$app->enqueueMessage(JText::_('nehme standard ->'.$picture),'Notice');
 	}
-	//echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
+
 	echo sportsmanagementHelper::getPictureThumb($picture, $playerName,0,0);
 	}
 	else

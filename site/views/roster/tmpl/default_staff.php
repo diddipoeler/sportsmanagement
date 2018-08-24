@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // Show team-staff as defined
 if (count($this->stafflist) > 0)
@@ -178,7 +179,7 @@ $this->overallconfig['use_jquery_modal']
        $routeparameter['pid'] = $row->person_slug;
        
 					$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
-					echo JHtml::link($link, '<span class="staffname">'. $playerName.'</span>');
+					echo HTMLHelper::link($link, '<span class="staffname">'. $playerName.'</span>');
 				}
 				else
 				{
@@ -195,17 +196,17 @@ $this->overallconfig['use_jquery_modal']
 						switch ($this->config['show_birthday_staff'])
 						{
 							case 1:	 // show Birthday and Age
-								$birthdateStr = JHtml::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								$birthdateStr.="&nbsp;(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 2:	 // show Only Birthday
-								$birthdateStr = JHtml::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
+								$birthdateStr = HTMLHelper::date($row->birthday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE'));
 								break;
 							case 3:	 // show Only Age
 								$birthdateStr = "(".sportsmanagementHelper::getAge($row->birthday,$row->deathday).")";
 								break;
 							case 4:	 // show Only Year of birth
-								$birthdateStr = JHtml::date($row->birthday, 'Y');
+								$birthdateStr = HTMLHelper::date($row->birthday, 'Y');
 								break;
 							default:
 								$birthdateStr = "";
@@ -219,7 +220,7 @@ $this->overallconfig['use_jquery_modal']
 					// deathday
 					if ( $row->deathday !="0000-00-00" )
 					{
-						$birthdateStr .= ' [ &dagger; '.JHtml::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
+						$birthdateStr .= ' [ &dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 					}
 							
 					echo $birthdateStr;

@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//echo '<pre>',print_r($this->club,true),'</pre><br>';
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <div class="row" id="clubplandatenav">
@@ -21,30 +21,29 @@ use Joomla\CMS\Language\Text;
 		<tr>
         <td>
         <?php
-                echo "".JHtml::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
-                //echo "".JHtml::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
+                echo "".HTMLHelper::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
                 ?>
                 </td>
                 <td>
                 <?PHP
-                echo "".JHtml::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
+                echo "".HTMLHelper::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
 				?>
             </td>
         </tr>
         <tr>
 			<td>
             <?php
-				echo JHtml::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
+				echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
                 ?>
                 </td>
                 <td>
                 <?PHP
-				echo ' - '.JHtml::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
+				echo ' - '.HTMLHelper::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
                 ?>
                 </td>
                 <td>
                 <?PHP
-                echo "".JHtml::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
+                echo "".HTMLHelper::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
 				?>
                 </td>
                 <td>
@@ -76,6 +75,6 @@ $this->overallconfig['use_jquery_modal']);
 		</tr>
         
 	</table>
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 </div>

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
 ?>
@@ -35,26 +36,26 @@ if (count($this->games))
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = $picture_path_sport_type_name.'/startroster.png';
                    
-					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = $picture_path_sport_type_name.'/in.png';
                     
-					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
 					<th class=""><?php
 					$imageTitle = Text::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = $picture_path_sport_type_name.'/out.png';
                    
-					echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
+					echo HTMLHelper::image($picture,$imageTitle,array(' title' => $imageTitle));
 					?></th>
                     
                     <th class=""><?php
 				$imageTitle=Text::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = $picture_path_sport_type_name.'/uhr.png';
                 
-				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
+				echo HTMLHelper::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
 					<?php
@@ -75,7 +76,7 @@ if (count($this->games))
                     
                     
 
-					echo JHtml::image($iconPath,Text::_($eventtype->name),
+					echo HTMLHelper::image($iconPath,Text::_($eventtype->name),
 					array(	"title" => Text::_($eventtype->name),
 					"align" => "top",
 					"hspace" => "2"));
@@ -157,7 +158,7 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 $jdate = JFactory::getDate($game->match_date);
 $jdate->setTimezone(new DateTimeZone($this->project->timezone));
 $body = $jdate->format('l, d.F Y H:i'); 		    
-					echo JHtml::link($report_link,$body);
+					echo HTMLHelper::link($report_link,$body);
 					?>
 					</td>
 					<td class="<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
@@ -172,7 +173,7 @@ $game->home_name,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);							
-                            echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
+                            echo HTMLHelper::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
 						} 
                         else 
                         {
@@ -203,7 +204,7 @@ $game->away_name,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);                            
-							echo JHtml::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
+							echo HTMLHelper::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
 						} 
                         else 
                         {

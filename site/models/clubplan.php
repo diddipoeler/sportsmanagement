@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.model');
 
 /**
@@ -633,7 +634,7 @@ catch (Exception $e)
 				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
-			return JHtml::image($logo_small,"",$params);
+			return HTMLHelper::image($logo_small,"",$params);
 		}
 		elseif ($type==2 && isset($country))
 		{

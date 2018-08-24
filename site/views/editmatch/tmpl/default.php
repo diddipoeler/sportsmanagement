@@ -12,10 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -143,6 +144,6 @@ $fieldsets = $this->form->getFieldsets();
 	<input type="hidden" name="option" value="com_sportsmanagement" /> 
 	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
 	<input type="hidden" name="task" value="" />
-	<?php echo JHTML::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	
 </form>

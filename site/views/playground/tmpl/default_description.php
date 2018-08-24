@@ -10,6 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <?php
 if ( $this->playground->notes )
@@ -19,7 +20,7 @@ if ( $this->playground->notes )
 <div class="row-fluid">
 <?php 
 $description = $this->playground->notes;
-$description = JHtml::_('content.prepare', $description);
+$description = HTMLHelper::::_('content.prepare', $description);
 echo $description; 
 ?>
 </div>

@@ -12,14 +12,15 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 ?>
@@ -52,5 +53,5 @@ JHtml::_( 'behavior.mootools' );
 	<input type="hidden" name="tmpl" value="component" />
 	<input type="hidden" name="task" value="imagehandler.select" />
 	<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>

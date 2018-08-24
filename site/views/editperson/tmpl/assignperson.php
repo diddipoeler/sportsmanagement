@@ -1,6 +1,7 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div>
 	<form action="index.php" method="post" id="adminForm">
@@ -49,6 +50,6 @@ use Joomla\CMS\Language\Text;
 		<input type="hidden" name="option" value="com_joomleague" />
 		<input type="hidden" name="view" value="person" />
 		<input type="hidden" name="task" value="person.personassign" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</form>
 </div>

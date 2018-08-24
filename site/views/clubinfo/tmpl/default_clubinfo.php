@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 //$this->columns = 2;
 $this->divclass = '';
 
@@ -100,8 +101,8 @@ if (!isset($this->club)) {
                         <span class="clubinfo_listing_value">
                             <?php
                             if (isset($this->clubassoc->name)) {
-                                echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_flag_width']));
-                                echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width'])) . substr($this->clubassoc->name, 0, 30);
+                                echo HTMLHelper::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_flag_width']));
+                                echo HTMLHelper::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width'])) . substr($this->clubassoc->name, 0, 30);
                             }
                             ?>
                             <br />
@@ -141,7 +142,6 @@ if (!isset($this->club)) {
                         if (( $user->id ) or ( !$this->overallconfig['nospam_email'] )) {
                             ?><a href="mailto: <?php echo $this->club->email; ?>"><?php echo $this->club->email; ?></a><?php
                         } else {
-                            //echo JHtml::_('email.cloak', $this->club->email );
                             echo $this->club->email;
                         }
                         ?>
@@ -154,7 +154,7 @@ if (!isset($this->club)) {
                     <address>
                         <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_WWW'); ?></strong>
 
-                        <?php echo JHtml::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
+                        <?php echo HTMLHelper::_('link', $this->club->website, $this->club->website, array("target" => "_blank")); ?>
 
                     </address>
                     <?php
@@ -240,7 +240,7 @@ if (!isset($this->club)) {
                                 ?>
                             </strong>
                             <?php
-                            echo JHtml::link($link, $playground->name);
+                            echo HTMLHelper::link($link, $playground->name);
                             if (!sportsmanagementHelper::existPicture($playground->picture)) {
                                 $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('stadium');
                             }
@@ -270,11 +270,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                     <?PHP
                     $link = sportsmanagementHelperRoute::getKunenaRoute($this->club->sb_catid);
                     $imgTitle = Text::_($this->club->name . ' Forum');
-                    $desc = JHtml::image('media/COM_SPORTSMANAGEMENT/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle, 'width' => '100'));
+                    $desc = HTMLHelper::image('media/COM_SPORTSMANAGEMENT/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle, 'width' => '100'));
                     ?>
                     <span class="clubinfo_listing_value">
                         <?PHP
-                        echo JHtml::link($link, $desc);
+                        echo HTMLHelper::link($link, $desc);
                         ?>
                     </span>
                     <?PHP
@@ -306,7 +306,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground' . $playgrou
                                     <?php
                                 }
                                 ?>	
-                                <a href="#"><?PHP echo JHTML::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
+                                <a href="#"><?PHP echo HTMLHelper::image($this->club->logo_big, $this->club->name, 'width="30"') . ' ' . $this->club->name; ?></a>
                                 <?php
                                 echo $this->familytree;
                                 ?>
