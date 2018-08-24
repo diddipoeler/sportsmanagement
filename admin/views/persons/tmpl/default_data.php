@@ -119,7 +119,7 @@ $this->readonly = ' readonly ';
                                 <?php if ($row->checked_out) : ?>
 						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'persons.', $canCheckin); ?>
 					<?php endif; ?>
-					<?php if ($canEdit) : ?>
+					<?php if ( $canEdit && !$this->assign ) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?></a>
 					<?php else : ?>
