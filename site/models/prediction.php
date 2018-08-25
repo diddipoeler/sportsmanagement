@@ -2326,7 +2326,9 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 						//Prediction Result is not the same as the match result but the correct difference between home and
 						//away result was tipped and the matchresult is draw
 						$points = $predictionProject->points_correct_draw_joker;
-						$diff = 1;
+						//$diff = 1;
+						//"$tend=1" should be used instead as "Prediction Result is not the same as the match result but the tendence of the result is correct"
+                       				$tend=1; //updated 2018-08-25
 					}
 					elseif(($result_home - $result_away)==($tipp_home - $tipp_away))
 					{
@@ -2361,7 +2363,9 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 						//Prediction Result is not the same as the match result but the correct difference between home and
 						//away result was tipped and the matchresult is draw
 						$points = $predictionProject->points_correct_draw;
-						$diff = 1;
+						//$diff = 1;
+						//"$tend=1" should be used instead as "Prediction Result is not the same as the match result but the tendence of the result is correct"
+                       				$tend=1; //updated 2018-08-25
 					}
 					elseif(($result_home - $result_away)==($tipp_home - $tipp_away))
 					{
