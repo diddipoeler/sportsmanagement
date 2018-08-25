@@ -10,6 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JFormFieldClubs
@@ -20,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class JFormFieldClubs extends JFormField
+class JFormFieldClubs extends FormField
 {
 
 	protected $type = 'clubs';
@@ -32,9 +37,9 @@ class JFormFieldClubs extends JFormField
 	 */
 	function getInput() {
 		$db = sportsmanagementHelper::getDBConnection();
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
-        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = ComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "com_sportsmanagement";
@@ -47,13 +52,13 @@ class JFormFieldClubs extends JFormField
 		$query = 'SELECT c.id, c.name FROM #__'.$database_table.'_club c ORDER BY name';
 		$db->setQuery( $query );
 		$clubs = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $clubs as $club ) {
-			$mitems[] = JHtml::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );
+			$mitems[] = HTMLHelper::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

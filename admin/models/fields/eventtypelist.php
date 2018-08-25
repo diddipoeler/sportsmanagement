@@ -12,8 +12,12 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
@@ -25,7 +29,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldeventtypelist extends JFormFieldList
+class JFormFieldeventtypelist extends FormField
 {
     
 	/**
@@ -44,14 +48,12 @@ class JFormFieldeventtypelist extends JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
-    //$vartable = (string) $this->element['targettable'];
-//		$select_id = JFactory::getApplication()->input->getVar('id');
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			

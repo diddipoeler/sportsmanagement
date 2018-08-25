@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
@@ -28,14 +29,19 @@ class JFormFieldacteventtype extends JFormFieldList
 
 	protected $type = 'acteventtype';
     
+    /**
+     * JFormFieldacteventtype::getOptions()
+     * 
+     * @return
+     */
     protected function getOptions()
 	{
 		// Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
+		$select_id = Factory::getApplication()->input->getVar('id');
         
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('s.id AS value, s.name AS text');

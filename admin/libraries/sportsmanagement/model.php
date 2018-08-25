@@ -11,6 +11,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 // import Joomla library
 jimport('joomla.application.component.modeladmin');
@@ -49,14 +51,14 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmview = $this->jsmjinput->getCmd('view');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
-        $this->jsmdate = JFactory::getDate();
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
+        $this->jsmdate = Factory::getDate();
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
 
@@ -137,7 +139,7 @@ $data['notes'] = $html;
 		
 		
 		
-if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
 {
 $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -272,7 +274,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         $object->modified = $this->jsmdate->toSql();
 	    $object->modified_by = $this->jsmuser->get('id');
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
 
        break;  
 /**
@@ -324,13 +326,13 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 	switch($data['gender'])
         {
 	case 0:
-       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player','');
 	break;	
 		case 1:
-       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small','');
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small','');
 	break;
 			case 2:
-       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small','');
+       $data['picture'] = ComponentHelper::getParams($this->jsmoption)->get('ph_player_woman_small','');
 	break;
 	}
        }
@@ -380,7 +382,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         $object->name = $team_name;
         $object->alias = JFilterOutput::stringURLSafe( $team_name );
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
         }
         
        }
@@ -390,15 +392,15 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */
        if ( empty($data['logo_big']) )
        {
-       $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
+       $data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big','');
        }
        if ( empty($data['logo_middle']) )
        {
-       $data['logo_middle'] = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+       $data['logo_middle'] = ComponentHelper::getParams($option)->get('ph_logo_medium','');
        }
        if ( empty($data['logo_small']) )
        {
-       $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
+       $data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small','');
        }
  
 /**
@@ -675,7 +677,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( $data['id'] )
 		{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {  
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
         }
@@ -691,7 +693,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( $data['id'] )
 		{
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {  
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
         }
@@ -727,7 +729,7 @@ $result = $this->jsmdb->execute();
 		$this->jsmquery->from('#__sportsmanagement_season_team_id');
 		$this->jsmquery->where('team_id ='. $data['id'] );
 		$this->jsmquery->where('season_id ='. $value );
-		//JFactory::getDbo()->setQuery($query);
+		//Factory::getDbo()->setQuery($query);
 		$this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
 		$delete_season[] = $value;
@@ -749,7 +751,7 @@ $result = $this->jsmdb->execute();
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
           
         }
@@ -786,9 +788,9 @@ $result = $this->jsmdb->execute();
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
-        $show_team_community = JComponentHelper::getParams($this->jsmoption)->get('show_team_community',0);
-        $cfg_use_plz_table = JComponentHelper::getParams($this->jsmoption)->get('cfg_use_plz_table',0);
+		$cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
+        $show_team_community = ComponentHelper::getParams($this->jsmoption)->get('show_team_community',0);
+        $cfg_use_plz_table = ComponentHelper::getParams($this->jsmoption)->get('cfg_use_plz_table',0);
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->getName(), $this->getName(), array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -801,7 +803,7 @@ $result = $this->jsmdb->execute();
         switch ($this->getName())
 		{
 		case 'position':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
@@ -827,7 +829,7 @@ $result = $this->jsmdb->execute();
            } 
         break;
         case 'statistic':
-        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/statistics');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
          $this->jsmquery->clear();
@@ -853,31 +855,31 @@ $result = $this->jsmdb->execute();
            } 
         break;
         case 'projectreferee':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectreferees');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'division':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/divisions');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'teamperson':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamplayers');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'smquote':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'jlextfederation':
-         $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+         $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
         $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
@@ -904,7 +906,7 @@ $result = $this->jsmdb->execute();
            } 
         break;
         case 'jlextcountry':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/flags');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
@@ -936,11 +938,11 @@ catch (Exception $e) {
             
         break;
         case 'jlextassociation':
-        $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('assocflag', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
         $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
         $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
        
@@ -967,7 +969,7 @@ catch (Exception $e) {
            } 
         break;
         case 'eventtype':
-         $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+         $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
 
@@ -1006,7 +1008,7 @@ catch (Exception $e) {
         $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
         }
 	*/
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;  
@@ -1033,7 +1035,7 @@ catch (Exception $e) {
             break;
         }
         
-        switch ( JComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
+        switch ( ComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
         {
         case 'com_content':
         $form->setFieldAttribute('category_id', 'type', 'category');
@@ -1055,22 +1057,22 @@ catch (Exception $e) {
         $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
         }
         */
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         
         break;
         case 'projectteam':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectteams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/projectteams/trikot_home');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/projectteams/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         break;
@@ -1124,24 +1126,24 @@ catch (Exception $e) {
         $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
         }
         */
-        $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_middle', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
+        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
         $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
         $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_big', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
         $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         //$form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot_home');
         $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         //$form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
@@ -1179,7 +1181,7 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_clubs', 'type', 'hidden');
         }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
@@ -1210,7 +1212,7 @@ catch (Exception $e) {
        
         break;
         case 'sportstype':
-        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/sport_types');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
         
@@ -1238,7 +1240,7 @@ catch (Exception $e) {
         break;
         
         case 'playground':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 
@@ -1264,12 +1266,12 @@ catch (Exception $e) {
            } 
         break;
         case 'agegroup':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         break;
         case 'league':
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/leagues');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);  
         break;
@@ -1286,7 +1288,7 @@ catch (Exception $e) {
             break;
             
         }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         /*
@@ -1339,7 +1341,7 @@ catch (Exception $e) {
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->getName().'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->getName().'.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -1369,7 +1371,7 @@ catch (Exception $e) {
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 
 	/**
@@ -1455,12 +1457,12 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
         $this->jsmpost = $this->jsmjinput->post->getArray(array());  
 	$this->jsmmessage = '';
@@ -1513,12 +1515,12 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser(); 
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
         $this->jsmpost = $this->jsmjinput->post->getArray(array()); 
 	$this->jsmmessage = '';
