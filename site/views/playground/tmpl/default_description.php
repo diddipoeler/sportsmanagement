@@ -20,7 +20,7 @@ if ( $this->playground->notes )
 <div class="row-fluid">
 <?php 
 $description = $this->playground->notes;
-$description = HTMLHelper::::_('content.prepare', $description);
+$description = HTMLHelper::_('content.prepare', $description);
 echo $description; 
 ?>
 </div>

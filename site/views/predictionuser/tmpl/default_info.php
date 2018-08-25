@@ -83,14 +83,14 @@ if (!empty($memberPredictionPoints))
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = sportsmanagementHelperRoute::getContactRoute($this->predictionMember->user_id);
-											$outputName = HTMLHelper::::link($link, $outputName);
+											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
 								case 2:	 // Link to CBE User Page with support for JoomLeague Tab
 											$link = sportsmanagementHelperRoute::getUserProfileRouteCBE(	$this->predictionMember->user_id,
 																									$this->predictionGame->id,
 																									$this->predictionMember->pmID);
-											$outputName = HTMLHelper::::link($link, $outputName);
+											$outputName = HTMLHelper::link($link, $outputName);
 											break;
 
 								default:	break;
@@ -110,7 +110,7 @@ if (!empty($memberPredictionPoints))
 							<td class='data'>
 								<?php
 								echo	($this->predictionMember->pmRegisterDate != '0000-00-00 00:00:00' ?
-										HTMLHelper::::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) :
+										HTMLHelper::date($this->predictionMember->pmRegisterDate,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) :
 										Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_UNKNOWN'));
 								?>
 							</td>
@@ -141,7 +141,7 @@ if (!empty($memberPredictionPoints))
 							<td class='data'>
 								<?php
 								echo	( !empty($this->predictionMember->last_tipp) && ( $this->predictionMember->last_tipp != '0000-00-00 00:00:00') ) ?
-										HTMLHelper::::date($this->predictionMember->last_tipp,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NEVER');
+										HTMLHelper::date($this->predictionMember->last_tipp,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CALENDAR_DATE')) : Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NEVER');
 								?>
 							</td>
 						</tr>
@@ -291,7 +291,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								<input type='hidden' name='task' value='predictionusers.selectprojectround' />
 								<input type='hidden' name='option' value='com_sportsmanagement' />
 								
-								<?php echo HTMLHelper::::_('form.token'); ?>
+								<?php echo HTMLHelper::_('form.token'); ?>
 
 								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
 																				sportsmanagementModelPrediction::$pjID,
@@ -453,11 +453,11 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 							<td class='data'>
 								<?php
 								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_UP'); $picture = 'media/com_sportsmanagement/jl_images/up.png';
-								echo HTMLHelper::::image($picture, $imgTitle, array(' title' => $imgTitle));
+								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
 								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_SAME'); $picture = 'media/com_sportsmanagement/jl_images/same.png';
-								echo HTMLHelper::::image($picture, $imgTitle, array(' title' => $imgTitle));
+								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
 								$imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_DOWN'); $picture = 'media/com_sportsmanagement/jl_images/down.png';
-								echo HTMLHelper::::image($picture, $imgTitle, array(' title' => $imgTitle));
+								echo HTMLHelper::image($picture, $imgTitle, array(' title' => $imgTitle));
 								?>
 							</td>
 						</tr>

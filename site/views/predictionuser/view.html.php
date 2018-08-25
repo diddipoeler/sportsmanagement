@@ -91,13 +91,13 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			if ($this->predictionMember->pmID > 0){$dMemberID=$this->predictionMember->pmID;}else{$dMemberID=0;}
 			if (!$this->allowedAdmin){$userID=$this->actJoomlaUser->id;}else{$userID=null;}
 
-			$predictionMembers[] = HTMLHelper::::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
+			$predictionMembers[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
 			if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID))
             {
                 $predictionMembers = array_merge($predictionMembers,$res);
                 }
                 
-			$lists['predictionMembers'] = HTMLHelper::::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
+			$lists['predictionMembers'] = HTMLHelper::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 			unset($res);
 			unset($predictionMembers);
 
@@ -131,14 +131,14 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 
 			if ( $this->getLayout() == 'edit' )
 			{
-				$dArray[] = HTMLHelper::::_('select.option',0,Text::_('JNO'));
-				$dArray[] = HTMLHelper::::_('select.option',1,Text::_('JYES'));
+				$dArray[] = HTMLHelper::_('select.option',0,Text::_('JNO'));
+				$dArray[] = HTMLHelper::_('select.option',1,Text::_('JYES'));
 
-				$lists['show_profile'] = HTMLHelper::::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
-				$lists['reminder'] = HTMLHelper::::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
-				$lists['receipt'] = HTMLHelper::::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
-				$lists['admintipp'] = HTMLHelper::::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
-				$lists['approvedForGame'] = HTMLHelper::::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
+				$lists['show_profile'] = HTMLHelper::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
+				$lists['reminder'] = HTMLHelper::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
+				$lists['receipt'] = HTMLHelper::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
+				$lists['admintipp'] = HTMLHelper::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
+				$lists['approvedForGame'] = HTMLHelper::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
 				unset($dArray);
                 /**
                  * schleife über die projekte
@@ -151,7 +151,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
           echo 'predictionuser view.html -> predictionProject<br /><pre>~' . print_r($predictionProject,true) . '~</pre><br />';
           }
           
-					$projectteams[] = HTMLHelper::::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
+					$projectteams[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
 					if ($res = sportsmanagementModelPredictionUsers::getPredictionProjectTeams($predictionProject->project_id))
 					{
 						$projectteams = array_merge($projectteams,$res);
@@ -161,7 +161,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
           $favTeamsList[$predictionProject->project_id] = 0;
           }
           
-					$lists['fav_team'][$predictionProject->project_id] = HTMLHelper::::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
+					$lists['fav_team'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
 
 		/**
 		 * kann champion ausgewaehlt werden ?
@@ -216,13 +216,13 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           $disabled = ' disabled="disabled" ';
           }
           
-          $predictionMembers[] = HTMLHelper::::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
+          $predictionMembers[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
 			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
             {
                 $predictionMembers = array_merge($predictionMembers,$res);
                 }
                 
-			$lists['grouplist'] = HTMLHelper::::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
+			$lists['grouplist'] = HTMLHelper::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
 			unset($res);
 			unset($predictionMembers);
           
@@ -231,8 +231,8 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           $champTeamsList[$predictionProject->project_id] = 0;
           }
           
-$lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
-$lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
+$lists['champ_tipp_disabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
+$lists['champ_tipp_enabled'][$predictionProject->project_id] = HTMLHelper::_('select.genericList',$projectteams,'champ_tipp['.$predictionProject->project_id.']','class="inputbox"'.$disabled.'','value','text',$champTeamsList[$predictionProject->project_id]);
 
 					unset($projectteams);
 				}
