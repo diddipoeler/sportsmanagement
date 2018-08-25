@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * JFormFieldagegroups
  * 
@@ -105,14 +105,14 @@ class JFormFieldagegroups extends JFormField
 			$sportstype->name=JText::_($sportstype->name);
 		}
 		if($this->required == false) {
-			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		
 		foreach ( $result as $item )
 		{
-			$mitems[] = JHtml::_('select.option',  $item->id, '&nbsp;'.$item->name. ' ('.$item->id.')' );
+			$mitems[] = HTMLHelper::_('select.option',  $item->id, '&nbsp;'.$item->name. ' ('.$item->id.')' );
 		}
-		return JHtml::_('select.genericlist',  $mitems, $this->name, 
+		return HTMLHelper::_('select.genericlist',  $mitems, $this->name, 
 				'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id);
                 
                 }

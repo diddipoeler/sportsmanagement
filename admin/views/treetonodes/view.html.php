@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 
 /**
@@ -75,7 +75,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 		$treetows = $mdltreeto->getTreeToData($this->jinput->get('tid'));
 
 		//build the html options for teams
-		$team_id[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND'));
+		$team_id[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TEAMS_LEGEND'));
 		if ( $projectteams = $this->model->getProjectTeamsOptions() )
 		{
 			$team_id = array_merge($team_id,$projectteams);

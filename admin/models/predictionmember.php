@@ -11,13 +11,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Utilities\ArrayHelper;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
-use Joomla\Utilities\ArrayHelper;
+
 
 /**
  * sportsmanagementModelpredictionmember
@@ -75,7 +77,7 @@ if ( !$result )
   //$rowproject->load( $value );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;
-  $rowproject->registerDate = JHtml::date(time(),'%Y-%m-%d %H:%M:%S');
+  $rowproject->registerDate = HTMLHelper::date(time(),'%Y-%m-%d %H:%M:%S');
   $rowproject->approved = 1;
   $rowproject->modified = $date->toSql();
   $rowproject->modified_by = $user->get('id');
@@ -196,9 +198,8 @@ $body .= "<html>";
 	$matchTimeDate = $matchTimeDate - $closingtime;
     $body .= "<tr class='" . $class ."'>";
 	$body .= "<td class='td_c'>";
-	$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
+	$body .= HTMLHelper::date($result->match_date, 'd.m.Y H:i', false);
 	$body .= " - ";
-	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
 	$body .= "</td>";
 /**
  * clublogo oder vereinsflagge hometeam	
@@ -213,7 +214,7 @@ if	(($result->home_logo_big == '') || (!file_exists($result->home_logo_big)))
 {
 $result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  JHTML::image(JURI::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(JURI::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .=  ' ' ;   
 $body .= "</td>";	
 $body .= "<td nowrap='nowrap' class='td_c'>";	
@@ -230,7 +231,7 @@ if	(($result->away_logo_big == '') || (!file_exists($result->away_logo_big)))
 {
 $result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  JHTML::image(JURI::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(JURI::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .= "</td>";				
 $body .= "<td nowrap='nowrap' class='td_l'>";
 $body .= $result->away_name;
@@ -323,7 +324,7 @@ if ( $projectcount )
    {
    $fromdate .= ' und '; 
    }    
-$fromdate .= JHtml::date($result->round_date_first, 'd.m.Y', false).'-'.JHtml::date($result->round_date_last, 'd.m.Y', false);
+$fromdate .= HTMLHelper::date($result->round_date_first, 'd.m.Y', false).'-'.HTMLHelper::date($result->round_date_last, 'd.m.Y', false);
    
 $body .= "<tr>";
 $body .= "<td colspan='8'>&nbsp;</td>";

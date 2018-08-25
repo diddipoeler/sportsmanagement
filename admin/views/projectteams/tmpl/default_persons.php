@@ -38,9 +38,11 @@
 */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.filesystem.file');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $app = JFactory::getApplication();
 
 ?>
@@ -57,7 +59,7 @@ $app = JFactory::getApplication();
 						</th>
 						<th width="20">&nbsp;</th>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.lastname',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.lastname',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -80,16 +82,15 @@ $app = JFactory::getApplication();
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
+								$image=HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
-								//echo JHtml::link($link3,$image);
 								echo $image;
 								?>
 							</a>
 						</th>
 						
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
 											foreach ($this->projectteam as $r)
@@ -112,9 +113,8 @@ $app = JFactory::getApplication();
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
 								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
+								$image=HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 								$linkParams='';
-								//echo JHtml::link($link3,$image);
 								echo $image;
 								?></a>
 						</th>
@@ -123,8 +123,8 @@ $app = JFactory::getApplication();
 						{
 							$cell_count++;
 							?><th>
-								<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->sortDirection,$this->sortColumn);
-									echo '<br>'.JHtml::_(	'select.genericlist',
+								<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->sortDirection,$this->sortColumn);
+									echo '<br>'.HTMLHelper::_(	'select.genericlist',
 														$this->lists['divisions'],
 														'division',
 														'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
@@ -135,7 +135,7 @@ $app = JFactory::getApplication();
 						}
 						?>
 						<th>
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_PICTURE','tl.picture',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_INITIAL_POINTS'); ?></th>
 						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MA'); ?></th>
@@ -154,10 +154,10 @@ $app = JFactory::getApplication();
                         
                         
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','TID','team_id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','TID','team_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th width="1%">
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -171,7 +171,7 @@ $app = JFactory::getApplication();
 						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
 						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=teamplayers&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
 						$link3=JRoute::_('index.php?option=com_sportsmanagement&view=teamstaffs&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-						$checked=JHtml::_('grid.checkedout',$row,$i);
+						$checked=HTMLHelper::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -190,9 +190,9 @@ $app = JFactory::getApplication();
 									$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams='title= "'.$imageTitle.'"';
-									$image=JHtml::image($imageFile,$imageTitle,$imageParams);
+									$image=HTMLHelper::image($imageFile,$imageTitle,$imageParams);
 									$linkParams='';
-									echo JHtml::link($link1,$image);
+									echo HTMLHelper::link($link1,$image);
 									?></td>
 								<?php
 							}
@@ -212,7 +212,7 @@ $app = JFactory::getApplication();
 									{
 										$append=' style="background-color:#bbffff"';
 									}
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'division_id'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
@@ -228,13 +228,13 @@ $app = JFactory::getApplication();
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
-									echo JHtml::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team"))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DEFAULT_IMAGE');
-									echo JHtml::image('administrator/components/com_sportsmanagement/assets/images/information.png',
+									echo HTMLHelper::image('administrator/components/com_sportsmanagement/assets/images/information.png',
 														$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								else
@@ -244,7 +244,7 @@ $app = JFactory::getApplication();
 									$imageParams['title']=$imageTitle ;
 									$imageParams['height']=30;
 									//$imageParams['width'] =40;
-									echo JHtml::image($row->picture,$imageTitle,$imageParams);
+									echo HTMLHelper::image($row->picture,$imageTitle,$imageParams);
 								}
 								?>
 							</td>
@@ -319,7 +319,7 @@ $app = JFactory::getApplication();
                             <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['is_in_score'],
 													'is_in_score'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
@@ -330,7 +330,7 @@ $app = JFactory::getApplication();
                             <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['use_finally'],
 													'use_finally'.$row->id,
 													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .

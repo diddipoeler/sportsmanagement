@@ -38,13 +38,13 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'objassoc.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -60,12 +60,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME','objassoc.name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_NAME','objassoc.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 					<th class="title" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.short_name',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_SHORT_NAME','objassoc.short_name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>					
 					
@@ -75,19 +75,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
           
           	<th width="" class="nowrap center">
 						<?php
-						echo JHtml::_('grid.sort','JSTATUS','objassoc.published',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JSTATUS','objassoc.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
                     
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->sortDirection,$this->sortColumn);
 						echo '<br />';
-						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'jlextfederations.saveorder');
+						echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'jlextfederations.saveorder');
 						?>
 					</th>
 					<th width="20" style="vertical-align: top; ">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','objassoc.id',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','objassoc.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 				</tr>
 			</thead>
@@ -108,7 +108,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=jlextfederation.edit&id='.$row->id);
 					$canEdit = $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextfederations.', $canCheckin);
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextfederations.', $canCheckin);
                     $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextfederation.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
@@ -119,7 +119,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         </td>
                         <td class="center">
                         <?php 
-                        echo JHtml::_('grid.id', $i, $row->id);  
+                        echo HTMLHelper::_('grid.id', $i, $row->id);  
                         ?>
                         </td>
 						<?php
@@ -128,7 +128,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							?>
 							<td style="text-align:center; ">
                             <?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextfederations.', $canCheckin); ?>
+						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextfederations.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=jlextfederation.edit&id='.(int) $row->id); ?>">
@@ -160,7 +160,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if (empty($row->assocflag) || !JFile::exists(JPATH_SITE.DS.$row->assocflag))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 else
@@ -182,7 +182,7 @@ else
 if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 else
@@ -197,13 +197,13 @@ else
             </td>
             <td class="center">
             <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'jlextfederations.', $canChange, 'cb'); ?>
+            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'jlextfederations.', $canChange, 'cb'); ?>
             <?php // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextfederations');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextfederations');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextfederations');
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextfederations');
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
             </div>

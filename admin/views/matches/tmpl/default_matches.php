@@ -125,9 +125,6 @@ fieldset button {
 					for ($i=0,$n=count($this->matches); $i < $n; $i++)
 					{
 						$row		=& $this->matches[$i];
-						//$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
-						//$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
-                        
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                         $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin);

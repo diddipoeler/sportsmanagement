@@ -11,7 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.filesystem.folder');
 
 /**
@@ -119,13 +119,13 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 
         foreach ($ress as $res) {
             $datum = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
-            $project_roundslist[] = JHtml::_('select.option', $res->id, sprintf("%s (%s)", $res->name, $datum));
+            $project_roundslist[] = HTMLHelper::_('select.option', $res->id, sprintf("%s (%s)", $res->name, $datum));
         }
-        $lists['project_rounds'] = JHtml::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
+        $lists['project_rounds'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ' .
                         'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
                         'document.roundForm.submit();" ', 'value', 'text', $roundws->id);
 
-        $lists['project_rounds2'] = JHtml::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $roundws->id);
+        $lists['project_rounds2'] = HTMLHelper::_('select.genericList', $project_roundslist, 'rid', 'class="inputbox" ', 'value', 'text', $roundws->id);
         // diddipoeler rounds for change in match
         $project_change_roundslist = array();
         if ($ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true)) {
@@ -145,9 +145,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             }
 
             if ($this->project_art_id == 3) {
-                $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON'));
+                $teams[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON'));
             } else {
-                $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+                $teams[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
             }
 
             $divhomeid = 0;

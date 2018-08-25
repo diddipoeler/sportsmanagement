@@ -38,7 +38,9 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 <div id="editcell">
@@ -49,15 +51,15 @@ JHtml::_('behavior.tooltip');
 
 $attribs['width'] = '16px';
 $attribs['height'] = '18px';
-$dl = JHtml::_('image', $this->path.'treedl.gif','', $attribs);
+$dl = HTMLHelper::_('image', $this->path.'treedl.gif','', $attribs);
 
-$ul = JHtml::_('image', $this->path.'treeul.gif','', $attribs);
-$cl = JHtml::_('image', $this->path.'treecl.gif','', $attribs);
-$dr = JHtml::_('image', $this->path.'treedr.gif','', $attribs);
-$ur = JHtml::_('image', $this->path.'treeur.gif','', $attribs);
-$cr = JHtml::_('image', $this->path.'treecr.gif','', $attribs);
-$p = JHtml::_('image', $this->path.'treep.gif','', $attribs);
-$h = JHtml::_('image', $this->path.'treeh.gif','', $attribs);
+$ul = HTMLHelper::_('image', $this->path.'treeul.gif','', $attribs);
+$cl = HTMLHelper::_('image', $this->path.'treecl.gif','', $attribs);
+$dr = HTMLHelper::_('image', $this->path.'treedr.gif','', $attribs);
+$ur = HTMLHelper::_('image', $this->path.'treeur.gif','', $attribs);
+$cr = HTMLHelper::_('image', $this->path.'treecr.gif','', $attribs);
+$p = HTMLHelper::_('image', $this->path.'treep.gif','', $attribs);
+$h = HTMLHelper::_('image', $this->path.'treeh.gif','', $attribs);
 
 $i = $this->treetows->tree_i;		//depth
 $r = 2*(pow(2,$i)); 			//rows
@@ -98,7 +100,7 @@ echo '<table>';
 				if(( $k == (1+($w*2)) ) && ( $j % (2*(pow(2,$w))) == (pow(2,$w))))
 				{
 // node __________________________________________________________________________________________________
-$checked = JHtml::_('grid.checkedout',$this->node[$j-1], $j-1);
+$checked = HTMLHelper::_('grid.checkedout',$this->node[$j-1], $j-1);
 if( $this->treetows->leafed == 1 )
 {
 	echo $this->node[$j-1]->node;
@@ -106,30 +108,24 @@ if( $this->treetows->leafed == 1 )
 	{
 			$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
 			$ednode ='<a href='. $link . '>';
-			$ednode .=JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png','edit');
+			$ednode .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png','edit');
 			$ednode .='</a>';
 			echo $ednode;
 			echo $this->node[$j-1]->team_name;
 //			$link3 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&task=treetomatch.display&nid=' . $this->node[$j-1]->id . '&tid='.$this->treetows->id .'&pid='.$this->jinput->get('pid'));
 			$link3 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=default&nid=' . $this->node[$j-1]->id . '&tid='.$this->treetows->id .'&pid='.$this->jinput->get('pid'));
             $match ='<a href='. $link3 . '>';
-			$match .=JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/matches.png','edit');
+			$match .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/matches.png','edit');
 			$match .='</a>';
 			echo $match;
 			$link4 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
 			$matchas ='<a href='. $link4 . '>';
-			$matchas .=JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/import.png','assign');
+			$matchas .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/import.png','assign');
 			$matchas .='</a>';
 			echo $matchas;
 	}
 	else
     {
-//echo JHtml::_(	'select.genericlist',
-//		$this->league,
-//		'league'.$row->id,
-//		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-//		$i.'\').checked=true"'.$append,
-//		'id','name',$row->league_id);
                 
 			echo $checked;
             $marker = $j - 1;
@@ -138,7 +134,7 @@ if( $this->treetows->leafed == 1 )
 			{
 				$append .= ' style="background-color:#bbffff"';
 			}
-			echo JHtml::_(	'select.genericlist',$this->lists['team'],'team_id'.$this->node[$j-1]->id,
+			echo HTMLHelper::_(	'select.genericlist',$this->lists['team'],'team_id'.$this->node[$j-1]->id,
 			'class="inputbox select-hometeam" size="1"'.$append,'value','text',$this->node[$j-1]->team_id);
 	}
 }
@@ -146,7 +142,7 @@ else
 {
 	if ($this->node[$j-1]->is_leaf == 1)
 	{
-		echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/images/settings.png','leaf');;
+		echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/settings.png','leaf');;
 	}
 	else
 	{

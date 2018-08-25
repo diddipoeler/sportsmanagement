@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      sportsmanagement.php
@@ -12,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -74,7 +74,7 @@ abstract class sportsmanagementHelper {
             $url = $picture;
         }
 
-        $modaltext .= JHtml::_('bootstrap.renderModal', $target, array(
+        $modaltext .= HTMLHelper::_('bootstrap.renderModal', $target, array(
                     'title' => $text,
                     'url' => $url,
                     'height' => $height,
@@ -1754,7 +1754,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1772,7 +1772,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1790,7 +1790,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1807,7 +1807,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1825,7 +1825,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/mail.gif';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1841,7 +1841,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1858,7 +1858,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 
@@ -1874,7 +1874,7 @@ abstract class sportsmanagementHelper {
             $picture = 'media/com_sportsmanagement/jl_images/rivals.png';
             $desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 		$output .= '<li class="list-inline-item">';
-            $output .= JHtml::link($link, $desc);
+            $output .= HTMLHelper::link($link, $desc);
 		$output .= '</li>';
         }
 $output .= '</ul>';
@@ -1958,7 +1958,7 @@ $output .= '</ul>';
         $desc .= '</span>';
 
         if ($showIcons) {
-            $output .= JHtml::link('javascript:void(0);', $desc, $params);
+            $output .= HTMLHelper::link('javascript:void(0);', $desc, $params);
             $output .= '<' . $container . ' id="' . $containerId . '" style="' . $style_append . ';" class="rankingteam jsmeventsshowhide">';
             $output .= self::showTeamIcons($team, $config, $cfg_which_database);
             $output .= '</' . $container . '>';
@@ -1967,7 +1967,7 @@ $output .= '</ul>';
         }
 
         if ($link != null) {
-            $output = JHtml::link($link, $output);
+            $output = HTMLHelper::link($link, $output);
         }
 
         return $output;
@@ -1984,7 +1984,7 @@ $output .= '</ul>';
     public static function showClubIcon(&$team, $type = 1, $with_space = 0) {
         if (($type == 1) && (isset($team->country))) {
             if ($team->logo_small != '') {
-                echo JHtml::image($team->logo_small, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_small, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -1993,7 +1993,7 @@ $output .= '</ul>';
             }
         } elseif (($type == 3) && (isset($team->country))) {
             if ($team->logo_middle != '') {
-                echo JHtml::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_middle, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -2002,7 +2002,7 @@ $output .= '</ul>';
             }
         } elseif (($type == 4) && (isset($team->country))) {
             if ($team->logo_big != '') {
-                echo JHtml::image($team->logo_big, '', array(' title' => '', ' width' => 20));
+                echo HTMLHelper::image($team->logo_big, '', array(' title' => '', ' width' => 20));
                 if ($with_space == 1) {
                     echo ' style="padding:1px;"';
                 }
@@ -2312,11 +2312,11 @@ $output .= '</ul>';
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
 
         if ($config['show_print_button'] == 1) {
-            JHtml::_('behavior.tooltip');
+            HTMLHelper::_('behavior.tooltip');
             $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
             // checks template image directory for image, if non found default are loaded
             if ($config['show_icons'] == 1) {
-                $image = JHtml::image('media/com_sportsmanagement/jl_images/printButton.png', JText::_('Print'));
+                $image = HTMLHelper::image('media/com_sportsmanagement/jl_images/printButton.png', JText::_('Print'));
             } else {
                 $image = JText::_('Print');
             }
@@ -2493,7 +2493,7 @@ $output .= '</ul>';
 
         $db->setQuery($query);
         if (!$required) {
-            $mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+            $mitems = array(HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
             return array_merge($mitems, $db->loadObjectList());
         } else {
             return $db->loadObjectList();

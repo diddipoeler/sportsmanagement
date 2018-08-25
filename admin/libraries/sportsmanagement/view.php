@@ -16,19 +16,20 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\HTML\HTMLHelper;
 // welche joomla version ?
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('jquery.framework');
+HTMLHelper::_('behavior.framework', true);
 
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-JHtml::_('behavior.mootools');  
+HTMLHelper::_('behavior.mootools');  
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -349,23 +350,23 @@ case 'teampersons':
         JHtmlSidebar::addFilter(
 			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+			HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
         break; 
          case 'clubs':
         JHtmlSidebar::addFilter(
 			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+			HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
 
-$myoptions[] = JHtml::_( 'select.option', '1', Text::_( 'JNO' ) );
-$myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) ); 
+$myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'JNO' ) );
+$myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) ); 
 
 	JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
 			'filter_geo_daten',
-			JHtml::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
+			HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 		);
 	
         break;    
@@ -373,12 +374,12 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+			HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
         JHtmlSidebar::addFilter(
 			Text::_('JOPTION_SELECT_CATEGORY'),
 			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
+			HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'))
 		);        
         break;
         }
@@ -388,7 +389,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'),
 			'filter_search_nation',
-			JHtml::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
+			HTMLHelper::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 		);
         }
 		
@@ -397,7 +398,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
 			'filter_federation',
-			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
+			HTMLHelper::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
 		);
         }
         
@@ -406,7 +407,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
 			'filter_unique_id',
-			JHtml::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
+			HTMLHelper::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
 		);
         }
 	
@@ -417,7 +418,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),
 			'filter_userfields',
-			JHtml::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
+			HTMLHelper::_('select.options', $this->userfields, 'id', 'name', $this->state->get('filter.userfields'), true)
 		);
         }
         if ( isset($this->league) )
@@ -425,7 +426,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),
 			'filter_league',
-			JHtml::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
+			HTMLHelper::_('select.options', $this->league, 'id', 'name', $this->state->get('filter.league'), true)
 		);
         }
         if ( isset($this->sports_type) )
@@ -433,7 +434,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),
 			'filter_sports_type',
-			JHtml::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
+			HTMLHelper::_('select.options', $this->sports_type, 'id', 'name', $this->state->get('filter.sports_type'), true)
 		);
         }
         if ( isset($this->season) )
@@ -441,7 +442,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),
 			'filter_season',
-			JHtml::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
+			HTMLHelper::_('select.options', $this->season, 'id', 'name', $this->state->get('filter.season'), true)
 		);
         }
         
@@ -450,7 +451,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
 			'filter_prediction_id',
-			JHtml::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
+			HTMLHelper::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
 		);
         }
        
@@ -459,7 +460,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
         JHtmlSidebar::addFilter(
 			Text::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
 			'filter_project_position_id',
-			JHtml::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
+			HTMLHelper::_('select.options', $this->project_position_id, 'value', 'text', $this->state->get('filter.project_position_id'), true)
 		);
         }
 
@@ -467,7 +468,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', Text::_( 'JYES' ) );
             JHtmlSidebar::addFilter(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP_FILTER'),
                 'filter_search_agegroup',
-                JHtml::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
+                HTMLHelper::_('select.options', $this->search_agegroup, 'value', 'text', $this->state->get('filter.search_agegroup'), true)
             );
         }
          

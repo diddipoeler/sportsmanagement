@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -116,9 +117,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $lists = array();
         if ($items) {
             foreach ($items as $item) {
-                $project_positionslist[] = JHtml::_('select.option', $item->id, JText::_($item->name));
+                $project_positionslist[] = HTMLHelper::_('select.option', $item->id, JText::_($item->name));
             }
-            $lists['project_positions'] = JHtml::_('select.genericlist', $project_positionslist, 'project_positionslist[]', 'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . max(15, count($items)) . '"', 'value', 'text');
+            $lists['project_positions'] = HTMLHelper::_('select.genericlist', $project_positionslist, 'project_positionslist[]', 'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . max(15, count($items)) . '"', 'value', 'text');
         } else {
             $lists['project_positions'] = '<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
         }
@@ -148,7 +149,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
         //build the html select list for positions
         if (count($notusedpositions) > 0) {
-            $lists['positions'] = JHtml::_('select.genericlist', $notusedpositions, 'positionslist[]', ' style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . min(15, count($notusedpositions)) . '"', 'value', 'text');
+            $lists['positions'] = HTMLHelper::_('select.genericlist', $notusedpositions, 'positionslist[]', ' style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . min(15, count($notusedpositions)) . '"', 'value', 'text');
         } else {
             $lists['positions'] = '<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
         }

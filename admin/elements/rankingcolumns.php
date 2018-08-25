@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldrankingcolumns
@@ -72,38 +72,38 @@ class JFormFieldrankingcolumns extends JFormField
 
     if ( $selrankingcol )
     {
-$mitems[] = JHtml::_('select.option', 'PLAYED', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PLAYED'));
-$mitems[] = JHtml::_('select.option', 'WINS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WINS'));
-$mitems[] = JHtml::_('select.option', 'LOSSES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LOSSES'));
-$mitems[] = JHtml::_('select.option', 'TIES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_TIES'));
-$mitems[] = JHtml::_('select.option', 'WOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WOT'));
-$mitems[] = JHtml::_('select.option', 'WSO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WSO'));
-$mitems[] = JHtml::_('select.option', 'LOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LOT'));
-$mitems[] = JHtml::_('select.option', 'LSO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LSO'));
-$mitems[] = JHtml::_('select.option', 'SCOREFOR', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREFOR'));
-$mitems[] = JHtml::_('select.option', 'SCOREAGAINST', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREAGAINST'));
-$mitems[] = JHtml::_('select.option', 'SCOREPCT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREPCT'));
-$mitems[] = JHtml::_('select.option', 'RESULTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_RESULTS'));
-$mitems[] = JHtml::_('select.option', 'DIFF', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_DIFF'));
-$mitems[] = JHtml::_('select.option', 'POINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_POINTS'));
-$mitems[] = JHtml::_('select.option', 'BONUS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_BONUS'));
-$mitems[] = JHtml::_('select.option', 'START', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_START'));
-$mitems[] = JHtml::_('select.option', 'LEGS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS'));
-$mitems[] = JHtml::_('select.option', 'LEGS_DIFF', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS_DIFF'));
-$mitems[] = JHtml::_('select.option', 'GB', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GB'));
-$mitems[] = JHtml::_('select.option', 'LEGS_RATIO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS_RATIO'));
-$mitems[] = JHtml::_('select.option', 'WINPCT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WINPCT'));
-$mitems[] = JHtml::_('select.option', 'QUOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_QUOT'));
-$mitems[] = JHtml::_('select.option', 'NEGPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_NEGPOINTS'));
-$mitems[] = JHtml::_('select.option', 'PENALTYPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PENALTYPOINTS'));
-$mitems[] = JHtml::_('select.option', 'OLDNEGPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_OLDNEGPOINTS'));
-$mitems[] = JHtml::_('select.option', 'POINTS_RATIO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_POINTS_RATIO'));
-$mitems[] = JHtml::_('select.option', 'TADMIN', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_TADMIN'));
-$mitems[] = JHtml::_('select.option', 'GFA', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GFA'));
-$mitems[] = JHtml::_('select.option', 'GAA', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GAA'));
-$mitems[] = JHtml::_('select.option', 'PPG', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPG'));
-$mitems[] = JHtml::_('select.option', 'PPP', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPP'));
-$mitems[] = JHtml::_('select.option', 'LASTGAMES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LASTGAMES'));		    
+$mitems[] = HTMLHelper::_('select.option', 'PLAYED', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PLAYED'));
+$mitems[] = HTMLHelper::_('select.option', 'WINS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WINS'));
+$mitems[] = HTMLHelper::_('select.option', 'LOSSES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LOSSES'));
+$mitems[] = HTMLHelper::_('select.option', 'TIES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_TIES'));
+$mitems[] = HTMLHelper::_('select.option', 'WOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WOT'));
+$mitems[] = HTMLHelper::_('select.option', 'WSO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WSO'));
+$mitems[] = HTMLHelper::_('select.option', 'LOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LOT'));
+$mitems[] = HTMLHelper::_('select.option', 'LSO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LSO'));
+$mitems[] = HTMLHelper::_('select.option', 'SCOREFOR', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREFOR'));
+$mitems[] = HTMLHelper::_('select.option', 'SCOREAGAINST', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREAGAINST'));
+$mitems[] = HTMLHelper::_('select.option', 'SCOREPCT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_SCOREPCT'));
+$mitems[] = HTMLHelper::_('select.option', 'RESULTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_RESULTS'));
+$mitems[] = HTMLHelper::_('select.option', 'DIFF', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_DIFF'));
+$mitems[] = HTMLHelper::_('select.option', 'POINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_POINTS'));
+$mitems[] = HTMLHelper::_('select.option', 'BONUS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_BONUS'));
+$mitems[] = HTMLHelper::_('select.option', 'START', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_START'));
+$mitems[] = HTMLHelper::_('select.option', 'LEGS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS'));
+$mitems[] = HTMLHelper::_('select.option', 'LEGS_DIFF', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS_DIFF'));
+$mitems[] = HTMLHelper::_('select.option', 'GB', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GB'));
+$mitems[] = HTMLHelper::_('select.option', 'LEGS_RATIO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LEGS_RATIO'));
+$mitems[] = HTMLHelper::_('select.option', 'WINPCT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_WINPCT'));
+$mitems[] = HTMLHelper::_('select.option', 'QUOT', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_QUOT'));
+$mitems[] = HTMLHelper::_('select.option', 'NEGPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_NEGPOINTS'));
+$mitems[] = HTMLHelper::_('select.option', 'PENALTYPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PENALTYPOINTS'));
+$mitems[] = HTMLHelper::_('select.option', 'OLDNEGPOINTS', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_OLDNEGPOINTS'));
+$mitems[] = HTMLHelper::_('select.option', 'POINTS_RATIO', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_POINTS_RATIO'));
+$mitems[] = HTMLHelper::_('select.option', 'TADMIN', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_TADMIN'));
+$mitems[] = HTMLHelper::_('select.option', 'GFA', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GFA'));
+$mitems[] = HTMLHelper::_('select.option', 'GAA', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_GAA'));
+$mitems[] = HTMLHelper::_('select.option', 'PPG', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPG'));
+$mitems[] = HTMLHelper::_('select.option', 'PPP', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_PPP'));
+$mitems[] = HTMLHelper::_('select.option', 'LASTGAMES', JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_LASTGAMES'));		    
     
     
     }
@@ -112,7 +112,7 @@ $mitems[] = JHtml::_('select.option', 'LASTGAMES', JText::_('COM_SPORTSMANAGEMEN
         
     foreach( $this->value as $key => $value )
     {
-        $mitems[] = JHtml::_('select.option', $value, JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_'.$value));
+        $mitems[] = HTMLHelper::_('select.option', $value, JText::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_'.$value));
     }    
         
         
@@ -120,7 +120,7 @@ $mitems[] = JHtml::_('select.option', 'LASTGAMES', JText::_('COM_SPORTSMANAGEMEN
     
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
     
-return JHtml::_('select.genericlist',  $mitems, $this->name, 
+return HTMLHelper::_('select.genericlist',  $mitems, $this->name, 
 				'class="inputbox" size="10" multiple="true" ', 'value', 'text', $this->value, $this->id);   
                                 
 	}

@@ -38,10 +38,12 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -50,7 +52,7 @@ $fieldsets = $this->form->getFieldsets();
 <!-- import the functions to move the events between selection lists	-->
 <?php
 //$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHtml::script('JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
@@ -96,7 +98,7 @@ $fieldsets = $this->form->getFieldsets();
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
@@ -124,12 +126,12 @@ else
 $startoffset = 0; 
 }    
 		
-        echo JHtml::_('sliders.start','adminteam',array('startOffset'=>$startoffset));
+        echo HTMLHelper::_('sliders.start','adminteam',array('startOffset'=>$startoffset));
 		foreach ($fieldsets as $fieldset) :
 			if ($fieldset->name == 'details') :
 				continue;
 			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo HTMLHelper::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
@@ -137,7 +139,7 @@ $startoffset = 0;
         $this->fieldset = $fieldset->name;
         echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo HTMLHelper::_('sliders.end'); ?>
 
 	
 	</div>
@@ -150,7 +152,7 @@ $startoffset = 0;
 <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
 <input type="hidden" name="task" value="projectteam.edit" />
 </div>
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";

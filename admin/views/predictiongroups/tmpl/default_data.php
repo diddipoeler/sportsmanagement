@@ -67,7 +67,6 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id='.$row->id);
-					//$checked = JHtml::_('grid.checkedout',$row,$i);
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin);

@@ -12,7 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('bootstrap.framework');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
   
 $version			= '1.0.58';
@@ -102,7 +103,7 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
         $slidesOptions = array(
             "active" => "slide1_id" // It is the ID of the active tab.
         );
-echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
 
 $slide_id = 1;                        
 		foreach ($imports as $import)
@@ -116,8 +117,8 @@ $slide_id = 1;
 				$db->setQuery($import);
 				$panelName = substr(str_replace('sportsmanagement','',str_replace('_','',$DummyStr)),1);
 				
-                //echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$panelName);
-				echo JHtml::_('bootstrap.addSlide', 'slide-group-id', Text::_($panelName), "slide".$slide_id."_id");
+                //echo HTMLHelper::_('sliders.panel',$DummyStr,'panel-'.$panelName);
+				echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_($panelName), "slide".$slide_id."_id");
                 	
 				echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 				echo "Checking existence of table [$DummyStr] - <span style='color:";
@@ -395,9 +396,9 @@ $slide_id = 1;
 				$slide_id++;	
 			}
 			unset($import);
-            echo JHtml::_('bootstrap.endSlide');
+            echo HTMLHelper::_('bootstrap.endSlide');
 		}
-        echo JHtml::_('bootstrap.endAccordion');
+        echo HTMLHelper::_('bootstrap.endAccordion');
 		return '';
 
 

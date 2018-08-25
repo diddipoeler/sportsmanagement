@@ -2,8 +2,9 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -29,7 +30,7 @@ echo $this->loadTemplate('data');
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="view" value="treetos" />
 <input type="hidden" name="task" value="treeto.display" />
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
 <?PHP
