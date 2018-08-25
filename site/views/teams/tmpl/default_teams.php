@@ -70,7 +70,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 			if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
-				$image = HTMLHelper::::image( $picture, $teamTitle, array( 'title' => $teamTitle, ' border' => 0) );
+				$image = HTMLHelper::image( $picture, $teamTitle, array( 'title' => $teamTitle, ' border' => 0) );
 			} else {
 				$image = sportsmanagementHelper::getPictureThumb($picture,
 					$team->team_name,
@@ -78,7 +78,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 					'auto',
 					1);
 			}
-			$smallTeamLogoLink = HTMLHelper::::link( $teaminfo_link, $image );
+			$smallTeamLogoLink = HTMLHelper::link( $teaminfo_link, $image );
 		}
 
 		if ($this->config['show_medium_logo']) {
@@ -87,8 +87,8 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogomedium");
 			}
-			$image = HTMLHelper::::image( $picture, $clubTitle, array( 'title' => $clubTitle, ' border' => 0  ) );
-			$mediumClubLogoLink = HTMLHelper::::link( $clubinfo_link, $image );
+			$image = HTMLHelper::image( $picture, $clubTitle, array( 'title' => $clubTitle, ' border' => 0  ) );
+			$mediumClubLogoLink = HTMLHelper::link( $clubinfo_link, $image );
 		}
 		?>
 		<tr >
@@ -101,7 +101,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				{
 					if ( !empty( $team->team_www ) )
 					{
-						echo HTMLHelper::::link( $team->team_www, $team->team_name, array( "target" => "_blank") );
+						echo HTMLHelper::link( $team->team_www, $team->team_name, array( "target" => "_blank") );
 					}
 					else
 					{
@@ -110,7 +110,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				}
 				if ( $this->config['which_link1'] == 1 )
 				{
-					echo HTMLHelper::::link( $teaminfo_link, $team->team_name );
+					echo HTMLHelper::link( $teaminfo_link, $team->team_name );
 				}
 				?>
 			</td>
@@ -120,7 +120,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				{
 					if (!empty($team->club_www))
 					{
-						echo HTMLHelper::::link(	$team->club_www, $team->club_name, array( "target" => "_blank") );
+						echo HTMLHelper::link(	$team->club_www, $team->club_name, array( "target" => "_blank") );
 					}
 					else
 					{
@@ -129,7 +129,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				}
 				if ( $this->config['which_link2'] == 1 )
 				{
-					echo HTMLHelper::::link( $clubinfo_link, $team->club_name );
+					echo HTMLHelper::link( $clubinfo_link, $team->club_name );
 				}
 				?>
 			</td>

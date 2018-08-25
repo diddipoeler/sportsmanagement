@@ -13,7 +13,7 @@ defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -76,15 +76,15 @@ When viewing on anything larger than 768px wide, you will not see any difference
 
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
           
-          echo HTMLHelper::::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggrouprank);
+          echo HTMLHelper::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggrouprank);
           	?>
 					</td>
 					<td>
           <?php
           $groups = sportsmanagementModelPrediction::getPredictionGroupList();
-          $predictionGroups[] = HTMLHelper::::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
+          $predictionGroups[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
-                        $htmlGroupOptions = HTMLHelper::::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
+                        $htmlGroupOptions = HTMLHelper::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
           echo $htmlGroupOptions;
           	?>
 					</td>
@@ -112,8 +112,8 @@ $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);                            
 
 							$imgTitle=Text::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
-							$desc = HTMLHelper::::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
-							echo HTMLHelper::::link($link,$desc,array('target' => ''));
+							$desc = HTMLHelper::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
+							echo HTMLHelper::link($link,$desc,array('target' => ''));
 							?>
 					</td>
 			
@@ -127,7 +127,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			</table>
             </div>
             <br />
-			<?php echo HTMLHelper::::_( 'form.token' ); ?>
+			<?php echo HTMLHelper::_( 'form.token' ); ?>
 		</form>
 		<?php
         $round_ids = NULL;
@@ -160,9 +160,9 @@ When viewing on anything larger than 768px wide, you will not see any difference
             <div class="table-responsive">
 				<table class="table table-responsive">
 					<tr>
-						<td><?php echo HTMLHelper::::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
-						<td><?php echo HTMLHelper::::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$from); ?></td>
-						<td><?php echo HTMLHelper::::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$to); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$from); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$to); ?></td>
 						<td><input type='submit' class='button' name='reload View' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>' /></td>
 					</tr>
 
@@ -183,7 +183,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
                     
 				</table>
                 </div>
-				<?php echo HTMLHelper::::_( 'form.token' ); ?>
+				<?php echo HTMLHelper::_( 'form.token' ); ?>
 			</form>
             <br />
 			<?php
@@ -507,7 +507,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
 						$link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID,$member->pmID);
-						$output = HTMLHelper::::link($link,$member->name);
+						$output = HTMLHelper::link($link,$member->name);
 					}
 					else
 					{
@@ -517,13 +517,13 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					$membersDataArray[$member->pmID]['name'] = $output;
 					
 					$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
-					$imgFile = HTMLHelper::::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
+					$imgFile = HTMLHelper::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					// bugtracker id 0000088
                     //$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
                     $link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound,sportsmanagementModelPrediction::$pjID);
 					if (($member->show_profile)||($this->predictionMember->pmID == $member->pmID))
 					{
-						$output = HTMLHelper::::link( $link, $imgFile);
+						$output = HTMLHelper::link( $link, $imgFile);
 					}
 					else
 					{
@@ -536,9 +536,9 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     if ( (int)sportsmanagementModelPrediction::$pggrouprank )
                     {
                     $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->pg_group_name);
-					$imgFile = HTMLHelper::::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
+					$imgFile = HTMLHelper::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound ,sportsmanagementModelPrediction::$pjID,$member->pmID,'',$member->pg_group_id);
-                    $output = HTMLHelper::::link( $link, $imgFile);
+                    $output = HTMLHelper::link( $link, $imgFile);
                     $groupmembersDataArray[$member->pg_group_id]['show_tip_details'] = $output;    
                     }    
 				
@@ -670,7 +670,7 @@ foreach ($computedMembersRanking AS $key => $value)
                             else
                             {
                             $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
-				$imgFile = HTMLHelper::::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));    
+				$imgFile = HTMLHelper::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));    
                             }
                              
                              
@@ -678,7 +678,7 @@ foreach ($computedMembersRanking AS $key => $value)
                              else
                              {
               $imgTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP');
-				$imgFile = HTMLHelper::::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));
+				$imgFile = HTMLHelper::image( "media/com_sportsmanagement/event_icons/goal2.png", $imgTitle , array('title' => $imgTitle));
               }
               ?>
               <td <?php echo $tdStyleStr; ?> >
