@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 
 ?>
@@ -74,7 +75,7 @@ if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf')))
 
 <?php echo $calendar['calendar'] ?> <?php } ?> <?php if (count($calendar['teamslist']) > 0) { ?>
 <div style="margin: 0 auto;"><?php
-echo JHtml::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', JRequest::getVar('jlcteam',0,'default','POST'));
+echo HTMLHelper::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', JRequest::getVar('jlcteam',0,'default','POST'));
 ?>
 </div>
 <?php
@@ -138,20 +139,9 @@ case 'headingrow':
 	}
 	else {
 		$sclass = ($cnt%2) ? 'sectiontableentry1' : 'sectiontableentry2';
-//		$date = JHtml::date ( $row['date'] .' UTC', $params->get('dateformat'), $params->get('time_zone'));
-//		$time = JHtml::date ( $row['date'] .' UTC', $params->get('timeformat'), $params->get('time_zone'));
-        
-        $date = JHtml::date($row['timestamp'] , $params->get('dateformat') );
-        //$time = JHtml::date($row['timestamp'] , $params->get('timeformat') );
+       
+        $date = HTMLHelper::date($row['timestamp'] , $params->get('dateformat') );
 
-/**
-* testausgabe
-*/        
-//        $time2 = JHtml::date($row['date'] , $params->get('timeformat') );
-        
-//        echo 'strtotime   '.JFactory::getDate(strtotime($row['date'])).'<br>';
-//        echo 'getTimestamp   '.sportsmanagementHelper::getTimestamp(JFactory::getDate(strtotime($row['date'])));
-//        echo 'row timestamp '. $row['timestamp'].'<br>';
         
         $uhrzeit = date("H:i",$row['timestamp']);
         $time = date("H:i",$row['timestamp']);

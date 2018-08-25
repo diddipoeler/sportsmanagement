@@ -9,6 +9,7 @@
  */ 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 //echo ' matches<br><pre>'.print_r($slidermatches,true).'</pre>';
 //echo ' projectid<br><pre>'.print_r($projectid,true).'</pre>';
@@ -44,7 +45,7 @@ foreach( $slidermatches as $match )
     <a href="<?PHP echo $link;  ?>" title="">
     <?PHP
 //echo $match->match_date;
-echo JHTML::_('date', $match->match_date, $params->get('dateformat'), null);
+echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
 echo ' ';
 echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 ?>

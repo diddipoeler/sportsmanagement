@@ -39,20 +39,13 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
-//$list = modJSMNewProjectHelper::getData();
-//JHTML::_( 'behavior.mootools' ); 
 jimport('joomla.html.pane');
 
 
-/*
-echo '<pre>';
-print_r($list);
-echo '</pre>';
-*/
-
-echo JHtml::_('sliders.start' , 'neueligen', array('useCookie'=>1)   );
-echo JHtml::_('sliders.panel', JText::_('Neue Ligen'), 'neueligen' );
+echo HTMLHelper::_('sliders.start' , 'neueligen', array('useCookie'=>1)   );
+echo HTMLHelper::_('sliders.panel', JText::_('Neue Ligen'), 'neueligen' );
 ?>
 
 
@@ -117,9 +110,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = JRoute::_( 'index.php?' . $query, false );
-echo JHTML::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
-//echo JHTML::link( $link, JText::_( $row->name  ) );
-                            
+echo HTMLHelper::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 $zeile++;
 }
@@ -187,7 +178,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
               "r" => $row->roundcode );
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = JRoute::_( 'index.php?' . $query, false );
-echo JHTML::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
+echo HTMLHelper::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 }
 $zeile++;
@@ -201,7 +192,7 @@ echo '</tr>';
 </table>
 </div>
 <?php
-echo JHtml::_('sliders.end');
+echo HTMLHelper::_('sliders.end');
 
 //echo $pane->endPanel();
 //echo $pane->endPane();

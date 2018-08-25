@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('DS'))
 {
@@ -313,7 +314,7 @@ foreach ( $listcomment[$list[$i]->match_id] as $key => $value )
 {
 $list_html .= "<tr>" ;
 $list_html .= "<td width=\"10%\">" . $value->event_time  . "</td>";
-$list_html .= "<td width=\"10%\">" . JHTML::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
+$list_html .= "<td width=\"10%\">" . HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
 $list_html .= "<td width=\"80%\">" . $value->notes  . "</td>";    
 $list_html .= "</tr>" ;
 }

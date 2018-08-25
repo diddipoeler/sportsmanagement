@@ -13,6 +13,7 @@
  * no direct access
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * modSportsmanagementTeamStatHelper
@@ -96,7 +97,7 @@ class modSportsmanagementTeamStatHelper
 		{
 			if (!empty($item->logo_big))
 			{
-				return JHtml::_('image',$item->logo_big, $item->short_name, array('width' => '50', 'class' => 'teamlogo') );
+				return HTMLHelper::_('image',$item->logo_big, $item->short_name, array('width' => '50', 'class' => 'teamlogo') );
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))
@@ -161,7 +162,7 @@ $routeparameter['p'] = $project->slug;
 		{
 			$imgTitle=JText::_($stat->name);
 			$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle);
-			$txt=JHTML::image($stat->icon, $imgTitle, $imgTitle2);
+			$txt=HTMLHelper::image($stat->icon, $imgTitle, $imgTitle2);
 		}
 		return $txt;
 	}

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * modMatchesHelper
@@ -520,7 +521,6 @@ class modMatchesSportsmanagementHelper {
 		$hteam = false;
 		$ateam = false;
 		foreach ((array) $matches AS $key => $match) {
-			//echo 'NOW(): '.JHtml::_('date', $match->currenttime, $this->params->get('dateformat').' '.$this->params->get('timeformat'),0).'<br />';
 			if ($match->projectteam1_id) {
 				$hteam = $teams[$match->projectteam1_id];
 			}
@@ -546,9 +546,9 @@ class modMatchesSportsmanagementHelper {
 					}
 				}
 			}
-			$rows[$match->match_id]['date'] = JHtml::_('date', $match->match_date, $this->params->get('dateformat'), null);
+			$rows[$match->match_id]['date'] = HTMLHelper::_('date', $match->match_date, $this->params->get('dateformat'), null);
 			if ($useicons) {
-				$rows[$match->match_id]['date'] = JHtml::_('image', $this->iconpath . 'date.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array (
+				$rows[$match->match_id]['date'] = HTMLHelper::_('image', $this->iconpath . 'date.png', JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'), array (
 						'title' => JText::_('MOD_SPORTSMANAGEMENT_MATCHES_DATE'),
 						'height' => '16',
 						'width' => '16'

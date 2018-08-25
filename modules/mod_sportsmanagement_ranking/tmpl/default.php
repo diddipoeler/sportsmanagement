@@ -9,8 +9,8 @@
  * @subpackage mod_sportsmanagement_ranking
  */
 
-
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // check if any results returned
 $items = count($list['ranking']);
@@ -123,7 +123,7 @@ $colors = $list['colors'];
 				<?php endif; ?>
 				<?php if ($spanStyle != '') echo $spanStyle; ?>
 				<?php if ($params->get('teamlink', 'none') != 'none'): ?>
-				<?php echo JHtml::link(modJSMRankingHelper::getTeamLink($item, $params, $list['project']), $item->team->$nametype); ?>
+				<?php echo HTMLHelper::link(modJSMRankingHelper::getTeamLink($item, $params, $list['project']), $item->team->$nametype); ?>
 				<?php else: ?>
 				<?php echo $item->team->$nametype; ?>
 				<?php endif; ?>
@@ -154,7 +154,7 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $divisionid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
-	echo JHtml::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
+	echo HTMLHelper::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
 </div>
 </div>

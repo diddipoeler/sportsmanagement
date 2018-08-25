@@ -39,6 +39,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <div id="jl-nav-module">
 <div class="jl-nav-module">
@@ -82,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 	
 		<?php for ($i = 1; $i < 17; $i++): ?>
 			<?php if ($params->get('navpoint'.$i) && $link = $helper->getLink($params->get('navpoint'.$i))): ?>
-				<li class="nav-item"><?php echo JHtml::link(JRoute::_($link), $params->get('navpoint_label'.$i)); ?></li>
+				<li class="nav-item"><?php echo HTMLHelper::link(JRoute::_($link), $params->get('navpoint_label'.$i)); ?></li>
 			<?php elseif ($params->get('navpoint'.$i) == "separator"): ?>
 				<li class="nav-item separator"><?php echo $params->get('navpoint_label'.$i); ?></li>
 			<?php endif; ?>
