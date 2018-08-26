@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -230,20 +231,22 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					{
 						$template = substr($file,0,(strlen($file)-4));
                         
-
-                        
-						// Determine if a metadata file exists for the view.
-				        //$metafile = $path.'/'.$template.'/metadata.xml';
+/**
+ * Determine if a metadata file exists for the view.
+ */
                         $metafile = $path.'/'.$template.'/tmpl/default.xml';
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
-                        // Attempt to load the xml file.
+/**
+ * Attempt to load the xml file.
+ */
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
 
-                        // This will save the value of the attribute, and not the objet
-                        //$attributetitle = (string)$metaxml->view->attributes()->title;
+/**
+ * This will save the value of the attribute, and not the objet
+ */
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
 
                         if ($menu = $metaxml->xpath('view[1]')) 
@@ -255,7 +258,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                         
                         if ((empty($records)) || (!in_array($template,$records)))
 						{
-						  $jRegistry = new JRegistry();
+						  $jRegistry = new Registry();
 							$form = JForm::getInstance($file, $xmldir.DS.$file);
 							$fieldsets = $form->getFieldsets();
 						
@@ -271,7 +274,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 							
                             $defaultvalues = $jRegistry->toString('ini');
                            
-                            $parameter = new JRegistry;
+                            $parameter = new Registry;
 			                if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $ini = $parameter->loadString($defaultvalues);
@@ -282,16 +285,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
-                            	
                             
-							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
-                            //$defaultvalues = preg_replace('"', '', $defaultvalues);
-							//$defaultvalues = implode('\n', $defaultvalues);
-							//echo 'defaultvalues<br /><pre>~' . print_r($defaultvalues,true) . '~</pre><br />';
-							
-							//$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
-                            
-                            // otherwise, compare the records with the files // get records
+/**
+ * otherwise, compare the records with the files
+ */ 
         $query->clear('');
         // Select some fields
         $query->select('id');
