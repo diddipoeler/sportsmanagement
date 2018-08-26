@@ -22,7 +22,7 @@ FormHelper::loadFieldClass('list');
 /**
  * SportsManagement Form Field class for the SportsManagement component
  */
-class FormFieldsportsmanagement extends FormField
+class JFormFieldsportsmanagement extends FormField
 {
 	/**
 	 * The field type.

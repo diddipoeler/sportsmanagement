@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class FormFieldprojectrounds extends FormField
+class JFormFieldprojectrounds extends FormField
 {
 	/**
 	 * The form field type.

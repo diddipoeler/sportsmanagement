@@ -24,7 +24,7 @@ use Joomla\CMS\Form\FormField;
  * @version $Id$
  * @access public
  */
-class FormFieldJSMSubtitle extends FormField {
+class JFormFieldJSMSubtitle extends FormField {
 		
 	public $type = 'JSMSubtitle';
 

@@ -33,7 +33,7 @@ jimport('joomla.html.pane');
  * @version 2014
  * @access public
  */
-class FormFieldjsmcolorsranking extends FormField
+class JFormFieldjsmcolorsranking extends FormField
 {
 	/**
 	 * field type

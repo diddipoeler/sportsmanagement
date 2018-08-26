@@ -39,7 +39,7 @@ JLoader::register('sportsmanagementHelper', $classpath);
  * @version 2014
  * @access public
  */
-class FormFieldsportstypelist extends FormField
+class JFormFieldsportstypelist extends FormField
 {
 	/**
 	 * field type

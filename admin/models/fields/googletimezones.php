@@ -30,7 +30,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class FormFieldGoogletimezones extends FormField
+class JFormFieldGoogletimezones extends FormField
 {
 	protected $type  = 'Googletimezones';
 

@@ -9,7 +9,7 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 
-class FormFieldserialnumber extends FormField {
+class JFormFieldserialnumber extends FormField {
 		
 	public $type = 'serialnumber';
 

@@ -28,7 +28,7 @@ JHtml::_( 'behavior.framework' );
  * @version $Id$
  * @access public
  */
-class FormFieldDependSQL extends FormField
+class JFormFieldDependSQL extends FormField
 {
 	/**
 	 * field name

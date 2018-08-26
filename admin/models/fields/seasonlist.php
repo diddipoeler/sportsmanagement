@@ -43,7 +43,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldseasonlist extends FormField
+class JFormFieldseasonlist extends FormField
 {
 	/**
 	 * field type

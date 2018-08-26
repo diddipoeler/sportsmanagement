@@ -29,7 +29,7 @@ jimport('joomla.form.formfield');
  * @version 2014
  * @access public
  */
-class FormFieldseasoncheckbox extends FormField
+class JFormFieldseasoncheckbox extends FormField
 {
 	/**
 	 * field type

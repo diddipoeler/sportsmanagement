@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class FormFieldGCalendar extends FormField
+class JFormFieldGCalendar extends FormField
 {
     
 	protected $type = 'GCalendar';

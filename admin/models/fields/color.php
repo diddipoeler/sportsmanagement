@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  * @version $Id$
  * @access public
  */
-class FormFieldColor extends FormFieldText
+class JFormFieldColor extends FormFieldText
 {
 	protected $type = 'Color';
 

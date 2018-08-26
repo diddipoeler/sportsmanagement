@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldplaygroundlist extends FormField
+class JFormFieldplaygroundlist extends FormField
 {
 	/**
 	 * field type

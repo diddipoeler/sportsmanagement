@@ -45,7 +45,7 @@ JHtml::_( 'behavior.mootools' );
  * @subpackageParameter
  * @since1.5
  */
-class FormFieldDependSQL extends FormField
+class JFormFieldDependSQL extends FormField
 {
 	/**
 	 * field name

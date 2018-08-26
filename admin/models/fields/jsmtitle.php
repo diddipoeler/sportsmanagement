@@ -24,7 +24,7 @@ use Joomla\CMS\Form\FormField;
  * @version $Id$
  * @access public
  */
-class FormFieldJSMTitle extends FormField {
+class JFormFieldJSMTitle extends FormField {
 		
 	public $type = 'JSMTitle';
 

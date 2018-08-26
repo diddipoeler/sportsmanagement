@@ -23,7 +23,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class FormFieldTitle extends FormField
+class JFormFieldTitle extends FormField
 {
 	public $type = 'Title';
 

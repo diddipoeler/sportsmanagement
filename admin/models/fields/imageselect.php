@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class FormFieldImageSelect extends FormField
+class JFormFieldImageSelect extends FormField
 {
 	protected $type = 'imageselect';
 

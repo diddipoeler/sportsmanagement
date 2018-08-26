@@ -25,7 +25,7 @@ jimport('joomla.version');
  * @version $Id$
  * @access public
  */
-class FormFieldJSMMessage extends FormField {
+class JFormFieldJSMMessage extends FormField {
 		
 	public $type = 'JSMMessage';
 

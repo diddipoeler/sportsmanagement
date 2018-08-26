@@ -24,7 +24,7 @@ use Joomla\CMS\Form\FormHelper;
  * @version $Id$
  * @access public
  */
-class FormFieldNameFormat extends FormField
+class JFormFieldNameFormat extends FormField
 {
 	protected $type = 'nameformat';
 

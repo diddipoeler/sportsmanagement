@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('calendar');
  * @version $Id$
  * @access public
  */
-class FormFieldCustomCalendar extends FormFieldCalendar
+class JFormFieldCustomCalendar extends FormFieldCalendar
 {
 
     public $type = 'CustomCalendar';

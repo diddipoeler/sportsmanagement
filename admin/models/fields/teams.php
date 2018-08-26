@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class FormFieldTeams extends FormField
+class JFormFieldTeams extends FormField
 {
 
 	protected $type = 'teams';

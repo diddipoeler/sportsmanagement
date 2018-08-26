@@ -25,7 +25,7 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version 2014
  * @access public
  */
-class FormFieldClubs extends FormField
+class JFormFieldClubs extends FormField
 {
 
 	protected $type = 'clubs';

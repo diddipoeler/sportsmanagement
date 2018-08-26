@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldProjects extends FormField
+class JFormFieldProjects extends FormField
 {
 
 	protected $type = 'projects';

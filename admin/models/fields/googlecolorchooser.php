@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 
-class FormFieldGoogleColorChooser extends FormFieldText
+class JFormFieldGoogleColorChooser extends FormFieldText
 {
 	protected $type = 'GoogleColorChooser';
 

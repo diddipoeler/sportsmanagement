@@ -52,7 +52,7 @@ jimport('joomla.form.formfield');
  * @version 2014
  * @access public
  */
-class FormFieldKunenaCategoryList extends FormField 
+class JFormFieldKunenaCategoryList extends FormField 
 {
 	protected $type = 'KunenaCategoryList';
 

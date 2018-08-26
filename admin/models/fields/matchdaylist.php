@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldMatchdaylist extends FormField
+class JFormFieldMatchdaylist extends FormField
 {
 	/**
 	 * field type

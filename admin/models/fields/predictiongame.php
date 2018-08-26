@@ -67,7 +67,7 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
  * @version 2014
  * @access public
  */
-class FormFieldPredictiongame extends FormField
+class JFormFieldPredictiongame extends FormField
 {
 
 	protected $type = 'predictiongame';

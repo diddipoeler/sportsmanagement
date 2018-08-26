@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class FormFieldPlaygrounds extends FormField
+class JFormFieldPlaygrounds extends FormField
 {
 
 	protected $type = 'playgrounds';

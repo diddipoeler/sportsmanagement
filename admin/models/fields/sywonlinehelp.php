@@ -21,7 +21,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class FormFieldSYWOnlineHelp extends FormField
+class JFormFieldSYWOnlineHelp extends FormField
 {
 	protected $type = 'SYWOnlineHelp';
 

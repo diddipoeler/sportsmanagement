@@ -30,7 +30,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class FormFieldJSMMenuItems extends FormField
+class JFormFieldJSMMenuItems extends FormField
 {
 	/**
 	 * field type

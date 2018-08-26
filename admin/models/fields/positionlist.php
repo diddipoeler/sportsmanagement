@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldpositionlist extends FormField
+class JFormFieldpositionlist extends FormField
 {
     
 	/**

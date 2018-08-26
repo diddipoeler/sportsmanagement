@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @version $Id$
  * @access public
  */
-class FormFieldJLGColor extends FormField
+class JFormFieldJLGColor extends FormField
 {
 	/**
 	 * The form field type.

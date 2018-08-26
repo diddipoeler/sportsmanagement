@@ -23,7 +23,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class FormFieldSubtitle extends FormField
+class JFormFieldSubtitle extends FormField
 {
 	public $type = 'Subtitle';
 

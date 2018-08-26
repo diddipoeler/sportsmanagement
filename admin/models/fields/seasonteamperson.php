@@ -29,7 +29,7 @@ jimport('joomla.form.formfield');
  * @version 2014
  * @access public
  */
-class FormFieldseasonteamperson extends FormField
+class JFormFieldseasonteamperson extends FormField
 {
 	/**
 	 * field type
