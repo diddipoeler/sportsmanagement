@@ -11,10 +11,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory; 
 
 /**
  * sportsmanagementViewpredictionmember
@@ -55,10 +53,10 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 	protected function addToolBar() 
 	{
 		
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
 
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
         $this->icon = 'pmember';
         
         $this->item->name = '';
