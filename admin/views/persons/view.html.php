@@ -37,10 +37,12 @@ class sportsmanagementViewPersons extends sportsmanagementView
        $this->assign = false;
        $this->season_id = 0;
        $this->team_id = 0;
+       $this->persontype = 0;
 		if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
 			$this->season_id = $this->jinput->get('season_id');
             $this->team_id = $this->jinput->get('team_id');
+            $this->persontype = $this->jinput->get('persontype');
 			$this->assign = true;
 		}
 

@@ -60,7 +60,8 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
-<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>" />	
+<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>" />
+<input type="hidden" name="persontype" value="<?php echo $this->persontype; ?>" />	
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <?php echo JHtml::_('form.token')."\n"; ?>
