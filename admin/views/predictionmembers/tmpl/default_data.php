@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
 HTMLHelper::_( 'behavior.tooltip' );
 ?>
 
@@ -106,8 +108,8 @@ HTMLHelper::_( 'behavior.tooltip' );
 			{
 				$row =& $this->items[$i];
 
-				$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
-                $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
+				$link	= Route::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
+                $link2	= Route::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
                 $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                 $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin);

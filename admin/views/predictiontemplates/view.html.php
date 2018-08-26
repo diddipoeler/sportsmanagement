@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text; 
 
 /**
  * sportsmanagementViewPredictionTemplates
@@ -60,7 +61,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
        
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+			$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
        
         $table = JTable::getInstance('predictiontemplate', 'sportsmanagementTable');
@@ -68,7 +69,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		//build the html select list for prediction games
 		$predictions = array();
-		$predictions[] = HTMLHelper::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = HTMLHelper::_( 'select.option', '0', '- ' . Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
 		{ 
 			$predictions = array_merge( $predictions, $res ); 
@@ -100,7 +101,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	   
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
 		$this->icon = 'templates';
 
 		JToolbarHelper::deleteList('', 'predictiontemplates.delete');
