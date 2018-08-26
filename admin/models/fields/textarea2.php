@@ -25,7 +25,7 @@ FormHelper::loadFieldClass('textarea');
  * @version $Id$
  * @access public
  */
-class FormFieldTextarea2 extends FormFieldTextarea
+class FormFieldTextarea2 extends JFormFieldTextarea
 {
 	protected $type = 'Textarea2';
 
