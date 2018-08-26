@@ -82,7 +82,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $values = array($value,$season_id,$db->Quote(''.$modified.''),$modified_by);
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+            ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
@@ -102,7 +102,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $values = array($value,$season_id,$teams[$value],'1','1',$db->Quote(''.$modified.''),$modified_by);
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
+            ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
