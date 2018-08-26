@@ -125,8 +125,6 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 		
         $lists['nation'] = $nation;
 
-        
-
         $this->user = JFactory::getUser();
         $this->config = JFactory::getConfig();
         $this->lists = $lists;
@@ -135,7 +133,6 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $this->request_url = $uri->toString();
         $this->project = $project;
         $this->project_team = $project_team;
-
 
     }
 
@@ -166,7 +163,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         JToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
         JToolbarHelper::divider();
 
-        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
+        sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
 	    JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 

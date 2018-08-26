@@ -35,20 +35,14 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	{
 	   $tpl = '';
        $this->assign = false;
+       $this->season_id = 0;
+       $this->team_id = 0;
 		if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
 			$this->season_id = $this->jinput->get('season_id');
+            $this->team_id = $this->jinput->get('team_id');
 			$this->assign = true;
 		}
-        
-		        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'state <pre>'.print_r($this->state,true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        }
-
 
 $starttime = microtime(); 
 		

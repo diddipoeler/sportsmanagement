@@ -2395,9 +2395,10 @@ $output .= '</ul>';
         
         switch ($layout)
         {
-            case 'assignplayers':
+            case 'assignpersons':
             $zusatz .= '&team_id=' . $jinput->get('team_id');
             $zusatz .= '&persontype=' . $jinput->get('persontype');
+            $zusatz .= '&season_id=' . $app->getUserState( "$option.season_id", '0' );;
             break;
         }
 
