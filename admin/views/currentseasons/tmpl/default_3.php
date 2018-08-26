@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.html.html.bootstrap');
 
 $templatesToLoad = array('footer','listheader');
@@ -91,7 +93,7 @@ $count++;
 
 
 <?php // This renders the beginning of the slides code. ?>
-<?php echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions); ?>
+<?php echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions); ?>
 
 <?PHP
 if ( $this->items )
@@ -99,7 +101,7 @@ if ( $this->items )
 foreach ($this->items as $item)
 {            
 // Open the first slide
-echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($item->country).' '.$item->name, 'slide'.$item->id.'_id');
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($item->country).' '.$item->name, 'slide'.$item->id.'_id');
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&task=project.edit&id=<?PHP echo $item->id; ?>">
 <img src="components/com_sportsmanagement/assets/icons/projekte.png" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_P_PANEL_PSETTINGS') ?>" /><br />
@@ -172,7 +174,7 @@ if ( $item->project_art_id != 3 )
 
 <?PHP	
 // This is the closing tag of the first slide
-echo JHtml::_('bootstrap.endSlide');
+echo HTMLHelper::_('bootstrap.endSlide');
 
 
 }            
@@ -181,7 +183,7 @@ echo JHtml::_('bootstrap.endSlide');
             
 ?>            
 <?php // This renders the end part of the slides code. ?>	
-<?php echo JHtml::_('bootstrap.endAccordion'); ?>
+<?php echo HTMLHelper::_('bootstrap.endAccordion'); ?>
 
 
 

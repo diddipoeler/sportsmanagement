@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewagegroups
@@ -45,13 +46,13 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         $this->table = JTable::getInstance('agegroup', 'sportsmanagementTable');
 		
         //build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
         $this->sports_type = $allSportstypes;
 		
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList',
 							$sportstypes,
 							'filter_sports_type',
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -61,7 +62,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		unset($sportstypes);
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation,$res);

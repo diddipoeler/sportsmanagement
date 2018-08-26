@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 			$colspan= 9;
 			?>
@@ -26,8 +27,8 @@ use Joomla\CMS\Language\Text;
 					for ($i=0,$n=count($this->match); $i < $n; $i++)
 					{
 						$row		= $this->match[$i];
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'mid');
-						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','treetomatch.');
+						$checked	= HTMLHelper::_('grid.checkedout',$row,$i,'mid');
+						$published	= HTMLHelper::_('grid.published',$row,$i,'tick.png','publish_x.png','treetomatch.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 					

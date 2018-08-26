@@ -12,10 +12,10 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
 
-//JHtml::_('behavior.modal');
-JHtml::_('behavior.modal', 'a.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal', 'a.modal');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);

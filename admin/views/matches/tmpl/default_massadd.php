@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 	
 		
@@ -51,7 +52,7 @@ use Joomla\CMS\Language\Text;
 				<input type='hidden' name='task' value='match.copyfrom' />
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
-				<?php echo JHtml::_('form.token')."\n"; ?>
+				<?php echo HTMLHelper::_('form.token')."\n"; ?>
 				<table class="<?php echo $this->table_data_class; ?>">
 					<thead>
 						<tr>
@@ -93,7 +94,7 @@ use Joomla\CMS\Language\Text;
 														<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
 															<?php
-															echo JHtml::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+															echo HTMLHelper::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																					'match_date','match_date',
 																					'%d-%m-%Y','size="10" ');
                                                            ?>
@@ -124,7 +125,7 @@ use Joomla\CMS\Language\Text;
 										<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_DEFAULT_DATE'); ?></td>
 										<td>
 											<?php
-											echo JHtml::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
+											echo HTMLHelper::calendar(	sportsmanagementHelper::convertDate($this->roundws->round_date_first),
 																	'date','date',
 																	'%d-%m-%Y','size="10" ');
 											?>

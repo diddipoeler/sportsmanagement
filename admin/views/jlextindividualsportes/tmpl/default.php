@@ -38,9 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
-//JHTML::script('JL_matchdetailsediting.js','administrator/components/com_joomleague/assets/js/');
-//JHTML::script('JL_matcheventsediting.js','administrator/components/com_joomleague/assets/js/');
 
 /*
 $massadd=JFactory::getApplication()->input->getVar('massadd');
@@ -71,8 +70,8 @@ else
 JToolbarHelper::help('screen.joomleague',true);
 */
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 <script type="text/javascript">
 <!--

@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewcpanel
@@ -249,7 +250,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
             <div class="icon">
                 <a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-        <?php echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, $attribs); ?>
+        <?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image, null, $attribs); ?>
                     <span><?php echo $text; ?></span></a>
             </div>
         </div>

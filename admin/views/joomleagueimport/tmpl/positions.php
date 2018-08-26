@@ -39,6 +39,7 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -65,7 +66,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				for ($i=0,$n=count($this->joomleague); $i < $n; $i++)
 				{
 					$row =& $this->joomleague[$i];
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+					$checked = HTMLHelper::_('grid.checkedout',$row,$i);
                     ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $i; ?></td>
@@ -77,7 +78,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td class="center">
                         <?php 
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                        echo JHtml::_(	'select.genericlist',$this->lists['position'],'position'.$row->id,
+                        echo HTMLHelper::_(	'select.genericlist',$this->lists['position'],'position'.$row->id,
 												'class="inputbox" size="1"'.$append,'value','text',0); 
                         ?>
                         </td>
@@ -101,7 +102,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 
 </form>
 <?PHP

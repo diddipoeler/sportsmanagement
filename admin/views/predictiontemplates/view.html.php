@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPredictionTemplates
@@ -67,14 +68,14 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		//build the html select list for prediction games
 		$predictions = array();
-		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
+		$predictions[] = HTMLHelper::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
 		{ 
 			$predictions = array_merge( $predictions, $res ); 
 			$this->prediction_ids	= $res;
 		}
           
-		$lists['predictions'] = JHtml::_(	'select.genericlist', 
+		$lists['predictions'] = HTMLHelper::_(	'select.genericlist', 
 								$predictions, 
 								'filter_prediction_id', 
 								'class="inputbox" onChange="this.form.submit();" ', 

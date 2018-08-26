@@ -38,8 +38,10 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 
 $model = $this->getModel('jlxmlimport');
 echo $model->getXml;

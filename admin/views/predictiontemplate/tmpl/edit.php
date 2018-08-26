@@ -38,12 +38,14 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 JHtmlBehavior::formvalidation();
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 
 
 $i    = 1;
@@ -71,11 +73,11 @@ $i    = 1;
 		</fieldset>
 
 		<?php
-		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
+		echo HTMLHelper::_('tabs.start','tabs', array('useCookie'=>1));
         $fieldSets = $this->form->getFieldsets();
         foreach ($fieldSets as $name => $fieldSet) :
             $label = $fieldSet->name;
-            echo JHtml::_('tabs.panel',JText::_($label), 'panel'.$i++);
+            echo HTMLHelper::_('tabs.panel',JText::_($label), 'panel'.$i++);
 			?>
 			<fieldset class="panelform">
 				<?php
@@ -97,7 +99,7 @@ $i    = 1;
  
     <div class="clr"></div>
     <?php endforeach; ?>
-    <?php echo JHtml::_('tabs.end'); ?>
+    <?php echo HTMLHelper::_('tabs.end'); ?>
     
 </fieldset>    
 	<div>		
@@ -105,7 +107,7 @@ $i    = 1;
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
         <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
 		<input type="hidden" name="task" value="predictiontemplate.edit"/>
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>
 

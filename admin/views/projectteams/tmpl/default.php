@@ -10,9 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.filesystem.file');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $app = JFactory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -81,10 +83,10 @@ $opt = ' allowClear: true,
    escapeMarkup: function(m) { return m; }
 ';
 $append = '';
-JHtml::_('formbehavior2.select2', '.test1', $opt);
+HTMLHelper::_('formbehavior2.select2', '.test1', $opt);
     if ( isset($this->lists['country_teams']) )
     {
-echo JHtml::_('select.genericlist',$this->lists['country_teams'],'team_id',
+echo HTMLHelper::_('select.genericlist',$this->lists['country_teams'],'team_id',
 'style="width:225px;" class="test1" size="6"'.$append,'value','text',0);
     }
 ?>
@@ -134,7 +136,7 @@ echo '</div>';
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <div>
 <?PHP

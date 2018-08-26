@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewLeagues
@@ -44,7 +45,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		$this->table = JTable::getInstance('league', 'sportsmanagementTable');
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
@@ -60,7 +61,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 					$this->state->get('filter.search_nation'));
 
 		unset($nation);
-        $nation[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+        $nation[] = HTMLHelper::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
         $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
         if ( $res = $mdlassociation->getAssociations($this->state->get('filter.federation')) )
         {
@@ -77,7 +78,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
             }
             else
             {
-            $lists['association'][$row->country][] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+            $lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
             $lists['association'][$row->country][] = $row;    
             }
         }
@@ -91,7 +92,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         unset($myoptions);
         
-        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $myoptions[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
         {

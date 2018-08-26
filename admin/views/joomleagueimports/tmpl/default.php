@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -188,7 +188,7 @@ foreach ($this->success as $key => $value)
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>" />
 
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

@@ -1,19 +1,19 @@
 <?php
-/**
-* @version    $Id: upload.php 4905 2010-01-30 08:51:33Z and_one $ 
-* @package    JoomlaTracks
-* @copyright  Copyright (C) 2008 Julien Vonthron. All rights reserved.
-* @license    GNU/GPL, see LICENSE.php
-* Joomla Tracks is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      upload.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage imagehandler
+ */
+ 
 // no direct access
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm" name="adminForm">
@@ -155,5 +155,5 @@ use Joomla\CMS\Language\Text;
 <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="task" value="imagehandler.upload" />
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>

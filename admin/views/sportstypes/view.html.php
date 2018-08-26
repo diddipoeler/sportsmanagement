@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * sportsmanagementViewSportsTypes
  * 
@@ -40,8 +42,8 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		}
         
 		$myoptions = array();
-		$myoptions[] = JHtml::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
-		$myoptions[] = JHtml::_( 'select.option', '1', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
         

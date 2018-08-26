@@ -39,7 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\HTML\HTMLHelper; 
 
 
 /**
@@ -108,7 +108,7 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
 			<div class="icon">
 				<a href="<?php echo $url; ?>"<?php echo $newWindow; ?>>
-					<?php echo JHtml::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image , NULL, NULL ); ?>
+					<?php echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/icons/' . $image , NULL, NULL ); ?>
 					<span><?php echo $text; ?></span></a>
 			</div>
 		</div>
