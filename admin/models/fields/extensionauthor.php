@@ -12,8 +12,8 @@ defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
-jimport('joomla.form.formfield');
+use Joomla\CMS\Factory;
+//jimport('joomla.form.formfield');
 
 /**
  * FormFieldExtensionAuthor
@@ -35,7 +35,7 @@ class FormFieldExtensionAuthor extends FormField {
 	 */
 	protected function getLabel() 
 	{		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();

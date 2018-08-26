@@ -12,9 +12,9 @@ defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 
-
-jimport('joomla.form.formfield');
+//jimport('joomla.form.formfield');
 
 /**
  * FormFieldExtensionTranslators
@@ -36,7 +36,7 @@ class FormFieldExtensionTranslators extends FormField {
 	 */
 	protected function getLabel() 
 	{		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         $extension = 'com_sportsmanagement';
         $base_dir = JPATH_ADMINISTRATOR;
         $language_tag = $lang->getTag();
@@ -47,7 +47,7 @@ class FormFieldExtensionTranslators extends FormField {
 		
 		$html .= '<div style="clear: both;">';
 		if (!empty($this->translators)) {
-			$html .= JText::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL');
+			$html .= Text::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL');
 		}
 		$html .= '</div>';
 		
@@ -65,7 +65,7 @@ class FormFieldExtensionTranslators extends FormField {
 		
 		if (!empty($this->translators)) {
 			$html .= '<div style="padding-top: 5px; overflow: inherit">';
-			$html .= JText::_($this->translators);
+			$html .= Text::_($this->translators);
 			$html .= '</div>';
 		}
 		
@@ -85,7 +85,7 @@ class FormFieldExtensionTranslators extends FormField {
 		$return = parent::setup($element, $value, $group);
 	
 		if ($return) {
-			$this->translators = isset($this->element['translators']) ? JText::_($this->element['translators']) : NULL;
+			$this->translators = isset($this->element['translators']) ? Text::_($this->element['translators']) : NULL;
 		}
 	
 		return $return;
