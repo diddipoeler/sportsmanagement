@@ -11,9 +11,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
@@ -25,7 +28,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldClublist extends JFormFieldList
+class JFormFieldClublist extends FormField
 {
 	/**
 	 * field type
@@ -45,7 +48,7 @@ class JFormFieldClublist extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');

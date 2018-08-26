@@ -11,9 +11,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
@@ -25,7 +28,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldAssociationsList extends JFormFieldList
+class JFormFieldAssociationsList extends FormField
 {
 	/**
 	 * field type
@@ -42,14 +45,14 @@ class JFormFieldAssociationsList extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $selected = 0;
 
         // Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
+		$select_id = Factory::getApplication()->input->getVar('id');
  		if (is_array($select_id)) {
  			$select_id = $select_id[0];
  		}
@@ -57,7 +60,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		
 		if ($select_id)
 		{		
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('country');		
 		$query->from('#__sportsmanagement_'.$vartable.' AS t');
@@ -65,7 +68,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 		$db->setQuery($query);
 		$country = $db->loadResult();
 			
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id AS value, t.name AS text');

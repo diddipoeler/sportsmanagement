@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjlextcountries
@@ -44,7 +45,7 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
         $this->table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
         
          //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
+		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 		if ($res = $this->get('Federation') )
         {
             $nation = array_merge($nation,$res);

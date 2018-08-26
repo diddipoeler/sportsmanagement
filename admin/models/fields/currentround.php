@@ -11,9 +11,13 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text; 
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
@@ -25,7 +29,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldCurrentround extends JFormFieldList
+class JFormFieldCurrentround extends FormField
 {
 	/**
 	 * field type
@@ -42,8 +46,8 @@ class JFormFieldCurrentround extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 		// JInput object 
          $jinput = $app->input; 
 
@@ -61,12 +65,12 @@ class JFormFieldCurrentround extends JFormFieldList
 		*/
 		if ($project_id)
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value');
-			$query->select('CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text ');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
+			$query->select('CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text ');
+			$query->from('#__sportsmanagement_round ');
 			$query->where('project_id = '.$project_id);
 			$query->order('roundcode');
 			$db->setQuery($query);

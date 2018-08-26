@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport( 'joomla.application.component.model' );
 
@@ -46,7 +47,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         
                 if(!$required) 
                 {
-                $mitems = array(JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                $mitems = array(HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
                 
@@ -55,7 +56,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 }
                 else
                 {
-                $mitems = array(JHTML::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                $mitems = array(HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
                 

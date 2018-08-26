@@ -11,9 +11,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
  * JFormFieldacteventtype
@@ -24,7 +26,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldacteventtype extends JFormFieldList
+class JFormFieldacteventtype extends FormField
 {
 
 	protected $type = 'acteventtype';
