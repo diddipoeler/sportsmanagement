@@ -273,10 +273,10 @@ $routeparameter['pid'] = $this->row->person_slug;
 						$cnt++;
 							if ( !isset( $totalEvents[$eventId] ) )
 							{
-								$totalEvents[$eventId]=0;
+								$totalEvents[$eventId] = 0;
 							}
 							$totalEvents[$eventId] += (int) $stat;
-							echo '<div title="'.$this->positioneventtypes[$this->row->position_id][$eventId]->name.': '.$stat.'" class="jl_roster_event'.$eventId.' jl_roster_event">
+							echo '<div title="'.Text::_($this->positioneventtypes[$this->row->position_id][$eventId]->name).': '.$stat.'" class="jl_roster_event'.$eventId.' jl_roster_event">
 							'.$stat.'		</div>
 							';
 						}
