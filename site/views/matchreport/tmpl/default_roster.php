@@ -10,9 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-HTMLHelper::_('behavior.modal');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+HTMLHelper::_('behavior.modal');
+
 
 ?>
 <!-- START: game roster -->

@@ -10,9 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-HTMLHelper::_('behavior.modal');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+HTMLHelper::_('behavior.modal');
+
 
 ?>
 <link rel="stylesheet" href="<?php echo JURI::base(true); ?>/components/com_sportsmanagement/assets/css/matchreport_2.css" >
