@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 <script type="text/javascript">
@@ -26,14 +27,14 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<th>
 							<?php
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
 							echo '&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
 							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
 							?>
 						</th>
 						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
@@ -87,8 +88,8 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					?>
 					<tr id="row-new">
-						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
-						<td><?php echo JHtml::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$this->playersoptionsout,'out','class="inputbox player-out"'); ?></td>
+						<td><?php echo HTMLHelper::_('select.genericlist',$this->playersoptionsin,'in','class="inputbox player-in"'); ?></td>
 						<td><?php echo $this->lists['projectpositions']; ?></td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
 						<td>

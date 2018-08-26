@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 		<!-- round selector START -->
 		<div style="width: 75%; margin-bottom: 14px;">
@@ -19,7 +21,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name='boxchecked' value="0" />
 			<div style="float: right; vertical-align: middle; line-height: 27px;">
-			<?php echo JHtml::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 
 				<?php
 				$lv=""; $nv=""; $sv=false;
@@ -31,7 +33,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$lv;
 					$link=JRoute::_('index.php?'.$query);
-					$prevlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
+					$prevlink=HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
 				}
 				else
@@ -47,7 +49,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$nv;
 					$link=JRoute::_('index.php?'.$query);
-					$nextlink=JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
+					$nextlink=HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;
 				}
 				else

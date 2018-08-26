@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
@@ -59,10 +60,10 @@ fieldset button {
             }
             ?>
 						<th width="" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="" >
-							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
 						<th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
@@ -72,8 +73,8 @@ fieldset button {
 						?>
 						<th >
 							<?php 
-								echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->sortDirection,$this->sortColumn);
-								echo '<br>'.JHtml::_(	'select.genericlist',
+								echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DIVISION','divhome.id',$this->sortDirection,$this->sortColumn);
+								echo '<br>'.HTMLHelper::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'filter_division',
 													'class="inputbox" size="1" onchange="window.location.href=window.location.href.split(\'&division=\')[0]+\'&division=\'+this.value"',
@@ -106,7 +107,7 @@ fieldset button {
                         <th class="title" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
 						<th width="1%" ><?php echo Text::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
-							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
+							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
 				</thead>
@@ -127,7 +128,7 @@ fieldset button {
 						$row		=& $this->matches[$i];
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin);
+                        $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin);
                         $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.match.' . $row->id) && $canCheckin;
 
 						list($date,$time) = explode(" ",$row->match_date);
@@ -154,14 +155,14 @@ fieldset button {
 							</td>
 							<td class="">
 								<?php
-								echo JHtml::_('grid.id', $i, $row->id);
+								echo HTMLHelper::_('grid.id', $i, $row->id);
 								?>
 						<!--	</td>  -->
 <!--							<td class=""> -->
                             
                             <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin); ?>
 									<?php endif; 
                                     
                                     if ($canEdit && !$row->checked_out ) :
@@ -201,7 +202,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 									 
 								 	$image = 'players_add.png';
 								 	$title=  '';
-								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
 													 'title= "' .$title. '"');
 													 
@@ -233,14 +234,14 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 			"fillTable" => 'true',
 			"singleHeader" => 'false',
 		);
-	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+	echo HTMLHelper::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 
                                 $attribs = array(
 			'onChange' => "document.getElementById('cb".$i."').checked=true",
 		);                                
-								echo JHtml::calendar(sportsmanagementHelper::convertDate($date),
+								echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($date),
 													'match_date'.$row->id,
 													'match_date'.$row->id,
 													'%d-%m-%Y',
@@ -254,7 +255,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
+									<?php echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'),
 															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT').'"');
 									?>
@@ -278,7 +279,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 							?>
 							<td class="center">
 								<?php
-							echo JHtml::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
+							echo HTMLHelper::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->division_id);
 							?>
                 <?php 
@@ -295,7 +296,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
               ?>
               <td style="text-align:center; ">
 								<?php
-							echo JHtml::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
+							echo HTMLHelper::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->round_id);
 							?>
 							</td>
@@ -320,7 +321,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 									echo '<sub>'.$row->homeplayers_count.'</sub> ';
 												 
 
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),
 													 'title= "' .$title. '"');
 													 
@@ -337,7 +338,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
@@ -349,7 +350,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 									$append=' style="background-color:#bbffff"';
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo JHtml::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
                                 <!--
@@ -369,7 +370,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 													 ' '.Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->awaystaff_count;
 													 
 									 echo '<sub>'.$row->awayplayers_count.'</sub> ';
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'),
 													 'title= "' .$title. '"');
 									 echo '<sub>'.$row->awaystaff_count.'</sub> ';	
@@ -414,7 +415,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 
                                 <a	href="javascript:void(0)"
 									onclick="switchMenu('part<?php echo $row->id; ?>')">&nbsp;
-									<?php echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
+									<?php echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/arrow_open.png',
 															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES'),
 															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PERIOD_SCORES').'"');
 									?>
@@ -423,7 +424,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 <?PHP
                                 if ( $row->alt_decision == 1 )
                                 {
-                                    echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',
+                                    echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/user_edit.png',
 															Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC'),
 															'title= "'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC').'"');
 
@@ -509,7 +510,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
 								<td>
 									<?php
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-									echo JHtml::_('select.genericlist',$this->lists['match_result_type'],
+									echo HTMLHelper::_('select.genericlist',$this->lists['match_result_type'],
 												'match_result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 												$row->match_result_type);
 									?>
@@ -525,7 +526,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                                 if (array_key_exists('result_type', $this->selectlist)) 
                                 {
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                                    echo JHtml::_('select.genericlist',$this->selectlist['result_type'],
+                                    echo HTMLHelper::_('select.genericlist',$this->selectlist['result_type'],
 												'result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 												$row->result_type);
     
@@ -547,7 +548,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway'.$row->id,J
                             <?php
                                 
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                                    echo JHtml::_('select.genericlist',$this->lists['articles'],
+                                    echo HTMLHelper::_('select.genericlist',$this->lists['articles'],
 												'content_id'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 												$row->content_id);
     
@@ -589,7 +590,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 									 	$image = 'icon-16-Referees.png';
 									 }
 									 $title= $row->referees_count;
-									 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+									 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'),
 													 'title= "'. $title. '"') ;
 									 echo '<sub>'.$row->referees_count.'</sub> ';	
@@ -608,20 +609,20 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
 										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 									}
-									echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+									echo HTMLHelper::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
 								?>
 							</td>
                             
                             <td class="center">
 <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'matches.', $canChange, 'cb'); ?>
+            <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'matches.', $canChange, 'cb'); ?>
             <?php 
             // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'matches');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'matches');
-									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'matches');
+									HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'matches');
+									echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
             </div>
@@ -653,7 +654,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('editstats'.$row->id,JURI::r
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type='hidden' name='act' value='' />
 			<input type='hidden' name='task' value='' />
-			<?php echo JHtml::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 		</form>
 <!--	</fieldset> -->
 </div>

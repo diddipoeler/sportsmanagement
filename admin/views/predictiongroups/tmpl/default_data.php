@@ -10,11 +10,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 's.ordering');
 
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');HTMLHelper::_('behavior.modal');
 ?>
 	<div id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">
@@ -26,16 +27,16 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					</th>
 					<th width="20">&nbsp;</th>
 					<th>
-						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_NAME','s.name',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_NAME','s.name',$this->sortDirection,$this->sortColumn); ?>
 					</th>
 					<th width="10%">
 						<?php
-						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->sortDirection,$this->sortColumn);
-						echo JHtml::_('grid.order',$this->items, 'filesave.png', 'predictiongroups.saveorder');
+						echo HTMLHelper::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->sortDirection,$this->sortColumn);
+						echo HTMLHelper::_('grid.order',$this->items, 'filesave.png', 'predictiongroups.saveorder');
 						?>
 					</th>
 					<th width="20">
-						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','s.id',$this->sortDirection,$this->sortColumn); ?>
+						<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','s.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
                     
                     <th width="" class="title">
@@ -69,11 +70,11 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id='.$row->id);
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin);
+                    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
+						<td class="center"><?php echo HTMLHelper::_('grid.id', $i, $row->id); ?></td>
 						<?php
 						
 							$inputappend='';
@@ -81,12 +82,12 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							<td class="center">
                             <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin); ?>
 									<?php endif; ?>
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>

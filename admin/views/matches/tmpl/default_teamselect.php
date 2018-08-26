@@ -9,11 +9,13 @@
  * @subpackage matches
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 <form name="projectteamForm" id="projectteamForm" method="post">
   
 <?php
 //echo $this->lists['projectteams'];  
-echo "".JHtml::_('select.genericlist', $this->lists['projectteams'], 'projectteam' , 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel )."";  
+echo "".HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'projectteam' , 'class="inputbox" size="1" onchange="this.form.submit();" ', 'value', 'text', $this->projectteamsel )."";  
 ?>  
 </form>  

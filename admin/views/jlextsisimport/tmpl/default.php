@@ -38,11 +38,13 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 $option = JFactory::getApplication()->input->getCmd('option');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_( 'behavior.tooltip' );
-JHtml::_( 'behavior.modal' );
+HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.modal' );
 
 //$url = JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
 $url = 'administrator'.DS.'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'sislogo.png';
@@ -52,7 +54,6 @@ $alt = 'DFBNet';
 $attribs['width'] = '170px';
 $attribs['height'] = '26px';
 $attribs['align'] = 'left';
-//$logo = JHtml::_('image', $url, $alt, $attribs);
 
 // Set toolbar items for the page
 //$doc = JFactory::getDocument();
@@ -89,7 +90,7 @@ echo '</pre>';
 			<thead>
 			  <tr>
 			    <th>
-			      <?php echo JHtml::_('image', $url, $alt, $attribs);; ?>
+			      <?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
 			      <?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
 			    </th>
 			  </tr>
@@ -108,11 +109,11 @@ echo '</pre>';
 				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_FORUM');
-				$forumLink=JHtml::link($link,$linkURL,$linkParams);
+				$forumLink=HTMLHelper::link($link,$linkURL,$linkParams);
 				$linkURL='http://bugtracker.joomleague.net/issues/226';
 				$link=JRoute::_($linkURL);
 				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_BUGTRACKER');
-				$bugtrackerLink=JHtml::link($link,$linkURL,$linkParams);
+				$bugtrackerLink=HTMLHelper::link($link,$linkURL,$linkParams);
 				echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT3').'</p>';
 				echo "<p>$forumLink</p>";
 				echo "<p>$bugtrackerLink</p>";
@@ -170,7 +171,7 @@ echo '</pre>';
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type="hidden" name="option" value="com_sportsmanagement" /> 
 		<input type="hidden" name='task' value='jlextsisimport.save' />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</form>
 </div>
 <?PHP

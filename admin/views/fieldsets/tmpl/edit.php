@@ -38,12 +38,14 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 // Get the form fieldsets.
@@ -83,7 +85,7 @@ $fieldsets = $this->form->getFieldsets();
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>

@@ -38,8 +38,10 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -74,7 +76,7 @@ echo $this->loadTemplate('data');
 	<input type="hidden" name="global_bestof" value="<?php echo $this->treetows->global_bestof; ?>" />
 	<input type="hidden" name="task" value="treetonode.display" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
     
 <?php echo $this->table_data_div; ?>
     

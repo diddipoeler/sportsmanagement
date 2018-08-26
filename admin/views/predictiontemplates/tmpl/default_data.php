@@ -10,8 +10,9 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 ?>
 
 <!--	<div id='editcell'> -->
@@ -55,18 +56,18 @@ JHtml::_( 'behavior.tooltip' );
 							</th>
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>							
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
 
 							<th class='title' width='20' nowrap='nowrap'>
 								<?php
-								echo JHtml::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
                             
@@ -104,7 +105,7 @@ JHtml::_( 'behavior.tooltip' );
 							$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id.'&predid='.$this->prediction_id );
                             $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                             $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                            $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin);
+                            $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin);
 							?>
 							<tr class='<?php echo "row$k"; ?>'>
 								<td>
@@ -114,17 +115,17 @@ JHtml::_( 'behavior.tooltip' );
 								</td>
 								<td>
 									<?php
-									echo JHtml::_('grid.id', $i, $row->id);
+									echo HTMLHelper::_('grid.id', $i, $row->id);
 									?>
 								</td>
 								<td style='text-align:center; '>
                                 <?php
                             if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
+										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
 									<?php endif; ?>	
 									<a href='<?php echo $link; ?>'>
 										<?php
-										echo JHtml::_(	'image',
+										echo HTMLHelper::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ),
 														'title= "' . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ) . '"' );

@@ -38,10 +38,12 @@
 */
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="helloworld-form" class="form-validate">
@@ -57,9 +59,9 @@ $params = $this->form->getFieldsets('params');
 	</div>
  
 	<div class="width-40 fltrt">
-		<?php echo JHtml::_('sliders.start', 'sportsmanagement-slider'); ?>
+		<?php echo HTMLHelper::_('sliders.start', 'sportsmanagement-slider'); ?>
 <?php foreach ($params as $name => $fieldset): ?>
-		<?php echo JHtml::_('sliders.panel', JText::_($fieldset->label), $name.'-params');?>
+		<?php echo HTMLHelper::_('sliders.panel', JText::_($fieldset->label), $name.'-params');?>
 	<?php if (isset($fieldset->description) && trim($fieldset->description)): ?>
 		<p class="tip"><?php echo $this->escape(JText::_($fieldset->description));?></p>
 	<?php endif;?>
@@ -72,12 +74,12 @@ $params = $this->form->getFieldsets('params');
 		</fieldset>
 <?php endforeach; ?>
  
-		<?php echo JHtml::_('sliders.end'); ?>
+		<?php echo HTMLHelper::_('sliders.end'); ?>
 	</div>
  
 	<div>
 		<input type="hidden" name="task" value="sportsmanagement.edit" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>
 <?PHP

@@ -37,9 +37,9 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.modal');
-//JHtml::_('behavior.modal', 'a.modal');
-//$option = JFactory::getApplication()->input->getCmd('option');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.modal');
 $view = $this->jinput->getVar("view");
 $view = ucfirst(strtolower($view));
 $cfg_help_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');

@@ -39,8 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjoomleagueimport
@@ -183,17 +182,17 @@ $document->addScriptDeclaration( $javascript );
         $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
         $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');
         
-        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
+        $nation[] = HTMLHelper::::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
 		if ($res = $model->getImportPositions('sportsmanagement'))
         {
             $nation = array_merge($nation, $res);
             }
 		
-        $whichtable[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
-        $whichtable[] = JHtml::_('select.option', 'project_position', JText::_('project_position'));
-        $whichtable[] = JHtml::_('select.option', 'person', JText::_('person'));
+        $whichtable[] = HTMLHelper::::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
+        $whichtable[] = HTMLHelper::::_('select.option', 'project_position', JText::_('project_position'));
+        $whichtable[] = HTMLHelper::::_('select.option', 'person', JText::_('person'));
         
-        $lists['whichtable'] = JHtmlSelect::genericlist(	$whichtable,
+        $lists['whichtable'] = HTMLHelper::Select::genericlist(	$whichtable,
 																'filter_which_table',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',

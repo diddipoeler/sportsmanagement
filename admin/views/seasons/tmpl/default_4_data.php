@@ -37,21 +37,14 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 's.ordering');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-//// welche joomla version
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('behavior.framework', true);
-//}
-//else
-//{
-//JHtml::_( 'behavior.mootools' );    
-//}
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
+
 $modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer', 'listheader');
@@ -68,22 +61,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 </th>
                 <th width="">&nbsp;</th>
                 <th>
-<?php echo JHtml::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_NAME', 's.name', $this->sortDirection, $this->sortColumn); ?>
+<?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_NAME', 's.name', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th width="" class="nowrap center">
 <?php
-echo JHtml::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
+echo HTMLHelper::_('grid.sort', 'JSTATUS', 's.published', $this->sortDirection, $this->sortColumn);
 ?>
                 </th>
 
                 <th width="">
 <?php
-echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
-echo JHtml::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorder');
+echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ORDERING', 's.ordering', $this->sortDirection, $this->sortColumn);
+echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorder');
 ?>
                 </th>
                 <th width="">
-<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
+<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 's.id', $this->sortDirection, $this->sortColumn); ?>
                 </th>
             </tr>
         </thead>
@@ -107,7 +100,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
     $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id=' . $row->id);
     $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
     $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
-    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
+    $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
     $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.season.' . $row->id) && $canCheckin;
     ?>
                 <tr class="<?php echo "row$k"; ?>">
@@ -118,7 +111,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                     </td>
                     <td class="center">
                         <?php
-                        echo JHtml::_('grid.id', $i, $row->id);
+                        echo HTMLHelper::_('grid.id', $i, $row->id);
                         ?>
                     </td>
                         <?php
@@ -143,7 +136,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         ?>
                     <td>
                         <?php if ($row->checked_out) : ?>
-                        <?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
+                        <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
@@ -161,13 +154,13 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                     </td>
                     <td class="center">
                         <div class="btn-group">
-                        <?php echo JHtml::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
+                        <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
                             <?php
                             // Create dropdown items and render the dropdown list.
                             if ($canChange) {
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
-                                JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
-                                echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
+                                HTMLHelper::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
+                                echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->name));
                             }
                             ?>
                         </div>

@@ -3,9 +3,11 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 
 
 $attribs['width'] = '20px';
@@ -65,7 +67,7 @@ echo $value->commit->author->name;
 
 <?PHP
 //echo $value->author->avatar_url;
-echo JHtml::image($value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
+echo HTMLHelper::image($value->author->avatar_url, $value->commit->author->name, $attribs, true, false);
 ?>
 </td>
 

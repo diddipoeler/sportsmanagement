@@ -10,7 +10,10 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 ?>
 <div id="editcell">
 	<form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' id='adminForm' name='adminForm'>
@@ -33,6 +36,6 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
         <input type='hidden' name='match_id' value='<?php echo $this->match_id; ?>' />
 		<input type='hidden' name='task' value='match.savepressebericht' />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</form>
 </div>

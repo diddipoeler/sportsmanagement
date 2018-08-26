@@ -39,6 +39,7 @@
  */
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -301,14 +302,14 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
                 $date = date_create($o['commit']['committer']['date']);
                 $date = date_format($date, 'r');
                 if ($params->get('relativeTime', '1') == '1') {
-                    $ISOtime = JHtml::date($date, 'Y-m-d H:i:s');
+                    $ISOtime = HTMLHelper::date($date, 'Y-m-d H:i:s');
 
                     // Load the JavaScript; first ensure we have MooTools Core
-                    JHtml::_('behavior.framework');
-                    JHtml::script(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/js/prettydate.js', false, false);
-                    $temp->commit->time = ' <span class="commit-time" title="' . $ISOtime . '">' . JHtml::date($date, 'D M d H:i:s O Y') . '</span>';
+                    HTMLHelper::_('behavior.framework');
+                    HTMLHelper::script(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/assets/js/prettydate.js', false, false);
+                    $temp->commit->time = ' <span class="commit-time" title="' . $ISOtime . '">' . HTMLHelper::date($date, 'D M d H:i:s O Y') . '</span>';
                 } else {
-                    $temp->commit->time = ' ' . JHtml::date($date);
+                    $temp->commit->time = ' ' . HTMLHelper::date($date);
                 }
 
                 $github[] = $temp;

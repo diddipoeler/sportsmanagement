@@ -10,15 +10,16 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 }
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 
@@ -124,6 +125,6 @@ if($close == 1) {
 		
 		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
         <input type="hidden" name="component" value="com_sportsmanagement" />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</form>
 </div>

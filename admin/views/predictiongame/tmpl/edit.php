@@ -38,11 +38,13 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
+HTMLHelper::_('behavior.formvalidation');
 
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
@@ -74,7 +76,7 @@ $fieldsets = $this->form->getFieldsets();
 									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JFactory::getApplication()->input->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
 													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
@@ -100,7 +102,7 @@ $fieldsets = $this->form->getFieldsets();
 		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="task" value="predictiongame.edit" />
 	</div>
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

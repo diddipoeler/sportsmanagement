@@ -11,6 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjlextdfbkeyimport
@@ -76,7 +77,7 @@ $mdl_divisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel")
 $projectdivisions = $mdl_divisions->getDivisions($this->project_id);  
 $this->division = 0;
 //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' projectdivisions <pre>'.print_r($projectdivisions,true).'</pre>', 'warning');
-$divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+$divisionsList[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		
 		if ($projectdivisions)
 		{ 
@@ -133,7 +134,7 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
             // project selected. projectteams available ?
             //build the html options for projectteams
             if ( $res = $this->model->getProjectteams($this->project_id,$this->division_id) ) {
-                $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
+                $projectteams[] = HTMLHelper::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
                 $projectteams = array_merge($projectteams, $res);
                 $lists['projectteams'] = $projectteams;
 
@@ -214,7 +215,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_id
 JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($this->project_id,true).'</pre>', 'warning');
 	    
         if ( $res = $model->getProjectteams($this->project_id,$this->division_id) ) {
-            $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
+            $projectteams[] = HTMLHelper::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             //$lists['projectteams'] = $projectteams;
 
@@ -267,7 +268,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id 
         $this->division_id = $this->jinput->get('divisionid');
 
         if ($res = $model->getProjectteams($this->project_id,$this->division_id)) {
-            $projectteams[] = JHtml::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
+            $projectteams[] = HTMLHelper::_('select.option', '0', '- ' . JText::_('Select projectteams') . ' -');
             $projectteams = array_merge($projectteams, $res);
             $lists['projectteams'] = $projectteams;
 

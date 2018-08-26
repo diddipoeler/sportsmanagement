@@ -38,8 +38,10 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
+
 
 //$params = $this->form->getFieldsets('params');
 //save and close 
@@ -72,7 +74,7 @@ if($close == 1) {
     
 			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='' />
-			<?php echo JHtml::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
 				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td>

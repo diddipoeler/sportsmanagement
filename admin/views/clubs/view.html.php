@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -58,12 +59,12 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$this->table = JTable::getInstance('club', 'sportsmanagementTable');
         
         //build the html select list for seasons
-		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+		$seasons[]	= HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons, $allSeasons);
         $this->season = $allSeasons;
-		$lists['seasons'] = JHtml::_( 'select.genericList',
+		$lists['seasons'] = HTMLHelper::_( 'select.genericList',
 									$seasons,
 									'filter_season',
 									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -72,12 +73,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
 									$this->state->get('filter.season'));
 
 		unset($seasons);
-
-//		// state filter
-//		$lists['state'] = JHtml::_('grid.state',$filter_state);
-        
+       
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);

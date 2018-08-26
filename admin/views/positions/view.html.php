@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPositions
@@ -45,7 +46,7 @@ $starttime = microtime();
 
 
 		//build the html options for parent position
-		$parent_id[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[] = HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		if ($res = $this->model->getParentsPositions())
 		{
 			foreach ($res as $re){$re->text = JText::_($re->text);}
@@ -55,13 +56,13 @@ $starttime = microtime();
 		unset($parent_id);
 
 		//build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$sportstypes[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
         
         $this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList', 
 							$sportstypes, 
 							'filter_sports_type', 
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"', 

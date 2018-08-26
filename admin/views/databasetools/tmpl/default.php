@@ -38,9 +38,11 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 
@@ -200,7 +202,7 @@ echo $this->loadTemplate('joomla2');
 <!--	</div> -->
 
 	<input type="hidden" name="task" value="databasetool.execute" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?PHP
 echo "<div>";

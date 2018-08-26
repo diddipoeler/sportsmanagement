@@ -38,10 +38,12 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -49,8 +51,8 @@ $fieldsets = $this->form->getFieldsets();
 ?>
 <!-- import the functions to move the events between selection lists	-->
 <?php
-//$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHtml::script('JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
+
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
@@ -59,11 +61,11 @@ $fieldsets = $this->form->getFieldsets();
 
 if ( $this->change_training_date )
 {
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'training'));     
 }
 else
 {
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); 
 } 
 
 ?>
@@ -71,7 +73,7 @@ echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
 
 switch ($fieldset->name)
 {
@@ -108,12 +110,12 @@ switch ($fieldset->name)
     echo $this->loadTemplate('fieldsets');
     break;
 }    
-echo JHtml::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 ?>    
 	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div> 
 <div class="clr"></div>
 <div>        
@@ -122,7 +124,7 @@ echo JHtml::_('bootstrap.endTab');
 <input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
 <input type="hidden" name="task" value="projectteam.edit" />
 </div>
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";

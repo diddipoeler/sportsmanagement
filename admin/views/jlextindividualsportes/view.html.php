@@ -39,10 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
-
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjlextindividualsportes
@@ -107,7 +104,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         
         
         
-        $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+        $teams[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
         if ($projectteams = $model->getPlayer($projectteam1_id, $project_id))
 		{
 			$teams = array_merge($teams, $projectteams);
@@ -117,7 +114,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
             
             
             
-         $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+         $teams[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
          if ($projectteams = $model->getPlayer($projectteam2_id, $project_id))
 		{
 			$teams = array_merge($teams, $projectteams);

@@ -10,15 +10,16 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 
 $url = 'administrator/components/com_sportsmanagement/assets/images/dfb-key.jpg';
 $alt = 'Lmo Logo';
 // $attribs['width'] = '170px';
 // $attribs['height'] = '26px';
 $attribs['align'] = 'left';
-$logo = JHtml::_('image', $url, $alt, $attribs);
+$logo = HTMLHelper::_('image', $url, $alt, $attribs);
 
 //// Set toolbar items for the page
 //JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ) ) );
@@ -60,7 +61,7 @@ echo '</pre>';
 	<table class='adminlist'>
 			<thead>
       <tr>
-      <th><?php echo JHtml::_('image', $url, $alt, $attribs);; ?>
+      <th><?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
       
       <?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11' ); ?>
       </th>
@@ -106,12 +107,9 @@ echo "<td>".$rowdfb->spieltag."</td>";
 
 $teile = explode(",", $rowdfb->paarung);
 echo "<td>".$teile[0]."</td>"; // Teil1
-//echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
-echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
-
+echo "<td>".HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[0] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
 echo "<td>".$teile[1]."</td>"; // Teil2
-//echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $this->lists['projectteams'] )."</td>";
-echo "<td>".JHtml::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
+echo "<td>".HTMLHelper::_('select.genericlist', $this->lists['projectteams'], 'chooseteam_'.$teile[1] , 'class="inputbox" size="1"', 'value', 'text', $startteamdfb )."</td>";
 
 echo "<td>".$rowdfb->spielnummer."</td></tr>";
 }

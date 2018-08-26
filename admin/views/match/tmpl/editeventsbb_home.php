@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 		<fieldset class="adminform">
@@ -33,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 					{
 						$imageTitle = JText::sprintf( '%1$s', JText::_( $ev->text ) );
 						$iconFileName = $ev->icon;
-						echo JHtml::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
+						echo HTMLHelper::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
 					} else {
 						echo JText::_( $ev->text ) ;
 					}

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewprojectteams
@@ -84,7 +85,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
-		$divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisionsList[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		
 		if ($projectdivisions)
 		{ 
@@ -187,7 +188,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($notusedteams);
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation, $res);
@@ -210,7 +211,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         //build the html select list for all teams
 		$allTeams = array();
-		$all_teams[] = JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
+		$all_teams[] = HTMLHelper::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
 		if( $allTeams = $this->model->getAllTeams($this->project_id) ) 
     {
 			$all_teams=array_merge($all_teams,$allTeams);
@@ -219,8 +220,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($all_teams);
         
         $myoptions = array();
-		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '1', JText::_( 'JYES' ) );
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 

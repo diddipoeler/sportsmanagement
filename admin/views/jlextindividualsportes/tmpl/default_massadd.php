@@ -1,4 +1,6 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 	<div id="editcell">
@@ -12,7 +14,7 @@
 				<input type='hidden' name='task' value='copyfrom' />
 				<input type='hidden' name='addtype' value='0' id='addtype' />
 				<input type='hidden' name='add_match_count' value='0' id='addmatchescount' />
-				<?php echo JHTML::_('form.token')."\n"; ?>
+				<?php echo HTMLHelper::_('form.token')."\n"; ?>
 				<table class='adminlist' border='0'>
 					<thead>
 						<tr>
@@ -54,7 +56,7 @@
 														<td style='text-align:right; vertical-align:top; font-weight:bold; '><?php echo JText::_('JL_ADMIN_MATCHES_MASSADD_STARTTIME'); ?></td>
 														<td>
 															<?php
-															echo JHTML::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
+															echo HTMLHelper::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
 																					'match_date','match_date',
 																					'%d-%m-%Y','size="10" ');
                                                            ?>
@@ -85,7 +87,7 @@
 										<td valign="top" align="right"><b><?php echo JText::_('JL_ADMIN_MATCHES_MASSADD_DEFAULT_DATE'); ?></b></td>
 										<td>
 											<?php
-											echo JHTML::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
+											echo HTMLHelper::calendar(	JoomleagueHelper::convertDate($this->roundws->round_date_first),
 																	'date','date',
 																	'%d-%m-%Y','size="10" ');
 											?>

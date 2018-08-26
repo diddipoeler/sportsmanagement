@@ -40,8 +40,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjoomleagueimports
@@ -97,7 +96,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$this->model->check_database();
         
         //build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = HTMLHelper::::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
@@ -105,7 +104,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$variable = $this->jinput->get('filter_sports_type',0);
 
 		$lists['sportstype'] = $sportstypes; 
-		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+		$lists['sportstypes'] = HTMLHelper::::_( 'select.genericList', 
 										$sportstypes, 
 										'filter_sports_type', 
 										'class="inputbox" onChange="" style="width:120px"',
@@ -114,28 +113,6 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 										$variable);
 		unset($sportstypes);
 		
-//        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
-//        $this->assign('jl_tables',$databasetool->getJoomleagueImportTables() );
-//        
-//        $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
-//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
-//        
-//        //build the html select list for seasons
-//		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-//        $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
-//		$allSeasons = $mdlSeasons->getSeasons();
-//		$seasons = array_merge($seasons,$allSeasons);
-//        
-//		$lists['seasons'] = JHtml::_( 'select.genericList',
-//									$seasons,
-//									'filter_season',
-//									'class="inputbox" onChange="" style="width:120px"',
-//									'id',
-//									'name',
-//									$this->state->get('filter.season'));
-//
-//		unset($seasons);
-//        
 		$this->lists = $lists;
 		//$this->request_url = $uri->toString();
 //        $this->assign('items',$checktables);
@@ -147,7 +124,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
         if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
 		{
-		$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$myoptions[] = HTMLHelper::::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
 		{

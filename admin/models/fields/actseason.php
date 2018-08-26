@@ -10,9 +10,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
  * JFormFieldactseason
@@ -23,7 +26,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldactseason extends JFormFieldList
+class JFormFieldactseason extends FormField
 {
 
 	protected $type = 'actseason';
@@ -38,7 +41,7 @@ class JFormFieldactseason extends JFormFieldList
 		// Initialize variables.
 		$options = array();
     
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('s.id AS value, s.name AS text');

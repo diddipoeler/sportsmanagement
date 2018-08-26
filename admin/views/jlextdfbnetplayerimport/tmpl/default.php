@@ -10,12 +10,14 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $option = JFactory::getApplication()->input->getCmd('option');
 
-JHtml::_( 'behavior.tooltip' );
-JHtml::_( 'behavior.modal' );
+HTMLHelper::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.modal' );
 
 //$url = JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
 $url = 'administrator'.DS.'components'.DS.$option. DS.'assets'.DS.'icons'.DS.'dfbnet-logo.gif';
@@ -25,7 +27,6 @@ $alt = 'DFBNet';
 $attribs['width'] = '184px';
 $attribs['height'] = '77px';
 $attribs['align'] = 'left';
-//$logo = JHtml::_('image', $url, $alt, $attribs);
 
 // Set toolbar items for the page
 //$doc = JFactory::getDocument();
@@ -62,7 +63,7 @@ echo '</pre>';
 			<thead>
 			  <tr>
 			    <th>
-			      <?php echo JHtml::_('image', $url, $alt, $attribs);; ?>
+			      <?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
 			      <?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
 			    </th>
 			  </tr>
@@ -176,7 +177,7 @@ echo '</pre>';
 		<input type="hidden" name='sent' value='1' />
 		<input type="hidden" name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type="hidden" name='task' value='jlextdfbnetplayerimport.save' />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</form>
 </div>
 <?PHP

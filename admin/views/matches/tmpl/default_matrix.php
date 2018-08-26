@@ -38,6 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 ?>
 
 <!--[if IE]>
@@ -170,5 +172,5 @@ echo $matrix;
 <input type='hidden' name='projectteam2_id' value='' />
 <input type='hidden' name='published' value='1' />
 <input type='hidden' name='task' value='match.addmatch' />
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>

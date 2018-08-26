@@ -38,9 +38,11 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 
 
 ?>
@@ -76,7 +78,7 @@ foreach ($this->_success_text as $key => $value)
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?PHP
 echo "<div>";

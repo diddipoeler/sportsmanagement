@@ -10,14 +10,16 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
+
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 }
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 //echo 'sportsmanagementViewMatch _displayEditStats teams<br><pre>'.print_r($this->teams,true).'</pre>';
@@ -55,14 +57,14 @@ if($close == 1) {
 $tabsOptionsJ31 = array(
             "active" => "panel1" // It is the ID of the active tab.
         );
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_($this->teams->team1) );	
+echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_($this->teams->team1) );	
 echo $this->loadTemplate('home');	
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_($this->teams->team2) );	
+echo HTMLHelper::_('bootstrap.endTab');
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_($this->teams->team2) );	
 echo $this->loadTemplate('away');	
-echo JHtml::_('bootstrap.endTab');	
-echo JHtml::_('bootstrap.endTabSet'); 
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.endTabSet'); 
 		
 		?>
 		
@@ -75,7 +77,7 @@ echo JHtml::_('bootstrap.endTabSet');
         <input type="hidden" name="match_id"	value="<?php echo $this->item->id; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="component" value="com_sportsmanagement" />
-		<?php echo JHtml::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 <!--	</div> -->
 </form>
 <div style="clear: both"></div>

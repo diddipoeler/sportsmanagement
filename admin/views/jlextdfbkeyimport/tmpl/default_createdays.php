@@ -10,8 +10,9 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_( 'behavior.tooltip' );
+HTMLHelper::_( 'behavior.tooltip' );
 
 //// Set toolbar items for the page
 //JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ) ) );
@@ -74,7 +75,7 @@ foreach($this->newmatchdays as $rowdays)
 <?php
 $append = ' style="background-color:#bbffff;" ';
 $date1 = '';
-echo JHtml::calendar($date1,
+echo HTMLHelper::calendar($date1,
 		'round_date_first['.$i.']',
 		'round_date_first['.$i.']',
 		'%d-%m-%Y',
@@ -88,7 +89,7 @@ echo JHtml::calendar($date1,
 <?php
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHtml::calendar($date1,
+echo HTMLHelper::calendar($date1,
 		'round_date_last['.$i.']',
 		'round_date_last['.$i.']',
 		'%d-%m-%Y',

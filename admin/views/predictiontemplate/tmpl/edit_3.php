@@ -38,6 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -46,8 +48,8 @@ $fieldsets = $this->form->getFieldsets();
 
 
 JHtmlBehavior::formvalidation();
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 
 
 
@@ -70,7 +72,7 @@ $i    = 1;
 <div class="form-horizontal">
 <?php 
 
-echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS')); 
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS')); 
 
 
 ?>
@@ -78,7 +80,7 @@ echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMAN
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
 
 
     ?>
@@ -108,12 +110,12 @@ echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->
             </div>
     <?PHP
 
-echo JHtml::_('bootstrap.endTab');    
+echo HTMLHelper::_('bootstrap.endTab');    
 }    
 
 ?>    
 	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+<?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
 </div> 			
     
 </fieldset>    
@@ -122,7 +124,7 @@ echo JHtml::_('bootstrap.endTab');
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
 <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
 <input type="hidden" name="task" value="predictiontemplate.edit"/>
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </div>
 </form>
 

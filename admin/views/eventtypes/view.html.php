@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.filesystem.file');
 
 /**
@@ -46,13 +46,13 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$this->table = $table;
 
 		//build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$sportstypes[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
 		$this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList',
 							$sportstypes,
 							'filter_sports_type',
 							'class="inputbox" onChange="this.form.submit();" style="width:120px"',

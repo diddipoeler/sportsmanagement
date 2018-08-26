@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPersons
@@ -64,7 +65,7 @@ $starttime = microtime();
 /**
  * build the html select list for positions
  */
-		$positionsList[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positionsList[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
         { 
@@ -76,7 +77,7 @@ $starttime = microtime();
 /**
  * build the html options for nation
  */
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
@@ -94,7 +95,7 @@ $starttime = microtime();
         unset($nation);
         
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $myoptions[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
@@ -184,12 +185,12 @@ $starttime = microtime();
 		}
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation = array_merge($nation, $res);}
         $lists['nation'] = $nation;
         
         //build the html select list for positions
-		$positionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positionsList[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
 		{
@@ -199,7 +200,7 @@ $starttime = microtime();
 		unset($positionsList);
         
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $myoptions[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
@@ -244,7 +245,7 @@ $starttime = microtime();
 	 */
 	function calendar($value,$name,$id,$format='%Y-%m-%d',$attribs=null,$onUpdate=null,$i=null)
 	{
-		JHtml::_('behavior.calendar'); //load the calendar behavior
+		HTMLHelper::_('behavior.calendar'); //load the calendar behavior
 
 		if (is_array($attribs)){$attribs=ArrayHelper::toString($attribs);}
 		$document = JFactory::getDocument();

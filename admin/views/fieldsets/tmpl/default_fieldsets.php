@@ -38,6 +38,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 switch ($this->fieldset) {
     case 'playground_jquery':
         $backgroundimage = JURI::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
@@ -312,7 +314,7 @@ switch ($this->fieldset) {
 zoom='3'\|mapType='Satellite'\|text='sv DWO'\|tooltip='DWO'\|
 marker='1'\|align='center' } ";
 //$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";  
-        echo JHtml::_('content.prepare', $params);
+        echo HTMLHelper::_('content.prepare', $params);
 
         break;
 
@@ -497,7 +499,7 @@ marker='1'\|align='center' } ";
                                        href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . JFactory::getApplication()->input->getVar("view") . '-' . $var_onlinehelp; ?>"
                                        class="modal">
                     <?php
-                    echo JHtml::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
+                    echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .
                             Text::_('COM_SPORTSMANAGEMENT_HELP_LINK') . '"');
                     ?>
                                     </a>

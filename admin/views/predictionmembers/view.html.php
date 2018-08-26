@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPredictionMembers
@@ -95,7 +96,7 @@ $this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id
     
 	if ( $res_prediction_members )
 		{
-			$lists['prediction_members'] = JHtml::_(	'select.genericlist', 
+			$lists['prediction_members'] = HTMLHelper::_(	'select.genericlist', 
 										$res_prediction_members, 
 										'prediction_members[]', 
 										'class="inputbox" multiple="true" onchange="" size="15"', 
@@ -110,7 +111,7 @@ $this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id
     $res_joomla_members = $this->getModel()->getJLUsers($this->prediction_id);
     if ( $res_joomla_members )
     {
-		$lists['members'] = JHtml::_(	'select.genericlist', 
+		$lists['members'] = HTMLHelper::_(	'select.genericlist', 
 										$res_joomla_members, 
 										'members[]', 
 										'class="inputbox" multiple="true" onchange="" size="15"', 
@@ -157,14 +158,14 @@ $this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id
 
         //build the html select list for prediction games
         $mdlPredGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
-		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
+		$predictions[] = HTMLHelper::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
 			{ 
 				$predictions = array_merge( $predictions, $res ); 
 				$this->prediction_ids = $res;
 			}
 			
-		$lists['predictions'] = JHtml::_('select.genericlist', 
+		$lists['predictions'] = HTMLHelper::_('select.genericlist', 
 								$predictions, 
 								'filter_prediction_id', 
 								'class="inputbox" onChange="this.form.submit();" ', 
