@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * sportsmanagementViewteampersons
  * 
@@ -91,9 +93,11 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $mdlProjectTeam = JModelLegacy::getInstance('ProjectTeam', 'sportsmanagementModel');
         $project_team = $mdlProjectTeam->getProjectTeam($this->team_id);
 
-        //build the html options for position
+/**
+ * build the html options for position
+ */
         $position_id = array();
-        $position_id[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
+        $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
 
         if ($this->_persontype == 1) {
@@ -112,7 +116,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 /**
  * build the html options for nation
  */
-		$nation[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
@@ -146,7 +150,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         $option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
-	$app->setUserState("$option.pid",$this->project_id);
+	    $app->setUserState("$option.pid",$this->project_id);
         $app->setUserState("$option.project_team_id", $this->project_team_id);
         $app->setUserState("$option.team_id", $this->team_id);
         $app->setUserState("$option.persontype", $this->_persontype);
@@ -163,7 +167,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
         JToolbarHelper::divider();
 
         sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
-	JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
+	    JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 
         JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -592,7 +593,7 @@ abstract class sportsmanagementHelper {
      */
     public static function getDBConnection($request = FALSE, $value = FALSE) {
         $app = JFactory::getApplication();
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
 
         $config = JFactory::getConfig();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
@@ -888,7 +889,7 @@ abstract class sportsmanagementHelper {
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
         // the specified default value will be returned.
         // function syntax is getUserState( $key, $default );
@@ -1390,7 +1391,7 @@ abstract class sportsmanagementHelper {
      * @return string placeholder (path)
      */
     public static function getDefaultPlaceholder($type = "player") {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
         $ph_logo_medium = $params->get('ph_logo_medium', 0);
@@ -1466,7 +1467,7 @@ abstract class sportsmanagementHelper {
     public static function getPictureThumb($picture, $alttext, $width = 40, $height = 40, $type = 0) {
         $ret = "";
         $picturepath = JPath::clean(JPATH_SITE . DS . str_replace(JPATH_SITE . DS, '', $picture));
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $ph_player = $params->get('ph_player', 0);
         $ph_logo_big = $params->get('ph_logo_big', 0);
         $ph_logo_medium = $params->get('ph_logo_medium', 0);
@@ -1501,7 +1502,7 @@ abstract class sportsmanagementHelper {
             }
         }
         if (!empty($picture)) {
-            $params = JComponentHelper::getParams('com_sportsmanagement');
+            $params = ComponentHelper::getParams('com_sportsmanagement');
             $format = "JPG"; //PNG is not working in IE8
             $format = $params->get('thumbformat', 'PNG');
             $bUseThumbLib = $params->get('usethumblib', false);
@@ -2383,7 +2384,7 @@ $output .= '</ul>';
         $zusatz = '';
         $project_id = $jinput->get('pid');
         if ($project_id) {
-            $zusatz = '&pid=' . $project_id;
+            $zusatz .= '&pid=' . $project_id;
         }
         //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JFactory::getApplication()->input->getVar('layout'),true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
@@ -2391,9 +2392,17 @@ $output .= '</ul>';
         if (!$view) {
             $view = $jinput->get('view');
         }
+        
+        switch ($layout)
+        {
+            case 'assignplayers':
+            $zusatz .= '&team_id=' . $jinput->get('team_id');
+            $zusatz .= '&persontype=' . $jinput->get('persontype');
+            break;
+        }
 
-        $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
-        $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
+        $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+        $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
         $bar = JToolbar::getInstance('toolbar');
         $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
@@ -2433,9 +2442,9 @@ $output .= '</ul>';
             default:
                 break;
         }
-        $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server', '');
-        $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
-        $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
+        $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server', '');
+        $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+        $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
         $bar = JToolBar::getInstance('toolbar');
 
         if ($layout) {
@@ -2957,7 +2966,7 @@ $output .= '</ul>';
         if (JFile::exists(JPATH_SITE . DS . $picture)) {
             // alles ok
         } else {
-            $picture = JComponentHelper::getParams($option)->get('ph_logo_big', '');
+            $picture = ComponentHelper::getParams($option)->get('ph_logo_big', '');
         }
         return $picture;
     }
@@ -2983,7 +2992,7 @@ $output .= '</ul>';
         if (JFile::exists(JPATH_SITE . DS . $picture)) {
             // alles ok
         } else {
-            $picture = JComponentHelper::getParams($option)->get('ph_team', '');
+            $picture = ComponentHelper::getParams($option)->get('ph_team', '');
         }
         return $picture;
     }
@@ -3003,8 +3012,8 @@ $output .= '</ul>';
         // in der konfiguration ausgewählt hat,
         // kommt es zu einem fehler, wenn wir darüber selektieren
         // ist k2 installiert ?
-        if (JComponentHelper::getParams($option)->get('which_article_component') == 'com_k2') {
-            $k2 = JComponentHelper::getComponent('com_k2');
+        if (ComponentHelper::getParams($option)->get('which_article_component') == 'com_k2') {
+            $k2 = ComponentHelper::getComponent('com_k2');
 
             if (!$k2->option) {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'), 'Error');
@@ -3018,7 +3027,7 @@ $output .= '</ul>';
 
         $query->select('c.id as value,c.title as text');
 
-        switch (JComponentHelper::getParams($option)->get('which_article_component')) {
+        switch (ComponentHelper::getParams($option)->get('which_article_component')) {
             case 'com_content':
                 $query->from('#__content as c');
                 break;
