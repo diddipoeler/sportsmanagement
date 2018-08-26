@@ -13,13 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::::_('behavior.tooltip');
-HTMLHelper::::_('behavior.formvalidation');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-HTMLHelper::::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 }
 
 //$params = $this->form->getFieldsets('params');
@@ -276,6 +276,6 @@ if($close == 1) {
 <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
 <input type="hidden" name="component" value="com_sportsmanagement" />	
 <?php 
-echo HTMLHelper::::_('form.token'); ?>
+echo HTMLHelper::_('form.token'); ?>
 </form>
 

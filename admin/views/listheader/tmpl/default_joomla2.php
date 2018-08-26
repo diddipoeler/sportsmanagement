@@ -105,7 +105,7 @@ echo $this->loadTemplate('debug');
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
-                echo HTMLHelper::::_('select.options', HTMLHelper::::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
 			</select>
             </td>
@@ -117,7 +117,7 @@ echo $this->loadTemplate('debug');
             <select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
 				<?php 
-                echo HTMLHelper::::_('select.options', HTMLHelper::::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
+                echo HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
                 ?>
 			</select>
             </td>
@@ -125,7 +125,7 @@ echo $this->loadTemplate('debug');
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
-                echo HTMLHelper::::_('select.options', HTMLHelper::::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
+                echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
 			</select>
             </td>

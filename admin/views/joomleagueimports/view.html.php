@@ -96,7 +96,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$this->model->check_database();
         
         //build the html select list for sportstypes
-		$sportstypes[] = HTMLHelper::::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
@@ -104,7 +104,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$variable = $this->jinput->get('filter_sports_type',0);
 
 		$lists['sportstype'] = $sportstypes; 
-		$lists['sportstypes'] = HTMLHelper::::_( 'select.genericList', 
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList', 
 										$sportstypes, 
 										'filter_sports_type', 
 										'class="inputbox" onChange="" style="width:120px"',
@@ -124,7 +124,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
         if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
 		{
-		$myoptions[] = HTMLHelper::::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$myoptions[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
 		{

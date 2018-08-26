@@ -41,8 +41,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::::_('behavior.tooltip');
-HTMLHelper::::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -381,7 +381,7 @@ if (isset($this->xml) && is_array($this->xml))
 			<input type='hidden' name='sent' value="2" id='sent' />
 			<input type='hidden' name='task' value="jlxmlimport.insert" />
 			<input type='hidden' name='filter_season' value='<?php echo $this->filter_season; ?>' />
-			<?php echo HTMLHelper::::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 			<?php
 			if (($xmlProjectImport) || ($xmlImportType=='events') || ($xmlImportType=='positions'))
 			{
@@ -2012,7 +2012,7 @@ if (isset($this->xml) && is_array($this->xml))
                                                 $agegroup = $agegroups->value;
                                             }    
                                             }
-									echo HTMLHelper::::_(	'select.genericlist',
+									echo HTMLHelper::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'personAgeGroup_'.$key,
 													'class="form-control form-control-inline"',
