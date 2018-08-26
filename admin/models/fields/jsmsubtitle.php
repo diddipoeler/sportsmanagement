@@ -16,7 +16,7 @@ use Joomla\CMS\Form\FormField;
 
 
 /**
- * JFormFieldJSMSubtitle
+ * FormFieldJSMSubtitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,7 +24,7 @@ use Joomla\CMS\Form\FormField;
  * @version $Id$
  * @access public
  */
-class JFormFieldJSMSubtitle extends FormField {
+class FormFieldJSMSubtitle extends FormField {
 		
 	public $type = 'JSMSubtitle';
 

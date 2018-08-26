@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * JFormFieldImageSelect
+ * FormFieldImageSelect
  * 
  * @package   
  * @author 
@@ -48,12 +48,12 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class JFormFieldImageSelect extends JFormField
+class FormFieldImageSelect extends FormField
 {
 	protected $type = 'imageselect';
 
 	/**
-	 * JFormFieldImageSelect::getInput()
+	 * FormFieldImageSelect::getInput()
 	 * 
 	 * @return
 	 */

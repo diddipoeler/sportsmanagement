@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-class JFormFieldPageTitleFormat extends JFormField
+class FormFieldPageTitleFormat extends FormField
 {
 	protected $type = 'pagetitleformat';
 

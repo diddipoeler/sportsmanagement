@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
 /**
- * JFormFieldClubs
+ * FormFieldClubs
  * 
  * @package   
  * @author 
@@ -25,13 +25,13 @@ use Joomla\CMS\Component\ComponentHelper;
  * @version 2014
  * @access public
  */
-class JFormFieldClubs extends FormField
+class FormFieldClubs extends FormField
 {
 
 	protected $type = 'clubs';
 	
 	/**
-	 * JFormFieldClubs::getInput()
+	 * FormFieldClubs::getInput()
 	 * 
 	 * @return
 	 */

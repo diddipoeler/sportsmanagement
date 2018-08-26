@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 /**
- * JFormFieldJLGColor
+ * FormFieldJLGColor
  * 
  * @package 
  * @author diddi
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  * @version $Id$
  * @access public
  */
-class JFormFieldJLGColor extends JFormField
+class FormFieldJLGColor extends FormField
 {
 	/**
 	 * The form field type.
@@ -62,7 +62,7 @@ class JFormFieldJLGColor extends JFormField
 
 	
 	/**
-	 * JFormFieldJLGColor::getInput()
+	 * FormFieldJLGColor::getInput()
 	 * 
 	 * @return
 	 */

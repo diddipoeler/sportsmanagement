@@ -21,7 +21,7 @@ FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldeventtypelist
+ * FormFieldeventtypelist
  * 
  * @package   
  * @author 
@@ -29,7 +29,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldeventtypelist extends FormField
+class FormFieldeventtypelist extends FormField
 {
     
 	/**

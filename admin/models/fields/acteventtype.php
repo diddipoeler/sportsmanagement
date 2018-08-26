@@ -18,7 +18,7 @@ jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldacteventtype
+ * FormFieldacteventtype
  * 
  * @package   
  * @author 
@@ -26,13 +26,13 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldacteventtype extends FormField
+class FormFieldacteventtype extends FormField
 {
 
 	protected $type = 'acteventtype';
     
     /**
-     * JFormFieldacteventtype::getOptions()
+     * FormFieldacteventtype::getOptions()
      * 
      * @return
      */

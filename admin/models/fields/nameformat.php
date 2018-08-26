@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
 /**
- * JFormFieldNameFormat
+ * FormFieldNameFormat
  * 
  * @package 
  * @author diddi
@@ -22,12 +22,12 @@ use Joomla\CMS\HTML\HTMLHelper;
  * @version $Id$
  * @access public
  */
-class JFormFieldNameFormat extends JFormField
+class FormFieldNameFormat extends FormField
 {
 	protected $type = 'nameformat';
 
 	/**
-	 * JFormFieldNameFormat::getInput()
+	 * FormFieldNameFormat::getInput()
 	 * 
 	 * @return
 	 */

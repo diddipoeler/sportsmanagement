@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * JFormFieldTeams
+ * FormFieldTeams
  * 
  * @package   
  * @author 
@@ -48,13 +48,13 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class JFormFieldTeams extends JFormField
+class FormFieldTeams extends FormField
 {
 
 	protected $type = 'teams';
 
 	/**
-	 * JFormFieldTeams::getInput()
+	 * FormFieldTeams::getInput()
 	 * 
 	 * @return
 	 */

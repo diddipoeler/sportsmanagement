@@ -17,7 +17,7 @@ jimport('joomla.form.formfield');
 jimport('joomla.version');
 
 /**
- * JFormFieldJSMMessage
+ * FormFieldJSMMessage
  * 
  * @package 
  * @author Dieter Plöger
@@ -25,7 +25,7 @@ jimport('joomla.version');
  * @version $Id$
  * @access public
  */
-class JFormFieldJSMMessage extends FormField {
+class FormFieldJSMMessage extends FormField {
 		
 	public $type = 'JSMMessage';
 

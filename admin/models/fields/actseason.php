@@ -18,7 +18,7 @@ jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldactseason
+ * FormFieldactseason
  * 
  * @package   
  * @author 
@@ -26,13 +26,13 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldactseason extends FormField
+class FormFieldactseason extends FormField
 {
 
 	protected $type = 'actseason';
     
     /**
-     * JFormFieldactseason::getOptions()
+     * FormFieldactseason::getOptions()
      * 
      * @return
      */

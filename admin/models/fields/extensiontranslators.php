@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldExtensionTranslators
+ * FormFieldExtensionTranslators
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +21,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionTranslators extends JFormField {
+class FormFieldExtensionTranslators extends FormField {
 		
 	public $type = 'ExtensionTranslators';
 	
 	/**
-	 * JFormFieldExtensionTranslators::getLabel()
+	 * FormFieldExtensionTranslators::getLabel()
 	 * 
 	 * @return
 	 */
@@ -51,7 +51,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 	}
 
 	/**
-	 * JFormFieldExtensionTranslators::getInput()
+	 * FormFieldExtensionTranslators::getInput()
 	 * 
 	 * @return
 	 */
@@ -69,7 +69,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 	}
 	
 	/**
-	 * JFormFieldExtensionTranslators::setup()
+	 * FormFieldExtensionTranslators::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

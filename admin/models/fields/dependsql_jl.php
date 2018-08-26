@@ -1,13 +1,34 @@
 <?php 
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      dependsql_jl.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
+ 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 JHtml::_( 'behavior.framework' );
 
 
-class JFormFieldDependSQL extends JFormFieldList
+/**
+ * FormFieldDependSQL
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
+class FormFieldDependSQL extends FormField
 {
 	/**
 	 * field name
@@ -17,6 +38,11 @@ class JFormFieldDependSQL extends JFormFieldList
 	 */
 	protected $type = 'dependsql';
 
+	/**
+	 * FormFieldDependSQL::getInput()
+	 * 
+	 * @return
+	 */
 	protected function getInput()
 	{
 		// elements

@@ -9,7 +9,7 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldJSMLink extends JFormField {
+class FormFieldJSMLink extends FormField {
 		
 	public $type = 'JSMLink';
 

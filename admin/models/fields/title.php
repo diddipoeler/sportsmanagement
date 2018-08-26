@@ -15,7 +15,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldTitle
+ * FormFieldTitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -23,12 +23,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldTitle extends JFormField
+class FormFieldTitle extends FormField
 {
 	public $type = 'Title';
 
 	/**
-	 * JFormFieldTitle::getLabel()
+	 * FormFieldTitle::getLabel()
 	 * 
 	 * @return
 	 */
@@ -79,7 +79,7 @@ class JFormFieldTitle extends JFormField
 	}
 
 	/**
-	 * JFormFieldTitle::getInput()
+	 * FormFieldTitle::getInput()
 	 * 
 	 * @return
 	 */

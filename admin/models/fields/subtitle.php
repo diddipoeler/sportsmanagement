@@ -15,7 +15,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldSubtitle
+ * FormFieldSubtitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -23,12 +23,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldSubtitle extends JFormField
+class FormFieldSubtitle extends FormField
 {
 	public $type = 'Subtitle';
 
 	/**
-	 * JFormFieldSubtitle::getLabel()
+	 * FormFieldSubtitle::getLabel()
 	 * 
 	 * @return
 	 */
@@ -77,7 +77,7 @@ class JFormFieldSubtitle extends JFormField
 	}
 
 	/**
-	 * JFormFieldSubtitle::getInput()
+	 * FormFieldSubtitle::getInput()
 	 * 
 	 * @return
 	 */

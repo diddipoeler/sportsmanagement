@@ -59,7 +59,7 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 /**
- * JFormFieldPredictiongame
+ * FormFieldPredictiongame
  * 
  * @package   
  * @author 
@@ -67,13 +67,13 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
  * @version 2014
  * @access public
  */
-class JFormFieldPredictiongame extends JFormField
+class FormFieldPredictiongame extends FormField
 {
 
 	protected $type = 'predictiongame';
 	
 	/**
-	 * JFormFieldPredictiongame::getInput()
+	 * FormFieldPredictiongame::getInput()
 	 * 
 	 * @return
 	 */

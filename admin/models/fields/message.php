@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldMessage
+ * FormFieldMessage
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +21,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldMessage extends JFormField
+class FormFieldMessage extends FormField
 {
 	public $type = 'Message';
 
 	/**
-	 * JFormFieldMessage::getLabel()
+	 * FormFieldMessage::getLabel()
 	 * 
 	 * @return
 	 */
@@ -54,7 +54,7 @@ class JFormFieldMessage extends JFormField
 	}
 
 	/**
-	 * JFormFieldMessage::getInput()
+	 * FormFieldMessage::getInput()
 	 * 
 	 * @return
 	 */
@@ -119,7 +119,7 @@ class JFormFieldMessage extends JFormField
 	}
 
 	/**
-	 * JFormFieldMessage::setup()
+	 * FormFieldMessage::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

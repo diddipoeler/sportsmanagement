@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldSYWOnlineHelp
+ * FormFieldSYWOnlineHelp
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +21,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldSYWOnlineHelp extends JFormField
+class FormFieldSYWOnlineHelp extends FormField
 {
 	protected $type = 'SYWOnlineHelp';
 
 	/**
-	 * JFormFieldSYWOnlineHelp::getLabel()
+	 * FormFieldSYWOnlineHelp::getLabel()
 	 * 
 	 * @return
 	 */
@@ -55,7 +55,7 @@ class JFormFieldSYWOnlineHelp extends JFormField
 	}
 
 	/**
-	 * JFormFieldSYWOnlineHelp::getInput()
+	 * FormFieldSYWOnlineHelp::getInput()
 	 * 
 	 * @return
 	 */

@@ -7,7 +7,7 @@
 * @license This file is part of SportsManagement.
 * 
 * https://docs.joomla.org/Creating_a_custom_form_field_type
-* https://hotexamples.com/examples/-/JFormFieldRadio/-/php-jformfieldradio-class-examples.html
+* https://hotexamples.com/examples/-/FormFieldRadio/-/php-FormFieldradio-class-examples.html
  */
 
 // no direct access
@@ -19,16 +19,16 @@ defined('_JEXEC') or die ;
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
 jimport('joomla.form.formfield');    
-class JSMFormField extends JFormFieldRadio {}	   
+class JSMFormField extends FormFieldRadio {}	   
 }
 else
 {
 require_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';    
-class JSMFormField extends JFormFieldRadio {}        
+class JSMFormField extends FormFieldRadio {}        
 }    
 
 /**
- * JFormFieldExtensionRadioButton
+ * FormFieldExtensionRadioButton
  * 
  * @package 
  * @author Dieter Plöger
@@ -36,12 +36,12 @@ class JSMFormField extends JFormFieldRadio {}
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionRadioButton extends JSMFormField {
+class FormFieldExtensionRadioButton extends JSMFormField {
 		
 	public $type = 'ExtensionRadioButton';
 
 	/**
-	 * JFormFieldExtensionRadioButton::getLabel()
+	 * FormFieldExtensionRadioButton::getLabel()
 	 * 
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ class JFormFieldExtensionRadioButton extends JSMFormField {
 
 
 	/**
-	 * JFormFieldExtensionRadioButton::getInput()
+	 * FormFieldExtensionRadioButton::getInput()
 	 * 
 	 * @return void
 	 */

@@ -11,12 +11,15 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldprojectpositionlist
+ * FormFieldprojectpositionlist
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,7 +27,7 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldprojectpositionlist extends JFormFieldList
+class FormFieldprojectpositionlist extends FormField
 {
     
 	/**

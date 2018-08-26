@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * JFormFieldPlaygrounds
+ * FormFieldPlaygrounds
  * 
  * @package   
  * @author 
@@ -48,13 +48,13 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2014
  * @access public
  */
-class JFormFieldPlaygrounds extends JFormField
+class FormFieldPlaygrounds extends FormField
 {
 
 	protected $type = 'playgrounds';
 
 	/**
-	 * JFormFieldPlaygrounds::getInput()
+	 * FormFieldPlaygrounds::getInput()
 	 * 
 	 * @return
 	 */

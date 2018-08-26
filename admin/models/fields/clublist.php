@@ -20,7 +20,7 @@ FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldClublist
+ * FormFieldClublist
  * 
  * @package   
  * @author 
@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldClublist extends FormField
+class FormFieldClublist extends FormField
 {
 	/**
 	 * field type

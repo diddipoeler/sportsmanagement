@@ -11,14 +11,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldseasoncheckbox
+ * FormFieldseasoncheckbox
  * 
  * @package   
  * @author 
@@ -26,7 +29,7 @@ jimport('joomla.form.formfield');
  * @version 2014
  * @access public
  */
-class JFormFieldseasoncheckbox extends JFormField
+class FormFieldseasoncheckbox extends FormField
 {
 	/**
 	 * field type
@@ -51,8 +54,8 @@ class JFormFieldseasoncheckbox extends JFormField
         $targetid = $this->element['targetid'];
         
         
-        //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
     
     
         // Initialize variables.
@@ -102,9 +105,9 @@ class JFormFieldseasoncheckbox extends JFormField
         $this->value = '';
     }
     
-    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
    
 
 

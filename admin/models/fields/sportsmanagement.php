@@ -1,15 +1,28 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      sportsmanagement.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
+ 
 // No direct access to this file
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
  
 // import the list field type
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
  
 /**
  * SportsManagement Form Field class for the SportsManagement component
  */
-class JFormFieldsportsmanagement extends JFormFieldList
+class FormFieldsportsmanagement extends FormField
 {
 	/**
 	 * The field type.

@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldExtensionAuthor
+ * FormFieldExtensionAuthor
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,12 +21,12 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionAuthor extends JFormField {
+class FormFieldExtensionAuthor extends FormField {
 		
 	public $type = 'ExtensionAuthor';
 	
 	/**
-	 * JFormFieldExtensionAuthor::getLabel()
+	 * FormFieldExtensionAuthor::getLabel()
 	 * 
 	 * @return
 	 */
@@ -45,7 +45,7 @@ class JFormFieldExtensionAuthor extends JFormField {
 	}
 
 	/**
-	 * JFormFieldExtensionAuthor::getInput()
+	 * FormFieldExtensionAuthor::getInput()
 	 * 
 	 * @return
 	 */

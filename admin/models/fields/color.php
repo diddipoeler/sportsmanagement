@@ -12,7 +12,7 @@
 defined('_JEXEC') or die();
 
 /**
- * JFormFieldColor
+ * FormFieldColor
  * 
  * @package 
  * @author diddi
@@ -20,12 +20,12 @@ defined('_JEXEC') or die();
  * @version $Id$
  * @access public
  */
-class JFormFieldColor extends JFormFieldText
+class FormFieldColor extends FormFieldText
 {
 	protected $type = 'Color';
 
 	/**
-	 * JFormFieldColor::getInput()
+	 * FormFieldColor::getInput()
 	 * 
 	 * @return
 	 */
@@ -37,7 +37,7 @@ class JFormFieldColor extends JFormFieldText
 	}
 
 	/**
-	 * JFormFieldColor::setup()
+	 * FormFieldColor::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

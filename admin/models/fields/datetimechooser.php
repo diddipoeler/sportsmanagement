@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 
-class JFormFieldDatetimechooser extends JFormField
+class FormFieldDatetimechooser extends FormField
 {
 
 	public $type = 'Datetimechooser';

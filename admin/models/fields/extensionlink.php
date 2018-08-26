@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
- * JFormFieldExtensionLink
+ * FormFieldExtensionLink
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,7 +24,7 @@ use Joomla\CMS\Language\Text;
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionLink extends FormField {
+class FormFieldExtensionLink extends FormField {
 		
 	public $type = 'ExtensionLink';
 
@@ -32,7 +32,7 @@ class JFormFieldExtensionLink extends FormField {
 	 * Method to get the field options.
 	 */
 	/**
-	 * JFormFieldExtensionLink::getLabel()
+	 * FormFieldExtensionLink::getLabel()
 	 * 
 	 * @return
 	 */
@@ -102,7 +102,7 @@ class JFormFieldExtensionLink extends FormField {
 	 * Method to get the field input markup.
 	 */
 	/**
-	 * JFormFieldExtensionLink::getInput()
+	 * FormFieldExtensionLink::getInput()
 	 * 
 	 * @return
 	 */

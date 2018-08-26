@@ -10,12 +10,15 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.form.helper');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 /**
- * JFormFieldProjects
+ * FormFieldProjects
  * 
  * @package   
  * @author 
@@ -23,14 +26,14 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldProjects extends JFormFieldList
+class FormFieldProjects extends FormField
 {
 
 	protected $type = 'projects';
 
     
     /**
-     * JFormFieldProjects::getOptions()
+     * FormFieldProjects::getOptions()
      * 
      * @return
      */

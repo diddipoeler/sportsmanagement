@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
- * JFormFieldExtensionVersion
+ * FormFieldExtensionVersion
  * 
  * @package 
  * @author Dieter Plöger
@@ -21,14 +21,14 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionVersion extends JFormField {
+class FormFieldExtensionVersion extends FormField {
 		
 	public $type = 'ExtensionVersion';
 	
 	protected $version;
 
 	/**
-	 * JFormFieldExtensionVersion::getLabel()
+	 * FormFieldExtensionVersion::getLabel()
 	 * 
 	 * @return
 	 */
@@ -46,7 +46,7 @@ class JFormFieldExtensionVersion extends JFormField {
 	}
 
 	/**
-	 * JFormFieldExtensionVersion::getInput()
+	 * FormFieldExtensionVersion::getInput()
 	 * 
 	 * @return
 	 */
@@ -59,7 +59,7 @@ class JFormFieldExtensionVersion extends JFormField {
 	}
 	
 	/**
-	 * JFormFieldExtensionVersion::setup()
+	 * FormFieldExtensionVersion::setup()
 	 * 
 	 * @param mixed $element
 	 * @param mixed $value

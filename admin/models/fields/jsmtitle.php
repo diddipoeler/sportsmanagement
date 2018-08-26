@@ -16,7 +16,7 @@ use Joomla\CMS\Form\FormField;
 
 
 /**
- * JFormFieldJSMTitle
+ * FormFieldJSMTitle
  * 
  * @package 
  * @author Dieter Plöger
@@ -24,7 +24,7 @@ use Joomla\CMS\Form\FormField;
  * @version $Id$
  * @access public
  */
-class JFormFieldJSMTitle extends FormField {
+class FormFieldJSMTitle extends FormField {
 		
 	public $type = 'JSMTitle';
 

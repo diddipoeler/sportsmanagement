@@ -44,7 +44,7 @@ jimport('joomla.form.formfield');
 //JHtml::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
 
 /**
- * JFormFieldKunenaCategoryList
+ * FormFieldKunenaCategoryList
  * 
  * @package   
  * @author 
@@ -52,12 +52,12 @@ jimport('joomla.form.formfield');
  * @version 2014
  * @access public
  */
-class JFormFieldKunenaCategoryList extends JFormField 
+class FormFieldKunenaCategoryList extends FormField 
 {
 	protected $type = 'KunenaCategoryList';
 
 	/**
-	 * JFormFieldKunenaCategoryList::getInput()
+	 * FormFieldKunenaCategoryList::getInput()
 	 * 
 	 * @return
 	 */

@@ -20,7 +20,7 @@ FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldAssociationsList
+ * FormFieldAssociationsList
  * 
  * @package   
  * @author 
@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldAssociationsList extends FormField
+class FormFieldAssociationsList extends FormField
 {
 	/**
 	 * field type
@@ -104,7 +104,7 @@ foreach ( $list as $item )
 	}
 	
 /**
- * JFormFieldAssociationsList::JJ_categoryArray()
+ * FormFieldAssociationsList::JJ_categoryArray()
  * 
  * @param integer $admin
  * @param mixed $country
@@ -147,7 +147,7 @@ $db = sportsmanagementHelper::getDBConnection();
     }    	
 	
 /**
- * JFormFieldAssociationsList::fbTreeRecurse()
+ * FormFieldAssociationsList::fbTreeRecurse()
  * 
  * @param mixed $id
  * @param mixed $indent
@@ -190,7 +190,7 @@ function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=
 }    
 	
 /**
- * JFormFieldAssociationsList::sm_htmlspecialchars()
+ * FormFieldAssociationsList::sm_htmlspecialchars()
  * 
  * @param mixed $string
  * @param mixed $quote_style

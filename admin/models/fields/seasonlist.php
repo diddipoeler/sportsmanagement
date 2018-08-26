@@ -11,6 +11,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 if (! defined('DS'))
 {
@@ -28,11 +31,11 @@ if ( !class_exists('sportsmanagementHelper'))
 }
 
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldseasonlist
+ * FormFieldseasonlist
  * 
  * @package   
  * @author 
@@ -40,8 +43,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-//class JFormFieldseasonlist extends JFormFieldList
-class JFormFieldseasonlist extends JFormField
+class FormFieldseasonlist extends FormField
 {
 	/**
 	 * field type

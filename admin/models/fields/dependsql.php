@@ -10,6 +10,9 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 if (! defined('DS'))
 {
@@ -20,7 +23,7 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'m
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php');  
 
 jimport('joomla.form.helper');
-//JFormHelper::loadFieldClass('list');
+//FormHelper::loadFieldClass('list');
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -42,7 +45,7 @@ JHtml::_( 'behavior.mootools' );
  * @subpackageParameter
  * @since1.5
  */
-class JFormFieldDependSQL extends JFormField
+class FormFieldDependSQL extends FormField
 {
 	/**
 	 * field name
@@ -53,7 +56,7 @@ class JFormFieldDependSQL extends JFormField
 	protected $type = 'dependsql';
     
     /**
-     * JFormFieldDependSQL::getInput()
+     * FormFieldDependSQL::getInput()
      * 
      * @return
      */

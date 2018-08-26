@@ -10,6 +10,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 if (! defined('DS'))
 {
@@ -18,11 +21,11 @@ if (! defined('DS'))
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 jimport('joomla.filesystem.folder');
-JFormHelper::loadFieldClass('list');
+FormHelper::loadFieldClass('list');
 
 
 /**
- * JFormFieldCountry
+ * FormFieldCountry
  * 
  * @package   
  * @author 
@@ -30,7 +33,7 @@ JFormHelper::loadFieldClass('list');
  * @version 2013
  * @access public
  */
-class JFormFieldCountry extends JFormFieldList
+class FormFieldCountry extends FormField
 {
 	/**
 	 * field type
