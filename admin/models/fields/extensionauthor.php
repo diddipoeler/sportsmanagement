@@ -24,7 +24,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class FormFieldExtensionAuthor extends FormField {
+class JFormFieldExtensionAuthor extends FormField {
 		
 	public $type = 'ExtensionAuthor';
 	

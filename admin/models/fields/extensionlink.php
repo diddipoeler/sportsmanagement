@@ -24,7 +24,7 @@ use Joomla\CMS\Language\Text;
  * @version $Id$
  * @access public
  */
-class FormFieldExtensionLink extends FormField {
+class JFormFieldExtensionLink extends FormField {
 		
 	public $type = 'ExtensionLink';
 

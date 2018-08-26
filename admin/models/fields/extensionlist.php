@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class FormFieldExtensionlist extends FormField
+class JFormFieldExtensionlist extends FormField
 {
 	/**
 	 * field type

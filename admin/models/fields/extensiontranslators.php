@@ -25,7 +25,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class FormFieldExtensionTranslators extends FormField {
+class JFormFieldExtensionTranslators extends FormField {
 		
 	public $type = 'ExtensionTranslators';
 	

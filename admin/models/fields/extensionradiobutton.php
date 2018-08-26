@@ -36,7 +36,7 @@ class JSMFormField extends JFormFieldRadio {}
  * @version $Id$
  * @access public
  */
-class FormFieldExtensionRadioButton extends JSMFormField {
+class JFormFieldExtensionRadioButton extends JSMFormField {
 		
 	public $type = 'ExtensionRadioButton';
 
