@@ -24,7 +24,7 @@ class JSMFormField extends FormFieldRadio {}
 else
 {
 require_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';    
-class JSMFormField extends FormFieldRadio {}        
+class JSMFormField extends JFormFieldRadio {}        
 }    
 
 /**
