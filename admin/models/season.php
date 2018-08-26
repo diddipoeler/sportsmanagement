@@ -68,6 +68,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $teams = $jinput->getVar('team_id', null, 'post', 'array');
         $season_id = $jinput->getVar('season_id', 0, 'post', 'array');
+        $persontype = $jinput->getVar('persontype', 0, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams, true).'</pre><br>','');
@@ -93,13 +94,13 @@ class sportsmanagementModelseason extends JSMModelAdmin
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		} 
         
-        if ( isset($teams[$value]) )
+        if ( isset($teams) )
         {
         $query->clear();
         // Insert columns.
         $columns = array('person_id','season_id','team_id','published','persontype','modified','modified_by'   );
         // Insert values.
-        $values = array($value,$season_id,$teams[$value],'1','1',$db->Quote(''.$modified.''),$modified_by);
+        $values = array($value,$season_id,$teams,'1',$persontype,$db->Quote(''.$modified.''),$modified_by);
         // Prepare the insert query.
         $query
             ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
