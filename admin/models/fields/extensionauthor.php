@@ -9,6 +9,9 @@
 
 // no direct access
 defined('_JEXEC') or die ;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 
 jimport('joomla.form.formfield');
 
