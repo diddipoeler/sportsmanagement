@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -86,14 +87,16 @@ class sportsmanagementModelseason extends JSMModelAdmin
             ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
+            try{
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
+	$db->execute();
+        }
+catch (Exception $e) {
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+}
 
-		if (!$db->execute())
-		{
-		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-		} 
-        
         if ( isset($teams) )
         {
         $query->clear();
@@ -106,13 +109,16 @@ class sportsmanagementModelseason extends JSMModelAdmin
             ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
+            try{
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
-
-		if (!$db->execute())
-		{
-		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-		}
+$db->execute();
+        }
+catch (Exception $e) {
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+}
+		
         
         }
              
