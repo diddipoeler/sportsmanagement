@@ -163,7 +163,7 @@ public function getStart()
 
 //		// Load the parameters.
 //		$params = JComponentHelper::getParams('com_sportsmanagement');
-		$this->setState('params', $params);
+//		$this->setState('params', $params);
 
 		// List state information.
 		//parent::populateState('v.name', 'ASC');
