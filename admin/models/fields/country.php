@@ -50,7 +50,7 @@ class JFormFieldCountry extends FormField
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         /**
          * Initialize variables.
