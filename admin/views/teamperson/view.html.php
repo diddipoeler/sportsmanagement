@@ -31,6 +31,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
+		$lists = array();
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
