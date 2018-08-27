@@ -24,8 +24,7 @@ HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');    
 HTMLHelper::_('jquery.framework');
 }    
-// No direct access
-defined('_JEXEC') or die('Restricted access');
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 try{
