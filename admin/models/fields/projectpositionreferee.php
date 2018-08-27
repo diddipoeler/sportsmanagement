@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldprojectpositionreferee extends FormField
+class JFormFieldprojectpositionreferee extends \JFormFieldList
 {
 	/**
 	 * field type

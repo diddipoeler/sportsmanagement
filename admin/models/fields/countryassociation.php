@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldcountryassociation extends FormField
+class JFormFieldcountryassociation extends \JFormFieldList
 {
 	/**
 	 * field type

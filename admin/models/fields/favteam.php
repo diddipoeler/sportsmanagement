@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldFavteam extends FormField
+class JFormFieldFavteam extends \JFormFieldList
 {
 	/**
 	 * field type

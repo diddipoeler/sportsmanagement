@@ -28,7 +28,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldcategorylistk2 extends FormField
+class JFormFieldcategorylistk2 extends \JFormFieldList
 {
 	/**
 	 * field type

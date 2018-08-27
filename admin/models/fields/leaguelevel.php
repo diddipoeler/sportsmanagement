@@ -34,7 +34,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldLeagueLevel extends FormField
+class JFormFieldLeagueLevel extends \JFormFieldList
 {
 	/**
 	 * field type

@@ -27,7 +27,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldGoogleApiKey extends FormField
+class JFormFieldGoogleApiKey extends \JFormFieldList
 {
     
 	protected $type = 'GoogleApiKey';

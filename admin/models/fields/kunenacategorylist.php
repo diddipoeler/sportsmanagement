@@ -23,7 +23,7 @@ use Joomla\CMS\Form\FormHelper;
  * @version 2014
  * @access public
  */
-class JFormFieldKunenaCategoryList extends FormField 
+class JFormFieldKunenaCategoryList extends \JFormFieldList 
 {
 	protected $type = 'KunenaCategoryList';
 

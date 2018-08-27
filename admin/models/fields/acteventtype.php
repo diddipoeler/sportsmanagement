@@ -26,7 +26,7 @@ FormHelper::loadFieldClass('list');
  * @version 2014
  * @access public
  */
-class JFormFieldacteventtype extends FormField
+class JFormFieldacteventtype extends \JFormFieldList
 {
 
 	protected $type = 'acteventtype';

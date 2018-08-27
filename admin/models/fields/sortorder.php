@@ -29,7 +29,7 @@ FormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldsortorder extends FormField
+class JFormFieldsortorder extends \JFormFieldList
 {
     /**
      * field type

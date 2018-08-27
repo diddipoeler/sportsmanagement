@@ -29,7 +29,7 @@ FormHelper::loadFieldClass('list');
  * @version 2013
  * @access public
  */
-class JFormFieldlanguagecharacter extends FormField
+class JFormFieldlanguagecharacter extends \JFormFieldList
 {
     /**
      * field type
