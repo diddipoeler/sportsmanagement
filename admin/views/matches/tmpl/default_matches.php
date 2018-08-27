@@ -308,8 +308,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 									 } else {
 									 	$image = 'players_edit.png';
 									 }
-$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
-echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+
                                 
 								$append='';
 								if ($row->projectteam1_id == 0)
@@ -322,7 +321,8 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 								?>
 								<br>
 									 <?php
-									 
+									 $pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
 									 $title=  ' '.Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS').': ' .$row->homeplayers_count. ', ' . 
 													 ' '.Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF').': ' .$row->homestaff_count . ' ';
 									
