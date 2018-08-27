@@ -342,7 +342,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
-							<td class="left"  nowrap="nowrap">
+							<td class="left"  nowrap="">
 								<?php
 								$append='';
 								if ($row->projectteam2_id == 0)
@@ -353,13 +353,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,J
 								echo HTMLHelper::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam2_id'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
-                                <!--
-								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
-									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&id=<?php echo $row->id;?>&team=<?php echo $row->projectteam2_id;?>&prefill="
-									class="modal open-starting-away"
-									title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'); ?>">
-                                    -->
+                               <br>
 									 <?php
 									 if($row->awayplayers_count==0 || $row->awaystaff_count==0 ) {
 									 	$image = 'players_add.png';
