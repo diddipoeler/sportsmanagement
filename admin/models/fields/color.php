@@ -1,15 +1,17 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      color.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage fields
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldColor
@@ -20,7 +22,7 @@ defined('_JEXEC') or die();
  * @version $Id$
  * @access public
  */
-class JFormFieldColor extends FormFieldText
+class JFormFieldColor extends FormField
 {
 	protected $type = 'Color';
 
@@ -31,7 +33,7 @@ class JFormFieldColor extends FormFieldText
 	 */
 	public function getInput()
 	{
-		$document = &JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript(JURI::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
 		return parent::getInput();
 	}
