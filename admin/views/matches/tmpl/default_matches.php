@@ -301,14 +301,21 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 							?>
 							</td>
               
-							<td class="right"  nowrap="nowrap">
-                            <!--
-								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
-									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=<?php echo $date; ?>&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
-									 class="modal openroster-team1<?php echo $row->id; ?>"
-									 title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'); ?>">
-                                     -->
+							<td class="right"  nowrap="">
+                            <?php
+$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
+echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
+                                
+								$append='';
+								if ($row->projectteam1_id == 0)
+								{
+									$append=' style="background-color:#bbffff"';
+								}
+								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+								echo HTMLHelper::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
+								?>
+								<br>
 									 <?php
 									 if($row->homeplayers_count==0 || $row->homestaff_count==0 ) {
 									 	$image = 'players_add.png';
@@ -328,19 +335,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 									 echo '<sub>'.$row->homestaff_count.'</sub> ';	
 									 									 ?>
 							<!--	</a> -->
-								<?php
-$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date='.$date.'&id='.$row->id.'&team='.$row->projectteam1_id;                                 
-echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);                                
-                                
-								$append='';
-								if ($row->projectteam1_id == 0)
-								{
-									$append=' style="background-color:#bbffff"';
-								}
-								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-								echo HTMLHelper::_(	'select.genericlist',$this->lists['teams_'.$row->divhomeid],'projectteam1_id'.$row->id,
-												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
-								?>
+								
 							</td>
 							<td class="left"  nowrap="">
 								<?php
