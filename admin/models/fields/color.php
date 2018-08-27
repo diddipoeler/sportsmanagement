@@ -22,7 +22,7 @@ use Joomla\CMS\Form\FormField;
  * @version $Id$
  * @access public
  */
-class JFormFieldColor extends FormField
+class JFormFieldColor extends \JFormFieldText
 {
 	protected $type = 'Color';
 
