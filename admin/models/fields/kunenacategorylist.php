@@ -10,12 +10,9 @@
  */
 
 defined ( '_JEXEC' ) or die ();
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
-
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-
-//JHtml::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
+use Joomla\CMS\Form\FormHelper;
 
 /**
  * FormFieldKunenaCategoryList
