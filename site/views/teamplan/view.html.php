@@ -13,10 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::('joomla.html.pane');
-HTMLHelper::('joomla.functions');
+/*
+HTMLHelper::_('joomla.html.pane');
+HTMLHelper::_('joomla.functions');
 HTMLHelper::_('behavior.tooltip');
-
+*/
+	
 /**
  * sportsmanagementViewTeamPlan
  * 
