@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage template
@@ -12,7 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-jimport('joomla.form.form');
+use Joomla\CMS\Form\Form;
+//jimport('joomla.form.form');
 
 
 /**
@@ -54,7 +55,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
 		$xmlfile = $templatepath.DS.'default'.DS.$this->item->template.'.xml';
        
-		$form = JForm::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
+		$form = Form::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
 		$form->bind($this->item->params);
       
 		$this->form = $form;
