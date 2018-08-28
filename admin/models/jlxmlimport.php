@@ -1570,7 +1570,10 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!empty($this->_sportstype_new))
 		{
 		  $query->clear();
@@ -1626,7 +1629,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 										'</span><strong>'.Text::_($this->_getObjectName('sports_type',$this->_sportstype_id)).'</strong>');
 			$my_text .= '<br />';
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -1641,6 +1644,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
        $query = JFactory::getDbo()->getQuery(true);
        
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if ( !empty($this->_league_new) )
 		{
 		  $query->clear();
@@ -1710,7 +1716,10 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!empty($this->_season_new))
 		{
 		  $query->clear();
@@ -2067,7 +2076,10 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!isset($this->_datas['position']) || count($this->_datas['position'])==0){return true;}
 		if ((!isset($this->_newpositionsid) || count($this->_newpositionsid)==0) &&
 			(!isset($this->_dbpositionsid) || count($this->_dbpositionsid)==0)){return true;}
@@ -2161,7 +2173,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 				}
 			}
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -2407,7 +2419,10 @@ $this->dump_variable("this->_dbclubsid", $this->_dbclubsid);
 $this->dump_variable("this->_newclubs", $this->_newclubs);
 }
 
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		// $this->_datas['club'] : array of all clubs obtained from the xml import file
 		// $this->_newclubsid    : array of club ids (xml values) for the new clubs to be created in the database
 		// JFactory::getDbo()clubsid     : array of club ids (db values) for the existing clubs to be used from the database
@@ -2634,7 +2649,7 @@ if ( $this->show_debug_info )
 $this->dump_variable("this->_convertClubID", $this->_convertClubID);
 }
 
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -2754,6 +2769,9 @@ $this->dump_variable("this->_convertClubID -> new_club_id", $new_club_id);
 	   $query = JFactory::getDbo()->getQuery(true);
 
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0){return true;}
 		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
 			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)){return true;}
@@ -2893,7 +2911,7 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 $my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_XML_IMPORT_ERROR_IN_FUNCTION',__FUNCTION__).'</strong></span><br />';
 $my_text .= Text::sprintf('Teamname: %1$s',$p_team->name).'<br />';
 $my_text .= $e->getMessage().'<br />';	
-$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;	
+$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;	
 }	
 					/*
 					if ($p_team->store()===false)
@@ -2921,7 +2939,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 				}
 			}
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -2939,7 +2957,10 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 		if ((!isset($this->_newpersonsid) || count($this->_newpersonsid)==0) &&
 			(!isset($this->_dbpersonsid) || count($this->_dbpersonsid)==0)){return true;}
 
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!empty($this->_dbpersonsid))
 		{
 			foreach ($this->_dbpersonsid AS $key => $id)
@@ -3148,7 +3169,7 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 				}
 			}
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -3161,7 +3182,9 @@ $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 	{
 		$app = JFactory::getApplication();
         $my_text = '';
-		
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
         $p_project = new stdClass();
        
 		$p_project->name = substr(trim($this->_name),0,99);
@@ -3647,6 +3670,9 @@ $t_params = json_encode( $ini );
         $db = JFactory::getDbo();
         
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if ( !isset($this->_datas['projectteam']) || count($this->_datas['projectteam']) == 0 )
         {
             return true;
@@ -3900,6 +3926,9 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
         
 //$this->dump_header("function _importProjectPositions");
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 //$this->dump_variable("this->_datas['projectposition']", $this->_datas['projectposition']);
 //$this->dump_variable("this->_newpositionsid", $this->_newpositionsid);
 //$this->dump_variable("this->_dbpositionsid", JFactory::getDbo()positionsid);
@@ -3984,7 +4013,10 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 	private function _importTeamPlayer()
 	{
 	   $app = JFactory::getApplication();
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!isset($this->_datas['teamplayer']) || count($this->_datas['teamplayer'])==0){return true;}
 
 		if (!isset($this->_datas['person']) || count($this->_datas['person'])==0){return true;}
@@ -4083,7 +4115,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			$this->_convertTeamPlayerID[$oldID]=$insertID;
 		}
 
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4095,7 +4127,10 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 	private function _importTeamStaff()
 	{
 //$this->dump_header("function _importTeamStaff");
-		$my_text='';
+		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if (!isset($this->_datas['teamstaff']) || count($this->_datas['teamstaff'])==0){return true;}
 
 		if (!isset($this->_datas['person']) || count($this->_datas['person'])==0){return true;}
@@ -4200,7 +4235,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 			$this->_convertTeamStaffID[$oldID]=$insertID;
 		}
 //$this->dump_variable("this->_convertTeamStaffID", $this->_convertTeamStaffID);
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4302,6 +4337,9 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
        $query = JFactory::getDbo()->getQuery(true);
        
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if ( !isset($this->_datas['round']) || count($this->_datas['round']) == 0 )
         {
         return true;
@@ -4362,7 +4400,7 @@ $my_text .= ' table_info round<pre>'.print_r($table_info,true).'</pre>';
             $insertID = JFactory::getDbo()->insertid();
 			$this->_convertRoundID[$oldId]=$insertID;
 		}
-		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -4377,6 +4415,9 @@ $my_text .= ' table_info round<pre>'.print_r($table_info,true).'</pre>';
        $query = JFactory::getDbo()->getQuery(true);
        
 		$my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}		
 		if ( !isset($this->_datas['match']) || count($this->_datas['match']) == 0 )
         {
         return true;
@@ -6313,7 +6354,10 @@ $mdl->setNewPicturePath();
         $db = JFactory::getDbo();
         // $this->_project_id
         // $this->_season_id 
-        $my_text='';
+        $my_text = '';
+if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
+    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+}	    
         $update_match_ids = array();
         
         // zum update der neue spieler id benötigen wir die match id´s aus dem projekt.
@@ -6949,7 +6993,7 @@ $mdl->setNewPicturePath();
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'truncate');
         $successTable = $databasetool->setSportsManagementTableQuery('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player', 'truncate');
         
-        $this->_success_text[__FUNCTION__] = $my_text;
+         $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
         
         self::setNewRoundDates();
         
