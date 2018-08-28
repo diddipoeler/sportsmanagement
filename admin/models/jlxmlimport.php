@@ -44,12 +44,13 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'data
  */
 class sportsmanagementModelJLXMLImport extends JModelLegacy
 {
-	var $_datas=array();
-	var $_league_id=0;
-	var $_season_id=0;
+	var $_datas = array();
+	var $_success_text = array();
+	var $_league_id = 0;
+	var $_season_id = 0;
     var $_project_id = 0;
-	var $_sportstype_id=0;
-	var $import_version='';
+	var $_sportstype_id = 0;
+	var $import_version = '';
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
