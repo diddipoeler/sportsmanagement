@@ -1,9 +1,20 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      pagetitleformat.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage fields
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 
 class JFormFieldPageTitleFormat extends FormField
 {
@@ -11,7 +22,7 @@ class JFormFieldPageTitleFormat extends FormField
 
 	function getInput() 
     {
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
 		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
