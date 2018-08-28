@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-HTMLHelper::('joomla.application.component.view');
 HTMLHelper::('joomla.html.pane');
 HTMLHelper::('joomla.functions');
 HTMLHelper::_('behavior.tooltip');
