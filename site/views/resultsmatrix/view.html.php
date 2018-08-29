@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
@@ -45,7 +47,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
 		$params = $this->app->getParams();
         
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
 		// add the matrix model
 		$matrixmodel = new sportsmanagementModelMatrix();
@@ -127,7 +129,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		}
 		$this->document->setTitle($pageTitle);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
          sportsmanagementHelperHtml::$project = $project;

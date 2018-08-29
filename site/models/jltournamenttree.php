@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -617,25 +618,25 @@ foreach ( $result as $row )
 
 if ( $this->debug_info )
 {
-echo 'bild heim -> '.JURI::base().$row->firstlogo. '<br />';
+echo 'bild heim -> '.Uri::base().$row->firstlogo. '<br />';
 }
 
-if( !JFile::exists(JURI::base().$row->firstlogo) )
+if( !JFile::exists(Uri::base().$row->firstlogo) )
 {
-$row->firstlogo = JURI::base().$this->club_logo;
+$row->firstlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$row->firstlogo = JURI::base().$row->firstlogo;
+$row->firstlogo = Uri::base().$row->firstlogo;
 }
 
-if( !JFile::exists(JURI::base().$row->secondlogo) )
+if( !JFile::exists(Uri::base().$row->secondlogo) )
 {
-$row->secondlogo = JURI::base().$this->club_logo;
+$row->secondlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$row->secondlogo = JURI::base().$row->secondlogo;
+$row->secondlogo = Uri::base().$row->secondlogo;
 }
 
 // pr�b die ergebnisse in der runde schon gesetzt sind
@@ -806,8 +807,8 @@ $temp->firstname = 'FREI';
 $temp->secondname = 'FREI';
 $temp->firstcountry = 'DEU';
 $temp->secondcountry = 'DEU';
-$temp->firstlogo = JURI::base().$this->club_logo;
-$temp->secondlogo = JURI::base().$this->club_logo;
+$temp->firstlogo = Uri::base().$this->club_logo;
+$temp->secondlogo = Uri::base().$this->club_logo;
 $export[] = $temp;
 $this->bracket[$round->roundcode] = array_merge($export);
 
@@ -884,22 +885,22 @@ $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(JURI::base().$rowresult->firstlogo) )
+if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
 {
-$rowresult->firstlogo = JURI::base().$this->club_logo;
+$rowresult->firstlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->firstlogo = JURI::base().$rowresult->firstlogo;
+$rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(JURI::base().$rowresult->secondlogo) )
+if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
 {
-$rowresult->secondlogo = JURI::base().$this->club_logo;
+$rowresult->secondlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->secondlogo = JURI::base().$rowresult->secondlogo;
+$rowresult->secondlogo = Uri::base().$rowresult->secondlogo;
 }
 
 switch ($durchlauf)
@@ -958,22 +959,22 @@ $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(JURI::base().$rowresult->firstlogo) )
+if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
 {
-$rowresult->firstlogo = JURI::base().$this->club_logo;
+$rowresult->firstlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->firstlogo = JURI::base().$rowresult->firstlogo;
+$rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(JURI::base().$rowresult->secondlogo) )
+if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
 {
-$rowresult->secondlogo = JURI::base().$this->club_logo;
+$rowresult->secondlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->secondlogo = JURI::base().$rowresult->secondlogo;
+$rowresult->secondlogo = Uri::base().$rowresult->secondlogo;
 }
     
 $temp = new stdClass();
@@ -1017,7 +1018,7 @@ $temp->secondname = 'FREILOS';
 $temp->firstcountry = $key->firstcountry;
 $temp->secondcountry = 'DEU';
 $temp->firstlogo = $key->firstlogo;
-$temp->secondlogo = JURI::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+$temp->secondlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 $export[] = $temp;
 $this->bracket[$round->roundcode] = array_merge($export);
 
@@ -1074,22 +1075,22 @@ $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(JURI::base().$rowresult->firstlogo) )
+if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
 {
-$rowresult->firstlogo = JURI::base().$this->club_logo;
+$rowresult->firstlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->firstlogo = JURI::base().$rowresult->firstlogo;
+$rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(JURI::base().$rowresult->secondlogo) )
+if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
 {
-$rowresult->secondlogo = JURI::base().$this->club_logo;
+$rowresult->secondlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->secondlogo = JURI::base().$rowresult->secondlogo;
+$rowresult->secondlogo = Uri::base().$rowresult->secondlogo;
 }
 
 switch ($durchlauf)
@@ -1147,22 +1148,22 @@ $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(JURI::base().$rowresult->firstlogo) )
+if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
 {
-$rowresult->firstlogo = JURI::base().$this->club_logo;
+$rowresult->firstlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->firstlogo = JURI::base().$rowresult->firstlogo;
+$rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(JURI::base().$rowresult->secondlogo) )
+if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
 {
-$rowresult->secondlogo = JURI::base().$this->club_logo;
+$rowresult->secondlogo = Uri::base().$this->club_logo;
 }
 else
 {
-$rowresult->secondlogo = JURI::base().$rowresult->secondlogo;
+$rowresult->secondlogo = Uri::base().$rowresult->secondlogo;
 }
     
 $temp = new stdClass();
@@ -1205,7 +1206,7 @@ $temp->firstname = 'FREILOS';
 $temp->secondname = $key->secondname;
 $temp->firstcountry = 'DEU';
 $temp->secondcountry = $key->secondcountry;
-$temp->firstlogo = JURI::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+$temp->firstlogo = Uri::base().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 $temp->secondlogo = $key->secondlogo;
 $export[] = $temp;
 $this->bracket[$round->roundcode] = array_merge($export);
@@ -1283,7 +1284,7 @@ break;
 
 case 2:
 //$varteams[] = '[{name: "'.substr($key->firstname,0,10).'", flag: "media/com_sportsmanagement/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.substr($key->secondname,0,10).'", flag: "media/com_sportsmanagement/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
-$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.JURI::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
+$varteams[] = '[{name: "'.$key->firstname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->firstcountry)).'.png"}, {name: "'.$key->secondname.'", flag: "'.Uri::base().'images/com_sportsmanagement/database/flags/'.strtolower(JSMCountries::convertIso3to2($key->secondcountry)).'.png"}]';
 break;
     
 }

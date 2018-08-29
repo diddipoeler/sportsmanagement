@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      view.php
@@ -10,6 +9,8 @@
  * @subpackage libraries
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Uri\Uri;
+
 jimport( 'joomla.application.component.view');
 $document = JFactory::getDocument();
 
@@ -23,23 +24,23 @@ $addfontawesome	= $params_com->get( 'add_fontawesome' );
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     if($cssflags){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($jsmflex){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/flex.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($jsmgrid){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/grid.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($usefontawesome){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/fontawesome_extend.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     if($addfontawesome){
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/libraries/fontawesome/css/font-awesome.min.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
 } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
@@ -86,7 +87,7 @@ class sportsmanagementView extends JViewLegacy {
         $this->modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $this->uri = JUri::getInstance();
+            $this->uri = Uri::getInstance();
         } else {
             $this->uri = JFactory::getURI();
         }
@@ -110,19 +111,10 @@ class sportsmanagementView extends JViewLegacy {
         $this->model = $this->getModel();
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
         
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/jcemediabox.css');
-		$this->document->addScript(JURI::root(true) . '/components/'.$this->option.'/assets/js/jcemediabox.js');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
-
-        /**
-         * führt zu fehlern
-         */
-//unset($scripts[JUri::root(true) . '/media/jui/js/jquery.min.js']);
-//unset($scripts[JUri::root(true) . '/media/jui/js/jquery-noconflict.js']);
-//unset($scripts[JUri::root(true) . '/media/jui/js/jquery-migrate.min.js']);
-//unset($scripts[JUri::root(true) . '/media/jui/js/bootstrap.min.js']);
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/jcemediabox.css');
+		$this->document->addScript(Uri::root(true) . '/components/'.$this->option.'/assets/js/jcemediabox.js');
 
         $headData['scripts'] = $scripts;
         $this->document->setHeadData($headData);

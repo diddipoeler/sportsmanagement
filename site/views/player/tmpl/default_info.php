@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
@@ -245,7 +247,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                 <?php
                 if ($this->config['player_number_picture']) {
                     $posnumber = $this->teamPlayer->jerseynumber;
-                    echo HTMLHelper::image(JURI::root() . 'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
+                    echo HTMLHelper::image(Uri::root() . 'images/com_sportsmanagement/database/events/shirt.php?text=' . $posnumber, $posnumber, array('title' => $posnumber));
                 } else {
                     echo $this->teamPlayer->jerseynumber;
                 }

@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <!-- START of match commentary -->
 <?php
@@ -46,7 +48,7 @@ if (!empty($this->matchcommentary))
                     <td class="list">
 						<dl>
 							<?php 
-                            echo HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
+                            echo HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar')); 
                             ?>
 						</dl>
 					</td>

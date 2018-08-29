@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Make sure that in case extensions are written for mentioned (common) views,
@@ -18,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'ranking');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+$this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>

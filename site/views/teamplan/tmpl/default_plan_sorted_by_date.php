@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 if ( !isset($this->config['show_matchreport_column']) ) 
 {
@@ -557,7 +558,7 @@ $routeparameter['mid'] = $match->match_slug;
 				{
 				?> 
 					<span class='hasTip' title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
-					<img src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
+					<img src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png' alt='' title='' /> </span> 
 				<?php
 				}
 			}
@@ -602,7 +603,7 @@ $routeparameter['mid'] = $match->match_slug;
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
 		<img
-			src='<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
+			src='<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png'
 			alt='' title='' /> </span> <?php
 				}
 			}

@@ -10,6 +10,7 @@
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewTeamsTree
@@ -81,7 +82,7 @@ $this->familyclub[$tree_club_id] = $rowclub;
 
 	if ( $this->config['show_bootstrap_tree'] )
 	{	
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
 	}
 	else
 	{
@@ -106,7 +107,7 @@ jQuery(function ($) {
 ";	
 	
 $this->document->addScriptDeclaration( $javascript );
-		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+		$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
 	}
 
 $this->document->setTitle( Text::_( 'COM_SPORTSMANAGEMENT_TEAMSTREE_PAGE_TITLE' ) );

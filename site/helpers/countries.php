@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.utilities.arrayhelper');
 
 if (!defined('JSM_PATH')) {
@@ -214,7 +216,7 @@ class JSMCountries {
         }
         
         if ($cssflags == 0){
-        $html = '<img src="' . JURI::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
+        $html = '<img src="' . Uri::root() . $src . '" alt="' . self::getCountryName($countrycode) . '" ';
         $html .= 'title="' . self::getCountryName($countrycode) . '" ' . $attributes . ' />';
         }
         else

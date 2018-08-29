@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 //echo '<pre>'.print_r($this->config,true).'</pre>';
 //echo 'joomla-version -> '.'JSM_JVERSION.'<br>';
@@ -14,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$this->kmlpath = JURI::root() . 'tmp' . DS . $this->club->id . '-club.kml';
+$this->kmlpath = Uri::root() . 'tmp' . DS . $this->club->id . '-club.kml';
 $this->kmlfile = $this->club->id . '-club.kml';
 $params = JComponentHelper::getParams('com_sportsmanagement');
 

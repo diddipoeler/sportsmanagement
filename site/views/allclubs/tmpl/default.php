@@ -13,6 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
@@ -24,7 +25,7 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();
+    $uri = Uri::getInstance();
 } else {
     $uri = JFactory::getURI();
 }

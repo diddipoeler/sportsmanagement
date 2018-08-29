@@ -13,11 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
-$savenewcomment[] = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
-$baseurl = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$savenewcomment[] = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
+$baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
 
 ?>
 <script>
@@ -76,7 +78,7 @@ jQuery('#team_id').change(updatePlayerSelect);
 <?php
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
     $uri = JFactory::getURI();
 }

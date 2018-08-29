@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_SEASON_POINTS'); ?></h2>
 
@@ -20,7 +22,7 @@ use Joomla\CMS\Language\Text;
 		var data_points_chart = <?php echo $this->pointschartdata->toPrettyString(); ?>;
 		return JSON.stringify(data_points_chart);
 	}
-	swfobject.embedSWF("<?php echo JURI::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
+	swfobject.embedSWF("<?php echo Uri::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
 			"points_chart", "100%", "200", "9.0.0", false, {"get-data": "points_chart"} );
 </script>
 

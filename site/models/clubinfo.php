@@ -11,6 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -804,7 +806,7 @@ $color = '';
 
         $cat_link = '';
 
-        $script .= "d" . $root_catid . " = new dTree('d" . $root_catid . "','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/');" . "\n";
+        $script .= "d" . $root_catid . " = new dTree('d" . $root_catid . "','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/');" . "\n";
         $script .= "d" . $root_catid . ".add(" . "0" . ", " . "-1" . ", ";
         $script .= "'" . $cat_name . "', ";
         $script .= "'" . $cat_link . "', ";
@@ -818,13 +820,13 @@ $color = '';
                     $script .= "'" . $row->name . "', ";
                     $script .= "'" . $row->link . "', ";
                     //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 } else {
                     $script .= "d" . $root_catid . ".add(" . $row->id . ", " . $row->new_club_id . ", ";
                     $script .= "'" . $row->name . "', ";
                     $script .= "'" . $row->link . "', ";
                     //$script .= "'" . ($aid >= $row->access ? 'false' : 'true') . "');" ."\n";
-                    $script .= "'','" . $row->name . "','','" . JURI::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
+                    $script .= "'','" . $row->name . "','','" . Uri::base() . "/components/" . $option . "/assets/img/standard2/" . $row->icon . "');" . "\n";
                 }
             }
         }

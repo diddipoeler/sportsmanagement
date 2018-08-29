@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewStatsRanking
@@ -41,7 +42,7 @@ class sportsmanagementViewStatsRanking extends sportsmanagementView
 		// read the config-data from template file
 		//$model = $this->getModel();
 		//$config = $model->getTemplateConfig($this->getName());
-	$this->document->addScript(JUri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+	$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->cfg_which_database);
 		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 		

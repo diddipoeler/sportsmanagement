@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $document = JFactory::getDocument();
 
 ?>
@@ -22,7 +24,7 @@ console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
 if( typeof jQuery.fn.tooltip.Constructor.VERSION === 'undefined' || jQuery.fn.tooltip.Constructor.VERSION === null ){
 console.log("bootstrap version ist nicht vorhanden");   
 <?php	
-$stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
+$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/com_sportsmanagement/assets/css/jsmbootstrap.css' . '" type="text/css" />' . "\n";
 $document->addCustomTag($stylelink);
 ?>	
 }	

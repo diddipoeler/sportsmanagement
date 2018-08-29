@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <?php
@@ -18,9 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-//$kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
-
-$this->kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$this->kmlpath = Uri::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
 $this->kmlfile = $this->predictionGame->id.'-prediction.kml';
 
 ?>

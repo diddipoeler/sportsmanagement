@@ -82,14 +82,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 			$pageTitle .= ': ' . $this->team->tname;
 		}
 		$this->document->setTitle( $pageTitle );
-
-/**
- * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr        
- * $view = $jinput->getVar( "view") ;
- * $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- * $document->addCustomTag($stylelink);
- */
-        
+       
         if ( !isset($this->config['table_class']) )
         {
             $this->config['table_class'] = 'table';

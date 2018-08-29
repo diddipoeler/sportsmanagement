@@ -11,6 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -39,7 +41,7 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy {
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = JFactory::getURI();
         }

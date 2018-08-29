@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
+use Joomla\CMS\Uri\Uri;
 
 /**
 * simpleGMapGeocoder | simpleGMapGeocoder is part of simpleGMapAPI
@@ -143,7 +144,7 @@ case 'playground':
 $kml[] = ' <href>' .'http://maps.google.com/mapfiles/kml/pal2/icon49.png'.'</href>';
 break;  
 default:
-$kml[] = ' <href>' . JURI::root().$picture . '</href>';
+$kml[] = ' <href>' . Uri::root().$picture . '</href>';
 break;  
 }
 
@@ -521,11 +522,11 @@ echo 'writekml3prediction avatar<br><pre>';
 
 if ( !file_exists($picturepath) || empty($row->avatar) )
 {
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+$kml[] = ' <href>' . Uri::root().$ph_logo_big . '</href>';    
 }
 else
 {
-$kml[] = ' <href>' . JURI::root().$row->avatar . '</href>';    
+$kml[] = ' <href>' . Uri::root().$row->avatar . '</href>';    
 }
 
 $kml[] = ' </Icon>';
@@ -601,18 +602,9 @@ $kml[] = ' <Style id="' . $row->team_id . 'Style">';
 $kml[] = ' <IconStyle id="' . $row->team_id . 'Icon">';
 $kml[] = ' <Icon>';
 
-//$picturepath = JURI::root().$row->logo_big;
-$picturepath = JURI::root().$row->logo_big;
-//if ( !file_exists($picturepath) )
-//{
-//$kml[] = ' <href>' . $ph_logo_big . '</href>';    
-//}
-//else
-//{
-//$kml[] = ' <href>' . $row->logo_big . '</href>';    
-//}
+$picturepath = Uri::root().$row->logo_big;
 
-$kml[] = ' <href>' . JURI::root().$row->logo_big . '</href>';
+$kml[] = ' <href>' . Uri::root().$row->logo_big . '</href>';
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
 $kml[] = ' </Style>';    

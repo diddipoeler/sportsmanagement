@@ -12,11 +12,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $this->view = JFactory::getApplication()->input->getCmd('view');
-//echo $this->kmlfile.'<br>';
-//echo JURI::root(true).'<br>';
-//echo JURI::root().'<br>';
-//$this->kmlfile = 'test-club.kml';
+
 
 switch ($this->view)
 {
@@ -81,17 +80,7 @@ if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPlugin
 
 
 $this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places');
-$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
-
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js&sensor=false');
-//$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3-7.min.js');
-
-
-//$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false&language=de');	
-//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&language=de');		
-//$this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
-
+$this->document->addScript(Uri::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 
 switch ($this->view)
 {
@@ -193,8 +182,6 @@ if ( !empty($latitude) && $latitude != '0.00000000' )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
-//$row->team_name = $row->team_name.' '."<img src='".JURI::root().$row->logo_big."' width='50'>";
-//$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."']";
 $map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."','".$row->logo_big."']";
 $zaehler++;
 }

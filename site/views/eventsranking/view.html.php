@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewEventsRanking
@@ -32,7 +33,7 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 	function init()
 	{
 
-$this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+$this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->jinput->getInt('cfg_which_database',0));
 

@@ -72,14 +72,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
                 }
 		}
 		$this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
-        
-/**
- *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
- *         $view = $jinput->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
-        
+       
         if ( !isset($this->config['table_class']) )
         {
             $this->config['table_class'] = 'table';

@@ -74,13 +74,9 @@ class sportsmanagementViewTeamStats extends sportsmanagementView
 			$pageTitle .= ': ' . $this->team->name;
 		}
 		$this->document->setTitle( $pageTitle );
-
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
-//        $this->document->addCustomTag($stylelink);
-        
+       
         $this->headertitle = Text::_( 'COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE' ) . " - " . $this->team->name;
         
-		//parent::display( $tpl );
 	}
 
 	/**

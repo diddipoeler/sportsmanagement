@@ -12,13 +12,14 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo 'mapconfig<pre>',print_r($this->mapconfig,true),'</pre><br>';
 }
 
-//$kmlpath = JURI::root().'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'ranking'.DS.'tmpl'.DS.'default_genkml3.php';
-$kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$kmlpath = Uri::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
 
 //echo $kmlpath.'<br>';
 
@@ -52,7 +53,7 @@ $kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
 		}
 		
 		/*
-    foreach ( $this->allteams as $row )
+    Uri:: ( $this->allteams as $row )
     {
 		if($row->address_string != '') {
 			$arrPluginParams[] = "address='" .$row->address_string. "'";

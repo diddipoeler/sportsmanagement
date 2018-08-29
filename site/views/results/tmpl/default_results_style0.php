@@ -13,6 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <style>
 #sbox-window {
@@ -296,7 +298,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->i
 $imgcontent,
 $imgTitle,
 '20',
-JURI::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
+Uri::base().'index.php?tmpl=component&option=com_content&view=article&id='.$game->content_id,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);                
@@ -584,7 +586,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 				$imgTitle = $count.' '.Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
 				if ($this->config['show_comments_count'] == 1) 
                 {
-					$href_text = HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text = HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} 
                 elseif ($this->config['show_comments_count'] == 2) 
                 {
@@ -618,7 +620,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 				$imgTitle = $count.' '.Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
 				if ($this->config['show_comments_count'] == 1) 
                 {
-					$href_text = HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text = HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} 
                 elseif ($this->config['show_comments_count'] == 2) 
                 {
@@ -651,7 +653,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
             {
 				$imgTitle	= Text::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+					$href_text		= HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
 				} elseif ($this->config['show_comments_count'] == 2) {
 					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}

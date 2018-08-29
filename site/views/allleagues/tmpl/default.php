@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
 HTMLHelper::_('behavior.modal');
@@ -38,7 +40,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </script>
 
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post">
+    <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt">
                 <?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>

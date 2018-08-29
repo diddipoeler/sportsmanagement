@@ -40,6 +40,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
 HTMLHelper::_('behavior.tooltip');
@@ -51,7 +53,7 @@ $fieldsets = $this->form->getFieldsets();
 //echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
     $uri = JFactory::getURI();
 }

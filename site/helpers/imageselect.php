@@ -12,6 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * ImageSelectSM
@@ -60,7 +61,7 @@ static $_foldertype = '';
     
 		HTMLHelper::_( 'behavior.modal' );
 
-		$baseFolder = JURI::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
+		$baseFolder = Uri::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
 
 		//Build the image select functionality

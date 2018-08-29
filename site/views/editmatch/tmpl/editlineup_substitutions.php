@@ -13,13 +13,15 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $savenewsubst = array();
 $savenewsubst[] = $this->match->id;
 $savenewsubst[] = $this->tid;
 $savenewsubst[] = $this->eventsprojecttime;
-$savenewsubst[] = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$savenewsubst[] = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
 
-$baseurl = "'".Route::_(JURI::base().'index.php?option=com_sportsmanagement')."'";
+$baseurl = "'".Route::_(Uri::base().'index.php?option=com_sportsmanagement')."'";
 ?>
 
 <!-- SUBSTITUTIONS START -->

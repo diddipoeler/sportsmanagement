@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Uri\Uri;
+
 jimport( 'joomla.application.component.model');
 
 /**
@@ -614,7 +616,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('LEFT',' #__sportsmanagement_team AS teams ON clubs.id = teams.club_id ');
         $query->where('teams.id = '.self::$teamid);
     	$db->setQuery( $query );
-    	$logo = JURI::root().$db->loadResult();
+    	$logo = Uri::root().$db->loadResult();
 
 		return $logo;
 	}

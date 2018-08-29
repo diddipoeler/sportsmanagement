@@ -109,14 +109,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
 		}
         
 		$this->document->setTitle( $pageTitle );
-        
-/**
- *         wir benutzen bootstrap
- *         $view = JFactory::getApplication()->input->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $this->document->addCustomTag($stylelink);
- */
-        
+       
         if ( !isset($this->config['table_class']) )
         {
             $this->config['table_class'] = 'table';

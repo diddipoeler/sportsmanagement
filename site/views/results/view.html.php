@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport( 'joomla.filesystem.file' );
 
@@ -46,7 +47,7 @@ class sportsmanagementViewResults extends sportsmanagementView
         $roundcode = 0;
         $default_name_format = '';
 
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model	= $this->getModel();
 		
@@ -90,7 +91,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 if ( $this->overallconfig['use_squeezebox_modal'] ) 
 {
-$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+$document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
 }	
 			
 			
@@ -139,27 +140,27 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		// add the links
 		$document->addHeadLink(Route::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
         $view = $jinput->getVar( "view") ;
-        //$stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
+        //$stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
         
 //        $stylelink = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
 
-	$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+	$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 		
         switch ($this->layout)
         {
@@ -439,7 +440,7 @@ $use_jquery_modal);
 		$link="javascript:void(0)";
 		$params=array("onclick" => "switchMenu('part".$match->id."')");
 		$imgTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EDIT_MATRIX_ROUNDS_PART_RESULT');
-		$desc=HTMLHelper::image(	JURI::root()."media/com_sportsmanagement/jl_images/sort01.gif",
+		$desc=HTMLHelper::image(	Uri::root()."media/com_sportsmanagement/jl_images/sort01.gif",
 		$imgTitle,array("border" => 0,"title" => $imgTitle));
 		echo HTMLHelper::link($link,$desc,$params);
 
@@ -736,7 +737,7 @@ $use_jquery_modal);
 			<!-- Referee tooltip -->
 			<span class="hasTip"
 				title="<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>"> <img
-				src="<?php echo JURI::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
+				src="<?php echo Uri::root(); ?>media/com_sportsmanagement/jl_images/icon-16-Referees.png"
 				alt="" title="" /> </span>
 			
 				<?php
@@ -783,7 +784,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			}
 			$output .= HTMLHelper::_(	'link',
 			$report_link,
-			HTMLHelper::image(JURI::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
+			HTMLHelper::image(Uri::root().$img,$imgTitle,array("border" => 0,"title" => $imgTitle)),
 			array("title" => $imgTitle));
 		}
 		else
@@ -935,9 +936,9 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/in.png';
+				$pic_time	= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/out.png';
+				$pic_in		= Uri::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/in.png';
 				$imgTime = HTMLHelper::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
 				$imgOut  = HTMLHelper::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn   = HTMLHelper::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));

@@ -40,6 +40,8 @@
 defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.tooltip');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -65,10 +67,10 @@ $script =	'
 			';
 
 $document->addScriptDeclaration($script);
-$document->addScript(JURI::root().'includes/js/joomla.javascript.js');
+$document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
     $uri = JFactory::getURI();
 }

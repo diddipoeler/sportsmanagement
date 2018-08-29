@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -41,7 +42,7 @@ class sportsmanagementViewRanking extends JViewLegacy
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -159,7 +160,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		if ($this->config['show_notes'] == 1 )
 	{
 	$ranking_reason = array();
-		foreach ( $this->teams as $teams ) 
+		Uri:: ( $this->teams as $teams ) 
         {
         
         if ( $teams->start_points )
@@ -260,7 +261,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
   
   
-  foreach ( $this->allteams as $row )
+  Uri:: ( $this->allteams as $row )
     {
     $address_parts = array();
 		if (!empty($row->club_address))
@@ -287,38 +288,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
 		$row->address_string = implode(', ', $address_parts);
-//    $this->map->addMarkerByAddress($row->address_string, $row->team_name, '"<a href="'.$row->club_www.'" target="_blank">'.$row->club_www.'</a>"', "http://maps.google.com/mapfiles/kml/pal2/icon49.png");		
-    
-    /*
-    $paramsdata	= $row->club_extended;
-		$paramsdefs	= JLG_PATH_ADMIN . DS . 'assets' . DS . 'extended' . DS . 'club.xml';
-		$extended	= new JLGExtraParams( $paramsdata, $paramsdefs );
-		foreach ( $extended->getGroups() as $key => $groups )
-		{
-		$lat = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LATITUDE');
-    $lng = $extended->get('JL_ADMINISTRATIVE_AREA_LEVEL_1_LONGITUDE');
-		}
-		
-    if ( $lat && $lng )
-    {
-    $adressecountry_flag = JSMCountries::getCountryFlag($row->club_country);
-        
-    //echo JURI::root().'<br>';
-    						
-		if ( $row->logo_big )
-    {
-    $path = JURI::root().$row->logo_big;
-    }
-    else
-    {
-    $path = JURI::root().'media/com_sportsmanagement/placeholders/'.'placeholder_150.png';
-    }
-    
-    //echo $path.'<br>';
-    						
-    $this->map->addMarker($lat, $lng, $row->club_name, $adressecountry_flag.' '.$row->address_string.'<br>',$path);
-    }
-    */
     
     }
     
@@ -336,7 +305,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$document->setTitle( $pageTitle );
 		$view = JFactory::getApplication()->input->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         //$document->addCustomTag($stylelink);
 		parent :: display($tpl);
 	}

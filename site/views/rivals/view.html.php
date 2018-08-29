@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewRivals
@@ -31,7 +32,7 @@ class sportsmanagementViewRivals extends sportsmanagementView
 	 */
 	function init()
 	{
-        $this->document->addScript ( JUri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'. $this->option .'/assets/js/smsportsmanagement.js' );
 	
 		//$this->project = sportsmanagementModelProject::getProject();
 		//$this->overallconfig = sportsmanagementModelProject::getOverallConfig();

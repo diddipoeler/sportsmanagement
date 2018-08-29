@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.modal');
 
 //echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
@@ -46,7 +48,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
         $InOutStats[4] = array('icon' => 'images/com_sportsmanagement/database/events/' . $this->project->fs_sport_type_name . '/out.png');
         for ($x = count($InOutStats); $x >= 1; $x--) {
             $css .= ".jl_roster_in_out$x { 
-		background: #0a0 url('" . JURI::base() . $InOutStats[$x]['icon'] . "') left top  no-repeat;
+		background: #0a0 url('" . Uri::base() . $InOutStats[$x]['icon'] . "') left top  no-repeat;
 		-moz-background-size: 14px;
 		-o-background-size: 14px;
 		-webkit-background-size: 14px; 
@@ -66,7 +68,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
                             $iconPath = 'media/com_sportsmanagement/event_icons/' . $iconPath;
                         }
                         $css .= ".jl_roster_event" . $eventtype->eventtype_id . " { 
-					background: #ddd url('" . JURI::base() . $iconPath . "') left top  no-repeat;
+					background: #ddd url('" . Uri::base() . $iconPath . "') left top  no-repeat;
 					-moz-background-size: 12px;
 					-o-background-size: 12px;
 					-webkit-background-size: 12px; 

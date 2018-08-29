@@ -11,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
@@ -352,7 +353,7 @@ function getLimit()
         $option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = JFactory::getURI();
         }

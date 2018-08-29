@@ -10,6 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewPlayground
@@ -66,7 +67,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->document->addCustomTag( '<meta property="og:title" content="' . $this->playground->name .'"/>' );
 		$this->document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
         $this->headertitle = $this->playground->name;

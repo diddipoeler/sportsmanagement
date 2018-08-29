@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -114,7 +116,7 @@ $option = $app->input->getCmd('option');
 		}
 	
        
-		$query = JURI::buildQuery($params);
+		$query = Uri::buildQuery($params);
 		$link = Route::_('index.php?' . $query);
 		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id,$cfg_which_database);
 		$forward = sportsmanagementModelRound::getRoundId($currentRoundcode+1, $project->id,$cfg_which_database);
@@ -126,7 +128,7 @@ $option = $app->input->getCmd('option');
             $params['mode'] = 0;
             $params['order'] = 0;
             
-			$query = JURI::buildQuery($params);
+			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
 			$prevlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
@@ -145,7 +147,7 @@ $option = $app->input->getCmd('option');
             $params['mode'] = 0;
             $params['order'] = 0;
 
-			$query = JURI::buildQuery($params);
+			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
 			$firstlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
@@ -162,7 +164,7 @@ $option = $app->input->getCmd('option');
             $params['mode'] = 0;
             $params['order'] = 0;
 
-			$query = JURI::buildQuery($params);
+			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
@@ -184,7 +186,7 @@ $option = $app->input->getCmd('option');
             $params['mode'] = 0;
             $params['order'] = 0;
 
-			$query = JURI::buildQuery($params);
+			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
 			$lastlink = $spacer4 . HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
@@ -217,7 +219,7 @@ $option = $app->input->getCmd('option');
             $params['mode'] = 0;
             $params['order'] = 0;
 
-					$query		= JURI::buildQuery($params);
+					$query		= Uri::buildQuery($params);
 					$link		= Route::_('index.php?' . $query . '#'.$option.'_top');
 					$pageNav   .= $spacer4 . HTMLHelper::link($link,$pagenumber);
 				}
@@ -276,7 +278,7 @@ $option = $app->input->getCmd('option');
 			if ($counter <= $rlimit)
 			{
 				$params['r'] = $counter;
-				$query = JURI::buildQuery($params);
+				$query = Uri::buildQuery($params);
 				$link  = Route::_('index.php?' . $query);
 
 				$pageNav2 .= "<option value='".$link."'";

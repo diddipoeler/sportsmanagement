@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
@@ -42,7 +43,7 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 	function init()
 	{
         
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
 		// add the ranking model
 		$rankingmodel = new sportsmanagementModelRanking();
@@ -130,7 +131,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		}
 		$this->document->setTitle($pageTitle);
         
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
         // diddipoeler

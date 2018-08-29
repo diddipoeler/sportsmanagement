@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Uri\Uri;
 
 //echo ' playground<br><pre>'.print_r($this->playground,true).'</pre>';
 //echo ' temas<br><pre>'.print_r($this->teams,true).'</pre>';
@@ -20,7 +21,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
+$this->kmlpath = Uri::root().'tmp'.DS.$this->playground->id.'-playground.kml';
 $this->kmlfile = $this->playground->id.'-playground.kml';
 
 ?>

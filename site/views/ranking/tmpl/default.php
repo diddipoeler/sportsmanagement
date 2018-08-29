@@ -12,12 +12,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
   // Make sure that in case extensions are written for mentioned (common) views,
   // that they are loaded i.s.o. of the template of this view
   $templatesToLoad = array('globalviews');
   sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-  $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
+  $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
   $this->kmlfile = $this->project->id.'-ranking.kml';
 
   if( version_compare(JSM_JVERSION,'4','eq') )

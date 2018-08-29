@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 jimport('joomla.application.component.view');
 
 
@@ -42,8 +44,8 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 
 		$app = JFactory::getApplication();
 		
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
+		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
+		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
 		$model		= $this->getModel();
 

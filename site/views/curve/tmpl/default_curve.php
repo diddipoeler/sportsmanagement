@@ -40,6 +40,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <script>
 function findSWF(movieName) {
@@ -96,13 +98,13 @@ function get_curve_chart_<?php echo $division->id; ?>() {
 	echo $this->$chart->toString(); ?>;
 	return JSON.stringify(data_curve_chart_<?php echo $division->id; ?>);
 }
-swfobject.embedSWF("<?php echo JUri::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
+swfobject.embedSWF("<?php echo Uri::base().'components/com_sportsmanagement/assets/classes/open-flash-chart/open-flash-chart.swf'; ?>", 
 		"curve_chart_<?php echo $division->id; ?>", "100%", "400", "9.0.0", false, 
 		{"loading": "loading <?php echo $division->name; ?>","get-data": "get_curve_chart_<?php echo $division->id; ?>", "wmode" : "transparent"} );
 
 function reload_curve_chart_<?php echo $division->id; ?>() {
 	var tmp = findSWF("curve_chart_<?php echo $division->id; ?>");
-	var baseurl = '<?php echo JUri::base() ?>/';
+	var baseurl = '<?php echo Uri::base() ?>/';
 	var reloadstring = 'index.php?option=com_sportsmanagement&format=raw&view=curve&p=<?php echo $this->project->slug?>&division=<?php echo $division->id;?>'+
 	'&tid1='+document.getElementById('tid1_<?php echo $division->id; ?>').options[document.getElementById('tid1_<?php echo $division->id; ?>').selectedIndex].value+
 	'&tid2='+document.getElementById('tid2_<?php echo $division->id; ?>').options[document.getElementById('tid2_<?php echo $division->id; ?>').selectedIndex].value;

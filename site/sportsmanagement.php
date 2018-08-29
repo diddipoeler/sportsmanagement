@@ -11,6 +11,7 @@
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
@@ -195,7 +196,7 @@ if ($paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICT
         }
     } else {
         if (!defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
-            DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', JURI::root());
+            DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', Uri::root());
         }
     }
 }
@@ -210,7 +211,7 @@ $language_tag = $lang->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-$document->addScript(JURI::root(true) . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+$document->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 /**
  * meta daten der komponente setzen

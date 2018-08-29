@@ -462,13 +462,7 @@ case 'country_flag':
 		    echo ' ';
         ?>
 
-<!-- <a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam2_id;?>"> -->
-<!-- <img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="30" /> -->
-<!-- </a> -->
-<!-- <div class="modal fade" id="modal<?php echo $result->projectteam2_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true"> -->
-<!-- <div class="modal-header"> -->
-<!-- <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button> -->
-<!-- </div> -->
+
 <?PHP
 
     ?>

@@ -12,9 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-//echo 'previousx <br><pre>'.print_r($this->previousx,true).'</pre>';
-//echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre>';
-//echo 'teams <br><pre>'.print_r($this->teams,true).'</pre>';
+use Joomla\CMS\Uri\Uri;
 
 foreach ( $this->teams as $currentteam )
 {
@@ -32,7 +30,7 @@ foreach ( $this->teams as $currentteam )
 			$pr_id = 0;
 			$k=0;
 			
-			foreach ( $this->previousx[$currentteam->id] as $game )
+			Uri:: ( $this->previousx[$currentteam->id] as $game )
 			{
                 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
@@ -108,7 +106,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev' . $game-
 				<td nowrap="nowrap"><?php
 				if ($game->show_report==1)
 				{
-					$desc = HTMLHelper::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = HTMLHelper::image( Uri::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					Text::_( 'Match Report' ),
 					array( "title" => Text::_( 'Match Report' ) ) );
 					echo HTMLHelper::link( $report_link, $desc);

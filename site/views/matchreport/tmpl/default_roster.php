@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.modal');
 
 
@@ -87,7 +89,7 @@ echo '';
 											
 if ( $this->config['show_player_profile_link_alignment'] == 0 )
 {
-echo HTMLHelper::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+echo HTMLHelper::link($player_link,$match_player.HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
 }
 }
 } else {
@@ -124,7 +126,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
 if ( $this->config['show_player_profile_link_alignment'] == 1 )
 {
 echo '<br>';
-echo HTMLHelper::link($player_link,$match_player.HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
+echo HTMLHelper::link($player_link,$match_player.HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)));
 }
 echo '&nbsp;';
 }
@@ -188,7 +190,7 @@ echo HTMLHelper::link($player_link,HTMLHelper::image($picture, $imgTitle, array(
 if ( $this->config['show_player_profile_link_alignment'] == 1 )
 {
 echo '<br>';
-echo HTMLHelper::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+echo HTMLHelper::link($player_link,HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
 }
 }
 else 
@@ -203,7 +205,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
 if ( $this->config['show_player_profile_link_alignment'] == 1 )
 {
 echo '<br>';
-echo HTMLHelper::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+echo HTMLHelper::link($player_link,HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
 }
 echo '&nbsp;';
 }
@@ -217,7 +219,7 @@ echo '';
 
 if ( $this->config['show_player_profile_link_alignment'] == 0 )
 {
-echo HTMLHelper::link($player_link,HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
+echo HTMLHelper::link($player_link,HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$player->jerseynumber,$player->jerseynumber,array('title'=> $player->jerseynumber)).$match_player);
 }
                           
 }

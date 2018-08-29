@@ -40,6 +40,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
@@ -68,8 +70,8 @@ $fieldsets = $this->form->getFieldsets();
                 //echo $picture;
 
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo Uri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo Uri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }

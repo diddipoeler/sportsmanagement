@@ -12,12 +12,14 @@
 defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.tooltip');
 
 //echo '<br /><pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
 //echo 'predictionMember <br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = JUri::getInstance();   
+    $uri = Uri::getInstance();   
 } else {
     $uri = JFactory::getURI();
 }
@@ -37,7 +39,7 @@ $script =	'
 			';
 
 $document->addScriptDeclaration($script);
-$document->addScript(JURI::root().'includes/js/joomla.javascript.js');
+$document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 ?>
 <form name='adminForm' id='adminForm' method='post' >
 	<table width='100%'><tr><td class='sectiontableheader'><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?></td></tr></table>

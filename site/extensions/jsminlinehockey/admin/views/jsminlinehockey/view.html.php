@@ -46,6 +46,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.view');
 jimport('joomla.html.html.select');
@@ -72,7 +73,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
 
         $db = JFactory::getDBO();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = JFactory::getURI();
         }

@@ -20,15 +20,16 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Uri\Uri;
 
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'maps' => true, 'bootstrap' => true, 'gcalendar' => true));
 
 $document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
-$document->addScript(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
+$document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
+$document->addScript(Uri::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
 
 if (JFactory::getApplication()->input->getCmd('tmpl', '') == 'component') {
-	$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
+	$document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
 }
 
 $dispatcher = JDispatcher::getInstance();

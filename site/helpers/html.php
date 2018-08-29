@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 /**
  * sportsmanagementHelperHtml
  * 
@@ -669,7 +671,7 @@ catch (Exception $e)
         $params = JComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         if (isset($previous[$ptid]->rank)) {
-            $imgsrc = JURI::root() . 'media/com_sportsmanagement/jl_images/';
+            $imgsrc = Uri::root() . 'media/com_sportsmanagement/jl_images/';
             if (( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" )) {
                 if ($usefontawesome) {
                     echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
@@ -746,7 +748,7 @@ catch (Exception $e)
             $params["p"] = $jinput->request->get('p');
 
 
-            $query = JURI::buildQuery($params);
+            $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
                     Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
@@ -818,7 +820,7 @@ catch (Exception $e)
                 $params["dir"] = $default;
             }
 
-            $query = JURI::buildQuery($params);
+            $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
                     Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
@@ -855,13 +857,13 @@ catch (Exception $e)
         echo '<tr>';
         echo '<td style="width: 10%; text-align: left;" nowrap="nowrap">';
         if ($limitstart > 0) {
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => 0));
             echo HTMLHelper::link($url . $query, '&lt;&lt;&lt;');
             echo '&nbsp;&nbsp;&nbsp';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $latestlimitstart));
@@ -879,13 +881,13 @@ catch (Exception $e)
         echo '<td style="width: 10%; text-align: right;" nowrap="nowrap">';
         if ($nextlimitstart > 0) {
             echo '&nbsp;&nbsp;&nbsp;';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $nextlimitstart));
             echo HTMLHelper::link($url . $query, '&gt;&gt;');
             echo '&nbsp;&nbsp;&nbsp';
-            $query = JURI::buildQuery(
+            $query = Uri::buildQuery(
                             array(
                                 "limit" => $limit,
                                 "limitstart" => $lastlimitstart));

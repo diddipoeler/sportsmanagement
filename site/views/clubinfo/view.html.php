@@ -12,6 +12,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewClubInfo
@@ -111,7 +112,7 @@ $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
 
 	if ( $this->config['show_bootstrap_tree'] )
 	{	
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
 	}
 	else
 	{
@@ -136,16 +137,9 @@ jQuery(function ($) {
 ";	
 	
 $this->document->addScriptDeclaration( $javascript );
-		$this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
+		$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/bootstrap-tree2.css');	
 	}
         $this->document->setTitle( $pageTitle );
-//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
-/**
- *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
- *         $view = $jinput->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
         
         if ( !isset($this->config['table_class']) )
         {

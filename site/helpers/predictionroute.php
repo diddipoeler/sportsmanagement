@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 // Component Helper
 jimport('joomla.application.component.helper');
 
@@ -251,7 +253,7 @@ public static function buildQuery($parts)
 			}
 		}
 
-		return JURI::buildQuery( $parts );
+		return Uri::buildQuery( $parts );
 	}
   
   	

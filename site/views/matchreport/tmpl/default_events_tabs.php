@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 <!-- START of match events -->
 
@@ -63,7 +65,7 @@ else
 {
 $imgTitle = Text::_($event->name);
 $imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-$text_bild = HTMLHelper::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+$text_bild = HTMLHelper::image(Uri::root().$pic_tab,$imgTitle,$imgTitle2);
 $text = Text::_($event->name);
 }
 
@@ -195,7 +197,7 @@ else
 				{
 					$imgTitle=Text::_($event->name);
 					$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle, ' style' => 'max-height:40px;');
-					$txt_tab=HTMLHelper::image(JURI::root().$pic_tab,$imgTitle,$imgTitle2);
+					$txt_tab=HTMLHelper::image(Uri::root().$pic_tab,$imgTitle,$imgTitle2);
 				}
 
 				echo $result->startPanel($txt_tab,$event->id);

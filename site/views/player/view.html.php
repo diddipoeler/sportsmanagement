@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewPlayer
@@ -203,7 +204,7 @@ catch (Exception $e)
         $this->document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
 
         $view = $this->jinput->getVar("view");
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
         $this->document->addCustomTag($stylelink);
 
         if (!isset($this->config['table_class'])) {

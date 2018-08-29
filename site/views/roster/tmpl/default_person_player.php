@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 ?>
 <div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
@@ -60,7 +61,7 @@ if ($this->config['show_player_numbers'])
 				<span class="jl_rosterperson_position_number">
 				<?php
 				$playerNumber = ( $this->config['player_numbers_pictures'] && function_exists( 'imagecreatefrompng' ) ) ? 
-					HTMLHelper::image( JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
+					HTMLHelper::image( Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array( 'title'=> $pnr ) ) 
 					: $pnr;
 					echo $playerNumber;
 				

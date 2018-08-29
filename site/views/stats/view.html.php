@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 jimport( 'joomla.application.component.view' );
 
 /**
@@ -90,7 +92,7 @@ class sportsmanagementViewStats extends JViewLegacy
 		$document->setTitle( $pageTitle );
         
         $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');

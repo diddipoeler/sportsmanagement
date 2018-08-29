@@ -75,16 +75,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 			$extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
 			$this->extended = $extended;
 		}
-
-
-/**
- * 		das benötigen wir nicht, da wir bootstrap verwenden
- *         $document->setTitle($titleStr);
- *         $view = JFactory::getApplication()->input->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
-        
+       
         if ( !isset($this->config['history_table_class']) )
         {
             $this->config['history_table_class'] = 'table';

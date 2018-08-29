@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
@@ -276,7 +277,7 @@ if (!empty($this->rows))
 		{
 			if ($this->config['player_numbers_pictures'])
 			{
-				$value = HTMLHelper::image(JURI::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr));
+				$value = HTMLHelper::image(Uri::root().'images/com_sportsmanagement/database/teamplayers/shirt.php?text='.$pnr,$pnr,array('title'=> $pnr));
 			}
 			else
 			{

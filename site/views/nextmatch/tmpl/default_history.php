@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <!-- Start of show matches through all projects -->
@@ -141,7 +143,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprevh' . $game
 				<td class="nowrap"><?php
 				if ( $game->show_report == 1 )
 				{
-					$desc = HTMLHelper::image( JURI::base()."media/com_sportsmanagement/jl_images/zoom.png",
+					$desc = HTMLHelper::image( Uri::base()."media/com_sportsmanagement/jl_images/zoom.png",
 					Text::_( 'Match Report' ),
 					array( "title" => Text::_( 'Match Report' ) ) );
 					echo HTMLHelper::link( $report_link, $desc);

@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 // Component Helper
 jimport('joomla.application.component.helper');
 
@@ -813,7 +815,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 			}
 		}
 
-		return JURI::buildQuery( $parts );
+		return Uri::buildQuery( $parts );
 	}
 
 	

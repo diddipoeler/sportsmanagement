@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
 //jimport('joomla.application.component.view');
 
@@ -37,7 +38,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView {
         $app = JFactory::getApplication();
         $db = JFactory::getDBO();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = JFactory::getURI();
         }

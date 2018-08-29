@@ -9,7 +9,8 @@
  * @subpackage statsrankingteams
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-//jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Uri\Uri;
+
 /**
  * sportsmanagementViewStatsRankingTeams
  * 
@@ -24,7 +25,7 @@ class sportsmanagementViewStatsRankingTeams extends sportsmanagementView
   
 function init()
 	{  
-  	$this->document->addScript(JUri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+  	$this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->cfg_which_database);
   
   $teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$this->cfg_which_database);

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
@@ -39,7 +40,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
         $this->document->addStyleSheet($css);
         $css = 'components/com_sportsmanagement/assets/css/jquery-easy-tooltip.css';
         $this->document->addStyleSheet($css);
-        $this->document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
+        $this->document->addScript( Uri::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
         //$this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
@@ -133,7 +134,7 @@ if ( $this->config['show_pictures'] )
 		}
 		$this->document->setTitle( $pageTitle );
         $view = $this->jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
 
 	}
@@ -687,7 +688,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 	{
 		$result='';
 		if(empty($event->icon)) {
-			$event->icon = JUri::Base() . "media/com_sportsmanagement/jl_images/same.png";
+			$event->icon = Uri::Base() . "media/com_sportsmanagement/jl_images/same.png";
 		}
 		$tiptext=Text::_($event->name).' '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_MINUTE_SHORT').' '.$matchEvent->event_time;
 		$tiptext .= ' ::';
@@ -729,7 +730,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 	 */
 	function getHtmlImageForTips($picture,$width=0,$height=0)
 	{
-		$picture = JURI::root().$picture;
+		$picture = Uri::root().$picture;
 		if($width > 0 && $height==0) {
 			return '&lt;img src=&quot;'.$picture.'&quot; width=&quot;'.$width.'&quot; /&gt;';
 		}

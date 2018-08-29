@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
 
 /**
@@ -34,7 +36,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 	function init()
 	{
 
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
         $js .= "hideclubplandate()".";\n";
@@ -143,14 +145,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 
 		// add the links
 		$this->document->addHeadLink(Route::_($feed.'&type=rss'),'alternate','rel',$rss);
-        
-/**
- *         das brauchen wir nicht mehr, da wir bootsrap benutzen
- *         $view = $jinput->getVar( "view") ;
- *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
- *         $document->addCustomTag($stylelink);
- */
-        
+       
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
 
 	}

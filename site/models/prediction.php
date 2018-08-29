@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -1438,7 +1439,7 @@ if	(($logo_home == '') || (!file_exists($logo_home)))
 $logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
 }
 $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
-$body .=  HTMLHelper::image(JURI::root().$logo_home,$imgTitle,array(' title' => $imgTitle));
+$body .=  HTMLHelper::image(Uri::root().$logo_home,$imgTitle,array(' title' => $imgTitle));
 $body .=  ' ';
 }
 if ( $configprediction['show_logo_small'] == 2 )
@@ -1464,7 +1465,7 @@ $logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_smal
 }
 $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
 $body .=  ' ';
-$body .=  HTMLHelper::image(JURI::root().$logo_away,$imgTitle,array(' title' => $imgTitle));
+$body .=  HTMLHelper::image(Uri::root().$logo_away,$imgTitle,array(' title' => $imgTitle));
 }
 if ( $configprediction['show_logo_small'] == 2 )
 {
