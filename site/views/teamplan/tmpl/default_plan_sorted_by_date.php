@@ -667,18 +667,20 @@ $routeparameter['mid'] = $match->match_slug;
 	<!-- Show icon for editing events in edit mode -->
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
-		<div id="info<?php echo $match->id; ?>" style="display: none;">
+		<div id="info<?php echo $match->id; ?>" class="jsmeventsshowhide" style="display: none;">
 		<table class='matchreport' border='0'>
-			<tr>
-				<td><?php
-				echo $this->showEventsContainerInResults(	
-												$match,
-												$this->projectevents,
-												$events,
-												$subs,
-												$this->config );
-				?></td>
-			</tr>
+		<tr>
+		<td>
+		<?php
+		echo $this->showEventsContainerInResults(	
+		$match,
+		$this->projectevents,
+		$events,
+		$subs,
+		$this->config );
+		?>
+		</td>
+		</tr>
 		</table>
 		</div>
 		</td>
