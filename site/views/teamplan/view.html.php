@@ -12,13 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
-/*
-HTMLHelper::_('joomla.html.pane');
-HTMLHelper::_('joomla.functions');
-HTMLHelper::_('behavior.tooltip');
-*/
-	
 /**
  * sportsmanagementViewTeamPlan
  * 
@@ -39,14 +34,14 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 	function init()
 	{
 	        
-        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 		
 		sportsmanagementHelperHtml::$project = $this->project;
 		
         if ( $this->config['show_date_image'] )
         {
-        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/calendar.css');
+        $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/calendar.css');
         }    
         
 		if (isset($this->project))
@@ -106,11 +101,12 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		$output = '';
 		$result = '';
 
-		if ($this->config['use_tabs_events'])
+		if ( $this->config['use_tabs_events'] )
 		{
-			// Make event tabs with JPane integrated function in Joomla 1.5 API
-			$result	=& JPane::getInstance('tabs',array('startOffset'=>0));
-			$output .= $result->startPane('pane');
+			$iPanel = 1; 
+  			$selector = 'teamplan'; 
+  			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'details')); 
+
 
 			// Size of the event icons in the tabs (when used)
 			$width = 20; $height = 20; $type = 4;
@@ -143,7 +139,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 					$tab_content = Text::_($event->name);
 				}
 
-				$output .= $result->startPanel($tab_content, $event->id);
+				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel'.$iPanel++, $tab_content);
 				$output .= '<table class="matchreport" border="0">';
 				$output .= '<tr>';
 
@@ -168,12 +164,12 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '</td>';
 				$output .= '</tr>';
 				$output .= '</table>';
-				$output .= $result->endPanel();
+				$output .= HTMLHelper::_('bootstrap.endTab');
 			}
 
-			if (!empty($substitutions))
+			if ( !empty($substitutions) )
 			{
-				if ($this->config['show_events_with_icons'] == 1)
+				if ( $this->config['show_events_with_icons'] )
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
@@ -185,14 +181,14 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 					$tab_content = Text::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+				$pic_time	= Uri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= Uri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+				$pic_in		= Uri::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
 				$imgTime = HTMLHelper::image($pic_time,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
 				$imgOut  = HTMLHelper::image($pic_out,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn   = HTMLHelper::image($pic_in,Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
-				$output .= $result->startPanel($tab_content,'0');
+				$output .= HTMLHelper::_('bootstrap.addTab', $selector, 'panel'.$iPanel++, $tab_content);
 				$output .= '<table class="matchreport" border="0">';
 				$output .= '<tr>';
 				$output .= '<td class="list">';
@@ -213,9 +209,9 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '</td>';
 				$output .= '</tr>';
 				$output .= '</table>';
-				$output .= $result->endPanel();
+				$output .= HTMLHelper::_('bootstrap.endTab');
 			}
-			$output .= $result->endPane();
+			echo HTMLHelper::_('bootstrap.endTabSet');
 		}
 		else
 		{
@@ -286,7 +282,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			}
 
 			$event_minute = str_pad($matchevent->event_time, 2 ,'0', STR_PAD_LEFT);
-			if ($this->config['show_event_minute'] == 1 && $matchevent->event_time > 0)
+			if ( $this->config['show_event_minute'] && $matchevent->event_time > 0)
 			{
 				$output .= '<b>'.$event_minute.'\'</b> ';
 			} 
@@ -306,20 +302,20 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			}
 			
 			// only show event sum and match notice when set to on in template cofig
-			if($this->config['show_event_sum'] == 1 || $this->config['show_event_notice'] == 1)
+			if( $this->config['show_event_sum'] || $this->config['show_event_notice'] == 1)
 			{
-				if (($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0) || ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
+				if (( $this->config['show_event_sum'] && $matchevent->event_sum > 0) || ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
 				{
 					$output .= ' (';
-						if ($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0)
+						if ( $this->config['show_event_sum'] && $matchevent->event_sum > 0)
 						{
 							$output .= $matchevent->event_sum;
 						}
-						if (($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0) && ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
+						if (( $this->config['show_event_sum'] && $matchevent->event_sum > 0) && ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0))
 						{
 							$output .= ' | ';
 						}
-						if ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0)
+						if ( $this->config['show_event_notice'] && strlen($matchevent->notice) > 0)
 						{
 							$output .= $matchevent->notice;
 						}
