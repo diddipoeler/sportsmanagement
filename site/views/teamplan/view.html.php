@@ -107,7 +107,6 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
   			$selector = 'teamplan'; 
   			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'panel'.$iPanel)); 
 
-
 			// Size of the event icons in the tabs (when used)
 			$width = 20; $height = 20; $type = 4;
  			// Never show event text or icon for each event list item (info already available in tab)
@@ -145,7 +144,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 				// Home team events
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="list-inline">';
 				foreach ($matchevents AS $me)
 				{
 					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo);
@@ -155,7 +154,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 				// Away team events
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="list-inline">';
 				foreach ($matchevents AS $me)
 				{
 					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo);
@@ -192,7 +191,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '<table class="matchreport" border="0">';
 				$output .= '<tr>';
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="list-inline">';
 				foreach ($substitutions AS $subs)
 				{
 					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam1_id,$imgTime,$imgOut,$imgIn);
@@ -200,7 +199,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 				$output .= '</ul>';
 				$output .= '</td>';
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="list-inline">';
 				foreach ($substitutions AS $subs)
 				{
 					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam2_id,$imgTime,$imgOut,$imgIn);
@@ -221,7 +220,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 			// Home team events
 			$output .= '<td class="list-left">';
-			$output .= '<ul>';
+			$output .= '<ul class="list-inline">';
 			foreach ((array) $matchevents AS $me)
 			{
 				if ($me->ptid == $matchInfo->projectteam1_id)
@@ -234,7 +233,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 
 			// Away team events
 			$output .= '<td class="list-right">';
-			$output .= '<ul>';
+			$output .= '<ul class="list-inline">';
 			foreach ($matchevents AS $me)
 			{
 				if ($me->ptid == $matchInfo->projectteam2_id)
@@ -270,7 +269,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		$output='';
 		if ($matchevent->event_type_id == $event->id && $matchevent->ptid == $projectteamId)
 		{
-			$output .= '<li class="events">';
+			$output .= '<li class="list-inline-item">';
 			if ($showEventInfo == 1)
 			{
 				// Size of the event icons in the tabs
@@ -343,7 +342,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		$output='';
 		if ($subs->ptid == $projectteamId)
 		{
-			$output .= '<li class="events">';
+			$output .= '<li class="list-inline-item">';
 			// $output .= $imgTime;
 			$output .= '&nbsp;'.$subs->in_out_time.'. '.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
 			$output .= '<br />';
