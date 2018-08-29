@@ -105,7 +105,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 		{
 			$iPanel = 1; 
   			$selector = 'teamplan'; 
-  			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'details')); 
+  			echo HTMLHelper::_('bootstrap.startTabSet', $selector, array('active'=>'panel'.$iPanel)); 
 
 
 			// Size of the event icons in the tabs (when used)
