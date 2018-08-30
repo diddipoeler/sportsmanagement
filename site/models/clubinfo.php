@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
@@ -50,7 +51,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -73,7 +74,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     static function getFirstClubId($club_id=0,$new_club_id=0)
     {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
@@ -117,7 +118,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @return void
      */
     static function generateTree($parent, $tree = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if (array_key_exists($parent, self::$arrPCat)) {
             self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
@@ -150,7 +151,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      * @return
      */
     static function fbTreeRecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if (isset($children[$id]) && $level <= $maxlevel) {
             foreach ($children[$id] as $v) {
@@ -227,10 +228,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                 
             } elseif (version_compare(JSM_JVERSION, '3', 'eq')) {
 // Joomla! 3.0 code here
-                $rssDoc = JFactory::getFeedParser($options);
+                $rssDoc = Factory::getFeedParser($options);
             } elseif (version_compare(JSM_JVERSION, '2', 'eq')) {
 // Joomla! 2.5 code here
-                $rssDoc = JFactory::getXMLparser('RSS', $options);
+                $rssDoc = Factory::getXMLparser('RSS', $options);
             } elseif (version_compare(JVERSION, '1.7.0', 'ge')) {
 // Joomla! 1.7 code here
             } elseif (version_compare(JVERSION, '1.6.0', 'ge')) {
@@ -246,9 +247,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                     $rssDoc = $feed->getFeed($rssId);
                     return $rssDoc;
                 } catch (\InvalidArgumentException $e) {
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 } catch (\RuntimeException $e) {
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 }
             } else {
                 $feed = new stdclass();
@@ -282,7 +283,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
      */
     public static function getClubAssociation($associations) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -304,7 +305,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
 
 static function getFirstClub($club_id = 0) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -342,9 +343,9 @@ $query->group('c.name');
      * @return void
      */
     public static function updateHits($clubid = 0, $inserthits = 0) {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if ($inserthits) {
@@ -366,7 +367,7 @@ $query->group('c.name');
      */
     static function getClub($inserthits = 0,$club_id = 0) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -411,7 +412,7 @@ $query->group('c.name');
      */
     public static function getTeamsByClubId() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -463,7 +464,7 @@ $query->group('c.name');
             } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns
-                JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
                 return false;
             }
         }
@@ -478,7 +479,7 @@ $query->group('c.name');
      */
     public static function getStadiums() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -533,7 +534,7 @@ $query->group('c.name');
      */
     public static function getPlaygrounds() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -573,7 +574,7 @@ $query->group('c.name');
      */
     public static function getClubHistory($clubid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -592,7 +593,7 @@ $query->group('c.name');
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 
@@ -620,7 +621,7 @@ $query->group('c.name');
      */
     public static function getClubHistoryHTML($clubid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -648,7 +649,7 @@ $query->group('c.name');
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 
@@ -721,7 +722,7 @@ $color = '';
      */
     public static function getClubHistoryTree($clubid, $new_club_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -762,7 +763,7 @@ $color = '';
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 
@@ -795,7 +796,7 @@ $color = '';
      */
     public static function getSortClubHistoryTree($clubtree, $root_catid, $cat_name) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -913,7 +914,7 @@ $color = '';
     function hasEditPermission($task = null) {
         //check for ACL permsission and project admin/editor
         $allowed = parent::hasEditPermission($task);
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->id > 0 && !$allowed) {
             // Check if user is the club admin
             $club = $this->getClub();

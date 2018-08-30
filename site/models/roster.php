@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 require_once('player.php');
@@ -55,7 +57,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
        
 		parent::__construct();
 
@@ -77,7 +79,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	public static function getProjectTeam($team_picture_which = 'pt' )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -147,7 +149,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	public static function getTeam()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -196,7 +198,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	public static function getTeamPlayers($persontype = 1)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -293,7 +295,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 	 */
 	public static function getPositionEventTypes($positionId=0)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $option = $app->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -352,7 +354,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 	 */
 	public static function getPlayerEventStats()
 	{
-		$app = JFactory::getApplication();		
+		$app = Factory::getApplication();		
 		$playerstats=array();
 		$rows = self::getTeamPlayers();
 		if (!empty($rows))
@@ -394,7 +396,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 	 */
 	public static function getTeamEventStat($eventtype_id)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
     $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -447,7 +449,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 	 */
 	function getTeamPlayer($round_id,$player_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
     $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -493,7 +495,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 	 */
 	public static function getRosterStats()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $stats = sportsmanagementModelProject::getProjectStats();
 		$projectteam = self::getprojectteam();
         
@@ -518,7 +520,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
      */
     public static function getLastSeasonDate()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
     $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );

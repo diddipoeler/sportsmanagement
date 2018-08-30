@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 <!-- Details-->
@@ -138,8 +139,8 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         if ($this->match->playground_id > 0): ?>
         <?php 
         $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pgid'] = $this->match->playground_slug;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
@@ -190,8 +191,8 @@ $this->overallconfig['use_jquery_modal']);
             $first = true;
                     foreach ( $this->matchreferees as $referee ) : 
                     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pid'] = $referee->person_slug;
 $referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);

@@ -10,7 +10,7 @@
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Factory;
 
 /**
  * JSMRanking
@@ -141,7 +141,7 @@ class JSMRanking
 	 */
 	function setProjectId($id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
@@ -184,7 +184,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -217,7 +217,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -246,7 +246,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -272,7 +272,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _initData($cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
        
@@ -290,7 +290,7 @@ $data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_data
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {		
 	// Get a reference to the global cache object.
-		$cache = JFactory::getCache('sportsmanagement.project'.$this->_projectid);
+		$cache = Factory::getCache('sportsmanagement.project'.$this->_projectid);
 		 
 		// Enable caching regardless of global setting
 		$params = JComponentHelper::getParams('com_sportsmanagement');
@@ -325,7 +325,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 	 */
 	function _collect($ptids = null,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');    
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
@@ -738,7 +738,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 	 */
 	public static function _initTeams($pid,$division,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
     $option = $app->input->getCmd('option');    
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -886,7 +886,7 @@ $res = $db->loadObjectList();
 	 */
 	public static function _getMatches($pid,$division,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
@@ -974,7 +974,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
@@ -1028,7 +1028,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     $option = $app->input->getCmd('option');  
 
 		$res = true;
@@ -1068,7 +1068,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function _getRoundcode($round_id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
@@ -1128,7 +1128,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSI
 	 */
 	function _getRankingCriteria()
 	{
-$app = JFactory::getApplication();		
+$app = Factory::getApplication();		
 		if (empty($this->_criteria))
 		{
 			// get the values from ranking template setting
@@ -1160,7 +1160,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA')
 	 */
 	function _buildRanking($teams,$cfg_which_database = 0)
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
         $option = $app->input->getCmd('option');  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         

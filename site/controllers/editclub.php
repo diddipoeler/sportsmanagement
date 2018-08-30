@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      editclub.php
@@ -11,7 +10,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 
 // Include dependancy of the main controllerform class
@@ -60,7 +59,7 @@ class sportsmanagementControllerEditClub extends JControllerForm {
      * @return void
      */
     function load() {
-        $cid = JFactory::getApplication()->input->getInt('cid', 0);
+        $cid = Factory::getApplication()->input->getInt('cid', 0);
 
         $club = & JTable::getInstance('Club', 'sportsmanagementTable');
         $club->load($cid);
@@ -80,10 +79,10 @@ class sportsmanagementControllerEditClub extends JControllerForm {
           {
           case 'add'     :
           {
-          JFactory::getApplication()->input->setVar('hidemainmenu',0);
-          JFactory::getApplication()->input->setVar('layout','form');
-          JFactory::getApplication()->input->setVar('view','club');
-          JFactory::getApplication()->input->setVar('edit',false);
+          Factory::getApplication()->input->setVar('hidemainmenu',0);
+          Factory::getApplication()->input->setVar('layout','form');
+          Factory::getApplication()->input->setVar('view','club');
+          Factory::getApplication()->input->setVar('edit',false);
 
           // Checkout the club
           $model=$this->getModel('club');
@@ -91,10 +90,10 @@ class sportsmanagementControllerEditClub extends JControllerForm {
           } break;
           case 'edit'    :
           {
-          JFactory::getApplication()->input->setVar('hidemainmenu',0);
-          JFactory::getApplication()->input->setVar('layout','form');
-          JFactory::getApplication()->input->setVar('view','club');
-          JFactory::getApplication()->input->setVar('edit',true);
+          Factory::getApplication()->input->setVar('hidemainmenu',0);
+          Factory::getApplication()->input->setVar('layout','form');
+          Factory::getApplication()->input->setVar('view','club');
+          Factory::getApplication()->input->setVar('edit',true);
 
           // Checkout the club
           $model=$this->getModel('club');
@@ -111,16 +110,16 @@ class sportsmanagementControllerEditClub extends JControllerForm {
      * @return void
      */
     function save() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Check for request forgeries
         JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
         $msg = '';
         $address_parts = array();
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $post = Factory::getApplication()->input->post->getArray(array());
 
         //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
-        $cid = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+        $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         $post['id'] = (int) $cid[0];
         $model = $this->getModel('club');
 
@@ -168,9 +167,9 @@ class sportsmanagementControllerEditClub extends JControllerForm {
 
         if ($model->save($post)) {
             $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-            $createTeam = JFactory::getApplication()->input->getVar('createTeam');
+            $createTeam = Factory::getApplication()->input->getVar('createTeam');
             if ($createTeam) {
-                $team_name = JFactory::getApplication()->input->getVar('name');
+                $team_name = Factory::getApplication()->input->getVar('name');
                 $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/','', $team_name), 0, 3));
                 $teammodel = $this->getModel('team');
                 $tpost['id'] = "0";
@@ -192,7 +191,7 @@ class sportsmanagementControllerEditClub extends JControllerForm {
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
         } else {
-            $this->setRedirect('index.php?option=com_sportsmanagement&close=' . JFactory::getApplication()->input->getString('close', 0) . '&tmpl=component&view=editclub&cid=' . $post['id'], $msg, $type);
+            $this->setRedirect('index.php?option=com_sportsmanagement&close=' . Factory::getApplication()->input->getString('close', 0) . '&tmpl=component&view=editclub&cid=' . $post['id'], $msg, $type);
         }
     }
 

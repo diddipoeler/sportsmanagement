@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php'); 
@@ -56,19 +57,19 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      * @return void
      */
     function saveevent() {
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
         $data = array();
-        $data['teamplayer_id'] = JFactory::getApplication()->input->getInt('teamplayer_id');
-        $data['projectteam_id'] = JFactory::getApplication()->input->getInt('projectteam_id');
-        $data['event_type_id'] = JFactory::getApplication()->input->getInt('event_type_id');
-        $data['event_time'] = JFactory::getApplication()->input->getVar('event_time', '');
-        $data['match_id'] = JFactory::getApplication()->input->getInt('match_id');
-        $data['event_sum'] = JFactory::getApplication()->input->getVar('event_sum', '');
-        $data['notice'] = JFactory::getApplication()->input->getVar('notice', '');
-        $data['notes'] = JFactory::getApplication()->input->getVar('notes', '');
+        $data['teamplayer_id'] = Factory::getApplication()->input->getInt('teamplayer_id');
+        $data['projectteam_id'] = Factory::getApplication()->input->getInt('projectteam_id');
+        $data['event_type_id'] = Factory::getApplication()->input->getInt('event_type_id');
+        $data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
+        $data['match_id'] = Factory::getApplication()->input->getInt('match_id');
+        $data['event_sum'] = Factory::getApplication()->input->getVar('event_sum', '');
+        $data['notice'] = Factory::getApplication()->input->getVar('notice', '');
+        $data['notes'] = Factory::getApplication()->input->getVar('notes', '');
 
         // diddipoeler
-        $data['projecttime'] = JFactory::getApplication()->input->getVar('projecttime', '');
+        $data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
 
 
         if (!$result = sportsmanagementModelMatch::saveevent($data)) {
@@ -78,7 +79,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
         }
 
         echo json_encode($result);
-        JFactory::getApplication()->close();
+        Factory::getApplication()->close();
     }
 
     /**
@@ -88,13 +89,13 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      */
     function savesubst() {
         $data = array();
-        $data['in'] = JFactory::getApplication()->input->getInt('in');
-        $data['out'] = JFactory::getApplication()->input->getInt('out');
-        $data['matchid'] = JFactory::getApplication()->input->getInt('matchid');
-        $data['in_out_time'] = JFactory::getApplication()->input->getVar('in_out_time', '');
-        $data['project_position_id'] = JFactory::getApplication()->input->getInt('project_position_id');
+        $data['in'] = Factory::getApplication()->input->getInt('in');
+        $data['out'] = Factory::getApplication()->input->getInt('out');
+        $data['matchid'] = Factory::getApplication()->input->getInt('matchid');
+        $data['in_out_time'] = Factory::getApplication()->input->getVar('in_out_time', '');
+        $data['project_position_id'] = Factory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
-        $data['projecttime'] = JFactory::getApplication()->input->getVar('projecttime', '');
+        $data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
 
         if (!$result = sportsmanagementModelMatch::savesubstitution($data)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . sportsmanagementModelMatch::getError();
@@ -102,7 +103,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
             $result = $result . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
         }
         echo json_encode($result);
-        JFactory::getApplication()->close();
+        Factory::getApplication()->close();
     }
 
     /**
@@ -111,7 +112,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      * @return void
      */
     function removeSubst() {
-        $substid = JFactory::getApplication()->input->getInt('substid', 0);
+        $substid = Factory::getApplication()->input->getInt('substid', 0);
 
         if (!$result = sportsmanagementModelMatch::removeSubstitution($substid)) {
             $result = "0" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': ' . sportsmanagementModelMatch::getError();
@@ -119,7 +120,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
             $result = "1" . "&" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST') . '&' . $substid;
         }
         echo json_encode($result);
-        JFactory::getApplication()->close();
+        Factory::getApplication()->close();
     }
 
     /**
@@ -129,13 +130,13 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      */
     function savecomment() {
         $data = array();
-        $data['event_time'] = JFactory::getApplication()->input->getVar('event_time', '');
-        $data['match_id'] = JFactory::getApplication()->input->getInt('matchid');
-        $data['type'] = JFactory::getApplication()->input->getVar('type', '');
-        $data['notes'] = JFactory::getApplication()->input->getVar('notes', '');
+        $data['event_time'] = Factory::getApplication()->input->getVar('event_time', '');
+        $data['match_id'] = Factory::getApplication()->input->getInt('matchid');
+        $data['type'] = Factory::getApplication()->input->getVar('type', '');
+        $data['notes'] = Factory::getApplication()->input->getVar('notes', '');
 
         // diddipoeler
-        $data['projecttime'] = JFactory::getApplication()->input->getVar('projecttime', '');
+        $data['projecttime'] = Factory::getApplication()->input->getVar('projecttime', '');
 
 
         if (!$result = sportsmanagementModelMatch::savecomment($data)) {
@@ -144,7 +145,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
             $result = $result . '&' . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
         }
         echo json_encode($result);
-        JFactory::getApplication()->close();
+        Factory::getApplication()->close();
     }
  
  /**
@@ -154,7 +155,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      */
     function removeEvent()
     {
-		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		$event_id = Factory::getApplication()->input->getInt('event_id');
 		if (!$result = sportsmanagementModelMatch::deleteevent($event_id))
 		{
 			$result="0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS').': '.$model->getError();
@@ -164,7 +165,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
 			$result="1"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
 		}
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
     }
 
     /**
@@ -173,7 +174,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
      * @return void
      */
     public function removeCommentary() {
-        $event_id = JFactory::getApplication()->input->getInt('event_id');
+        $event_id = Factory::getApplication()->input->getInt('event_id');
 
         if (!$result = sportsmanagementModelMatch::deletecommentary($event_id)) {
             $result = '0' . '&' . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': ' . sportsmanagementModelMatch::getError();
@@ -181,7 +182,7 @@ class sportsmanagementControllermatches extends JControllerLegacy {
             $result = '1' . '&' . JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY') . '&' . $event_id;
         }
         echo json_encode($result);
-        JFactory::getApplication()->close();
+        Factory::getApplication()->close();
     }
 
 }

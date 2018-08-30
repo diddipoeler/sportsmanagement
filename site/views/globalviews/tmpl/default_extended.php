@@ -17,7 +17,6 @@ use Joomla\CMS\Language\Text;
 if(count($this->extended->getFieldsets()) > 0)
 {
 	// fieldset->name is set in the backend and is localized, so we need the backend language file here
-	//JFactory::getLanguage()->load('COM_SPORTSMANAGEMENT', JPATH_ADMINISTRATOR);
 	
 	foreach ($this->extended->getFieldsets() as $fieldset)
 	{

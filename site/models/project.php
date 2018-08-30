@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -208,7 +209,6 @@ $result = $db->execute();
 	$app = JFactory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
-        //$db = JFactory::getDbo();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime();

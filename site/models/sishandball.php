@@ -40,9 +40,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
-//jimport('joomla.application.component.modelitem');
 
 
 /**
@@ -71,8 +71,8 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
 		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer );	
 		return $link;
@@ -89,8 +89,8 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getTabelle($linkresults,$liganummer,$sis_art) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -169,8 +169,8 @@ else
 	 */
 	function getStatistik($linkresults,$liganummer) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -253,8 +253,8 @@ else
 	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden

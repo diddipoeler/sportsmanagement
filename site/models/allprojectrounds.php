@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.model' );
 
@@ -92,17 +93,6 @@ $this->_params['table_class'] = $jinput->request->get('table_class', 'table', 'S
 
 $this->_params['view'] = $jinput->request->get('view', 'allprojectrounds', 'STR');
 $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement', 'STR');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
-
-// 		$this->round = JFactory::getApplication()->input->getInt( "r", $this->current_round);
-// 		$this->part  = JFactory::getApplication()->input->getInt( "part", 0);
-// 		$this->from  = JFactory::getApplication()->input->getInt( 'from', $this->round );
-// 		$this->to	 = JFactory::getApplication()->input->getInt( 'to', $this->round);
-// 		$this->type  = JFactory::getApplication()->input->getInt( 'type', 0 );
-// 		$this->last  = JFactory::getApplication()->input->getInt( 'last', 0 );
-
-// 		$this->selDivision = JFactory::getApplication()->input->getInt( 'division', 0 );
 
 		parent::__construct( );
 	}

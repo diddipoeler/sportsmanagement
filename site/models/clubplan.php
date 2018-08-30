@@ -11,6 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -51,7 +53,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct();
@@ -82,7 +84,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
     function getTeamsArt()
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -129,8 +131,8 @@ catch (Exception $e)
      */
     function getTeamsProjects()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -182,8 +184,8 @@ catch (Exception $e)
      */
     function getTeamsSeasons()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -227,8 +229,8 @@ catch (Exception $e)
 	 */
 	function getTeams()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -268,7 +270,7 @@ catch (Exception $e)
 	 */
 	function getStartDate()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
@@ -303,7 +305,7 @@ catch (Exception $e)
 	 */
 	function getEndDate()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
@@ -335,7 +337,7 @@ catch (Exception $e)
 	 */
 	public static function setStartDate($date)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
 			self::$startdate = strftime("%Y-%m-%d",strtotime($date));
@@ -353,7 +355,7 @@ catch (Exception $e)
 	 */
 	public static function setEndDate($date)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
 			self::$enddate = strftime("%Y-%m-%d",strtotime($date));
@@ -372,8 +374,8 @@ catch (Exception $e)
 	 */
 	function getAllMatches($orderBy = 'ASC',$type = 0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        
        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
        $this->teamseasons = $project->season_id;
@@ -574,8 +576,8 @@ catch (Exception $e)
 	 */
 	function getMatchReferees($matchID)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);

@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -47,15 +49,15 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         
 		parent::__construct();
-		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
-		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
-        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
-        sportsmanagementModelPerson::$projectid = JFactory::getApplication()->input->getInt('p',0);
-		sportsmanagementModelPerson::$personid = JFactory::getApplication()->input->getInt('pid',0);
+		self::$projectid = Factory::getApplication()->input->getInt('p',0);
+		self::$personid = Factory::getApplication()->input->getInt('pid',0);
+        self::$cfg_which_database = Factory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+        sportsmanagementModelPerson::$projectid = Factory::getApplication()->input->getInt('p',0);
+		sportsmanagementModelPerson::$personid = Factory::getApplication()->input->getInt('pid',0);
         
 	}
 
@@ -69,8 +71,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getHistory($order='ASC')
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
        
@@ -117,8 +119,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
 //       // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -142,8 +144,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getGames()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

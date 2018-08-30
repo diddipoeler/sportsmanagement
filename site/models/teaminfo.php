@@ -10,6 +10,8 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -38,12 +40,12 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
-        self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
-        self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
-        self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT');
+        self::$projectteamid = Factory::getApplication()->input->get('ptid', 0, 'INT');
+        self::$teamid = Factory::getApplication()->input->get('tid', 0, 'INT');
+        self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::$projectid = self::$projectid;
         parent::__construct();
     }
@@ -56,9 +58,9 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      * @return void
      */
     public static function updateHits($teamid = 0, $inserthits = 0) {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if ($inserthits) {
@@ -79,7 +81,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getTrainigData($projectid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -120,7 +122,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getTeamByProject($inserthits = 0) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -182,7 +184,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getClub() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -221,7 +223,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getSeasons($config, $history = 0) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -340,7 +342,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getPlayerMarketValue($projectid, $projectteamid, $season_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -379,7 +381,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getTeamRanking($projectid, $division_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -445,7 +447,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     function getMergeClubs($merge_clubs) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -482,7 +484,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getLeague($projectid) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -525,7 +527,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getLeagueRankOverviewDetail($seasonsranking) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -578,7 +580,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getLeagueRankOverview($seasonsranking) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -619,7 +621,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getPlayerMeanAge($projectid, $projectteamid, $season_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -684,7 +686,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     public static function getPlayerCount($projectid, $projectteamid, $season_id) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -734,12 +736,12 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
      */
     function hasEditPermission($task = null) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         //check for ACL permsission and project admin/editor
         $allowed = parent::hasEditPermission($task);
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         if ($user->id > 0 && !$allowed) {
             // Check if user is the projectteam admin
             $team = self::getTeamByProject();

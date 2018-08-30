@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model');
 
 /**
@@ -48,13 +50,13 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		parent::__construct( );
-		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT' );
-		self::$matchid = JFactory::getApplication()->input->get('mid', 0, 'INT' );
-		self::$showpics = JFactory::getApplication()->input->get('pics', 0, 'INT' );
-		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT' );
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database',0, 'INT');
+		self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT' );
+		self::$matchid = Factory::getApplication()->input->get('mid', 0, 'INT' );
+		self::$showpics = Factory::getApplication()->input->get('pics', 0, 'INT' );
+		self::$projectteamid = Factory::getApplication()->input->get('ptid', 0, 'INT' );
+        self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database',0, 'INT');
         
         sportsmanagementModelProject::$projectid = self::$projectid;
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;  
@@ -76,8 +78,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getSpecifiedMatch($projectId, $projectTeamId, $matchId)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -147,8 +149,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getMatch()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -225,8 +227,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
      */
     function getReferees()
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -315,8 +317,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function _getHighestMatches($teamid,$whichteam,$gameart)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -517,8 +519,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getGames( )
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -584,8 +586,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getTeamsFromMatches( & $games, $config=array() )
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -724,8 +726,8 @@ catch (Exception $e)
 	*/
 	function _getTeamPreviousX($current_roundcode, $ptid, $config=array())
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

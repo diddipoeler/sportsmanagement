@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 jimport('joomla.application.component.controllerform');
@@ -46,7 +47,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function cancel()
 	{
-		JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',JFactory::getURI()->toString()));
+		Factory::getApplication()->redirect(str_ireplace('&layout=edit','',Factory::getURI()->toString()));
 	}
 
 	/**
@@ -57,8 +58,8 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	function select()
 	{
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
-		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
-		$uID	= JFactory::getApplication()->input->getVar('uid',			null,	'post',	'int');
+		$pID	= Factory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
+		$uID	= Factory::getApplication()->input->getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
@@ -73,47 +74,47 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	function savememberdata()
 	{
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
+		$app = Factory::getApplication();
+		$document = Factory::getDocument();
         
 		$msg	= '';
 		$link	= '';
 
-		$post	= JFactory::getApplication()->input->post->getArray(array());
+		$post	= Factory::getApplication()->input->post->getArray(array());
 		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-		$predictionGameID	= JFactory::getApplication()->input->getVar('prediction_id',	'','post','int');
-		$joomlaUserID		= JFactory::getApplication()->input->getVar('user_id',		'','post','int');
+		$predictionGameID	= Factory::getApplication()->input->getVar('prediction_id',	'','post','int');
+		$joomlaUserID		= Factory::getApplication()->input->getVar('user_id',		'','post','int');
 
 		$model			= $this->getModel('predictionusers');
-		$user			=& JFactory::getUser();
+		$user			=& Factory::getUser();
 		$isMember		= $model->checkPredictionMembership();
 		$allowedAdmin	= $model->getAllowed();
 
 		if ( ( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ) )
 		{
 			$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
-			$link = JFactory::getURI()->toString();
+			$link = Factory::getURI()->toString();
 		}
 		else
 		{
 			if ((!$isMember) && (!$allowedAdmin))
 			{
 				$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
-				$link = JFactory::getURI()->toString();
+				$link = Factory::getURI()->toString();
 			}
 			else
 			{
 				if (!$model->savememberdata())
 				{
 					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
-					$link = JFactory::getURI()->toString();
+					$link = Factory::getURI()->toString();
 				}
 				else
 				{
 					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
-					$link = JFactory::getURI()->toString();
+					$link = Factory::getURI()->toString();
 				}
 			}
 		}
@@ -133,7 +134,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	{
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $pID = $jinput->getVar('prediction_id','0');

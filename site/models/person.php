@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -53,8 +55,8 @@ class sportsmanagementModelPerson extends JModelLegacy
  	 */
  	function __construct()
   	{
-  	    $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+  	    $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // JInput object
        $jinput = $app->input;
  		parent::__construct();
@@ -76,9 +78,9 @@ class sportsmanagementModelPerson extends JModelLegacy
 	  */
 	 public static function updateHits($personid=0,$inserthits=0)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  
  if ( $inserthits )
@@ -103,9 +105,9 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function getPerson($personid = 0, $cfg_which_database = 0,$inserthits=0)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        self::$personid	= JFactory::getApplication()->input->getInt( 'pid', 0 );
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        self::$personid	= Factory::getApplication()->input->getInt( 'pid', 0 );
         $starttime = microtime(); 
         
         self::updateHits(self::$personid,$inserthits); 
@@ -135,8 +137,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function getReferee()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 	   // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -212,8 +214,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getContactID( $catid )
 	{
-		$app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -238,8 +240,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getAllEvents()
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -283,8 +285,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null)
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -348,8 +350,8 @@ if ( empty($result) )
 	 */
 	function getPlayerChangedRecipients()
 	{
-	    $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	  $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -389,7 +391,7 @@ if ( empty($result) )
 	 */
 	function sendMailTo($listOfRecipients, $subject, $message)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$mailFrom = $app->getCfg('mailfrom');
 		$fromName = $app->getCfg('fromname');
 		JUtility::sendMail( $mailFrom, $fromName, $listOfRecipients, $subject, $message );
@@ -403,9 +405,9 @@ if ( empty($result) )
 	 */
 	public static function getAllowed($config_editOwnPlayer)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$allowed = false;
 		if(self::_isAdmin($user) || self::_isOwnPlayer($user,$config_editOwnPlayer)) {
 			$allowed=true;
@@ -426,9 +428,9 @@ if ( empty($result) )
 	{
 	   
 	   // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$document = Factory::getDocument();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$allowed = false;
 		if ($user->id > 0)
 		{
@@ -465,7 +467,7 @@ if ( empty($result) )
 	 */
 	public static function _isOwnPlayer($user,$config_editOwnPlayer)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
 		if($user->id > 0)
 		{
@@ -484,10 +486,10 @@ if ( empty($result) )
 	 */
 	function isEditAllowed($config_editOwnPlayer,$config_editAllowed)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
 		$allowed = false;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if($user->id > 0)
 		{
 			if(self::_isAdmin($user) || ($config_editAllowed && self::_isOwnPlayer($user,$config_editOwnPlayer))) {
@@ -509,8 +511,8 @@ if ( empty($result) )
 	 */
 	function _getProjectTeamIds4UserId($userId)
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -584,7 +586,7 @@ if ( empty($result) )
 	 */
 	public static function isContactDataVisible($config_showContactDataOnlyTeamMembers)
 	{
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$result = true;
 		// project admin and editor,see contact always
 		if($config_showContactDataOnlyTeamMembers && !sportsmanagementModelProject::isUserProjectAdminOrEditor($user->id,sportsmanagementModelProject::getProject()))

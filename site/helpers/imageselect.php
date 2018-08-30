@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 /**
  * ImageSelectSM
@@ -35,7 +36,7 @@ static $_foldertype = '';
 	 */
 	function __construct()
 	{
-  $type	= JFactory::getApplication()->input->getVar( 'type' );
+  $type	= Factory::getApplication()->input->getVar( 'type' );
   self::$_foldertype = $type;
 	}
 
@@ -53,8 +54,8 @@ static $_foldertype = '';
 	 */
 	public static function getSelector( $fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name='', $fieldid)
 	{
-		$document = JFactory::getDocument();
-    $app = JFactory::getApplication();
+		$document = Factory::getDocument();
+    $app = Factory::getApplication();
     self::$_foldertype = $type;
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<pre>'.print_r($type,true).'</pre>'),'Error');
@@ -143,7 +144,7 @@ static $_foldertype = '';
 	public static function check( $file )
 	{
 		jimport( 'joomla.filesystem.file' );
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 		$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<pre>'.print_r($file,true).'</pre>'),'');

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.utilities.arrayhelper');
 
@@ -73,7 +74,7 @@ class JSMCountries {
      * @return
      */
     public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -105,7 +106,7 @@ class JSMCountries {
      * @return
      */
     public static function convertIso2to3($iso_code_2) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -135,7 +136,7 @@ class JSMCountries {
      * @return
      */
     public static function convertIso3to2($iso_code_3) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -186,7 +187,7 @@ class JSMCountries {
 
         
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -233,7 +234,7 @@ class JSMCountries {
      * @return string: a country name
      */
     public static function getCountryName($iso3) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

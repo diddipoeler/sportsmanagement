@@ -9,6 +9,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -43,13 +45,13 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         parent::__construct();
-        self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
-        self::$personid = JFactory::getApplication()->input->get('pid', 0, 'INT');
-        self::$teamplayerid = JFactory::getApplication()->input->get('pt', 0, 'INT');
-        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        self::$projectid = Factory::getApplication()->input->get('p', 0, 'INT');
+        self::$personid = Factory::getApplication()->input->get('pid', 0, 'INT');
+        self::$teamplayerid = Factory::getApplication()->input->get('pt', 0, 'INT');
+        self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         $getDBConnection = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         parent::setDbo($getDBConnection);
@@ -62,7 +64,7 @@ class sportsmanagementModelPlayer extends JModelLegacy {
      * @return
      */
     function getTeamPlayers($cfg_which_database = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -120,8 +122,8 @@ self::$_teamplayers = $result;
      * @return
      */
     static function getTeamPlayer($projectid = 0, $personid = 0, $teamplayerid = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -182,8 +184,8 @@ self::$_inproject = $result;
      * @return
      */
     function getTeamStaff() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -228,8 +230,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      * @return
      */
     function getPlayerHistory($sportstype = 0, $order = 'ASC', $persontype = 1, $cfg_which_database = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
@@ -297,8 +299,8 @@ catch (Exception $e)
      * @return
      */
     function getAllEvents($sportstype = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -345,8 +347,8 @@ catch (Exception $e)
      * @return
      */
     public static function getTimePlayed($player_id, $game_regular_time, $match_id = NULL, $cards = NULL, $project_id = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -486,8 +488,8 @@ catch (Exception $e)
      * @return
      */
     public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0, $cfg_which_database = 0, $team_id = 0, $person_id = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
@@ -581,8 +583,8 @@ catch (Exception $e)
      * @return
      */
     function getStats() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         $stats = array();
         $players = self::getTeamPlayer();
@@ -617,9 +619,9 @@ catch (Exception $e)
      * @return
      */
     function getCareerStats($person_id, $sports_type_id) {
-        $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $db = Factory::getDBO();
+        $query_core = Factory::getDbo()->getQuery(true);
 
         if (empty($this->_careerStats)) {
             $query_core->select('s.id,s.name,s.short,s.class,s.icon,s.calculated,ppos.id AS pposid,ppos.position_id AS position_id,s.params,s.baseparams');
@@ -667,7 +669,7 @@ catch (Exception $e)
      * @return
      */
     function getPlayerStatsByGame() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $teamplayers = self::getTeamPlayers();
         $displaystats = array();
         if (count($teamplayers)) {
@@ -723,8 +725,8 @@ $displaystats[] = $stat;
      * @return
      */
     function getPlayerStatsByProject($sportstype = 0) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         $teamplayer = self::getTeamPlayer();
         $result = array();
@@ -767,8 +769,8 @@ $displaystats[] = $stat;
      * @return
      */
     function getGames() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
@@ -871,8 +873,8 @@ $displaystats[] = $stat;
      * @return
      */
     function getGamesEvents() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);

@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -42,7 +44,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -86,8 +88,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getDivision()
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -127,8 +129,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getProjectTeamId()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -172,8 +174,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatchesPerRound($config,$rounds)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$rm=array();
 
 		$ordering='DESC';
@@ -197,8 +199,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatches($config)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$ordering = 'DESC';
 		if ($config['plan_order'])
@@ -217,8 +219,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function getMatchesRefering($config)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
@@ -239,8 +241,8 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 	 */
 	public static function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -393,8 +395,8 @@ try{
 	 */
 	public static function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -474,8 +476,8 @@ try{
 	 */
 	public static function _getRefereesByMatch($matches,$projekt)
 	{
-	   	$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	   	$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -549,8 +551,8 @@ try{
 	 */
 	function getEventTypes($match_id)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);

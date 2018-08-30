@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
 
@@ -58,7 +60,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	function __construct()
 	{
 	    // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -78,8 +80,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function checkMatchPlayerProjectPositionID()
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -250,8 +252,8 @@ catch (Exception $e)
      */
     function getMatchPositions($which = 'player')
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -303,8 +305,8 @@ catch (Exception $e)
      */
     function getMatchPersons($which = 'player')
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -378,8 +380,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      */
     function getMatchReferees()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -420,8 +422,8 @@ catch (Exception $e)
 	 */
 	function getEventTypes()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -460,8 +462,8 @@ catch (Exception $e)
      */
     function getMatchArticle($article_id = 0,$match_id = 0,$cat_id = 0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -510,8 +512,8 @@ catch (Exception $e)
 	 */
 	function getMatchStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -552,8 +554,8 @@ catch (Exception $e)
 	 */
 	function getPlayersStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -598,8 +600,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getPlayersEvents()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -647,8 +649,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getMatchStaffStats()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -698,8 +700,8 @@ catch (Exception $e)
     	 */
     	function getPlaygroundSchema($schema,$which)
   {
-  $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+  $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);

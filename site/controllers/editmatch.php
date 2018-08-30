@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 // Include dependancy of the main controllerform class
 jimport('joomla.application.component.controllerform');
@@ -57,7 +58,7 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      * @return void
      */
     function saveReferees() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
         $model = $this->getModel('editmatch');
@@ -83,7 +84,7 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      * @return void
      */
     function save() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
         $model = $this->getModel('editmatch');
@@ -102,14 +103,14 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
      * @return void
      */
     function saveshort() {
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-        $user = JFactory::getUser();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
         
         /* Ein Datenbankobjekt beziehen */
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         
         // Set the values
         $data['modified'] = $date->toSql();
@@ -156,7 +157,7 @@ class sportsmanagementControllerEditMatch extends JControllerForm {
 /**
  * Update their details in the table using id as the primary key.
  */
-        $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
+        $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 
         $routeparameter = array();
         $routeparameter['cfg_which_database'] = $post['cfg_which_database'];

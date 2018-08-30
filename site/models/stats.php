@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model');
 
 /**
@@ -42,7 +44,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct();
@@ -61,7 +63,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getHighest($which = 'HOME' )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -151,7 +153,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getSeasonTotals( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -217,8 +219,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getChartData( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -271,8 +273,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getTotalRounds( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -303,8 +305,8 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function getAttendanceRanking( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);

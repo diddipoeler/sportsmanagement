@@ -136,16 +136,13 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	{
 		$stats = self::getProjectUniqueStats();
 		$order = ($order ? $order : $this->order);
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stats <pre>'.print_r($stats ,true).'</pre>', 'error');
 		$results = array();
 		$results2 = array();
 		foreach ($stats as $stat) 
 		{
-			//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stat <pre>'.print_r($stat ,true).'</pre>', 'error');
 			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
 			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
 		}
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($results2,true).'</pre>', 'error');
 		return $results;
 	}
 
@@ -153,16 +150,13 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	{
 		$stats = self::getProjectUniqueStats();
 		$order = ($order ? $order : $this->order);
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stats <pre>'.print_r($stats ,true).'</pre>', 'error');
 		$results = array();
 		$results2 = array();
 		foreach ($stats as $stat) 
 		{
-			//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stat <pre>'.print_r($stat ,true).'</pre>', 'error');
 			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
 			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
 		}
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($results2,true).'</pre>', 'error');
 		return $results2;
 	}
 
@@ -171,8 +165,6 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	$teamstotal = array();	
 	foreach((array) $teamsstats as $rows => $value )
 	{
-	//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' rows <pre>'.print_r($rows ,true).'</pre>', 'error');
-	//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' value <pre>'.print_r($value ,true).'</pre>', 'error');
 	foreach ( $value AS $row )
 	{
 	$teamstotal[$row->team_id][team_id] = $row->team_id;

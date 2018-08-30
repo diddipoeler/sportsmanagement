@@ -3,6 +3,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -225,18 +226,18 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 	public function exportData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
 
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		//$this->_project_id = $app->getUserState($option.'project');
-        $this->_project_id = JFactory::getApplication()->input->getInt('p');
-        $this->_update = JFactory::getApplication()->input->getInt('update');
+        $this->_project_id = Factory::getApplication()->input->getInt('p');
+        $this->_update = Factory::getApplication()->input->getInt('update');
 		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
@@ -251,7 +252,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		if(empty($filename)) 
     {
 			//$this->_project_id = $app->getUserState($option.'project');
-            $this->_project_id = JFactory::getApplication()->input->getInt('p');
+            $this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
 				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
@@ -402,7 +403,7 @@ $xmlfile = $xmlfile.$output;
 			$this->downloadXml($output,"");
 
 			// close the application
-			$app =& JFactory::getApplication();
+			$app =& Factory::getApplication();
 			$app->close();
 		}
 	}
@@ -421,7 +422,7 @@ $xmlfile = $xmlfile.$output;
 	function downloadXml($data, $table)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -566,7 +567,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getJoomLeagueVersion()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -582,9 +583,9 @@ $xmlfile = $xmlfile.$output;
         $query->select('manifest_cache');
 		// From the table
 		$query->from('#__extensions');
-        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
-        JFactory::getDbo()->setQuery( $query );
-       $manifest_cache = json_decode( JFactory::getDbo()->loadResult(), true );
+        $query->where('name LIKE '.Factory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
+        Factory::getDbo()->setQuery( $query );
+       $manifest_cache = json_decode( Factory::getDbo()->loadResult(), true );
        
 		if ( $manifest_cache['version'] )
 		{
@@ -592,7 +593,7 @@ $xmlfile = $xmlfile.$output;
 			$result[0]['exportRoutine'] = $exportRoutine;
 			$result[0]['exportDate'] = date('Y-m-d');
 			$result[0]['exportTime'] = date('H:i:s');
-			$result[0]['exportSystem'] = JFactory::getConfig()->getValue('config.sitename');
+			$result[0]['exportSystem'] = Factory::getConfig()->getValue('config.sitename');
 			$result[0]['object'] = 'JoomLeagueVersion';
 			return $result;
 		}
@@ -612,7 +613,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getProjectData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -649,7 +650,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getTemplateData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -696,7 +697,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getLeagueData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -733,7 +734,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getSportsTypeData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -770,7 +771,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getSeasonData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -807,7 +808,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getDivisionData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -844,7 +845,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getProjectTeamData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -922,7 +923,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getProjectPositionData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -959,7 +960,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getProjectRefereeData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -996,7 +997,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getTeamData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1045,7 +1046,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getClubData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1097,7 +1098,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getRoundData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1134,7 +1135,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getMatchData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1172,7 +1173,7 @@ $xmlfile = $xmlfile.$output;
 	private function _getPlaygroundData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 
@@ -23,12 +24,12 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
      * @since 0.9
      */
     function display($tpl = null) {
-        $app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
 
 
@@ -38,10 +39,10 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         }
 
         //get vars
-        $type = JFactory::getApplication()->input->getVar('type');
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $fieldid = JFactory::getApplication()->input->getVar('fieldid');
+        $field = Factory::getApplication()->input->getVar('field');
+        $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $search = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
         $search = trim(JString::strtolower($search));
 
@@ -49,7 +50,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         //$version = urlencode(sportsmanagementHelper::getVersion());
         //$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
 
-        JFactory::getApplication()->input->setVar('folder', $folder);
+        Factory::getApplication()->input->setVar('folder', $folder);
 
         // Do not allow cache
         JResponse::allowCache(false);
@@ -96,20 +97,20 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
      * @since 0.9
      */
     function _displayupload($tpl = null) {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 
         //initialise variables
-        $document = JFactory::getDocument();
-        $uri = JFactory::getURI();
+        $document = Factory::getDocument();
+        $uri = Factory::getURI();
         $params = JComponentHelper::getParams($option);
-        $type = JFactory::getApplication()->input->getVar('type');
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $fieldid = JFactory::getApplication()->input->getVar('fieldid');
-        $menu = JFactory::getApplication()->input->setVar('hidemainmenu', 1);
+        $field = Factory::getApplication()->input->getVar('field');
+        $fieldid = Factory::getApplication()->input->getVar('fieldid');
+        $menu = Factory::getApplication()->input->setVar('hidemainmenu', 1);
         //get vars
-        $task = JFactory::getApplication()->input->getVar('task');
+        $task = Factory::getApplication()->input->getVar('task');
 
         jimport('joomla.client.helper');
         $ftp = JClientHelper::setCredentialsFromRequest('ftp');

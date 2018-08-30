@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -116,15 +117,8 @@ function __construct( )
         {
         $this->request['to'] = (int) $this->request['r'];
         }
-
-
-
-        
-        //$this->color_from = JFactory::getApplication()->input->getVar( "color_from");
-        //$this->color_to = JFactory::getApplication()->input->getVar( "color_to");
         
         $item = $menu->getItem($this->menue_itemid);
-//        $this->menue_params = new JParameter($item->params);
         $this->menue_params = new JRegistry();
         
         if ( $this->menue_params->get('jl_tree_jquery_version') )

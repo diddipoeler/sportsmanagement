@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -40,16 +41,16 @@ class sportsmanagementViewEditMatch extends JViewLegacy
      */
     function display($tpl = null) {
 
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $document = JFactory::getDocument();
-        $db = JFactory::getDBO();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $document = Factory::getDocument();
+        $db = Factory::getDBO();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         // JInput object
         $jinput = $app->input;
         $model = $this->getModel();
@@ -115,12 +116,12 @@ class sportsmanagementViewEditMatch extends JViewLegacy
      * @return
      */
     function initEditLineup() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $document = Factory::getDocument();
         $default_name_format = '';
 
-        $tid = JFactory::getApplication()->input->getVar('team', '0');
+        $tid = Factory::getApplication()->input->getVar('team', '0');
         $this->tid = $tid;
         $match = sportsmanagementModelMatch::getMatchTeams($this->match->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
@@ -274,9 +275,9 @@ class sportsmanagementViewEditMatch extends JViewLegacy
      * @return
      */
     function initEditEevents() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $document = JFactory::getDocument();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $document = Factory::getDocument();
         //$model = $this->getModel();
         $params = JComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
@@ -440,7 +441,7 @@ $document->addScriptDeclaration( $javascript );
      * @return void
      */
     function initEditMatch() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $oldmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
         $res = array();

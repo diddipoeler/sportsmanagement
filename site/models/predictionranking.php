@@ -12,16 +12,13 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
-//jimport( 'joomla.application.component.model' );
-//jimport('joomla.application.component.modelitem');
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 jimport( 'joomla.utilities.utility' );
 
-//require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
-//require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionRanking
@@ -60,7 +57,7 @@ static $limit = 0;
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -123,7 +120,7 @@ if ( $jinput->getVar( "view") == 'predictionranking' )
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -155,7 +152,7 @@ public function getStart()
 
 protected function populateState($ordering = null, $direction = null)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
 self::$limit = $value;
 $this->setState('list.limit', self::$limit);
@@ -189,8 +186,8 @@ $this->setState('list.start', self::$limitstart);
  */
 function _buildQuery()
 {
-    $option = JFactory::getApplication()->input->getCmd('option');    
-    $app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');    
+    $app = Factory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -281,8 +278,8 @@ function getPagination()
      */
     function getChampLogo($ProjectID,$champ_tipp)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $projectteamid = 0;
     
     if ( $champ_tipp )

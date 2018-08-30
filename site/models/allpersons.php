@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -118,33 +119,11 @@ public function getStart()
         
         
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r(JFactory::getApplication()->input->getVar('limitstart'),true).'</pre>'),'');
-        
+       
         // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
-        
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
-        
-        //$this->setState('list.start', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
-        //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
-        
-        // In case limit has been changed, adjust limitstart accordingly
-        //$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($value,true).'</pre>'),'');
-
-		//$limitstart = JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int');
-		//$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart',0);
-        //$value = JFactory::getApplication()->input->getVar('limitstart');
-//        $this->setState('limitstart', $this->limitstart);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'),'');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getState('limitstart'),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-        
         $columns = $jinput->getVar('show_columns');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
         $this->setState('filter.select_columns', $columns);

@@ -262,10 +262,10 @@ $task = $input->getCmd('task');
 $option = $input->getCmd('option');
 $view = $input->getVar("view");
 $view = ucfirst(strtolower($view));
-//$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
 $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
-//$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;
+
 
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER', JComponentHelper::getParams($option)->get('cfg_help_server', ''));
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER', JComponentHelper::getParams($option)->get('cfg_bugtracker_server', ''));
@@ -283,11 +283,7 @@ if (is_null($controller) && !($controller instanceof JControllerLegacy)) {
 $task = $input->getCmd('task');
 // Den 'task' der im Request übergeben wurde ausführen
 $controller->execute($task);
-//$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();
 
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' speicher <pre>'.print_r(memory_get_usage(),true).'</pre>', 'warning');
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' speicher '.memory_get_usage().'', 'warning');
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__." not real: ".(memory_get_peak_usage(false)/1024/1024)." MiB", 'warning');
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__." real: ".(memory_get_peak_usage(true)/1024/1024)." MiB", 'warning');
+
 ?>

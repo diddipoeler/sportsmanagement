@@ -39,6 +39,7 @@
 
 // No direct access.
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 // Include dependancy of the main controllerform class
 jimport('joomla.application.component.controllerform');
@@ -79,11 +80,11 @@ class sportsmanagementControllerUpdsportsmanagement extends JControllerForm
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$model	= $this->getModel('updsportsmanagement');
 
 		// Get the data from the form POST
-		$data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$data = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 
         // Now update the loaded data to the database via a function in the model
         $upditem	= $model->updItem($data);

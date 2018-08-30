@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -264,11 +265,7 @@ return $result;
 		{
 			return false;
 		}
-        
-//        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('ph_player',''));
-//        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
-//        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
+       
 		return $form;
 	}
 	
