@@ -40,6 +40,7 @@ class sportsmanagementModelClubs extends JSMModelList
                         'a.logo_middle',
                         'a.logo_small',
                         'a.country',
+			'a.state',
                         'a.alias',
                         'a.zipcode',
                         'a.location',
