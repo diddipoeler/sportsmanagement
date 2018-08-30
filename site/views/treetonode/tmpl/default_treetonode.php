@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 $style  = 'style="background-color: '.$this->config['tree_bg_colour'].';';
 $style .= 'border: 1px solid  '.$this->config['tree_border_colour'].';';
@@ -92,17 +93,17 @@ if( $this->config['show_treeheader'] == 1 )
 					if( $this->config['show_round_date'] )
                     {
 						echo '<br/>';
-						$date1 = JFactory::getDate($this->roundname[$hed]->round_date_first)->format('d-m-Y');
-						$date2 = JFactory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
+						$date1 = Factory::getDate($this->roundname[$hed]->round_date_first)->format('d-m-Y');
+						$date2 = Factory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
 						if( $date1 == $date2 )
                         {
 							echo $date1;
 						}
 						else
                         {
-							echo JFactory::getDate($this->roundname[$hed]->round_date_first)->format('d');
+							echo Factory::getDate($this->roundname[$hed]->round_date_first)->format('d');
 							echo '&divide;';
-							echo JFactory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
+							echo Factory::getDate($this->roundname[$hed]->round_date_last )->format('d-m-Y');
 						}
 					}
 					//date end

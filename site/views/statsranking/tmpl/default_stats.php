@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 ?>
 
 <?php
@@ -128,8 +128,8 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		<?php
 		if ( $this->config['link_to_player'] == 1 ) {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
-$routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $row->team_id;
 $routeparameter['pid'] = $row->person_id;
@@ -154,8 +154,8 @@ echo HTMLHelper::link( $link, $playerName );
 			if ( ( $this->config['link_to_team'] == 1 ) && ( $this->project->id > 0 ) && ( $row->team_id > 0 ) )
 			{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
-$routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $row->team_id;
 $routeparameter['ptid'] = 0;
@@ -188,8 +188,8 @@ if ($this->multiple_stats == 1)
 <div class="fulltablelink">
 <?php 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
-$routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['division'] = $this->division->id;
 $routeparameter['tid'] = $this->teamid;

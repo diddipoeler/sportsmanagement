@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if ( !isset($this->config['show_matchreport_column']) ) 
 {
@@ -23,7 +24,7 @@ if ( !isset($this->config['show_matchreport_column']) )
 <?php
 if (!empty($this->matches))
 {
-$teamid=JFactory::getApplication()->input->getInt('tid');
+$teamid=Factory::getApplication()->input->getInt('tid');
 ?>
 <!--	<thead> -->
 	<?php
@@ -240,8 +241,8 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 		if ($this->config['show_teamplan_link']) {
 			
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $hometeam->team_slug;
 $routeparameter['division'] = $match->division_slug;
@@ -261,7 +262,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 			$awaylink = null;
 		}
 		$isFavTeam = in_array($hometeam->id,$this->favteams);
-		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+		$home = sportsmanagementHelper::formatTeamName($hometeam, "g".$match->id."t".$hometeam->id, $this->config, $isFavTeam, $homelink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
 		$teamA .= '<td width="30%" class="'.$class1.'">'.$home.'</td>';
 
@@ -274,7 +275,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,
 						0,
 						'logo_small',
-						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						Factory::getApplication()->input->getInt('cfg_which_database',0),
 						$match->id,
 						$this->modalwidth,
 						$this->modalheight,
@@ -285,7 +286,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,
 						0,
 						'logo_small',
-						JFactory::getApplication()->input->getInt('cfg_which_database',0),
+						Factory::getApplication()->input->getInt('cfg_which_database',0),
 						$match->id,
 						$this->modalwidth,
 						$this->modalheight,
@@ -329,7 +330,7 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		$seperator ='<td width="10">'.$this->config['seperator'].'</td>';
 
 		$isFavTeam = in_array($guestteam->id, $this->favteams);
-		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+		$away = sportsmanagementHelper::formatTeamName($guestteam,"g".$match->id."t".$guestteam->id,$this->config, $isFavTeam, $awaylink,Factory::getApplication()->input->getInt('cfg_which_database',0));
 		
 		$teamB .= '<td width="30%" class="'.$class2.'">'.$away.'</td>';
 		
@@ -424,8 +425,8 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             
             //Link
             $routeparameter = array();                    
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->match_slug; 
             if (isset($match->team1_result))
@@ -628,8 +629,8 @@ $routeparameter['mid'] = $match->match_slug;
 		<td><?php
 		if (!$match->cancel) {
 $routeparameter = array();                    
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $match->match_slug;   			
 			if (isset($match->team1_result))

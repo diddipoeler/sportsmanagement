@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 
@@ -65,8 +66,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 	foreach ($this->seasons as $season)
 	{
 	   $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
         $routeparameter['p'] = $season->project_slug;
         $routeparameter['division'] = $season->division_slug;
         $routeparameter['type'] = 0; 
@@ -76,8 +77,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 		$ranking_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 		
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
         $routeparameter["p"] = $season->project_slug;
         $routeparameter['r'] = $season->round_slug;
         $routeparameter['division'] = $season->division_slug;
@@ -87,8 +88,8 @@ use Joomla\CMS\HTML\HTMLHelper;
         $results_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['division'] = $season->division_slug;
@@ -97,15 +98,15 @@ use Joomla\CMS\HTML\HTMLHelper;
         $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
         $teamstats_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
         
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $season->team_slug;
        $routeparameter['ptid'] = $season->ptid;
