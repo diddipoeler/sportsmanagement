@@ -166,6 +166,8 @@ $joomlaicon = $params->get('show_joomla_icons');
                             name="new_club_id<?php echo $row->id; ?>"
                             value="<?php echo $row->new_club_id; ?>"
                             onchange="document.getElementById('cb<?php echo $i; ?>').checked = true" />
+                        <br />
+                        <?php echo $this->escape($row->state); ?>
                     </td>
                     <td class="center">
                         <?php
