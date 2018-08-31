@@ -50,6 +50,7 @@ static $limit = 0;
      * @return
      */
     function __construct() {
+        parent::__construct();
         $prediction = new sportsmanagementModelPrediction();
 
         sportsmanagementModelPrediction::$roundID = $this->jsmjinput->getVar('r', '0');
@@ -74,8 +75,6 @@ static $limit = 0;
         }
 
         sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID, sportsmanagementModelPrediction::$roundID);
-
-        parent::__construct();
 
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
