@@ -12,6 +12,9 @@
 defined('_JEXEC') or die(JText('Restricted access'));
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\User\UserHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 jimport('joomla.html.pane');
 HTMLHelper::_('behavior.tooltip');
@@ -370,7 +373,7 @@ try{
             }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
 		//}
@@ -448,7 +451,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
@@ -543,7 +546,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             if ( !$allowed )
             {
             // ist der user der einer gruppe zugeordnet ?
-        $groups = JUserHelper::getUserGroups($user->get('id')); 
+        $groups = UserHelper::getUserGroups($user->get('id')); 
         
         if(in_array($editorgroup,$groups))
         {
@@ -583,16 +586,16 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         /**
          * ist der user der einer gruppe zugeordnet ?
          */
-        $groups = JUserHelper::getUserGroups($user->get('id')); 
+        $groups = UserHelper::getUserGroups($user->get('id')); 
         
         if(in_array($editorgroup,$groups))
         {
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ALLOWED'),'Notice');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ALLOWED'),'Notice');
             $showediticon = true;
         }
         else
         {
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_NOTALLOWED'),'Error');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_NOTALLOWED'),'Error');
             $showediticon = false;
         }
 }
@@ -664,7 +667,7 @@ else
             
             if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
             }
 		}
 			if ( $post['match_number'.$pks[$x]] )
@@ -767,8 +770,8 @@ else
             else
             {
 
-                sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
-                $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
+                sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
+                $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
             }
 
 		}
@@ -787,7 +790,7 @@ else
 	 */
 	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 }
