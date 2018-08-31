@@ -37,22 +37,15 @@ class sportsmanagementViewResults extends sportsmanagementView
 	 */
 	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= Factory::getDocument();
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $this->layout = $jinput->getCmd('layout');
+        $this->layout = $this->jinput->getCmd('layout');
         $roundcode = 0;
         $default_name_format = '';
 
-        $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 
-		$model	= $this->getModel();
+		$model = $this->getModel();
 		
-		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
+		sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
@@ -92,7 +85,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 
 if ( $this->overallconfig['use_squeezebox_modal'] ) 
 {
-$document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/jquery.popdown.js' );	
+$this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/jquery.popdown.js' );	
 }	
 			
 			
@@ -132,35 +125,28 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		{
 			$pageTitle .= ': ' . $this->project->name;
 		}
-		$document->setTitle($pageTitle);
+		$this->document->setTitle($pageTitle);
 
 		//build feed links
-		$feed = 'index.php?option='.$option.'&view=results&p='.$this->project->id.'&format=feed';
+		$feed = 'index.php?option='.$this->option.'&view=results&p='.$this->project->id.'&format=feed';
 		$rss = array('type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
 		// add the links
-		$document->addHeadLink(Route::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-        $view = $jinput->getVar( "view") ;
-        //$stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
+		$this->document->addHeadLink(Route::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
+        $view = $this->jinput->getVar( "view") ;
         
-//        $stylelink = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
-        
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
 
-        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
-
 	$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
 		
         switch ($this->layout)

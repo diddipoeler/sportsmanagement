@@ -12,7 +12,7 @@ defined('_JEXEC') or die(JText('Restricted access'));
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 HTMLHelper::_('behavior.tooltip');
 
@@ -25,7 +25,7 @@ HTMLHelper::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelResults extends JModelLegacy
+class sportsmanagementModelResults extends JSMModelLegacy
 {
 	static $projectid	= 0;
 	static $divisionid	= 0;
@@ -47,54 +47,40 @@ class sportsmanagementModelResults extends JModelLegacy
 	 */
 	function __construct()
 	{
-		 // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
+//		 // Reference global application object
+//        $app = Factory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
         
         parent::__construct();
 
-		self::$divisionid = $jinput->getVar('division','0');
-		self::$mode = $jinput->getVar('mode','0');
-		self::$order = $jinput->getVar('order','0');
-        self::$projectid = $jinput->getVar('p','0');
-        self::$layout = $jinput->getVar('layout','');
+		self::$divisionid = $this->jsmjinput->getVar('division','0');
+		self::$mode = $this->jsmjinput->getVar('mode','0');
+		self::$order = $this->jsmjinput->getVar('order','0');
+        self::$projectid = $this->jsmjinput->getVar('p','0');
+        self::$layout = $this->jsmjinput->getVar('layout','');
         
-		$round = $jinput->getVar('r','0');
+		$round = $this->jsmjinput->getVar('r','0');
 		$roundid = $round;
-        self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
+        self::$cfg_which_database = $this->jsmjinput->getVar('cfg_which_database','0');
         
         sportsmanagementModelProject::$projectid = self::$projectid;
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         sportsmanagementModelProject::$roundslug = $round;
-        sportsmanagementModelProject::$seasonid = $jinput->getVar('s','0');
+        sportsmanagementModelProject::$seasonid = $this->jsmjinput->getVar('s','0');
         sportsmanagementModelProject::$layout = self::$layout;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
-        
         
 		if( (int)$round > 0 ) 
         {
-			//$this->roundid = $round;
             self::$roundid = $round;
 		} 
         else 
         {
-            self::$roundid = sportsmanagementModelProject::getCurrentRound($jinput->getVar('view'),self::$cfg_which_database);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
-            //$roundid = sportsmanagementModelProject::$_current_round;
+            self::$roundid = sportsmanagementModelProject::getCurrentRound($this->jsmjinput->getVar('view'),self::$cfg_which_database);
 		}
         
         sportsmanagementHelperHtml::$roundid = (int)self::$roundid;
-        //sportsmanagementHelperHtml::$roundid = $this->roundid;
-        
-		//$this->roundid = $roundid;
 		$this->config = sportsmanagementModelProject::getTemplateConfig('results',self::$cfg_which_database);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid<br><pre>'.print_r($this->roundid,true).'</pre>'),'');
-        
 	}
 
 	/**
