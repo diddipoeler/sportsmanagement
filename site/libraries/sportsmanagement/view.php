@@ -10,11 +10,12 @@
  */
 defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Component\ComponentHelper;
 
-jimport( 'joomla.application.component.view');
 $document = JFactory::getDocument();
 
-$params_com = JComponentHelper::getParams( 'com_sportsmanagement' );
+$params_com = ComponentHelper::getParams( 'com_sportsmanagement' );
 $jsmgrid	= $params_com->get( 'use_jsmgrid' );
 $jsmflex	= $params_com->get( 'use_jsmflex' );
 $cssflags	= $params_com->get( 'cfg_flags_css' );
@@ -62,7 +63,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementView extends JViewLegacy {
+class sportsmanagementView extends HtmlView {
 
     protected $icon = '';
     protected $title = '';
