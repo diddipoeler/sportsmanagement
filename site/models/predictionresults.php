@@ -5,6 +5,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
  * @subpackage predictionresults
  */
  
@@ -13,9 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.model');
-//require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionResults
@@ -52,69 +50,24 @@ static $limit = 0;
      * @return
      */
     function __construct() {
-        // Reference global application object
-        $app = Factory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-
-//    $this->predictionGameID		= $jinput->getInt('prediction_id',		0);
-//		$this->predictionMemberID	= $jinput->getInt('uid',	0);
-//		$this->joomlaUserID			= $jinput->getInt('juid',	0);
-//		self::$roundID				= $jinput->request->get('r', '0', 'STR');
-//        $this->pggroup				= $jinput->getInt('pggroup',		0);
-//        $this->pggrouprank			= $jinput->getInt('pggrouprank',		0);
-//		$this->pjID					= $jinput->getInt('pj',		0);
-//		$this->isNewMember			= $jinput->getInt('s',		0);
-//		$this->tippEntryDone		= $jinput->getInt('eok',	0);
-//
-//		$this->from  				= $jinput->getInt('from',self::$roundID);
-//		$this->to	 				= $jinput->getInt('to',	self::$roundID);
-//		$this->type  				= $jinput->getInt('type',	0);
-//
-//		$this->page  				= $jinput->getInt('page',	1);
-
         $prediction = new sportsmanagementModelPrediction();
 
-//        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
-//        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-//        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-//        sportsmanagementModelPrediction::$roundID = self::$roundID;
-//        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-//        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-//        sportsmanagementModelPrediction::$pjID = $this->pjID;
-//        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-//        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-//        sportsmanagementModelPrediction::$from = $this->from;
-//        sportsmanagementModelPrediction::$to = $this->to;
-//        sportsmanagementModelPrediction::$type = $this->type;
-//        sportsmanagementModelPrediction::$page = $this->page;
-
-        sportsmanagementModelPrediction::$roundID = $jinput->getVar('r', '0');
-        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj', '0');
-        sportsmanagementModelPrediction::$from = $jinput->getVar('from', $jinput->getVar('r', '0'));
-        sportsmanagementModelPrediction::$to = $jinput->getVar('to', $jinput->getVar('r', '0'));
-
-        sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id', '0');
-
-        sportsmanagementModelPrediction::$predictionMemberID = $jinput->getVar('uid', '0');
-        sportsmanagementModelPrediction::$joomlaUserID = $jinput->getVar('juid', '0');
-
-        sportsmanagementModelPrediction::$pggroup = $jinput->getVar('pggroup', '0');
-        sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank', 0);
-
-        sportsmanagementModelPrediction::$isNewMember = $jinput->getInt('s', 0);
-        sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok', 0);
-
-        sportsmanagementModelPrediction::$type = $jinput->getInt('type', 0);
-        sportsmanagementModelPrediction::$page = $jinput->getInt('page', 1);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
+        sportsmanagementModelPrediction::$roundID = $this->jsmjinput->getVar('r', '0');
+        sportsmanagementModelPrediction::$pjID = $this->jsmjinput->getVar('pj', '0');
+        sportsmanagementModelPrediction::$from = $this->jsmjinput->getVar('from', $this->jsmjinput->getVar('r', '0'));
+        sportsmanagementModelPrediction::$to = $this->jsmjinput->getVar('to', $this->jsmjinput->getVar('r', '0'));
+        sportsmanagementModelPrediction::$predictionGameID = $this->jsmjinput->getVar('prediction_id', '0');
+        sportsmanagementModelPrediction::$predictionMemberID = $this->jsmjinput->getVar('uid', '0');
+        sportsmanagementModelPrediction::$joomlaUserID = $this->jsmjinput->getVar('juid', '0');
+        sportsmanagementModelPrediction::$pggroup = $this->jsmjinput->getVar('pggroup', '0');
+        sportsmanagementModelPrediction::$pggrouprank = $this->jsmjinput->getInt('pggrouprank', 0);
+        sportsmanagementModelPrediction::$isNewMember = $this->jsmjinput->getInt('s', 0);
+        sportsmanagementModelPrediction::$tippEntryDone = $this->jsmjinput->getInt('eok', 0);
+        sportsmanagementModelPrediction::$type = $this->jsmjinput->getInt('type', 0);
+        sportsmanagementModelPrediction::$page = $this->jsmjinput->getInt('page', 1);
 
         if ((int) sportsmanagementModelPrediction::$pjID == 0) {
             $pred_proj = sportsmanagementModelPrediction::getPredictionProjectNames(sportsmanagementModelPrediction::$predictionGameID, 'ASC', 1);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_proj<br><pre>'.print_r($pred_proj,true).'</pre>'),'');
-
             if (isset($pred_proj[0])) {
                 sportsmanagementModelPrediction::$pjID = $pred_proj[0]->slug;
             }
@@ -124,12 +77,15 @@ static $limit = 0;
 
         parent::__construct();
 
-
-
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
 
+/**
+ * sportsmanagementModelPredictionResults::getStart()
+ * 
+ * @return
+ */
 public function getStart()
 {
     // Reference global application object
@@ -163,6 +119,13 @@ public function getStart()
     return $this->cache[$store];
 }	
 	
+/**
+ * sportsmanagementModelPredictionResults::populateState()
+ * 
+ * @param mixed $ordering
+ * @param mixed $direction
+ * @return void
+ */
 protected function populateState($ordering = null, $direction = null)
 	{
 $app = Factory::getApplication();
@@ -179,11 +142,21 @@ $this->setState('list.start', self::$limitstart);
 	
 }
 	
+/**
+ * sportsmanagementModelPredictionResults::getLimit()
+ * 
+ * @return
+ */
 function getLimit()
 	{
 		return $this->getState('list.limit');
 	}
 	
+	/**
+	 * sportsmanagementModelPredictionResults::getLimitStart()
+	 * 
+	 * @return
+	 */
 	function getLimitStart()
 	{
 		return $this->getState('list.start');

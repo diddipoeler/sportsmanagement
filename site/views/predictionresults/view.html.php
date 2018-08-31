@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.filesystem.file' );
 
@@ -28,6 +29,11 @@ jimport( 'joomla.filesystem.file' );
 class sportsmanagementViewPredictionResults extends sportsmanagementView
 {
 	
+	/**
+	 * sportsmanagementViewPredictionResults::init()
+	 * 
+	 * @return void
+	 */
 	function init()
 	{
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
@@ -54,7 +60,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 
       $predictionRounds[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = sportsmanagementModelPrediction::getRoundNames($this->predictionGame->id) )
@@ -73,7 +79,6 @@ $this->ausgabeende = $this->limitstart + $this->limit;
             $this->memberList = $this->get('Data');
             $this->pagination = $this->get('Pagination');
 
-//$headertitle
 $this->headertitle = $pageTitle;
 
 if ( !isset($this->config['table_class']) )
@@ -86,7 +91,7 @@ $this->config['table_class'] = 'table';
 		}
 		else
 		{
-			JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
+            $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'),'error');
 		}
 	}
 
