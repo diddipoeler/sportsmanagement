@@ -11,10 +11,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\Registry\Registry;
 
 /**
  * sportsmanagementTableagegroup
@@ -25,7 +24,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableagegroup extends JTable 
+class sportsmanagementTableagegroup extends Table 
 {
 	/**
 	 * Constructor
@@ -51,10 +50,10 @@ class sportsmanagementTableagegroup extends JTable
 		// setting alias
 		if ( empty( $this->alias ) )
 		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe( $this->name );
 		}
 		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 		//should check name unicity
 		return true;
@@ -72,13 +71,13 @@ class sportsmanagementTableagegroup extends JTable
 	{
 		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['extended']);
 			$array['extended'] = (string) $registry;
 		}
 		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry();
 			$registry->loadArray($array['extendeduser']);
 			$array['extendeduser'] = (string) $registry;
 		}
@@ -98,7 +97,7 @@ class sportsmanagementTableagegroup extends JTable
 		if (parent::load($pk, $reset)) 
 		{
 			// Convert the params field to a registry.
-			$params = new JRegistry;
+			$params = new Registry;
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         
