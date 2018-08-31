@@ -12,14 +12,14 @@
 
 // no direct access
 defined('_JEXEC') or die ;
+use Joomla\CMS\Form\Field\RadioField;
 
 /**
 * welche joomla version ?
 */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-jimport('joomla.form.formfield');    
-class JSMFormField extends FormFieldRadio {}	   
+class JSMFormField extends RadioField {}	   
 }
 else
 {
