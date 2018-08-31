@@ -13,11 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-
-// import Joomla library
-jimport('joomla.application.component.modeladmin');
-// import Joomla library
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * JSMModelAdmin
@@ -28,7 +26,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class JSMModelAdmin extends JModelAdmin
+class JSMModelAdmin extends AdminModel
 {
     
 
@@ -1435,7 +1433,7 @@ catch (Exception $e) {
  * @version $Id$
  * @access public
  */
-class JSMModelList extends JModelList
+class JSMModelList extends ListModel
 {
     
 /**
@@ -1493,7 +1491,7 @@ if( $this->jsmapp->isSite() )
  * @version $Id$
  * @access public
  */
-class JSMModelLegacy extends JModelLegacy
+class JSMModelLegacy extends BaseDatabaseModel
 {
     
 /**
