@@ -5,6 +5,7 @@
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
  * @subpackage results
  */
 
@@ -12,7 +13,6 @@ defined('_JEXEC') or die(JText('Restricted access'));
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-//jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 HTMLHelper::_('behavior.tooltip');
 
@@ -47,11 +47,6 @@ class sportsmanagementModelResults extends JSMModelLegacy
 	 */
 	function __construct()
 	{
-//		 // Reference global application object
-//        $app = Factory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-        
         parent::__construct();
 
 		self::$divisionid = $this->jsmjinput->getVar('division','0');
@@ -485,12 +480,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
            
             
 			$db->setQuery($query);
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
 			if ($db->loadResult()) return true;
 		}
@@ -537,11 +526,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function isAllowed($cfg_which_database = 0,$editorgroup = 0)
 	{
-	$app = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-    // JInput object
-        $jinput = $app->input;
-        
 		$allowed = false;
 		$user = Factory::getUser();
 		if ( $user->id != 0 )
@@ -550,12 +534,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			$hasACLPermssion = $user->authorise('results.saveshort', 'com_sportsmanagement');
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;
-			
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hasACLPermssion<br><pre>'.print_r($hasACLPermssion,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isProjectAdmin<br><pre>'.print_r($isProjectAdmin,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isProjectEditor<br><pre>'.print_r($isProjectEditor,true).'</pre>'),'Notice');
-            
+           
 			if( $hasACLPermssion && ($isProjectAdmin || $isProjectEditor) )
 			{
 				$allowed = true;
@@ -564,23 +543,17 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             if ( !$allowed )
             {
             // ist der user der einer gruppe zugeordnet ?
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editorgroup'.'<pre>'.print_r($editorgroup,true).'</pre>' ),'');
         $groups = JUserHelper::getUserGroups($user->get('id')); 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' groups'.'<pre>'.print_r($groups,true).'</pre>' ),'');
         
         if(in_array($editorgroup,$groups))
         {
-            //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ALLOWED'),'Notice');
             $allowed = true;
         }
         else
         {
-            //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_NOTALLOWED'),'Error');
             $allowed = false;
         }    
             }
-            
-            
             
 		}
 		return $allowed;
@@ -607,10 +580,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		
         if ( !$allowed )
 			{  
-        // ist der user der einer gruppe zugeordnet ?
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editorgroup'.'<pre>'.print_r($editorgroup,true).'</pre>' ),'');
+        /**
+         * ist der user der einer gruppe zugeordnet ?
+         */
         $groups = JUserHelper::getUserGroups($user->get('id')); 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' groups'.'<pre>'.print_r($groups,true).'</pre>' ),'');
         
         if(in_array($editorgroup,$groups))
         {
