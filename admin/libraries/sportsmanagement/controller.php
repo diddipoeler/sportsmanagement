@@ -11,12 +11,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
+use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * JSMControllerAdmin
@@ -27,7 +23,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class JSMControllerAdmin extends JControllerAdmin
+class JSMControllerAdmin extends AdminController
 {
 
     /**
@@ -60,7 +56,7 @@ class JSMControllerAdmin extends JControllerAdmin
  * @version $Id$
  * @access public
  */
-class JSMControllerForm extends JControllerForm
+class JSMControllerForm extends FormController
 {
 
     /**
