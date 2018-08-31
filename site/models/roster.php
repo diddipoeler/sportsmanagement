@@ -12,8 +12,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.model');
-
 require_once('player.php');
 
 /**
@@ -25,7 +23,7 @@ require_once('player.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRoster extends JModelLegacy
+class sportsmanagementModelRoster extends JSMModelLegacy
 {
 	static $projectid = 0;
 	static $projectteamid = 0;
@@ -56,16 +54,12 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   // Reference global application object
-        $app = Factory::getApplication();
-       
 		parent::__construct();
-
-		self::$projectid = $app->input->get('p', 0, 'INT');
-		self::$teamid = $app->input->get('tid', 0, 'INT');
-		self::$projectteamid = $app->input->get('ptid', 0, 'INT');
+		self::$projectid = $this->jsmjinput->get('p', 0, 'INT');
+		self::$teamid = $this->jsmjinput->get('tid', 0, 'INT');
+		self::$projectteamid = $this->jsmjinput->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = $app->input->get('cfg_which_database', 0, 'INT');
+        self::$cfg_which_database = $this->jsmjinput->get('cfg_which_database', 0, 'INT');
 		sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         sportsmanagementModelProject::setProjectID(self::$projectid,self::$cfg_which_database);
 		self::getProjectTeam();

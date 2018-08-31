@@ -44,6 +44,7 @@ class sportsmanagementModelPredictionResults extends JSMModelList {
     static $roundID = 0;
 static $limitstart = 0;
 static $limit = 0;
+
     /**
      * sportsmanagementModelPredictionResults::__construct()
      * 
