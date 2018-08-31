@@ -12,9 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelprojectteam
@@ -37,12 +35,12 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app =& Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
 
 $project_id = $post['pid'];
 //$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
@@ -115,7 +113,7 @@ $object->associations = $associations;
 }
 			
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 			
 			
 		}
@@ -131,12 +129,12 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setseasonid()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $db = Factory::getDbo();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
@@ -156,11 +154,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $proTeam->team_id;
         $object->season_id = $season_id;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }
@@ -176,7 +174,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetable($setzer=0)
     {
-    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+    $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -187,11 +185,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $projectteam_id;
         $object->is_in_score = $setzer;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }    
@@ -207,7 +205,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetablepoints($setzer=0)
     {
-    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+    $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -218,11 +216,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $projectteam_id;
         $object->use_finally = $setzer;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }        
@@ -240,12 +238,12 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function matchgroups()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->post->getArray(array());
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $db = Factory::getDbo();
+        $post = Factory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
@@ -305,15 +303,14 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function storeAssign($post)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post = JFactory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
         if ( JComponentHelper::getParams($option)->get('show_debug_info_backend') )
         {
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
@@ -342,8 +339,8 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 		    $query->from('#__sportsmanagement_project_team');
 		    $query->where('team_id = '.$value);
             $query->where('project_id = '.$project_id);
-		    JFactory::getDbo()->setQuery($query);
-		    $team_id = JFactory::getDbo()->loadResult();
+		    Factory::getDbo()->setQuery($query);
+		    $team_id = Factory::getDbo()->loadResult();
             if ( !$team_id )
             {
         // Create and populate an object.
@@ -351,7 +348,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $profile->project_id = $project_id;
         $profile->team_id = $value;
         // Insert the object into the user profile table.
-        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
+        $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $profile);
         }
         
         }
@@ -373,14 +370,11 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     public function delete(&$pks)
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$db		= JFactory::getDbo();
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$db		= Factory::getDbo();
 		//$query	= $db->getQuery(true);
-        //$pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        
+       
         // als erstes die heimspiele
         if (count($pks))
 		{
@@ -430,9 +424,9 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 	 */
 	function getProjectTeam($team_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$db	= JFactory::getDbo();
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$db	= Factory::getDbo();
 		$query	= $db->getQuery(true);
         // Select some fields
 		$query->select('t.*');

@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * SMStatistic
@@ -94,10 +95,10 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticNumQuery($project_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, pt.id');
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -120,10 +121,10 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticDenQuery($project_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_den = JFactory::getDbo()->getQuery(true);
+    $query_den = Factory::getDbo()->getQuery(true);
     
     $query_den->select('SUM(ms.value) AS den, pt.id');
     $query_den->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -150,10 +151,10 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticCoreQuery($project_id, $query_num,$query_den)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_core = JFactory::getDbo()->getQuery(true);
+    $query_core = Factory::getDbo()->getQuery(true);
     
     $query_core->select('(n.num / d.den) AS total, pt.team_id');
     $query_core->from('#__sportsmanagement_project_team AS pt');
@@ -180,8 +181,8 @@ class SMStatistic extends JObject
      */
     function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false,$table = 'match_staff_statistic')
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = $db->getQuery(true);
     
@@ -241,10 +242,10 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select,$which='statistic')
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select($select);
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -290,10 +291,10 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_num = JFactory::getDbo()->getQuery(true);
+    $query_num = Factory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
     $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -331,10 +332,10 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den,$select)
     {
-    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
-    $query_core = JFactory::getDbo()->getQuery(true);
+    $query_core = Factory::getDbo()->getQuery(true);
     
     $query_core->select($select);
     $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -369,7 +370,7 @@ class SMStatistic extends JObject
      */
     function getSids($id_field='stat_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = self::getParams();
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
@@ -399,7 +400,7 @@ class SMStatistic extends JObject
      */
     function getQuotedSids($id_field='stat_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = self::getParams();
         
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' id_field<br><pre>'.print_r($id_field,true).'</pre>'),'');
@@ -499,7 +500,7 @@ class SMStatistic extends JObject
 	 */
 	function getBaseParams()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -548,8 +549,8 @@ class SMStatistic extends JObject
 	 */
 	function getParams()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		if (empty($this->_params))
 		{
@@ -789,7 +790,7 @@ class SMStatistic extends JObject
 	 */
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->getQuery(true);
 		
@@ -864,9 +865,9 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -913,7 +914,7 @@ try{
             } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 			// Apply weighting using factors
 			$res = array();
@@ -940,7 +941,7 @@ try{
             } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 		}
 
@@ -972,9 +973,9 @@ try{
 	 */
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1059,11 +1060,11 @@ try{
 	protected function getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
 
 		// To be robust against partly filled in information for a match (match player, statistic, event)
 		// we determine if a player was contributing to a match, by checking for the following conditions:
@@ -1151,8 +1152,8 @@ try{
 	 */
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
@@ -1206,7 +1207,7 @@ $res = $db->loadResult();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }        
         }
         
@@ -1236,8 +1237,8 @@ $res = $db->loadResult();
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = NULL)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1282,7 +1283,7 @@ $stats = $db->loadObjectList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
             
 			// Apply weighting using factors
@@ -1327,7 +1328,7 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 			// Determine the total statistics for the position_id of the project team
             $query->clear('select');
@@ -1348,7 +1349,7 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }            
             
 			if (!isset($res['totals']->value))
@@ -1369,12 +1370,12 @@ try{
 	{
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $subquery = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $subquery = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
 
 
 		// Get the number of matches played per teamplayer of the projectteam.
@@ -1478,8 +1479,8 @@ try{
 	protected function getRosterStatsForEvents($team_id, $project_id, $position_id, $sids)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
-        $app = JFactory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
 
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
@@ -1542,12 +1543,12 @@ try{
 	protected function getGamesPlayedQuery($project_id, $division_id, $team_id)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
-        $subquery = JFactory::getDbo()->getQuery(true);
-        $query_mp = JFactory::getDbo()->getQuery(true);
-        $query_ms = JFactory::getDbo()->getQuery(true);
-        $query_me = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $subquery = Factory::getDbo()->getQuery(true);
+        $query_mp = Factory::getDbo()->getQuery(true);
+        $query_ms = Factory::getDbo()->getQuery(true);
+        $query_me = Factory::getDbo()->getQuery(true);
 
 
 		// To be robust against partly filled in information for a match (match player, statistic, event)
