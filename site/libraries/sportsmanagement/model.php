@@ -11,15 +11,15 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.modeladmin');
-jimport('joomla.application.component.modellist');
-jimport('joomla.application.component.model');
-
-class JSMModelList extends JModelList
+class JSMModelList extends ListModel
 {
 // Reference global application object
-$this->jsmapp = JFactory::getApplication('site');
+$this->jsmapp = Factory::getApplication('site');
 // JInput object
 $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -55,7 +55,7 @@ protected function populateState($ordering = 'obj.name', $direction = 'asc')
 }
 
 
-class JSMModelLegacy extends JModelLegacy
+class JSMModelLegacy extends BaseDatabaseModel
 {
     
 
