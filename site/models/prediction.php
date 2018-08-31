@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -75,11 +76,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function __construct()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post	= JFactory::getApplication()->input->post->getArray(array());
+
 		self::$roundID = $jinput->getVar('r','0');
         self::$pjID	= $jinput->getVar('pj','0');
         self::$from	= $jinput->getVar('from',self::$roundID);
@@ -126,11 +127,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
   static function checkRoundID($project_id,$roundID)
 {
  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option'); 
-    $document	= JFactory::getDocument();
+    $document	= Factory::getDocument();
 
 // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -215,7 +216,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   static function getChampionPoints($champ_tipp)
   {
     // Reference global application object
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
     $jinput = $app->input;
     $option = $jinput->getCmd('option');
@@ -292,7 +293,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	static function getPredictionGame()
 	{
 	    // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -341,7 +342,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
   {
   
   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -418,7 +419,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }	    
         break;  
@@ -432,7 +433,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }	    
         break;
@@ -453,7 +454,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getPredictionMember($configavatar)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -497,7 +498,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			}
 			else
 			{
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 				if ($user->id > 0)
 				{
 				//	$query->clear();
@@ -550,7 +551,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getPredictionProjectS()
 	{
 		 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -613,11 +614,11 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getPredictionTemplateConfig($template)
 	{
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -703,7 +704,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getPredictionProject($project_id=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -753,7 +754,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getMatchTeam($teamID=0,$teamName='name')
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -794,7 +795,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getMatchTeamClubLogo($teamID=0,$which_logo = 'logo_big')
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -833,7 +834,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
   static function getMatchTeamClubFlag($teamID=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -874,7 +875,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getProjectSettings($pid=0)
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -921,7 +922,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getProjectRounds($pid=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -951,7 +952,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function checkPredictionMembership()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -962,7 +963,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->select('id');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
-        $query->where('user_id = '.JFactory::getUser()->id );
+        $query->where('user_id = '.Factory::getUser()->id );
         $query->where('approved = 1');
 
 		$db->setQuery($query,0,1);
@@ -981,7 +982,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function checkIsNotApprovedPredictionMember()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -992,7 +993,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->select('user_id,approved');
         $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
-        $query->where('user_id = '.JFactory::getUser()->id );
+        $query->where('user_id = '.Factory::getUser()->id );
 
 		$db->setQuery($query,0,1);
 		if (!$result = $db->loadObject())
@@ -1015,7 +1016,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getAllowed($pmUID=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1026,13 +1027,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		$allowed = false;
         $groupNames = '';
         // Application Instanz holen
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // ACL Instanz holen
-        $acl = JFactory::getACL();
+        $acl = Factory::getACL();
         // JUserobjekt holen
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         
-        $authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
+        $authorised = JAccess::getAuthorisedViewLevels(Factory::getUser()->get('id'));
 
         $authorisedgroups = $user->getAuthorisedGroups();
         
@@ -1053,7 +1054,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
     
 		if ($user->id > 0)
 		{
-			//$auth= JFactory::getACL();
+			
 			//$aro_group = $acl->getAroGroup($user->id);
 
 			if (($groups[0] == 7) || ($groups[0] == 8))
@@ -1096,7 +1097,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getSystemAdminsEMailAdresses()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1149,7 +1150,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getPredictionGameAdminsEMailAdresses()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1191,7 +1192,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	static function getPredictionGameAdmins($predictionID)
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1228,7 +1229,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	public static function getPredictionMemberEMailAdress($predictionMemberID)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1284,12 +1285,12 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
   {
   
   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-  $document	= JFactory::getDocument();
-  $app = JFactory::getApplication();
+  $document	= Factory::getDocument();
+  $app = Factory::getApplication();
   
 //  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($RoundID,true).'</pre>'),'');
 //  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ProjectID<br><pre>'.print_r($ProjectID,true).'</pre>'),'');
@@ -1323,11 +1324,11 @@ $round_ids);
   $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
   //Fetch the mail object
-	$mailer = JFactory::getMailer();
+	$mailer = Factory::getMailer();
 	// als html
 	$mailer->isHTML(TRUE);
   //Set a sender
-	$config = JFactory::getConfig();
+	$config = Factory::getConfig();
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         // Joomla! 3.0 code here
@@ -1416,7 +1417,7 @@ $body .= "</table>";
 						
   $body .= "<tr class='" . $class ."'>";
 	$body .= "<td class='td_c'>";
-	$jdate = JFactory::getDate($result->match_date);
+	$jdate = Factory::getDate($result->match_date);
 	$jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
 	$body .= $jdate->format('d.m.Y H:i'); 
 
@@ -1614,7 +1615,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
 	function sendMembershipConfirmation($cid=array())
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1634,10 +1635,10 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
 				if (count($predictionGameMemberMail) > 0)
 				{
 					//Fetch the mail object
-					$mailer = JFactory::getMailer();
+					$mailer = Factory::getMailer();
 
 					//Set a sender
-					$config = JFactory::getConfig();
+					$config = Factory::getConfig();
                      if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         // Joomla! 3.0 code here
@@ -1747,7 +1748,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
   static function getPredictionGroupList()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1774,7 +1775,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
 	static function getPredictionMemberList(&$config,$actUserId=null)
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1820,7 +1821,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
 	function getMemberPredictionTotalCount($user_id)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -1849,7 +1850,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mailer<br><pre>'.print_r
 	static function getMemberPredictionJokerCount($user_id,$project_id=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2057,7 +2058,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	static function getPredictionMembersResultsList($project_id,$round1ID,$round2ID=0,$user_id=0,$type=0)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2129,7 +2130,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	static function createProjectSelector(&$predictionProjects,$current,$addTotalSelect=null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2207,7 +2208,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 	public static function savePredictionPoints(&$memberResult,&$predictionProject,$returnArray=false)
 	{
 	// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2441,11 +2442,11 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 	static function getRoundNames($project_id,$ordering='ASC', $round_ids = NULL)
 	{
 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-  $document	= JFactory::getDocument();
+  $document	= Factory::getDocument();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -2495,7 +2496,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 	static function compare($a,$b)
 	{
 	    // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2550,7 +2551,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 	static function computeMembersRanking($membersResultsArray,$config)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2598,7 +2599,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 	static function getPredictionMembersList(&$config = NULL, &$configavatar = NULL, $total = false, $limit = NULL)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -2665,7 +2666,7 @@ $query->where('pm.group_id = '.(int)self::$pggroup);
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            JFactory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
             return false;
         }
 		foreach ( $results as $row )

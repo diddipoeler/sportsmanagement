@@ -10,6 +10,8 @@
 
 defined('_JEXEC') or die(JText('Restricted access'));
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 HTMLHelper::_('behavior.tooltip');
@@ -46,7 +48,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	function __construct()
 	{
 		 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -79,7 +81,6 @@ class sportsmanagementModelResults extends JModelLegacy
 		} 
         else 
         {
-			//$this->roundid = sportsmanagementModelProject::getCurrentRound(JFactory::getApplication()->input->getVar('view'));
             self::$roundid = sportsmanagementModelProject::getCurrentRound($jinput->getVar('view'),self::$cfg_which_database);
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
@@ -172,12 +173,12 @@ class sportsmanagementModelResults extends JModelLegacy
          if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$rssDoc = JFactory::getFeedParser($options);
+$rssDoc = Factory::getFeedParser($options);
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-$rssDoc = JFactory::getXMLparser('RSS', $options);
+$rssDoc = Factory::getXMLparser('RSS', $options);
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -244,7 +245,7 @@ else
 	 */
 	function getMatches($cfg_which_database = 0,$editorgroup=0,$cat_id = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
     $query = $db->getQuery(true);
@@ -255,7 +256,7 @@ else
 		}
 		
 		$allowed = self::isAllowed($cfg_which_database,$editorgroup);
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if ( count($this->matches) > 0 )
 		{
@@ -293,7 +294,7 @@ else
 	 */
 	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0,$team = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -407,7 +408,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function getMatchReferees($match_id = 0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -442,7 +443,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getMatchRefereeTeams($match_id = 0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -481,7 +482,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function isTeamEditor($userid = 0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -519,7 +520,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function isMatchAdmin($matchid = 0,$userid = 0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -550,13 +551,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function isAllowed($cfg_which_database = 0,$editorgroup = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
     // JInput object
         $jinput = $app->input;
         
 		$allowed = false;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if ( $user->id != 0 )
 		{
 			$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
@@ -608,9 +609,9 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	function getShowEditIcon($editorgroup=0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
         
 		$allowed = self::isAllowed();
     	$showediticon = false;
@@ -658,7 +659,7 @@ else
      */
     function saveshort($cfg_which_database = 0)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -670,8 +671,8 @@ else
         
         //$post2 = $jinput->post->getArray(array());
         
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post2<br><pre>'.print_r($post2, true).'</pre><br>','Notice');
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
@@ -174,16 +175,16 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     $timePlayed = $model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id);
                                     
                     $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $player_hist->project_slug;
        $routeparameter['tid'] = $player_hist->team_slug;
        $routeparameter['pid'] = $this->person->slug;
             
                     $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
                      $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $player_hist->project_slug;
        $routeparameter['tid'] = $player_hist->team_slug;
        $routeparameter['ptid'] = 0;

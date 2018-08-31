@@ -2,6 +2,7 @@
 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
@@ -26,8 +27,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	{
 		parent::__construct();
 
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
@@ -45,7 +46,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->getVar( 'folder' );
+			$folder = Factory::getApplication()->input->getVar( 'folder' );
 			$this->setState('folder', $folder);
 
 			$set = true;
@@ -106,8 +107,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function getList()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
         static $list;
 
 		// Only process the list once per request
@@ -261,7 +262,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();

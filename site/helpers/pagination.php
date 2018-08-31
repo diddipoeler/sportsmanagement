@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
@@ -39,7 +40,7 @@ class sportsmanagementModelPagination extends JModelLegacy
      */
     function getnextlink()
     {
-       $app = JFactory::getApplication();
+       $app = Factory::getApplication();
 $option = $app->input->getCmd('option');	    
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
@@ -61,7 +62,7 @@ $option = $app->input->getCmd('option');
 	 */
 	public static function pagenav($project,$cfg_which_database = 0,$s=0)
 	{
-       $app = JFactory::getApplication();
+       $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');	    
        // JInput object
         $jinput = $app->input;
@@ -109,7 +110,7 @@ $option = $app->input->getCmd('option');
 		if ($mytask){$params['task'] = $mytask;}
 		if ($division > 0){$params['division'] = $division;}
 		if ($divLevel > 0){$params['divLevel'] = $divLevel;}
-		$prediction_id = JFactory::getApplication()->input->getInt("prediction_id",0);
+		$prediction_id = Factory::getApplication()->input->getInt("prediction_id",0);
 		if($prediction_id >0) 
         {
 			$params['prediction_id']= $prediction_id;
@@ -253,7 +254,7 @@ $option = $app->input->getCmd('option');
 	 */
 	function pagenav2($jl_task,$rlimit,$currentRoundcode=0,$user='',$mode='')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');	    
 		$mytask = $app->input->getVar('task',false);
 		$divLevel = $app->input->getInt('divLevel',0);

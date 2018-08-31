@@ -12,8 +12,9 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 $params_com = ComponentHelper::getParams( 'com_sportsmanagement' );
 $jsmgrid	= $params_com->get( 'use_jsmgrid' );
@@ -80,7 +81,7 @@ class sportsmanagementView extends HtmlView {
      */
     public function display($tpl = null) {
         // Reference global application object
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
 
@@ -90,15 +91,15 @@ class sportsmanagementView extends HtmlView {
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $this->uri = Uri::getInstance();
         } else {
-            $this->uri = JFactory::getURI();
+            $this->uri = Factory::getURI();
         }
 
         $this->action = $this->uri->toString();
         $this->params = $this->app->getParams();
         // Get a refrence of the page instance in joomla
-        $this->document = JFactory::getDocument();
+        $this->document = Factory::getDocument();
         $this->option = $this->jinput->getCmd('option');
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->view = $this->jinput->getVar("view");
         $this->cfg_which_database = $this->jinput->getVar('cfg_which_database','0');
 	    if(isset($_SERVER['HTTP_REFERER'])) {

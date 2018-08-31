@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'prediction.php' );
@@ -52,7 +53,7 @@ static $limit = 0;
      */
     function __construct() {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -123,19 +124,8 @@ static $limit = 0;
 
         parent::__construct();
 
-        //$this->pggrouprank			= JFactory::getApplication()->input->getInt('pggrouprank',		0);
-        //$this->predictionGameID	= $jinput->getInt('prediction_id',0);
-/*
-        if (JFactory::getApplication()->input->getVar("view") == 'predictionresults') {
-            self::$limit = $jinput->getInt('limit',$app->getCfg('list_limit'));
-	self::$limitstart = $jinput->getInt('start',0);
-	// In case limit has been changed, adjust it
-	//$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
- 
-	$this->setState('limit', self::$limit);
-	$this->setState('limitstart', self::$limitstart);
-        }
-*/
+
+
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
     }
@@ -143,7 +133,7 @@ static $limit = 0;
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -175,7 +165,7 @@ public function getStart()
 	
 protected function populateState($ordering = null, $direction = null)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
 self::$limit = $value;
 $this->setState('list.limit', self::$limit);
@@ -256,11 +246,11 @@ function getLimit()
      */
     static function getMatches($roundID, $project_id, $match_ids, $round_ids, $proteams_ids, $show_logo_small_overview = '') {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
 
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection();
@@ -347,15 +337,15 @@ function getLimit()
      */
     function showClubLogo($clubLogo, $teamName) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
 
 

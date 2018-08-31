@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 // import Joomla modelitem library
 jimport('joomla.application.component.modelitem');
@@ -74,9 +75,9 @@ class sportsmanagementModelsportsmanagement extends JModelItem
 	 */
 	protected function populateState() 
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		// Get the message id
-		$id = JFactory::getApplication()->input->getInt('id');
+		$id = Factory::getApplication()->input->getInt('id');
 		$this->setState('message.id', $id);
  
 		// Load the parameters.

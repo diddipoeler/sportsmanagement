@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model');
 
 /**
@@ -58,7 +60,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct( );
@@ -81,8 +83,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function determineTeam1And2()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -281,8 +283,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDataByDivision($division=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database,FALSE);

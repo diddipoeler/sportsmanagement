@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 <!--[if IE]>
@@ -146,7 +147,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             {
                 
 				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $team_row_header->club_slug,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0));
 				//$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $teamnumber .', ' . $team_row_header->$name;
@@ -185,8 +186,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 				{
 				$title = Text :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
 				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $trow->team_slug;
 $routeparameter['ptid'] = 0;
@@ -288,8 +289,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routepar
 						$title = "";
 						$arrayString = array ();
 						$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $result->match_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -322,7 +323,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id,Factory::getApplication()->input->getInt('cfg_which_database',0));
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -346,7 +347,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 								$match_result = HTMLHelper::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id,Factory::getApplication()->input->getInt('cfg_which_database',0));
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = HTMLHelper::link($link, $desc);
@@ -374,7 +375,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid,0,0,0,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid,0,0,0,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0));
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, Text :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);

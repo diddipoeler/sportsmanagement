@@ -31,11 +31,11 @@ if (!class_exists('sportsmanagementModeldatabasetool'))
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');	
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 // sprachdatei aus dem backend laden
-$langtag = JFactory::getLanguage();
-$document = JFactory::getDocument();
-$app = JFactory::getApplication();
-$config = JFactory::getConfig();
-$lang = JFactory::getLanguage();
+$langtag = Factory::getLanguage();
+$document = Factory::getDocument();
+$app = Factory::getApplication();
+$config = Factory::getConfig();
+$lang = Factory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = $langtag->getTag();
@@ -158,7 +158,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	function __construct()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         self::$projectid = $jinput->getVar('p','0');
@@ -178,7 +178,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 */
 	public static function updateHits($projectid=0,$inserthits=0)
     {
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
  $query = $db->getQuery(true);
@@ -206,7 +206,7 @@ $result = $db->execute();
 	 */
 	public static function getProject($cfg_which_database = 0,$call_function = '',$inserthits=0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -267,7 +267,7 @@ $result = $db->execute();
 	 */
 	public static function setProjectID($id=0,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         
 		self::$projectid = (int)$id;
@@ -302,7 +302,7 @@ $result = $db->execute();
 	 */
 	public static function getCurrentRound($view=NULL,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$round = self::increaseRound($cfg_which_database);
         
         self::$_current_round = $round;
@@ -326,7 +326,7 @@ $result = $db->execute();
 	 */
 	public static function getCurrentRoundNumber($cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$round = self::increaseRound($cfg_which_database);
        
 		return ($round ? $round->roundcode : 0);
@@ -339,7 +339,7 @@ $result = $db->execute();
 	public static function increaseRound($cfg_which_database = 0)
 	{
 		
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -457,7 +457,7 @@ catch (Exception $e){
              $object->current_round = $result->id;
 				try {
              // Update their details in the users table using id as the primary key.
-             $resultupdate = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+             $resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
 }
 catch (Exception $e)
 {
@@ -532,7 +532,7 @@ $s = $configcolors;
 	 */
 	public static function getDivisionsId($divLevel=0,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -620,7 +620,7 @@ $s = $configcolors;
 	 */
 	public static function getDivisions($divLevel=0,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -666,7 +666,7 @@ $s = $configcolors;
 	 */
 	public static function getRounds($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -675,7 +675,7 @@ $s = $configcolors;
         
         if ( !self::$projectid )
         {
-            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
+            self::$projectid = Factory::getApplication()->input->getInt('p',0);
         } 
         
         if (empty(self::$_rounds))
@@ -729,7 +729,7 @@ catch (Exception $e)
 	 */
 	public static function getRoundOptions($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -738,7 +738,7 @@ catch (Exception $e)
         
         if ( !self::$projectid )
         {
-            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
+            self::$projectid = Factory::getApplication()->input->getInt('p',0);
         } 
         
         // Select some fields
@@ -766,7 +766,7 @@ catch (Exception $e)
 	 */
 	public static function getTeaminfo($projectteamid,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -814,7 +814,7 @@ catch (Exception $e)
 	 */
 	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '')
 	{
-	   	$app = JFactory::getApplication();
+	   	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -873,7 +873,7 @@ catch (Exception $e)
 	 */
 	public static function getTeams($division=0,$teamname='name',$cfg_which_database = 0,$call_function = '')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         
 		$teams = array();
 		if ($division != 0)
@@ -945,7 +945,7 @@ catch (Exception $e)
 	 */
 	public static function getTeamsIndexedByPtid($division=0,$teamname='name',$cfg_which_database = 0,$call_function = '')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
 		$result = self::getTeams($division,$teamname,$cfg_which_database,$call_function);
 		$teams = array();
@@ -987,7 +987,7 @@ catch (Exception $e)
 	 */
 	public static function getEventTypes($evid='',$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1019,11 +1019,11 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	public static function getprojectteamID($teamid,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     $option = $app->input->getCmd('option');
     if ( !self::$projectid )
         {
-            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
+            self::$projectid = Factory::getApplication()->input->getInt('p',0);
         } 
         
         // Get a db connection.
@@ -1049,7 +1049,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	function getPlaygrounds($cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1079,7 +1079,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	function getProjectGameRegularTime($project_id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1108,7 +1108,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	function getReferees($cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1148,7 +1148,7 @@ $query->where("me.event_type_id IN (".$evid.")");
 	 */
 	public static function getTemplateConfig($template,$cfg_which_database = 0,$call_function = '')
 	{
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1254,7 +1254,7 @@ $starttime = microtime();
    	*/
    	function getProjectCountry($cfg_which_database = 0)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1277,7 +1277,7 @@ $app = JFactory::getApplication();
 	 */
 	public static function getProjectEvents($position_id=0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1314,7 +1314,7 @@ catch (Exception $e)
 	 */
 	public static function getProjectStats($statid=0,$positionid=0,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1403,7 +1403,7 @@ catch (Exception $e)
 	 */
 	public static function getProjectPositions($cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1443,7 +1443,7 @@ catch (Exception $e)
 	 */
 	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0,$roundcode = 0,$modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    
     
 		if ( $type == 1 )
@@ -1548,7 +1548,7 @@ $use_jquery_modal);
 	 */
 	public static function getMatchSubstitutions($match_id,$cfg_which_database = 0)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1698,11 +1698,11 @@ catch (Exception $e) {
     public static function getMatch()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         $option = $jinput->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -1735,11 +1735,11 @@ catch (Exception $e) {
 	public static function getMatchEvents($match_id,$showcomments=0,$sortdesc=0,$cfg_which_database = 0)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         $option = $jinput->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1840,10 +1840,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function hasEditPermission($task=null,$cfg_which_database = 0)
 	{
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         $allowed = false;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
         
         // ist der user der einer gruppe zugeordnet ?
         $groups = JUserHelper::getUserGroups($user->get('id')); 

@@ -12,6 +12,7 @@
 
 // No direct access.
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 // Include dependancy of the main controllerform class
 jimport('joomla.application.component.controllerform');
@@ -46,37 +47,19 @@ class sportsmanagementControllereditperson extends JControllerForm {
     }
 
     public function submit() {
-//                // Check for request forgeries.
-//                JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-// 
-//                // Initialise variables.
-//                $app    = JFactory::getApplication();
-//                $model  = $this->getModel('updhelloworld');
-// 
-//                // Get the data from the form POST
-//                $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-// 
-//        // Now update the loaded data to the database via a function in the model
-//        $upditem        = $model->updItem($data);
-// 
-//        // check if ok and display appropriate message.  This can also have a redirect if desired.
-//        if ($upditem) {
-//            echo "<h2>Updated Greeting has been saved</h2>";
-//        } else {
-//            echo "<h2>Updated Greeting failed to be saved</h2>";
-//        }
+
 
         return true;
     }
 
     public function save() {
         // Initialise variables.
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $model = $this->getModel('editperson');
 
-        //$data	= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-        $data = JFactory::getApplication()->input->post->getArray(array());
-        $id = JFactory::getApplication()->input->getInt('id');
+        //$data	= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+        $data = Factory::getApplication()->input->post->getArray(array());
+        $id = Factory::getApplication()->input->getInt('id');
 
         // Now update the loaded data to the database via a function in the model
         $upditem = $model->updItem($data);

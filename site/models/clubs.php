@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -35,7 +37,7 @@ class sportsmanagementModelClubs extends JModelLegacy
 	function __construct( )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 		parent::__construct( );
 
@@ -57,8 +59,8 @@ class sportsmanagementModelClubs extends JModelLegacy
 	 */
 	function getClubs( $ordering = null)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	   $app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);	

@@ -12,8 +12,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $view = $jinput->getVar( "view") ;        
@@ -68,8 +70,8 @@ switch ( $view )
     // $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
     
     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $this->teamPlayer->team_id;
 $routeparameter['pid'] = $this->person->id;
@@ -166,8 +168,8 @@ $this->overallconfig['use_jquery_modal']);
 			if ( $this->showediticon )
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = sportsmanagementModelProject::$projectslug;
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = sportsmanagementModelResults::$divisionid;
@@ -204,7 +206,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		?>
 		</td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
-			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,JFactory::getApplication()->input->getInt('cfg_which_database',0)); ?>
+			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,Factory::getApplication()->input->getInt('cfg_which_database',0)); ?>
 				</td>
                 <td>
         <?php
@@ -254,8 +256,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				if (!is_null($this->ptid))
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $this->teams[$this->ptid]->team_id;
 $routeparameter['division'] = 0;

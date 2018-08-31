@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <?PHP
 if (!isset($this->team)) {
@@ -87,7 +88,7 @@ $this->overallconfig['use_jquery_modal']);
                             <div class="jl_parentContainer">
                                 <span class="clubinfo_listing_item"> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></span>
                                 <span class="clubinfo_listing_value"> <?php
-                                    $user = JFactory::getUser();
+                                    $user = Factory::getUser();
                                     if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
                                         echo HTMLHelper::link('mailto:' . $this->club->email, $this->club->email);
                                     } else {
@@ -154,11 +155,11 @@ $this->overallconfig['use_jquery_modal']);
                             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></strong>
                             <?php
                             $routeparameter = array();
-                            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                             $routeparameter['p'] = $this->project->slug;
                             $routeparameter['tid'] = $this->team->slug;
-                            $routeparameter['ptid'] = JFactory::getApplication()->input->getInt('ptid', 0);
+                            $routeparameter['ptid'] = Factory::getApplication()->input->getInt('ptid', 0);
                             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
                             echo HTMLHelper::link($link, $this->team->tname);
                             ?>
@@ -167,8 +168,8 @@ $this->overallconfig['use_jquery_modal']);
                             <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></strong>
                             <?php
                             $routeparameter = array();
-                            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                             $routeparameter['p'] = $this->project->slug;
                             $routeparameter['tid'] = $this->team->slug;
 
@@ -204,7 +205,7 @@ $this->overallconfig['use_jquery_modal']);
                             <address>
                                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_EMAIL'); ?></strong>
                                 <?php
-                                    $user = JFactory::getUser();
+                                    $user = Factory::getUser();
                                     if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
                                         echo HTMLHelper::link('mailto:' . $this->team->team_email, $this->team->team_email);
                                     } else {

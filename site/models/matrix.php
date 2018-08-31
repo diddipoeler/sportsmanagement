@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -37,7 +39,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
        $jinput = $app->input;
        
@@ -58,8 +60,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getDivision( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -86,8 +88,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getRound( )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -116,8 +118,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
      */
     function getRussiaMatrixResults($teams, $results )
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         //$russiamatrix = array();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
@@ -225,8 +227,8 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getMatrixResults( $project_id, $unpublished = 0 )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);

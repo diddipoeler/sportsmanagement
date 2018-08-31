@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 // Component Helper
 jimport('joomla.application.component.helper');
@@ -43,7 +44,7 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  */
 public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionresults', 
@@ -88,7 +89,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
  */
 public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0,$type=0,$from=0,$to=0,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionranking', 

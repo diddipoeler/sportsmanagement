@@ -12,10 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
-//echo ' config<pre>'.print_r($this->config,true).'</pre>';
-//echo ' person<pre>'.print_r($this->person,true).'</pre>';
-//echo ' inprojectinfo<pre>'.print_r($this->inprojectinfo,true).'</pre>';
 
 ?>
 <!-- person data START -->
@@ -256,7 +254,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 					<address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php 
-            $user = JFactory::getUser();
+            $user = Factory::getUser();
 				if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
 				{
 					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php

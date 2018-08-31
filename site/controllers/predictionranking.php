@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
@@ -49,7 +50,7 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 	{
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $pID = $jinput->getVar('prediction_id','0');
@@ -69,17 +70,6 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
         $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
         }
         
-//		//$post	= JFactory::getApplication()->input->post->getArray(array());
-//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',	'post',	'int');
-//		$pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');
-//        $pggrouprank= JFactory::getApplication()->input->getVar('pggrouprank',null,	'post',	'int');
-//        $pjID	= JFactory::getApplication()->input->getVar('pj',	'',	'post',	'int');
-//        
-//		$rID	= JFactory::getApplication()->input->getVar('r',		'',	'post',	'int');
-//		$set_pj	= JFactory::getApplication()->input->getVar('set_pj',		'',	'post',	'int');
-//		$set_r	= JFactory::getApplication()->input->getVar('set_r',			'',	'post',	'int');
-
 		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank,$type,$from,$to);
         
 		//echo '<br />' . $link . '<br />';

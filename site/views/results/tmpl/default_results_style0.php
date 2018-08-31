@@ -14,7 +14,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 ?>
 <style>
 #sbox-window {
@@ -174,8 +174,8 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 			if (isset($game->team1_result))
 			{
 			$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
@@ -184,16 +184,16 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			else
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 				
 			}
 
-			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0));
-			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0));
+			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,Factory::getApplication()->input->getInt('cfg_which_database',0));
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
@@ -373,7 +373,7 @@ $this->overallconfig['use_jquery_modal']);
 			<td>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
+					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0) );
 				?>
 			</td>
 			<td width='<?PHP echo $width;?>'>
@@ -387,7 +387,7 @@ $this->overallconfig['use_jquery_modal']);
 			<td>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam,NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam,NULL,Factory::getApplication()->input->getInt('cfg_which_database',0));
 				?>
 			</td>
 			<!-- show match score -->
@@ -596,8 +596,8 @@ $this->overallconfig['use_jquery_modal']); ?>
 				if (isset($game->team1_result))
 				{
 				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
@@ -606,8 +606,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				else
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
@@ -630,8 +630,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 				if (isset($game->team1_result))
 				{
 				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -640,8 +640,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				else
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
@@ -661,8 +661,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$route
 				if (isset($game->team1_result))
 				{
 				$routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -671,8 +671,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				else
 				{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);					

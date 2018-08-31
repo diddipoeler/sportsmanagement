@@ -11,10 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
-//jimport('joomla.application.component.model');
-//jimport('joomla.application.component.modelitem');
-//jimport('joomla.application.component.modelform');
 
 jimport('joomla.application.component.modeladmin');
 
@@ -46,7 +44,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
      */
     function updItem($data)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         foreach( $data['request'] as $key => $value)
         {
@@ -109,7 +107,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	function getData()
 	{
-	   $this->_id = JFactory::getApplication()->input->getInt('pid',0);
+	   $this->_id = Factory::getApplication()->input->getInt('pid',0);
 //		// Lets load the content if it doesn't already exist
 //		if (empty($this->_data))
 //		{
@@ -146,8 +144,8 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
-        $app = JFactory::getApplication('site');
+		$cfg_which_media_tool = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
+        $app = Factory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
 		if (empty($form))
@@ -155,7 +153,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 			return false;
 		}
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
@@ -171,7 +169,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();

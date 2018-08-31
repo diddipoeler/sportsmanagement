@@ -1,6 +1,7 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.view' );
 
@@ -10,13 +11,13 @@ class sportsmanagementViewResults extends JViewLegacy
 	function display($tpl = null)
 	{
 
-		$document	= JFactory::getDocument();
-		$option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+		$document	= Factory::getDocument();
+		$option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
 		$document->link = Route::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$matches = $model->getMatches();
-		sportsmanagementModelProject::setProjectID(JFactory::getApplication()->input->getInt('p',0));
+		sportsmanagementModelProject::setProjectID(Factory::getApplication()->input->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		

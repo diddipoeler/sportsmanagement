@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 ?>
 <!-- person data START -->
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA'); ?></h4>
@@ -197,7 +197,7 @@ use Joomla\CMS\Uri\Uri;
             <address>
                 <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_EMAIL'); ?></strong>
                 <?php
-                $user = JFactory::getUser();
+                $user = Factory::getUser();
                 if (( $user->id ) || (!$this->overallconfig['nospam_email'] )) {
                     ?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
                         echo $this->person->email;

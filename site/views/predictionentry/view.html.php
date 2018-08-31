@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewPredictionEntry
@@ -48,7 +49,7 @@ class sportsmanagementViewPredictionEntry extends sportsmanagementView
       $this->configavatar = $configavatar;
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			
             $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
@@ -59,11 +60,11 @@ class sportsmanagementViewPredictionEntry extends sportsmanagementView
             
 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $this->websiteName = JFactory::getConfig()->get('config.sitename');
+            $this->websiteName = Factory::getConfig()->get('config.sitename');
             }
             else
             {
-			$this->websiteName = JFactory::getConfig()->getValue('config.sitename');
+			$this->websiteName = Factory::getConfig()->getValue('config.sitename');
             }
 
 			if ( $this->allowedAdmin )

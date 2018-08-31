@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 <?php 
@@ -31,7 +32,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $team2 = $this->teams[$thismatch->projectteam2_id];
             }
 		
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		if (isset($team1) && isset($team2))
 		{
@@ -48,7 +49,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             $teamsoptions[] = HTMLHelper::_('select.option',$team->projectteamid,$team->name,'value','text');
             }
 		
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
         $canEdit = $user->authorise('core.edit','com_sportsmanagement');
         $canCheckin = $user->authorise('core.manage','com_checkin') || $thismatch->checked_out == $user->get ('id') || $thismatch->checked_out == 0;
         $checked = HTMLHelper::_('jgrid.checkedout', $i, $user->get ('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
@@ -63,7 +64,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 	
 	if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 	{
-		$db= JFactory::getDBO();
+		$db= Factory::getDBO();
 		$query="	SELECT username
 				FROM #__users
 				WHERE id=".$match->checked_out;

@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 
@@ -34,11 +36,11 @@ class sportsmanagementViewEditClub extends JViewLegacy
 	 */
 	function display($tpl=null)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-		$uri 	= JFactory::getURI();
-		$user 	= JFactory::getUser();
-        $document = JFactory::getDocument();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+		$uri 	= Factory::getURI();
+		$user 	= Factory::getUser();
+        $document = Factory::getDocument();
 		$model	= $this->getModel();
         $this->club = $model->getClub();
 

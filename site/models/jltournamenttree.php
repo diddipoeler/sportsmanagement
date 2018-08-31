@@ -42,11 +42,11 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.model');
-jimport('joomla.filesystem.file');
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper') ;
-jimport( 'joomla.utilities.utility' );
+Factory::('joomla.application.component.model');
+Factory::('joomla.filesystem.file');
+Factory::('joomla.utilities.array');
+Factory::('joomla.utilities.arrayhelper') ;
+Factory::( 'joomla.utilities.utility' );
 
 
 /**
@@ -92,12 +92,12 @@ var $jl_tree_jquery_version = '1.7.1';
 function __construct( )
 	{
         $menu =  JSite::getMenu();
-		$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
- 		$this->from  = JFactory::getApplication()->input->getInt( 'from', 0 );
- 		$this->to	 = JFactory::getApplication()->input->getInt( 'to', 0 );
- 		$this->round = JFactory::getApplication()->input->getVar( "r");
-        $this->request = JFactory::getApplication()->input->get();
-        $this->menue_itemid = JFactory::getApplication()->input->getInt( "Itemid", 0 );
+		$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
+ 		$this->from  = Factory::getApplication()->input->getInt( 'from', 0 );
+ 		$this->to	 = Factory::getApplication()->input->getInt( 'to', 0 );
+ 		$this->round = Factory::getApplication()->input->getVar( "r");
+        $this->request = Factory::getApplication()->input->get();
+        $this->menue_itemid = Factory::getApplication()->input->getInt( "Itemid", 0 );
         
         $this->request['r'] = (int) $this->request['r'];
         if ( isset($this->request['from']) )
@@ -170,7 +170,7 @@ function __construct( )
   }
  
  // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -298,11 +298,11 @@ return $this->color_to;
  */
 function getTournamentName()
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$app = JFactory::getApplication();
-$user = JFactory::getUser();
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$user = Factory::getUser();
 
-$db = JFactory::getDBO();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 //$subQuery = $db->getQuery(true);
 //$subQuery2 = $db->getQuery(true);
@@ -327,10 +327,10 @@ return $result->name;
  */
 function getTournamentRounds()
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$app = JFactory::getApplication();
-$user = JFactory::getUser();
-$db = JFactory::getDBO();
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$user = Factory::getUser();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
@@ -478,9 +478,9 @@ return '['.implode(",",$temp_rounds).']';
  */
 function getTournamentMatches($rounds)
 {
-$option = JFactory::getApplication()->input->getCmd('option');
-$app = JFactory::getApplication();
-$user = JFactory::getUser();
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$user = Factory::getUser();
 
 /**
  * erst einmal nicht ausgeprägt
@@ -488,7 +488,7 @@ $user = JFactory::getUser();
  */
 return false;
 	
-$db = JFactory::getDBO();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 
 //echo '1.) rounds -> <br /><pre>~'.print_r($rounds,true).'~</pre><br />';
@@ -1311,11 +1311,11 @@ return implode(",",$varteams);
 function getTournamentResults($rounds)
 {
     
-$option = JFactory::getApplication()->input->getCmd('option');
-$app = JFactory::getApplication();
-$user = JFactory::getUser();
+$option = Factory::getApplication()->input->getCmd('option');
+$app = Factory::getApplication();
+$user = Factory::getUser();
 
-$db = JFactory::getDBO();
+$db = Factory::getDBO();
 $query = $db->getQuery(true);
 //$query2 = $db->getQuery(true);
 $subQuery = $db->getQuery(true);
@@ -1465,7 +1465,7 @@ return implode(",",$varresults);
  */
 function checkStartExtension()
 {
-$application = JFactory::getApplication();
+$application = Factory::getApplication();
 }
 
 }

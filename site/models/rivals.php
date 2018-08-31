@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelRivals
@@ -36,7 +37,7 @@ class sportsmanagementModelRivals extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -76,7 +77,7 @@ class sportsmanagementModelRivals extends JModelLegacy
 	 */
 	function getOpponents()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

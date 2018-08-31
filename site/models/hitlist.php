@@ -39,6 +39,7 @@
 
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -72,7 +73,7 @@ var $_identifier = "hitlist";
 	public function __construct($config = array())
         {   
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         self::$projectid = $jinput->getInt( "p", 0 );
@@ -95,7 +96,7 @@ var $_identifier = "hitlist";
         public function getSportsmanagementHits($config=array(),$max_hits=0, $table='project')
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
        $option = $jinput->getCmd('option');

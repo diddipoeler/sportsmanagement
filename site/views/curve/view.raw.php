@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.view');
 
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
@@ -34,17 +36,17 @@ class sportsmanagementViewCurve extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 		
 		// Get a reference of the page instance in joomla
-		$document = JFactory::getDocument();
-		$uri      = JFactory::getURI();
+		$document = Factory::getDocument();
+		$uri      = Factory::getURI();
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/json2.js';
 		$document->addScript($js);
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
 		$document->addScript($js);
 
-		$division = JFactory::getApplication()->input->getInt('division', 0);
+		$division = Factory::getApplication()->input->getInt('division', 0);
 
 		$model = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );

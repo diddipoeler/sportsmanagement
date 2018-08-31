@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      imagehandler.php
@@ -11,6 +10,7 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
@@ -38,18 +38,17 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
      * @since 0.9
      */
     function upload() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         // Check for request forgeries
         JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
-        $file = JFactory::getApplication()->input->getVar('userfile', '', 'files', 'array');
-        //$task	= JFactory::getApplication()->input->getVar( 'task' );
-        $type = JFactory::getApplication()->input->getVar('type');
+        $file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
+        $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
-        $field = JFactory::getApplication()->input->getVar('field');
-        $linkaddress = JFactory::getApplication()->input->getVar('linkaddress');
+        $field = Factory::getApplication()->input->getVar('field');
+        $linkaddress = Factory::getApplication()->input->getVar('linkaddress');
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
         JClientHelper::setCredentialsFromRequest('ftp');
@@ -121,16 +120,16 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy {
      * @since 0.9
      */
     function delete() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         // Set FTP credentials, if given
         jimport('joomla.client.helper');
         JClientHelper::setCredentialsFromRequest('ftp');
 
         // Get some data from the request
-        $images = JFactory::getApplication()->input->getVar('rm', array(), '', 'array');
-        $type = JFactory::getApplication()->input->getVar('type');
+        $images = Factory::getApplication()->input->getVar('rm', array(), '', 'array');
+        $type = Factory::getApplication()->input->getVar('type');
 
         $folder = ImageSelectSM::getfolder($type);
 

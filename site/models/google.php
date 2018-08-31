@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 JLoader::import( 'joomla.application.component.model' );
 
@@ -30,7 +31,7 @@ class sportsmanagementModelGoogle extends JModelLegacy
 
 	public function getDBCalendars() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		if ($this->cached_data == null) 
         {
 			$calendars = jsmGCalendarDBUtil::getAllCalendars();

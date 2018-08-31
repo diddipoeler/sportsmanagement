@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -37,7 +38,7 @@ class sportsmanagementControllerResults extends JControllerLegacy
 	{
 		parent::__construct($config);
     // Initialise variables.
-    $this->app = JFactory::getApplication();
+    $this->app = Factory::getApplication();
     // JInput object
     $this->jinput = $this->app->input;
     $this->jsmoption = $this->jinput->getCmd('option');
@@ -89,7 +90,7 @@ class sportsmanagementControllerResults extends JControllerLegacy
     public function saveshort()
 	{
 	// Initialise variables.
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
     $jinput = $app->input;
     $model = $this->getModel('results');

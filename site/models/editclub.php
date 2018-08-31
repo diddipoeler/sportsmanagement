@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 //jimport('joomla.application.component.model');
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
@@ -76,11 +77,11 @@ class sportsmanagementModelEditClub extends JModelForm
    */
   function __construct()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		parent::__construct();
 
-		$this->projectid = JFactory::getApplication()->input->getInt( 'p', 0 );
-		$this->clubid = JFactory::getApplication()->input->getInt( 'cid', 0 );
+		$this->projectid = Factory::getApplication()->input->getInt( 'p', 0 );
+		$this->clubid = Factory::getApplication()->input->getInt( 'cid', 0 );
         $this->name = 'club';
         
 	}
@@ -92,7 +93,7 @@ class sportsmanagementModelEditClub extends JModelForm
    */
   function getClub()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		if ( is_null( $this->club  ) )
 		{
 			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
@@ -107,12 +108,12 @@ class sportsmanagementModelEditClub extends JModelForm
          */
         public function getForm($data = array(), $loadData = true)
         {
-            $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+            $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
  
-        $app = JFactory::getApplication('site');
+        $app = Factory::getApplication('site');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
  
         // Get the form.
@@ -162,9 +163,9 @@ class sportsmanagementModelEditClub extends JModelForm
 	 */
 	protected function loadFormData()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getClub();

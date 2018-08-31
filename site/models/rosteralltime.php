@@ -39,6 +39,7 @@
 
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 //jimport('joomla.application.component.model');
 jimport('joomla.application.component.modellist');
@@ -87,14 +88,14 @@ var $_identifier = "rosteralltime";
 	function __construct()
 	{
 		parent::__construct();
-$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // JInput object
        $jinput = $app->input;
 		self::$projectid = (int) $jinput->get( 'p', 0 );
 		self::$teamid = (int) $jinput->get( 'tid', 0 );
 		self::$projectteamid = (int) $jinput->get( 'ttid', 0 );
-		self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+		self::$cfg_which_database = Factory::getApplication()->input->get('cfg_which_database', 0, 'INT');
         $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 	}
     
@@ -108,7 +109,7 @@ $option = JFactory::getApplication()->input->getCmd('option');
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -152,15 +153,14 @@ public function getStart()
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
         
         // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
@@ -177,7 +177,7 @@ public function getStart()
     function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -185,7 +185,7 @@ public function getStart()
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
         
         $query->select('tp.person_id AS person_id');
         //$query->select('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
@@ -219,9 +219,9 @@ public function getStart()
      */
     function getPlayerPosition()
     {
-         $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+         $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  // Select some fields
         $query->select('po.*');
@@ -243,9 +243,9 @@ return $db->loadObjectList();
      */
     function getPositionEventTypes($positionId=0)
 	{
-	    $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	    $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
 		$result = array();
         
@@ -285,9 +285,9 @@ return $db->loadObjectList();
      */
     function getTeam()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  
 		if (is_null($this->team))
@@ -329,9 +329,9 @@ return $db->loadObjectList();
 	 */
 	function getTeamPlayers($persontype = 1,$positioneventtypes = array(),$items = array() )
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
 	
     $person_range = array();	
@@ -409,7 +409,7 @@ return $db->loadObjectList();
             $this->_all_time_players[$player->pid]->out = 0;
         }
         
-        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,JFactory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
+        $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>'),'');
 $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;

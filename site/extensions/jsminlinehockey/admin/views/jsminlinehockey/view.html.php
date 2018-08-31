@@ -47,8 +47,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.view');
 jimport('joomla.html.html.select');
 
 /**
@@ -68,16 +68,16 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
      * @return void
      */
     function init() {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $mainframe = Factory::getApplication();
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDBO();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 
         //$model = $this->getModel();
 
@@ -112,7 +112,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
      */
     protected function addToolbar() {
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // Set toolbar items for the page
         JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
         JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');

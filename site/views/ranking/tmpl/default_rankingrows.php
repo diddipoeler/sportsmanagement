@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('behavior.tooltip');
 
 $current = &$this->current;
@@ -192,8 +194,8 @@ $this->overallconfig['use_jquery_modal']);
     //**********START OPTIONAL COLUMNS DISPLAY
     foreach ($columns AS $c) {
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
         $routeparameter['p'] = $this->project->slug;
         $routeparameter['tid'] = $team->team->team_slug;
         $routeparameter['division'] = 0;
@@ -680,8 +682,8 @@ $this->overallconfig['use_jquery_modal']);
                                 break;
                         }
                         $routeparameter = array();
-                        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                         $routeparameter['p'] = $g->project_slug;
                         $routeparameter['mid'] = $g->slug;
                         $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);

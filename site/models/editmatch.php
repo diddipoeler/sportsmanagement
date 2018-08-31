@@ -57,7 +57,7 @@ const MATCH_ROSTER_RESERVE		= 3;
     function __construct()
 	{
 		 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -84,9 +84,9 @@ const MATCH_ROSTER_RESERVE		= 3;
  */
 function updateReferees($data)
 	{
-		$app = JFactory::getApplication();
-        $config = JFactory::getConfig();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $config = Factory::getConfig();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -111,7 +111,7 @@ return $result;
 	 */
 	function updateStaff($data)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 $data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
 $result = sportsmanagementModelMatch::updateStaff($data);
@@ -131,7 +131,7 @@ return $result;
  */
 function updateRoster($data)
     {
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 $data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 $result = sportsmanagementModelMatch::updateRoster($data);
@@ -147,7 +147,7 @@ return $result;
      */
     function updItem($data)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         foreach( $data['request'] as $key => $value)
         {
@@ -187,7 +187,7 @@ return $result;
 	function getData()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a db connection.
@@ -257,8 +257,8 @@ return $result;
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
-        $app = JFactory::getApplication('site');
+		$cfg_which_media_tool = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
+        $app = Factory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
 		if (empty($form))
@@ -278,7 +278,7 @@ return $result;
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();

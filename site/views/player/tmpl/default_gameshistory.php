@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
 ?>
@@ -129,14 +131,14 @@ catch (Exception $e)
             foreach ($this->games as $game)
 			{
 			 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->match_slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $this->teams[$game->projectteam1_id]->team_slug;
 $routeparameter['ptid'] = 0;
@@ -155,7 +157,7 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 				<tr class="">
 					<td class="">
 					<?php
-$jdate = JFactory::getDate($game->match_date);
+$jdate = Factory::getDate($game->match_date);
 $jdate->setTimezone(new DateTimeZone($this->project->timezone));
 $body = $jdate->format('l, d.F Y H:i'); 		    
 					echo HTMLHelper::link($report_link,$body);

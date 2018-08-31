@@ -9,6 +9,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.model' );
 
@@ -37,7 +38,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
     function __construct( )
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 

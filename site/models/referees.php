@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -36,9 +38,9 @@ class sportsmanagementModelReferees extends JModelLegacy
 	function __construct()
 	{
 		
-        self::$projectid = JFactory::getApplication()->input->getInt( 'p', 0 );
+        self::$projectid = Factory::getApplication()->input->getInt( 'p', 0 );
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+        self::$cfg_which_database = Factory::getApplication()->input->getInt( 'cfg_which_database', 0 );
 		parent::__construct();
 	}
     
@@ -49,8 +51,8 @@ class sportsmanagementModelReferees extends JModelLegacy
 	 */
 	function getReferees()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
     $query = $db->getQuery(true);
     $subquery = $db->getQuery(true);

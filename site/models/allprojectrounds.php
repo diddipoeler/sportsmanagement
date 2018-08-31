@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.model' );
 
@@ -68,10 +69,9 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 	function __construct( )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-    //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
     $this->projectid = $jinput->request->get('p', 0, 'INT');
     sportsmanagementModelProject::$projectid = $this->projectid;
     sportsmanagementModelProject::$projectslug = $this->projectid;
@@ -106,9 +106,9 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
    */
   function getProjectMatches()
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
   
   $result = array();
@@ -161,9 +161,9 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
    */
   function getProjectTeamID($favteams)
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
   
   foreach ( $favteams as $key => $value )
@@ -189,9 +189,9 @@ $this->ProjectTeams[$value] = $db->loadResult();
    */
   function getSubstitutes()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$projectteamplayer = array();
@@ -265,9 +265,9 @@ $this->ProjectTeams[$value] = $db->loadResult();
 	 */
 	function getPlayersEvents()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$playersevents = array();
@@ -314,9 +314,9 @@ if ( !$res )
    */
   function getMatchPlayers()
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
 	$projectteamplayer = array();
@@ -408,7 +408,7 @@ if ( !$res )
    */
   function getRoundsColumn($rounds,$config)
   {
-  $app = JFactory::getApplication();
+  $app = Factory::getApplication();
   
   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'Error');
   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 JLoader::import( 'joomla.application.component.model' );
 
@@ -28,19 +29,19 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 
 	public function getGoogleCalendarFeeds() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
-		$startDate = JFactory::getApplication()->input->getVar('start', null, 'GET');
-		$endDate = JFactory::getApplication()->input->getVar('end', null, 'GET');
+		$startDate = Factory::getApplication()->input->getVar('start', null, 'GET');
+		$endDate = Factory::getApplication()->input->getVar('end', null, 'GET');
 
 		$calendarids = '';
-		if (JFactory::getApplication()->input->getVar('gcids', null) != null) {
-			if(is_array(JFactory::getApplication()->input->getVar('gcids', null)))
-				$calendarids = JFactory::getApplication()->input->getVar('gcids', null);
+		if (Factory::getApplication()->input->getVar('gcids', null) != null) {
+			if(is_array(Factory::getApplication()->input->getVar('gcids', null)))
+				$calendarids = Factory::getApplication()->input->getVar('gcids', null);
 			else
-				$calendarids = explode(',', JFactory::getApplication()->input->getVar('gcids', null));
+				$calendarids = explode(',', Factory::getApplication()->input->getVar('gcids', null));
 		} else {
-			$calendarids = JFactory::getApplication()->input->getVar('gcid', null);
+			$calendarids = Factory::getApplication()->input->getVar('gcid', null);
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
         

@@ -13,6 +13,8 @@ defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 //add js file
 HTMLHelper::_('behavior.framework');
 
@@ -48,13 +50,13 @@ HTMLHelper::_('behavior.framework');
     switch ($this->config['show_picture'])
 	{
     case 'logo_small':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     case 'logo_middle':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     case 'logo_big':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     case 'projectteam_picture':
     echo sportsmanagementHelper::getPictureThumb($team->projectteam_picture,$team->name,$this->config['picture_width'],'auto',1);
@@ -66,22 +68,22 @@ HTMLHelper::_('behavior.framework');
     echo JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'logo_small_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_small':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     case 'logo_middle_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_middle':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     case 'logo_big_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_big':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
     break;
     
     }
