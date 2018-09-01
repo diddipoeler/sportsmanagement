@@ -590,7 +590,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
         if(in_array($editorgroup,$groups))
         {
-            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ALLOWED'),'Notice');
+            //$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ALLOWED'),'Notice');
             $showediticon = true;
         }
         else
