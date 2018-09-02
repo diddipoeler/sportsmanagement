@@ -11,7 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Registry\Registry;
 
@@ -24,7 +23,7 @@ use Joomla\Registry\Registry;
  * @version 2014
  * @access public
  */
-class sportsmanagementTableagegroup extends Table 
+class sportsmanagementTableagegroup extends JSMTable 
 {
 	/**
 	 * Constructor
@@ -59,30 +58,30 @@ class sportsmanagementTableagegroup extends Table
 		return true;
 	}
 	
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-	 * @see JTable:bind
-	 * @since 1.5
-	 */
-	function bind($array, $ignore = '')
-	{
-		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
-		{
-			$registry = new Registry();
-			$registry->loadArray($array['extended']);
-			$array['extended'] = (string) $registry;
-		}
-		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
-		{
-			$registry = new Registry();
-			$registry->loadArray($array['extendeduser']);
-			$array['extendeduser'] = (string) $registry;
-		}
-		return parent::bind($array, $ignore);
-	}
+//	/**
+//	 * Overloaded bind function
+//	 *
+//	 * @param       array           named array
+//	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
+//	 * @see JTable:bind
+//	 * @since 1.5
+//	 */
+//	function bind($array, $ignore = '')
+//	{
+//		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
+//		{
+//			$registry = new Registry();
+//			$registry->loadArray($array['extended']);
+//			$array['extended'] = (string) $registry;
+//		}
+//		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
+//		{
+//			$registry = new Registry();
+//			$registry->loadArray($array['extendeduser']);
+//			$array['extendeduser'] = (string) $registry;
+//		}
+//		return parent::bind($array, $ignore);
+//	}
     
     /**
 	 * Overloaded load function
