@@ -451,7 +451,9 @@ $tippmode = $ptippmode[$pids[$x]];
 				$dJoker = (	isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]]) &&
 							!empty($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "'1'" : 'NULL';
 				*/
-				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "1" : 'NULL';
+				//$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "1" : 'NULL';
+				//Änderung wegen Joomla4, ansonsten wird NICHT gespeichert!
+				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? '1' : '0';
 				//echo 'Joker:~'.$dJoker.'~ ';
 
 				$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; 
