@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewDivision
@@ -36,14 +37,16 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $starttime = microtime(); 
 		$lists = array();
 
-		// Check for errors.
+		/**
+         * Check for errors.
+         */
 		if (count($errors = $this->get('Errors'))) 
 		{
-			JError::raiseError(500, implode('<br />', $errors));
+            $this->app->enqueueMessage(implode("\n",$errors));
 			return false;
 		}
 
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
 $count_teams = $this->model->count_teams_division($this->item->id);
@@ -61,8 +64,6 @@ $this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_team
 	*/
 	protected function addToolbar()
 	{	
-//	$app	= JFactory::getApplication();
-//	$jinput	= $app->input;
 	$this->jinput->set('hidemainmenu', true);
 	$this->jinput->set('pid', $this->project_id);
 
