@@ -37,15 +37,6 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $starttime = microtime(); 
 		$lists = array();
 
-		/**
-         * Check for errors.
-         */
-		if (count($errors = $this->get('Errors'))) 
-		{
-            $this->app->enqueueMessage(implode("\n",$errors));
-			return false;
-		}
-
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
@@ -66,10 +57,8 @@ $this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_team
 	{	
 	$this->jinput->set('hidemainmenu', true);
 	$this->jinput->set('pid', $this->project_id);
-
     $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
     $this->icon = 'division';
-    
     parent::addToolbar();
 	}	
     

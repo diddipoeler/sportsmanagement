@@ -10,6 +10,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+
 jimport('joomla.html.parameter.element.timezones');
 
 require_once(JPATH_COMPONENT.DS.'models'.DS.'sportstypes.php');
@@ -45,15 +49,8 @@ class sportsmanagementViewProject extends sportsmanagementView
 			return;
 		}
         
-        JFactory::getApplication()->input->setVar('hidemainmenu', true);
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-        
+        Factory::getApplication()->input->setVar('hidemainmenu', true);
+       
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
@@ -103,13 +100,13 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$this->item = $this->get('Item');
    
 	$iProjectDivisionsCount = 0;
-	$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+	$mdlProjectDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
 	
 	if ( $this->item->project_art_id != 3 )
 	{
 		$iProjectPositionsCount = 0;
-		$mdlProjectPositions = JModelLegacy::getInstance('Projectpositions', 'sportsmanagementModel');
+		$mdlProjectPositions = BaseDatabaseModel::getInstance('Projectpositions', 'sportsmanagementModel');
 /**
  *     sind im projekt keine positionen vorhanden, dann
  *     bitte einmal die standard positionen, torwart, abwehr,
@@ -124,15 +121,15 @@ class sportsmanagementViewProject extends sportsmanagementView
 	}
     	
 	$iProjectRefereesCount = 0;
-	$mdlProjectReferees = JModelLegacy::getInstance('Projectreferees', 'sportsmanagementModel');
+	$mdlProjectReferees = BaseDatabaseModel::getInstance('Projectreferees', 'sportsmanagementModel');
 	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->item->id);
 		
 	$iProjectTeamsCount = 0;
-	$mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
+	$mdlProjecteams = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
 	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->item->id);
 		
 	$iMatchDaysCount = 0;
-	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
+	$mdlRounds = BaseDatabaseModel::getInstance("Rounds", "sportsmanagementModel");
 	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
 		
 	$this->project	= $this->item;
@@ -163,7 +160,7 @@ class sportsmanagementViewProject extends sportsmanagementView
         $this->icon = 'project';
    
         $bar = JToolBar::getInstance('toolbar');
-        switch ( JComponentHelper::getParams($this->option)->get('which_article_component') )
+        switch ( ComponentHelper::getParams($this->option)->get('which_article_component') )
     {
         case 'com_content':
         $bar->appendButton('Link', 'featured', 'Kategorie', 'index.php?option=com_categories&extension=com_content');

@@ -13,8 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\Form;
-//jimport('joomla.form.form');
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewTemplate
@@ -37,18 +38,9 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	{
 		$lists = array();
 		$starttime = microtime();
-
-/**
- * Check for errors.
- */
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		
+	
 		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
         
         
@@ -63,7 +55,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         switch ( $this->form->getName() )
         {
             case 'ranking':
-            $mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
+            $mdlProjecteams = BaseDatabaseModel::getInstance('Projectteams', 'sportsmanagementModel');
 			$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
 			$this->teamscount = $iProjectTeamsCount;
 			$this->form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
@@ -90,7 +82,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $templates = array();
         $res = $this->model->getAllTemplatesList($project->id, $master_id);
         $templates = array_merge($templates, $res);
-        $lists['templates'] = JHtml::_('select.genericlist',$templates, 
+        $lists['templates'] = HTMLHelper::_('select.genericlist',$templates, 
 		'new_id', 
 		'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
 		'value', 
@@ -106,7 +98,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 /**
  * Load the language files for the contact integration
  */
-		$jlang = JFactory::getLanguage();
+		$jlang = Factory::getLanguage();
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
@@ -119,8 +111,8 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-        JFactory::getApplication()->input->set('hidemainmenu', true);
-        JFactory::getApplication()->input->set('pid', $this->project_id);
+        $this->jinput->set('hidemainmenu', true);
+        $this->jinput->set('pid', $this->project_id);
         $this->item->name = $this->item->template;
         $this->title = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(Text::_($this->item->title)));
         $this->icon = 'template';

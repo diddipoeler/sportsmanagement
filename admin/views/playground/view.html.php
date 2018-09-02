@@ -11,7 +11,10 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri; 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+
 /**
  * sportsmanagementViewPlayground
  * 
@@ -31,27 +34,6 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$this->app = JFactory::getApplication();
-        $starttime = microtime(); 
-        
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		
- 
-/**
- * Check for errors.
- */
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-
-        
         
         if ( $this->item->latitude == 255 )
         {
@@ -65,15 +47,15 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		
 		$this->extended	= sportsmanagementHelper::getExtended($this->item->extended, 'playground');
         
-$this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-$this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
+$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
 
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 	}
 		else
 		{		
-		$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/playground/tmpl/edit.js');
+		$this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/playground/tmpl/edit.js');
 		}
 
 	}
@@ -86,8 +68,7 @@ if( version_compare(JSM_JVERSION,'4','eq') )
 	 */
 	protected function addToolBar() 
 	{
-		$jinput = JFactory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
+        $this->jinput->set('hidemainmenu', true);
         parent::addToolbar();
 	}
     

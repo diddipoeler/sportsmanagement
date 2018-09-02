@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 /**
  * sportsmanagementViewProjectReferee
  * 
@@ -24,7 +26,6 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementViewProjectReferee extends sportsmanagementView
 {
 
-	
 	/**
 	 * sportsmanagementViewProjectReferee::init()
 	 * 
@@ -32,17 +33,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        $this->show_debug_info	= JComponentHelper::getParams($this->option)->get('show_debug_info', 0);
 		$lists = array();
- 
-/**
- * Check for errors.
- */
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
         
         $this->_persontype = $this->jinput->get('persontype');
         if ( empty($this->_persontype) )
@@ -51,29 +42,20 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         }
         
         $this->project_id	= $this->item->project_id;
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project	= $project;
         
         $person_id	= $this->item->person_id;
-        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+        $mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson(0,$person_id);
 /**
  * name für den titel setzen
  */
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
-        
         $this->project_person	= $project_person;
-                      
-        
-        if ( $this->show_debug_info )
-        {
-            $this->app->enqueueMessage(Text::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
-        }
-        
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectreferee');		
 		$this->extended	= $extended;
-
 	}
 
 	

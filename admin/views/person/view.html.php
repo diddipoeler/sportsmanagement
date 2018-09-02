@@ -11,6 +11,10 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri; 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewPerson
@@ -31,24 +35,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
-	$starttime = microtime();
-       
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
-/**
- * Check for errors.
- */
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-
-                
+               
 /**
  * name für den titel setzen
  */
@@ -149,16 +136,14 @@ class sportsmanagementViewPerson extends sportsmanagementView
 /**
  * Load the language files for the contact integration
  */
-	$jlang = JFactory::getLanguage();
+	$jlang = Factory::getLanguage();
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
         
-//	$document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
-//	$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
-$this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
-$this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
-$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/person/tmpl/edit.js');
+$this->document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
+$this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/person/tmpl/edit.js');
     
 	}
  
@@ -170,13 +155,9 @@ $this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/pe
 	 */
 	protected function addToolBar() 
 	{
-  	        
-	$jinput = JFactory::getApplication()->input;
-	$jinput->set('hidemainmenu', true);
-	
-	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
+	$this->jinput->set('hidemainmenu', true);
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
 	$this->icon = 'person';
-    
 	parent::addToolbar();
         
 	}

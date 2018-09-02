@@ -76,10 +76,14 @@ class sportsmanagementView extends HtmlView
 	 */
 	public function display ($tpl = null)
 	{
-        
+        $this->app = Factory::getApplication();
+        $this->starttime = microtime(); 
+        /**
+         * Check for errors.
+         */
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			$this->app->enqueueMessage(implode("\n",$errors));
 			return false;
 		}
         
@@ -101,7 +105,6 @@ class sportsmanagementView extends HtmlView
         
         $this->document	= Factory::getDocument();
         $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->format = $this->jinput->getCmd('format');

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
+
 /**
  * sportsmanagementViewClub
  * 
@@ -37,16 +38,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 		
         $starttime = microtime(); 
         $this->tmpl	= $this->jinput->get('tmpl');
- 
-		/**
-         * Check for errors.
-         */
-		if (count($errors = $this->get('Errors'))) 
-		{
-			$this->app->enqueueMessage(implode("\n",$errors));
-			return false;
-		}
-        
+       
         if ( $this->item->latitude != 255 )
         {
             $this->googlemap = true;
@@ -134,7 +126,6 @@ $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/clu
 		$this->jinput->set('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADD_NEW');
         $this->icon = 'club';
-       
         parent::addToolbar();
 	}
     

@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewSeason
@@ -31,13 +32,6 @@ class sportsmanagementViewSeason extends sportsmanagementView
 	 */
 	public function init ()
 	{
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
 	
 	}
  
@@ -50,10 +44,8 @@ class sportsmanagementViewSeason extends sportsmanagementView
 	protected function addToolBar() 
 	{
         $this->jinput->set('hidemainmenu', true);
-		
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_ADD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASON_ADD_NEW');
         $this->icon = 'season';
-
         parent::addToolbar();
 	}
     

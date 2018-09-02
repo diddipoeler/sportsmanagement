@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
 
@@ -45,55 +48,21 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $user = JFactory::getUser();
-//        $uri = JFactory::getURI();
-		$model = $this->getModel();
-        $document = JFactory::getDocument();
         $browser = JBrowser::getInstance();
-        $config = JComponentHelper::getParams ( 'com_media' );
-        $this->config	= $config ;
-//$this->request_url	= $uri->toString();
-        $project_id	= $app->getUserState( "$option.pid", '0' );
-        $this->project_id	= $project_id;
+        $this->config = ComponentHelper::getParams ( 'com_media' );
+
+        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+//        $this->project_id = $project_id;
         $default_name_format = '';
+       
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+	    $this->projectws = $mdlProject->getProject($this->project_id);
+//        $this->projectws = $projectws;
+        $this->eventsprojecttime = $this->projectws->game_regular_time;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'');
-        
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $projectws = $mdlProject->getProject($this->project_id);
-        $this->projectws	= $projectws;
-        $this->eventsprojecttime	= $projectws->game_regular_time;
-        
-        //JFactory::getApplication()->input->setVar('hidemainmenu', true);
-        
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-        
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-        
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
-        
-        $match = $model->getMatchData($this->item->id);
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
-		$this->extended	= $extended;
-        $this->match	= $match;
-		$this->cfg_which_media_tool	= JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $this->match = $model->getMatchData($this->item->id);
+		$this->extended = sportsmanagementHelper::getExtended($item->extended, 'match');
+		$this->cfg_which_media_tool	= ComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
         
         switch ( $this->getLayout() )
         {
@@ -217,12 +186,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEdit()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-	$document = JFactory::getDocument();
-    $model = $this->getModel();
-    $project_id = $app->getUserState( "$option.pid", '0' );
+	//	$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//	$document = JFactory::getDocument();
+   // $model = $this->getModel();
+   // $project_id = $app->getUserState( "$option.pid", '0' );
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
     
@@ -231,7 +200,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$oldmatches [] = HTMLHelper::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH' ) );
 		$res = array ();
 		$new_match_id = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
-		if ($res = $model->getMatchRelationsOptions ( $project_id, $this->item->id . "," . $new_match_id )) {
+		if ($res = $this->model->getMatchRelationsOptions ( $this->project_id, $this->item->id . "," . $new_match_id )) {
 			foreach ( $res as $m ) {
 				$m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp ( $m ) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 			}
@@ -242,7 +211,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$newmatches [] = HTMLHelper::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH' ) );
 		$res = array ();
 		$old_match_id = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
-		if ($res = $model->getMatchRelationsOptions ( $project_id, $this->item->id . "," . $old_match_id )) {
+		if ($res = $this->model->getMatchRelationsOptions ( $this->project_id, $this->item->id . "," . $old_match_id )) {
 			foreach ( $res as $m ) {
 				$m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp ( $m ) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 			}
@@ -264,7 +233,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $myoptions[] = HTMLHelper::_('select.option', '4', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
         $lists['team_won'] = HTMLHelper::_('select.genericlist', $myoptions, 'team_won', 'class="inputbox" size="1"', 'value', 'text', $this->item->team_won);
         
-        $this->lists	= $lists;
+        $this->lists = $lists;
         $this->setLayout('edit');
     
     }
@@ -276,10 +245,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initPicture()
 	{
-		$jinput = JFactory::getApplication()->input;
-        $option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
-		$model = $this->getModel();
+//		$jinput = JFactory::getApplication()->input;
+//        $option = $jinput->getCmd('option');
+//		$document = JFactory::getDocument();
+//		$model = $this->getModel();
     
 
         $this->setLayout('picture');

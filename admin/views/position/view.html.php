@@ -12,6 +12,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri; 
 
 /**
  * sportsmanagementViewPosition
@@ -33,33 +36,12 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
-		
-        $starttime = microtime(); 
-        
-//        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
-//        {
-//            $this->app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
-//            $this->jquery = true;
-//        }
-//        else
-//        {
-//            $this->app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
-//            $this->jquery = false;
-//        }
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		
+	
         
         //build the html options for parent position
         		$parent_id = array();
 		$parent_id[] = HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
-		$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
@@ -75,7 +57,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
 		unset($parent_id);
         
-        $mdlEventtypes = JModelLegacy::getInstance('Eventtypes', 'sportsmanagementModel');
+        $mdlEventtypes = BaseDatabaseModel::getInstance('Eventtypes', 'sportsmanagementModel');
         
         //build the html select list for events
 		$res = array();
@@ -154,7 +136,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		unset($notusedevents);
         
         // position statistics
-        $mdlStatistics = JModelLegacy::getInstance('Statistics', 'sportsmanagementModel');
+        $mdlStatistics = BaseDatabaseModel::getInstance('Statistics', 'sportsmanagementModel');
         
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
 		
@@ -181,11 +163,10 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			$lists['statistic'] = '<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
                         
-		$this->document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+		$this->document->addScript(Uri::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         
 		$this->lists = $lists;
 	unset($lists);
-        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         	
 	}
  
@@ -197,16 +178,10 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	
-	$jinput = JFactory::getApplication()->input;
-	$jinput->set('hidemainmenu', true);
-        
-	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW');
+	$this->jinput->set('hidemainmenu', true);
+	$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_POSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_POSITION_NEW');
 	$this->icon = 'position';
-        
-
 	parent::addToolbar();
-        
 	}
     
 

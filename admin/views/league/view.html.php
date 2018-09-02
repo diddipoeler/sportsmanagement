@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewLeague
@@ -24,7 +24,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewLeague extends sportsmanagementView
 {
-	
 
 	/**
 	 * sportsmanagementViewLeague::init()
@@ -34,13 +33,6 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init ()
 	{
 		 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-				
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
@@ -59,12 +51,9 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        $jinput = JFactory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
-        
-		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
+        $this->jinput->set('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
         $this->icon = 'league';
-
         parent::addToolbar();
 	}
     

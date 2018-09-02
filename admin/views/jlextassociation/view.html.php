@@ -32,15 +32,6 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 	public function init ()
 	{
 		
-        $starttime = microtime(); 
-		 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-
 	}
  
 	
@@ -51,10 +42,7 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        
-		$app	= JFactory::getApplication();
-		$jinput	= $app->input;
-		$jinput->set('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
 		parent::addToolbar();
 	}
     

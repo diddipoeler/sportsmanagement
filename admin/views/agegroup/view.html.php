@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewagegroup
@@ -33,13 +33,6 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	public function init ()
 	{
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-
 	}
 	
 	/**
@@ -49,11 +42,9 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{ 
-        
-		Factory::getApplication()->input->setVar('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
+		$this->jinput->setVar('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
         $this->icon = 'agegroup';
-        		
         parent::addToolbar();
 	}
 	
