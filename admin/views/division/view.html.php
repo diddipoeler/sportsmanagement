@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewDivision
@@ -60,12 +61,12 @@ $this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_team
 	*/
 	protected function addToolbar()
 	{	
-	$app	= JFactory::getApplication();
-	$jinput	= $app->input;
-	$jinput->set('hidemainmenu', true);
-	$jinput->set('pid', $this->project_id);
+//	$app	= JFactory::getApplication();
+//	$jinput	= $app->input;
+	$this->jinput->set('hidemainmenu', true);
+	$this->jinput->set('pid', $this->project_id);
 
-    $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
+    $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
     $this->icon = 'division';
     
     parent::addToolbar();

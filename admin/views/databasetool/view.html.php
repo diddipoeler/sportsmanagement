@@ -11,8 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-//jimport( 'joomla.application.component.view' );
+use Joomla\CMS\Factory;
 
 
 /**
@@ -36,18 +35,16 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
 	public function init ($tpl = null)
 	{
 		$db		= sportsmanagementHelper::getDBConnection();
-		$uri	= JFactory::getURI();
+		$uri	= Factory::getURI();
         $model	= $this->getModel();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $document = Factory::getDocument();
         //$this->state = $this->get('State'); 
-        $command = JFactory::getApplication()->input->getCmd('task');
+        $command = Factory::getApplication()->input->getCmd('task');
         
         $this->assign('request_url',$uri->toString());
-        
-        //$command2 = JFactory::getApplication()->input->getVar('task');
-        
+       
         $this->task = $command;
         // Explode the controller.task command.
 	   //list ($this->controller, $this->task) = explode('.', $command);
@@ -137,7 +134,7 @@ $document->addScriptDeclaration( $javascript );
 
 /*        
         // Load our Javascript
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript('../media/com_joomlaupdate/json2.js');
 		$document->addScript('../media/com_joomlaupdate/encryption.js');
 		$document->addScript('../media/com_joomlaupdate/update.js');
@@ -156,7 +153,7 @@ $document->addScriptDeclaration( $javascript );
 	protected function addToolbar()
 	{
   		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -166,7 +163,7 @@ $document->addScriptDeclaration( $javascript );
 		JToolbarHelper::back();
 		JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
+        JToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
 	}	
 	
 }

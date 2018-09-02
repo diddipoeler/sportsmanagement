@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewagegroup
@@ -49,7 +50,7 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	protected function addToolBar() 
 	{ 
         
-		JFactory::getApplication()->input->setVar('hidemainmenu', true);
+		Factory::getApplication()->input->setVar('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
         $this->icon = 'agegroup';
         		

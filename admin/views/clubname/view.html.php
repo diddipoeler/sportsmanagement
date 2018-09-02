@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewclubname
@@ -51,7 +51,7 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	protected function addToolBar() 
 	{ 
         
-		JFactory::getApplication()->input->setVar('hidemainmenu', true);
+		Factory::getApplication()->input->setVar('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_NEW');
         $this->icon = 'clubname';
         		
