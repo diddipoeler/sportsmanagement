@@ -1122,11 +1122,17 @@ $result = false;
         $query->where('m.published = 1' );
         
         $query->order('m.match_date DESC,t1.short_name' );
-               
+try{               
 		$db->setQuery($query);
 		$matches = $db->loadObjectList();
-        
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+	$matches = false;
+}
         
 		if ($matches)
 		{
