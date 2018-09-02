@@ -11,10 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableClub
@@ -25,9 +22,10 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableClub extends JTable
+class sportsmanagementTableClub extends JSMTable
 {
-	/**
+	
+    /**
 	 * Constructor
 	 *
 	 * @param object Database connector object
@@ -36,7 +34,7 @@ class sportsmanagementTableClub extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club', 'id', $db );
+		parent::__construct( '#__sportsmanagement_club', 'id', $db );
 	}
 
 	/**
@@ -49,7 +47,7 @@ class sportsmanagementTableClub extends JTable
 	function check()
 	{	
 		// setting alias
-        $this->alias = JFilterOutput::stringURLSafe( $this->name );
+        $this->alias = OutputFilter::stringURLSafe( $this->name );
         
 //		if ( empty( $this->alias ) )
 //		{
