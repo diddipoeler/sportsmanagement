@@ -55,6 +55,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
 //        $this->project_id = $project_id;
         $default_name_format = '';
        
+       // get the Data
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');  
+        
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $this->projectws = $mdlProject->getProject($this->project_id);
 //        $this->projectws = $projectws;
