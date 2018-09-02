@@ -66,7 +66,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $this->eventsprojecttime = $this->projectws->game_regular_time;
         
         $this->match = $this->model->getMatchData($this->item->id);
-		$this->extended = sportsmanagementHelper::getExtended($item->extended, 'match');
+		$this->extended = sportsmanagementHelper::getExtended($this->item->extended, 'match');
 		$this->cfg_which_media_tool	= ComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
         
         switch ( $this->getLayout() )
