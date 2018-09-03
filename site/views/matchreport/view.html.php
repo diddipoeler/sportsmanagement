@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
@@ -87,7 +88,7 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->staffstats = $this->model->getMatchStaffStats();
         
 $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
-		$jRegistry = new JRegistry;
+		$jRegistry = new Registry;
 		$jRegistry->loadString($match->extended, 'ini');
 		$extended = JForm::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
 		$extended->bind($jRegistry);
