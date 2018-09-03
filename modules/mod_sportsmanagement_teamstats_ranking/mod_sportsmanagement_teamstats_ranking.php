@@ -32,6 +32,10 @@ if (!class_exists('JSMModelLegacy'))
 {
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
 }
+if (!class_exists('JSMCountries')) 
+{
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 /**
