@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 
 $app = JFactory::getApplication();
 
@@ -168,7 +169,7 @@ if (count($matches) > 0){
 			if (!empty($match['heading'])) $show_pheading = true;
 			$pheading .= $match['heading'];
 		}
-		include(JModuleHelper::getLayoutPath($module->module, $template.DS.'match'));
+		include(ModuleHelper::getLayoutPath($module->module, $template.DS.'match'));
 		$lastheading = $heading;
 		$oldprojectid = $match['project_id'];
 		$oldround_id = $match['round_id'];

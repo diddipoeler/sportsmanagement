@@ -12,6 +12,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -52,6 +53,6 @@ $list = modJSMNewProjectHelper::getData($new_project_article,$mycategory);
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

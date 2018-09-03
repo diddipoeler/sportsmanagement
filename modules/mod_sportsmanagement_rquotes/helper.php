@@ -11,7 +11,7 @@
  
 //no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Helper\ModuleHelper;
 
 
 /**
@@ -36,7 +36,7 @@ class modRquotesHelper
  */
 static function renderRquote(&$rquote, &$params,$module)
 	{	
-	require(JModuleHelper::getLayoutPath($module->module,'_rquote'));
+	require(ModuleHelper::getLayoutPath($module->module,'_rquote'));
 	}
 //---------------------------------------------------------------------------------------------------------------------------------------------------	
 /**
@@ -342,7 +342,7 @@ jimport('joomla.filesystem.file');
 		$rows = explode("\n", $contents);
 		$num = rand(0,$count-1);
 		
-	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
+	require(ModuleHelper::getLayoutPath($module->module,'textfile'));
 
 	return $rows;
  }
@@ -368,7 +368,7 @@ function getTextFile2(&$params,$filename,$module)
 	$count = count($lines);
 	$rows = explode("\n", $contents);
 
-	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
+	require(ModuleHelper::getLayoutPath($module->module,'textfile'));
 	}
 
 //------------------------------------------------------------------------------------------------	

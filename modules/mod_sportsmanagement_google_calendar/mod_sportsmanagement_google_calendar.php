@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Helper\ModuleHelper;
 
 try
 {
@@ -31,7 +32,7 @@ try
 	);
 
 	// Get the Layout
-	require JModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+	require ModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
 }
 catch(Exception $e)
 {

@@ -12,6 +12,7 @@
 // No direct access
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -70,5 +71,5 @@ $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 //Layout
-require JModuleHelper::getLayoutPath('mod_sportsmanagement_eventsranking');
+require ModuleHelper::getLayoutPath('mod_sportsmanagement_eventsranking');
 

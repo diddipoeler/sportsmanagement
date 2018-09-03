@@ -12,6 +12,8 @@
  
  //no direct access
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Helper\ModuleHelper;
+
 if(!defined('DS'))
 {
 define('DS',DIRECTORY_SEPARATOR);
@@ -86,7 +88,7 @@ $list = modRquotesHelper::getTodayRquote($category,$params);
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module, $style,'default'));
+require(ModuleHelper::getLayoutPath($module->module, $style,'default'));
 ?>
 </div>
 <?PHP

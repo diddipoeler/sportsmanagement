@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -132,7 +133,7 @@ $doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module, $params->get('template', 'default') ));
+require(ModuleHelper::getLayoutPath($module->module, $params->get('template', 'default') ));
 ?>
 </div>
 <?PHP
