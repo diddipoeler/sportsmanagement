@@ -9,10 +9,10 @@
  * @subpackage mod_sportsmanagement_ranking
  */
 
-
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -109,7 +109,7 @@ $list = modJSMRankingHelper::getData($params);
 
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">

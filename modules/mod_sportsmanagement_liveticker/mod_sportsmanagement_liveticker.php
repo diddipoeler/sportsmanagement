@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -50,7 +51,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 /*
 // No conflict
 $document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
+$document->addScript(Uri::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
 //$jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
@@ -59,7 +60,7 @@ $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanag
 //$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
 
 $document = JFactory::getDocument();
-$document->addScript(JURI::base().'modules/'.$module->module.'/js/turtushout.js');
+$document->addScript(Uri::base().'modules/'.$module->module.'/js/turtushout.js');
 
 $action = JRequest::getCmd('action');
 
@@ -98,13 +99,13 @@ $table_class    = $params->get( 'table_class', 'table' );
 
 if ($use_local_jquery) 
 {
-$document->addScript(JURI::base().'modules/'.$module->module.'/js/jquery-1.2.3.pack.js');
+$document->addScript(Uri::base().'modules/'.$module->module.'/js/jquery-1.2.3.pack.js');
 }
 
 if ($use_css) 
 {
 //add css file
-$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$use_css);
+$document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$use_css);
 }
     
 $is_ajaxed = isset($_SERVER["HTTP_X_REQUESTED_WITH"])?($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") : false;
@@ -326,7 +327,7 @@ foreach ( $listcomment[$list[$i]->match_id] as $key => $value )
 {
 $list_html .= "<tr>" ;
 $list_html .= "<td width=\"10%\">" . $value->event_time  . "</td>";
-$list_html .= "<td width=\"10%\">" . HTMLHelper::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
+$list_html .= "<td width=\"10%\">" . HTMLHelper::image( Uri::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', 'Kommentar', array(' title' => 'Kommentar'))  . "</td>";
 $list_html .= "<td width=\"80%\">" . $value->notes  . "</td>";    
 $list_html .= "</tr>" ;
 }

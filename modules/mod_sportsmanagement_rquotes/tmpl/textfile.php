@@ -37,8 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
 
-$css = JURI::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
+$css = Uri::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
 $document = JFactory::getDocument();
 $document->addStyleSheet($css); 
  

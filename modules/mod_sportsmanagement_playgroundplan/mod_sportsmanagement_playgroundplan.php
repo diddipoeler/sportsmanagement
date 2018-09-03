@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -59,14 +60,14 @@ $document = JFactory::getDocument();
 /**
  * add css file
  */
-$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 $mode = $params->def("mode");
 
 switch ($mode)
 	{
 	case 0:
-		$document->addScript(JURI::base().'modules'.DS.$module->module.DS.'js/qscroller.js');
+		$document->addScript(Uri::base().'modules'.DS.$module->module.DS.'js/qscroller.js');
 		require_once(dirname(__FILE__).DS.'js'.DS.'ticker.js');
 		break;
 	case 1:

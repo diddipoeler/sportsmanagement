@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
@@ -81,7 +83,7 @@ $usefontawesome = $params_com->get('use_fontawesome');
             } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
                 $thispic = $person['default_picture'];
             }
-            echo '<img class="photo" src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+            echo '<img class="photo" src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
             if ($params->get('picture_width') != '') {
                 echo ' width="' . $params->get('picture_width') . '"';
             }

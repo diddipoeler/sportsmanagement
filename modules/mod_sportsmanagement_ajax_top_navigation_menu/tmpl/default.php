@@ -11,12 +11,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.tooltip');
 
 
 ?>
 <script type="text/javascript">
-var ajaxmenu_baseurl = '<?php echo JUri::base() ?>';
+var ajaxmenu_baseurl = '<?php echo Uri::base() ?>';
 </script>
 
 <div>

@@ -20,11 +20,12 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Uri\Uri;
 
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'fullcalendar' => true));
 
 $document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
+$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
 
 $color = $params->get('event_color', '135CAE');
 $fadedColor = jsmGCalendarUtil::getFadedColor($color);
@@ -112,5 +113,5 @@ $calCode .= "});\n";
 $calCode .= "// ]]>\n";
 $document->addScriptDeclaration($calCode);
 
-echo "<div id='gcalendar_module_".$module->id."_loading' style=\"text-align: center;\"><img src=\"".JURI::base() . "administrator/components/com_sportsmanagement/assets/images/ajax-loader.gif\"  alt=\"loader\" /></div>";
+echo "<div id='gcalendar_module_".$module->id."_loading' style=\"text-align: center;\"><img src=\"".Uri::base() . "administrator/components/com_sportsmanagement/assets/images/ajax-loader.gif\"  alt=\"loader\" /></div>";
 echo "<div id='gcalendar_module_".$module->id."'></div><div id='gcalendar_module_".$module->id."_popup' style=\"visibility:hidden\" ></div>";

@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 $app = JFactory::getApplication();
 
@@ -56,7 +57,7 @@ if (!defined('_JSMMATCHLISTMODPATH'))
 }
 if (!defined('_JSMMATCHLISTMODURL')) 
 { 
-    define('_JSMMATCHLISTMODURL', JURI::base().'modules/'.$module->module.'/');
+    define('_JSMMATCHLISTMODURL', Uri::base().'modules/'.$module->module.'/');
 }
 
 require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
@@ -115,7 +116,7 @@ $doc = JFactory::getDocument();
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');
+$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_3.js' );
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 

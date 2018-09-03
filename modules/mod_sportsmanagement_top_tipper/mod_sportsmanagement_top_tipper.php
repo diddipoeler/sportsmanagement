@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if ( !defined('DS') )
 {
@@ -74,7 +75,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 /**
  * add css file
  */
-$document->addStyleSheet(JURI::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+$document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
 
 $pg_id = $params->get('pg');
 

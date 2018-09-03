@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -80,7 +81,7 @@ $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->g
 }
 else
 {
-$module->picture_server = JURI::root();    
+$module->picture_server = Uri::root();    
 }
 
 $data = new modJSMClubiconsHelper ($params,$module);
@@ -106,7 +107,7 @@ HTMLHelper::_('behavior.mootools');
 }
 
 $doc = JFactory::getDocument();
-//$doc->addStyleSheet(JURI::base() . 'modules'.DS.$module->module.DS.'css/style.css');
+//$doc->addStyleSheet(Uri::base() . 'modules'.DS.$module->module.DS.'css/style.css');
 // Add styles
 $style = '
 .img-zoom {
@@ -129,7 +130,7 @@ $doc->addStyleDeclaration($style);
 if ( $cnt )
 {
 $script =  'script';
-$doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
+$doc->addScript( Uri::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

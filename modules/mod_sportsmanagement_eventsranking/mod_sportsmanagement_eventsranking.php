@@ -13,6 +13,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -68,7 +69,7 @@ $list = modSMEventsrankingHelper::getData($params);
 
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 //Layout
 require ModuleHelper::getLayoutPath('mod_sportsmanagement_eventsranking');

@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if ( !defined('DS') )
 {
@@ -46,7 +47,7 @@ $data        = modJSMSportsHelper::getData($params);
 $document = JFactory::getDocument();
 
 //add css file
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css');
+//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css');
 
 /**
  * wenn die komponente im frontend nicht geladen oder aufgerufen wurde,

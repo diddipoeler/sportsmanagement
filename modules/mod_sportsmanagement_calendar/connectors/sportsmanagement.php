@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Uri\Uri;
 
 /**
  * SportsmanagementConnector
@@ -260,7 +260,7 @@ class SportsmanagementConnector extends JSMCalendar
 			if ($row->picture != '' AND file_exists(JPATH_BASE.DS.$row->picture))
 			{
 				$linkit = 1;
-				$newrows[$key]['name'] = '<img src="'.JUri::root(true).'/'.$row->picture.'" alt="Picture" style="height:40px; vertical-align:middle;margin:0 5px;" />';
+				$newrows[$key]['name'] = '<img src="'.Uri::root(true).'/'.$row->picture.'" alt="Picture" style="height:40px; vertical-align:middle;margin:0 5px;" />';
 
 				//echo $newrows[$key]['name'].'<br />';
 			}

@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 
 ?>
@@ -19,7 +21,7 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 <script type="text/javascript">
 jlcinjectcontainer['<?php echo $module->id ?>'] = '<?php echo $inject_container ?>';
 jlcmodal['<?php echo $module->id ?>'] = '<?php echo $lightbox ?>';
-var calendar_baseurl = '<?php echo JUri::base() ?>';
+var calendar_baseurl = '<?php echo Uri::base() ?>';
 <?PHP
 if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
 {

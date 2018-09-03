@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -331,17 +332,17 @@ if (!defined('JLTOPAM_MODULESCRIPTLOADED'))
 {
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {    
-	$document->addScript( JURI::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
+	$document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
 }    
 else
 {
-    $document->addScript( JURI::base().'modules/'.$module->module.'/js/'.$module->module.'_2.js' );
+    $document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'_2.js' );
 }	
     //	$document->addScriptDeclaration(';
-//    var ajaxmenu_baseurl=\''. JURI::base() . '\';
+//    var ajaxmenu_baseurl=\''. Uri::base() . '\';
 //      ');
-	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
-	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
+	$document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
+	$document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 

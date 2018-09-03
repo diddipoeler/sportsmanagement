@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 switch ($mode) {
     // bootstrap mode template
@@ -238,7 +239,7 @@ switch ($mode) {
                                 } elseif (file_exists(JPATH_BASE . '/' . $person['default_picture']) && $person['default_picture'] != '') {
                                     $thispic = $person['default_picture'];
                                 }
-                                echo '<img src="' . JURI::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
+                                echo '<img src="' . Uri::base() . '/' . $thispic . '" alt="' . $text . '" title="' . $text . '"';
                                 if ($params->get('picture_width') != '') {
                                     echo ' width="' . $params->get('picture_width') . '"';
                                 }

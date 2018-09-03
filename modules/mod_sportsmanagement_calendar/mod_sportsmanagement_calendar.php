@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 $app = JFactory::getApplication();
 
@@ -67,7 +68,7 @@ $startDate= new JDate($params->get('cal_start_date'));
     
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-//$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');    
+//$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');    
 $config = JFactory::getConfig();
 $offset = $config->get('offset');    
 $year = $jinput->getVar('year', $startDate->toFormat('Y'));
@@ -114,21 +115,21 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 {
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {    
-    //$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');
-    $doc->addScript( JURI::root().'/media/system/js/mootools-core-uncompressed.js');
-    $doc->addScript( JURI::root().'/media/system/js/mootools-more-uncompressed.js');
-    $doc->addScript( JURI::root().'/media/system/js/modal-uncompressed.js');
-	$doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
+    //$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
+    $doc->addScript( Uri::root().'/media/system/js/mootools-core-uncompressed.js');
+    $doc->addScript( Uri::root().'/media/system/js/mootools-more-uncompressed.js');
+    $doc->addScript( Uri::root().'/media/system/js/modal-uncompressed.js');
+	$doc->addScript( Uri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
 }
 else
 {
-    $doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'_2.js' );
+    $doc->addScript( Uri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'_2.js' );
 }    
 
 //	$doc->addScriptDeclaration(';
-//    var calendar_baseurl=\''. JUri::base() . '\';
+//    var calendar_baseurl=\''. Uri::base() . '\';
 //      ');
-	$doc->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
+	$doc->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);

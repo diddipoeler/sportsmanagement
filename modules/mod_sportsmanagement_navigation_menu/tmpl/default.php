@@ -40,12 +40,13 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 ?>
 <div id="jl-nav-module">
 <div class="jl-nav-module">
 
-<form method="post" action="<?php echo JUri::root();?>">
+<form method="post" action="<?php echo Uri::root();?>">
 
 <ul class="nav menu<?php echo $params->get('moduleclass_sfx'); ?>">
 

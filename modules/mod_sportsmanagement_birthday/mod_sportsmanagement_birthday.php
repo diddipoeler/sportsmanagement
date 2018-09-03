@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -70,15 +71,15 @@ switch ($mode) {
     if ( $mode == 'L' && $params->get('show_player_card') )
     {
     $attribs['layout'] = 'default_player_card';    
-    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . 'player_card.css');
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     else
     {
 //add css file
-    $document->addStyleSheet(JUri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
-    $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
+    $document->addStyleSheet(Uri::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
+    $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css' . '" type="text/css" />' . "\n";
     $document->addCustomTag($stylelink);
     }
     break;
@@ -112,7 +113,7 @@ switch ($mode) {
         $id = 0;
         $container = 'slider' . $module->id . '_container';
         $layout = isset($attribs['layout']) ? $attribs['layout'] : 'jssor';
-        $document->addScript(JURI::base() . 'modules/' . $module->module . '/js/jssor.slider.mini.js');
+        $document->addScript(Uri::base() . 'modules/' . $module->module . '/js/jssor.slider.mini.js');
 
         if (count($persons) > 0) {
             foreach ($persons AS $person) {

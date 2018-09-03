@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 $refresh = $params->def("refresh");
 $minute = $params->def("minute");
@@ -307,7 +308,7 @@ $a++;
             {
 				$thispic = $club->default_picture;
 			}
-			$birthdaytext .= '<div style="width:100%"><center><img style="" src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
+			$birthdaytext .= '<div style="width:100%"><center><img style="" src="'.Uri::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
 			if ($params->get('picture_width') != '') $birthdaytext .= ' width="'.$params->get('picture_width').'"';
 			$birthdaytext .= ' /></center></div><br />';
 

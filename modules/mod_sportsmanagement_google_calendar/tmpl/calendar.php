@@ -1,12 +1,14 @@
-<?php defined('_JEXEC') or die;
+<?php 
+defined('_JEXEC') or die;
+use Joomla\CMS\Uri\Uri;
 
 // Load the FullCalendar assets
 $document = JFactory::getDocument();
-$document->addStyleSheet(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.css');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/lib/moment.min.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/lang/de.js');
-$document->addScript(JUri::root() . '/modules/mod_google_calendar/media/fullcalendar/gcal.js');
+$document->addStyleSheet(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.css');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/lib/moment.min.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/lang/de.js');
+$document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/gcal.js');
 ?>
 <script>
 	jQuery(document).ready(function($) {

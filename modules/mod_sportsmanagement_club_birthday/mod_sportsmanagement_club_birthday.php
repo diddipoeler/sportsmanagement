@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -86,12 +87,12 @@ $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->g
 }
 else
 {
-$module->picture_server = JURI::root() ;
+$module->picture_server = Uri::root() ;
 }
 }
 
 //add css file
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 
 $mode = $params->def("mode");
 $results = $params->get('limit');
@@ -143,12 +144,12 @@ $scrollpause = $params->def("scrollpause");
 	{
 		case 'B':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
-            //$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+            //$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
         case 'T':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
 			include(dirname(__FILE__).DS.'js'.DS.'ticker.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
 		case 'V':
         
@@ -225,28 +226,28 @@ $html_li = '';
         $wowslider_style = $params->def("wowsliderstyle");
         
 			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
-			//$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jquery.simplyscroll.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/wowslider/'.$wowslider_style.'/style.css');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
+			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/jquery.simplyscroll.js');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/wowslider/'.$wowslider_style.'/style.css');
             
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/'.$wowslider_style.'.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/'.$wowslider_style.'.js');
 
 			break;
 		case 'L':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
 			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
-			//$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
-            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
+			//$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
+            //$document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
+            $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;
             
        case 'J':
        $container = 'slider'.$module->id.'_container';
         $layout = isset($attribs['layout'])?$attribs['layout']:'jssor';
-        $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
+        $document->addScript(Uri::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
 
 $html_li = '';
     $html_ahref = '';
@@ -319,7 +320,7 @@ $html_li .= '</div>';
     }    
         
 
-            $document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
+            $document->addStyleSheet(Uri::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
 			break;     
 	}
     

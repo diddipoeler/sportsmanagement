@@ -37,9 +37,11 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
- //no direct access
- defined('_JEXEC') or die('Restricted access');
-//$css = JURI::base().'modules/mod_rquotes/assets/rquote.css';
+//no direct access
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+
+//$css = Uri::base().'modules/mod_rquotes/assets/rquote.css';
 // $document =& JFactory::getDocument();
 // $document->addStyleSheet($css); 
 

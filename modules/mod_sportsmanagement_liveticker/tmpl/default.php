@@ -37,6 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Uri\Uri;
+
 ?>
 
 <div id="turtushout-warning"><?php echo JText::_( '!Warning! JavaScript must be enabled for proper operation.' ); ?></div>
@@ -84,5 +86,5 @@ $display_add_box = 0;
 
 <script>
 	var turtushout_update_timeout = <?php echo $update_timeout * 1000; ?>;
-	var turtushout_server_url = '<?php echo JURI::root(); ?>';
+	var turtushout_server_url = '<?php echo Uri::root(); ?>';
 </script>

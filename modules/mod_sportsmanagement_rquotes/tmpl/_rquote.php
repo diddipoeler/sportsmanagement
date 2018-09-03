@@ -39,7 +39,9 @@
 
 //no direct access
 defined('_JEXEC') or die('Restricted access');
-$css = JURI::base().'modules/'.$module->module.'/assets/rquote.css';
+use Joomla\CMS\Uri\Uri;
+
+$css = Uri::base().'modules/'.$module->module.'/assets/rquote.css';
 $document = JFactory::getDocument();
 $document->addStyleSheet($css); 
 
@@ -54,7 +56,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',Uri::root() );
 }
 
 if ( !isset($rquote->person_picture) )

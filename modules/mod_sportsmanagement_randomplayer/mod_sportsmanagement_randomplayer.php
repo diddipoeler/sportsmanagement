@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -87,7 +88,7 @@ $document = JFactory::getDocument();
 /**
  * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr  
  * //add css file
- * $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
+ * $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css');
  */
 
 ?>           

@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
@@ -428,7 +429,7 @@ class JSMCalendar extends PHPCalendar
 	function getCalendarLink($month, $year)
 	{
 		$getquery = JRequest::get('GET'); //get the GET query
-		$calendarLink= JUri::current().'?'; //get the current url, without the GET query; and add "?", to set the GET vars
+		$calendarLink= Uri::current().'?'; //get the current url, without the GET query; and add "?", to set the GET vars
 
 		foreach($getquery as $key => $value){  /*this bucle goes through every GET variable that was in the url*/
 			if($key!='month' AND $key!='year' AND $key!='day' AND $value){ /*the month,year, and day Variables must be diferent of the current ones, because this is a link for a diferent month */

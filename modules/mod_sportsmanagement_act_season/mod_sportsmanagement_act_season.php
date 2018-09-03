@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -68,7 +69,7 @@ $season_ids = JComponentHelper::getParams('com_sportsmanagement')->get( 'current
 $list = modJSMActSeasonHelper::getData($season_ids);
 
 //add css file
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
+//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

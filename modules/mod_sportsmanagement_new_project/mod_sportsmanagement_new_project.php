@@ -13,6 +13,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Uri\Uri;
 
 if (! defined('DS'))
 {
@@ -49,7 +50,7 @@ $mycategory      = $params->get( 'mycategory', 0 );
 $list = modJSMNewProjectHelper::getData($new_project_article,$mycategory);
 
 //add css file
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
+//$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
