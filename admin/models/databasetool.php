@@ -25,7 +25,7 @@ jimport('joomla.filesystem.file');
  * @version 2013
  * @access public
  */
-class sportsmanagementModeldatabasetool extends BaseDatabaseModel {
+class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
     var $_sport_types_events = array();
     var $_sport_types_position = array();
