@@ -28,7 +28,7 @@ jimport('joomla.utilities.arrayhelper');
 
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');	
+//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');	
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 // sprachdatei aus dem backend laden
 $langtag = Factory::getLanguage();
