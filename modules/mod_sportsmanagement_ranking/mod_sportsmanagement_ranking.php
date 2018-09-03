@@ -42,7 +42,12 @@ if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get( 'show_query_debug_info' ) );
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+
+//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
