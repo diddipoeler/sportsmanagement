@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.file');
 
@@ -37,9 +38,9 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
         
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
-        $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
-        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
-        $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
+        $mdlDivisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
         $model = $this->getModel();
         $this->paramconfig = sportsmanagementModelRanking::$paramconfig;
         $this->paramconfig['p'] = $this->project->slug;
@@ -59,7 +60,7 @@ class sportsmanagementViewRanking extends sportsmanagementView {
          * sollen die vereinskürzel ersetzt und/oder angezeigt werden ?
          */
         if ($this->config['show_club_short_names'] || $this->config['show_replace_club_short_names']) {
-            $mdlClubnames = JModelLegacy::getInstance("clubnames", "sportsmanagementModel");
+            $mdlClubnames = BaseDatabaseModel::getInstance("clubnames", "sportsmanagementModel");
         }
 
         if (($this->overallconfig['show_project_rss_feed']) == 1) {
