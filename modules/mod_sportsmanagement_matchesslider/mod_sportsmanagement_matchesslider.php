@@ -10,6 +10,8 @@
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -20,11 +22,6 @@ if ( !defined('JSM_PATH') )
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
-
-//if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-//{
-//DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
-//}
 
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
@@ -41,9 +38,9 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php')
 /**
  * soll die externe datenbank genutzt werden ?
  */
-if ( JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
+if ( ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {
@@ -194,6 +191,6 @@ break;
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (! defined('DS'))
 {
@@ -22,13 +23,23 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 

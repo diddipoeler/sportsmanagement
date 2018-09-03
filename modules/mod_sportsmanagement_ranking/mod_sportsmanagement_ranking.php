@@ -23,7 +23,17 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMCountries')) 
+{
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php');
+}
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
@@ -49,7 +59,6 @@ JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.mode
 
 //require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 
 

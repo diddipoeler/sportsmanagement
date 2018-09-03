@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Helper\ModuleHelper;
+
 $app = JFactory::getApplication();
 
 if (! defined('DS'))
@@ -133,6 +135,6 @@ $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(ModuleHelper::getLayoutPath($module->module));
 ?>
 </div>

@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if ( !defined('DS') )
 {
@@ -23,15 +24,17 @@ if ( !defined('JSM_PATH') )
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-if ( !class_exists('JSMModelList') )
-{
-    $classpath = JPATH_ADMINISTRATOR . DS . 'components/com_sportsmanagement' . DS . 'libraries' . DS . 'sportsmanagement' . DS . 'model.php';
-    JLoader::register('JSMModelList', $classpath);
-}
-
 /**
  * prüft vor Benutzung ob die gewünschte Klasse definiert ist
  */
+if (!class_exists('JSMModelList')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
+if (!class_exists('JSMModelLegacy')) 
+{
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
+}
 if ( !class_exists('sportsmanagementHelper') )
 {
 /**
@@ -39,9 +42,9 @@ if ( !class_exists('sportsmanagementHelper') )
  */
     $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
-    JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');
+
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'predictionranking.php' );
@@ -98,7 +101,7 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
 /**
  * das model laden
  */
-$modelpg = JModelLegacy::getInstance('PredictionRanking', 'sportsmanagementModel');
+$modelpg = BaseDatabaseModel::getInstance('PredictionRanking', 'sportsmanagementModel');
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 /**

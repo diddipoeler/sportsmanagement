@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
 
 if (! defined('DS'))
 {
@@ -356,6 +357,6 @@ $layout = 'default_2';
 ?>           
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module,$layout));
+require(ModuleHelper::getLayoutPath($module->module,$layout));
 ?>
 </div>
