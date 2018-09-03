@@ -14,6 +14,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementTeamStatHelper
@@ -35,7 +36,7 @@ class modSportsmanagementTeamStatHelper
 	 */
 	public static function getData(&$params)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $mainframe = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
