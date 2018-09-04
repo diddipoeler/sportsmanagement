@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die();
 
-JLoader::import('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllerjsmGCalendars
  * 
@@ -22,7 +20,7 @@ JLoader::import('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmGCalendars extends JControllerAdmin {
+class sportsmanagementControllerjsmGCalendars extends JSMControllerAdmin {
 
 	/**
 	 * sportsmanagementControllerjsmGCalendars::getModel()

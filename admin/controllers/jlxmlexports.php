@@ -40,10 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
 /**
  * sportsmanagementControllerjlxmlexports
  * 
@@ -53,7 +49,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlxmlexports extends JControllerAdmin
+class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
 {
 
   
