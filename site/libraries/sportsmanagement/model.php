@@ -16,6 +16,28 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 
+class JSMModelAdmin extends AdminModel
+{
+    
+    /**
+     * JSMModelList::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+	{
+// Reference global application object
+$this->jsmapp = Factory::getApplication('site');
+$this->jsmjinput = $this->jsmapp->input;
+$this->jsmoption = $this->jsmjinput->getCmd('option');
+$this->jsmview = $this->jsmjinput->getCmd('view');	   
+       parent::__construct($config);
+       }
+    
+    
+}
+
 /**
  * JSMModelList
  * 
