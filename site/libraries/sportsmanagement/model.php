@@ -16,11 +16,21 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Factory;
 
+/**
+ * JSMModelAdmin
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class JSMModelAdmin extends AdminModel
 {
     
+    
     /**
-     * JSMModelList::__construct()
+     * JSMModelAdmin::__construct()
      * 
      * @param mixed $config
      * @return void

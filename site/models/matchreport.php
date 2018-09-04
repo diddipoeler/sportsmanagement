@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 jimport( 'joomla.filesystem.folder' );
 
@@ -740,7 +741,7 @@ catch (Exception $e)
 	if ( $res )
     {
     	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-		$jRegistry = new JRegistry;
+		$jRegistry = new Registry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $jRegistry->loadString($res); 
