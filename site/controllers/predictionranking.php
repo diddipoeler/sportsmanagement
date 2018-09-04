@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 
 /**
@@ -25,7 +24,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionRanking extends JControllerLegacy
+class sportsmanagementControllerPredictionRanking extends BaseController
 {
 	
     	/**

@@ -11,10 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-
-// Include dependancy of the main controllerform class
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerEditClub
@@ -25,7 +22,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerEditClub extends JControllerForm {
+class sportsmanagementControllerEditClub extends FormController {
 
     /**
      * Class Constructor

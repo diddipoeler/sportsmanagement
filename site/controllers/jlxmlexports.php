@@ -11,8 +11,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjlxmlexports
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @access public
  */
 
-class sportsmanagementControllerjlxmlexports extends JControllerLegacy {
+class sportsmanagementControllerjlxmlexports extends BaseController {
 
     /**
      * sportsmanagementControllerjlxmlexports::display()

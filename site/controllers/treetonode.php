@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerTreetonode
@@ -21,7 +22,7 @@ defined('_JEXEC') or die;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerTreetonode extends JControllerLegacy
+class sportsmanagementControllerTreetonode extends BaseController
 {
 	
 }

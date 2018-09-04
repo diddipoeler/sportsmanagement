@@ -11,8 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerEventsRanking
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @access public
  */
 
-class sportsmanagementControllerEventsRanking extends JControllerLegacy {
+class sportsmanagementControllerEventsRanking extends BaseController {
 
     /**
      * sportsmanagementControllerEventsRanking::display()

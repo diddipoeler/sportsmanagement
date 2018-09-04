@@ -11,8 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -27,7 +26,7 @@ use Joomla\CMS\Factory;
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictionEntry extends JControllerLegacy {
+class sportsmanagementControllerPredictionEntry extends BaseController {
 
     /**
      * sportsmanagementControllerPredictionEntry::__construct()

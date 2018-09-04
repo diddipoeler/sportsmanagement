@@ -11,8 +11,8 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
-jimport('joomla.application.component.controller');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.php'); 
 
 /**
@@ -24,7 +24,7 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.p
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllermatches extends JControllerLegacy {
+class sportsmanagementControllermatches extends BaseController {
 
     /**
      * sportsmanagementControllermatches::__construct()

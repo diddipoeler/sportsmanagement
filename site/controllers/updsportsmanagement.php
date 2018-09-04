@@ -40,9 +40,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
-
-// Include dependancy of the main controllerform class
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerUpdsportsmanagement
@@ -53,7 +51,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerUpdsportsmanagement extends JControllerForm
+class sportsmanagementControllerUpdsportsmanagement extends FormController
 {
 
 	/**

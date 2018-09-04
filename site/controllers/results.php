@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerResults
@@ -24,7 +23,7 @@ jimport( 'joomla.application.component.controller' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerResults extends JControllerLegacy
+class sportsmanagementControllerResults extends BaseController
 {
 
 	

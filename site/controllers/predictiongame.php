@@ -10,8 +10,7 @@
  */
 
 defined('_JEXEC') or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\MVC\Controller\BaseController;
 
 require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.php' ;
 
@@ -24,7 +23,7 @@ require_once JLG_PATH_EXTENSION_PREDICTIONGAME . DS . 'helpers' . DS . 'route.ph
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerPredictiongame extends JControllerLegacy
+class sportsmanagementControllerPredictiongame extends BaseController
 {
 	/**
 	 * sportsmanagementControllerPredictiongame::__construct()
