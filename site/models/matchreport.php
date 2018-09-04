@@ -11,8 +11,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
 
 /**
@@ -24,7 +25,7 @@ jimport( 'joomla.filesystem.folder' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelMatchReport extends JModelLegacy
+class sportsmanagementModelMatchReport extends JSMModelLegacy
 {
 
 	var $matchid = 0;
@@ -154,7 +155,7 @@ catch (Exception $e)
 	 */
 	function getClubinfo($clubid)
 	{
-        $mdl = JModelLegacy::getInstance("club", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
         $this->club = $mdl->getTable();
 		$this->club->load($clubid);
 
