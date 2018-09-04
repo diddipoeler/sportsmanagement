@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 //jimport('joomla.application.component.model');
 jimport( 'joomla.filesystem.folder' );
@@ -155,8 +156,8 @@ catch (Exception $e)
 	 */
 	function getClubinfo($clubid)
 	{
-        $mdl = BaseDatabaseModel::getInstance("club", "sportsmanagementModel");
-        $this->club = $mdl->getTable();
+        $this->club = Table::getInstance("club", "sportsmanagementTable");
+        //$this->club = $mdl->getTable();
 		$this->club->load($clubid);
 
 		return $this->club;
