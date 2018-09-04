@@ -12,10 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
-
 /**
  * sportsmanagementControllerpredictiongames
  * 
@@ -25,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerpredictiongames extends JControllerAdmin
+class sportsmanagementControllerpredictiongames extends JSMControllerAdmin
 {
   
    

@@ -12,8 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
 use Joomla\Utilities\ArrayHelper; 
 use Joomla\CMS\Language\Text;
 
@@ -26,7 +24,7 @@ use Joomla\CMS\Language\Text;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllertreetos extends JControllerAdmin
+class sportsmanagementControllertreetos extends JSMControllerAdmin
 {
 
 /**

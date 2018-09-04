@@ -13,9 +13,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
  
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllerseasons
  * 
@@ -25,16 +22,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-/**
- * sportsmanagementControllerseasons
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementControllerseasons extends JControllerAdmin
+class sportsmanagementControllerseasons extends JSMControllerAdmin
 {
 	/**
 	 * sportsmanagementControllerseasons::applypersons()

@@ -12,9 +12,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * sportsmanagementControllerteams
  * 
@@ -24,7 +21,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerteams extends JControllerAdmin {
+class sportsmanagementControllerteams extends JSMControllerAdmin {
 
     /**
      * Save the manual order inputs from the categories list page.
