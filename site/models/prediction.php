@@ -777,7 +777,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('pt.id = '.(int)$teamID);
 
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ( $object = $db->loadObject() )
 		{
 			return $object->name;
@@ -816,7 +816,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('pt.id = '.(int)$teamID);
                     
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ( $object = $db->loadObject() )
 		{
 			return $object->$which_logo;
@@ -856,7 +856,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('pt.id = '.(int)$teamID);
                     
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		if ($object = $db->loadObject())
 		{
 			return $object->country;
