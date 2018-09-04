@@ -1028,8 +1028,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $groupNames = '';
         // Application Instanz holen
         $app = Factory::getApplication();
-        // ACL Instanz holen
-        $acl = Factory::getACL();
         // JUserobjekt holen
         $user = Factory::getUser();
         
