@@ -126,9 +126,10 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 
 		<td class="td_l playername">
 		<?php
+// JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));			
 		if ( $this->config['link_to_player'] == 1 ) {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
 $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $row->team_id;
@@ -154,7 +155,7 @@ echo HTMLHelper::link( $link, $playerName );
 			if ( ( $this->config['link_to_team'] == 1 ) && ( $this->project->id > 0 ) && ( $row->team_id > 0 ) )
 			{
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
 $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $row->team_id;
@@ -188,7 +189,7 @@ if ($this->multiple_stats == 1)
 <div class="fulltablelink">
 <?php 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
 $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['division'] = $this->division->id;
