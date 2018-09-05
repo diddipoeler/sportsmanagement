@@ -781,7 +781,14 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
 
 			$object->match_number = $post['match_number'.$pks[$x]];
             $object->match_date = $post['match_date'.$pks[$x]];
+            if ( isset($post['result_type'.$pks[$x]]) )
+            {
             $object->result_type = $post['result_type'.$pks[$x]];
+            }
+            else
+            {
+            $object->result_type = 0;    
+            }
             $object->match_result_type = $post['match_result_type'.$pks[$x]];
             $object->crowd = $post['crowd'.$pks[$x]];
             $object->round_id = $post['round_id'.$pks[$x]];
