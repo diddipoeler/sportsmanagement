@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewCurrentseasons
@@ -40,23 +39,23 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
         foreach ($this->items as $item)
 	{
 	   $item->count_projectdivisions = 0;
-		$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+		$mdlProjectDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
 		$item->count_projectdivisions = $mdlProjectDivisions->getProjectDivisionsCount($item->id);
 		
 		$item->count_projectpositions = 0;
-		$mdlProjectPositions = JModelLegacy::getInstance("Projectposition", "sportsmanagementModel");
+		$mdlProjectPositions = BaseDatabaseModel::getInstance("Projectposition", "sportsmanagementModel");
 		$item->count_projectpositions = $mdlProjectPositions->getProjectPositionsCount($item->id);
 		
 		$item->count_projectreferees = 0;
-		$mdlProjectReferees = JModelLegacy::getInstance("Projectreferees", "sportsmanagementModel");
+		$mdlProjectReferees = BaseDatabaseModel::getInstance("Projectreferees", "sportsmanagementModel");
 		$item->count_projectreferees = $mdlProjectReferees->getProjectRefereesCount($item->id);
 		
 		$item->count_projectteams = 0;
-		$mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+		$mdlProjecteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
 		$item->count_projectteams = $mdlProjecteams->getProjectTeamsCount($item->id);
         
         $item->count_matchdays = 0;
-		$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
+		$mdlRounds = BaseDatabaseModel::getInstance("Rounds", "sportsmanagementModel");
 		$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 	   
        }
