@@ -16,6 +16,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementControllerPredictionEntry
@@ -85,16 +86,16 @@ class sportsmanagementControllerPredictionEntry extends BaseController {
 
         if (( $user->id != $joomlaUserID)) {
             $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
-            $link = JUri::getInstance()->toString();
+            $link = Uri::getInstance()->toString();
         } else {
             if ($isMember) {
                 $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_4');
-                $link = JUri::getInstance()->toString();
+                $link = Uri::getInstance()->toString();
             } else {
                 $post['registerDate'] = HTMLHelper::date($input = 'now', 'Y-m-d h:i:s', false);
                 if (!$mdlPredictionEntry->store($post)) {
                     $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5');
-                    $link = JUri::getInstance()->toString();
+                    $link = Uri::getInstance()->toString();
                 } else {
                     $cids = array();
                     $cids[] = $mdlPredictionEntry->getDbo()->insertid();
@@ -213,11 +214,11 @@ class sportsmanagementControllerPredictionEntry extends BaseController {
 
         if (( ( $user->id != $joomlaUserID ) ) && (!$allowedAdmin )) {
             $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_1');
-            $link = JUri::getInstance()->toString();
+            $link = Uri::getInstance()->toString();
         } else {
             if ((!$isMember ) && (!$allowedAdmin )) {
                 $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_2');
-                $link = JUri::getInstance()->toString();
+                $link = Uri::getInstance()->toString();
             } else {
                 if ($pjID != $set_pj) {
                     $params = array('option' => 'com_sportsmanagement',
@@ -250,7 +251,7 @@ class sportsmanagementControllerPredictionEntry extends BaseController {
                     $link = Factory::getURI()->toString();
                 } else {
                     $msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1');
-                    $link = JUri::getInstance()->toString();
+                    $link = Uri::getInstance()->toString();
                 }
             }
         }
