@@ -206,10 +206,15 @@ catch (Exception $e)
         $query->join('INNER','('.$query_den.') AS d ON d.id = pt.id ');
         $query->where('pt.project_id = '. $projectid);
         $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).' ');
-	
+try {	
 		$db->setQuery($query, $limitstart, $limit);
 		$res = $db->loadObjectList();
-		
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}		
 		if (!empty($res))
 		{
 			$precision = $this->getPrecision();
