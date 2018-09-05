@@ -191,19 +191,19 @@ public $_predictionGame	= null;
  
         // Bind the form fields to the hello table
         if (!$row->bind($data)) {
-                $this->setError($this->_db->getErrorMsg());
+               // $this->setError($this->_db->getErrorMsg());
                 return false;
         }
  
         // Make sure the hello record is valid
         if (!$row->check()) {
-                $this->setError($this->_db->getErrorMsg());
+              //  $this->setError($this->_db->getErrorMsg());
                 return false;
         }
  
         // Store the web link table to the database
         if (!$row->store()) {
-                $this->setError( $row->getErrorMsg() );
+                //$this->setError( $row->getErrorMsg() );
                 return false;
         }
  
@@ -543,7 +543,7 @@ catch (Exception $e) {
                         //if( !$db->query() )
 					{
 
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 
 					}
@@ -579,7 +579,7 @@ catch (Exception $e) {
 
 					if ( !$resultquery )
 					{
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 					}
                     
@@ -609,10 +609,10 @@ catch (Exception $e) {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-					if( !$db->query() )
+					if( !$db->execute() )
 					{
 
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                       // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 
 					}
@@ -630,7 +630,7 @@ catch (Exception $e) {
 
 		if (!$resultquery)
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 
 		}
