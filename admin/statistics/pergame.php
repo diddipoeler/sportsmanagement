@@ -183,6 +183,7 @@ catch (Exception $e)
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
+		$app = JFactory::getApplication();
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
 		$db = sportsmanagementHelper::getDBConnection();
