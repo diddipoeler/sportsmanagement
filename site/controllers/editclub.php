@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerEditClub
@@ -109,12 +110,12 @@ class sportsmanagementControllerEditClub extends FormController {
     function save() {
         $app = Factory::getApplication();
         // Check for request forgeries
-        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         $msg = '';
         $address_parts = array();
         $post = Factory::getApplication()->input->post->getArray(array());
 
-        //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+        //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
         $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         $post['id'] = (int) $cid[0];
@@ -140,7 +141,7 @@ class sportsmanagementControllerEditClub extends FormController {
         //$coords = $model->resolveLocation($address);
         $coords = sportsmanagementHelper::resolveLocation($address);
 
-        //$app->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+        //$app->enqueueMessage(Text::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
 
         foreach ($coords as $key => $value) {
             $post['extended'][$key] = $value;
@@ -160,10 +161,10 @@ class sportsmanagementControllerEditClub extends FormController {
             $post['merge_teams'] = '';
         }
 
-        //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+        //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
         if ($model->save($post)) {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
             $createTeam = Factory::getApplication()->input->getVar('createTeam');
             if ($createTeam) {
                 $team_name = Factory::getApplication()->input->getVar('name');
@@ -177,7 +178,7 @@ class sportsmanagementControllerEditClub extends FormController {
             }
             $type = 'message';
         } else {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE') . $model->getError();
             $type = 'error';
         }
 

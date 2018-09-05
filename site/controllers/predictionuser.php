@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionUsers
@@ -55,7 +56,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function select()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$pID	= Factory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
 		$uID	= Factory::getApplication()->input->getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
@@ -71,7 +72,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function savememberdata()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         $option = Factory::getApplication()->input->getCmd('option');
         $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
 		$app = Factory::getApplication();
@@ -92,26 +93,26 @@ class sportsmanagementControllerPredictionUsers extends FormController
 
 		if ( ( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ) )
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
 			$link = Factory::getURI()->toString();
 		}
 		else
 		{
 			if ((!$isMember) && (!$allowedAdmin))
 			{
-				$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
+				$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
 				$link = Factory::getURI()->toString();
 			}
 			else
 			{
 				if (!$model->savememberdata())
 				{
-					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
 					$link = Factory::getURI()->toString();
 				}
 				else
 				{
-					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
 					$link = Factory::getURI()->toString();
 				}
 			}
@@ -130,7 +131,7 @@ class sportsmanagementControllerPredictionUsers extends FormController
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		// Reference global application object
         $app = Factory::getApplication();
         // JInput object

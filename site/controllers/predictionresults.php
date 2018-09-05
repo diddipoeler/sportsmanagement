@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionResults
@@ -47,7 +47,7 @@ class sportsmanagementControllerPredictionResults extends BaseController
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         // Reference global application object
         $app = Factory::getApplication();
         // JInput object

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerEditMatch
@@ -71,7 +72,7 @@ class sportsmanagementControllerEditMatch extends FormController {
         $routeparameter['order'] = 0;
         $routeparameter['layout'] = 'form';
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         $this->setRedirect($link, $msg);
     }
@@ -90,7 +91,7 @@ class sportsmanagementControllerEditMatch extends FormController {
         $return = $model->updateStaff($post);
 
         $link = $_SERVER['HTTP_REFERER'];
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         $this->setRedirect($link, $msg);
     }
@@ -167,7 +168,7 @@ class sportsmanagementControllerEditMatch extends FormController {
         $routeparameter['order'] = $post['order'];
         $routeparameter['layout'] = $post['oldlayout'];
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-        $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);
         $this->setRedirect($link, $msg);

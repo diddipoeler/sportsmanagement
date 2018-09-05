@@ -14,6 +14,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllereditperson
@@ -65,7 +66,7 @@ class sportsmanagementControllereditperson extends FormController {
         // Set the redirect based on the task.
         switch ($this->getTask()) {
             case 'apply':
-                $message = JText::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
+                $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
                 $this->setRedirect('index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id=' . $id, $message);
                 break;
 

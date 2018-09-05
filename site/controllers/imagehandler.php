@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.filesystem.file');
 //require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
@@ -42,7 +43,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         $option = Factory::getApplication()->input->getCmd('option');
 
         // Check for request forgeries
-        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         $file = Factory::getApplication()->input->getVar('userfile', '', 'files', 'array');
         $type = Factory::getApplication()->input->getVar('type');
@@ -56,9 +57,9 @@ class sportsmanagementControllerImagehandler extends BaseController {
         //set the target directory
         $base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS;
 
-        $app->enqueueMessage(JText::_($type), '');
-        $app->enqueueMessage(JText::_($folder), '');
-        $app->enqueueMessage(JText::_($base_Dir), '');
+        $app->enqueueMessage(Text::_($type), '');
+        $app->enqueueMessage(Text::_($folder), '');
+        $app->enqueueMessage(Text::_($base_Dir), '');
 
         //do we have an imagelink?
         if (!empty($linkaddress)) {
@@ -74,10 +75,10 @@ class sportsmanagementControllerImagehandler extends BaseController {
             $filepath = $base_Dir . $filename;
 
             if (!copy($linkaddress, $filepath)) {
-                echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
+                echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
                 //$app->close();
             } else {
-                //echo "<script> alert('" . JText::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+                //echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
                 echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
                 //$app->close();
             }
@@ -85,7 +86,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
 
         //do we have an upload?
         if (empty($file['name'])) {
-            echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
+            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY') . "'); window.history.go(-1); </script>\n";
             //$app->close();
         }
 
@@ -102,11 +103,11 @@ class sportsmanagementControllerImagehandler extends BaseController {
 
         //upload the image
         if (!JFile::upload($file['tmp_name'], $filepath)) {
-            echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
+            echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
 //          $app->close();
         } else {
-//          echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-//          echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//          echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
             echo "<script>  window.parent.selectImage_" . $type . "('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 //          $app->close();
         }
@@ -136,7 +137,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         if (count($images)) {
             foreach ($images as $image) {
                 if ($image !== JFilterInput::clean($image, 'path')) {
-                    JError::raiseWarning(100, JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
+                    JError::raiseWarning(100, Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE') . ' ' . htmlspecialchars($image, ENT_COMPAT, 'UTF-8'));
                     continue;
                 }
 

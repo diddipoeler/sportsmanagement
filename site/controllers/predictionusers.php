@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerPredictionUsers
@@ -56,7 +58,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function select()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
@@ -71,7 +73,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 //            }
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($post['prediction_id'],$post['uid'],$post['task'],$post['pj'],$post['pggroup'],$post['r']);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link <br><pre>'.print_r($link,true).'</pre>'),'Notice');		
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link <br><pre>'.print_r($link,true).'</pre>'),'Notice');		
 		
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
@@ -84,7 +86,7 @@ class sportsmanagementControllerPredictionUsers extends BaseController
 	 */
 	function savememberdata()
 	{
-JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
         $option = JFactory::getApplication()->input->getCmd('option');
         $optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
 		$app = JFactory::getApplication();
@@ -99,34 +101,34 @@ JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$joomlaUserID		= JFactory::getApplication()->input->getVar('user_id',		'','post','int');
 
 		//$model			= $this->getModel('predictionusers');
-        $modelusers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
-        $model = JModelLegacy::getInstance("prediction", "sportsmanagementModel");
+        $modelusers = BaseDatabaseModel::getInstance("predictionusers", "sportsmanagementModel");
+        $model = BaseDatabaseModel::getInstance("prediction", "sportsmanagementModel");
 		$user			= JFactory::getUser();
 		$isMember		= $model->checkPredictionMembership();
 		$allowedAdmin	= $model->getAllowed();
 
 		if ( ( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ) )
 		{
-			$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
+			$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_1');
 			$link = JFactory::getURI()->toString();
 		}
 		else
 		{
 			if ((!$isMember) && (!$allowedAdmin))
 			{
-				$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
+				$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_2');
 				$link = JFactory::getURI()->toString();
 			}
 			else
 			{
 				if (!$modelusers->savememberdata())
 				{
-					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3');
 					$link = JFactory::getURI()->toString();
 				}
 				else
 				{
-					$msg .= JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
+					$msg .= Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1');
 					$link = JFactory::getURI()->toString();
 				}
 			}
@@ -145,7 +147,7 @@ JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 	 */
 	function selectprojectround()
 	{
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		// Reference global application object
         $app = JFactory::getApplication();
         // JInput object

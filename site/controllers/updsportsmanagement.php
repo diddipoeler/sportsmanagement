@@ -41,6 +41,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerUpdsportsmanagement
@@ -75,7 +76,7 @@ class sportsmanagementControllerUpdsportsmanagement extends FormController
 	public function submit()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app	= Factory::getApplication();
