@@ -1087,7 +1087,7 @@ catch (Exception $e)
         return false;    
         }  
         
-        return true; 
+        //return true; 
     }
       
     /**
