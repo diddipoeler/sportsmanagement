@@ -1020,6 +1020,7 @@ $result = false;
 	   $user = Factory::getUser();
        $post = Factory::getApplication()->input->post->getArray(array());
        $option = Factory::getApplication()->input->getCmd('option');
+       $parentsave = true;
        /* Ein Datenbankobjekt beziehen */
        $db = Factory::getDbo();
        // Set the values
@@ -1055,7 +1056,15 @@ $result = false;
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
          // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
+         try{   
+       $parentsave = parent::save($data);
+       }
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
+       if ( $parentsave )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
@@ -1074,7 +1083,7 @@ $result = false;
 		}
         else
         {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         return false;    
         }  
         
