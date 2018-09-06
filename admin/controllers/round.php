@@ -11,6 +11,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerround
@@ -46,7 +48,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 	$msgType = 'message';
 	$msg = '';
 	$model = $this->getModel('rounds');	
-	$post = JFactory::getApplication()->input->post->getArray(array());	
+	$post = Factory::getApplication()->input->post->getArray(array());	
 	$project_id = $post['project_id'];
 	$scheduling = $post['scheduling'];
 	$time       = $post['time'];
@@ -57,7 +59,7 @@ class sportsmanagementControllerround extends JSMControllerForm
 	
 	if ( !$teamsorder )
 	{
-	$msg = Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
+	$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB');
 	$msgType = 'error';
 	}
 	else
