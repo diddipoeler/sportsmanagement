@@ -789,11 +789,26 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
             {
             $object->result_type = 0;    
             }
-            $object->match_result_type = $post['match_result_type'.$pks[$x]];
+            if ( isset($post['match_result_type'.$pks[$x]]) )
+            {
+	$object->match_result_type = $post['match_result_type'.$pks[$x]];
+	    }
+	else
+	{
+	$object->match_result_type = 0;	
+	}
+
             $object->crowd = $post['crowd'.$pks[$x]];
             $object->round_id = $post['round_id'.$pks[$x]];
-            $object->division_id = $post['division_id'.$pks[$x]];
-            $object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
+            if ( isset($post['division_id'.$pks[$x]]) )
+            {
+	$object->division_id = $post['division_id'.$pks[$x]];
+	    }
+	else
+	{
+	$object->division_id = 0;	
+	}
+	$object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $object->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             $object->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
             $object->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
