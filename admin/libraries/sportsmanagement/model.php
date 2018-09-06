@@ -103,6 +103,7 @@ if( $this->jsmapp->isSite() )
        $post = $this->jsmjinput->post->getArray();
        $address_parts = array();
        $person_double = array();
+       $parentsave = true;
        //$view = $this->jsmjinput->getCmd('view');
        //$view = $this->jsmjinput->get('view', '', 'CMD');
        
@@ -537,7 +538,15 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 /**
  * zuerst sichern, damit wir bei einer neuanlage die id haben
  */         
-       if ( parent::save($data) )
+       try{   
+       $parentsave = parent::save($data);
+       }
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+}
+       if ( $parentsave )
        {
 	$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
