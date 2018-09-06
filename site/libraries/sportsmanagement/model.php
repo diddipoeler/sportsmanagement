@@ -80,12 +80,21 @@ class JSMModelList extends ListModel
      */
     public function __construct($config = array())
 	{
+	    parent::__construct($config);
+	    $getDBConnection = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($getDBConnection);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($this->jsmdb);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmsubquery1 = $this->jsmdb->getQuery(true); 
+        $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
+        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
 // Reference global application object
 $this->jsmapp = Factory::getApplication('site');
 $this->jsmjinput = $this->jsmapp->input;
 $this->jsmoption = $this->jsmjinput->getCmd('option');
 $this->jsmview = $this->jsmjinput->getCmd('view');	   
-       parent::__construct($config);
+       
        }
     
     
