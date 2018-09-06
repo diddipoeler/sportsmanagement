@@ -34,7 +34,6 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	public function init ()
 	{
 		
-		$starttime = microtime();
         $lists = array();
 
 		$this->change_training_date	= $this->app->getUserState( "$this->option.change_training_date", '0' );
@@ -51,7 +50,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');		
 		$this->extendeduser = $extendeduser;
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
 		if ( $this->checkextrafields )
 		{
 			if ( $this->item->id )
