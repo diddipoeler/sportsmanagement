@@ -12,7 +12,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\FormController; 
-
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllermatch
@@ -48,14 +49,14 @@ class sportsmanagementControllermatch extends FormController
      */
     public function copyfrom()
 	{
-		$app = JFactory::getApplication();
-		$option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();
+		$app = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();
 		$msg = '';
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
-		$round_id = JFactory::getApplication()->input->getInt('rid');
+		$round_id = Factory::getApplication()->input->getInt('rid');
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
 		$post['round_id'] = $round_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -69,7 +70,7 @@ class sportsmanagementControllermatch extends FormController
 //            $timezone = 'Europe/Berlin';
 //        }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
 		// Add matches (type=1)
 		if ( $post['addtype']==1 )
@@ -81,7 +82,7 @@ class sportsmanagementControllermatch extends FormController
 					$post['published'] = 1;
 				}
 
-				$matchNumber = JFactory::getApplication()->input->getInt('firstMatchNumber',1);
+				$matchNumber = Factory::getApplication()->input->getInt('firstMatchNumber',1);
 				$roundFound = false;
 				
 				if ($projectRounds = $model->getProjectRoundCodes($post['project_id']))
@@ -91,7 +92,7 @@ class sportsmanagementControllermatch extends FormController
 					//$uiTime = $post['startTime'];
 					//$post['match_date'] = $this->convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone);
                     $post['match_date'] = sportsmanagementHelper::convertDate($post['match_date'],0).' '.$post['startTime'];
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_date<br><pre>'.print_r($post['match_date'],true).'</pre>'),'');
+                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match_date<br><pre>'.print_r($post['match_date'],true).'</pre>'),'');
 			
 					foreach ($projectRounds AS $projectRound)
 					{
@@ -110,22 +111,22 @@ class sportsmanagementControllermatch extends FormController
 									$post['match_number'] = $matchNumber;
 								}
                                 
-                                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' x -> '.$x.'' ),'Error');
-                                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' add_match_count -> '.$add_match_count.'' ),'Error');
+                                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' x -> '.$x.'' ),'Error');
+                                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' add_match_count -> '.$add_match_count.'' ),'Error');
 
 								//if ($model->store($post))
                                 $model = $this->getModel('match');
                                 if ($model->save($post))
 								{
-									//$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
-                                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+									//$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
+                                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 									$matchNumber++;
 								}
 								else
 								{
-									$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH');
-                                    //$msg = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.print_r($db->getErrorMsg(),true).'</b>');
-                                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+									$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH');
+                                    //$msg = Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.print_r($db->getErrorMsg(),true).'</b>');
+                                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 									break;
 								}
 							}
@@ -178,22 +179,22 @@ class sportsmanagementControllermatch extends FormController
                     $model = $this->getModel('match');
                     if ($model->save($dmatch))
 					{
-						$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_COPY_MATCH');
+						$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_COPY_MATCH');
 					}
 					else
 					{
-						$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_COPY_MATCH');
+						$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_COPY_MATCH');
 					}
 				}
 			}
 			else
 			{
-				$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_COPY_MATCH2');
+				$msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_COPY_MATCH2');
 			}
 		}
 		//echo $msg;
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
-		//$link .= '&hidemainmenu='.JFactory::getApplication()->input->getVar('hidemainmenu',0);
+		//$link .= '&hidemainmenu='.Factory::getApplication()->input->getVar('hidemainmenu',0);
 		$this->setRedirect($link,$msg);
 	}
     
@@ -204,18 +205,18 @@ class sportsmanagementControllermatch extends FormController
 	 */
 	function insertgooglecalendar()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         $model = $this->getModel('match');
         $result = $model->insertgooglecalendar();
         
         if ( $result )
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
         }
         else
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
         }
         
         $link = 'index.php?option=com_sportsmanagement&view=matches';
@@ -254,9 +255,9 @@ class sportsmanagementControllermatch extends FormController
 	 */
     function addmatch()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+		$post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         $post['count_result'] = 1;
@@ -264,7 +265,7 @@ class sportsmanagementControllermatch extends FormController
 		$model = $this->getModel('match');
         $row = $model->getTable();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
         
         // bind the form fields to the table
         if (!$row->bind($post)) 
@@ -279,18 +280,18 @@ class sportsmanagementControllermatch extends FormController
         return false;
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         // store to the database
 		//if ($row->store($post))
         if ($row->save($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
 		}
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
 		$this->setRedirect($link,$msg);
@@ -305,23 +306,23 @@ class sportsmanagementControllermatch extends FormController
     function save($key = NULL, $urlVar = NULL)
 	{
 	// Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $id	= JFactory::getApplication()->input->getInt('id');
-//        $tmpl = JFactory::getApplication()->input->getVar('tmpl');
+        $id	= Factory::getApplication()->input->getInt('id');
+//        $tmpl = Factory::getApplication()->input->getVar('tmpl');
 		$model = $this->getModel('match');
-        $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-//        $createTeam = JFactory::getApplication()->input->getVar('createTeam');
+        $data = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+//        $createTeam = Factory::getApplication()->input->getVar('createTeam');
         $return = $model->save($data);   
        
        // Set the redirect based on the task.
 		switch ($this->getTask())
 		{
 			case 'apply':
-			$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+			$message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
 			$this->setRedirect('index.php?option=com_sportsmanagement&view=match&layout=edit&tmpl=component&id='.$id, $message);
 			break;
 
@@ -344,8 +345,8 @@ class sportsmanagementControllermatch extends FormController
 	 */
 	function remove()
 	{
-	$app = JFactory::getApplication();
-    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+	$app = Factory::getApplication();
+    $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
 	
@@ -361,8 +362,8 @@ class sportsmanagementControllermatch extends FormController
 	 */
 	function picture()
   {
-  //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
-	$match_id = JFactory::getApplication()->input->getInt('id',0);
+  //$cid = Factory::getApplication()->input->getVar('cid',array(0),'','array');
+	$match_id = Factory::getApplication()->input->getInt('id',0);
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   //$this->setState('folder', $folder);
@@ -373,7 +374,7 @@ class sportsmanagementControllermatch extends FormController
   JFolder::create($dest);
   }
 
-  $msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE');
+  $msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE');
   $link='index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/'.$folder;
 	$this->setRedirect($link,$msg);
   
@@ -386,10 +387,10 @@ class sportsmanagementControllermatch extends FormController
 //   */
 //  function readpressebericht()
 //    {
-//    JFactory::getApplication()->input->setVar('hidemainmenu',1);
-//		JFactory::getApplication()->input->setVar('layout','readpressebericht');
-//		JFactory::getApplication()->input->setVar('view','match');
-//		JFactory::getApplication()->input->setVar('edit',true);
+//    Factory::getApplication()->input->setVar('hidemainmenu',1);
+//		Factory::getApplication()->input->setVar('layout','readpressebericht');
+//		Factory::getApplication()->input->setVar('view','match');
+//		Factory::getApplication()->input->setVar('edit',true);
 //		parent::display();    
 //    }
     
@@ -401,20 +402,20 @@ class sportsmanagementControllermatch extends FormController
     function savepressebericht()
     {
     	// Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
-		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
-		$app = JFactory::getApplication();
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		$app = Factory::getApplication();
+		$post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');
 
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			//$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			//$upload = Factory::getApplication()->input->getVar('import_package',null,'files','array');
             $upload = $app->input->files->get('import_package');
-            //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
-            $match_id = JFactory::getApplication()->input->getInt('id',0);
+            //$cid = Factory::getApplication()->input->getVar('cid',array(0),'','array');
+            $match_id = Factory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
@@ -441,7 +442,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 					}
 					if (!JFile::upload($tempFilePath,$dest))
 					{
-						JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
 						return;
 					}
 					else
@@ -451,7 +452,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 							$result=JArchive::extract($dest,$extractdir);
 							if ($result === false)
 							{
-								JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
+								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
 								return false;
 							}
 							JFile::delete($dest);
@@ -466,13 +467,13 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 							{
 								if (!@ rename($src[0],$importFile))
 								{
-									JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
+									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
+								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
 								return;
 							}
 						}
@@ -482,13 +483,13 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 							{
 								if (!@ rename($dest,$importFile))
 								{
-									JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
+								JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
 								return false;
 							}
 						}
@@ -510,10 +511,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
      */
     function pressebericht()
     {
-    JFactory::getApplication()->input->setVar('hidemainmenu',1);
-	JFactory::getApplication()->input->setVar('layout','pressebericht');
-	JFactory::getApplication()->input->setVar('view','match');
-	JFactory::getApplication()->input->setVar('edit',true);
+    Factory::getApplication()->input->setVar('hidemainmenu',1);
+	Factory::getApplication()->input->setVar('layout','pressebericht');
+	Factory::getApplication()->input->setVar('view','match');
+	Factory::getApplication()->input->setVar('edit',true);
 	
 	parent::display();    
         
@@ -529,7 +530,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
      */
     private function convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone)
 	{
-		$format = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE_FORMAT');
+		$format = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE_FORMAT');
 
 		if (((!strpos($uiDate,'-')!==false) && (!strpos($uiDate,'.')!==false)) && (strlen($uiDate) <= 8 ))
 		{
