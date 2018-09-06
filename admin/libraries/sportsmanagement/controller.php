@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * JSMControllerAdmin
@@ -82,7 +84,7 @@ class JSMControllerForm extends FormController
 //        $this->option = $this->jsmjinput->getCmd('option');
         //$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
 
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
 
         // Map the apply task to the save method.
         //$this->registerTask('apply', 'save');
@@ -98,7 +100,7 @@ class JSMControllerForm extends FormController
     function save($key = null, $urlVar = null)
     {
         // Check for request forgeries.
-        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Initialise variables.
         //$app = JFactory::getApplication();
@@ -108,7 +110,7 @@ class JSMControllerForm extends FormController
         $model = $this->getModel($this->view_item);
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
         $setRedirect = '';
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
         $this->club_id = $this->jsmapp->getUserState("$this->jsmoption.club_id", '0');
@@ -121,10 +123,10 @@ class JSMControllerForm extends FormController
         }
 
         if (JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' this->club_id<br><pre>' . print_r($this->club_id, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' this->team_id<br><pre>' . print_r($this->team_id, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' this->view_item <br><pre>' . print_r($this->view_item, true) . '</pre>'), '');
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' this->view_list<br><pre>' . print_r($this->view_list, true) . '</pre>'), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->club_id<br><pre>' . print_r($this->club_id, true) . '</pre>'), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->team_id<br><pre>' . print_r($this->team_id, true) . '</pre>'), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_item <br><pre>' . print_r($this->view_item, true) . '</pre>'), '');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_list<br><pre>' . print_r($this->view_list, true) . '</pre>'), '');
 
 
         }
@@ -134,7 +136,7 @@ class JSMControllerForm extends FormController
                 case 'club':
 
                     if ($createTeam) {
-                        $mdlTeam = JModelLegacy::getInstance("team", "sportsmanagementModel");
+                        $mdlTeam = BaseDatabaseModel::getInstance("team", "sportsmanagementModel");
                         $team_name = $data['name'];
                         $team_short_name = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $team_name), 0, 3));
 
@@ -156,7 +158,7 @@ class JSMControllerForm extends FormController
             // Set the redirect based on the task.
             switch ($this->getTask()) {
                 case 'apply':
-                    $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+                    $message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
                     if ($tmpl) {
 
                         switch ($this->view_item) {
@@ -190,12 +192,12 @@ class JSMControllerForm extends FormController
                     break;
 
                 case 'save2new':
-                    $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+                    $message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
                     $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend(null, $urlVar) . $setRedirect, false), $message);
 
                     break;
                 default:
-                    $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+                    $message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
                     if ($tmpl) {
                         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
                     } else {
@@ -226,12 +228,12 @@ class JSMControllerForm extends FormController
      * Function that allows child controller access to model data after the data
      * has been saved.
      *
-     * @param JModelLegacy $model The data model object.
+     * @param BaseDatabaseModel $model The data model object.
      * @param array $validData The validated data.
      *
      * @return void
      */
-    protected function postSaveHook(JModelLegacy $model, $validData = array())
+    protected function postSaveHook(BaseDatabaseModel $model, $validData = array())
     {
         return;
     }
