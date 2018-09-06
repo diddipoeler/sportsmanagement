@@ -49,8 +49,8 @@ class sportsmanagementViewRound extends sportsmanagementView
 	}
 	else
 	{
-		$this->form->setValue('round_date_first', null, '0000-00-00');
-		$this->form->setValue('round_date_last', null, '0000-00-00');
+		//$this->form->setValue('round_date_first', null, '0000-00-00');
+		//$this->form->setValue('round_date_last', null, '0000-00-00');
 		$this->form->setValue('project_id', null, $this->project_id);
  
 	}
