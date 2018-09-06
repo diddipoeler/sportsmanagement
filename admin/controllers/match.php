@@ -263,6 +263,7 @@ class sportsmanagementControllermatch extends FormController
         $post['count_result'] = 1;
         $post['published'] = 1;
         $post['summary'] = '-';
+        $post['preview'] = '-';
 		$model = $this->getModel('match');
         //$row = $model->getTable();
         
