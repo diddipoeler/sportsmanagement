@@ -263,29 +263,29 @@ class sportsmanagementControllermatch extends FormController
         $post['count_result'] = 1;
         $post['published'] = 1;
 		$model = $this->getModel('match');
-        $row = $model->getTable();
+        //$row = $model->getTable();
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
         
         // bind the form fields to the table
-        if (!$row->bind($post)) 
-        {
-        $this->setError($this->_db->getErrorMsg());
-        return false;
-        }
-        // make sure the record is valid
-        if (!$row->check()) 
-        {
-        $this->setError($this->_db->getErrorMsg());
-        return false;
-        }
+//        if (!$row->bind($post)) 
+//        {
+//        $this->setError($this->_db->getErrorMsg());
+//        return false;
+//        }
+//        // make sure the record is valid
+//        if (!$row->check()) 
+//        {
+//        $this->setError($this->_db->getErrorMsg());
+//        return false;
+//        }
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         // store to the database
 		//if ($row->store($post))
-        if ($row->save($post))
+        if ($model->save($post))
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
 		}
