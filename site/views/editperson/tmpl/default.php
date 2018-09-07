@@ -39,9 +39,9 @@ $fieldsets = $this->form->getFieldsets();
 	<fieldset class="adminform">
 	<div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
-						<?php echo Text::_('JAPPLY');?></button>
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
 					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
-						<?php echo Text::_('JSAVE');?></button>
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
 					
 				</div>
 	<legend>

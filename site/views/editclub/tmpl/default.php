@@ -46,9 +46,9 @@ $fieldsets = $this->form->getFieldsets();
         <fieldset>
         <div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('editclub.apply', this.form);">
-						<?php echo Text::_('JAPPLY');?></button>
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
 					<button type="button" onclick="Joomla.submitform('editclub.save', this.form);">
-						<?php echo Text::_('JSAVE');?></button>
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
 					
 				</div>
 			<legend>
@@ -66,6 +66,7 @@ $fieldsets = $this->form->getFieldsets();
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
 foreach ($fieldsets as $fieldset) :
 echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true)); 
+echo $this->loadTemplate($fieldset->name);
 echo HTMLHelper::_('bootstrap.endTab');
 endforeach; 
 
