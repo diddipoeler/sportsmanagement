@@ -47,7 +47,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
     $this->club->merge_teams = explode(",", $this->club->merge_teams);
     
 
-		//$this->form = $this->get('Form');	
+		$this->form = $this->get('Form');	
 		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
 		$this->extended = $extended;
         $this->lists = $lists;
