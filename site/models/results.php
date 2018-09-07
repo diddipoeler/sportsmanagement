@@ -678,8 +678,23 @@ else
 			{
             $object->match_date = $post['match_date'.$pks[$x]];
 			}
+            if ( isset($post['result_type'.$pks[$x]]) )
+            {
             $object->result_type = $post['result_type'.$pks[$x]];
-            $object->match_result_type = $post['match_result_type'.$pks[$x]];
+            }
+            else
+            {
+            $object->result_type = 0;    
+            }
+            
+            if ( isset($post['match_result_type'.$pks[$x]]) )
+            {
+	$object->match_result_type = $post['match_result_type'.$pks[$x]];
+	    }
+	else
+	{
+	$object->match_result_type = 0;	
+	}
             $object->crowd = $post['crowd'.$pks[$x]];
             
             if ( $post['round_id'.$pks[$x]] )
@@ -687,11 +702,15 @@ else
             $object->round_id	= $post['round_id'.$pks[$x]];
             }
             
-            if ( $post['division_id'.$pks[$x]] )
+            if ( isset($post['division_id'.$pks[$x]]) )
             {
-            $object->division_id	= $post['division_id'.$pks[$x]];
+            $object->division_id = $post['division_id'.$pks[$x]];
             }
-            
+           	else
+	       {
+	       $object->division_id = 0;	
+	       }
+    
             $object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $object->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             
@@ -753,27 +772,20 @@ else
             
             $object->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $object->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
-
+try{
             // Update their details in the table using id as the primary key.
             $result_update = $db->updateObject('#__sportsmanagement_match', $object, 'id', true);
+            $result = true;
+            $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    
+    $result = false;
+}            
             
-            if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
-        {
-            $app->enqueueMessage(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object, true).'</pre><br>','Notice');
-         }
-            
-            if(!$result_update) 
-            {
-                $app->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-				$result = false;
-			}
-            else
-            {
-
-                sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
-                $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
-            }
-
 		}
 		return $result;
 	}
