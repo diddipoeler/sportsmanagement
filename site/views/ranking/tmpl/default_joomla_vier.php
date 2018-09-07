@@ -19,10 +19,12 @@ $this->endPane = 'endTabSet';
 $this->addPanel = 'addTab';
 $this->endPanel = 'endTab';
 $this->config['table_class'] = 'table table-striped';
+/*
 // Define tabs options for version of Joomla! 4.0
 $tabsOptions = array(
-    "active" => "tab1_id" // It is the ID of the active tab.
+    "active" => "tab1id" // It is the ID of the active tab.
 );
+*/
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -30,9 +32,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate('projectheading');
 
-echo HTMLHelper::_('bootstrap.' . $this->startPane, 'ID-Tabs-Group', $tabsOptions);
+echo HTMLHelper::_('bootstrap.' . $this->startPane, 'myTab', array('active' => 'tab1id'));
 if ($this->config['show_table_1']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', Text::_($this->config['table_text_1']));
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
 
 ?>
 <div class="container">
@@ -46,7 +48,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab1_id', T
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_2']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', Text::_($this->config['table_text_2']));
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
 
 ?>
 <div class="container">
@@ -60,7 +62,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab2_id', T
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_3']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', Text::_($this->config['table_text_3']));
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
 
 ?>
 <div class="container">
@@ -74,7 +76,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab3_id', T
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_4']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', Text::_($this->config['table_text_4']));
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
 
 ?>
 <div class="container">
@@ -88,7 +90,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab4_id', T
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 }
 if ($this->config['show_table_5']) {
-echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', Text::_($this->config['table_text_5']));
+echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
 
 ?>
 <div class="container">
@@ -102,7 +104,7 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'ID-Tabs-Group', 'tab5_id', T
 }
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
-echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
+echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
 
 /*
 $options2 = array(
