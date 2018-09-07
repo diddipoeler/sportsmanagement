@@ -54,6 +54,7 @@ JLoader::import('components.com_sportsmanagement.libraries.github.github', JPATH
 JLoader::import('components.com_sportsmanagement.libraries.github.object', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.github.http', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.commits', JPATH_ADMINISTRATOR);		
+JLoader::import('components.com_sportsmanagement.libraries.github.milestones', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package.issues', JPATH_ADMINISTRATOR);	
 }
