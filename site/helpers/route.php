@@ -14,10 +14,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
-// Component Helper
-jimport('joomla.application.component.helper');
-
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Router;
+use Joomla\CMS\Component\Router\RouterBase;
 
 /**
  * sportsmanagementHelperRoute
@@ -810,7 +809,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 			$parts['Itemid'] = $item->id;
 		}
 		else {
-			$params = JComponentHelper::getParams('com_sportsmanagement');
+			$params = ComponentHelper::getParams('com_sportsmanagement');
 			if ($params->get('default_itemid')) {
 				$parts['Itemid'] = intval($params->get('default_itemid'));				
 			}
@@ -828,7 +827,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	 */
 	public static function _findItem($query)
 	{
-		$component = JComponentHelper::getComponent('com_sportsmanagement');
+		$component = ComponentHelper::getComponent('com_sportsmanagement');
 		$site = new JSite();
 		$menus	= $site->getMenu();
 		$items	= $menus->getItems('component', $component->id);
