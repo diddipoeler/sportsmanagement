@@ -13,15 +13,14 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php' );
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-//jimport('joomla.html.pane');
 
 /**
  * sportsmanagementViewResultsranking
@@ -188,8 +187,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		foreach ($rounds as $r)
 		{
 		  $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $r->slug;
 $routeparameter['division'] = 0;
