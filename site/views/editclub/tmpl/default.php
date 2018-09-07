@@ -46,8 +46,7 @@ $fieldsets = $this->form->getFieldsets();
 						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('editclub.save');">
 						<?php echo Text::_('JSAVE');?></button>
-					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo Text::_('JCANCEL');?></button>
+					
 				</div>
 			<legend>
       <?php 
