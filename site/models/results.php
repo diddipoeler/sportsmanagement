@@ -695,8 +695,16 @@ else
 	{
 	$object->match_result_type = 0;	
 	}
-            $object->crowd = $post['crowd'.$pks[$x]];
             
+            if ( isset($post['crowd'.$pks[$x]]) )
+            {
+            $object->crowd = $post['crowd'.$pks[$x]];
+            }
+           	else
+	       {
+	       $object->crowd = 0;	
+	       }
+           
             if ( $post['round_id'.$pks[$x]] )
             {
             $object->round_id	= $post['round_id'.$pks[$x]];
