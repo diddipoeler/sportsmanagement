@@ -55,8 +55,9 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$matrixconfig = sportsmanagementModelProject::getTemplateConfig('matrix',$this->jinput->getInt('cfg_which_database',0));
 
 		// add the results model
-		$resultsmodel	= new sportsmanagementModelResults();
+		$resultsmodel = new sportsmanagementModelResults();
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0));
+		$resultsmodel::$roundid = $this->jinput->getInt('r',0);
         
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
