@@ -53,7 +53,7 @@ $fieldsets = $this->form->getFieldsets();
 				</div>
 			<legend>
       <?php 
-      echo Text::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->club->name.'</i>'); 
+      echo Text::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->item->name.'</i>'); 
       ?>
       </legend>
 </fieldset>
