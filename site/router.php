@@ -49,47 +49,6 @@ if (version_compare($baseVersion, '2.5', 'ge')) {
 }
 
 
-if (class_exists('JComponentRouterBase')) {
-
-    //abstract class SportsmanagementRouterBase extends JComponentRouterBase {}
-    class SportsmanagementRouterBase {
-        
-    }
-
-} else {
-
-    class SportsmanagementRouterBase {
-
-        /** @var JApplicationCms  */
-        public $app;
-
-        /** @var JMenu|null  */
-        public $menu;
-
-        /**
-         * SportsmanagementRouterBase constructor.
-         *
-         * @param JApplicationCms $app
-         * @param JMenu           $menu
-         */
-        public function __construct($app = null, $menu = null) {
-            if ($app) {
-                $this->app = $app;
-            } else {
-                $this->app = JFactory::getApplication('site');
-            }
-
-            if ($menu) {
-                $this->menu = $menu;
-            } else {
-                $this->menu = $this->app->getMenu();
-            }
-        }
-
-    }
-
-}
-
 /**
  * SportsmanagementRouter3
  * 
@@ -99,7 +58,7 @@ if (class_exists('JComponentRouterBase')) {
  * @version $Id$
  * @access public
  */
-class SportsmanagementRouter3 extends SportsmanagementRouterBase {
+class SportsmanagementRouter extends JComponentRouterBase {
 
     
     /**
@@ -108,7 +67,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
      * @param mixed $query
      * @return
      */
-    public function build3(&$query) {
+    public function build(&$query) {
         $app = JFactory::getApplication();
         //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
         //    $show_debug_info = $paramscomponent->get( 'show_debug_info' );
@@ -684,7 +643,7 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
      *
      * @since   3.3
      */
-    public function parse3(&$segments) {
+    public function parse(&$segments) {
         $app = JFactory::getApplication();
 
         $vars = array();
@@ -1183,8 +1142,8 @@ class SportsmanagementRouter3 extends SportsmanagementRouterBase {
  */
 function sportsmanagementBuildRoute(&$query) {
 
-    $router = new SportsmanagementRouter3;
-    return $router->build3($query);
+    $router = new SportsmanagementRouter;
+    return $router->build($query);
 }
 
 /**
@@ -1194,8 +1153,8 @@ function sportsmanagementBuildRoute(&$query) {
  * @return
  */
 function sportsmanagementParseRoute($segments) {
-    $router = new SportsmanagementRouter3;
-    return $router->parse3($segments);
+    $router = new SportsmanagementRouter;
+    return $router->parse($segments);
 }
 
 ?>
