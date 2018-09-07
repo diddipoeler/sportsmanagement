@@ -10,6 +10,7 @@
  */
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Component\Router\RouterBase;
 
 /**
  * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
@@ -38,10 +39,16 @@ $baseVersion = substr(JVERSION, 0, 3);
 if (version_compare($baseVersion, '4.0', 'ge')) {
 // Joomla! 4.0 code here
     defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+ class SportsmanagementRouterBase extends RouterBase {
+        
+    }    
 }
 if (version_compare($baseVersion, '3.0', 'ge')) {
 // Joomla! 3.0 code here
     defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+    class SportsmanagementRouterBase extends JComponentRouterBase {
+        
+    }
 }
 if (version_compare($baseVersion, '2.5', 'ge')) {
 // Joomla! 2.5 code here
@@ -58,7 +65,7 @@ if (version_compare($baseVersion, '2.5', 'ge')) {
  * @version $Id$
  * @access public
  */
-class SportsmanagementRouter extends JComponentRouterBase {
+class SportsmanagementRouter extends SportsmanagementRouterBase {
 
     
     /**
