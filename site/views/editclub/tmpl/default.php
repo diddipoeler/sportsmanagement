@@ -12,6 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+
+echo ' club<br><pre>'.print_r($this->item,true).'</pre>';
+
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
 
@@ -42,9 +45,9 @@ $fieldsets = $this->form->getFieldsets();
 		?>
         <fieldset>
         <div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editclub.apply');">
+					<button type="button" onclick="Joomla.submitform('editclub.apply', this.form);">
 						<?php echo Text::_('JAPPLY');?></button>
-					<button type="button" onclick="Joomla.submitform('editclub.save');">
+					<button type="button" onclick="Joomla.submitform('editclub.save', this.form);">
 						<?php echo Text::_('JSAVE');?></button>
 					
 				</div>
