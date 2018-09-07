@@ -51,6 +51,7 @@ if(version_compare( $baseVersion,'4.0','ge'))
 // Joomla! 4.0 code here
 defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
 JLoader::import('components.com_sportsmanagement.libraries.github.github', JPATH_ADMINISTRATOR);	
+JLoader::import('components.com_sportsmanagement.libraries.github.http', JPATH_ADMINISTRATOR);	
 }
 if(version_compare($baseVersion,'3.0','ge')) 
 {
