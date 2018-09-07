@@ -57,7 +57,7 @@ JLoader::import('components.com_sportsmanagement.libraries.github.commits', JPAT
 JLoader::import('components.com_sportsmanagement.libraries.github.milestones', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package.issues', JPATH_ADMINISTRATOR);	
-
+JLoader::import('components.com_sportsmanagement.libraries.github.package.activity', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.package.issues.milestones', JPATH_ADMINISTRATOR);	
 }
 if(version_compare($baseVersion,'3.0','ge')) 
