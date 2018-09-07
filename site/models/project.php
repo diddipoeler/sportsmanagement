@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -82,7 +82,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelProject extends JModelLegacy
+class sportsmanagementModelProject extends BaseDatabaseModel
 {
 	static $_project = null;
 	static $projectid = 0;
@@ -1295,7 +1295,7 @@ $app = Factory::getApplication();
 		{
 		  $query->where('ppos.position_id = '. (int)$position_id );
 		}
-        $query->group('et.id');
+        $query->group('et.id,et.name,et.icon');
 		try{
         $db->setQuery($query);
 		$events = $db->loadObjectList('id');
@@ -1303,6 +1303,8 @@ $app = Factory::getApplication();
 catch (Exception $e)
 {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+	$events = false;
 }
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $events;
@@ -1786,7 +1788,7 @@ catch (Exception $e) {
 		// Where
         $query->where('me.match_id = '.(int)$match_id );
         $query->where('p.published = 1');
-	$query->group('me.id');	
+	$query->group('me.event_type_id,me.id');	
         // order
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
 try {        	
@@ -1828,8 +1830,11 @@ catch (Exception $e)
                 $events[] = $temp;
             }
         }
-
+if ( $events )
+{
 $events = ArrayHelper::sortObjects($events,'event_time',$arrayobjectsort);
+}
+
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $events;
 	}
