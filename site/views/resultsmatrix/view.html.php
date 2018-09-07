@@ -62,7 +62,14 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		
 		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
+		if ( $resultsmodel::$roundid )
+		{
 		$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid);
+		}
+		else
+		{
+		$roundcode = '';	
+		}
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC',$this->jinput->getInt('cfg_which_database',0));
 		
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
