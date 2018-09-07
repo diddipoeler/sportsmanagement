@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelround
@@ -38,9 +39,9 @@ class sportsmanagementModelround extends JSMModelAdmin
 	public function saveshort()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -48,7 +49,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         //// Get the input
-//        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+//        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         $pks = $jinput->get('cid',array(),'array');
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
@@ -60,7 +61,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$post = $jinput->post;
         $post = $jinput->post->getArray();
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        $post = JFactory::getApplication()->input->post->getArray(array());
+//        $post = Factory::getApplication()->input->post->getArray(array());
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -111,12 +112,12 @@ class sportsmanagementModelround extends JSMModelAdmin
      */
     function massadd()
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
     
     //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     
-    $post = JFactory::getApplication()->input->post->getArray(array());
+    $post = Factory::getApplication()->input->post->getArray(array());
     $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     
@@ -159,7 +160,7 @@ class sportsmanagementModelround extends JSMModelAdmin
     function getMaxRound($project_id)
 	{
 	   // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         // select some fields
 		$query->select('COUNT(roundcode)');
@@ -269,10 +270,10 @@ catch (Exception $e)
 	 */
 	public function deleteRoundMatches($pks=array())
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
 
@@ -283,8 +284,8 @@ catch (Exception $e)
             $query->select('m.id');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
             $query->where('m.round_id IN ('.implode(",",$pks).')');
-            JFactory::getDBO()->setQuery($query);
-            $matches = JFactory::getDbo()->loadColumn();
+            Factory::getDBO()->setQuery($query);
+            $matches = Factory::getDbo()->loadColumn();
             
             if ( $matches )
             {
@@ -338,7 +339,7 @@ catch (Exception $e)
             {
             $query->clear();
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.$row_to_delete->table)->where($row_to_delete->field.' IN ('.$row_to_delete->id.')' );
-            JFactory::getDbo()->setQuery($query);
+            Factory::getDbo()->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
@@ -361,7 +362,7 @@ catch (Exception $e)
 	 */
 	public function delete(&$pks)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
    
     $success = $this->deleteRoundMatches($pks);  
     
