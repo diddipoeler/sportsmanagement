@@ -61,7 +61,7 @@ if (version_compare($baseVersion, '2.5', 'ge')) {
  * @version $Id$
  * @access public
  */
-class SportsmanagementRouter extends JComponentRouterBase {
+class SportsmanagementRouter extends RouterBase {
 
     
     /**
