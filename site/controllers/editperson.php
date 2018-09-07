@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
  * @file      editmperson.php
@@ -41,16 +40,34 @@ class sportsmanagementControllereditperson extends FormController {
         $this->registerTask('apply', 'save');
     }
 
+    /**
+     * sportsmanagementControllereditperson::getModel()
+     * 
+     * @param string $name
+     * @param string $prefix
+     * @param mixed $config
+     * @return
+     */
     public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+    /**
+     * sportsmanagementControllereditperson::submit()
+     * 
+     * @return
+     */
     public function submit() {
 
 
         return true;
     }
 
+    /**
+     * sportsmanagementControllereditperson::save()
+     * 
+     * @return
+     */
     public function save() {
         // Initialise variables.
         $app = Factory::getApplication();
