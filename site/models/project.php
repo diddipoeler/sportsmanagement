@@ -1788,7 +1788,7 @@ catch (Exception $e) {
 		// Where
         $query->where('me.match_id = '.(int)$match_id );
         $query->where('p.published = 1');
-	$query->group('me.event_type_id,me.id,me.event_time,me.notice,me.event_sum');	
+	$query->group('me.event_type_id,me.id,me.event_time,me.notice,me.event_sum,me.projectteam_id,t.alias, t.id, et.name, t.name, p.picture, tp.picture,p.firstname, p.nickname, p.lastname, p.alias, p.id');	
         // order
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
 try {        	
