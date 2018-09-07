@@ -59,21 +59,22 @@ class sportsmanagementModelEditClub extends JModelForm
         
 	}
     
- // /**
-//   * sportsmanagementModelEditClub::getClub()
-//   * 
-//   * @return
-//   */
-//  function getClub()
-//	{
-//	   $app = Factory::getApplication();
-//		if ( is_null( $this->club  ) )
-//		{
-//			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
-//			$this->club->load( $this->clubid );
-//		}
-//		return $this->club;
-//	}  
+
+  /**
+   * sportsmanagementModelEditClub::getData()
+   * 
+   * @return
+   */
+  function getData()
+	{
+	   //$this->_id = Factory::getApplication()->input->getInt('cid',0);
+		if ( is_null( $this->club  ) )
+		{
+			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
+			$this->club->load( $this->clubid );
+		}
+		return $this->club;
+	}  
 
 
 /**
@@ -141,7 +142,7 @@ class sportsmanagementModelEditClub extends JModelForm
 		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
-			$data = $this->getClub();
+			$data = $this->getData();
 		}
 		return $data;
 	}		

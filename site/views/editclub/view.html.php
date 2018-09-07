@@ -40,15 +40,15 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 //		$user 	= Factory::getUser();
 //        $document = Factory::getDocument();
 //		$model	= $this->getModel();
-        $this->club = sportsmanagementModelClubInfo::getClub(0,$this->jinput->getVar('cid','0'));
-
+        //$this->club = sportsmanagementModelClubInfo::getClub(0,$this->jinput->getVar('cid','0'));
+$this->item = $this->model->getData();
 		$lists = array();
 
-    $this->club->merge_teams = explode(",", $this->club->merge_teams);
+    $this->item->merge_teams = explode(",", $this->item->merge_teams);
     
 
 		$this->form = $this->get('Form');	
-		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended = $extended;
         $this->lists = $lists;
 

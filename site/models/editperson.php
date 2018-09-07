@@ -98,26 +98,29 @@ class sportsmanagementModelEditPerson extends JModelAdmin
     }
     
     
-   // /**
-//	 * Method to load content person data
-//	 *
-//	 * @access	private
-//	 * @return	boolean	True on success
-//	 * @since	0.1
-//	 */
-//	function getData()
-//	{
-//	   $this->_id = Factory::getApplication()->input->getInt('pid',0);
-////		// Lets load the content if it doesn't already exist
-////		if (empty($this->_data))
-////		{
+    /**
+	 * Method to load content person data
+	 *
+	 * @access	private
+	 * @return	boolean	True on success
+	 * @since	0.1
+	 */
+	function getData()
+	{
+	   $this->_id = Factory::getApplication()->input->getInt('pid',0);
+//		// Lets load the content if it doesn't already exist
+//		if (empty($this->_data))
+//		{
+    $this->_data = $this->getTable( 'person', 'sportsmanagementTable' );
+			$this->_data->load( $this->_id );
+            
 //			$query='SELECT * FROM #__sportsmanagement_person WHERE id='.(int) $this->_id;
 //			$this->_db->setQuery($query);
 //			$this->_data = $this->_db->loadObject();
-//			return $this->_data;
-////		}
-////		return true;
-//	}
+			return $this->_data;
+//		}
+//		return true;
+	}
 
 
 	/**
