@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.formvalidation');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-echo ' person<br><pre>'.print_r($this->item,true).'</pre>';
+//echo ' person<br><pre>'.print_r($this->item,true).'</pre>';
 
 ?>
 <script type="text/javascript">
@@ -32,7 +32,7 @@ echo ' person<br><pre>'.print_r($this->item,true).'</pre>';
 		}
 	}
 </script>
-<form name="adminForm" id="adminForm" method="post" action="<?php echo Route::_('index.php'); ?>">
+<form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 <?php
 
 		?>

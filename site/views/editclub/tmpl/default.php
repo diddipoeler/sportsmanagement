@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-echo ' club<br><pre>'.print_r($this->item,true).'</pre>';
+//echo ' club<br><pre>'.print_r($this->item,true).'</pre>';
 
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
@@ -29,7 +29,7 @@ echo ' club<br><pre>'.print_r($this->item,true).'</pre>';
 $fieldsets = $this->form->getFieldsets();
 
 ?>
-<form name="adminForm" id="adminForm" method="post" action="index.php">
+<form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 
 <?php
 		//save and close 
