@@ -53,6 +53,7 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
 JLoader::import('components.com_sportsmanagement.libraries.github.github', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.http', JPATH_ADMINISTRATOR);	
 JLoader::import('components.com_sportsmanagement.libraries.github.commits', JPATH_ADMINISTRATOR);		
+JLoader::import('components.com_sportsmanagement.libraries.github.object', JPATH_ADMINISTRATOR);	
 }
 if(version_compare($baseVersion,'3.0','ge')) 
 {
