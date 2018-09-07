@@ -14,15 +14,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'matrix.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results'.DS.'view.html.php');
 
-jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-//jimport('joomla.html.pane');
 
 /**
  * sportsmanagementViewResultsmatrix
@@ -61,7 +61,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		
-		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid);
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC',$this->jinput->getInt('cfg_which_database',0));
 		
@@ -92,7 +92,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$this->matchdaysoptions = $options;
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $project->slug;
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = 0;
@@ -146,10 +146,10 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 	function getRoundSelectNavigation(&$rounds)
 	{
 	   // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
        
@@ -158,7 +158,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		{
 		  $routeparameter = array();
 $routeparameter['cfg_which_database'] = $jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $r->slug;
 $routeparameter['division'] = 0;
