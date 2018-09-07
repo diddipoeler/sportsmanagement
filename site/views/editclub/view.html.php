@@ -12,9 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewEditClub
@@ -25,39 +23,39 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewEditClub extends JViewLegacy
+class sportsmanagementViewEditClub extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewEditClub::display()
+	 * sportsmanagementViewEditClub::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$uri 	= Factory::getURI();
-		$user 	= Factory::getUser();
-        $document = Factory::getDocument();
-		$model	= $this->getModel();
-        $this->club = $model->getClub();
+	//	$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
+//		$uri 	= Factory::getURI();
+//		$user 	= Factory::getUser();
+//        $document = Factory::getDocument();
+//		$model	= $this->getModel();
+        $this->club = $this->model->getClub();
 
 		$lists = array();
 
     $this->club->merge_teams = explode(",", $this->club->merge_teams);
     
 
-		$this->form = $this->get('Form');	
+		//$this->form = $this->get('Form');	
 		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
 		$this->extended = $extended;
         $this->lists = $lists;
 
-        $this->cfg_which_media_tool = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
+        $this->cfg_which_media_tool = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
 
 		
-		parent::display($tpl);	
+		//parent::display($tpl);	
 	}
 
 	

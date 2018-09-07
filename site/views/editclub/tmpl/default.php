@@ -15,9 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 //JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
 
 
-HTMLHelper::_('behavior.modal');
-jimport('joomla.html.pane');
-jimport('joomla.html.html.tabs' );
+//HTMLHelper::_('behavior.modal');
+//jimport('joomla.html.pane');
+//jimport('joomla.html.html.tabs' );
 
 //echo 'form<pre>'.print_r($this->form , true).'</pre><br>';
 //echo 'club<pre>'.print_r($this->club , true).'</pre><br>';
@@ -61,6 +61,17 @@ $fieldsets = $this->form->getFieldsets();
 
 <?php
 
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
+foreach ($fieldsets as $fieldset) :
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true)); 
+echo HTMLHelper::_('bootstrap.endTab');
+endforeach; 
+
+echo HTMLHelper::_('bootstrap.endTabSet');
+
+
+
+/*
 $options = array(
     'onActive' => 'function(title, description){
         description.setStyle("display", "block");
@@ -89,39 +100,14 @@ echo HTMLHelper::_('tabs.panel', Text::_('PANEL_3_TITLE'), 'panel_3_id');
 //echo $this->loadTemplate('extended');
  
 echo HTMLHelper::_('tabs.end');
-
-/*
-echo HTMLHelper::_('sliders.start');
-foreach ($fieldsets as $fieldset) :
-if ($fieldset->name == 'details')
-{
-    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
-    echo $this->loadTemplate('details');
-}
-if ($fieldset->name == 'picture')
-{
-    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
-    echo $this->loadTemplate('picture');
-}
-if ($fieldset->name == 'extended')
-{
-    echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
-    echo $this->loadTemplate('extended');
-}
-endforeach;
-echo HTMLHelper::_('sliders.end');
 */
 
 
-
-
 ?>
-	<div class="clr"></div>
-	<input type="hidden" name="option" value="com_sportsmanagement" />
-    <input type="hidden" name="close" id="close" value="0"/>
-	<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
-    <input type="hidden" name="task" value="editclub.save" />	
-
-	<?php echo HTMLHelper::_('form.token'); ?>
-	
+<div class="clr"></div>
+<input type="hidden" name="option" value="com_sportsmanagement" />
+<input type="hidden" name="close" id="close" value="0"/>
+<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
+<input type="hidden" name="task" value="" />	
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>

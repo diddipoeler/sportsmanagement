@@ -13,8 +13,6 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 
-//jimport('joomla.application.component.view');
-
 /**
  * sportsmanagementViewEditPerson
  * 
@@ -26,31 +24,31 @@ use Joomla\CMS\Uri\Uri;
  */
 class sportsmanagementViewEditPerson extends sportsmanagementView {
 
+    
     /**
-     * sportsmanagementViewEditPerson::display()
+     * sportsmanagementViewEditPerson::init()
      * 
-     * @param mixed $tpl
-     * @return void
+     * @return
      */
     function init() {
 
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
-        $db = JFactory::getDBO();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = Uri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $user = JFactory::getUser();
-
-        $params = $app->getParams();
-        $dispatcher = JDispatcher::getInstance();
+        //$option = JFactory::getApplication()->input->getCmd('option');
+//        $app = JFactory::getApplication();
+//        $db = JFactory::getDBO();
+//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
+//            $uri = Uri::getInstance();
+//        } else {
+//            $uri = JFactory::getURI();
+//        }
+//        $user = JFactory::getUser();
+//
+//        $params = $app->getParams();
+//        $dispatcher = JDispatcher::getInstance();
 
         // Get some data from the models
-        $state = $this->get('State');
-        $this->item = $this->model->getData();
-        $this->form = $this->get('Form');
+        //$state = $this->get('State');
+//        $this->item = $this->model->getData();
+//        $this->form = $this->get('Form');
 
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
@@ -69,11 +67,11 @@ class sportsmanagementViewEditPerson extends sportsmanagementView {
         }
 
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode('<br />', $errors));
-            return false;
-        }
+        //// Check for errors.
+//        if (count($errors = $this->get('Errors'))) {
+//            JError::raiseError(500, implode('<br />', $errors));
+//            return false;
+//        }
 
 
         //parent::display($tpl);

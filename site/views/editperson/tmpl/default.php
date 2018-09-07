@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.formvalidation');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
+//echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 
 ?>
 <script type="text/javascript">
@@ -32,7 +32,7 @@ echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 		}
 	}
 </script>
-<form name="editperson" id="editperson" method="post" action="<?php echo Route::_('index.php'); ?>">
+<form name="adminForm" id="adminForm" method="post" action="<?php echo Route::_('index.php'); ?>">
 <?php
 
 		?>
@@ -64,12 +64,9 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 	
 	
 <div class="clr"></div>
-
-    
-	<input type="hidden" name="assignperson" value="0" id="assignperson" />
-	<input type="hidden" name="option" value="com_sportsmanagement" /> 
-	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
-	<input type="hidden" name="task" value="" />
-	<?php echo HTMLHelper::_('form.token')."\n"; ?>
-	
+<input type="hidden" name="assignperson" value="0" id="assignperson" />
+<input type="hidden" name="option" value="com_sportsmanagement" /> 
+<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
+<input type="hidden" name="task" value="" />
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
