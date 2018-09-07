@@ -128,9 +128,11 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 break;	
 case 'editclub':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'clubinfo.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
 break;
 case 'editperson':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
 break;
 case 'player':
 case 'staff':  
