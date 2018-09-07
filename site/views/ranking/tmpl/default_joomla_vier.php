@@ -104,7 +104,7 @@ echo HTMLHelper::_('bootstrap.' . $this->endPanel);
 
 echo HTMLHelper::_('bootstrap.' . $this->endPane, 'ID-Tabs-Group');
 
-
+/*
 $options2 = array(
     'active'    => 'tab1_id'    // Not in docs, but DOES work
 );
@@ -121,7 +121,7 @@ echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab2_id', Text::_('COM
 
 <?php echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.endTabSet');
-
+*/
 
 
 
