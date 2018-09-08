@@ -37,19 +37,20 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-        // JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = Factory::getURI();
-		$user = Factory::getUser();
-		$app = Factory::getApplication();
-		$model = $this->getModel();
-		$lists = array();
-		$starttime = microtime(); 
-		$item = $this->get('Item');
-		$this->item = $item;
+//		// Reference global application object
+//		$app = Factory::getApplication();
+//        // JInput object
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$uri = Factory::getURI();
+//		$user = Factory::getUser();
+//		$app = Factory::getApplication();
+//		$model = $this->getModel();
+//		$lists = array();
+//		$starttime = microtime(); 
+		
+//        $item = $this->get('Item');
+//		$this->item = $item;
         
 		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
 		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
