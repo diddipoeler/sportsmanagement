@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Language\Text;
 
 /**
  * JSMModelAdmin
@@ -81,13 +82,13 @@ $this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
  */ 
 if ( $this->jsmapp->isAdmin() )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
 }  
 if( $this->jsmapp->isSite() )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
 }    
         }    
 
@@ -107,10 +108,10 @@ if( $this->jsmapp->isSite() )
        //$view = $this->jsmjinput->getCmd('view');
        //$view = $this->jsmjinput->get('view', '', 'CMD');
        
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
-//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
 $input_options = JFilterInput::getInstance(
         array(
@@ -128,11 +129,11 @@ $input_options = JFilterInput::getInstance(
 if (array_key_exists('notes', $data)) 
 {    
 $html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' postData <br><pre>'.print_r($postData ,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 $data['notes'] = $html;
 //$html = $postData->get('notes','','raw');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' html <br><pre>'.print_r($html ,true).'</pre>'),'Notice');
 }
 		
 		
@@ -140,14 +141,14 @@ $data['notes'] = $html;
 		
 if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
 {
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 }
 
 //if( version_compare(JSM_JVERSION,'4','eq') ) 
 //{
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');    
 //}
 
     
@@ -164,7 +165,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 //       break; 
 //       }
        
-       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -530,7 +531,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             
  			if ($data['name'] == $orig_table->name) 
  			{ 
- 				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY'); 
+ 				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY'); 
  				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
  			} 
  		} 
@@ -545,10 +546,15 @@ catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $parentsave = false;
 }
+       
+       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'parent save '.$parentsave,'');
+       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'get name '.$this->getName(),'');
+       
        if ( $parentsave )
        {
-	$id =  (int) $this->getState($this->getName().'.id');
+	$id = (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
@@ -560,7 +566,7 @@ catch (Exception $e)
 /**
  * Here you can do other tasks with your newly saved record...
  */                
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
 
 if ($this->jsmjinput->get('task') == 'save2copy') 
  		{
@@ -625,7 +631,7 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
         $this->jsmdb->setQuery($this->jsmquery);
 	$res = $this->jsmdb->loadObject();
 	$delete_season[] = $value;
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
         if ( !$res )
         {
         $this->jsmquery->clear();
@@ -644,12 +650,12 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery();
 }
 catch (Exception $e) {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
 }
 
 //		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 //		{
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
 //		}  
         $message .= 'Saisonzuordnung : '.$res->name.' angelegt.<br>';
         }
@@ -686,7 +692,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {  
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
         }
 		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
@@ -702,7 +708,7 @@ $result = $this->jsmdb->execute();
 		{
 		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {  
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
         }
 		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
@@ -758,7 +764,7 @@ $result = $this->jsmdb->execute();
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+//            $this->app->enqueueMessage(Text::_('sportsmanagementModelteam save<br><pre>'.print_r(Factory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
           
         }
@@ -1424,11 +1430,11 @@ catch (Exception $e) {
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return JText::_('JGLOBAL_SAVE_SORT_NO');
+					return Text::_('JGLOBAL_SAVE_SORT_NO');
 				}
 			}
 		}
-		return JText::_('JGLOBAL_SAVE_SORT_YES');
+		return Text::_('JGLOBAL_SAVE_SORT_YES');
 	}
                 
 }
@@ -1480,11 +1486,11 @@ public function __construct($config = array())
  */ 
 if ( $this->jsmapp->isAdmin() )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
 }  
 if( $this->jsmapp->isSite() )
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
 }    
         }    
     
@@ -1538,11 +1544,11 @@ public function __construct($config = array())
  */        
         if ( $this->jsmapp->isAdmin() )
         {
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
         }  
         if( $this->jsmapp->isSite() )
         {
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
         } 
         
         }    
