@@ -13,10 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory; 
-
-//jimport( 'joomla.application.component.view' );
-jimport('joomla.form.form');
-
+use Joomla\CMS\Form\Form;
 
 /**
  * sportsmanagementViewPredictionTemplate
@@ -49,15 +46,15 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 //		$lists = array();
 //		$starttime = microtime(); 
 		
-//        $item = $this->get('Item');
-//		$this->item = $item;
+        $item = $this->get('Item');
+		$this->item = $item;
         
 		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
 		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
         
         //$app->enqueueMessage(Text::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
-		$form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
+		$form = Form::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);
 		$form->bind($item->params);
         // Assign the Data
