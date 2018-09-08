@@ -65,11 +65,11 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
         
         //$this->prediction_id = $jinput->get('predid', 0, '');
         //$this->prediction_id = $jinput->request->get('predid', 0, 'INT');
-		$this->prediction_id = $app->getUserState( "$option.prediction_id", '0' );
+		$this->prediction_id = $this->app->getUserState( "$this->option.prediction_id", '0' );
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
         //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
 //        $predictionGame = $model->getPredictionGame( $this->prediction_id );
-		$this->predictionGame = $model->getPredictionGame( $this->prediction_id );
+		$this->predictionGame = $this->model->getPredictionGame( $this->prediction_id );
 
 	}
 
