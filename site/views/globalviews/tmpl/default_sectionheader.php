@@ -13,14 +13,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Reference global application object
 $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $view = $jinput->getVar( "view") ;        
-$modalheight = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
+$modalheight = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
 
 
 switch ( $view )
@@ -132,7 +133,7 @@ $this->overallconfig['use_jquery_modal']);
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
 echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
@@ -380,7 +381,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
@@ -409,9 +410,9 @@ $this->overallconfig['use_jquery_modal']);
 	                
                     $link = sportsmanagementHelperRoute::getClubInfoRoute( $this->project->id, $this->club->id, "club.edit" );
                     
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubedit'.$this->club->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBINFO_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
