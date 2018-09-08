@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      predictiongame.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 
 // Check to ensure this file is included in Joomla!
@@ -44,6 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'predictiongames.php');
 
 /**
@@ -78,8 +52,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -91,7 +65,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}
@@ -113,7 +87,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         
-        $app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
+        $app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
         
     }
   
@@ -248,7 +222,7 @@ else
         
         if ( $result )
         {
-            $app->enqueueMessage(JText::_('Admins zum Tippspiel gespeichern'),'Notice');
+            $app->enqueueMessage(Text::_('Admins zum Tippspiel gespeichern'),'Notice');
         }
 	
 
@@ -263,40 +237,45 @@ else
 	 */
 	function storePredictionProjects($data)
 	{
- 		$option = JFactory::getApplication()->input->getCmd('option');
-	$app	= JFactory::getApplication();
-    // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-         $result	= true;
-		$peid	= (isset($data['project_ids']) ? $data['project_ids'] : array());
+       
+         $result = true;
+		$peid = (isset($data['project_ids']) ? $data['project_ids'] : array());
 		ArrayHelper::toInteger($peid);
 		$peids = implode(',',$peid);
 
-		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project WHERE prediction_id = ' . $data['id'];
-		if (count($peid)){$query .= ' AND project_id NOT IN (' . $peids . ')';}
-		$this->_db->setQuery($query);
-		if(!$this->_db->execute())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			$result = false;
+		$this->jsmquery = 'DELETE FROM #__sportsmanagement_prediction_project WHERE prediction_id = ' . $data['id'];
+		if (count($peid)){$this->jsmquery .= ' AND project_id NOT IN (' . $peids . ')';}
+		try{ 
+        $this->jsmdb->setQuery($this->jsmquery);
+        $this->jsmdb->execute();
+        $result = true;
 		}
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
 
 		for ($x=0; $x < count($peid); $x++)
 		{
-			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
-			$this->_db->setQuery($query);
-			if (!$this->_db->execute())
-			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-				$result= false;
-			}
+			$this->jsmquery = "INSERT IGNORE INTO #__sportsmanagement_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
+			try{ 
+        $this->jsmdb->setQuery($this->jsmquery);
+        $this->jsmdb->execute();
+        $result = true;
+		}
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
 		}
         
         if ( $result )
         {
-            $app->enqueueMessage(JText::_('Projekte zum Tippspiel gespeichern'),'Notice');
+            $app->enqueueMessage(Text::_('Projekte zum Tippspiel gespeichern'),'Notice');
         }
 
 		return $result;
@@ -519,7 +498,7 @@ else
 		if ( !$result )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result= false;
 		}
 
@@ -743,7 +722,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 						if (!$result)
                         {
                             //$this->setError($this->_db->getErrorMsg());
-                            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                             $result= false;
                             }
 					}
