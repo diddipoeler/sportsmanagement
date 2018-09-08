@@ -549,8 +549,8 @@ catch (Exception $e)
     $parentsave = false;
 }
        
-       $this->jsmapp->enqueueMessage('parent save '.$parentsave,'');
-       $this->jsmapp->enqueueMessage('get name'.$this->getName(),'');
+       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'parent save '.$parentsave,'');
+       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'get name '.$this->getName(),'');
        
        if ( $parentsave )
        {

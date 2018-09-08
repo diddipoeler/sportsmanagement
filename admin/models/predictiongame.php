@@ -58,9 +58,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
        
        // zuerst sichern, damit wir bei einer neuanlage die id haben
  try{
-    parent::save($data) ;
- $result = true;
-		}
+    $result = parent::save($data);
+ 		}
 catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
