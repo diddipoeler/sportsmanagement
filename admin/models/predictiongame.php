@@ -275,7 +275,7 @@ catch (Exception $e)
         
         if ( $result )
         {
-            $app->enqueueMessage(Text::_('Projekte zum Tippspiel gespeichern'),'Notice');
+            $this->jsmapp->enqueueMessage(Text::_('Projekte zum Tippspiel gespeichern'),'Notice');
         }
 
 		return $result;
