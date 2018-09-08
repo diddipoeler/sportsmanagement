@@ -17,6 +17,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.modeladmin');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'predictiongames.php');
 
@@ -41,13 +42,13 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app	= JFactory::getApplication();
+	   //$option = Factory::getApplication()->input->getCmd('option');
+	//$app	= Factory::getApplication();
     // Get a db connection.
-        $db = JFactory::getDbo();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+        //$db = Factory::getDbo();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -56,7 +57,17 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
        //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
+ try{
+    parent::save($data) ;
+ $result = true;
+		}
+catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}      
+       if ( $result )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
@@ -65,16 +76,17 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(Text::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
            
-		}
-                
-        
-       self::storePredictionAdmins($data);
+		self::storePredictionAdmins($data);
        self::storePredictionProjects($data);
+        }
+          
+        
        
-       return true;    
+       
+       return $result;    
     }   
     
     /**
@@ -84,8 +96,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
      */
     function import()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         $app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
         
@@ -102,8 +114,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	function getPredictionGame($id=0)
 	{
-//	   $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
+//	   $app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -142,8 +154,8 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	*/
 	function getPredictionProjectIDs($prediction_id=0)
 	{
-	   //$app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
+	   //$app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -186,8 +198,8 @@ else
 	 */
 	function storePredictionAdmins($data)
 	{
- 		$option = JFactory::getApplication()->input->getCmd('option');
-	$app	= JFactory::getApplication();
+ 		$option = Factory::getApplication()->input->getCmd('option');
+	$app	= Factory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -296,9 +308,9 @@ catch (Exception $e)
 
 	function deletePredictionAdmins($cid=array())
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
 		if ( count( $cid ) )
@@ -327,9 +339,9 @@ catch (Exception $e)
 
 	function deletePredictionProjects($cid=array())
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
 		if ( count( $cid ) )
@@ -359,9 +371,9 @@ catch (Exception $e)
 
 	function deletePredictionMembers($cid=array())
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
 		if ( count( $cid ) )
@@ -390,9 +402,9 @@ catch (Exception $e)
 
 	function deletePredictionResults($cid=array())
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
 		if ( count( $cid ) )
@@ -420,9 +432,9 @@ catch (Exception $e)
 	 */
 	function savePredictionProjectSettings($data)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
  		$result	= true;
@@ -492,7 +504,7 @@ catch (Exception $e)
                                         
         
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project', $object, 'id');
         
 		//$this->_db->setQuery( $query );
 		if ( !$result )
@@ -515,9 +527,9 @@ catch (Exception $e)
 	 */
 	function rebuildPredictionProjectSPoints($cid)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $db = JFactory::getDbo();  
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $db = Factory::getDbo();  
         $query = $db->getQuery(true);
         
  		$result	= true;
@@ -715,7 +727,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$object->diff = $diff;
 		$object->tend = $tend;
                         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $object, 'id');
+        $result = Factory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $object, 'id');
         
 						//echo "<br />$query<br />";
 						//$this->_db->setQuery($query);
