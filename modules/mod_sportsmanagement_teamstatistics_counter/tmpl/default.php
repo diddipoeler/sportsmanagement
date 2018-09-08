@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * Offene Punkte
@@ -49,7 +50,7 @@ $stats = $data['stats'];
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/startroster.png' class="m-b-1" style="height: 20px;"/>
                                     <h2 class="statistic-counter"><?php echo $stats['totalrounds']; ?></h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_ROUND_NUMBERS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_ROUND_NUMBERS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -59,7 +60,7 @@ $stats = $data['stats'];
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/shirt.png' class="m-b-1" style="height: 20px;"/>
                                     <h2 class="statistic-counter"><?php echo $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches; ?></h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_PLAYED_MATCHES'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_PLAYED_MATCHES'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -69,7 +70,7 @@ $stats = $data['stats'];
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/win.png' class="m-b-1" style="height: 20px;"/>
                                     <h2 class="statistic-counter"><?php echo count($stats['results']['win']); ?></h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_WINS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_WINS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -79,7 +80,7 @@ $stats = $data['stats'];
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/draw.png' class="m-b-1" style="height: 20px;"/>
                                     <h2 class="statistic-counter"><?php echo count($stats['results']['tie']); ?></h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_DRAWS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_DRAWS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -89,7 +90,7 @@ $stats = $data['stats'];
                                 <div class="single_counter p-y-2 m-t-1">
                                     <img src='images/com_sportsmanagement/database/events/lose.png' class="m-b-1" style="height: 20px;"/>
                                     <h2 class="statistic-counter"><?php echo count($stats['results']['loss']); ?></h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_LOSES'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_LOSES'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -101,7 +102,7 @@ $stats = $data['stats'];
                                     <h2 class="statistic-counter">
                                         <?php echo $stats['totalshome']->totalgoals + $stats['totalsaway']->totalgoals; ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -117,7 +118,7 @@ $stats = $data['stats'];
                                         echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
                                         ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS_PER_MATCH'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS_PER_MATCH'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -129,7 +130,7 @@ $stats = $data['stats'];
                                     <h2 class="statistic-counter">
                                         <?php echo $stats['totalshome']->goalsfor + $stats['totalsaway']->goalsfor; ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -145,7 +146,7 @@ $stats = $data['stats'];
                                         echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
                                         ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS_PER_MATCH'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS_PER_MATCH'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -157,7 +158,7 @@ $stats = $data['stats'];
                                     <h2 class="statistic-counter">
                                         <?php echo $stats['totalshome']->goalsagainst + $stats['totalsaway']->goalsagainst; ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -173,7 +174,7 @@ $stats = $data['stats'];
                                         echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
                                         ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS_PER_MATCH'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS_PER_MATCH'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>
@@ -185,7 +186,7 @@ $stats = $data['stats'];
                                     <h2 class="statistic-counter">
                                         <?php echo empty($stats['nogoals_against']->totalzero) ? 0 : $stats['nogoals_against']->totalzero; ?>
                                     </h2>
-                                    <p><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_CLEAN_SHEETS'); ?></p>
+                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_CLEAN_SHEETS'); ?></p>
                                 </div>
                             </div>
                         <?php endif; ?>

@@ -11,6 +11,9 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 if (!defined('DS'))
 {
@@ -36,11 +39,15 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'teamstats.php');
 require_once(dirname(__FILE__) . DS . 'helper.php');
 
 $data     = modJSMTeamStatisticsCounter::getData($params);
-$document = JFactory::getDocument();
-$document->addStyleSheet(JURI::base() . 'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css');
+$document = Factory::getDocument();
+/**
+ * add css file
+ */
+$document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+
 ?>
 
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>"
      id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-	<?PHP require(JModuleHelper::getLayoutPath($module->module)); ?>
+	<?PHP require(ModuleHelper::getLayoutPath($module->module)); ?>
 </div>
