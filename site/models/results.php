@@ -728,8 +728,15 @@ else
             $object->team2_single_sets = $post['team2_single_sets'.$pks[$x]];
             $object->team1_single_games = $post['team1_single_games'.$pks[$x]];
             $object->team2_single_games = $post['team2_single_games'.$pks[$x]];
+            if ( isset($post['content_id'.$pks[$x]]) )
+            {
             $object->content_id = $post['content_id'.$pks[$x]];
-            
+            }
+           	else
+	       {
+	       $object->content_id = 0;	
+	       }
+           
             if ( $post['use_legs'] )
             {
                 foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
@@ -790,7 +797,6 @@ catch (Exception $e)
 {
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
-    
     $result = false;
 }            
             
