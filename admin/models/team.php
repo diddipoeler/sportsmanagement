@@ -259,6 +259,9 @@ catch (Exception $e)
         }
                 
         $this->jsmquery->order('dayofweek ASC');
+        
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+        
         try{
         $this->jsmdb->setQuery($this->jsmquery);
 		$result = $this->jsmdb->loadObjectList();
