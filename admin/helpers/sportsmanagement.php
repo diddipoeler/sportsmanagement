@@ -2418,8 +2418,8 @@ $output .= '</ul>';
         
         $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
-        //$bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
-
+        $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
+/*
 // Use core button class or custom class.
 $bar->appendButton(new StandardButton('new'))
     ->text('JTOOLBAR_NEW')
@@ -2435,7 +2435,7 @@ $bar->popupButton('preview')
     ->iframeWidth(640)
     ->iframeHeight(480)
     ->setOption('foo', 'bar');
-
+*/
 
 
 //// Render the popup button
