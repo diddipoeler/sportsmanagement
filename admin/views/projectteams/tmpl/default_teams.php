@@ -13,22 +13,17 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $app = JFactory::getApplication();
 
-$modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
-
 $view = $this->jinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server','') ;
+$cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;
+$cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server','') ;
 
 ?>
 
@@ -252,8 +247,8 @@ Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$imag
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 '20',
 Uri::base().$link,
-$modalwidth,
-$modalheight);
+$this->modalwidth,
+$this->modalheight);
 ?>
               
 														
@@ -276,8 +271,8 @@ Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$imag
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 '20',
 Uri::base().$link,
-$modalwidth,
-$modalheight);
+$this->modalwidth,
+$this->modalheight);
 ?>
               
 													
@@ -301,8 +296,8 @@ Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$imag
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
 '20',
 Uri::base().$link,
-$modalwidth,
-$modalheight);                                
+$this->modalwidth,
+$this->modalheight);                                
 
 ?>
               
@@ -319,8 +314,8 @@ Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$imag
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE'),
 '20',
 Uri::base().$link,
-$modalwidth,
-$modalheight);                                
+$this->modalwidth,
+$this->modalheight);                                
 
 ?>
               
