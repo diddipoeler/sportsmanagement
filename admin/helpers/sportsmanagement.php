@@ -2409,9 +2409,14 @@ $output .= '</ul>';
         $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
         $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
         $bar = JToolbar::getInstance('toolbar');
+        $layout = new JLayoutFile('joomla.toolbar.popup');
         $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
         $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
+
+// Render the popup button
+$dhtml = $layout->render(array('name' => 'test', 'text' => JText::_('Custom button'), 'class' => 'icon-archive', 'doTask' => ''));
+$bar->appendButton('Custom', $dhtml);
 
 //    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
 //    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
