@@ -484,6 +484,11 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
 
 
        break; 
+/**
+ * tippspiel 
+ */         
+       case 'predictiongame':
+       break;
        default:
        break; 
        }
@@ -541,7 +546,8 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
  * zuerst sichern, damit wir bei einer neuanlage die id haben
  */         
        try{   
-       $parentsave = parent::save($data);
+       parent::save($data);
+       $parentsave = true;
        }
 catch (Exception $e)
 {
