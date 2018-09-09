@@ -147,7 +147,7 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // com
 //    $db = Factory::getDbo();
 // 
 //$query = $db->getQuery(true);
- 
+$this->jsmquery->clear(); 
 // delete all custom keys
 $conditions = array(
     $this->jsmdb->quoteName('id') . '='.$id
@@ -191,7 +191,7 @@ catch (Exception $e)
         
         //$db		= $this->getDbo();
 		//$query	= $db->getQuery(true);
-    
+$this->jsmquery->clear();    
     for($a=0; $a < count($post['tdids']); $a++ )    
     {
         $rowtraining = JTable::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
@@ -242,6 +242,7 @@ catch (Exception $e)
 //		$app	= Factory::getApplication();
 //        //$db		= $this->getDbo();
 //		$query	= Factory::getDbo()->getQuery(true);
+$this->jsmquery->clear();        
         // Select some fields
 		$this->jsmquery->select('tt.*');
         // From table
@@ -260,7 +261,7 @@ catch (Exception $e)
                 
         $this->jsmquery->order('dayofweek ASC');
         
-        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         
         try{
         $this->jsmdb->setQuery($this->jsmquery);
@@ -297,6 +298,7 @@ catch (Exception $e)
 //        $db = Factory::getDbo();
 //        // Create a new query object.
 //        $query = $db->getQuery(true);
+$this->jsmquery->clear();        
         // Insert columns.
         $columns = array('team_id','notes');
         // Insert values.
@@ -341,7 +343,7 @@ catch (Exception $e)
         $option = Factory::getApplication()->input->getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+$this->jsmquery->clear();        
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
