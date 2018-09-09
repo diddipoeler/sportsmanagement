@@ -236,35 +236,33 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 							?>
 							<td>
                             <?php 
-                            //echo JSMCountries::getCountryFlag($row->country); 
-                            if ($row->club_logo == '')
+/**
+ * die möglichkeit bieten, das vereinslogo zu aktualisieren
+ */
+$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
+$image = 'icon-16-Teams.png';
+
+                            if ( $row->club_logo == '' )
 							{
-								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 								echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
-                            // die möglichkeit bieten, das vereinslogo zu aktualisieren
-                            $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
+echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
+Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+'20',
+Uri::base().$link,
+$modalwidth,
+$modalheight);
 ?>
               
-							<a	href="javascript:openLink('<?php echo $link; ?>')">
-									 <?php
-									 
-								 	$image = 'icon-16-Teams.png';
-								 	$title=  '';
-								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-													 'title= "' .$title. '"');
-													 
-										
-									 									 ?>
-								</a>
-							
+														
               <?php                               
 
 							}
-							elseif ($row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig"))
+							elseif ( $row->club_logo == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") )
 							{
-								$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
+								$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE');
 								echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
@@ -273,10 +271,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 </a>
 <?PHP
 
-/**
- * die möglichkeit bieten, das vereinslogo zu aktualisieren
- */
-$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
+
 ?>
               
 							<a	href="javascript:openLink('<?php echo $link; ?>')">
