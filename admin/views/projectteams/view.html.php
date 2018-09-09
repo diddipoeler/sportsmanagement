@@ -254,16 +254,16 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+	   //// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
 
-	$app->setUserState( "$option.pid", $this->project_id );
-        $app->setUserState( "$option.season_id", $this->season_id );
-        $app->setUserState( "$option.project_art_id", $this->project_art_id );
-        $app->setUserState( "$option.sports_type_id", $this->sports_type_id );
+	$this->app->setUserState( "$this->option.pid", $this->project_id );
+        $this->app->setUserState( "$this->option.season_id", $this->season_id );
+        $this->app->setUserState( "$this->option.project_art_id", $this->project_art_id );
+        $this->app->setUserState( "$this->option.sports_type_id", $this->sports_type_id );
         
         // Set toolbar items for the page
         if ( $this->project_art_id != 3 )
