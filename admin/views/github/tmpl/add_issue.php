@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 // Include the component HTML helpers.
-HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+//HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
