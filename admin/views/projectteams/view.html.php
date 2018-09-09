@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewprojectteams
@@ -44,7 +46,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 		}
        
-		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
        
 		$this->project_art_id = $project->project_art_id;
@@ -58,11 +60,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
 		$starttime = microtime(); 
 		$items = $this->get('Items');
-        
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -80,12 +77,12 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 		
 		
-		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+		$mdlDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
         $projectdivisions = array();
 		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
-		$divisionsList[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisionsList[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		
 		if ($projectdivisions)
 		{ 
@@ -165,8 +162,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		}
 		else
 		{
-		//JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM').'<br /><br />');
-		$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'),'Notice');
+		//JError::raiseWarning('ERROR_CODE','<br />'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM').'<br /><br />');
+		$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADD_TEAM'),'Notice');
 		}
 
 		//build the html select list for teams
@@ -188,7 +185,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($notusedteams);
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation, $res);
@@ -211,7 +208,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         //build the html select list for all teams
 		$allTeams = array();
-		$all_teams[] = HTMLHelper::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
+		$all_teams[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
 		if( $allTeams = $this->model->getAllTeams($this->project_id) ) 
     {
 			$all_teams=array_merge($all_teams,$allTeams);
@@ -220,8 +217,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($all_teams);
         
         $myoptions = array();
-		$myoptions[] = HTMLHelper::_( 'select.option', '0', JText::_( 'JNO' ) );
-		$myoptions[] = HTMLHelper::_( 'select.option', '1', JText::_( 'JYES' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '0', Text::_( 'JNO' ) );
+		$myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'JYES' ) );
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
@@ -271,21 +268,21 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         // Set toolbar items for the page
         if ( $this->project_art_id != 3 )
         {
-            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TITLE');
         }
         else
         {
-            $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
+            $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
         }
         
-        JToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
-		JToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
+        JToolbarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
+		JToolbarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
         JToolbarHelper::deleteList('', 'projectteams.delete');
 
 		JToolbarHelper::apply('projectteams.saveshort');
-        sportsmanagementHelper::ToolbarButton('changeteams', 'move', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
-		sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
-        JToolbarHelper::custom('projectteam.copy', 'copy', 'copy', JText::_('JTOOLBAR_DUPLICATE'), true);
+        sportsmanagementHelper::ToolbarButton('changeteams', 'move', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
+		sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
+        JToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
 		JToolbarHelper::checkin('projectteams.checkin');
         
         JToolbarHelper::publish('projectteams.use_table_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_YES', true);

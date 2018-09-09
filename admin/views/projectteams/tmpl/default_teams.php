@@ -12,6 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
+
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -30,7 +33,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 ?>
 
 	<div  class="table-responsive" id="editcell">
-	<!--	<fieldset class="adminform"> -->
+
 			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<?php $cell_count=25; ?>
 			<table class="<?php echo $this->table_data_class; ?>">
@@ -40,7 +43,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 						<th >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-					<!--	<th >&nbsp;</th> -->
+
 						<th>
 							<?php echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
@@ -294,8 +297,14 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 
                                                 
 							} else {
-								if (JFile::exists(JPATH_SITE.DS.$row->club_logo)) {
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
+/**
+ * die möglichkeit bieten, das vereinslogo zu aktualisieren
+ */
+$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;								
+$image = 'icon-16-Teams.png';
+                                
+                                if ( JFile::exists(JPATH_SITE.DS.$row->club_logo) ) {
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
@@ -303,46 +312,35 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 <img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP 
-/**
- * die möglichkeit bieten, das vereinslogo zu aktualisieren
- */
-$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
+echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
+Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+'20',
+Uri::base().$link,
+$modalwidth,
+$modalheight);                                
+
 ?>
               
-							<a	href="javascript:openLink('<?php echo $link; ?>')">
-									 <?php
-									 
-								 	$image = 'icon-16-Teams.png';
-								 	$title=  '';
-								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-													 'title= "' .$title. '"');
-													 
-										
-									 									 ?>
-								</a>
+							
 							
               <?php                                                                
 								} else {
-									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
-									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-                                // die möglichkeit bieten, das vereinslogo zu aktualisieren
-                                $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
+//									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
+//									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+//													$imageTitle,'title= "'.$imageTitle.'"');
+
+echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
+Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE'),
+'20',
+Uri::base().$link,
+$modalwidth,
+$modalheight);                                
+
 ?>
               
-							<a	href="javascript:openLink('<?php echo $link; ?>')">
-									 <?php
-									 
-								 	$image = 'icon-16-Teams.png';
-								 	$title=  '';
-								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-													 'title= "' .$title. '"');
-													 
-										
-									 									 ?>
-								</a>
+							
 							
               <?php                                
                                 
