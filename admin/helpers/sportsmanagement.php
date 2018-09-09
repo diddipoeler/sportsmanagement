@@ -7,7 +7,12 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage helpers
+ * 
+ * toolbar
+ * https://issues.joomla.org/tracker/joomla-cms/19670
+ * 
  */
+ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
@@ -2412,7 +2417,25 @@ $output .= '</ul>';
         
         $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
-        $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
+        //$bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
+
+// Use core button class or custom class.
+$bar->appendButton(new StandardButton('new'))
+    ->text('JTOOLBAR_NEW')
+    ->task('article.add')
+    ->icon('icon-plus');
+    
+// Use pre-defined megic methods
+$bar->popupButton('preview')
+    ->text('COM_FOO_TOOLBAR_PREVIEW')
+    ->url(Route::_('...'))
+    ->icon('icon-eye')
+    ->listCheck(true)
+    ->iframeWidth(640)
+    ->iframeHeight(480)
+    ->setOption('foo', 'bar');
+
+
 
 //// Render the popup button
 //$layout2 = new JLayoutFile('joomla.toolbar.popup');
