@@ -229,7 +229,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
 			$layout = new FileLayout('joomla.toolbar.batch');
 			$dhtml = $layout->render(array('title' => $title));
 			Toolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');
-            ToolbarHelper::help('JHELP_COMPONENTS_BANNERS_BANNERS');
+            
+            ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL');
             
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
