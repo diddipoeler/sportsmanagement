@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\Toolbar;
 
 /**
  * sportsmanagementViewcpanel
@@ -192,7 +194,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         $document = Factory::getDocument();
         $task = $this->jinput->getCmd('task');
 
-        $document->addScript(JURI::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
         if ($this->app->isAdmin()) {
             if ($task == '' && $this->option == 'com_sportsmanagement') {
@@ -219,6 +221,12 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
             $bar = JToolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 
+            $title = Text::_('JTOOLBAR_BATCH');
+			// Instantiate a new FileLayout instance and render the batch button
+			$layout = new FileLayout('joomla.toolbar.batch');
+			$dhtml = $layout->render(array('title' => $title));
+			Toolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');
+            
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');
             }
