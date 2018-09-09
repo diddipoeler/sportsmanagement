@@ -297,7 +297,7 @@ catch (Exception $e)
         // Insert columns.
         $columns = array('team_id','notes');
         // Insert values.
-        $values = array($team_id,'-');
+        $values = array($team_id,$this->jsmdb->quote('-') );
         // Prepare the insert query.
         $this->jsmquery
             ->insert($this->jsmdb->quoteName('#__sportsmanagement_team_trainingdata'))
