@@ -23,6 +23,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\Button\PopupButton;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -2480,7 +2481,7 @@ $bar->popupButton('preview')
         $cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server', '');
         $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
         $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
-        $bar = JToolBar::getInstance('toolbar');
+        $bar = ToolBar::getInstance('toolbar');
 
         if ($layout) {
             $send = '<button class="btn btn-small modal" rel="help" href="#" onclick="Joomla.popupWindow(\'' . $cfg_help_server . 'SM-Backend:' . $view . '-' . $layout . '\', \'Help\', ' . $modal_popup_width . ', ' . $modal_popup_height . ', 1)"><i class="icon-question-sign"></i>' . Text::_('Onlinehilfe') . '</button>';
