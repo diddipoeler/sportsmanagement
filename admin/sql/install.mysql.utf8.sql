@@ -1310,7 +1310,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team_trainingdata` (
   `time_start` INT(11) NOT NULL DEFAULT '0' ,
   `time_end` INT(11) NOT NULL DEFAULT '0' ,
   `place` VARCHAR(255) NOT NULL DEFAULT '' ,
-  `notes` TEXT NOT NULL ,
+  `notes` TEXT NULL DEFAULT NULL,
   `ordering` INT(11) NOT NULL DEFAULT '0' ,
   `checked_out` INT(11) NOT NULL DEFAULT '0' ,
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
