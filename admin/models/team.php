@@ -170,7 +170,7 @@ catch (Exception $e)
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
         self::$change_training_date = $result; 
-        $this->jsmapp->setUserState( "$option.change_training_date", self::$change_training_date);
+        $this->jsmapp->setUserState( "$this->jsmoption.change_training_date", self::$change_training_date);
         
      return $result;           
     }
@@ -312,6 +312,7 @@ catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
     $result = false;
 }
 		
@@ -345,17 +346,6 @@ catch (Exception $e)
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
         }
         $post = Factory::getApplication()->input->post->getArray(array());
-        
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
-        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
         
         //$result=true;
 		for ($x=0; $x < count($pks); $x++)
