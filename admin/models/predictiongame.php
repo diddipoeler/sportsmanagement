@@ -45,12 +45,12 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	//$app	= Factory::getApplication();
     // Get a db connection.
         //$db = Factory::getDbo();
-       $date = Factory::getDate();
-	   $user = Factory::getUser();
+       //$date = Factory::getDate();
+	   //$user = Factory::getUser();
        $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
+	   $data['modified'] = $this->jsmdate->toSql();
+	   $data['modified_by'] = $this->jsmuser->get('id');
        
        //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(Text::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -66,7 +66,7 @@ catch (Exception $e)
     $result = false;
 }      
        
-       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'result '.$result,'');
+//       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'result '.$result,'');
        
        if ( $result )
        {
