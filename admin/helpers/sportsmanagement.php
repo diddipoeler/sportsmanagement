@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filter\OutputFilter;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -599,7 +601,7 @@ abstract class sportsmanagementHelper {
 
         $config = Factory::getConfig();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(JURI::root(),true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(Uri::root(),true).'</pre>'),'');
 
         if ($params->get('cfg_dbprefix')) {
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' database<br><pre> wir benutzen andere tabellen</pre>'),'');
@@ -703,7 +705,7 @@ abstract class sportsmanagementHelper {
                     $query->from('#__user_profiles as up');
                     $query->where('up.user_id = ' . $user_id);
                     $query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.website' . ''));
-                    $query->where('up.profile_value LIKE ' . $db->Quote('' . JURI::root() . ''));
+                    $query->where('up.profile_value LIKE ' . $db->Quote('' . Uri::root() . ''));
                     $db->setQuery($query);
                     $results2 = $db->loadResult();
 
@@ -1545,7 +1547,7 @@ abstract class sportsmanagementHelper {
                     $ret .= '" alt="' . $alttext . '" title="' . $alttext . '"/>';
                 }
             } else {
-                $picture = JURI::root(true) . '/' . str_replace(JPATH_SITE . DS, "", $picture);
+                $picture = Uri::root(true) . '/' . str_replace(JPATH_SITE . DS, "", $picture);
                 $title = $alttext;
                 //height and width set, let the browser resize it
                 $bUseHighslide = $params->get('use_highslide', false);
@@ -2407,7 +2409,7 @@ $output .= '</ul>';
         $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
         $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
         $bar = JToolbar::getInstance('toolbar');
-        $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
+        $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
         $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
 
@@ -2429,7 +2431,7 @@ $output .= '</ul>';
         $layout = $jinput->get('layout');
         $view = ucfirst(strtolower($view));
         $layout = ucfirst(strtolower($layout));
-        $document->addScript(JURI::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         $window_width = '<script>alert($(window).width()); </script>';
         $window_height = '<script>alert(window.screen.height); </script>';
 
