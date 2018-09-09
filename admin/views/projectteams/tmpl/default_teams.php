@@ -271,32 +271,21 @@ $modalheight);
 </a>
 <?PHP
 
-
+echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
+Uri::root().'administrator/components/com_sportsmanagement/assets/images/'.$image,
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+'20',
+Uri::base().$link,
+$modalwidth,
+$modalheight);
 ?>
               
-							<a	href="javascript:openLink('<?php echo $link; ?>')">
-									 <?php
-									 
-								 	$image = 'icon-16-Teams.png';
-								 	$title=  '';
-								 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
-													 Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
-													 'title= "' .$title. '"');
-													 
-										
-									 									 ?>
-								</a>
-							
+													
               <?php           
 
 
                                                 
 							} else {
-/**
- * die möglichkeit bieten, das vereinslogo zu aktualisieren
- */
-$link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;								
-$image = 'icon-16-Teams.png';
                                 
                                 if ( JFile::exists(JPATH_SITE.DS.$row->club_logo) ) {
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
