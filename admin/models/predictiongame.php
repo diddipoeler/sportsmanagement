@@ -14,7 +14,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -66,6 +65,9 @@ catch (Exception $e)
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }      
+       
+       $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.'result '.$result,'');
+       
        if ( $result )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
