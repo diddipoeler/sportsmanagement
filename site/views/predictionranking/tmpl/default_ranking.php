@@ -434,6 +434,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					$membersResultsArray[$member->pmID]['totalDiff'] = $totalDiff;
 					$membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
 					$membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
+					$membersResultsArray[$member->pmID]['membernameAtoZ'] = $member->name;
                     
                     if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
