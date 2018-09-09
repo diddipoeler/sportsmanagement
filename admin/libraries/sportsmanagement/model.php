@@ -488,6 +488,15 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
  * tippspiel 
  */         
        case 'predictiongame':
+       $data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
+       if ( isset($data['notify_to']) )
+       {
+        
+       }
+       else
+       {
+       $data['notify_to'] = '-'; 
+       }
        break;
        default:
        break; 
