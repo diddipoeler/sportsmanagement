@@ -2535,6 +2535,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 				default;
 					break;
 			}
+			$res= strcasecmp ($a['membernameAtoZ'], $b['membernameAtoZ'] );
 		}
 		return $res;
 	}
