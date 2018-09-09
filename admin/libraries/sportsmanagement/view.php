@@ -680,7 +680,8 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         
         }
         
-        sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        ToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout=add_issue');
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
