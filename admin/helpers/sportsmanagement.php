@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Toolbar\Toolbar;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -2413,7 +2414,7 @@ $output .= '</ul>';
 
         $modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
         $modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
-        $bar = JToolbar::getInstance('toolbar');
+        $bar = Toolbar::getInstance('toolbar');
         
         $page_url = OutputFilter::ampReplace('index.php?option=com_sportsmanagement&view=' . $view . '&tmpl=component&layout=' . $layout . '&type=' . $type . '&issueview=' . $issueview . '&issuelayout=' . $issuelayout . $zusatz);
 
