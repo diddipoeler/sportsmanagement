@@ -12,8 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-jimport( 'joomla.application.component.view' );
-
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewgithub
@@ -51,20 +51,22 @@ class sportsmanagementViewgithub extends sportsmanagementView
    {
      $this->milestone = 2;
    }
-	   
-       if ($this->getLayout()=='addissue' || $this->getLayout()=='addissue_3')
-		{
-			$this->_displayAddIssue();
-			return;
-		}
-        
-        if ($this->getLayout()=='github_result' || $this->getLayout()=='github_result_3')
-		{
-			$this->_displayGithubResult();
-			return;
-		}
-
-        $this->document->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/assets/css/octicons.css');
+	   switch ( $this->getLayout() )
+       {
+       case 'addissue':
+       case 'addissue_3':
+       case 'addissue_4':
+       $this->_displayAddIssue();
+	   return;
+       break; 
+       case 'github_result':
+       case 'github_result_3':
+       case 'github_result_4':
+       $this->_displayGithubResult();
+	   return;
+       break; 
+       }
+        $this->document->addStyleSheet(Uri::root().'administrator/components/com_sportsmanagement/assets/css/octicons.css');
         $this->commitlist = $this->model->getGithubList();
 
 	}
@@ -109,7 +111,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
         
         $this->lists = $lists;   
         
-        $params = \JComponentHelper::getParams($this->option);
+        $params = ComponentHelper::getParams($this->option);
       
         
         if ($params->get('gh_token', '')) 
