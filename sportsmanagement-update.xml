@@ -1253,6 +1253,6 @@
       <maintainerurl>http://fussballineuropa.de</maintainerurl>
       <section>some-section</section>
       <targetplatform name="joomla" version=".*" />
-   </upd   
+     </update>
    
 </updates>
