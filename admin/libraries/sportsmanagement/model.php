@@ -546,8 +546,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
  * zuerst sichern, damit wir bei einer neuanlage die id haben
  */         
        try{   
-       parent::save($data);
-       $parentsave = true;
+       $parentsave = parent::save($data);
        }
 catch (Exception $e)
 {
