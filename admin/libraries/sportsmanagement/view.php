@@ -85,8 +85,7 @@ class sportsmanagementView extends HtmlView
 			$this->app->enqueueMessage(implode("\n",$errors));
 			return false;
 		}
-        $this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-        $this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+        
         $this->layout = $this->getLayout();
         
     if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -110,6 +109,8 @@ class sportsmanagementView extends HtmlView
         $this->format = $this->jinput->getCmd('format');
         $this->view = $this->jinput->getCmd('view', 'cpanel');
         $this->tmpl = $this->jinput->getCmd('tmpl', '');
+        $this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+        $this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 	$this->project_id = $this->jinput->get('pid');
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
