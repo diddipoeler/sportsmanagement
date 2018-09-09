@@ -319,6 +319,7 @@ sportsmanagementModelPrediction::$type);
                 $membersResultsArray[$member->pmID]['totalDiff']        = $totalDiff;
                 $membersResultsArray[$member->pmID]['totalTend']        = $totalTend;
                 $membersResultsArray[$member->pmID]['totalJoker']       = $totalJoker;
+                $membersResultsArray[$member->pmID]['membernameAtoZ'] = $member->name;
 
                 // check all needed output for later
                 $picture    = $member->avatar;
