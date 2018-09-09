@@ -247,11 +247,11 @@ catch (Exception $e)
         // From table
 		$this->jsmquery->from('#__sportsmanagement_team_trainingdata as tt');
         
-        if ( $team_id)
+        if ( $team_id )
         {
         $this->jsmquery->where('tt.team_id = '.$team_id);
         }
-        else
+        elseif ( $pro_team_id )
         {
         $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id AS st on st.team_id = tt.team_id');
         $this->jsmquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');   
