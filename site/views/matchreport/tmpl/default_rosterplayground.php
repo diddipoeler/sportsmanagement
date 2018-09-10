@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 $startfade = $this->config['roster_playground_player_fade'];
 
 //echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
