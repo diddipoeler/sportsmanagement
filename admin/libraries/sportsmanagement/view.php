@@ -696,8 +696,15 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view);
 			JToolbarHelper::divider();
 		}
-        
-        
+/**
+ * test
+ * 
+ * 
+ */        
+$title = JText::_('JTOOLBAR_BATCH');
+$layout = new JLayoutFile('newissue', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
+$html = $layout->render();        
+JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');         
         
 	}
 
