@@ -683,10 +683,13 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
         JToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout=add_issue');
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		
+		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
+		
         if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_sportsmanagement');
-            JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,'http://jsm-wiki.diddipoeler.de/index.php?title=Hauptseite');
+            JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:');
 			JToolbarHelper::divider();
 		}
         
