@@ -41,7 +41,12 @@ function storechangeteams()
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
     }
 
-
+ function cancel($key = NULL)
+{
+    $msg = JText::_('JLIB_HTML_BEHAVIOR_CLOSE');
+            $link = 'index.php?option='.$this->option.'&view=close&tmpl=component';
+		$this->setRedirect($link,$msg);
+    }
 
 
 }
