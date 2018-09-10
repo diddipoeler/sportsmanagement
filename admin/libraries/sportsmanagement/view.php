@@ -680,7 +680,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         
         }
         
-        sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
         //JToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout='.$this->layout.'&tmpl=component'.'&issueview='.$this->view,'github',false);
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		
@@ -705,7 +705,15 @@ $title = JText::_('JTOOLBAR_BATCH');
 $layout = new JLayoutFile('newissue', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
 JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');         
-        
+
+$modal_params = array(); 
+$modal_params['url'] = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout='.$this->layout.'&issueview='.$this->view  ;
+$modal_params['height'] = $this->modalheight;
+$modal_params['width'] = $this->modalwidth;	
+echo JHTML::_('bootstrap.renderModal', 'collapseModal', $modal_params);
+		
+		
+		
 	}
 
 	/**
