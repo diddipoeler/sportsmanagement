@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      editlist.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage projectteams
@@ -51,8 +51,8 @@ HTMLHelper::_( 'behavior.tooltip' );
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
+<?php echo JText::_('JCANCEL');?></button>
 		</div>
 	</fieldset>
 	<div class="col50">
