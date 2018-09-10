@@ -681,7 +681,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         }
         
         //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
-        JToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout=add_issue');
+        JToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout=add_issue&tmpl=component','github',false);
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		
 		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
