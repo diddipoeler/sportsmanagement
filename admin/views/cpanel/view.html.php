@@ -224,11 +224,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
             $bar = JToolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 
-            $title = Text::_('JTOOLBAR_BATCH');
-			// Instantiate a new FileLayout instance and render the batch button
-			$layout = new FileLayout('joomla.toolbar.batch');
-			$dhtml = $layout->render(array('title' => $title));
-			Toolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');
+            
             
             //ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,'http://jsm-wiki.diddipoeler.de/index.php?title=Hauptseite');
             
