@@ -280,9 +280,19 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         JToolbarHelper::deleteList('', 'projectteams.delete');
 
 		JToolbarHelper::apply('projectteams.saveshort');
-        sportsmanagementHelper::ToolbarButton('changeteams', 'move', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
-		sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
-        JToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
+        //sportsmanagementHelper::ToolbarButton('changeteams', 'move', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
+	//sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
+
+$layout = new JLayoutFile('changeteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
+$html = $layout->render();        
+JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    		
+
+$layout = new JLayoutFile('assignteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
+$html = $layout->render();        
+JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    
+		
+		
+		JToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
 		JToolbarHelper::checkin('projectteams.checkin');
         
         JToolbarHelper::publish('projectteams.use_table_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_YES', true);
