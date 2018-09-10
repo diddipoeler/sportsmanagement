@@ -2526,16 +2526,17 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 
 				case 'count_tips_p':
 					$res= -($a['predictionsCount'] - $b['predictionsCount']);
+					$res= strcasecmp ($a['membernameAtoZ'], $b['membernameAtoZ'] );
 					break;
 
 				case 'count_tips_m':
 					$res=+($a['predictionsCount'] - $b['predictionsCount']);
+					$res= strcasecmp ($a['membernameAtoZ'], $b['membernameAtoZ'] );
 					break;
 
 				default;
 					break;
 			}
-			$res= strcasecmp ($a['membernameAtoZ'], $b['membernameAtoZ'] );
 		}
 		return $res;
 	}
