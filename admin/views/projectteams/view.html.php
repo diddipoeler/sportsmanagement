@@ -286,10 +286,20 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 $layout = new JLayoutFile('changeteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
 JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    		
+$modal_params = array(); 
+$modal_params['url'] = 'index.php?option=com_sportsmanagement&view=projectteams&layout=changeteams&tmpl=component&pid='.$this->project_id ;
+$modal_params['height'] = $this->modalheight;
+$modal_params['width'] = $this->modalwidth;	
+echo JHTML::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_params);
 
 $layout = new JLayoutFile('assignteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
 JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    
+$modal_params = array(); 
+$modal_params['url'] = 'index.php?option=com_sportsmanagement&view=projectteams&layout=editlist&tmpl=component&pid='.$this->project_id ;
+$modal_params['height'] = $this->modalheight;
+$modal_params['width'] = $this->modalwidth;	
+echo JHTML::_('bootstrap.renderModal', 'collapseModalassignTeams', $modal_params);
 		
 		
 		JToolbarHelper::custom('projectteam.copy', 'copy', 'copy', Text::_('JTOOLBAR_DUPLICATE'), true);
