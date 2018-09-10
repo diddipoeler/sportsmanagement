@@ -692,7 +692,8 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_sportsmanagement');
-            JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
+            //JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
+			JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view);
 			JToolbarHelper::divider();
 		}
         
