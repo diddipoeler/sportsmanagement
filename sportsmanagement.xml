@@ -147,6 +147,7 @@
 			<folder>sisdata</folder>
 			<folder>modules</folder>
 			<folder>libraries</folder>
+			<folder>layouts</folder>
 		</files>
  
 		<languages folder="admin">
