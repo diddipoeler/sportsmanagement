@@ -685,11 +685,14 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		
 		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
+		$layout = $this->jinput->get('layout');
+        $view = ucfirst(strtolower($this->view));
+        $layout = ucfirst(strtolower($layout));
 		
         if ($canDo->get('core.admin'))
 		{
 			JToolbarHelper::preferences('com_sportsmanagement');
-            JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:');
+            JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
 			JToolbarHelper::divider();
 		}
         
