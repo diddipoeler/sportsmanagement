@@ -269,22 +269,9 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
 $picture = ($player->picture != $picture2) ? $player->picture : $player->ppic ;
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->heim person_id<br /> ~' . $player->person_id . ' ~<br />';
-echo 'this->heim lastname<br /> ~' . $player->lastname . ' ~<br />';
-echo 'this->heim firstname<br /> ~' . $player->firstname . ' ~<br />';
-echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
-}
-
-
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['links']; ?>px; top:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['oben']; ?>px; text-align:center;">
-
-
-
-
 
 <?PHP
 echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,
@@ -295,12 +282,22 @@ $this->config['roster_playground_player_picture_width'],
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']						       
-);     
+);    
+	
+if ( $this->config['show_player_profile_link'] )
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $player->team_slug;
+$routeparameter['pid'] = $player->person_slug;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);	
 ?>
- 
-
-
-<a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
+<a class="link" href="<?php echo $player_link; ?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
+<?php
+} 
+?> 
 </div>
                                       
 <?PHP
@@ -331,11 +328,6 @@ foreach ($this->matchplayerpositions as $pos)
 				}
 			}
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->gast personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
-}
-
 if ($personCount > 0)
 {			
 
@@ -364,9 +356,21 @@ $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']						       
 );    
-?>
 
-<a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
+if ( $this->config['show_player_profile_link'] )
+{
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $player->team_slug;
+$routeparameter['pid'] = $player->person_slug;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);	
+?>
+<a class="link" href="<?php echo $player_link;?>"><font color=""><?PHP echo $player->lastname." "; ?></font></a>
+<?php
+}	
+?>	
 </div>
                                       
 <?PHP
