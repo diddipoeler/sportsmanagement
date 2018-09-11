@@ -42,7 +42,8 @@ $fieldsets = $this->form->getFieldsets();
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
 					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
-					
+					<button type="button" onclick="Joomla.submitform('editperson.cancel', this.form);">
+						<?php echo Text::_('JCANCEL');?></button>
 				</div>
 	<legend>
   <?php 
