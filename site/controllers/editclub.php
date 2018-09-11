@@ -52,7 +52,7 @@ class sportsmanagementControllerEditClub extends FormController {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
-         public function cancel()
+         public function cancel($key = NULL)
         {
             $msg = 'cancel';
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
@@ -80,7 +80,7 @@ class sportsmanagementControllerEditClub extends FormController {
      * 
      * @return void
      */
-    function display() {
+    function display($cachable = false, $urlparams = Array() ) {
         /*
           switch($this->getTask())
           {
@@ -116,7 +116,7 @@ class sportsmanagementControllerEditClub extends FormController {
      * 
      * @return void
      */
-    function save() {
+    function save($key = NULL, $urlVar = NULL) {
         $app = Factory::getApplication();
         // Check for request forgeries
         JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
