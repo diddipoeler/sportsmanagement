@@ -16,40 +16,40 @@ use Joomla\CMS\Language\Text;
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container">
-	<?php
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-		{
-		echo $this->loadTemplate('debug');  
-        }
+<div class="<?php echo $this->divclasscontainer;?>">
+<?php
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');  
+}
           
-	if ( !empty($this->project->id) )
-	{
-		echo $this->loadTemplate('projectheading');
+if ( !empty($this->project->id) )
+{
+echo $this->loadTemplate('projectheading');
 
-		if ( $this->config['show_sectionheader'] )
-		{
-			echo $this->loadTemplate('sectionheader');
-		}
+if ( $this->config['show_sectionheader'] )
+{
+echo $this->loadTemplate('sectionheader');
+}
 
-		if ( $this->config['show_plan_layout'] == 'plan_default' )
-		{
-			echo $this->loadTemplate('plan');
-		} 
-        else if( $this->config['show_plan_layout'] == 'plan_sorted_by_date') 
-        {
-			echo $this->loadTemplate('plan_sorted_by_date');
-		}
+if ( $this->config['show_plan_layout'] == 'plan_default' )
+{
+echo $this->loadTemplate('plan');
+} 
+else if( $this->config['show_plan_layout'] == 'plan_sorted_by_date') 
+{
+echo $this->loadTemplate('plan_sorted_by_date');
+}
 		
-		echo "<div>";
-	}
-	else
-	{
-		echo "<div>";
-			echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
-	}
+echo "<div>";
+}
+else
+{
+echo "<div>";
+echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
+}
 
-		echo $this->loadTemplate('jsminfo');
-	echo '</div>';
-	?>
+echo $this->loadTemplate('jsminfo');
+echo '</div>';
+?>
 </div>
