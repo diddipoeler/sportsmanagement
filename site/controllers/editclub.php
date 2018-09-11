@@ -52,6 +52,14 @@ class sportsmanagementControllerEditClub extends FormController {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+         public function cancel()
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+ 
+                return true;
+        }
+ 
     /**
      * sportsmanagementControllerEditClub::load()
      * 
