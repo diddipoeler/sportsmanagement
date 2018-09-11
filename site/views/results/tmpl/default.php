@@ -15,49 +15,40 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container-fluid">
-	<?php
+<div class="<?php echo $this->divclasscontainer;?>">
+<?php
     
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');
 }    
-    
-    
-	echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('projectheading');
 
-	if ( $this->config['show_sectionheader'] )
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
-	
-	if ( $this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3 )
-	{
-		echo $this->loadTemplate('pagnav');
-	}
-
-	echo $this->loadTemplate('results');
-
-	if ( $this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3 )
-	{
-		echo $this->loadTemplate('pagnav');
-	}
-    
-    if ( $this->overallconfig['show_project_rss_feed'] )
-	{
-		if ( $this->rssfeeditems )
-        {
-        echo $this->loadTemplate('rssfeed');    
-        }
-	}
-/*
-if ( $this->config['show_summary'] )
+if ( $this->config['show_sectionheader'] )
 {
-	echo $this->loadTemplate('summary');	
+echo $this->loadTemplate('sectionheader');
 }
-*/    
+	
+if ( $this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3 )
+{
+echo $this->loadTemplate('pagnav');
+}
+
+echo $this->loadTemplate('results');
+
+if ( $this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3 )
+{
+echo $this->loadTemplate('pagnav');
+}
+    
+if ( $this->overallconfig['show_project_rss_feed'] )
+{
+if ( $this->rssfeeditems )
+{
+echo $this->loadTemplate('rssfeed');    
+}
+}
 
 echo $this->loadTemplate('jsminfo');
 ?>
-
 </div>
