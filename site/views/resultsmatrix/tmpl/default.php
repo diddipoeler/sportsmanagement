@@ -16,38 +16,30 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
-<div class="container" id="resultsmatrix">
-
-	<?php 
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+<div class="<?php echo $this->divclasscontainer;?>" id="resultsmatrix">
+<?php 
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-    echo $this->loadTemplate('debug');
+echo $this->loadTemplate('debug');
 }
-	echo $this->loadTemplate('projectheading');
-		
-	echo $this->loadTemplate('selectround');
+echo $this->loadTemplate('projectheading');
+echo $this->loadTemplate('selectround');
 
 // diddipoeler
-  // aufbau der templates
-  $this->output = array();
+// aufbau der templates
+$this->output = array();
   
-  $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
-  if(isset($this->divisions) && count($this->divisions) > 1) 
-  {
-	//echo $this->loadTemplate('matrix_division');
-    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
-    }
-    else
-    {
-	//echo $this->loadTemplate('matrix');
-    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
-    }
+$this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+if(isset($this->divisions) && count($this->divisions) > 1) 
+{
+$this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
+}
+else
+{
+$this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
+}
 
 echo $this->loadTemplate('show_tabs');
-  
-
-
-	echo $this->loadTemplate('jsminfo');
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>
