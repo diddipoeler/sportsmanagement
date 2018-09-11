@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
@@ -75,6 +75,8 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="close" id="close" value="0"/>
 <input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->club->id; ?>" />
+<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p',0); ?>" /> 	
 <input type="hidden" name="task" value="" />	
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>
