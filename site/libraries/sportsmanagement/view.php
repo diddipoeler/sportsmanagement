@@ -138,6 +138,14 @@ class sportsmanagementView extends HtmlView {
                 break;
         }
 
+ /**
+  * flexible einstellung der div klassen im frontend
+  * da man nicht alle templates mit unterschiedlich bootstrap versionen
+  * abfangen kann. hier muss der anwender bei den templates hand anlegen
+  */	    
+	$this->divclasscontainer = isset($this->config['divclasscontainer']) ? $this->config['divclasscontainer'] : 'container-fluid';   
+	$this->divclassrow = isset($this->config['divclassrow']) ? $this->config['divclassrow'] : 'row-fluid';
+		
         $this->init();
 
         $this->addToolbar();
@@ -145,11 +153,7 @@ class sportsmanagementView extends HtmlView {
         parent::display($tpl);
     }
 
-    /**
-     * sportsmanagementView::addToolbar()
-     * 
-     * @return void
-     */
+    c
     protected function addToolbar() {
         
     }
