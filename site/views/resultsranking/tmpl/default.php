@@ -23,7 +23,7 @@ $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
-<div class="container" id="resultsranking">
+<div class="<?php echo $this->divclasscontainer;?>" id="resultsranking">
 
 <?php 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
