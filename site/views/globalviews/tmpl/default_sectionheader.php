@@ -428,7 +428,7 @@ $this->overallconfig['use_jquery_modal']);
     break;
     default:
     ?>
-    <div class="row" id="sectionheader">
+    <div class="<?php echo $this->divclassrow;?>" id="sectionheader">
     <table class="table" id="sectionheader">
     <tr>
     <td class="contentheading">
