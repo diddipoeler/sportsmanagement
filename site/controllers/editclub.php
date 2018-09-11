@@ -182,7 +182,7 @@ class sportsmanagementControllerEditClub extends FormController {
             $post['merge_teams'] = '';
         }
 
-        //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+        $app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
         if ($model->updItem($post)) {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
@@ -204,13 +204,13 @@ class sportsmanagementControllerEditClub extends FormController {
         }
 
         // Check the table in so it can be edited.... we are done with it anyway
-        $model->checkin();
+        //$model->checkin();
 
 
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
         } else {
-            $this->setRedirect('index.php?option=com_sportsmanagement&close='.Factory::getApplication()->input->getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
+            $this->setRedirect('index.php?option=com_sportsmanagement&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
         }
     }
 
