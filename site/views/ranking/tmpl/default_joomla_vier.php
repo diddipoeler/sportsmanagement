@@ -37,8 +37,8 @@ if ($this->config['show_table_1']) {
 echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab1id', Text::_($this->config['table_text_1']));
 
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking');
         ?>
@@ -51,8 +51,8 @@ if ($this->config['show_table_2']) {
 echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab2id', Text::_($this->config['table_text_2']));
 
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_home');
         ?>
@@ -65,8 +65,8 @@ if ($this->config['show_table_3']) {
 echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab3id', Text::_($this->config['table_text_3']));
 
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_away');
         ?>
@@ -79,8 +79,8 @@ if ($this->config['show_table_4']) {
 echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab4id', Text::_($this->config['table_text_4']));
 
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_first');
         ?>
@@ -93,8 +93,8 @@ if ($this->config['show_table_5']) {
 echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($this->config['table_text_5']));
 
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <?PHP
         echo $this->loadTemplate('ranking_second');
         ?>
@@ -103,37 +103,15 @@ echo HTMLHelper::_('bootstrap.' . $this->addPanel, 'myTab', 'tab5id', Text::_($t
 <?PHP
 }
 echo HTMLHelper::_('bootstrap.' . $this->endPanel);
-
 echo HTMLHelper::_('bootstrap.' . $this->endPane, 'myTab');
 
-/*
-$options2 = array(
-    'active'    => 'tab1_id'    // Not in docs, but DOES work
-);
-
-echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-Group2', $options2);
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab1_id', Text::_('COM_BOOTSTRAPTABS_TAB_1')); ?> 
-
-<p>Content of the first tab.</p> 
-
-<?php echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-Group2', 'tab2_id', Text::_('COM_BOOTSTRAPTABS_TAB_2')); ?>
-
-<p>Content of the second tab.</p> 
-
-<?php echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.endTabSet');
-*/
-
-
-
 ?>
-<div class="container">
-    <div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclassrow;?>">
 <?PHP
 echo $this->loadTemplate('jsminfo');
 ?>
-    </div>
+</div>
 </div>
 <?PHP
 ?>
