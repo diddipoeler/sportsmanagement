@@ -182,7 +182,7 @@ class sportsmanagementControllerEditClub extends FormController {
             $post['merge_teams'] = '';
         }
 
-        $app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+        //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
         if ($model->updItem($post)) {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');

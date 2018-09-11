@@ -74,8 +74,8 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <div class="clr"></div>
 <input type="hidden" name="option" value="com_sportsmanagement" />
 <input type="hidden" name="close" id="close" value="0"/>
-<input type="hidden" name="cid" value="<?php echo $this->club->id; ?>" />
-<input type="hidden" name="id" value="<?php echo $this->club->id; ?>" />
+<input type="hidden" name="cid" value="<?php echo $this->item->id; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p',0); ?>" /> 	
 <input type="hidden" name="task" value="" />	
 <?php echo HTMLHelper::_('form.token'); ?>

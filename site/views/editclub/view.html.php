@@ -34,13 +34,7 @@ class sportsmanagementViewEditClub extends sportsmanagementView
 	 */
 	function init()
 	{
-	//	$option = Factory::getApplication()->input->getCmd('option');
-//		$app = Factory::getApplication();
-//		$uri 	= Factory::getURI();
-//		$user 	= Factory::getUser();
-//        $document = Factory::getDocument();
-//		$model	= $this->getModel();
-        //$this->club = sportsmanagementModelClubInfo::getClub(0,$this->jinput->getVar('cid','0'));
+	
 $this->item = $this->model->getData();
 		$lists = array();
 
@@ -53,9 +47,7 @@ $this->item = $this->model->getData();
         $this->lists = $lists;
 
         $this->cfg_which_media_tool = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
-
-		
-		//parent::display($tpl);	
+	
 	}
 
 	
