@@ -13,8 +13,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 ?>
 <script>
@@ -40,10 +41,9 @@ if ( $this->overallconfig['show_project_staffel_id'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 {
 	?>
-<!--	<div class="componentheading"> -->
-<div class="row" id="projectheading">
+<div class="<?php echo $this->divclassrow;?>" id="projectheading">
 		<table class="table">
-<!--				<tbody> -->
+
 				<?php
 				if ( $this->overallconfig['show_project_country'] )
 				{
@@ -158,7 +158,7 @@ echo Text::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>'
 			    	?>
 					<td class="buttonheading" align="right">
 					<?php
-						if(JFactory::getApplication()->input->getVar('print') != 1) {
+						if(Factory::getApplication()->input->getVar('print') != 1) {
 							$overallconfig = $this->overallconfig;
 							echo sportsmanagementHelper::printbutton(null, $overallconfig);
 						}
@@ -197,7 +197,7 @@ else
 					<tr class="contentheading">
 						<td class="buttonheading" align="right">
 						<?php 
-							if(JFactory::getApplication()->input->getVar('print') != 1)
+							if(Factory::getApplication()->input->getVar('print') != 1)
 							{
 								echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
 							}
