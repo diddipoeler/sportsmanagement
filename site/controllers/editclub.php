@@ -198,7 +198,7 @@ class sportsmanagementControllerEditClub extends FormController {
         if ($this->getTask() == 'save') {
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
         } else {
-            $this->setRedirect('index.php?option=com_sportsmanagement&close=' . Factory::getApplication()->input->getString('close', 0) . '&tmpl=component&view=editclub&cid=' . $post['id'], $msg, $type);
+            $this->setRedirect('index.php?option=com_sportsmanagement&close='.Factory::getApplication()->input->getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'].'&id='.$post['id'].'&p='.$post['p'], $msg, $type);
         }
     }
 
