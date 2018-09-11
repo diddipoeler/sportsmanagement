@@ -63,9 +63,12 @@ class sportsmanagementControllereditperson extends FormController {
         return true;
     }
 
+   
     /**
      * sportsmanagementControllereditperson::save()
      * 
+     * @param mixed $key
+     * @param mixed $urlVar
      * @return
      */
     public function save($key = NULL, $urlVar = NULL) {
@@ -97,6 +100,12 @@ class sportsmanagementControllereditperson extends FormController {
         return true;
     }
 
+        /**
+         * sportsmanagementControllereditperson::cancel()
+         * 
+         * @param mixed $key
+         * @return
+         */
         public function cancel($key = NULL)
         {
             $msg = 'cancel';

@@ -59,7 +59,38 @@ class sportsmanagementModelEditClub extends JModelForm
         
 	}
     
-
+/**
+ * sportsmanagementModelEditClub::updItem()
+ * 
+ * @param mixed $data
+ * @return void
+ */
+function updItem($data)
+    {
+        $app = Factory::getApplication();
+        
+        foreach( $data['request'] as $key => $value)
+        {
+            $data[$key] = $value;
+        }
+        
+        // Specify which columns are to be ignored. This can be a string or an array.
+        //$ignore = 'id';
+        $ignore = '';
+        // Get the table object from the model.
+        $table = $this->getTable( 'club' );
+        // Bind the array to the table object.
+        $table->bind( $data, $ignore );
+        
+        if ( !$table->store() )
+        {
+            JError::raiseError(500, $db->getErrorMsg());
+        }
+        else
+        {
+            
+        }
+        }
   /**
    * sportsmanagementModelEditClub::getData()
    * 

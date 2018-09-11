@@ -52,6 +52,12 @@ class sportsmanagementControllerEditClub extends FormController {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+         /**
+          * sportsmanagementControllerEditClub::cancel()
+          * 
+          * @param mixed $key
+          * @return
+          */
          public function cancel($key = NULL)
         {
             $msg = 'cancel';
@@ -75,9 +81,12 @@ class sportsmanagementControllerEditClub extends FormController {
         $this->display();
     }
 
+    
     /**
      * sportsmanagementControllerEditClub::display()
      * 
+     * @param bool $cachable
+     * @param mixed $urlparams
      * @return void
      */
     function display($cachable = false, $urlparams = Array() ) {
@@ -111,9 +120,12 @@ class sportsmanagementControllerEditClub extends FormController {
          */
     }
 
+   
     /**
      * sportsmanagementControllerEditClub::save()
      * 
+     * @param mixed $key
+     * @param mixed $urlVar
      * @return void
      */
     function save($key = NULL, $urlVar = NULL) {
@@ -128,7 +140,7 @@ class sportsmanagementControllerEditClub extends FormController {
 
         $cid = Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
         $post['id'] = (int) $cid[0];
-        $model = $this->getModel('club');
+        $model = $this->getModel('editclub');
 
         if (!empty($post['address'])) {
             $address_parts[] = $post['address'];
@@ -172,7 +184,7 @@ class sportsmanagementControllerEditClub extends FormController {
 
         //$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 
-        if ($model->save($post)) {
+        if ($model->updItem($post)) {
             $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
             $createTeam = Factory::getApplication()->input->getVar('createTeam');
             if ($createTeam) {
