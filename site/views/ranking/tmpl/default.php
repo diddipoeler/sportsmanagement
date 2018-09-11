@@ -33,7 +33,7 @@ use Joomla\CMS\Uri\Uri;
 
   </script>
 
-  <div class="container" id="defaultranking">
+  <div class="<?php echo $this->divclasscontainer;?>" id="defaultranking">
   <?php
 
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -62,7 +62,7 @@ use Joomla\CMS\Uri\Uri;
   if ( $this->config['show_ranking'] )
   {
 ?>
-<div class="row" id="ranking">
+<div class="<?php echo $this->divclassrow;?>" id="ranking">
 <?php    
 /**
  * sollen überhaupt reiter angezeigt werden ?
