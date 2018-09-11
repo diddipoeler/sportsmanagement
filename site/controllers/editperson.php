@@ -68,7 +68,7 @@ class sportsmanagementControllereditperson extends FormController {
      * 
      * @return
      */
-    public function save() {
+    public function save($key = NULL, $urlVar = NULL) {
         // Initialise variables.
         $app = Factory::getApplication();
         $model = $this->getModel('editperson');
@@ -97,7 +97,7 @@ class sportsmanagementControllereditperson extends FormController {
         return true;
     }
 
-        public function cancel()
+        public function cancel($key = NULL)
         {
             $msg = 'cancel';
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
