@@ -52,7 +52,7 @@ usort($this->matches, function($a, $b) { return $a->match_timestamp - $b->match_
 				if ( substr( $match->match_date, 0, 10 ) != $pr_id)
 				{			
 				?>
-                <div class="row table-responsive" id="teamplansbd">   
+                <div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplansbd">   
 				<table class="<?php echo $this->config['table_class']; ?>">
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
