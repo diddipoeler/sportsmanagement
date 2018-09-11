@@ -13,8 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 
@@ -28,7 +28,7 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' 
  * @version 2014
  * @access public
  */
-class sportsmanagementModelEditPerson extends JModelAdmin
+class sportsmanagementModelEditPerson extends AdminModel
 {
   
   /* interfaces */
@@ -134,7 +134,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
 	 */
 	public function getTable($type = 'person', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 	
 	/**

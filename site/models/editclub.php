@@ -13,16 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-
-//jimport('joomla.application.component.model');
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
-//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'jltoolbar.php');
-
-// Include dependancy of the main model form
-jimport('joomla.application.component.modelform');
-
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelEditClub
@@ -33,7 +25,7 @@ jimport('joomla.application.component.modelform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelEditClub extends JModelForm
+class sportsmanagementModelEditClub extends AdminModel
 {
 	
   /* interfaces */
@@ -70,7 +62,7 @@ class sportsmanagementModelEditClub extends JModelForm
 	 */
 	public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
         
 /**
