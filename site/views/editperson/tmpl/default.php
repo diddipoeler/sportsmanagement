@@ -13,7 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-//jimport('joomla.html.pane');
+use Joomla\CMS\Factory;
+
 // Load the tooltip behavior.
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
@@ -77,6 +78,11 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="assignperson" value="0" id="assignperson" />
 <input type="hidden" name="option" value="com_sportsmanagement" /> 
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
+<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>" /> 	
+	
+<input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p',0); ?>" /> 
+<input type="hidden" name="tid" value="<?php echo Factory::getApplication()->input->getInt('tid',0); ?>" /> 
+	
 <input type="hidden" name="task" value="" />
 <?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
