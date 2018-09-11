@@ -87,15 +87,16 @@ function updItem($data)
         $table = $this->getTable( 'club' );
         // Bind the array to the table object.
         $table->bind( $data, $ignore );
-        
-        if ( !$table->store() )
-        {
-            JError::raiseError(500, $db->getErrorMsg());
+ try{       
+        $result = $table->store();
         }
-        else
-        {
-            
-        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $result = false;
+}
+        return $result;
         }
   /**
    * sportsmanagementModelEditClub::getData()
