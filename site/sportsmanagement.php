@@ -129,6 +129,7 @@ break;
 case 'editclub':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'clubinfo.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php' );
+require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'JSON.php' );  
 break;
 case 'editperson':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
