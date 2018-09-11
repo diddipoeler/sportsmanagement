@@ -97,12 +97,12 @@ class sportsmanagementControllereditperson extends FormController {
         return true;
     }
 
-//        public function apply()
-//        {
-////            $msg = 'apply';
-////            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-//
-// 
-//                return true;
-//        }
+        public function cancel()
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+
+ 
+                return true;
+        }
 }
