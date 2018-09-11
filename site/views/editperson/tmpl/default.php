@@ -55,8 +55,18 @@ $fieldsets = $this->form->getFieldsets();
 <?php 
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));    
 foreach ($fieldsets as $fieldset) :
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true)); 
+
+switch ( $fieldset->name )
+{
+case 'details':
+//case 'picture':
+//case 'extended':
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));
+echo $this->loadTemplate($fieldset->name);
 echo HTMLHelper::_('bootstrap.endTab');
+break;    
+}
+
 endforeach; 
 
 echo HTMLHelper::_('bootstrap.endTabSet');
