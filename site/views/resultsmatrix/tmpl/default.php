@@ -25,8 +25,10 @@ echo $this->loadTemplate('debug');
 echo $this->loadTemplate('projectheading');
 echo $this->loadTemplate('selectround');
 
-// diddipoeler
-// aufbau der templates
+/**
+ * diddipoeler
+ * aufbau der templates
+ */
 $this->output = array();
   
 $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
