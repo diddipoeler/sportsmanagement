@@ -20,12 +20,12 @@ if(($this->config['show_playground'] || $this->config['show_playground_alert']))
 if($this->config['show_referee']){$nbcols++;}
 
 ?>
-<div class="row-fluid">  
-<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
+ 
+<table class="<?PHP echo $this->config['table_class']; ?> ">
 	<tr>
 		<td>
 			May be designed in the future???
 		</td>
 	</tr>
 </table>
-</div>
+
