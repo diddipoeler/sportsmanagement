@@ -16,7 +16,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_CONTAINER">
 <option value="container-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_CONTAINER_FLUID</option>
 </field>
 
-<field 	name="divclassrow" type="list" default="container-fluid" 
+<field 	name="divclassrow" type="list" default="row-fluid" 
 class=""
 label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW" 
 description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
