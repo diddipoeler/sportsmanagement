@@ -32,18 +32,18 @@ $fieldsets = $this->form->getFieldsets();
 		}
 	}
 </script>
-<form name="editperson" id="editperson" method="post" action="<?php echo Route::_('index.php'); ?>">
+<form name="editperson" id="editperson" method="post" action="<?php echo $this->uri->toString(); ?>">
 <?php
 
 		?>
 	<fieldset class="adminform">
 	<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editperson.apply', this.form);">
-						<?php echo Text::_('JAPPLY');?></button>
-					<button type="button" onclick="Joomla.submitform('editperson.save', this.form);">
-						<?php echo Text::_('JSAVE');?></button>
-					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo Text::_('JCANCEL');?></button>
+					<button type="button" onclick="Joomla.submitform('editmatch.apply', this.form);">
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
+					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
+						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
+					<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+<?php echo Text::_('JCANCEL');?></button>
 				</div>
 	<legend>
   <?php 
