@@ -153,7 +153,7 @@ class sportsmanagementView extends HtmlView {
         parent::display($tpl);
     }
 
-    c
+    
     protected function addToolbar() {
         
     }
