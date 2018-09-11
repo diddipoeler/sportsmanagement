@@ -39,6 +39,14 @@ class sportsmanagementControllerEditMatch extends FormController {
         $this->registerTask('apply', 'save');
     }
 
+     public function cancel()
+        {
+            $msg = 'cancel';
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+ 
+                return true;
+        }
+    
     /**
      * sportsmanagementControllerEditMatch::getModel()
      * 
