@@ -52,7 +52,7 @@ if (!empty($this->matches))
 $teamid = Factory::getApplication()->input->getInt('tid');
 $nbcols = 0;
 ?>
-<div class="row table-responsive" id="teamplan">   
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="teamplan">   
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr >
