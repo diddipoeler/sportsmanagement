@@ -58,7 +58,21 @@ class sportsmanagementModelEditClub extends JModelForm
         $this->name = 'club';
         
 	}
-    
+
+/**
+	 * Returns a Table object, always creating it
+	 *
+	 * @param	type	The table type to instantiate
+	 * @param	string	A prefix for the table class name. Optional.
+	 * @param	array	Configuration array for model. Optional.
+	 * @return	JTable	A database object
+	 * @since	1.6
+	 */
+	public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+        
 /**
  * sportsmanagementModelEditClub::updItem()
  * 

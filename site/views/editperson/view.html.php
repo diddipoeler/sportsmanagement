@@ -32,23 +32,7 @@ class sportsmanagementViewEditPerson extends sportsmanagementView {
      */
     function init() {
 
-        //$option = JFactory::getApplication()->input->getCmd('option');
-//        $app = JFactory::getApplication();
-//        $db = JFactory::getDBO();
-//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//            $uri = Uri::getInstance();
-//        } else {
-//            $uri = JFactory::getURI();
-//        }
-//        $user = JFactory::getUser();
-//
-//        $params = $app->getParams();
-//        $dispatcher = JDispatcher::getInstance();
-
-        // Get some data from the models
-        //$state = $this->get('State');
-//        $this->item = $this->model->getData();
-//$this->item = sportsmanagementModelPerson::getPerson($this->jinput->getVar('pid','0'), $this->jinput->getVar('cfg_which_database','0'), 1);
+       
 $this->item = $this->model->getData();
         $this->form = $this->get('Form');
 
@@ -68,15 +52,6 @@ $this->item = $this->model->getData();
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id, 'frontend', $this->cfg_which_database);
         }
 
-
-        //// Check for errors.
-//        if (count($errors = $this->get('Errors'))) {
-//            JError::raiseError(500, implode('<br />', $errors));
-//            return false;
-//        }
-
-
-        //parent::display($tpl);
     }
 
 }
