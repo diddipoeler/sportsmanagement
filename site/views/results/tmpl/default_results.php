@@ -17,7 +17,7 @@ JError::raiseWarning( 'ERROR_CODE', JText::_( 'Error: ProjectID was not submitte
 else
 {
 ?>
-<div class="<?php echo $this->divclassrow; ?>" id="defaultresults">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresults">
 <br />
 <?php
 if ( count( $this->matches ) > 0 )
