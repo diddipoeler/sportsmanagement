@@ -390,7 +390,7 @@ $this->overallconfig['use_jquery_modal']);
 
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
-'administrator/components/com_sportsmanagement/assets/images/edit.png',
+'administrator/components/com_sportsmanagement/assets/images/teams.png',
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
 '20',
 $link,
