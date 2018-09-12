@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage editperson
+ * @subpackage editteam
  */
 
 // No direct access.
@@ -62,7 +62,7 @@ class sportsmanagementControllereditteam extends FormController {
         switch ($this->getTask()) {
             case 'apply':
                 $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id='.$id.'&pid='.$id.'&p='.$data['p'].'&tid='.$data['tid'], $message);
+                $this->setRedirect('index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id='.$id.'&ptid='.$data['ptid'].'&p='.$data['p'].'&tid='.$data['tid'], $message);
                 break;
 
             case 'save':
