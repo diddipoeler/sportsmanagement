@@ -1,12 +1,12 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      editmperson.php
+ * @file      editprojectteam.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage editperson
+ * @subpackage editprojectteam
  */
 
 // No direct access.
@@ -62,7 +62,7 @@ class sportsmanagementControllereditprojectteam extends FormController {
         switch ($this->getTask()) {
             case 'apply':
                 $message = Text::_('COM_SPORTSMANAGEMENT_SAVE_SUCCESS');
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=editprojectteam&tmpl=component&id='.$id.'&pid='.$id.'&p='.$data['p'].'&tid='.$data['tid'], $message);
+                $this->setRedirect('index.php?option=com_sportsmanagement&view=editprojectteam&tmpl=component&id='.$id.'&ptid='.$data['ptid'].'&p='.$data['p'].'&tid='.$data['tid'], $message);
                 break;
 
             case 'save':
