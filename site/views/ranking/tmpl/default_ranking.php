@@ -35,6 +35,7 @@ foreach ($this->currentRanking as $division => $cu_rk) {
 
         $this->colors = sportsmanagementModelProject::getColors($configvalues, sportsmanagementModelProject::$cfg_which_database);
         ?>
+<div class="<?php echo $this->divclassrow;?> table-responsive">
         <table class="<?PHP echo $this->config['table_class']; ?>">
             <tr>
                 <td class="contentheading">
@@ -48,7 +49,8 @@ foreach ($this->currentRanking as $division => $cu_rk) {
                 </td>
             </tr>
         </table>
-        <div class="table-responsive">
+</div>    
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
                     <?php
                     foreach ($cu_rk as $ptid => $team) {
@@ -65,7 +67,7 @@ foreach ($this->currentRanking as $division => $cu_rk) {
                 <?php
             } else {
                 ?>
-        <div class="table-responsive">
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
                 <?php
                 echo $this->loadTemplate('rankingheading');
