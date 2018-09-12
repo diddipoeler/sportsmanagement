@@ -57,31 +57,6 @@ class sportsmanagementTableagegroup extends JSMTable
 		//should check name unicity
 		return true;
 	}
-	
-//	/**
-//	 * Overloaded bind function
-//	 *
-//	 * @param       array           named array
-//	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-//	 * @see JTable:bind
-//	 * @since 1.5
-//	 */
-//	function bind($array, $ignore = '')
-//	{
-//		if (key_exists( 'extended', $array ) && is_array( $array['extended'] ))
-//		{
-//			$registry = new Registry();
-//			$registry->loadArray($array['extended']);
-//			$array['extended'] = (string) $registry;
-//		}
-//		if (key_exists( 'extendeduser', $array ) && is_array( $array['extendeduser'] ))
-//		{
-//			$registry = new Registry();
-//			$registry->loadArray($array['extendeduser']);
-//			$array['extendeduser'] = (string) $registry;
-//		}
-//		return parent::bind($array, $ignore);
-//	}
     
     /**
 	 * Overloaded load function
