@@ -19,6 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 foreach ($this->awayRank as $division => $cu_rk) {
     if ($division) {
         ?>
+<div class="<?php echo $this->divclassrow;?> table-responsive">
         <table class="<?PHP echo $this->config['table_class']; ?>">
             <tr>
                 <td class="contentheading">
@@ -32,7 +33,8 @@ foreach ($this->awayRank as $division => $cu_rk) {
                 </td>
             </tr>
         </table>
-        <div class="table-responsive">
+</div>    
+        <div class="<?php echo $this->divclassrow;?> table-responsive">
             <table class="<?PHP echo $this->config['table_class']; ?>">
         <?php
         foreach ($cu_rk as $ptid => $team) {
