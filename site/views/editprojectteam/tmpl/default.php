@@ -6,7 +6,7 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage editperson
+ * @subpackage editprojectteam
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -78,7 +78,7 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="assignperson" value="0" id="assignperson" />
 <input type="hidden" name="option" value="com_sportsmanagement" /> 
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
-<input type="hidden" name="pid" value="<?php echo $this->item->id; ?>" /> 	
+<input type="hidden" name="ptid" value="<?php echo $this->item->id; ?>" /> 	
 	
 <input type="hidden" name="p" value="<?php echo Factory::getApplication()->input->getInt('p',0); ?>" /> 
 <input type="hidden" name="tid" value="<?php echo Factory::getApplication()->input->getInt('tid',0); ?>" /> 
