@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-<div class="row" id="notes">
+<div class="<?php echo $this->divclassrow;?>" id="notes">
 <h4>
     <?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NOTES'); ?>
 </h4>
