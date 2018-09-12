@@ -1,12 +1,12 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für Sportarten
  * @version   1.0.05
- * @file      editperson.php
+ * @file      editprojectteam.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage editperson
+ * @subpackage editprojectteam
  */
 
 // Check to ensure this file is included in Joomla!
@@ -61,7 +61,7 @@ class sportsmanagementModelEditprojectteam extends AdminModel
     
 	function getData()
 	{
-	   $this->_id = Factory::getApplication()->input->getInt('pid',0);
+	   $this->_id = Factory::getApplication()->input->getInt('ptid',0);
 
     $this->_data = $this->getTable( 'projectteam', 'sportsmanagementTable' );
 			$this->_data->load( $this->_id );
