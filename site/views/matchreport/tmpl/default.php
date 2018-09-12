@@ -13,13 +13,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.tooltip');
 
-/*
-echo '<pre>'.print_r($this->matchplayerpositions,true).'</pre>';
-echo '<pre>'.print_r($this->matchplayers,true).'</pre>';
-echo '<pre>'.print_r($this->matchstaffpositions,true).'</pre>';
-echo '<pre>'.print_r($this->matchstaffs,true).'</pre>';
-*/
-	
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
