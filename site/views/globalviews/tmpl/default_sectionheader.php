@@ -379,7 +379,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
 		if ( $this->showediticon )
 		{
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
-echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
+echo sportsmanagementHelperHtml::getBootstrapModalImage('projectteamedit'.$this->projectteamid,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMINFO_EDIT_DETAILS'),
 '20',
@@ -387,7 +387,17 @@ $link,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']); 			
-            
+
+$link = "index.php?option=com_sportsmanagement&tmpl=component&view=editteam&ptid=".$this->projectteamid."&tid=".$this->teamid."&p=".$this->project->id;	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teamedit'.$this->projectteamid,
+'administrator/components/com_sportsmanagement/assets/images/edit.png',
+Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+'20',
+$link,
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']); 
+			
 		} else {
 			//echo "no permission";
 		}
