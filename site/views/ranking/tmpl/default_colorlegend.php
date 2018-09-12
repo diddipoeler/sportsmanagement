@@ -18,7 +18,7 @@ if (!isset($this->tableconfig['show_colors_legend'])) {
 if ($this->tableconfig['show_colors_legend']) {
     ?>
     <br />
-    <div class="row table-responsive" id="colorlegend">
+    <div class="<?php echo $this->divclassrow;?> table-responsive" id="colorlegend">
         <table class="table">
             <tr>
                 <?php
