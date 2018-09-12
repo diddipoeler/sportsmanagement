@@ -75,7 +75,6 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 	
 	
 <div class="clr"></div>
-<input type="hidden" name="assignperson" value="0" id="assignperson" />
 <input type="hidden" name="option" value="com_sportsmanagement" /> 
 <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
 <input type="hidden" name="ptid" value="<?php echo $this->item->id; ?>" /> 	
