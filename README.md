@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   15-09-2018: **1.0.66** Korrektur Modul Teamstatistik Counter
 *   31-08-2018: **1.0.65** Neues Modul Eventsranking, Teamstatistik Counter, Installation f. Joomla 4
 *   06-07-2018: **1.0.64** Joomla Fehlerhandling mit Tabellenauswertung vorbereitet
 *   05-04-2018: **1.0.63** JCE MediaBox for Joomla! 3
