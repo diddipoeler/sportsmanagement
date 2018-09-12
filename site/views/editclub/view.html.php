@@ -46,7 +46,7 @@ $this->item = $this->model->getData();
 		$this->extended = $extended;
         $this->lists = $lists;
 
-        $this->cfg_which_media_tool = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
+        $this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
 	
 	}
 
