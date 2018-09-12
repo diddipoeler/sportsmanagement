@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-<div class="row" id="hint">
+<div class="<?php echo $this->divclassrow;?>" id="hint">
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
