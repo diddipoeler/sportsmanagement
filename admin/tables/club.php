@@ -48,14 +48,6 @@ class sportsmanagementTableClub extends JSMTable
 	{	
 		// setting alias
         $this->alias = OutputFilter::stringURLSafe( $this->name );
-        
-//		if ( empty( $this->alias ) )
-//		{
-//			$this->alias = JFilterOutput::stringURLSafe( $this->name );
-//		}
-//		else {
-//			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
-//		}
 		return true;
 	}
 
