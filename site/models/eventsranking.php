@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -56,8 +56,6 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		self::$matchid = $jinput->get('mid',0,'INT');
 		
 		self::$eventid = (is_array($jinput->get('evid'))) ? implode(",", array_map('intval', $jinput->get('evid')) ) : (int)$jinput->get('evid');
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$eventid,true).'</pre>'),'');
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($jinput->get('evid'),true).'</pre>'),'');
 		
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
@@ -167,7 +165,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         try{
 		$result = $db->loadObjectList('etid');
@@ -175,7 +173,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
 	}
@@ -230,7 +228,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             try{
 			$this->_total = $db->loadResult();
@@ -239,7 +237,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		}
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
 		
@@ -305,7 +303,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         $rows = $db->loadObjectList();

@@ -4,7 +4,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 jimport( 'joomla.utilities.array' );
@@ -241,7 +241,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
-			JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+			JError::raiseWarning('ERROR_CODE',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 		}
 		else
 		{
@@ -255,7 +255,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
             $this->_project_id = Factory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				JError::raiseWarning('ERROR_CODE',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else 
       {
@@ -435,7 +435,7 @@ $xmlfile = $xmlfile.$output;
 			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				JError::raiseWarning('ERROR_CODE',Text::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else {
 				// get the project datas

@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 JLoader::import( 'joomla.application.component.model' );
 
 class sportsmanagementModelGoogle extends JModelLegacy 
@@ -38,7 +38,7 @@ class sportsmanagementModelGoogle extends JModelLegacy
 			$this->cached_data = $calendars;
 		}
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
         
 		return $this->cached_data;
 	}

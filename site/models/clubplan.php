@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -112,13 +112,13 @@ try{
 		}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
+       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
        }
         
         return $teamsart;
@@ -159,8 +159,8 @@ catch (Exception $e)
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$teamsprojects = $db->loadObjectList();
@@ -168,7 +168,7 @@ catch (Exception $e)
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsprojects'.'<pre>'.print_r($teamsprojects,true).'</pre>' ),'');
+       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teamsprojects'.'<pre>'.print_r($teamsprojects,true).'</pre>' ),'');
        }
         
         return $teamsprojects;
@@ -212,7 +212,7 @@ catch (Exception $e)
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsseasons'.'<pre>'.print_r($teamsseasons,true).'</pre>' ),'');
+       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' teamsseasons'.'<pre>'.print_r($teamsseasons,true).'</pre>' ),'');
        }
         
         return $teamsseasons;
@@ -252,13 +252,9 @@ catch (Exception $e)
        
        if ( !$teams )
        {
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+
         }
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
-       }
        
 		return $teams;
 	}
@@ -274,7 +270,7 @@ catch (Exception $e)
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
+       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
        }
 	
     	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
@@ -293,7 +289,7 @@ catch (Exception $e)
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
         }
 		return self::$startdate;
 	}
@@ -309,7 +305,7 @@ catch (Exception $e)
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
+       $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
        }
        
 		if ( empty(self::$enddate) )
@@ -323,7 +319,7 @@ catch (Exception $e)
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
         }
         
 		return self::$enddate;
@@ -379,19 +375,7 @@ catch (Exception $e)
        
        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
        $this->teamseasons = $project->season_id;
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
-       
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubid'.'<pre>'.print_r(self::$clubid,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
-         }
-        
+ 
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -403,9 +387,6 @@ catch (Exception $e)
 		$startdate = self::getStartDate();
 		$enddate = self::getEndDate();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' startdate'.'<pre>'.print_r($startdate,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' enddate'.'<pre>'.print_r($enddate,true).'</pre>' ),'');
-
 		if (is_null($teams)) 
         {
 			return null;
@@ -430,13 +411,10 @@ catch (Exception $e)
         // Joomla! 2.5 code here
         $rounds = $db->loadResultArray();
         } 
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
         if ( $rounds )
         {
         $round_ids = implode(',',$rounds);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($round_ids,true).'</pre>'),'Notice');
         }  
         }
         
@@ -545,22 +523,14 @@ catch (Exception $e)
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_($e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_($e->getMessage()), 'error');
 }		
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( !$this->allmatches )
        {
-  /*      
-		if ( $db->getErrorNum() )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        }
-*/
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
+        $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
         }
         
 		return $this->allmatches;
@@ -602,7 +572,7 @@ catch (Exception $e)
         /*
         if ( !$result && $db->getErrorMsg() )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
         */
 		return $result;

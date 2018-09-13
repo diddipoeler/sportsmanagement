@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 JLoader::import( 'joomla.application.component.model' );
 
 class sportsmanagementModelJSONFeed extends JModelLegacy 
@@ -45,7 +45,7 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
 		if(empty($results))
 			return null;
@@ -62,7 +62,7 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 			$calendars[] = $events;
 		}
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
 
 		return $calendars;
 	}

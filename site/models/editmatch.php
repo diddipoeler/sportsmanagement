@@ -112,7 +112,6 @@ return $result;
 	function updateStaff($data)
 	{
 $app = Factory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 $data['staffpositions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,2,$data['project_id']);
 $result = sportsmanagementModelMatch::updateStaff($data);
 return $result;
@@ -132,10 +131,8 @@ return $result;
 function updateRoster($data)
     {
 $app = Factory::getApplication();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');	
 $data['positions'] = sportsmanagementModelMatch::getProjectPositionsOptions(0,1,$data['project_id']);
 $result = sportsmanagementModelMatch::updateRoster($data);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions <br><pre>'.print_r($positions ,true).'</pre>'),'Notice');		
 return $result;	
 }
 	
@@ -170,10 +167,7 @@ return $result;
         {
             
         }
-  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table<br><pre>'.print_r($table,true).'</pre>'),'Notice');
-        
+       
     }
     
     
@@ -193,17 +187,9 @@ return $result;
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $jinput->getInt('cfg_which_database',0) );
         $query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'');
-        
+       
 	   $this->_id = $jinput->getVar('matchid','0');
-       
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _id -> '.$this->_id.''),'');  
-       
-//		// Lets load the content if it doesn't already exist
-//		if (empty($this->_data))
-//		{
-		
+	
         $query->select('m.*');
         $query->select('t1.name as hometeam ');
         $query->select('t2.name as awayteam ');
@@ -219,13 +205,11 @@ return $result;
         $query->where('m.id = '.(int)$this->_id);
         $db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 //        	$query='SELECT * FROM #__sportsmanagement_match WHERE id = '.(int) $this->_id;
 //			$this->_db->setQuery($query);
 			$this->_data = $db->loadObject();
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _data<br><pre>'.print_r($this->_data,true).'</pre>'),'');
             
 			return $this->_data;
 //		}

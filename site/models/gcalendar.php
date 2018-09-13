@@ -60,10 +60,7 @@ class sportsmanagementModelGCalendar extends JModelLegacy
 			}
 		}
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
-        }
+        
         
 		return $this->cached_data;
 	}

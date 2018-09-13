@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelEditClub
  * 
@@ -92,8 +92,8 @@ function updItem($data)
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
         return $result;
@@ -126,7 +126,7 @@ catch (Exception $e)
         $show_team_community = ComponentHelper::getParams($option)->get('show_team_community',0);
  
         $app = Factory::getApplication('site');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
  
         // Get the form.
         JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');

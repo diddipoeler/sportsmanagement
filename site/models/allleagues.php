@@ -115,8 +115,6 @@ public function getStart()
 		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -142,20 +140,7 @@ public function getStart()
 
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
-  
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ordering<br><pre>'.print_r($filter_order,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' direction<br><pre>'.print_r($filter_order_Dir,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' listOrder<br><pre>'.print_r($listOrder,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderCol<br><pre>'.print_r($orderCol,true).'</pre>'),'');
 
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
-		// List state information.
-		//parent::populateState('v.name', 'ASC');
 	}
     
     
@@ -185,7 +170,6 @@ public function getStart()
         if ( $this->use_current_season )
         {
         $filter_season = JComponentHelper::getParams($this->jsmoption)->get('current_season',0);    
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($filter_season,true).'</pre>'),'Notice');
         $this->jsmquery->join('INNER','#__sportsmanagement_project AS p ON v.id = p.league_id');
 /**
  * sicherheitshalber noch eine abfrage, wenn der user die nutzung der saison eingeschaltet,
@@ -200,15 +184,7 @@ public function getStart()
         $this->jsmquery->group('v.id');
 
         $this->jsmquery->order($this->jsmdb->escape($this->getState('filter_order', 'v.name')).' '.$this->jsmdb->escape($this->getState('filter_order_Dir', 'ASC') ) );
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
+       
         
 		return $this->jsmquery;
 

@@ -33,9 +33,7 @@ class sportsmanagementModelEvent extends JModelLegacy
         $app = Factory::getApplication();
         
 		$results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
-        
+       
 		if (empty($results) || Factory::getApplication()->input->getVar('eventID', null) == null) {
 			return null;
 		}

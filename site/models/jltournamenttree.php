@@ -228,8 +228,6 @@ $this->jl_tree_bracket_round_width = 16 + ( $this->team_strlen * 4 ) + 25 + 100;
 $fieldName = $this->request['tree_name'];
 $fieldtype = $tFields[$tableName][$fieldName]->Type;
   
-//$app->enqueueMessage(JText::_('feldtyp -> '.$fieldtype),'Notice');
-
 return $this->jl_tree_bracket_round_width;    
 }
 
@@ -333,7 +331,6 @@ $user = Factory::getUser();
 $db = Factory::getDBO();
 $query = $db->getQuery(true);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
 if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo '0.) projekt -> <br /><pre>~'.print_r($this->projectid,true).'~</pre><br />';
@@ -431,8 +428,6 @@ $query->group("ro.roundcode");
 $query->order("ro.roundcode DESC");
 
 $db->setQuery($query);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
@@ -1290,13 +1285,6 @@ break;
 }
 
 }
-
-if ( $this->debug_info )
-{
-echo 'Gesamt. varteams -> <br /><pre>~'.print_r($varteams,true).'~</pre><br />';
-}
-
-//$app->enqueueMessage(JText::_('laengster mannschafts string -> '.$this->team_strlen),'Notice');
 
 return implode(",",$varteams);
 

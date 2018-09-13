@@ -40,7 +40,7 @@
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.modellist');
 
 
@@ -121,13 +121,9 @@ var $_identifier = "hitlist";
 		$db->setQuery($query,0,$max_hits);
 		$db->query();
         $rows = $db->loadObjectList();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rows<br><pre>'.print_r($rows,true).'</pre>'),'');
-        
-        self::$_success_text[JText::_('COM_SPORTSMANAGEMENT_HITLIST_'.strtoupper($table))] = $rows;
-        
-        //return $rows;
-            
+       
+        self::$_success_text[Text::_('COM_SPORTSMANAGEMENT_HITLIST_'.strtoupper($table))] = $rows;
+           
         }
 
     

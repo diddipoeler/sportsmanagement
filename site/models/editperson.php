@@ -92,8 +92,6 @@ class sportsmanagementModelEditPerson extends AdminModel
         $db->setQuery((string)$query);
 */        
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table<br><pre>'.print_r($table,true).'</pre>'),'Notice');
         
     }
     

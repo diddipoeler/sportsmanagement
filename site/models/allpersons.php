@@ -125,7 +125,6 @@ public function getStart()
 		$this->setState('list.limit', $value);
 
         $columns = $jinput->getVar('show_columns');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
         $this->setState('filter.select_columns', $columns);
         $this->columns = $columns;
 
@@ -155,13 +154,6 @@ public function getStart()
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
   
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ordering<br><pre>'.print_r($filter_order,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' direction<br><pre>'.print_r($filter_order_Dir,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' listOrder<br><pre>'.print_r($listOrder,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderCol<br><pre>'.print_r($orderCol,true).'</pre>'),'');
-
-
 //		// Load the parameters.
 //		$params = JComponentHelper::getParams('com_sportsmanagement');
 //		$this->setState('params', $params);
@@ -194,12 +186,7 @@ public function getStart()
             $select_columns[$key] = 'v.'.$value;
         } 
         }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns' .  ' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
-        
-        //$select_columns_temp	= implode(",",$select_columns);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns_temp' .  ' <br><pre>'.print_r($select_columns_temp,true).'</pre>'),'Notice');
-        
+       
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -258,16 +245,7 @@ public function getStart()
         $query->group('v.id');
 
         $query->order($db->escape($this->getState('filter_order', 'v.lastname')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        }
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
-        
+
 		return $query;
 
 	}

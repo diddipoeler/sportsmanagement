@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -78,10 +78,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     // Get a db connection.
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);    
     $query = $db->getQuery(true);
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
-    
+   
     if ( $new_club_id > 0 )
     {
     // Select some fields
@@ -92,19 +89,12 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
     $query->where('id = ' . $new_club_id);
     $db->setQuery($query);
     $result_club_id = $db->loadObject();
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($result_club_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new_club_id<br><pre>'.print_r($new_club_id,true).'</pre>'),'');
-    
-    
+
     self::$first_club_id = $result_club_id->id;    
     self::getFirstClubId($result_club_id->id,$result_club_id->new_club_id);    
     }
     else
     {
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
     self::$first_club_id = $club_id;
     return $club_id; 
     }
@@ -247,9 +237,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy {
                     $rssDoc = $feed->getFeed($rssId);
                     return $rssDoc;
                 } catch (\InvalidArgumentException $e) {
-                    Factory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 } catch (\RuntimeException $e) {
-                    Factory::getApplication()->enqueueMessage(JText::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
+                    Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
                 }
             } else {
                 $feed = new stdclass();
@@ -691,7 +681,7 @@ $color = '';
             }
 
             $link = sportsmanagementHelperRoute::getClubInfoRoute($row->pid, $row->slug, null, self::$cfg_which_database);
-            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
+            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM');
 
             $temp .= HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/club_from.png', $imageTitle, 'title= "' . $imageTitle . '"');
             $temp .= "&nbsp;";
@@ -755,8 +745,6 @@ $color = '';
         try {
             $db->setQuery($query);
 
-//                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
             $result = $db->loadObjectList();
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         } catch (Exception $e) {
@@ -774,7 +762,6 @@ $color = '';
 
         self::$jgcat_rows = array_merge(self::$jgcat_rows, $result);
 
-        //$app->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
         foreach ($result as $row) {
             if ($row->new_club_id) {
                 self::$treedepth++;

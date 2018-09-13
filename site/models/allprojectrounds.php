@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 jimport( 'joomla.application.component.model' );
 
@@ -238,14 +238,10 @@ $this->ProjectTeams[$value] = $db->loadResult();
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
-        
+       
         if ( !$result )
         {
         JError::raiseWarning(0, 'Keine Auswechselungen vorhanden');      
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
      else
      {   
@@ -292,13 +288,11 @@ $this->ProjectTeams[$value] = $db->loadResult();
 if ( !$res )
         {
         JError::raiseWarning(0, 'Keine Ereignisse vorhanden');     
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
         
 		foreach ( $res as $row )
 		{
-    $playersevents[] = HTMLHelper::_( 'image', $row->eticon, JText::_($row->eticon ), NULL ) . JText::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
+    $playersevents[] = HTMLHelper::_( 'image', $row->eticon, Text::_($row->eticon ), NULL ) . Text::_($row->etname).' '.$row->notice.' '.$row->firstname.' '.$row->lastname.' ('.$row->event_time.')';
     }
     
 // 			$this->_playersevents = $events;
@@ -353,13 +347,11 @@ if ( !$res )
 		$matchplayers = $db->loadObjectList();
         
             
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 
         if ( !$matchplayers )
         {
         JError::raiseWarning(0, 'Keine Spieler vorhanden');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+
         }
 		
 	
@@ -409,13 +401,7 @@ if ( !$res )
   function getRoundsColumn($rounds,$config)
   {
   $app = Factory::getApplication();
-  
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'Error');
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
-  
-  //$countrows = count($rounds) %2;
-  //echo 'countrows -> '.$countrows.'<br>';
-  
+ 
   if ( count($rounds) %2 ) 
   { 
 //   echo "Zahl ist ungrade<br>"; 
@@ -475,8 +461,7 @@ if ( !$res )
   
   if ( $config['show_firstroster'] )
   {
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' show_firstroster'.''.$config['show_firstroster'].'' ),'');  
-  $htmlcontent[$a]['firstroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['firstroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstroster'] .= implode(",",self::getMatchPlayers());
@@ -484,7 +469,7 @@ if ( !$res )
   }
   if ( $config['show_firstsubst'] )
   {
-  $htmlcontent[$a]['firstsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['firstsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstsubst'] .= implode(",",self::getSubstitutes());
@@ -492,7 +477,7 @@ if ( !$res )
   }
   if ( $config['show_firstevents'] )
   {
-  $htmlcontent[$a]['firstevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['firstevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstevents'] .= implode(",",self::getPlayersEvents());
@@ -520,7 +505,7 @@ if ( !$res )
   {
   if ( $config['show_secondroster'] )
   {
-  $htmlcontent[$a]['secondroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['secondroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondroster'] .= implode(",",$this->getMatchPlayers());
@@ -528,7 +513,7 @@ if ( !$res )
   }
   if ( $config['show_secondsubst'] )
   {
-  $htmlcontent[$a]['secondsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['secondsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondsubst'] .= implode(",",$this->getSubstitutes());
@@ -536,7 +521,7 @@ if ( !$res )
   }
   if ( $config['show_secondevents'] )
   {
-  $htmlcontent[$a]['secondevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['secondevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['secondevents'] .= implode(",",$this->getPlayersEvents());
@@ -579,19 +564,19 @@ if ( !$res )
   {
   
   
-  $htmlcontent[$a]['firstroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
+  $htmlcontent[$a]['firstroster'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstroster'] .= implode(",",$this->getMatchPlayers());
   $htmlcontent[$a]['firstroster'] .= '';
   
-  $htmlcontent[$a]['firstsubst'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
+  $htmlcontent[$a]['firstsubst'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstsubst'] .= implode(",",$this->getSubstitutes());
   $htmlcontent[$a]['firstsubst'] .= '';
   
-  $htmlcontent[$a]['firstevents'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
+  $htmlcontent[$a]['firstevents'] = '<b>'.Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;
   $htmlcontent[$a]['firstevents'] .= implode(",",$this->getPlayersEvents());
