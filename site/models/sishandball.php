@@ -41,7 +41,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 
@@ -118,7 +118,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -147,7 +147,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -199,7 +199,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -228,7 +228,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -282,7 +282,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
 					$doc = DOMDocument::loadXML($content);
@@ -310,7 +310,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);

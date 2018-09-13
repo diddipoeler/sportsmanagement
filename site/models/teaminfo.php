@@ -11,7 +11,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -71,7 +71,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
             $result = $db->execute();
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
         }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+
     }
 
     /**
@@ -89,8 +89,6 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
         $trainingData = array();
         if (self::$projectteamid == 0) {
@@ -106,7 +104,6 @@ class sportsmanagementModelTeamInfo extends JModelLegacy {
         $query->where('team_id = ' . self::$teamid);
         $query->order('dayofweek ASC');
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
         $db->setQuery($query);
         $trainingData = $db->loadObjectList();
@@ -193,7 +190,7 @@ catch (Exception $e)
                 $db->setQuery($query);
 
                 if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-                    $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+                    $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
                 }
 
                 self::$club = $db->loadObject();
@@ -265,29 +262,7 @@ catch (Exception $e)
 
         $db->setQuery($query);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
-
         $seasons = $db->loadObjectList();
-
-        if (!$seasons && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'seasons -><pre>' . print_r($seasons, true) . '</pre>';
-            $my_text .= 'history -><pre>' . print_r($history, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
-        }
 
         foreach ($seasons as $k => $season) {
             $ranking = self::getTeamRanking($season->projectid, $season->division_id);
@@ -354,7 +329,7 @@ catch (Exception $e)
         $db->setQuery($query);
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         $player = $db->loadResult();
@@ -378,15 +353,7 @@ catch (Exception $e)
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'projectid -><pre>' . print_r($projectid, true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
-        }
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
-
+        
         $rank = array();
 
         sportsmanagementModelProject::setProjectID($projectid, self::$cfg_which_database);
@@ -416,13 +383,7 @@ catch (Exception $e)
         }
 
         //}
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'rank -><pre>' . print_r($rank, true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rank<br><pre>'.print_r($rank,true).'</pre>'),'');
-        }
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $rank;
@@ -449,19 +410,7 @@ catch (Exception $e)
 
         $db->setQuery($query);
         $result = $db->loadObjectList();
-
-        if (!$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
     }
@@ -490,18 +439,7 @@ catch (Exception $e)
         $db->setQuery($query, 0, 1);
         $league = $db->loadResult();
 
-        if (!$league && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 
@@ -534,8 +472,6 @@ catch (Exception $e)
             $leaguesoverviewdetail[$season->league] = $temp;
         }
 
-// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonsranking<br><pre>'.print_r($seasonsranking,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' leaguesoverviewdetail<br><pre>'.print_r($leaguesoverviewdetail,true).'</pre>'),'');
 
         foreach ($seasonsranking as $season) {
             $leaguesoverviewdetail[$season->league]->match += $season->games;
@@ -556,7 +492,6 @@ catch (Exception $e)
             }
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' leaguesoverviewdetail<br><pre>'.print_r($leaguesoverviewdetail,true).'</pre>'),'');
 
         return $leaguesoverviewdetail;
     }
@@ -573,15 +508,7 @@ catch (Exception $e)
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'seasonsranking -><pre>' . print_r($seasonsranking, true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonsranking<br><pre>'.print_r($seasonsranking,true).'</pre>'),'');    
-        }
-
-
+        
         $leaguesoverview = array();
 
         foreach ($seasonsranking as $season) {
@@ -637,20 +564,7 @@ catch (Exception $e)
 
         $db->setQuery($query);
         $players = $db->loadObjectList();
-
-        if (!$players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
-        }
-
+       
         foreach ($players as $player) {
             if ($player->birthday != '0000-00-00') {
                 $age += sportsmanagementHelper::getAge($player->birthday, $player->deathday);
@@ -700,18 +614,6 @@ catch (Exception $e)
         $db->setQuery($query);
         $player = $db->loadResult();
 
-        if (!$player && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'getErrorMsg -><pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump -><pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $player;

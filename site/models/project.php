@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -287,7 +288,7 @@ $result = $db->execute();
 	{
 		if (!$project = self::getProject($cfg_which_database,__METHOD__))
 		{
-			$this->setError(0, Jtext::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
+			$this->setError(0, Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED'));
 			return false;
 		}
 		
@@ -463,8 +464,8 @@ catch (Exception $e){
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 }
 		
 				
@@ -570,7 +571,7 @@ $s = $configcolors;
         } 
         
 		if(count($res) == 0) {
-			echo JText::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
+			echo Text::_('COM_SPORTSMANAGEMENT_RANKING_NO_SUBLEVEL_DIVISION_FOUND') . $divLevel;
 		}
 		return $res;
 	}
@@ -705,7 +706,7 @@ $s = $configcolors;
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 			
 		}
@@ -749,7 +750,7 @@ catch (Exception $e)
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         }
         $query->select('id AS value');
-        $query->select("CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
+        $query->select("CASE LENGTH(name) when 0 then CONCAT('".Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
         $query->from('#__sportsmanagement_round ');
         $query->where('project_id = '.(int)self::$projectid);
         $query->order('roundcode '.$ordering);
@@ -1191,9 +1192,9 @@ $starttime = microtime();
 
 				if (! $result = $db->loadResult())
 				{
-					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
-					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
-					JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
+					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING')." ".$template);
+					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID'). $project->master_template);
+					JError::raiseNotice(500,Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT'));
                                                             
 					return $arrStandardSettings;
 				}
@@ -1302,8 +1303,8 @@ $app = Factory::getApplication();
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 	$events = false;
 }
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1324,8 +1325,6 @@ catch (Exception $e)
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
-
 		if (empty(self::$_stats))
 		{
 			require_once (JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'statistics'.DS.'base.php');
@@ -1352,7 +1351,7 @@ try{
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		
 		}
@@ -1360,17 +1359,8 @@ catch (Exception $e)
        
 		// sort into positions
 		$positions = self::getProjectPositions($cfg_which_database);
-        
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
-        
+       
 		$stats = array();
-		
-//        // init
-//		foreach ($positions as $pos)
-//		{
-//			$stats[$pos->id] = array();
-//		}
         
 		if (count(self::$_stats) > 0)
 		{
@@ -1426,7 +1416,7 @@ try{
 			}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -1496,7 +1486,7 @@ $use_jquery_modal);
 		// Bind the form fields to the items table
 		if (!$row->bind($data))
 		{
-			$this->setError(JText::_('Binding failed'));
+			$this->setError(Text::_('Binding failed'));
 			return false;
 		}
 
@@ -1797,8 +1787,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $events = false;
 }
 	
@@ -1862,7 +1852,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				if (!$user->authorise($task, $option)) 
                 {
 					$allowed = false;
-					error_log(JText::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION',$task));
+					error_log(Text::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION',$task));
 				} 
                 else 
                 {
@@ -1881,8 +1871,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				} 
                 else 
                 {
-					error_log(Jtext::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'));
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),'Error');
+					error_log(Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'));
+                    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),'Error');
 				}
 			}
             

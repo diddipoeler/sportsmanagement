@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -69,12 +69,9 @@ public $_predictionGame	= null;
         $prediction = new sportsmanagementModelPrediction();  
        
         $post = $jinput->post->getArray(array());
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
        
        self::$pjID = $jinput->getVar('pj','0');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pjID<br><pre>'.print_r(self::$pjID,true).'</pre>'),'');
-        
+       
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
@@ -93,9 +90,7 @@ public $_predictionGame	= null;
         
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pjID<br><pre>'.print_r(sportsmanagementModelPrediction::$pjID,true).'</pre>'),'');
-               
+              
        sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
        
 		parent::__construct();
@@ -185,8 +180,6 @@ public $_predictionGame	= null;
 		$app = Factory::getApplication();
 		$document = Factory::getDocument();
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-
         
         // get the table
         $row = self::getTable();
@@ -221,22 +214,22 @@ public $_predictionGame	= null;
 	public static function createHelptText($gameMode=0)
 	{
   //$option = Factory::getApplication()->input->getCmd('option').'_';
-		$gameModeStr = ($gameMode==0) ? JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_STANDARD_MODE') : JText::_($option.'JL_PRED_ENTRY_TOTO_MODE');
+		$gameModeStr = ($gameMode==0) ? Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_STANDARD_MODE') : Text::_($option.'JL_PRED_ENTRY_TOTO_MODE');
 
-		$helpText = '<hr><h3>'.JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_TITLE').'</h3>';
+		$helpText = '<hr><h3>'.Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_TITLE').'</h3>';
 
 		$helpText .= '<ul>';
 			$helpText .= '<li>';
-				$helpText .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_01','<b>'.$gameModeStr.'</b>');
+				$helpText .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_01','<b>'.$gameModeStr.'</b>');
 			$helpText .= '</li>';
 			$helpText .= '<li>';
-				$helpText .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_02');
+				$helpText .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_02');
 			$helpText .= '</li>';
 			$helpText .= '<li>';
-				$helpText .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_03');
+				$helpText .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_03');
 			$helpText .= '</li>';
 			$helpText .= '<li>';
-				$helpText .= JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_04');
+				$helpText .= Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_04');
 			$helpText .= '</li>';
 		$helpText .= '</ul>';
 		$helpText .= '<hr>';
@@ -346,17 +339,12 @@ try{
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
     Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
 }
-		
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+   
         if (!$results)
 		{
-		  $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_PROJECT'),'Notice');
-//		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+		  $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_PROJECT'),'Notice');
 		}  
         
 		return $results;
@@ -384,8 +372,6 @@ Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br
     $result	= true;
 
 		$post = $jinput->post->getArray();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
 		//$pids = Factory::getApplication()->input->getVar('pids',array(),'post','array');
         $pids = $jinput->getVar('pids', null, 'post', 'array');
@@ -528,7 +514,7 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($temp,true).'</pre>'),'');
+
                         
 //                        $query	= $db->getQuery(true);
 //                        $query->clear();
@@ -544,14 +530,8 @@ catch (Exception $e) {
                         if( !$resultquery )
                         //if( !$db->query() )
 					{
-
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
-
 					}
-                                            
-//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($object,true).'</pre>'),'');
 
 					}
 					else
@@ -577,11 +557,11 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
+
 
 					if ( !$resultquery )
 					{
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
 						$result = false;
 					}
                     
@@ -607,14 +587,13 @@ catch (Exception $e) {
                     
                     if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 					if( !$db->execute() )
 					{
 
-                       // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 						$result = false;
 
 					}
@@ -632,9 +611,7 @@ catch (Exception $e) {
 
 		if (!$resultquery)
 		{
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
-
 		}
 
 /**

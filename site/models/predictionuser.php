@@ -71,9 +71,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
         
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'');
-        
+       
 		parent::__construct();
 	}
 

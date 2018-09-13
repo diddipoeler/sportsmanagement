@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.model');
 
 /**
@@ -77,10 +77,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamid<br><pre>'.print_r($this->teamid,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
-        
+       
 		# it should be checked if any tid is given in the params of the url
 		# if ( is_null( $this->team ) )
 		if ( !isset( self::$team ) )
@@ -467,7 +464,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
             self::$totalrounds = $db->loadResult();
@@ -482,7 +479,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( !self::$totalrounds )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
         return self::$totalrounds;
@@ -663,7 +660,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         $matches = $db->loadObjectList();
@@ -678,7 +675,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
     	         
         if ( !$matches )
         {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
         }
 		
 		$results = array(	'win' => array(), 'tie' => array(), 'loss' => array(), 'forfeit' => array(),

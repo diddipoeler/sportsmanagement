@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -92,7 +92,7 @@ $db->setQuery($query);
 $result = $db->execute();
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+
     }
     
 	/**
@@ -163,7 +163,6 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $db->setQuery($query);
 		self::$_inproject = $db->loadObject();  
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$_inproject;
 	}
@@ -269,7 +268,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
                 {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
                 }
                 
 				$info = $db->loadObjectList();
@@ -316,27 +315,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 if ( empty($result) )
         {
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' result <br><pre>'.print_r($result ,true).'</pre>'),'Error');
         return 0;
         } 
 		
-                if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        $my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
-        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        }
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        //$my_text .= 'cardsresult <pre>'.print_r($cardsresult,true).'</pre>';   
-        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				return $result;
 	}
@@ -364,7 +346,7 @@ if ( empty($result) )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
 
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -412,9 +394,7 @@ if ( empty($result) )
 		if(self::_isAdmin($user) || self::_isOwnPlayer($user,$config_editOwnPlayer)) {
 			$allowed=true;
 		}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
-        
+       
 		return $allowed;
 	}
 
@@ -452,9 +432,7 @@ if ( empty($result) )
 				}
 			}
 		}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
-        
+       
 		return $allowed;
 	}
 
@@ -498,7 +476,7 @@ if ( empty($result) )
 			return $allowed;
 		}
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' allowed<br><pre>'.print_r($allowed,true).'</pre>'),'Notice');
         
 		return false;
 	}
@@ -529,7 +507,7 @@ if ( empty($result) )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
 		$projectTeamIds = array();
@@ -559,7 +537,7 @@ if ( empty($result) )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
     
     if(version_compare(JVERSION,'3.0.0','ge')) 

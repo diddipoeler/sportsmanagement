@@ -10,7 +10,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -107,8 +107,8 @@ class sportsmanagementModelPlayer extends JModelLegacy {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -168,8 +168,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -211,8 +211,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
 self::$_inproject = $result;
@@ -275,8 +275,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
         switch ($persontype) {
@@ -329,8 +329,8 @@ try {
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $info = false;
 }
         
@@ -469,7 +469,6 @@ catch (Exception $e)
 
         }
 
-        //$app->enqueueMessage(JText::_('result -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
     }
@@ -537,19 +536,7 @@ catch (Exception $e)
         $db->setQuery($query);
         $rows = $db->loadObjectList();
 
-        if (!$rows && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
-//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+        
 
         $inoutstat = new stdclass;
         $inoutstat->played = 0;
@@ -563,15 +550,7 @@ catch (Exception $e)
             $inoutstat->sub_in += ($row->came_in == 1) && ($row->teamplayer_id == $teamplayer_id);
             $inoutstat->sub_out += ($row->out == 1) || ($row->in_for == $teamplayer_id);
         }
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'inoutstat <pre>' . print_r($inoutstat, true) . '</pre>';
-//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
-//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' inoutstat<br><pre>'.print_r($inoutstat,true).'</pre>'),'');
-        }
-
+       
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
         return $inoutstat;
@@ -589,15 +568,11 @@ catch (Exception $e)
         $stats = array();
         $players = self::getTeamPlayer();
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' players<br><pre>'.print_r($players,true).'</pre>'),'');
-
         if (is_array($players)) {
             foreach ($players as $player) {
                 // Remark: we cannot use array_merge because numerical keys will result in duplicate entries
                 // so we check if a key already exists in the output array before adding it.
                 $projectStats = sportsmanagementModelProject::getProjectStats(0, $player->position_id);
-
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectStats<br><pre>'.print_r($projectStats,true).'</pre>'),'');
 
                 if (is_array($projectStats)) {
                     foreach ($projectStats as $key => $projectStat) {
@@ -644,8 +619,8 @@ try{
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $this->_careerStats = false;
 }            
             
@@ -700,10 +675,7 @@ catch (Exception $e)
 		{
             foreach ($pos_stats as $stat) {
                 if (!empty($stat)) {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat<br><pre>'.print_r($stat,true).'</pre>'),'');                    
 if ( isset($stat->_showinsinglematchreports) ) {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stat->_name<br><pre>'.print_r($stat->_name,true).'</pre>'),'');  
-//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.$stat->_name.'.php');     
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
 $mdlstats = JModelLegacy::getInstance($stat->_name, "SMStatistic");   
 $mdlstats->id = $stat->id;    
@@ -714,7 +686,6 @@ $displaystats[] = $stat;
             }
 	}
         }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' displaystats<br><pre>'.print_r($displaystats,true).'</pre>'),'');          
         return $displaystats;
     }
 
@@ -773,7 +744,6 @@ $displaystats[] = $stat;
         $teamplayers = self::getTeamPlayers();
         $games = array();
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
 
         if (count($teamplayers)) {
             $quoted_tpids = array();
@@ -823,22 +793,6 @@ $displaystats[] = $stat;
             $games = $db->loadObjectList();
         }
 
-        if (!$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-        } elseif (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'getErrorMsg <pre>' . print_r($db->getErrorMsg(), true) . '</pre>';
-            $my_text .= 'dump <pre>' . print_r($query->dump(), true) . '</pre>';
-            $my_text .= 'tpid_list <pre>' . print_r($tpid_list, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpid_list<br><pre>'.print_r($tpid_list,true).'</pre>'),'');
-        }
-
         foreach ($games as $game) {
 
             $inoutstats = self::getInOutStats($game->project_id, $game->projectteam1_id, $game->teamplayer_id, 0, $game->id);
@@ -848,15 +802,7 @@ $displaystats[] = $stat;
             $game->playedtime = 0;
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'games <pre>' . print_r($games, true) . '</pre>';
-            $my_text .= 'inoutstats <pre>' . print_r($inoutstats, true) . '</pre>';
-            //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' games<br><pre>'.print_r($games,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' inoutstats<br><pre>'.print_r($inoutstats,true).'</pre>'),'');
-        }
+        
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $games;
     }
@@ -877,8 +823,6 @@ $displaystats[] = $stat;
         $teamplayers = self::getTeamPlayers();
         $gameevents = array();
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamplayers<br><pre>'.print_r($teamplayers,true).'</pre>'),'Error');
-
         if (count($teamplayers)) {
             $quoted_tpids = array();
             foreach ($teamplayers as $teamplayer) {
@@ -895,8 +839,8 @@ try {
  }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $events = false;
 }
 

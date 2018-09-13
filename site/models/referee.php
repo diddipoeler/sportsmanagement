@@ -101,9 +101,7 @@ class sportsmanagementModelReferee extends JModelLegacy
             $query->order('s.ordering ASC');
             $query->order('l.ordering ASC');
             $query->order('p.name '.$order);
-			
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
+           
             $db->setQuery($query);
 			self::$_history = $db->loadObjectList();
 		}
@@ -181,9 +179,7 @@ class sportsmanagementModelReferee extends JModelLegacy
        $query->where('m.published = 1');
        
        $query->order('m.match_date');
-
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');             
-                    
+                   
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 require_once('player.php');
 
 /**
@@ -79,9 +79,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteamid<br><pre>'.print_r(self::$projectteamid,true).'</pre>'),'Notice');
-        
+       
 		if (is_null(self::$projectteam))
 		{
 			if ((int)self::$projectteamid)
@@ -100,12 +98,12 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 			{
 				if (!self::$teamid)
 				{
-					$this->setError(JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'));
+					$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'));
 					return false;
 				}
 				if (!self::$projectid)
 				{
-					$this->setError(JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'));
+					$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'));
 					return false;
 				}
                 
@@ -154,12 +152,12 @@ class sportsmanagementModelRoster extends JSMModelLegacy
 		{
 			if (!self::$teamid)
 			{
-				$this->setError(JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'));
+				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'));
 				return false;
 			}
 			if (!self::$projectid)
 			{
-				$this->setError(JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'));
+				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'));
 				return false;
 			}
             
@@ -174,8 +172,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			self::$team = $db->loadObject();
@@ -247,8 +245,8 @@ class sportsmanagementModelRoster extends JSMModelLegacy
             self::$_players = $db->loadObjectList();
             }
 catch (Exception $e){
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'),'Error');	
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');	
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehlertext<br><pre>'.print_r($e->getMessage(),true).'</pre>'),'Error');	
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');	
 }
             
             
@@ -316,8 +314,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         
@@ -367,7 +365,6 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 				foreach ($eventtypes as $eventtype)
 				{
 					$teamstats = self::getTeamEventStat($eventtype->eventtype_id);
-// $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamstats <br><pre>'.print_r($teamstats ,true).'</pre>'),'Notice');					
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
@@ -412,24 +409,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
     $query->group('tp.person_id');
        
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
 		$result = $db->loadObjectList('person_id');
-        if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } 
-        
-        
+
 		return $result;
 	}
 
@@ -473,8 +454,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
        
         
@@ -492,9 +473,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
 		$app = Factory::getApplication();
         $stats = sportsmanagementModelProject::getProjectStats();
 		$projectteam = self::getprojectteam();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($projectteam,true).'</pre>'),'Notice');  
-        
+       
 		$result = array();
 		foreach ($stats as $pos => $pos_stats)
 		{
@@ -529,8 +508,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r(
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         try{

@@ -40,7 +40,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 //jimport('joomla.application.component.model');
 jimport('joomla.application.component.modellist');
 
@@ -131,12 +131,6 @@ public function getStart()
         $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
     }
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
-
     // Add the total to the internal cache.
     $this->cache[$store] = $start;
 
@@ -205,8 +199,7 @@ public function getStart()
         $query->group('tp.person_id');
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
     return $query;
 
 	}    
@@ -294,12 +287,12 @@ return $db->loadObjectList();
 		{
 			if (!self::$teamid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_ERROR' ) );
+				JError::raiseWarning( 'ERROR_CODE', Text::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_ERROR' ) );
 				return false;
 			}
 			if (!self::$projectid)
 			{
-				JError::raiseWarning( 'ERROR_CODE', JText::_( 'COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED' ) );
+				JError::raiseWarning( 'ERROR_CODE', Text::_( 'COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED' ) );
 				return false;
 			}
             
@@ -383,13 +376,7 @@ return $db->loadObjectList();
 			$this->_players = $db->loadObjectList();
 			$this->_all_time_players = $db->loadObjectList('pid');
 //		}
-		
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _players<br><pre>'.print_r($this->_players,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positioneventtypes<br><pre>'.print_r($positioneventtypes,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamid<br><pre>'.print_r(self::$teamid,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype,true).'</pre>'),'');
-        
+       
 		foreach ($this->_players as $player)
 		{
 		$player->start = 0;
@@ -411,7 +398,6 @@ return $db->loadObjectList();
         
         $this->InOutStat = sportsmanagementModelPlayer::getInOutStats(0,0,0,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0),self::$teamid,$player->pid);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' InOutStat<br><pre>'.print_r($this->InOutStat,true).'</pre>'),'');
 $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;
                 $this->_all_time_players[$player->pid]->start = $this->InOutStat->started;
 				$this->_all_time_players[$player->pid]->came_in = $this->InOutStat->sub_in;
@@ -421,7 +407,6 @@ $this->_all_time_players[$player->pid]->played = $this->InOutStat->played;
 
 foreach ($positioneventtypes AS $event => $eventid )
 			{
-			 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventId<br><pre>'.print_r($eventid,true).'</pre>'),'');
              
              for($a=0; $a < count($eventid); $a++ )
 {
@@ -446,8 +431,6 @@ foreach ($positioneventtypes AS $event => $eventid )
 
 		
 		}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _all_time_players<br><pre>'.print_r($this->_all_time_players,true).'</pre>'),'');
 
 		return $this->_all_time_players;
 	}

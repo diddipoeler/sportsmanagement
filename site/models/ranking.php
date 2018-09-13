@@ -257,14 +257,10 @@ else
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vorher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
-       
        if ( !self::$round )
         {
             sportsmanagementModelProject::$_current_round = 0;
             self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r(self::$round,true).'</pre>'),'');
         }
         else
         {
@@ -281,13 +277,11 @@ catch (Exception $e){
     echo $e->getMessage();
 }
 
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
     
     if ( !$result )
     {
         sportsmanagementModelProject::$_current_round = 0;
         self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt current round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
     }    
 
         }
@@ -302,10 +296,7 @@ catch (Exception $e){
 		// current round roundcode
 		$rounds = sportsmanagementModelProject::getRounds('ASC',$cfg_which_database);
 		$current = null;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds<pre>'.print_r($rounds,true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nachher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
-        
+       
 		foreach ($rounds as $r)
 		{
 			if ( (int)$r->id == (int)self::$round ) 
@@ -344,37 +335,8 @@ catch (Exception $e){
         $query->order('r.roundcode ASC ');
                
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($current->roundcode,true).'</pre>'),'Error');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$projectid,true).'</pre>'),'Error');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-		$games = $db->loadObjectList();
-        
-        if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-            
-            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
-            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        
-        } 
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
+		$games = $db->loadObjectList();
 
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$cfg_which_database,__METHOD__);
 
@@ -414,11 +376,6 @@ catch (Exception $e){
 	{
 		$app	= Factory::getApplication();
         $input = $app->input;
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
-        
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        //$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
-		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
         
 		$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
 
@@ -437,11 +394,6 @@ catch (Exception $e){
 		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" , $cfg_which_database,__METHOD__);
 
 		self::$round = (self::$round == 0 || self::$round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database) : self::$round;
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstRound<br><pre>'.print_r($firstRound,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastRound<br><pre>'.print_r($lastRound,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
-
 
 		self::$rounds = sportsmanagementModelProject::getRounds($cfg_which_database);
         
@@ -479,15 +431,6 @@ catch (Exception $e){
 		}
 
 		self::$divLevel = 0;
-
-
-
-
-//$app->enqueueMessage(JText::_('computeRanking this->part -> '.'<pre>'.print_r($this->part,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->from -> '.'<pre>'.print_r($this->from,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->to-> '.'<pre>'.print_r($this->to,true).'</pre>' ),'');
-//$app->enqueueMessage(JText::_('computeRanking this->rounds -> '.'<pre>'.print_r($this->rounds,true).'</pre>' ),'');
-
 
 		//for sub division ranking tables
 		if ( $project->project_type=='DIVISIONS_LEAGUE' )
@@ -617,10 +560,7 @@ catch (Exception $e){
 
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+        
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {

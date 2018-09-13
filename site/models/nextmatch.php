@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.model');
 
 /**
@@ -130,7 +130,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
             
         if ( !$this->_match  )
 	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 			if($this->_match)
@@ -174,7 +174,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         }
 	    catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         }
         			
 		}
@@ -644,7 +644,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $teams = false;
 }
         
@@ -795,7 +795,7 @@ catch (Exception $e)
         }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $res = false;
 }
         

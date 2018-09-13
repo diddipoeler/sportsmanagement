@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementModelPredictionResults
  * 
@@ -108,12 +108,7 @@ public function getStart()
     {
         $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
     }
-    
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
+
     // Add the total to the internal cache.
     $this->cache[$store] = $start;
     return $this->cache[$store];
@@ -135,10 +130,6 @@ $this->setState('list.limit', self::$limit);
 $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
 self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
 $this->setState('list.start', self::$limitstart);
-//$app->enqueueMessage(JText::_(__METHOD__.' limit <br><pre>'.print_r(self::$limit,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' limitstart <br><pre>'.print_r(self::$limitstart,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' limit cfg<br><pre>'.print_r($app->getCfg('list_limit', 0),true).'</pre>'),'');
-		
 	
 }
 	
@@ -326,7 +317,7 @@ function getLimit()
         if ((!isset($clubLogo)) || ($clubLogo == '') || (!file_exists($clubLogo))) {
             $clubLogo = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
         }
-        $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
+        $imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_LOGO_OF', $teamName);
         $output .= HTMLHelper::image($clubLogo, $imgTitle, array(' width' => 20, ' title' => $imgTitle));
         return $output;
     }

@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -121,14 +121,9 @@ class sportsmanagementModelMatrix extends JModelLegacy
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         //$russiamatrix = array();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
-        
+       
         foreach ($teams as $team_row_id => $team_row) 
         {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row_id<br><pre>'.print_r($team_row_id,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row<br><pre>'.print_r($team_row,true).'</pre>'),'Notice');
         
         foreach ($teams as $team_col_id => $team_col) 
         {
@@ -137,7 +132,6 @@ class sportsmanagementModelMatrix extends JModelLegacy
             {
             if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
                 {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
                 if ( isset($team_row->first[(int)$team_col->projectteamid]) )
                 {
                 $team_row->second[(int)$team_col->projectteamid] = new stdClass();     
@@ -211,10 +205,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
             }    
         }
         }    
-            
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-    
-    
+
     return $teams;    
     }
     
@@ -274,15 +265,15 @@ class sportsmanagementModelMatrix extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         
 		if ( !$result = $db->loadObjectList() )
 		{
-		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		  $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+          $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			//echo $db->getErrorMsg();
 		}
 		return $result;

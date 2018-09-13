@@ -11,7 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
@@ -84,8 +84,6 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         $result	= true;
         $post = $jinput->post->getArray();
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-
 		$predictionGameID = $post['prediction_id'];
 		$joomlaUserID = $post['user_id'];
 		$predictionMemberID	= $post['member_id'];
@@ -138,14 +136,12 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$object->admintipp = $admintipp;
 		$object->picture = $picture;
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object,true).'</pre>'),'');
-
         // Update their details in the table using id as the primary key.
         $resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');
         
 		if (!$resultquery)
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
 
@@ -168,10 +164,6 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	$playerName = $outputUserName;
 	$picture = '';
 	
-	//$app->enqueueMessage(JText::_('username ->'.$outputUserName),'Notice');
-	//$app->enqueueMessage(JText::_('user_id ->'.$user_id),'Notice');
-
-	
 	if (self::$config['show_photo'])
 	{
 	/**
@@ -188,7 +180,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	$results = $db->loadResult();
 	if ( !$results )
 	{
-    $app->enqueueMessage(JText::_('Die Komponente '.self::$config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
+    $app->enqueueMessage(Text::_('Die Komponente '.self::$config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
     }
     
     // Select some fields
@@ -238,8 +230,8 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
        }
        else
        {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
+       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
        }
        break;
        case 'com_kunena':
@@ -262,9 +254,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 			
 	if ( !file_exists($picture) )
 	{
-		//$app->enqueueMessage(JText::_('user bild ->'.$picture.' ist nicht vorhanden'),'Error');
         $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-        //$app->enqueueMessage(JText::_('nehme standard ->'.$picture),'Notice');
 	}
 
 	echo sportsmanagementHelper::getPictureThumb($picture, $playerName,0,0);

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelTreetonode
@@ -50,7 +51,7 @@ class sportsmanagementModelTreetonode extends JSMModelLegacy
 	{
 		if (!$this->projectid) 
         {
-			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1'));
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1'));
 			return false;
 		}
         if ( !$this->treetoid )

@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -65,10 +65,6 @@ static $limit = 0;
 		parent::__construct();
                 
         $this->ranking_array = $jinput->getVar('ranking_array','');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' ranking_array<br><pre>'.print_r($this->ranking_array,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' pggroup<br><pre>'.print_r($this->pggroup,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' _REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
         
         $prediction = new sportsmanagementModelPrediction();  
 
@@ -140,11 +136,6 @@ public function getStart()
         $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
     }
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->limitstart<br><pre>'.print_r($this->limitstart,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' store<br><pre>'.print_r($store,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getState('list.start'),true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($this->getState('list.limit'),true).'</pre>'),'');
     // Add the total to the internal cache.
     $this->cache[$store] = $start;
     return $this->cache[$store];
@@ -159,13 +150,6 @@ $this->setState('list.limit', self::$limit);
 $value = $app->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
 self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
 $this->setState('list.start', self::$limitstart);
-
-
-
-//$app->enqueueMessage(JText::_(__METHOD__.' limit <br><pre>'.print_r(self::$limit,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' limitstart <br><pre>'.print_r(self::$limitstart,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' limit cfg<br><pre>'.print_r($app->getCfg('list_limit', 0),true).'</pre>'),'');
-		
 	
 }
 	
@@ -285,7 +269,6 @@ function getPagination()
     if ( $champ_tipp )
     {
     $sChampTeamsList = explode(';',$champ_tipp);
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList'.'<pre>'.print_r($sChampTeamsList,true).'</pre>' ),'');
 foreach ($sChampTeamsList AS $key => $value)
     {
     $dChampTeamsList[] = explode(',',$value);
@@ -301,8 +284,7 @@ if ( isset($champTeamsList[(int)$ProjectID]) )
     if ( $projectteamid )
     {
     $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid,0);
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteamid'.'<pre>'.print_r($projectteamid,true).'</pre>' ),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teaminfo'.'<pre>'.print_r($teaminfo,true).'</pre>' ),'');
+
     return $teaminfo;
     }
     }
@@ -327,7 +309,7 @@ if ( isset($champTeamsList[(int)$ProjectID]) )
 	function createMatchdayList($project_id, $round_ids = NULL,$text = 'FROM')
 	{
 		$from_matchday = array();
-		$from_matchday[]= HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_'.$text.'_MATCHDAY'));
+		$from_matchday[]= HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_RANKING_'.$text.'_MATCHDAY'));
 		$from_matchday = array_merge($from_matchday,sportsmanagementModelPrediction::getRoundNames($project_id,'ASC', $round_ids));
 		return $from_matchday;
 	}

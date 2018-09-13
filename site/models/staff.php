@@ -11,7 +11,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.model');
 
 /**
@@ -107,11 +107,7 @@ class sportsmanagementModelStaff extends JModelLegacy
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_('getStaffHistory personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
-        
-        //if (empty($this->_history))
-		//{
+
 			$personid = self::$personid;
             
             // Select some fields
@@ -144,12 +140,10 @@ class sportsmanagementModelStaff extends JModelLegacy
             $query->order('s.ordering '.$order.', l.ordering ASC, p.name ASC ');
             $db->setQuery($query);
 			self::$_history = $db->loadObjectList();
-   
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
+       
         if ( !self::$_history )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
 		return self::$_history;
