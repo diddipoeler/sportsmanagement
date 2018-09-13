@@ -40,7 +40,7 @@ class sportsmanagementModelStatsRankingTeams extends JModelLegacy
 	function __construct( )
 	{
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct( );

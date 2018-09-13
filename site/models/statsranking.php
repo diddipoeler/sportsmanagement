@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model');
 
 /**
@@ -53,7 +55,7 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	function __construct( )
 	{
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 		parent::__construct( );
@@ -192,16 +194,16 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	{
 		$stats = self::getProjectUniqueStats();
 		$order = ($order ? $order : $this->order);
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stats <pre>'.print_r($stats ,true).'</pre>', 'error');
+		//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stats <pre>'.print_r($stats ,true).'</pre>', 'error');
 		$results = array();
 		$results2 = array();
 		foreach ($stats as $stat) 
 		{
-			//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stat <pre>'.print_r($stat ,true).'</pre>', 'error');
+			//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' stat <pre>'.print_r($stat ,true).'</pre>', 'error');
 			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
 			$results2[$stat->id] = $stat->getTeamsRanking(self::$projectid, self::getLimit(), self::getLimitStart(), $order);
 		}
-		//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($results2,true).'</pre>', 'error');
+		//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($results2,true).'</pre>', 'error');
 		return $results;
 	}
 

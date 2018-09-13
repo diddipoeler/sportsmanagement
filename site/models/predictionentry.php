@@ -11,6 +11,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -59,7 +61,7 @@ public $_predictionGame	= null;
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -146,7 +148,7 @@ public $_predictionGame	= null;
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
     // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
@@ -179,9 +181,9 @@ public $_predictionGame	= null;
 	 */
 	function store($data)
 {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+		$document = Factory::getDocument();
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
 
@@ -218,7 +220,7 @@ public $_predictionGame	= null;
 	 */
 	public static function createHelptText($gameMode=0)
 	{
-  //$option = JFactory::getApplication()->input->getCmd('option').'_';
+  //$option = Factory::getApplication()->input->getCmd('option').'_';
 		$gameModeStr = ($gameMode==0) ? JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_STANDARD_MODE') : JText::_($option.'JL_PRED_ENTRY_TOTO_MODE');
 
 		$helpText = '<hr><h3>'.JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_TITLE').'</h3>';
@@ -252,12 +254,12 @@ public $_predictionGame	= null;
      */
     public static function getTippCount($predictionProjectID,$matchID,$total=3)
 	{
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('count(tipp)');
@@ -298,12 +300,12 @@ public $_predictionGame	= null;
 	public static function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
 	{
 
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-	$db = JFactory::getDBO();
+	$db = Factory::getDBO();
 	$query = $db->getQuery(true);
 		
 try{		
@@ -343,8 +345,8 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
-JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
 }
 		
 		
@@ -368,13 +370,13 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
 	 */
 	function savePredictions($allowedAdmin=false)
 	{
-    $document	= JFactory::getDocument();
-    $app = JFactory::getApplication();
+    $document	= Factory::getDocument();
+    $app = Factory::getApplication();
     // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		$query = $db->getQuery(true);
         
         $starttime = microtime(); 
@@ -385,7 +387,7 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		//$pids = JFactory::getApplication()->input->getVar('pids',array(),'post','array');
+		//$pids = Factory::getApplication()->input->getVar('pids',array(),'post','array');
         $pids = $jinput->getVar('pids', null, 'post', 'array');
 		ArrayHelper::toInteger($pids);
 
@@ -516,10 +518,10 @@ $dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]];
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
 $temp->modified_by = $joomlaUserID;
-                        $temp->modified = JFactory::getDate()->toSql();						
+                        $temp->modified = Factory::getDate()->toSql();						
                         // Update the object
                         try{
-                        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
+                        $resultquery = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
                         }
 catch (Exception $e) {
 //    // catch any database errors.
@@ -565,10 +567,10 @@ catch (Exception $e) {
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
 $temp->modified_by = $joomlaUserID;
-                        $temp->modified = JFactory::getDate()->toSql();						
+                        $temp->modified = Factory::getDate()->toSql();						
                         // Insert the object
 try{
-                        $resultquery = JFactory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
+                        $resultquery = Factory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
                         }
 catch (Exception $e) {
 //    // catch any database errors.
@@ -626,7 +628,7 @@ catch (Exception $e) {
         $object->id = $mID;
         $object->last_tipp = date('Y-m-d H:i:s');
         // Update their details in the table using id as the primary key.
-        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');
+        $resultquery = Factory::getDbo()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');
 
 		if (!$resultquery)
 		{

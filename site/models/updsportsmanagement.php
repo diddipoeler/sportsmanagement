@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 // Include dependancy of the main model form
 jimport('joomla.application.component.modelform');
@@ -70,7 +71,7 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 	public function getForm($data = array(), $loadData = true)
 	{
 
-        $app = JFactory::getApplication('site');
+        $app = Factory::getApplication('site');
 
         // Get the form.
 		$form = $this->loadForm('com_v.updhelloworld', 'updv', array('control' => 'jform', 'load_data' => true));
@@ -90,13 +91,13 @@ class sportsmanagementModelUpdsportsmanagement extends JModelForm
 
 		if (!isset($this->_item))
 		{
-			$cache = JFactory::getCache('com_sportsmanagement', '');
+			$cache = Factory::getCache('com_sportsmanagement', '');
 			$id = $this->getState('sportsmanagement.id');
 			$this->_item =  $cache->get($id);
 			if ($this->_item === false) {
 
                 // Menu parameters
-                $menuitemid = JFactory::getApplication()->input->getInt( 'Itemid' );  // this returns the menu id number so you can reference parameters
+                $menuitemid = Factory::getApplication()->input->getInt( 'Itemid' );  // this returns the menu id number so you can reference parameters
                 $menu = JSite::getMenu();
                 if ($menuitemid) {
                    $menuparams = $menu->getParams( $menuitemid );

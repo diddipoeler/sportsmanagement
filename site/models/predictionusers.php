@@ -10,6 +10,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
@@ -36,7 +37,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	function __construct()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -72,9 +73,9 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	 */
 	function savememberdata()
 	{
-		$document	= JFactory::getDocument();
-    $option = JFactory::getApplication()->input->getCmd('option');    
-    $app = JFactory::getApplication();
+		$document	= Factory::getDocument();
+    $option = Factory::getApplication()->input->getCmd('option');    
+    $app = Factory::getApplication();
     $jinput = $app->input;
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -161,7 +162,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	static function showMemberPicture($outputUserName, $user_id = 0)
 	{
 
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
 	$playerName = $outputUserName;
@@ -285,7 +286,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
     // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );
@@ -305,7 +306,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
@@ -335,11 +336,11 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	function getChampTippAllowed()
 	{
 		$allowed = false;
-		$user = & JFactory::getUser();
+		$user = & Factory::getUser();
 
 		if ($user->id > 0)
 		{
-			$auth = & JFactory::getACL();
+			$auth = & Factory::getACL();
 			$aro_group = $auth->getAroGroup($user->id);
 
 			if ((strtolower($aro_group->name) == 'super administrator') || (strtolower($aro_group->name) == 'administrator'))
@@ -359,11 +360,11 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	static function getPredictionProjectTeams($project_id)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-	   $document	= JFactory::getDocument();
+	   $document	= Factory::getDocument();
     
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -391,11 +392,11 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		static function getPointsChartData( )
 		{
 		  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-		  $document	= JFactory::getDocument();
+		  $document	= Factory::getDocument();
     
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();

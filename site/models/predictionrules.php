@@ -10,6 +10,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
@@ -34,7 +35,7 @@ class sportsmanagementModelPredictionRules extends JModelLegacy
 	function __construct()
 	{
 	    // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

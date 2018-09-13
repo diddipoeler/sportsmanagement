@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
@@ -45,7 +46,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
 	function __construct()
 	{
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -89,7 +90,7 @@ class sportsmanagementModelPredictionUser extends JModelForm
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
     // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,
 				array('load_data' => $loadData) );

@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -38,7 +40,7 @@ class sportsmanagementModelTeams extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 		parent::__construct( );
         

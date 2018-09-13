@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 /**
@@ -56,18 +58,18 @@ class sportsmanagementModelRanking extends JModelLegacy
 	 */
 	function __construct( )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
        $jinput = $app->input;
        $from = 0;
        $to = 0;
 		self::$projectid = (int) $jinput->get('p', 0, '');
         self::$paramconfig['p'] = self::$projectid;
-		//$this->round = JFactory::getApplication()->input->getInt("r", $this->current_round);
+		//$this->round = Factory::getApplication()->input->getInt("r", $this->current_round);
         self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = $jinput->getInt("part", 0);
-		//$this->from  = JFactory::getApplication()->input->getInt('from', 0 );
-		//$this->to	 = JFactory::getApplication()->input->getInt('to', $this->round);
+		//$this->from  = Factory::getApplication()->input->getInt('from', 0 );
+		//$this->to	 = Factory::getApplication()->input->getInt('to', $this->round);
         self::$from = $jinput->post->get('from', 0, '');
         self::$to = $jinput->post->get('to', self::$round, '');
         
@@ -192,12 +194,12 @@ class sportsmanagementModelRanking extends JModelLegacy
          if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$rssDoc = JFactory::getFeedParser($options);
+$rssDoc = Factory::getFeedParser($options);
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-$rssDoc = JFactory::getXMLparser('RSS', $options);
+$rssDoc = Factory::getXMLparser('RSS', $options);
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -248,7 +250,7 @@ else
 	 */
 	public static function getPreviousGames($cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
     $option = $app->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -410,7 +412,7 @@ catch (Exception $e){
 	 */
 	public static function computeRanking($cfg_which_database = 0,$s=0)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
         $input = $app->input;
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -600,7 +602,7 @@ catch (Exception $e){
 	 */
 	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -656,12 +658,12 @@ catch (Exception $e){
 	public static function _sortRanking(&$ranking)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'ASC', 'STR');
-//		$order     = JFactory::getApplication()->input->getVar( 'order', '' );
-//		$order_dir = JFactory::getApplication()->input->getVar( 'dir', 'ASC' );
+//		$order     = Factory::getApplication()->input->getVar( 'order', '' );
+//		$order_dir = Factory::getApplication()->input->getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{

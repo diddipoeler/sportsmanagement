@@ -10,6 +10,8 @@
  */
  
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -47,10 +49,10 @@ class sportsmanagementModelStaff extends JModelLegacy
  	function __construct()
  	{
  		
- 		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
- 		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
- 		self::$teamid = JFactory::getApplication()->input->getInt('tid',0);
-        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
+ 		self::$projectid = Factory::getApplication()->input->getInt('p',0);
+ 		self::$personid = Factory::getApplication()->input->getInt('pid',0);
+ 		self::$teamid = Factory::getApplication()->input->getInt('tid',0);
+        self::$cfg_which_database = Factory::getApplication()->input->getInt( 'cfg_which_database', 0 );
         parent::__construct();
  	}
 
@@ -62,8 +64,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getTeamStaff()
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -100,8 +102,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getStaffHistory($order='ASC')
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -162,8 +164,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
