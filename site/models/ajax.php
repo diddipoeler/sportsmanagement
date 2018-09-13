@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
@@ -35,9 +36,9 @@ class sportsmanagementModelAjax extends JModelLegacy
      */
     function getProjectsOptions($season_id = 0, $league_id = 0, $ordering = 0)
     {
-        $app = JFactory::getApplication();
-        $db = JFactory::getDbo();
-        //$option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
+        //$option = Factory::getApplication()->input->getCmd('option');
         // Select some fields
         $query = $db->getQuery(true);
         $query->select('p.id AS value, p.name AS text, s.name AS season_name, l.name AS league_name');

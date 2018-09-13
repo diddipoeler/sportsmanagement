@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.modellist');
 
 /**
@@ -37,7 +39,7 @@ var $_identifier = "allteams";
 	public function __construct($config = array())
         {   
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
@@ -65,7 +67,7 @@ var $_identifier = "allteams";
 public function getStart()
 {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
@@ -109,7 +111,7 @@ public function getStart()
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -118,16 +120,16 @@ public function getStart()
         
         
         // List state information
-		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = Factory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
-//		$value = JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int');
-//		$this->setState('list.start', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
+//		$value = Factory::getApplication()->input->getVar('limitstart', 0, '', 'int');
+//		$this->setState('list.start', Factory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
         
         //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
         
-//        $this->setState('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
+//        $this->setState('limitstart', Factory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
 //        // In case limit has been changed, adjust limitstart accordingly
 //        $this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 
@@ -140,14 +142,14 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
+        //$filter_order = Factory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.name';
 		}
         
-        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
+        //$filter_order_Dir = Factory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {
@@ -181,7 +183,7 @@ public function getStart()
     function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -191,7 +193,7 @@ public function getStart()
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
 		
         // Select some fields
 		$query->select('v.id,v.name,v.picture,v.website');

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 JLoader::import( 'joomla.application.component.model' );
 //JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
@@ -34,22 +35,22 @@ class sportsmanagementModelGCalendar extends JModelLegacy
     {
 		$this->setState('filter.extension', $this->_extension);
 
-		$calendarids = JFactory::getApplication()->getParams()->get('calendarids');
+		$calendarids = Factory::getApplication()->getParams()->get('calendarids');
 		if(!is_array($calendarids) && !empty($calendarids)){
 			$calendarids = array($calendarids);
 		}
-		$tmp = JFactory::getApplication()->input->getVar('gcids', null);
+		$tmp = Factory::getApplication()->input->getVar('gcids', null);
 		if(!empty($tmp)){
 			$calendarids = explode(',', $tmp);
 		}
 		$this->setState('calendarids', $calendarids);
 
-		$this->setState('params', JFactory::getApplication()->getParams());
+		$this->setState('params', Factory::getApplication()->getParams());
 	}
 
 	public function getDBCalendars()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		if($this->cached_data == null){
 			$calendarids = $this->getState('calendarids');
 			if(!empty($calendarids)){

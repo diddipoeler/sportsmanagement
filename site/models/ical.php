@@ -10,6 +10,8 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.model' );
 
 
@@ -41,7 +43,7 @@ class sportsmanagementModelical extends JModelLegacy
 	function __construct( )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 	parent::__construct( );
         
@@ -59,7 +61,7 @@ class sportsmanagementModelical extends JModelLegacy
 
 	function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC',$cfg_which_database = 0) 
  	{ 
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );

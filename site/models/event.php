@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 JLoader::import('joomla.application.component.model');
 
@@ -29,22 +30,22 @@ class sportsmanagementModelEvent extends JModelLegacy
 
 	public function getGCalendar() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
-		$results = jsmGCalendarDBUtil::getCalendars(JFactory::getApplication()->input->getVar('gcid', null));
+		$results = jsmGCalendarDBUtil::getCalendars(Factory::getApplication()->input->getVar('gcid', null));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
-		if (empty($results) || JFactory::getApplication()->input->getVar('eventID', null) == null) {
+		if (empty($results) || Factory::getApplication()->input->getVar('eventID', null) == null) {
 			return null;
 		}
 
-		return jsmGCalendarZendHelper::getEvent($results[0], JFactory::getApplication()->input->getVar('eventID', null));
+		return jsmGCalendarZendHelper::getEvent($results[0], Factory::getApplication()->input->getVar('eventID', null));
 	}
 
 	protected function populateState() 
     {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$params	= $app->getParams();
 		$this->setState('params', $params);
