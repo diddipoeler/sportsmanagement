@@ -21,7 +21,7 @@ $fieldsets = $this->form->getFieldsets();
 
 <?php
 		//save and close 
-		$close = JFactory::getApplication()->input->getInt('close',0);
+		$close = Factory::getApplication()->input->getInt('close',0);
 		if($close == 1) {
 			?><script>
 			window.addEvent('domready', function() {
@@ -42,7 +42,7 @@ $fieldsets = $this->form->getFieldsets();
 				</div>
 			<legend>
       <?php 
-      echo Text::sprintf('COM_SPORTSMANAGEMENTE_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->item->name.'</i>'); 
+      echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_CLUB_LEGEND_DESC','<i>'.$this->item->name.'</i>'); 
       ?>
       </legend>
 </fieldset>
