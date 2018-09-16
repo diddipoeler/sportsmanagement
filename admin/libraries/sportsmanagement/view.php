@@ -499,6 +499,8 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
             }
             }
         // Built the actions for new and existing records.
+        // projectteam
+        $search_tmpl_array = array('projectteam' => null, 'treetonode' => null );
 		if ($isNew) 
 		{
 			// For new records, check the create permission.
@@ -508,13 +510,19 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			{
 				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
 				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+                if ( !array_key_exists($this->view, $search_tmpl_array) )
+			{
 				JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                }
 			}
 			elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 			{
 			$toolbarButtons[] = ['apply', $this->view.'.apply'];
 			$toolbarButtons[] = ['save', $this->view.'.save'];
-			$toolbarButtons[] = ['save2new', $this->view.'.save2new'];	
+            if ( !array_key_exists($this->view, $search_tmpl_array) )
+			{
+            $toolbarButtons[] = ['save2new', $this->view.'.save2new'];
+            }	
 			}
 				
 			}
@@ -536,7 +544,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 				$toolbarButtons[] = ['save', $this->view.'.save'];		
 				}
 				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ( $canDo->get('core.create') && $this->view != 'treetonode' ) 
+				if ( $canDo->get('core.create') && !array_key_exists($this->view, $search_tmpl_array) ) 
 				{
 					if( version_compare(JSM_JVERSION,'3','eq') ) 
 					{
@@ -548,7 +556,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 					}
 				}
 			}
-			if ( $canDo->get('core.create')  && $this->view != 'treetonode' ) 
+			if ( $canDo->get('core.create')  && !array_key_exists($this->view, $search_tmpl_array) ) 
 			{
 				if( version_compare(JSM_JVERSION,'3','eq') ) 
 				{
