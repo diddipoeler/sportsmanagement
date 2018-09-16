@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
@@ -43,7 +44,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt">
-                <?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
+                <?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>
             </legend>            
             <div class="filter-search">
                 <input 
@@ -73,7 +74,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         type="submit"
                         class="button"
                         >
-                <!--?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?>
+                <!--?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?>
             </button>
 
             <button
@@ -116,7 +117,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 />
 
             <div class="display-limit">
-                <?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+                <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
                 <?php echo $this->pagination->getLimitBox(); ?>
             </div>
 

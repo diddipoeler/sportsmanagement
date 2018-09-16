@@ -1,6 +1,7 @@
 <?PHP
 
 defined('_JEXEC') or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 //jimport( 'joomla.application.component.controller' );
 // import Joomla controlleradmin library
@@ -55,7 +56,7 @@ $this->setRedirect ( $link, $msg );
         //$post = JFactory::getApplication()->input->get ( 'post' );
         $post = $jinput->post->getArray(array());
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         // first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) 
@@ -66,7 +67,7 @@ $this->setRedirect ( $link, $msg );
 			$extractdir = JPATH_SITE . DS . 'tmp';
 			$importFile = JPATH_SITE . DS . 'tmp' . DS . 'ish_bw_import.xls';
             
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' upload<br><pre>'.print_r($upload,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' upload<br><pre>'.print_r($upload,true).'</pre>'),'');
             
             if (JFile::exists ( $importFile )) 
             {
@@ -78,13 +79,13 @@ $this->setRedirect ( $link, $msg );
 					JFile::delete ( $dest );
 				}
 				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
+					JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
 					return;
 				} else {
 					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
 							return false;
 						}
 						JFile::delete ( $dest );
@@ -96,21 +97,21 @@ $this->setRedirect ( $link, $msg );
 						}
 						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'xls') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
 							return;
 						}
 					} else {
 						if (strtolower ( JFile::getExt ( $dest ) ) == 'xls' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
+							JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
 							return false;
 						}
 					}

@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 jimport( 'joomla.application.component.model' );
@@ -242,8 +243,8 @@ if ( !$matchlink )
 
 if($app->isAdmin()) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
 }
 
 $teams = array();
@@ -300,10 +301,7 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_matches = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_matches,true).'</pre>'),'');
 $pages = $json_object_matches->pages;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($pages ,true).'</pre>'),'');
 
 for( $page =1; $page <= $pages ; $page++  )
 {
@@ -374,13 +372,13 @@ $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
 $linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
 if ( !copy($linkaddress,$filepath) )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.print_r($linkaddress,true).'</pre>'),'Error');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.print_r($linkaddress,true).'</pre>'),'Error');    
 }
 else
 {
 }
     
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_home;
@@ -478,7 +476,6 @@ Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->clu
 if ( !$club_id_away ) 
 {
 $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_away;
@@ -571,7 +568,7 @@ $temp->match_result_type = 2;
 
 if ( $value_match->id == 1324 )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
 }
 
 /**
@@ -582,9 +579,6 @@ $exportmatches[] = $temp;
 }
 
 }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
 
 /**
@@ -718,8 +712,6 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_club = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_club,true).'</pre>'),'');
 
 $playground_id = $json_object_club->venue->venue->id;
 $playground_short_name = $json_object_club->venue->venue->name;
@@ -739,7 +731,6 @@ $profile->standard_playground = $playground_id;
 // update the object into the table. 
 $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $profile,'id');
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($playground_id,true).'</pre>'),'');
 
 // Select some fields  
 $query->clear();  
@@ -855,8 +846,8 @@ $derlink  = $db->loadResult();
     
 if($app ->isAdmin()) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
 }    
 
 return $derlink;
@@ -929,7 +920,7 @@ $json_object_clubs = json_decode($result);
 $json_array = json_decode($result,true);
 
 $seiten = $json_object_clubs->pages;
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.print_r($seiten ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.print_r($seiten ,true).'</pre>'),'');
 
 for ($seite=1;$seite <= $seiten;$seite++)
 {
@@ -974,7 +965,7 @@ Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->clu
 
 if ( !$club_id_db ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
@@ -984,11 +975,11 @@ $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
 }
 else
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
 }
 }
 }
@@ -1003,11 +994,11 @@ $query->from('#__sportsmanagement_club');
 $db->setQuery($query); 
 
 $db_clubs = $db->loadObjectList();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($db_clubs,true).'</pre>'),'');
+
 
 foreach( $db_clubs as $row )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($row->id,true).'</pre>'),'');
+
 // ################ anfang ############
 // jetzt holen wir uns die mannschaften
 $url_teams = 'https://www.ishd.de/api/licenses/clubs/'.$row->id.'/teams.json';
@@ -1021,7 +1012,7 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
 }
 $json_object_teams = json_decode($result);
 
@@ -1045,7 +1036,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'Notice');
+
 
 // Create and populate an object.
 $profile = new stdClass();
@@ -1108,7 +1099,7 @@ $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 if ( $stammverein == $row->club_id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
 }
 $json_object_players = json_decode($result);
 
@@ -1137,7 +1128,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
+
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
@@ -1184,7 +1175,6 @@ foreach( $xml->children() as $quote )
 { 
 $club_id = (string)$quote->club_id;
 $club_name = (string)$quote->club_name;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($club_name,true).'</pre>'),'');
 
 // Select some fields 
 $query->clear(); 
@@ -1195,7 +1185,7 @@ $query->where('id = '.$club_id );
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
@@ -1205,12 +1195,11 @@ $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.print_r($club_name,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.print_r($club_name,true).'</pre>'),'');
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden<br><pre>'.print_r($club_name,true).'</pre>'),'Notice');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
 }
 
 // ################ anfang ############
@@ -1251,8 +1240,8 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden<br><pre>'.print_r($team_name ,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
+
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 // Create and populate an object.
 $profile = new stdClass();
@@ -1264,19 +1253,19 @@ $profile->alias = JFilterOutput::stringURLSafe( $team_name );;
 // Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 
 }
 else
 {
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 
 if ( $stammverein == $club_id  )
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team spieler lesen -> '.$team_name.'-'.$team.'-'.$club_id),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler lesen -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 // jetzt holen wir uns die spieler
 $url_player = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams/'.rawurlencode($team);
@@ -1309,7 +1298,7 @@ $player_approved = (string)$quote_player->approved;
 $player_nationality = (string)$quote_player->nationality;
 $player_last_modifcation = (string)$quote_player->last_modifcation;
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team spieler -> '.$player_id.'-'.$player_last_name.'-'.$player_first_name.'-'.$player_date_of_birth),'');
 
 $parts = array();
 // Select some fields 
@@ -1322,7 +1311,7 @@ $db->setQuery($query);
 
 if ( !$db->loadResult() ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler nicht vorhanden -> '.$player_last_name.''),'Notice');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $player_id;
@@ -1337,11 +1326,11 @@ $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
  
 // Insert the object into the user profile table.
 $result = Factory::getDbo()->insertObject('#__sportsmanagement_person', $profile);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler angelegt -> '.$player_last_name.''),'Notice');
 }
 else
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
 }
 
 
@@ -1383,7 +1372,7 @@ function getdata()
 		  echo date('H:i:s') , " Load workbook from Excel5 file" , EOL;
 $callStartTime = microtime(true);
 		  $objPHPExcel = PHPExcel_IOFactory::load(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls');
-          //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' objPHPExcel<br><pre>'.print_r($objPHPExcel,true).'</pre>'),'');
+          
           
 /**
 * heimmannschaft auslesen
@@ -1489,7 +1478,7 @@ $callStartTime = microtime(true);
          }
           $this->_datas['awaygoals'] = array_merge($export);
           
-          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _datas<br><pre>'.print_r($this->_datas,true).'</pre>'),'');
+          $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _datas<br><pre>'.print_r($this->_datas,true).'</pre>'),'');
           
           echo date('H:i:s') , ' Current memory usage: ' , (memory_get_usage(true) / 1024 / 1024) , " MB" , EOL;
 

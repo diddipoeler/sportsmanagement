@@ -15,6 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.model');
 
@@ -130,16 +131,9 @@ $option = $app->input->getCmd('option');
 			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
-			$prevlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
+			$prevlink = HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
-//            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//            {
-//            $my_text = 'prevlink -> '.$link.'<br>'; 
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;    
-//            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
-//            }
+
 
 			$params['r'] = $firstRound['id'];
             $params['division'] = $division;
@@ -148,12 +142,12 @@ $option = $app->input->getCmd('option');
 
 			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
-			$firstlink = HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
+			$firstlink = HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
 		}
 		else
 		{
-			$prevlink = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV');
-			$firstlink = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START') . $spacer4;
+			$prevlink = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV');
+			$firstlink = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START') . $spacer4;
 		}
 		
         if ($lastRound['id'] != $roundid)
@@ -170,7 +164,7 @@ $option = $app->input->getCmd('option');
             
             
 			$nextlink = $spacer4;
-			$nextlink .= HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
+			$nextlink .= HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
 			$params['r'] = $lastRound['id'];
             $params['division'] = $division;
@@ -179,12 +173,12 @@ $option = $app->input->getCmd('option');
 
 			$query = Uri::buildQuery($params);
 			$link = Route::_('index.php?' . $query . '#'.$option.'_top');
-			$lastlink = $spacer4 . HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
+			$lastlink = $spacer4 . HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
 		}
 		else
 		{
-			$nextlink = $spacer4 . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT');
-			$lastlink = $spacer4 . JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END');
+			$nextlink = $spacer4 . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT');
+			$lastlink = $spacer4 . Text::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END');
 		}
         
 		$limit = count($arrRounds);

@@ -10,10 +10,11 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
+use Joomla\CMS\Language\Text;
 
 if ( !isset( $this->project ) )
 {
-    JError::raiseWarning( 'ERROR_CODE', JText::_( 'Error: ProjectID was not submitted in URL or project was not found in database!' ) );
+    JError::raiseWarning( 'ERROR_CODE', Text::_( 'Error: ProjectID was not submitted in URL or project was not found in database!' ) );
 }
 else
 {

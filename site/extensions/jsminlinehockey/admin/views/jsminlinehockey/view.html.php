@@ -48,6 +48,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.html.html.select');
 
@@ -87,20 +88,19 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
             $this->projectid = $mainframe->getUserState("$option.pid", '0');
         }
 
-        $mainframe->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
+        $mainframe->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
         $this->matchlink = $this->model->getMatchLink($this->projectid);
         //$project = sportsmanagementModelProject::getProject($projectid);
         // if ( empty($projectid) )
 //    {
-//    JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_NO_PROJECT' ) );
 //    $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
 //    }
 //    else
 //    {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
+        $mainframe->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
 //    }
 
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
+        JToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
 
         $this->request_url = $uri->toString();
     }

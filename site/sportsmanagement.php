@@ -60,7 +60,7 @@ $input = $app->input;
   }
  */
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
 if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling

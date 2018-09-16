@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementHelperHtml
@@ -107,7 +108,7 @@ $modaltext .= '</a>';
         if (!isset($overallconfig['time_format'])) {
             $overallconfig['time_format'] = 'H:i';
         }
-        $timeSuffix = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
+        $timeSuffix = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
         if ($timeSuffix == 'COM_SPORTSMANAGEMENT_GLOBAL_CLOCK') {
             $timeSuffix = '%1$s&nbsp;h';
         }
@@ -141,7 +142,7 @@ $modaltext .= '</a>';
                         $styletext = ' style="text-decoration:blink"';
                     }
                     $output = '<b><i><acronym title="' . $title . '"' . $styletext . '>';
-                    $output .= JText::_($config['mark_now_playing_text']);
+                    $output .= Text::_($config['mark_now_playing_text']);
                     $output .= '</acronym></i></b>';
                 }
             }
@@ -196,9 +197,6 @@ $modaltext .= '</a>';
             $guestteam->division_shortname = $division->shortname;
         }
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
-
         if ((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0)) {
             //TO BE FIXED: Where is spacer defined???
             if (!isset($config['spacer'])) {
@@ -220,15 +218,9 @@ $modaltext .= '</a>';
                 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
                 $output .= HTMLHelper::link($link, $hometeam->$nametype);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam->nametype'.'<pre>'.print_r($hometeam->$nametype,true).'</pre>' ),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nametype'.'<pre>'.print_r($nametype,true).'</pre>' ),'');
             } else {
                 $output .= $hometeam->$nametype;
             }
-
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
 
             if ($hometeam->division_id != $guestteam->division_id) {
                 $output .= $config['spacer'];
@@ -247,7 +239,6 @@ $modaltext .= '</a>';
 
 
                     $output .= HTMLHelper::link($link, $guestteam->$nametype);
-                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
                 } else {
                     $output .= $guestteam->$nametype;
                 }
@@ -256,12 +247,7 @@ $modaltext .= '</a>';
             $output .= '&nbsp;';
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'hometeam -><pre>' . print_r($hometeam, true) . '</pre>';
-            $my_text .= 'guestteam -><pre>' . print_r($guestteam, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
+        
         return $output;
     }
 
@@ -280,11 +266,6 @@ $modaltext .= '</a>';
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'current_round <pre>' . print_r($current_round, true) . '</pre>';
-        }
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'current_round<pre>'.print_r($current_round,true).'</pre>'),'Error');
 
         $projectid = JFactory::getApplication()->input->getInt('p', 0);
         //$thisproject = JTable::getInstance('Project','sportsmanagementTable');
@@ -336,7 +317,7 @@ $modaltext .= '</a>';
                     echo $thisround->name;
                 }
             } elseif ($thisround->id > 0) {
-                echo ' - ' . $thisround->id . '. ' . JText::_('COM_SPORTSMANAGEMENT_RESULTS_MATCHDAY') . '&nbsp;';
+                echo ' - ' . $thisround->id . '. ' . Text::_('COM_SPORTSMANAGEMENT_RESULTS_MATCHDAY') . '&nbsp;';
             }
 
             if ($config['show_rounds_dates'] == 1) {
@@ -458,7 +439,7 @@ $modaltext .= '</a>';
 catch (Exception $e)
 {
     // keine fehlermeldung ausgeben
-	//JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	//JFactory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		    
             }
@@ -472,14 +453,14 @@ catch (Exception $e)
 
             $boldStart = '';
             $boldEnd = '';
-            $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
+            $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
             $toolTipText = '';
             $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
 
             if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground != $game->playground_id)) {
                 $boldStart = '<b style="color:red; ">';
                 $boldEnd = '</b>';
-                $toolTipTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
+                $toolTipTitle = Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
                 $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
             }
 
@@ -500,7 +481,7 @@ catch (Exception $e)
 catch (Exception $e)
 {
 	// keine fehlermeldung ausgeben
-    //JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    //JFactory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
             if ($pginfo) {
                 $toolTipText .= $pginfo->name . '&lt;br /&gt;';
@@ -549,7 +530,7 @@ catch (Exception $e)
         } else {
             $overtime = 0;
         }
-        $temptext = JText::_('COM_SPORTSMANAGEMENT_RESULTS_LIVE_WRONG');
+        $temptext = Text::_('COM_SPORTSMANAGEMENT_RESULTS_LIVE_WRONG');
         for ($temp_count = 1; $temp_count <= $project->game_parts + $overtime; $temp_count++) {
             $this_part_start = (($temp_count - 1) * ($project->halftime + $parts_time));
             $this_part_end = $this_part_start + $parts_time;
@@ -585,37 +566,37 @@ catch (Exception $e)
         if ($res == 0) {
             if ($usefontawesome) {
                 $icon = 'fa-handshake-o';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_DRAW');
                 $title = $alt;
                 $icon_color = 'draw';
 
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/draw.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_DRAW');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_DRAW');
                 $title = $alt;
             }
         } else if ($res < 0) {
             if ($usefontawesome) {
                  $icon = 'fa-thumbs-down';
-                 $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                 $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
                 $title = $alt;
                 $icon_color = 'lost';
                  
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_down.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_LOST');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_LOST');
                 $title = $alt;
             }
         } else {
             if ($usefontawesome) {
                  $icon = 'fa-thumbs-up';
-                 $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                 $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
                 $icon_color = 'won';
                  
             } else {
                 $img = 'media/com_sportsmanagement/jl_images/thumbs_up.png';
-                $alt = JText::_('COM_SPORTSMANAGEMENT_WON');
+                $alt = Text::_('COM_SPORTSMANAGEMENT_WON');
                 $title = $alt;
             }
         }
@@ -674,26 +655,26 @@ catch (Exception $e)
             $imgsrc = Uri::root() . 'media/com_sportsmanagement/jl_images/';
             if (( $team->rank == $previous[$ptid]->rank ) || ( $previous[$ptid]->rank == "" )) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
+                    echo '<i class="fa fa-circle draw" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_SAME').'"></i>';
                 } else {
                     $imgsrc .= "same.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_SAME');
                     $title = $alt;
                 }
             } elseif ($team->rank < $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-lg fa-angle-double-up won" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_UP').'"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-up won" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_UP').'"></i>';
                 } else {
                     $imgsrc .= "up.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_UP');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_UP');
                     $title = $alt;
                 }
             } elseif ($team->rank > $previous[$ptid]->rank) {
                 if ($usefontawesome) {
-                    echo '<i class="fa fa-lg fa-angle-double-down lost" aria-hidden="true" title="'.JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN').'"></i>';
+                    echo '<i class="fa fa-lg fa-angle-double-down lost" aria-hidden="true" title="'.Text::_('COM_SPORTSMANAGEMENT_RANKING_DOWN').'"></i>';
                 } else {
                     $imgsrc .= "down.png";
-                    $alt = JText::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
+                    $alt = Text::_('COM_SPORTSMANAGEMENT_RANKING_DOWN');
                     $title = $alt;
                 }
             }
@@ -750,9 +731,9 @@ catch (Exception $e)
 
             $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
-                    Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
-            echo JText::_($columnTitle);
+            echo Text::_($columnTitle);
         }
     }
 
@@ -819,9 +800,9 @@ catch (Exception $e)
 
             $query = Uri::buildQuery($params);
             echo HTMLHelper::link(
-                    Route::_("index.php?" . $query), JText::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
+                    Route::_("index.php?" . $query), Text::_($columnTitle), array("class" => "jl_rankingheader")) . $img;
         } else {
-            echo JText::_($columnTitle);
+            echo Text::_($columnTitle);
         }
     }
 

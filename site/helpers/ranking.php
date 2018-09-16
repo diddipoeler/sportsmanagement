@@ -11,6 +11,7 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * JSMRanking
@@ -143,7 +144,7 @@ class JSMRanking
 	{
 	$app = Factory::getApplication();
 $option = $app->input->getCmd('option');    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+    
     
 		$this->_projectid = (int) $id;
 //		$this->_project = new sportsmanagementModelProject();
@@ -157,7 +158,7 @@ $option = $app->input->getCmd('option');
             $my_text = 'projectid -> '.$this->_projectid.'<br>'; 
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
           
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
+    
     }
 
 		// wipe data
@@ -186,7 +187,7 @@ $option = $app->input->getCmd('option');
 	{
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -217,7 +218,7 @@ $option = $app->input->getCmd('option');
 	{
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -246,7 +247,7 @@ $option = $app->input->getCmd('option');
 	{
         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');    
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
         
 		$this->_from     = $from;
 		$this->_to       = $to;
@@ -272,11 +273,11 @@ $option = $app->input->getCmd('option');
 	{
 	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       
        
 		if (!$this->_projectid) {
 
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'),'error');			
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'),'error');			
 			return false;
 		}
 
@@ -325,7 +326,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
 	{
 	   $app = Factory::getApplication();
        $option = $app->input->getCmd('option');    
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       
     
 		$mode     	= $this->_mode;
 		$from     	= $this->_from;
@@ -770,7 +771,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$res = $db->loadObjectList();
@@ -933,7 +934,7 @@ $option = $app->input->getCmd('option');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$res = $db->loadObjectList();
@@ -977,7 +978,7 @@ $option = $app->input->getCmd('option');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
 			if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -1075,8 +1076,8 @@ $option = $app->input->getCmd('option');
         
 		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'),'error');	
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'),'error');				
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID'),'error');	
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID'),'error');				
 			return false;
 		}
 		return $this->_roundcodes[(int)$round_id];
@@ -1104,7 +1105,7 @@ $app = Factory::getApplication();
 					$crit[] = '_cmp'.$v;
 				}
 				else {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');				
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA'),'error');				
 				}
 			}
 			// set a default criteria if empty

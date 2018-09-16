@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.utilities.arrayhelper');
 
@@ -91,7 +92,7 @@ class JSMCountries {
 
         $options = array();
         foreach ($countries AS $k) {
-            $options[] = HTMLHelper::_('select.option', $k['alpha3'], JText::_($k['name']), $value_tag, $text_tag);
+            $options[] = HTMLHelper::_('select.option', $k['alpha3'], Text::_($k['name']), $value_tag, $text_tag);
         }
 
         //Now Sort the countries
@@ -254,7 +255,7 @@ class JSMCountries {
         $res = $db->loadResult();
 
         if ($res)
-            return JText::_($res);
+            return Text::_($res);
     }
 
     /**
@@ -268,7 +269,7 @@ class JSMCountries {
             return false;
         }
         $parts = explode(',', $full);
-        return JText::_($parts[0]);
+        return Text::_($parts[0]);
     }
 
     /**
@@ -312,7 +313,7 @@ class JSMCountries {
         ) {
             $countryFlag = self::getCountryFlag($country);
             $countryName = self::getCountryName($country);
-            $dummy = JText::_($addressString);
+            $dummy = Text::_($addressString);
             $dummy = str_replace('%NAME%', $name, $dummy);
             $dummy = str_replace('%ADDRESS%', $address, $dummy);
             $dummy = str_replace('%STATE%', $state, $dummy);

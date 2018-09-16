@@ -1,5 +1,6 @@
 <?PHP
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -29,7 +30,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <input type="radio" name="check" value="players"> Spieler
 	
 <input class='input_box' id='import_package' name='import_package' type='file' size='57' />
-<input class='button' type='submit' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_BUTTON'); ?>' />
+<input class='button' type='submit' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_BUTTON'); ?>' />
 </fieldset>
 <input type='hidden' name='sent' value='1' />
 <input type='hidden' name='projectid' value='<?php echo $this->projectid ; ?>' />		
