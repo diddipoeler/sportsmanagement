@@ -65,13 +65,11 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
         $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
         
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		//echo $query; die();
 		$link = Route::_('index.php?' . $query . $anchor, false);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
 		return $link;
 	}
@@ -112,12 +110,10 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
         $params['from'] = $from;
         $params['to'] = $to;
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = Route::_('index.php?' . $query, false);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
 		return $link;
 	}

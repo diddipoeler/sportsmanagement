@@ -85,9 +85,7 @@ $option = $app->input->getCmd('option');
             $roundid = $project->current_round;
         }
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
-        
+       
 		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
 		$lastRound = sportsmanagementModelRounds::getLastRound($project->id,$cfg_which_database);
 		$previousRound = sportsmanagementModelRounds::getPreviousRound($roundid, $project->id,$cfg_which_database);
@@ -169,15 +167,7 @@ $option = $app->input->getCmd('option');
 			$link = Route::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-        $my_text = 'nextink -> '.$link.'<br>'; 
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
-            }
+            
             
 			$nextlink = $spacer4;
 			$nextlink .= HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));

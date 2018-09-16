@@ -770,9 +770,6 @@ catch (Exception $e)
         $app = JFactory::getApplication();
         $jinput = $app->input;
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($jinput->request,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramconfig<br><pre>'.print_r($paramconfig,true).'</pre>'),'');
-
         $output = "";
         $img = '';
         if ($config['column_sorting'] || $config == null) {

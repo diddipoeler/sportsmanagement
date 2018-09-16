@@ -81,7 +81,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 onclick="document.getElementById('filter_search').value='';this.form.submit(); "
                 >
                 <?php
-                //echo JText::_('JSEARCH_FILTER_CLEAR');
+
                 ?>
             </button>
                 -->

@@ -58,7 +58,6 @@ static $_foldertype = '';
     $app = Factory::getApplication();
     self::$_foldertype = $type;
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<pre>'.print_r($type,true).'</pre>'),'Error');
     
 		HTMLHelper::_( 'behavior.modal' );
 

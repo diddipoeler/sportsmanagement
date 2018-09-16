@@ -199,10 +199,8 @@ $option = $app->input->getCmd('option');
 		self::setDivisionId($division,$cfg_which_database);
 
 		$teams = self::_collect(NULL,$cfg_which_database);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 	
 		$rankings = self::_buildRanking($teams,$cfg_which_database);
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankings<br><pre>'.print_r($rankings,true).'</pre>'),'');
         	
 		return $rankings;
 	}
@@ -776,26 +774,7 @@ if( version_compare(JSM_JVERSION,'3','eq') )
         }
         
 		$res = $db->loadObjectList();
-        
-        if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-          
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } 
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
+
 
 /**
  * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
@@ -1074,17 +1053,7 @@ $option = $app->input->getCmd('option');
             $query = $db->getQuery(true);
             $starttime = microtime(); 
             
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'round_id -><pre>'.print_r($round_id,true).'</pre>';
-//            $my_text .= 'from -><pre>'.print_r($from,true).'</pre>';
-//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
-//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
-    }
-        
+               
 		if (empty($this->_roundcodes))
 		{
 			
@@ -1093,15 +1062,9 @@ $option = $app->input->getCmd('option');
             $query->where('r.project_id = ' . $this->_projectid);
             $query->order('r.roundcode');
             
-//			$query = ' SELECT r.roundcode, r.id ' 
-//			       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ' 
-//			       . ' WHERE r.project_id = ' . $this->_projectid;
 			$db->setQuery($query);
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+            
         
 			$this->_roundcodes = $db->loadAssocList('id');
             
@@ -1162,7 +1125,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_RANKING_NOT_VALID_CRITERIA')
 	{
 	    $app = Factory::getApplication();
         $option = $app->input->getCmd('option');  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+
         
         // division filtering
 		$teams = array_filter($teams, array($this, "_filterdivision"));

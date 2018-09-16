@@ -236,13 +236,10 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
 
 $project_id = $input->getInt("p");
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
-
 if ($project_id) {
     sportsmanagementModelProject::$projectid = $project_id;
     $teams = sportsmanagementModelProject::getTeams();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams <br><pre>'.print_r($teams,true).'</pre>'),'');
+
 
     if ($teams) {
         foreach ($teams as $team) {
@@ -251,7 +248,6 @@ if ($project_id) {
     }
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
 
 $document->setMetaData('author', 'Dieter Ploeger');
 $document->setMetaData('revisit-after', '2 days');

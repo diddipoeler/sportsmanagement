@@ -215,9 +215,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
   $params = array("option" => self::$option,
 				"view" => $view );  
   
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');  
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parameter<br><pre>'.print_r($parameter,true).'</pre>'),'');  
-  
+
   
   foreach( $parameter as $key => $value )
   {

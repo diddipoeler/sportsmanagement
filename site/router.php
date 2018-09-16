@@ -72,22 +72,6 @@ class SportsmanagementRouter extends RouterBase {
      */
     public function build(&$query) {
         $app = JFactory::getApplication();
-        //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-        //    $show_debug_info = $paramscomponent->get( 'show_debug_info' );
-        //    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-        //if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-        //{
-        //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
-        //}
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-
-
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'query -><pre>' . print_r($query, true) . '</pre>';
-            //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            sportsmanagementHelper::setDebugInfoText(__method__, __function__, 'sportsmanagementRoute', __line__, $my_text);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-        }
 
         $segments = array();
 
