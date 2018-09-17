@@ -75,8 +75,8 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
             $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mre
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
+            FROM #__sportsmanagement_project_referee as m    
+            LEFT JOIN #__sportsmanagement_match_referee as mre
             ON mre.project_referee_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
