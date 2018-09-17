@@ -12,10 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
- 
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
- 
+
 /**
  * sportsmanagementModelseason
  * 
@@ -97,7 +94,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Err
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
 }
 
-        if ( isset($teams) )
+        if ( isset($teams) && $persontype != 3 )
         {
         $query->clear();
         // Insert columns.
