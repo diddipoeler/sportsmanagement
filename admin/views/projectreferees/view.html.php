@@ -86,10 +86,10 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
      */
     protected function addToolbar() {
 
-        $app = JFactory::getApplication();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $app->setUserState("$option.persontype", $this->_persontype);
+        //$app = JFactory::getApplication();
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        $this->app->setUserState("$this->option.persontype", $this->_persontype);
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 
