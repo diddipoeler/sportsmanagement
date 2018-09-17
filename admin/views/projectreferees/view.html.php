@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * HTML View class for the Sportsmanagement Component
@@ -46,7 +48,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
 
-        $table = JTable::getInstance('projectreferee', 'sportsmanagementTable');
+        $table = Table::getInstance('projectreferee', 'sportsmanagementTable');
         $this->table = $table;
 
         $this->_persontype = $jinput->get('persontype');
@@ -54,14 +56,14 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
             $this->_persontype = $app->getUserState("$option.persontype", '0');
         }
         $this->project_id = $app->getUserState("$option.pid", '0');
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
 /**
  * build the html options for position
  */
         $position_id[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
-        $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+        $mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
         $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
         if ($project_ref_positions) {
             $position_id = array_merge($position_id, $project_ref_positions);
