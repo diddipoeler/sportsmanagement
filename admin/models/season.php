@@ -155,16 +155,18 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error'
         $values = array($value,$season_id);
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
+        try{
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
-
-		if (!$db->execute())
-		{
-		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-		}  
+	$db->execute();
+        }
+catch (Exception $e) {
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+} 
         
         }
         
