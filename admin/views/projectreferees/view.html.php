@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * HTML View class for the Sportsmanagement Component
@@ -62,7 +64,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
 /**
  * build the html options for position
  */
-        $position_id[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
+        $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
         $mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
         $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
         if ($project_ref_positions) {
@@ -72,8 +74,8 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $lists['project_position_id'] = $position_id;
         unset($position_id);
 
-        $this->user = JFactory::getUser();
-        $this->config = JFactory::getConfig();
+        $this->user = Factory::getUser();
+        $this->config = Factory::getConfig();
         $this->lists = $lists;
         $this->items = $items;
         $this->pagination = $pagination;
