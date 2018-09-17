@@ -104,7 +104,7 @@ class sportsmanagementView extends HtmlView
         
         $this->document	= Factory::getDocument();
         $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-        $this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $this->document->addScript(JUri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->format = $this->jinput->getCmd('format');
