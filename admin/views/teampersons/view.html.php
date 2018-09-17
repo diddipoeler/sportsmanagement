@@ -142,16 +142,16 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        $app = JFactory::getApplication();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$app = JFactory::getApplication();
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
-	    $app->setUserState("$option.pid",$this->project_id);
-        $app->setUserState("$option.project_team_id", $this->project_team_id);
-        $app->setUserState("$option.team_id", $this->team_id);
-        $app->setUserState("$option.persontype", $this->_persontype);
-        $app->setUserState("$option.season_id", $this->season_id);
+	    $this->app->setUserState("$this->option.pid",$this->project_id);
+        $this->app->setUserState("$this->option.project_team_id", $this->project_team_id);
+        $this->app->setUserState("$this->option.team_id", $this->team_id);
+        $this->app->setUserState("$this->option.persontype", $this->_persontype);
+        $this->app->setUserState("$this->option.season_id", $this->season_id);
 
         // Set toolbar items for the page
         if ($this->_persontype == 1) {
@@ -167,7 +167,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 	    JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
         JToolbarHelper::divider();
 
-        JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
+        JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option='.$this->option.'&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
 
         parent::addToolbar();
     }
