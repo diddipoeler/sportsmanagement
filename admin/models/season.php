@@ -56,10 +56,10 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $modified = $date->toSql();
-	   $modified_by = $user->get('id');
+        //$date = JFactory::getDate();
+//	   $user = JFactory::getUser();
+       $modified = $this->jsmdate->toSql();
+	   $modified_by = $this->jsmuser->get('id');
        
         //$post = JFactory::getApplication()->input->post->getArray(array());
         //$post = $jinput->post;
