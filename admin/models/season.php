@@ -98,6 +98,20 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()
 $row = Table::getInstance('season', 'sportsmanagementTable');
 $row->load($season_id);
 $this->jsmapp->enqueueMessage('Saisonzuordnung : '.$row->name.' schon vorhanden.','notice');	
+	
+if ( $persontype == 3 )
+{
+$this->jsmquery->clear();
+$this->jsmquery->select('id');
+// From table
+$this->jsmquery->from('#__sportsmanagement_season_person_id');
+$this->jsmquery->where('season_id = '.$season_id);
+$this->jsmquery->where('person_id = '.$value);
+$this->jsmdb->setQuery($this->jsmquery);
+$new_id = $this->jsmdb->loadResult();
+$this->jsmapp->enqueueMessage('SaisonPersonId : '.$new_id.' ','notice');	
+}
+	
 }
 
         if ( isset($teams) && $persontype != 3 )
