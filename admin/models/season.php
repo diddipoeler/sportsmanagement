@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelseason
@@ -91,8 +92,12 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	$this->jsmdb->execute();
         }
 catch (Exception $e) {
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+
+$row = Table::getInstance('season', 'sportsmanagementTable');
+$row->load($season_id);
+$this->jsmapp->enqueueMessage('Saisonzuordnung : '.$row->name.' schon vorhanden.','notice');	
 }
 
         if ( isset($teams) && $persontype != 3 )
