@@ -46,7 +46,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					echo Text::_('JSEARCH_FILTER_CLEAR');
 					?>
 </button>	
-	
+<button type="button" onclick="Joomla.submitform('seasons.cancel', this.form)">
+<?php echo Text::_('JCANCEL');?></button>	
 	
 <?php	
 echo $this->loadTemplate('data');
