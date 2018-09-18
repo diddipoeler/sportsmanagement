@@ -92,8 +92,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	$this->jsmdb->execute();
         }
 catch (Exception $e) {
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
-//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
 
 $row = Table::getInstance('season', 'sportsmanagementTable');
 $row->load($season_id);
