@@ -67,6 +67,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
         $teams = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
         $season_id = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');
+	$project_id = $this->jsmjinput->getVar('project_id', 0, 'post', 'array');    
         $persontype = $this->jsmjinput->getVar('persontype', 0, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
@@ -92,8 +93,8 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	$this->jsmdb->execute();
         }
 catch (Exception $e) {
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Error');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');  
 
 $row = Table::getInstance('season', 'sportsmanagementTable');
 $row->load($season_id);
@@ -109,7 +110,22 @@ $this->jsmquery->where('season_id = '.$season_id);
 $this->jsmquery->where('person_id = '.$value);
 $this->jsmdb->setQuery($this->jsmquery);
 $new_id = $this->jsmdb->loadResult();
-$this->jsmapp->enqueueMessage('SaisonPersonId : '.$new_id.' ','notice');	
+//$this->jsmapp->enqueueMessage('SaisonPersonId : '.$new_id.' ','notice');
+// Create and populate an object.
+$profile = new stdClass();
+$profile->project_id = $project_id;
+$profile->person_id = $new_id;
+$profile->published = 1;
+$profile->modified = $this->jsmdb->Quote(''.$modified.'');
+$profile->modified_by = $modified_by;
+try{
+// Insert the object into the user profile table.
+$resultproref = $this->jsmdb->insertObject('#__sportsmanagement_project_referee', $profile);
+}
+catch (Exception $e){
+ 
+}	
+	
 }
 	
 }
