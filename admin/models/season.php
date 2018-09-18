@@ -110,6 +110,21 @@ $this->jsmquery->where('season_id = '.$season_id);
 $this->jsmquery->where('person_id = '.$value);
 $this->jsmdb->setQuery($this->jsmquery);
 $new_id = $this->jsmdb->loadResult();
+
+$modified = $this->jsmdate->toSql();	
+$mdlTable = new stdClass();
+$mdlTable->id = $new_id;
+$mdlTable->modified = $this->jsmdb->Quote(''.$modified.'');
+$mdlTable->modified_by = $modified_by;
+$mdlTable->persontype = 3;
+$mdlTable->published = 1;	
+try {
+    $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
+}
+catch (Exception $e){
+ 
+}
+	
 //$this->jsmapp->enqueueMessage('SaisonPersonId : '.$new_id.' ','notice');
 // Create and populate an object.
 $profile = new stdClass();
