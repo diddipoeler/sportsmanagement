@@ -24,6 +24,14 @@ use Joomla\CMS\Factory;
  */
 class sportsmanagementControllerseasons extends JSMControllerAdmin
 {
+	
+ function cancel($key = NULL)
+{
+    $msg = JText::_('JLIB_HTML_BEHAVIOR_CLOSE');
+    $link = 'index.php?option=com_sportsmanagement&view=close&tmpl=component';
+$this->setRedirect($link,$msg);
+    }
+	
 	/**
 	 * sportsmanagementControllerseasons::applypersons()
 	 * 
