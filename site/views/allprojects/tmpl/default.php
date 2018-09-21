@@ -47,8 +47,8 @@ function tableOrdering( order, dir, task )
 
 <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
-<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
-<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+<button type="submit" class="btn" title=""><i class="icon-search"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></i></button>
+<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></i></button>
 
 <?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
 <?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?>
