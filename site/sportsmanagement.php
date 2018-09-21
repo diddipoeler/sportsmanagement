@@ -80,6 +80,10 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 $view = $input->getVar("view");
 switch ($view)
 {
+case 'allprojects': 
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'leagues.php');
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'seasons.php');
+break;
 case 'ranking': 
 case 'curve':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
