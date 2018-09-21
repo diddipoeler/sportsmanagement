@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (! defined('JSM_PATH'))
 {
@@ -58,12 +59,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 
 		$this->state 		= $this->get('State');
 		$this->items 		= $this->get('Items');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
+       
 		$this->pagination	= $this->get('Pagination');
 		
         //build the html options for nation
@@ -73,7 +69,6 @@ class sportsmanagementViewallprojects extends sportsmanagementView
             $temp = array_merge($temp,$res);
             }
 		
-        //$lists['nation'] = $temp;
         $lists['nation2'] = JHtmlSelect::genericlist(	$temp,
 																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -84,13 +79,12 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         unset($temp);
         
         $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
-        $modeltemp = JModelLegacy::getInstance("Leagues", "sportsmanagementModel");
+        $modeltemp = BaseDatabaseModel::getInstance("Leagues", "sportsmanagementModel");
 		if ($res = $modeltemp->getLeagues())
         {
             $temp = array_merge($temp,$res);
             }
 		
-        //$lists['nation'] = $temp;
         $lists['leagues'] = JHtmlSelect::genericlist(	$temp,
 																'filter_search_leagues',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
@@ -101,7 +95,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         unset($temp);
         
         $temp[] = HTMLHelper::_('select.option','',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
-        $modeltemp = JModelLegacy::getInstance("Seasons", "sportsmanagementModel");
+        $modeltemp = BaseDatabaseModel::getInstance("Seasons", "sportsmanagementModel");
 		if ($res = $modeltemp->getSeasons())
         {
             $temp = array_merge($temp,$res);
