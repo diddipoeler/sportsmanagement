@@ -45,13 +45,13 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container-fluid">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 	<div class="filter-search">
 
-		<!--label class="filter_search-lbl" for="filter_search"><!--?php echo Text::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
+
 		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
 		<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
@@ -80,17 +80,17 @@ function searchPerson(val)
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="limitstart" value="" />
         
-    <div class="display-limit">
-			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
         
-	</fieldset>
+</fieldset>
 
-	<?php 
-	echo $this->loadTemplate('items'); 
-   echo $this->loadTemplate('jsminfo');
-    ?>
+<?php 
+echo $this->loadTemplate('items'); 
+echo $this->loadTemplate('jsminfo');
+?>
 </form>
 </div>
 

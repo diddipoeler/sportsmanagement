@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
-<div class="table-responsive">        
+<div class="row-fluid table-responsive">        
     <table class="<?php echo $this->tableclass; ?>">
         <thead>
             <tr>
@@ -134,16 +134,16 @@ use Joomla\CMS\HTML\HTMLHelper;
                 }
                 ?>
             </tr>
-        <?php endforeach; ?>
-    </table>
+<?php endforeach; ?>
+</table>
 </div>
 
 <div class="pagination">
-    <p class="counter">
-        <?php echo $this->pagination->getPagesCounter(); ?>
-    </p>
-    <p class="counter">
-        <?php echo $this->pagination->getResultsCounter(); ?>
-    </p>
-    <?php echo $this->pagination->getPagesLinks(); ?>
+<p class="counter">
+<?php echo $this->pagination->getPagesCounter(); ?>
+</p>
+<p class="counter">
+<?php echo $this->pagination->getResultsCounter(); ?>
+</p>
+<?php echo $this->pagination->getPagesLinks(); ?>
 </div>

@@ -45,19 +45,12 @@ class sportsmanagementViewallleagues extends sportsmanagementView {
      * @return void
      */
     function init() {
-        $app = JFactory::getApplication();
-        // JInput object
-        $this->jinput = $app->input;
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table', 'request', 'string');
-        $user = JFactory::getUser();
+
         $starttime = microtime();
         $this->state = $this->get('State');
         $this->items = $this->get('Items');
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         $this->pagination = $this->get('Pagination');
 
@@ -76,7 +69,7 @@ class sportsmanagementViewallleagues extends sportsmanagementView {
         $form->limitField = $this->pagination->getLimitBox();
         $this->filter = $this->state->get('filter.search');
         $this->form = $form;
-        $this->user = $user;
+
         $this->sortDirection = $this->state->get('filter_order_Dir');
         $this->sortColumn = $this->state->get('filter_order');
         $this->lists = $lists;

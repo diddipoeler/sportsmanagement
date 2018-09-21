@@ -8,10 +8,12 @@
  * @package   sportsmanagement
  * @subpackage allleagues
  */
+ 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
@@ -40,33 +42,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     }
 </script>
 
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container-fluid">
     <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt">
                 <?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>
             </legend>            
             <div class="filter-search">
-                <input 
-                    type="text"
-                    name="filter_search"
-                    id="filter_search"
+                <input type="text" name="filter_search" id="filter_search"
                     value="<?php echo $this->escape($this->filter); ?>" 
                     class="inputbox" onchange="document.getElementById('adminForm').submit();"
                     />
-                <button
-                    type="submit"
-                    class="btn"
-                    title=""
-                    >
+                <button type="submit" class="btn" title="" >
                     <i class="icon-search"></i>
                 </button>
-                <button
-                    type="button"
-                    class="btn"
-                    title=""
-                    onclick="document.id('filter_search').value = '';this.form.submit();"
-                    >
+                <button type="button" class="btn" title="" onclick="document.id('filter_search').value = '';this.form.submit();" >
                     <i class="icon-remove"></i>
                 </button>
                 <!--
@@ -88,8 +78,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 -->
                 <?php echo $this->lists['nation2'] . '&nbsp;&nbsp;'; ?>
                 <?php
-                $startRange = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
-                $endRange = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
+                $startRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
+                $endRange = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
                 for ($i = $startRange; $i <= $endRange; $i++) {
 
                     //printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
@@ -98,38 +88,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                 ?>
             </div>
 
-            <input
-                type="hidden"
-                name="filter_order"
-                value="<?php echo $this->sortColumn; ?>"
-                />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+<input type="hidden" name="limitstart" value="" />
 
-            <input
-                type="hidden"
-                name="filter_order_Dir"
-                value="<?php echo $this->sortDirection; ?>"
-                />
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
 
-            <input 
-                type="hidden"
-                name="limitstart"
-                value="" 
-                />
+</fieldset>
 
-            <div class="display-limit">
-                <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-                <?php echo $this->pagination->getLimitBox(); ?>
-            </div>
+<?php
+echo $this->loadTemplate('items');
+echo $this->loadTemplate('jsminfo');
+?>
 
-        </fieldset>
-
-        <?php
-        echo $this->loadTemplate('items');
-        echo $this->loadTemplate('jsminfo');
-		?>
-
-        
-
-    </form>
+</form>
 </div>
 

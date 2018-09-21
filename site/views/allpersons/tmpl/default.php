@@ -45,24 +45,20 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<div class="container-fluid">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 	<div class="filter-search">
 
-<!--label class="filter_search-lbl" for="filter_search"><!--?php echo Text::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
+
 		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
 		<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
 		<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
-		<!--button type="submit" class="button"><!--?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button-->
 		
-        <!--button class="button" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<!--?php
-					echo Text::_('JSEARCH_FILTER_CLEAR');
-					?>
-				</button-->
+		
+        
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
         
         <td align="center" colspan="4">
@@ -85,19 +81,18 @@ function searchPerson(val)
 	
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-
         
-    <div class="display-limit">
-			<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
         
-	</fieldset>
+</fieldset>
 
-	<?php 
-	echo $this->loadTemplate('items'); 
-    echo $this->loadTemplate('jsminfo');
-    ?>
+<?php 
+echo $this->loadTemplate('items'); 
+echo $this->loadTemplate('jsminfo');
+?>
 </form>
 </div>
 

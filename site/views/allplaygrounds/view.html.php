@@ -52,7 +52,7 @@ class sportsmanagementViewallplaygrounds extends sportsmanagementView
 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
-		$user		= JFactory::getUser();
+
         $starttime = microtime(); 
 
 		$this->state 		= $this->get('State');
@@ -79,7 +79,7 @@ class sportsmanagementViewallplaygrounds extends sportsmanagementView
         $form->limitField = $this->pagination->getLimitBox();
         $this->filter = $this->state->get('filter.search');
 		$this->form = $form;
-		$this->user = $user;
+
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');
         $this->lists = $lists;
