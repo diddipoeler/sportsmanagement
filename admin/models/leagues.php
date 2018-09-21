@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelLeagues
@@ -60,10 +62,10 @@ class sportsmanagementModelLeagues extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
 		// Load the filter state.
@@ -159,12 +161,6 @@ class sportsmanagementModelLeagues extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         return $this->jsmquery;
 	}
 
@@ -220,7 +216,7 @@ class sportsmanagementModelLeagues extends JSMModelList
         }
         foreach ($result as $league)
         {
-            $league->name = JText::_($league->name);
+            $league->name = Text::_($league->name);
         }
         return $result;
     }

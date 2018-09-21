@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelSeasons
@@ -88,10 +90,10 @@ class sportsmanagementModelSeasons extends JSMModelList
 		//$app = JFactory::getApplication('administrator');
         $order = '';
         
-        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 
 		// Load the filter state.
@@ -206,30 +208,12 @@ class sportsmanagementModelSeasons extends JSMModelList
 		    }
             break;
         }
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.ordering<br><pre>'.print_r($this->getState('list.ordering', $this->_order),true).'</pre>'),'Notice');
-        
+       
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', $this->_order)).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
- 
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
- 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 
         return $this->jsmquery;
 	}
-	
-  
-  
-
-
 
 	/**
 	 * sportsmanagementModelSeasons::getSeasonTeams()
@@ -253,7 +237,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         } 
     }
@@ -278,13 +262,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
         foreach ($result as $season)
         {
-            $season->name = JText::_($season->name);
+            $season->name = Text::_($season->name);
         }
         return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
     }
