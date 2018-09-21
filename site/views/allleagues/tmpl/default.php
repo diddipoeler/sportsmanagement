@@ -11,7 +11,6 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 
@@ -43,7 +42,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </script>
 
 <div class="container-fluid">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
 <fieldset class="filters">
 <legend class="hidelabeltxt">
 <?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?>

@@ -23,11 +23,6 @@ HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
-} else {
-    $uri = JFactory::getURI();
-}
 ?>
 <script language="javascript" type="text/javascript">
 function tableOrdering( order, dir, task )
@@ -40,7 +35,7 @@ function tableOrdering( order, dir, task )
 }
 </script>
 <div class="container-fluid">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($uri->toString());?>" method="post">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
 <fieldset class="filters">
 <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 <div class="filter-search">

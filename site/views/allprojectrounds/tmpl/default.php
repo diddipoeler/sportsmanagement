@@ -19,7 +19,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 
-<div class="">
+<div class="container-fluid">
 <!-- projectheading -->
 
 <?php echo $this->loadTemplate('projectheading'); ?>
@@ -36,8 +36,5 @@ echo $this->loadTemplate('sectionheader');
 echo $this->loadTemplate('results_all'); 
 echo $this->loadTemplate('jsminfo');
 ?>
-
-	
-
 
 </div>
