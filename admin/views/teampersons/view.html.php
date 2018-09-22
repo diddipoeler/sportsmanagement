@@ -54,7 +54,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
             $this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
         }
         $this->project_team_id = $this->jinput->getVar('project_team_id');
-        $this->team_id = $jinput->getInt('team_id');
+        $this->team_id = $this->jinput->getInt('team_id');
 
         if (!$this->team_id) {
             $this->team_id = $this->app->getUserState("$this->option.team_id", '0');
