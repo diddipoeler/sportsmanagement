@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewteampersons
@@ -32,41 +34,37 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
      */
     public function init() {
         // Reference global application object
-        $app = JFactory::getApplication();
+//        $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = JFactory::getURI();
-        }
-        $document = JFactory::getDocument();
-        $model = $this->getModel();
-        $starttime = microtime();
-        $this->restartpage = FALSE;
-        $this->state = $this->get('State');
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
 
-        $items = $this->get('Items');
-        $this->project_id = $app->getUserState("$option.pid", '0');
-        $this->_persontype = JFactory::getApplication()->input->getVar('persontype');
+//        $document = JFactory::getDocument();
+
+
+        $this->restartpage = FALSE;
+//        $this->state = $this->get('State');
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
+
+//        $items = $this->get('Items');
+        $this->project_id = $this->app->getUserState("$this->option.pid", '0');
+        $this->_persontype = $this->jinput->getVar('persontype');
         if (empty($this->_persontype)) {
-            $this->_persontype = $app->getUserState("$option.persontype", '0');
+            $this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
         }
-        $this->project_team_id = JFactory::getApplication()->input->getVar('project_team_id');
+        $this->project_team_id = $this->jinput->getVar('project_team_id');
         $this->team_id = $jinput->getInt('team_id');
 
         if (!$this->team_id) {
-            $this->team_id = $app->getUserState("$option.team_id", '0');
+            $this->team_id = $this->app->getUserState("$this->option.team_id", '0');
         }
 
         if (!$this->project_team_id) {
-            $this->project_team_id = $app->getUserState("$option.project_team_id", '0');
+            $this->project_team_id = $this->app->getUserState("$this->option.project_team_id", '0');
         }
 
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
         $this->season_id = $project->season_id;
@@ -79,18 +77,18 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
             $this->restartpage = FALSE;
         }
 
-        $total = $this->get('Total');
-        $pagination = $this->get('Pagination');
+//        $total = $this->get('Total');
+//        $pagination = $this->get('Pagination');
 
-        $table = JTable::getInstance('teamperson', 'sportsmanagementTable');
-        $this->table = $table;
+        $this->table = Table::getInstance('teamperson', 'sportsmanagementTable');
+//        $this->table = $table;
 
-        $app->setUserState("$option.pid", $project->id);
-        $app->setUserState("$option.season_id", $project->season_id);
-        $app->setUserState("$option.project_art_id", $project->project_art_id);
-        $app->setUserState("$option.sports_type_id", $project->sports_type_id);
+        $this->app->setUserState("$this->option.pid", $project->id);
+        $this->app->setUserState("$this->option.season_id", $project->season_id);
+        $this->app->setUserState("$this->option.project_art_id", $project->project_art_id);
+        $this->app->setUserState("$this->option.sports_type_id", $project->sports_type_id);
 
-        $mdlProjectTeam = JModelLegacy::getInstance('ProjectTeam', 'sportsmanagementModel');
+        $mdlProjectTeam = BaseDatabaseModel::getInstance('ProjectTeam', 'sportsmanagementModel');
         $project_team = $mdlProjectTeam->getProjectTeam($this->team_id);
 
 /**
@@ -98,7 +96,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
  */
         $position_id = array();
         $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
-        $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+        $mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 
         if ($this->_persontype == 1) {
             $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
@@ -125,12 +123,12 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 		
         $lists['nation'] = $nation;
 
-        $this->user = JFactory::getUser();
-        $this->config = JFactory::getConfig();
+//        $this->user = JFactory::getUser();
+//        $this->config = JFactory::getConfig();
         $this->lists = $lists;
-        $this->items = $items;
-        $this->pagination = $pagination;
-        $this->request_url = $uri->toString();
+//        $this->items = $items;
+//        $this->pagination = $pagination;
+
         $this->project = $project;
         $this->project_team = $project_team;
 

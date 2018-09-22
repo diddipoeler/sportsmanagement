@@ -102,24 +102,24 @@ class sportsmanagementView extends HtmlView
  * alles aufrufen was für die views benötigt wird
  */
         
-        $this->document	= Factory::getDocument();
-        $this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-        $this->document->addScript(JUri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
-		$this->jinput = $this->app->input;
-		$this->option = $this->jinput->getCmd('option');
-        $this->format = $this->jinput->getCmd('format');
-        $this->view = $this->jinput->getCmd('view', 'cpanel');
-        $this->tmpl = $this->jinput->getCmd('tmpl', '');
-        $this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-        $this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
-	$this->project_id = $this->jinput->get('pid');
-	$this->jsmmessage = '';
-	$this->jsmmessagetype = 'notice';
-        $this->state = $this->get('State');
-        if(isset($this->state)) {
-            $this->sortDirection = $this->state->get('list.direction');
-            $this->sortColumn = $this->state->get('list.ordering');
-        }
+$this->document	= Factory::getDocument();
+$this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
+$this->document->addScript(JUri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+$this->jinput = $this->app->input;
+$this->option = $this->jinput->getCmd('option');
+$this->format = $this->jinput->getCmd('format');
+$this->view = $this->jinput->getCmd('view', 'cpanel');
+$this->tmpl = $this->jinput->getCmd('tmpl', '');
+$this->modalheight = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+$this->modalwidth = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
+$this->project_id = $this->jinput->get('pid');
+$this->jsmmessage = '';
+$this->jsmmessagetype = 'notice';
+$this->state = $this->get('State');
+if(isset($this->state)) {
+$this->sortDirection = $this->state->get('list.direction');
+$this->sortColumn = $this->state->get('list.ordering');
+}
 
 if ( ComponentHelper::getParams($this->option)->get('cfg_which_database') )
 {
