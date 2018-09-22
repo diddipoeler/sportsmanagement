@@ -13,6 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewPersons
@@ -38,31 +41,27 @@ class sportsmanagementViewPersons extends sportsmanagementView
        $this->season_id = 0;
        $this->team_id = 0;
        $this->persontype = 0;
-		if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
-		{
-			$this->season_id = $this->jinput->get('season_id');
-            $this->team_id = $this->jinput->get('team_id');
-            $this->persontype = $this->jinput->get('persontype');
-			$this->assign = true;
-		}
+       
+       switch ( $this->getLayout() )
+       {
+       case 'assignpersons':
+       case 'assignpersons_3':
+       case 'assignpersons_4':
+       $this->season_id = $this->jinput->get('season_id');
+       $this->team_id = $this->jinput->get('team_id');
+       $this->persontype = $this->jinput->get('persontype');
+	   $this->assign = true;
+       break; 
+       }
 
-$starttime = microtime(); 
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-
-		$this->table = JTable::getInstance('person', 'sportsmanagementTable');
-
+		$this->table = Table::getInstance('person', 'sportsmanagementTable');
 		$this->app->setUserState($this->option.'task','');
 
 /**
  * build the html select list for positions
  */
-		$positionsList[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
+		$positionsList[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positions = BaseDatabaseModel::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
         { 
             $positions = array_merge($positionsList, $positions);
@@ -73,7 +72,7 @@ $starttime = microtime();
 /**
  * build the html options for nation
  */
-		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
@@ -91,8 +90,8 @@ $starttime = microtime();
         unset($nation);
         
         $myoptions = array();
-        $myoptions[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        $myoptions[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
             $myoptions = array_merge($myoptions,$res);
@@ -120,74 +119,71 @@ $starttime = microtime();
 	function _displayAssignPlayers($tpl=null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $user	= JFactory::getUser();
-		$model = $this->getModel();
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        //$user	= JFactory::getUser();
+		//$model = $this->getModel();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//        $this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
 		//$project_id = $app->getUserState($option.'project');
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
-        $this->persontype	= $app->getUserState( "$option.persontype", '0' );
-		$mdlProject = JModelLegacy::getInstance('project', 'sportsmanagementModel');
+        $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
+        $this->persontype	= $this->app->getUserState( "$this->option.persontype", '0' );
+		$mdlProject = BaseDatabaseModel::getInstance('project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 		$project_name = $project->name;
-		$project_team_id = $app->getUserState($option.'project_team_id');
-		$team_name = $model->getProjectTeamName($project_team_id);
+		$project_team_id = $this->app->getUserState($this->option.'project_team_id');
+		$team_name = $this->model->getProjectTeamName($project_team_id);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($this->persontype,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($this->persontype,true).'</pre>'),'');
         
 		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
-        $items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+        //$items = $this->get('Items');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('person', 'sportsmanagementTable');
-		$this->table	= $table;
+        $this->table = Table::getInstance('person', 'sportsmanagementTable');
+//		$this->table	= $table;
 
 		//save icon should be replaced by the apply
-		JToolbarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
+		JToolbarHelper::apply('person.saveassigned',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
 		
 		// Set toolbar items for the page
 		$type = $jinput->getInt('type');
 		if ($type == 0)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
-                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
-                    //$items = $model->getNotAssignedPlayers(JString::strtolower($search),$project_team_id);
+                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
+                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
 		}
 		elseif ($type == 1)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
-                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
-                    //$items = $model->getNotAssignedStaff(JString::strtolower($search),$project_team_id);
+                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
+                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
 		}
 		elseif ($type == 2)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
-                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
-                    //$items = $model->getNotAssignedReferees(JString::strtolower($search),$this->project_id);
+                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
+                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
 		}
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation = array_merge($nation, $res);}
         $lists['nation'] = $nation;
         
         //build the html select list for positions
-		$positionsList[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
+		$positionsList[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$positions = BaseDatabaseModel::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
 		{
 			$positions = array_merge($positionsList, $positions);
@@ -196,8 +192,8 @@ $starttime = microtime();
 		unset($positionsList);
         
         $myoptions = array();
-        $myoptions[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = BaseDatabaseModel::getInstance("agegroups", "sportsmanagementModel");
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
             $myoptions = array_merge($myoptions,$res);
@@ -218,10 +214,10 @@ $starttime = microtime();
 		$this->team_name	= $team_name;
 		$this->project_team_id	= $project_team_id;
 		$this->lists	= $lists;
-		$this->items	= $items;
-        $this->user	= $user;
-		$this->pagination	= $pagination;
-		$this->request_url	= JFactory::getURI()->toString();
+	//	$this->items	= $items;
+//        $this->user	= $user;
+//		$this->pagination	= $pagination;
+//		$this->request_url	= JFactory::getURI()->toString();
 		$this->type	= $type;
         
         $this->setLayout('assignplayers');
@@ -266,7 +262,7 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
 		JToolbarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolbarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
@@ -275,8 +271,8 @@ $starttime = microtime();
 		JToolbarHelper::apply('persons.saveshort');
 		JToolbarHelper::editList('person.edit');
 		JToolbarHelper::addNew('person.add');
-		JToolbarHelper::custom('person.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('person.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('person.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('person.export', Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}
