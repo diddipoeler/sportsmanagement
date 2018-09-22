@@ -15,6 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementHelperHtml
@@ -44,7 +45,7 @@ class sportsmanagementHelperHtml {
      * @return
      */
     public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $use_jquery_modal = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 
@@ -168,7 +169,7 @@ $modaltext .= '</a>';
      * @return
      */
     public static function showDivisonRemark(&$hometeam, &$guestteam, &$config, $division_id = '') {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $output = '';
         if ($config['switch_home_guest']) {
@@ -207,8 +208,8 @@ $modaltext .= '</a>';
 
             if ($config['show_division_link']) {
                 $routeparameter = array();
-                $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                 $routeparameter['p'] = self::$project->slug;
                 $routeparameter['type'] = 0;
                 $routeparameter['r'] = self::$project->round_slug;
@@ -227,8 +228,8 @@ $modaltext .= '</a>';
 
                 if ($config['show_division_link']) {
                     $routeparameter = array();
-                    $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                    $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                     $routeparameter['p'] = self::$project->slug;
                     $routeparameter['type'] = 0;
                     $routeparameter['r'] = self::$project->round_slug;
@@ -261,13 +262,13 @@ $modaltext .= '</a>';
      * @return string html
      */
     public static function showMatchdaysTitle($title, $current_round, &$config, $mode = 0) {
-        $app = JFactory::getApplication();
-        $cfg_which_database = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+        $app = Factory::getApplication();
+        $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
 
-        $projectid = JFactory::getApplication()->input->getInt('p', 0);
+        $projectid = Factory::getApplication()->input->getInt('p', 0);
         //$thisproject = JTable::getInstance('Project','sportsmanagementTable');
         //$thisproject->load($projectid);
 
@@ -301,8 +302,8 @@ $modaltext .= '</a>';
             if ($config['type_section_heading'] == 1 && $thisround->name != '') {
                 if ($mode == 1) {
                     $routeparameter = array();
-                    $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-                    $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+                    $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                    $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
                     $routeparameter['p'] = $thisproject->project_slug;
                     $routeparameter['type'] = 0;
                     $routeparameter['r'] = $thisround->round_slug;
@@ -345,7 +346,7 @@ $modaltext .= '</a>';
      * @return
      */
     public static function getRoundSelectNavigation($form, $cfg_which_database = 0, $s = 0) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC', $cfg_which_database);
@@ -363,7 +364,7 @@ $modaltext .= '</a>';
         $routeparameter['layout'] = sportsmanagementModelProject::$layout;
 
 //                $routeparameter['cfg_which_database'] = $cfg_which_database;
-//                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+//                $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
 //        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
 //        $routeparameter['r'] = 0;
 //        $routeparameter['division'] = $division;
@@ -409,7 +410,7 @@ $modaltext .= '</a>';
      */
     public static function showMatchPlayground(&$game, $config = array()) {
 
-        $cfg_which_database = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
+        $cfg_which_database = Factory::getApplication()->input->getInt('cfg_which_database', 0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
@@ -439,7 +440,7 @@ $modaltext .= '</a>';
 catch (Exception $e)
 {
     // keine fehlermeldung ausgeben
-	//JFactory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	//Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		    
             }
@@ -481,7 +482,7 @@ catch (Exception $e)
 catch (Exception $e)
 {
 	// keine fehlermeldung ausgeben
-    //JFactory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    //Factory::getApplication()->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
             if ($pginfo) {
                 $toolTipText .= $pginfo->name . '&lt;br /&gt;';
@@ -495,8 +496,8 @@ catch (Exception $e)
                 $pginfo->short_name = '';
             }
             $routeparameter = array();
-            $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-            $routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+            $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+            $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
             $routeparameter['p'] = $game->project_slug;
             $routeparameter['pgid'] = $game->playground_slug;
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground', $routeparameter);
@@ -702,7 +703,7 @@ catch (Exception $e)
      */
     public static function printColumnHeadingSortAllTimeRanking($columnTitle, $paramName, $config = null, $default = "DESC") {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 
         $output = "";
@@ -713,13 +714,13 @@ catch (Exception $e)
             $params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
             $params["l"] = $jinput->request->get('l', 0, 'INT');
             $params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
-            $params["type"] = JFactory::getApplication()->input->getInt("type", 0);
+            $params["type"] = Factory::getApplication()->input->getInt("type", 0);
             //$params["order"] = $jinput->request->get('order', '', 'STR');
             //$params["dir"] = $jinput->request->get('dir', 'DESC', 'STR');
             if ($jinput->request->get('order', '', 'STR') == $paramName) {
                 $params["order"] = $paramName;
-                $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
-                $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
+                $params["dir"] = ( Factory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
+                $imgname = 'sort' . (Factory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
                 $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;
@@ -748,7 +749,7 @@ catch (Exception $e)
      */
     public static function printColumnHeadingSort($columnTitle, $paramName, $config = null, $default = "DESC", $paramconfig = null) {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
 
         $output = "";
@@ -790,8 +791,8 @@ catch (Exception $e)
 
             if ($jinput->request->get('order', '', 'STR') == $paramName) {
                 $params["order"] = $paramName;
-                $params["dir"] = ( JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
-                $imgname = 'sort' . (JFactory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
+                $params["dir"] = ( Factory::getApplication()->input->getVar('dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
+                $imgname = 'sort' . (Factory::getApplication()->input->getVar('dir', '') == 'ASC' ? "02" : "01" ) . '.gif';
                 $img = HTMLHelper::image('media/com_sportsmanagement/jl_images/' . $imgname, $params["dir"]);
             } else {
                 $params["order"] = $paramName;

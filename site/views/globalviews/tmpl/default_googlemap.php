@@ -13,8 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-$this->view = JFactory::getApplication()->input->getCmd('view');
+$this->view = Factory::getApplication()->input->getCmd('view');
 
 
 switch ($this->view)
@@ -63,11 +64,11 @@ break;
  */
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-$sef = JFactory::getConfig()->get('sef', false);
+$sef = Factory::getConfig()->get('sef', false);
 }
 else
 {
-$sef = JFactory::getConfig()->getValue('config.sef', false);
+$sef = Factory::getConfig()->getValue('config.sef', false);
 }
 
 

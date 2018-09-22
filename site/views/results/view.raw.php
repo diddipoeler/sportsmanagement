@@ -4,6 +4,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
@@ -16,9 +17,9 @@ class sportsmanagementViewResults extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $app = JFactory::getApplication();
+		$document	= Factory::getDocument();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
         $roundcode = 0;
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
 //		$document->addStyleSheet($css);

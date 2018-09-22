@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.view');
 
 /**
@@ -33,25 +33,25 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy {
      * @return void
      */
     function display($tpl = null) {
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = Uri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         $this->jinput = $this->app->input;
-        //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
+        //$this->projectid = Factory::getApplication()->input->getInt( "p", 0 );
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p', 0), sportsmanagementModelProject::$cfg_which_database);
         $this->project = sportsmanagementModelProject::getProject();
 
         if ($this->project->project_type == 'TOURNAMENT_MODE') {
             $model = $this->getModel();
-            $bracket_request = JFactory::getApplication()->input->get();
+            $bracket_request = Factory::getApplication()->input->get();
             $this->logo = $bracket_request['tree_logo'];
             $this->color_from = $model->getColorFrom();
             $this->color_to = $model->getColorTo();

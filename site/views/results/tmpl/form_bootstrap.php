@@ -21,7 +21,7 @@ $this->columns = 12;
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
 <div class="container-fluid">
@@ -159,7 +159,7 @@ $this->divclassrest = "span3";
 <input type='hidden' name='layout' value='form' />
 <input type='hidden' name='task' value='results.saveshort' />
 <input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 <input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 <input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 <input type='hidden' name='save_data' value='1' class='button' />

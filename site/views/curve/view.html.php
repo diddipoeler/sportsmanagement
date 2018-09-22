@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
 
 /**
@@ -139,7 +139,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	function _setChartdata($config)
 	{
 	// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
 	   $option = $jinput->getCmd('option');

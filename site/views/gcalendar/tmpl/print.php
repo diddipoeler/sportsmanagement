@@ -24,7 +24,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 $params = $this->params;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -74,7 +74,7 @@ foreach($allCalendars as $calendar) {
 	$color = jsmGCalendarUtil::getFadedColor($calendar->color);
 	echo ".".$cssClass.",.fc-agenda ".$cssClass." .fc-event-time, .".$cssClass." a, .".$cssClass." div{background-color: ".$color." !important; border-color: #".$calendar->color."; color: white;}";
 	if(empty($calendarids) || in_array($calendar->id, $calendarids)){
-		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JFactory::getApplication()->input->getInt('Itemid')));
+		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.Factory::getApplication()->input->getInt('Itemid')));
 		$calsSources .= "				'".$value."',\n";
 	}
 }

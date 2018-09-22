@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 
 <div class="row-fluid">
@@ -36,7 +37,7 @@ if (!empty($value)) // && !$field->backendonly)
 </div>
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <?php 
-switch (JFactory::getApplication()->input->getVar('view'))
+switch (Factory::getApplication()->input->getVar('view'))
 {
     case 'clubinfo':
     $title = $this->club->name;

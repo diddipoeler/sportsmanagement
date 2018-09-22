@@ -9,11 +9,12 @@
  * @subpackage globalviews
  */ 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 ?>
 <div class="row-fluid" id="no_tabs">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <?php
-$view = JFactory::getApplication()->input->getCmd('view');
+$view = Factory::getApplication()->input->getCmd('view');
 
 foreach ($this->output as $key => $templ) {
     switch ($view) {

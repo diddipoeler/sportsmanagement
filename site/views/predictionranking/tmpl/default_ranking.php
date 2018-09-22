@@ -13,17 +13,9 @@ defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-HTMLHelper::_('behavior.tooltip');
+use Joomla\CMS\Factory;
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'this->config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
-echo 'this->items<br /><pre>~' . print_r($this->items,true) . '~</pre><br />';
-echo 'this->pagination<br /><pre>~' . print_r($this->pagination,true) . '~</pre><br />';
-echo 'this->limit<br /><pre>~' . print_r($this->limit,true) . '~</pre><br />';
-echo 'this->limitstart<br /><pre>~' . print_r($this->limitstart,true) . '~</pre><br />';
-echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br />';
-}
+HTMLHelper::_('behavior.tooltip');
 
 ?>
 
@@ -101,8 +93,8 @@ When viewing on anything larger than 768px wide, you will not see any difference
           <?php
 							echo '&nbsp;&nbsp;';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $predictionProject->project_slug;
 $routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;

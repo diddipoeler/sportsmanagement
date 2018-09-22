@@ -2,6 +2,7 @@
 
 defined('_JEXEC') or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 //jimport( 'joomla.application.component.controller' );
 // import Joomla controlleradmin library
@@ -42,18 +43,16 @@ $this->setRedirect ( $link, $msg );
     }
 
     function save() {
-	   //$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
+	   //$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-		$document = JFactory::getDocument ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
-		//JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		//Factory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 
-		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jsminlinehockey' );
-        //$post = JFactory::getApplication()->input->get ( 'post' );
         $post = $jinput->post->getArray(array());
         
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -61,7 +60,7 @@ $this->setRedirect ( $link, $msg );
         // first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) 
         {
-			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
+			$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
             $tempFilePath = $upload ['tmp_name'];
             $dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
 			$extractdir = JPATH_SITE . DS . 'tmp';

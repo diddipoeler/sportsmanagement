@@ -14,11 +14,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 
 if ( $this->overallconfig['use_jquery_modal'] )
@@ -40,11 +41,11 @@ if ( $this->overallconfig['use_squeezebox_modal'] )
 
 if ( !$this->showediticon )
 {
-	JFactory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), Text::_('ALERTNOTAUTH') );
+	Factory::getApplication()->redirect( str_ireplace('layout=form','',$uri->toString()), Text::_('ALERTNOTAUTH') );
 }
 
 // load javascripts
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -220,7 +221,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveshort' />
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

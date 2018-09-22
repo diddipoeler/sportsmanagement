@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <!-- START of match summary -->
 <?php
@@ -98,13 +99,13 @@ $comments = '';
 	if ($separate_comments) {
 
 	// Comments integration trigger when separate_comments in plugin is set to yes/1
-		if (\JFactory::getApplication()->triggerEvent( 'onMatchReportComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		if (Factory::getApplication()->triggerEvent( 'onMatchReportComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
 			echo $comments;
 		}
 	}
 	else {
 		// Comments integration trigger when separate_comments in plugin is set to no/0
-		if (\JFactory::getApplication()->triggerEvent( 'onMatchComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
+		if (Factory::getApplication()->triggerEvent( 'onMatchComments', array( &$this->match, $this->team1->name .' - '. $this->team2->name, &$comments ) )) {
 			echo $comments;
 		}
 	}

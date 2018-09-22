@@ -22,7 +22,8 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-$document = JFactory::getDocument();
+use Joomla\CMS\Factory;
+$document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $tmp = array();

@@ -21,14 +21,14 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'maps' => true, 'bootstrap' => true, 'gcalendar' => true));
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
 $document->addScript(Uri::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
 
-if (JFactory::getApplication()->input->getCmd('tmpl', '') == 'component') {
+if (Factory::getApplication()->input->getCmd('tmpl', '') == 'component') {
 	$document->addStyleSheet(Uri::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
 }
 
@@ -86,7 +86,7 @@ $plugins['pluginsAfter'] = array();
 $dispatcher->trigger('onBeforeDisplayEvent', array($this->event,  &$content, &$plugins['pluginsBefore']));
 $dispatcher->trigger('onAfterDisplayEvent', array($this->event,  &$content, &$plugins['pluginsAfter']));
 
-echo jsmGCalendarUtil::renderEvents(array($this->event), $content, JFactory::getApplication()->getParams(), $plugins);
+echo jsmGCalendarUtil::renderEvents(array($this->event), $content, Factory::getApplication()->getParams(), $plugins);
 
 //if(!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_gcalendarap'.DS.'gcalendarap.php'))
 // echo "<div style=\"text-align:center;margin-top:10px\" ><a href=\"http://g4j.digital-peak.com\">GCalendar</a></div>\n";

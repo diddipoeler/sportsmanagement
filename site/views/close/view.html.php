@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.view');
 
 /**
@@ -27,7 +28,7 @@ class sportsmanagementViewClose extends JViewLegacy
 	function display($tpl = null)
 	{
 		// close a modal window
-		JFactory::getDocument()->addScriptDeclaration('
+		Factory::getDocument()->addScriptDeclaration('
 			window.parent.location.href=window.parent.location.href;
 			window.parent.SqueezeBox.close();
 		');

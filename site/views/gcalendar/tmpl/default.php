@@ -24,7 +24,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 $params = $this->params;
 
 if ($this->params->get('show_page_heading', 1)) { ?>
@@ -33,7 +33,7 @@ if ($this->params->get('show_page_heading', 1)) { ?>
 	</h1>
 <?php }
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 $theme = $params->get('theme', '');
 if (empty($theme) || $theme == -1) {
@@ -51,7 +51,7 @@ $allCalendars = jsmGCalendarDBUtil::getAllCalendars();
 $calsSources = "		eventSources: [\n";
 foreach($allCalendars as $calendar) {
 	if(empty($calendarids) || in_array($calendar->id, $calendarids)){
-		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JFactory::getApplication()->input->getInt('Itemid')));
+		$value = html_entity_decode(Route::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.Factory::getApplication()->input->getInt('Itemid')));
 		$calsSources .= "				'".$value."',\n";
 	}
 }

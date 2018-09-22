@@ -1,6 +1,6 @@
 <?php defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.view');
 
@@ -10,8 +10,8 @@ class sportsmanagementViewjlxmlexports extends JViewLegacy
 	{
 		
     // Get a refrence of the page instance in joomla
-		$document = & JFactory::getDocument();
-		$uri = &JFactory::getURI();		
+		$document = & Factory::getDocument();
+		$uri = &Factory::getURI();		
 				
 		
     

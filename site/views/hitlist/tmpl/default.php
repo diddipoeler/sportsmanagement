@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.framework');
 HTMLHelper::_('behavior.modal');
@@ -25,7 +25,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
 <script language="javascript" type="text/javascript">

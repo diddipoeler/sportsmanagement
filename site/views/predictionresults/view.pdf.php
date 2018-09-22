@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
@@ -31,13 +31,13 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	=& JFactory::getDocument();
+		$document	=& Factory::getDocument();
 		$model		=& $this->getModel();
-    $option = JFactory::getApplication()->input->getCmd('option');
-    $optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
+    $option = Factory::getApplication()->input->getCmd('option');
+    $optiontext = strtoupper(Factory::getApplication()->input->getCmd('option').'_');
     $this->optiontext = $optiontext;
     
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->predictionGame = $model->getPredictionGame();
 
@@ -55,7 +55,7 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 			$this->configavatar = $configavatar;
 			$this->predictionMember = $model->getPredictionMember($configavatar);
 			$this->predictionProjectS = $model->getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 
       $predictionRounds[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = &$model->getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}

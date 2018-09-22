@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 // pagination
 //require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
@@ -64,7 +65,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
       
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			
             
             $ranking_array = array();

@@ -9,6 +9,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 ?>
 <!-- matchdays pageNav -->
 <br />
@@ -19,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 			if (!empty($this->rounds))
 			{
 				$pageNavigation  = "<div class='pagenav'>";
-				$pageNavigation .= sportsmanagementModelPagination::pagenav($this->project,JFactory::getApplication()->input->getInt('cfg_which_database',0));
+				$pageNavigation .= sportsmanagementModelPagination::pagenav($this->project,Factory::getApplication()->input->getInt('cfg_which_database',0));
 				$pageNavigation .= "</div>";
 				echo $pageNavigation;
 			}

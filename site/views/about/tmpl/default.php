@@ -11,13 +11,14 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 ?>
 <table class="table table-responsive about">
     <tr>
         <td align="center">
             <?PHP
             // Reference global application object
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
             // JInput object
             $jinput = $app->input;
             $option = $jinput->getCmd('option');

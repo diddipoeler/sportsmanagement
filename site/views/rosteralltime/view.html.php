@@ -10,6 +10,8 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');
 
 jimport('joomla.application.component.view');
@@ -35,9 +37,9 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$model = $this->getModel();
-        $user = JFactory::getUser();
+        $user = Factory::getUser();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
         $state = $this->get('State');

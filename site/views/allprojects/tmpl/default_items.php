@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 ?>
 <div class="row-fluid table-responsive">        
 <table class="<?php echo $this->tableclass;?>">
@@ -46,8 +46,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 if ( $item->slug )
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $item->slug;
 $routeparameter['type'] = 0;
 $routeparameter['r'] = 0;

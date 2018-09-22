@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
 
@@ -70,7 +71,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
 			$this->memberData = sportsmanagementModelPredictionUsers::memberPredictionData();
 			$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();

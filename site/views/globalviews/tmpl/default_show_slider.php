@@ -11,13 +11,14 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <div class="row-fluid" id="show_slider">
     <?php
     if (version_compare(JSM_JVERSION, '4', 'eq')) {
 // Joomla! 4.0 code here
         $idxTab = 1;
-        $view = JFactory::getApplication()->input->getCmd('view');
+        $view = Factory::getApplication()->input->getCmd('view');
         foreach ($this->output as $key => $templ) {
 
             switch ($view) {
@@ -44,7 +45,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     } elseif (version_compare(JSM_JVERSION, '3', 'eq')) {
 // Joomla! 3.0 code here
         $idxTab = 1;
-        $view = JFactory::getApplication()->input->getCmd('view');
+        $view = Factory::getApplication()->input->getCmd('view');
         foreach ($this->output as $key => $templ) {
 
             switch ($view) {

@@ -10,10 +10,12 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
     echo 'club rssfeedoutput<pre>', print_r($this->rssfeedoutput, true), '</pre><br>';
 }
-$app = & JFactory::getApplication();
+$app = & Factory::getApplication();
 ?>
 <div class="no-column">
     <div class="contentpaneopen">

@@ -11,8 +11,9 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-$app	= JFactory::getApplication();
+$app	= Factory::getApplication();
 
 ?>
 <div class="no-column">

@@ -40,6 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 // Show referees as defined
 if ( !empty( $this->rows  ) )
@@ -99,8 +100,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,$row-
 					if ( $this->config['link_name'] == 1 )
 					{
 					   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pid'] = $row->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);

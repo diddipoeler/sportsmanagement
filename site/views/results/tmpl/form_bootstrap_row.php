@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 $match = $this->game;
 $i = $this->i;
@@ -28,7 +29,7 @@ if ( isset($this->teams[$thismatch->projectteam2_id]) )
 $team2 = $this->teams[$thismatch->projectteam2_id];
 }
 		
-$user = JFactory::getUser();
+$user = Factory::getUser();
 if (isset($team1) && isset($team2))
 {
 $userIsTeamAdmin = ( $user->id == $team1->admin || $user->id == $team2->admin );

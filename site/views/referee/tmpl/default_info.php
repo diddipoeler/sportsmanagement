@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 ?>
 <!-- person data START -->
@@ -235,7 +236,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
                     <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
 			<?php
-							$user = JFactory::getUser();
+							$user = Factory::getUser();
 							if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
 							{
 								?>

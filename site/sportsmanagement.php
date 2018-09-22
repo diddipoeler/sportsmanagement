@@ -12,7 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -42,9 +42,9 @@ if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-$document = JFactory::getDocument();
-$app = JFactory::getApplication();
-$config = JFactory::getConfig();
+$document = Factory::getDocument();
+$app = Factory::getApplication();
+$config = Factory::getConfig();
 $input = $app->input;
 
 /*
@@ -204,7 +204,7 @@ if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
 if ($paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
     DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));
 } else {
-    if (COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JFactory::getApplication()->input->getInt('cfg_which_database', 0)) {
+    if (COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || Factory::getApplication()->input->getInt('cfg_which_database', 0)) {
         if (!defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
             DEFINE('COM_SPORTSMANAGEMENT_PICTURE_SERVER', $paramscomponent->get('cfg_which_database_server'));
         }
@@ -218,7 +218,7 @@ if ($paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICT
 /**
  * sprachdatei aus dem backend laden
  */
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = $lang->getTag();

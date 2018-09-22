@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 
@@ -39,10 +40,10 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-    $option = JFactory::getApplication()->input->getCmd('option');
+		$document	= Factory::getDocument();
+    $option = Factory::getApplication()->input->getCmd('option');
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		
 		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
 		$document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
@@ -74,7 +75,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 				$this->predictionMember->pmID = 0;
 			}
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
 			$this->memberData = $model->memberPredictionData();
 			$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();

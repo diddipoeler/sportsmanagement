@@ -10,6 +10,7 @@
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.view');
 
@@ -34,10 +35,10 @@ class sportsmanagementViewsishandball extends JViewLegacy
 	function display($tpl = null) 
     {
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

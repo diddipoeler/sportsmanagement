@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 ?>
 <!-- START of match timeline -->
 
@@ -70,7 +72,7 @@ use Joomla\CMS\Language\Text;
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+			echo sportsmanagementModelProject::getClubIconHtml($this->team1,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>
@@ -97,7 +99,7 @@ use Joomla\CMS\Language\Text;
 			?>
             <td width="40">
             <?php
-			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
+			echo sportsmanagementModelProject::getClubIconHtml($this->team2,1,0,'logo_big',Factory::getApplication()->input->getInt('cfg_which_database',0),0,$this->modalwidth,$this->modalheight,$this->overallconfig['use_jquery_modal'] );
 		}
 		?>
 		</td>

@@ -11,6 +11,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Factory;
 
 /**
  * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
@@ -71,7 +72,7 @@ class SportsmanagementRouter extends RouterBase {
      * @return
      */
     public function build(&$query) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $segments = array();
 
@@ -631,7 +632,7 @@ class SportsmanagementRouter extends RouterBase {
      * @since   3.3
      */
     public function parse(&$segments) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $vars = array();
 
@@ -699,7 +700,7 @@ class SportsmanagementRouter extends RouterBase {
             case 'event':
                 $vars['gcid'] = $segments[1];
                 if (count($segments) < 3) {
-                    $vars['eventID'] = JFactory::getApplication()->input->getVar('eventId');
+                    $vars['eventID'] = Factory::getApplication()->input->getVar('eventId');
                 } else {
                     $vars['eventID'] = $segments[2];
                 }

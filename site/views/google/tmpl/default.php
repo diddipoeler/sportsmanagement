@@ -22,16 +22,16 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 jsmGCalendarUtil::loadLibrary();
 
 $component = JComponentHelper::getComponent('com_gcalendar');
-$menu = JFactory::getApplication()->getMenu();
+$menu = Factory::getApplication()->getMenu();
 $items = $menu->getItems('component_id', $component->id);
 
 $model = & $this->getModel();
 if (is_array($items)){
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$pathway = $app->getPathway();
 	foreach($items as $item) {
 		$paramsItem	= $menu->getParams($item->id);
@@ -107,7 +107,7 @@ foreach($this->calendars as $calendar) {
 }
 $calendar_list .="</table></div>\n";
 if($params->get('show_selection')==1 || $params->get('show_selection') == 3){
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
 	$document->addScript(Uri::base(). 'components/com_gcalendar/views/google/tmpl/gcalendar.js' );
 	$document->addStyleSheet(Uri::base().'components/com_gcalendar/views/google/tmpl/gcalendar.css');
 	if($params->get('show_selection', 1) == 1) {

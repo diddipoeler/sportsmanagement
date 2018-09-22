@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 ?>
 <!-- START of match events -->
 
@@ -119,8 +119,8 @@ foreach ($this->matchevents AS $me)
                         {
 
 $routeparameter = array(); 
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
 $routeparameter['p'] = $this->project->slug; 
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
@@ -222,8 +222,8 @@ else
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
 $routeparameter = array(); 
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
 $routeparameter['p'] = $this->project->slug; 
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 
@@ -280,8 +280,8 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 						if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
 						{
 $routeparameter = array(); 
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0); 
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0); 
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0); 
 $routeparameter['p'] = $this->project->slug; 
 $routeparameter['tid'] = $me->team_id; 
 $routeparameter['pid'] = $me->playerid; 

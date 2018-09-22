@@ -1,7 +1,7 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Router\Route;
-
+use Joomla\CMS\Factory;
 jimport( 'joomla.application.component.view' );
 
 class JoomleagueViewClubplan extends JLGView
@@ -10,7 +10,7 @@ class JoomleagueViewClubplan extends JLGView
 	function display($tpl = null)
 	{
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->link = Route::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$config = $model->getTemplateConfig($this->getName());

@@ -41,6 +41,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <div class="table-responsive">
 <table class="<?php echo $this->config['table_class']; ?>">
@@ -128,8 +129,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$team->id,$team->$pic,$team->name,$this->config['team_picture_width']);
 echo '<br />';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $team->team_slug;
 $routeparameter['ptid'] = 0;

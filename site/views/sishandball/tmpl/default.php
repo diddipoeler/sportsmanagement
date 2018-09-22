@@ -16,7 +16,7 @@ require_once('components'.DS.'com_sportsmanagement'.DS.'lib'.DS.'xshv2.lib.core.
 $modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
 
-$document =  JFactory::getDocument();
+$document =  Factory::getDocument();
 $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel="stylesheet" type="text/css" />' . "\n";
 //$app->addCustomHeadTag( $cssHTML );
 $document->addCustomTag( $cssHTML );

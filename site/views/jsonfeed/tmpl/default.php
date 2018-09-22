@@ -21,7 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Router\Route;
-$document = JFactory::getDocument();
+use Joomla\CMS\Factory;
+$document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $dispatcher = JDispatcher::getInstance();
@@ -30,12 +31,12 @@ JPluginHelper::importPlugin('gcalendar');
 $data = array();
 $SECSINDAY=86400;
 if (!empty($this->calendars)) {
-	$itemID = JFactory::getApplication()->input->getVar('Itemid', null);
+	$itemID = Factory::getApplication()->input->getVar('Itemid', null);
 	foreach ($this->calendars as $calendar) {
 		if($itemID == null){
 			$itemID = jsmGCalendarUtil::getItemId($calendar->id);
 		}
-		$params = JFactory::getApplication()->getMenu()->getParams($itemID);
+		$params = Factory::getApplication()->getMenu()->getParams($itemID);
 		$tmp = clone JComponentHelper::getParams('com_sportsmanagement');
 		if (empty($params)) {
 			$params = $tmp;
@@ -53,7 +54,7 @@ if (!empty($this->calendars)) {
 			if (!empty($itemID)) {
 				$itemID = '&Itemid='.$itemID;
 			} else {
-				$menu = JFactory::getApplication()->getMenu();
+				$menu = Factory::getApplication()->getMenu();
 				$activemenu = $menu->getActive();
 				if($activemenu != null){
 					$itemID = '&Itemid='.$activemenu->id;

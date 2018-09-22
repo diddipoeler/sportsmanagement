@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 JLoader::import('joomla.application.component.view');
 
 JLoader::import('components.com_sportsmanagement.libraries.fullcalendar.fullcalendar', JPATH_BASE);
@@ -31,7 +32,7 @@ class sportsmanagementViewGcalendar extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		$calendars = $this->get('DBCalendars');
         
@@ -50,7 +51,7 @@ class sportsmanagementViewGcalendar extends JViewLegacy
 	}
 
 	protected function prepareDocument() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu();
 		$title	= null;
 

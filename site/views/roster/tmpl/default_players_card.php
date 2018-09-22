@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 foreach ( $this->rows as $position_id => $players ): ?>
 <div style="margin:auto; width:100%;">
@@ -73,8 +74,8 @@ $this->overallconfig['use_jquery_modal']);
 				  	if ($this->config['link_player']==1)
 					{
 					   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $this->team->slug;
 $routeparameter['pid'] = $row->person_slug;

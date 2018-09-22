@@ -13,9 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-$option = JFactory::getApplication()->input->getCmd('option');
-$view = JFactory::getApplication()->input->getVar( "view") ;
+$option = Factory::getApplication()->input->getCmd('option');
+$view = Factory::getApplication()->input->getVar( "view") ;
 $view = ucfirst(strtolower($view));
 $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;

@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 ?>
 <div class="row-fluid table-responsive">              
 <table class="<?php echo $this->tableclass;?>">
@@ -50,8 +50,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 if ( $item->projectslug )
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $item->projectslug;
 $routeparameter['pgid'] = $item->slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    

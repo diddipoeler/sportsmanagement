@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Factory;
 if (! defined('JSM_PATH'))
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
@@ -52,7 +52,7 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 	function init()
 	{
         
-		$user		= JFactory::getUser();
+		$user		= Factory::getUser();
         $starttime = microtime(); 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');

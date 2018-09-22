@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 jimport('joomla.html.pane');
 // Load the tooltip behavior.
 HTMLHelper::_('behavior.tooltip');
@@ -27,7 +27,7 @@ $fieldsets = $this->form->getFieldsets();
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
 <script type="text/javascript">
@@ -167,7 +167,7 @@ echo $this->loadTemplate('matchextended');
         <input type='hidden' name='matchid' value='<?php echo $this->match->id; ?> ' />	
 		
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelEditMatch::$roundid; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo Factory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

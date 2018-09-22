@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -39,8 +40,8 @@ class sportsmanagementViewRanking extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
@@ -143,7 +144,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->awayRank = $model->awayRank;
         }
         
-        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JFactory::getApplication()->input->getVar("view"));
+        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.Factory::getApplication()->input->getVar("view"));
         
         // mannschaften holen
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
@@ -304,7 +305,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$document->setTitle( $pageTitle );
-		$view = JFactory::getApplication()->input->getVar( "view") ;
+		$view = Factory::getApplication()->input->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         //$document->addCustomTag($stylelink);
 		parent :: display($tpl);

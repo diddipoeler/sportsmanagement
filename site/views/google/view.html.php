@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Factory;
 JLoader::import( 'joomla.application.component.view');
 
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
@@ -37,7 +37,7 @@ class sportsmanagementGCalendarViewGoogle extends JViewLegacy
 			$calendars = array();
 		$this->calendars = $calendars ;
 
-		$this->params = JFactory::getApplication()->getParams();
+		$this->params = Factory::getApplication()->getParams();
 
 		parent::display($tpl);
 	}

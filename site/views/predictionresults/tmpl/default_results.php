@@ -13,6 +13,7 @@ defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 HTMLHelper::_('behavior.tooltip');
 
 ?>
@@ -111,7 +112,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
             echo '&nbsp;&nbsp;';
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = sportsmanagementModelPrediction::$cfg_which_database;
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = sportsmanagementModelPrediction::$pjID;
 $routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;

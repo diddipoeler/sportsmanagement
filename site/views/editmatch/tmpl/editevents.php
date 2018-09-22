@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Factory;
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
@@ -80,7 +80,7 @@ jQuery('#team_id').change(updatePlayerSelect);
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
           

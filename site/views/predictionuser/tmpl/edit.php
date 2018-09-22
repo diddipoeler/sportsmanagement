@@ -41,6 +41,7 @@ defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.tooltip');
 
@@ -54,9 +55,9 @@ echo 'form<br /><pre>~' . print_r($this->form,true) . '~</pre><br />';
 
 if (!$this->showediticon)
 {
-	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
+	Factory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
 }
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 $script =	'
 				function submitbutton(pressbutton)
@@ -72,7 +73,7 @@ $document->addScript(Uri::root().'includes/js/joomla.javascript.js');
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 ?>
 <form name='adminForm' id='adminForm' method='post' >

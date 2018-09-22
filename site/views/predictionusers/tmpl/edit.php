@@ -13,6 +13,7 @@ defined('_JEXEC') or die(Text::_('Restricted access'));
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.tooltip');
 
@@ -21,14 +22,14 @@ HTMLHelper::_('behavior.tooltip');
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
-    $uri = JFactory::getURI();
+    $uri = Factory::getURI();
 }
 
 if (!$this->showediticon)
 {
-	JFactory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
+	Factory::getApplication()->redirect(str_ireplace('&layout=edit','',$uri->toString()),Text::_('ALERTNOTAUTH'));
 }
-$document =& JFactory::getDocument();
+$document =& Factory::getDocument();
 
 $script =	'
 				function submitbutton(pressbutton)

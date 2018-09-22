@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.view' );
 
@@ -36,12 +37,12 @@ class sportsmanagementViewStats extends JViewLegacy
 	{
 		
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getint( "cfg_which_database", 0 ));

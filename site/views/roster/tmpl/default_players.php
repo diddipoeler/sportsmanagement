@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
@@ -338,8 +339,8 @@ $this->overallconfig['use_jquery_modal']
 		if ($this->config['link_player']==1)
 		{
 		  $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->get('cfg_which_database', 0);
-       $routeparameter['s'] = JFactory::getApplication()->input->get('s', '');
+       $routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);
+       $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['pid'] = $row->person_slug;
@@ -430,7 +431,7 @@ $this->overallconfig['use_jquery_modal']
 		{
 			$model = $this->getModel();
 			
-            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JFactory::getApplication()->input->get('cfg_which_database', 0));
+            $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,Factory::getApplication()->input->get('cfg_which_database', 0));
             
 //echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';

@@ -15,6 +15,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 ?>
 <!-- START of match preview -->
@@ -85,14 +86,14 @@ if ($separate_comments) {
     /**
      * Comments integration trigger when separate_comments in plugin is set to yes/1
      */
-    if (\JFactory::getApplication()->triggerEvent('onNextMatchComments', array(&$this->match, $this->teams[0]->name . ' - ' . $this->teams[1]->name, &$comments))) {
+    if (Factory::getApplication()->triggerEvent('onNextMatchComments', array(&$this->match, $this->teams[0]->name . ' - ' . $this->teams[1]->name, &$comments))) {
         echo $comments;
     }
 } else {
     /**
      * Comments integration trigger when separate_comments in plugin is set to no/0
      */
-    if (\JFactory::getApplication()->triggerEvent('onMatchComments', array(&$this->match, $this->teams[0]->name . ' - ' . $this->teams[1]->name, &$comments))) {
+    if (Factory::getApplication()->triggerEvent('onMatchComments', array(&$this->match, $this->teams[0]->name . ' - ' . $this->teams[1]->name, &$comments))) {
         echo $comments;
     }
 }

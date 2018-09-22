@@ -11,6 +11,8 @@
     defined('_JEXEC') or die('Restricted access');
 	use Joomla\CMS\Language\Text;
 	use Joomla\CMS\HTML\HTMLHelper;
+	use Joomla\CMS\Factory;
+	
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
         $visible = 'text';
@@ -23,7 +25,7 @@
         $visible = 'hidden';
     }
     //$this->config['show_tipp_tendence']=1;
-    if (((JFactory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPredictionMembership())) &&
+    if (((Factory::getUser()->id==0) || (!sportsmanagementModelPrediction::checkPredictionMembership())) &&
         ((!$this->allowedAdmin) || ($this->predictionMember->pmID==0)))
     {
         if ($this->allowedAdmin)
@@ -33,7 +35,7 @@
             {
                 echo '<br />allowedAdmin<pre>~' . print_r($this->allowedAdmin,true) . '~</pre><br />';
                 echo '<br />predictionMember<pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-                echo '<br />getUser<pre>~' . print_r(JFactory::getUser()->id,true) . '~</pre><br />';
+                echo '<br />getUser<pre>~' . print_r(Factory::getUser()->id,true) . '~</pre><br />';
             }
         }
     }
@@ -333,7 +335,7 @@ When viewing on anything larger than 768px wide, you will not see any difference
     /**
      * das datum des spiels
      */
-    $jdate = JFactory::getDate($result->match_date);
+    $jdate = Factory::getDate($result->match_date);
     $jdate->setTimezone(new DateTimeZone($predictionProjectSettings->timezone));
     //echo $jdate->format('d.m.Y H:i'); //outputs 01:00:00
     $pred_matchdatetime = $jdate->format('D  d.M. Y H:i')." Uhr </br>";

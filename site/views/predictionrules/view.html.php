@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 
 /**
@@ -34,11 +36,11 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
 		$model		= $this->getModel();
-    $option = JFactory::getApplication()->input->getCmd('option');
+    $option = Factory::getApplication()->input->getCmd('option');
     
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
@@ -55,7 +57,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
       $this->configavatar = $configavatar;
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
-			$this->actJoomlaUser = JFactory::getUser();
+			$this->actJoomlaUser = Factory::getUser();
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 

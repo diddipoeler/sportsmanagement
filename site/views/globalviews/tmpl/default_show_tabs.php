@@ -12,6 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 ?>
 <div class="row-fluid" id="show_tabs">
 <?php
@@ -87,7 +88,7 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 elseif(version_compare(JSM_JVERSION,'2','eq'))
 {
 // Joomla! 2.5 code here
-$view = JFactory::getApplication()->input->getCmd('view');
+$view = Factory::getApplication()->input->getCmd('view');
 ?>
 
 <div class="panel with-nav-tabs panel-default">

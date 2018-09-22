@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 class GCalendarView extends JViewLegacy {
 
@@ -32,7 +33,7 @@ class GCalendarView extends JViewLegacy {
 		$state = $this->get('State');
 
 		$tmp = clone $state->params;
-		$tmp->merge(JFactory::getApplication()->getParams());
+		$tmp->merge(Factory::getApplication()->getParams());
 
 		$this->state = $state;
 		$this->params = $tmp;
@@ -49,7 +50,7 @@ class GCalendarView extends JViewLegacy {
 	}
 
 	protected function prepareDocument() {
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$menus	= $app->getMenu();
 		$title	= null;
 
