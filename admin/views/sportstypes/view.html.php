@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewSportsTypes
@@ -34,18 +35,12 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$starttime = microtime();
-		
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-			$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
         
 		$myoptions = array();
 		$myoptions[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
 		$myoptions[] = HTMLHelper::_( 'select.option', '1', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
-		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
+		$this->table = Table::getInstance('sportstype', 'sportsmanagementTable');
         
         // sportart filter
 		$lists['sportart'] = $myoptions;

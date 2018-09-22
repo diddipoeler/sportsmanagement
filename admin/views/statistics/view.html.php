@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -35,40 +38,14 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-		//$jinput = $app->input;
-		//$option = $jinput->getCmd('option');
-		//$document = JFactory::getDocument();
-		//$user = JFactory::getUser();
-		//$uri = JFactory::getURI();
-		//$model	= $this->getModel();
-        
-		//$this->state = $this->get('State');
-		//$this->sortDirection = $this->state->get('list.direction');
-		//$this->sortColumn = $this->state->get('list.ordering');
-		
-
-	$starttime = microtime();
-		//$items = $this->get('Items');
-		
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
-		//$total = $this->get('Total');
-		//$pagination = $this->get('Pagination');
-
-
-		$table = JTable::getInstance('statistic', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table = Table::getInstance('statistic', 'sportsmanagementTable');
         
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
-		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
-		$allSportstypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();		
+		$sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
+		$allSportstypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();		
 		
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
-		$lists['sportstypes']=JHtml::_( 'select.genericList', 
+		$lists['sportstypes'] = HTMLHelper::_( 'select.genericList', 
 										$sportstypes, 
 										'filter_sports_type', 
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
@@ -77,13 +54,7 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 
-		//$this->user = $user;
-		$this->config = JFactory::getConfig();
 		$this->lists = $lists;
-		//$this->items = $items;
-		//$this->pagination = $pagination;
-		//$this->request_url = $uri->toString();
-        
 	}
 	
 	/**
