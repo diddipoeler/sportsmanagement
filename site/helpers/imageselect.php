@@ -69,53 +69,49 @@ static $_foldertype = '';
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
-			jQuery('a_' + field).val() = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			jQuery('a_' + field + '_name').val() ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-			jQuery$('a_' + field + '_name').trigger('change');
-      		if(jQuery$(fieldid)) {
-        		jQuery(fieldid).val() = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
+			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			$('a_' + field + '_name').fireEvent('change');
+      		if($(fieldid)) {
+        		$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
       		}
-			jQuery('a_' + field + '_name').trigger('change');
+			$('a_' + field + '_name').fireEvent('change');
 		}
-		
-        function reset_" . $funcname . "()
+        
+		function reset_" . $funcname . "()
 		{
-			jQuery('a_" . $fieldname . "').attr('value', '" . $default . "');
-			jQuery('a_" . $fieldname . "_name').attr('value', '" . $default . "').trigger('change');
-            console.log('reset funcname: ' + '" . $funcname . "');
-            console.log('reset default: ' + '" . $default . "');
+			$('a_" . $fieldname . "').setProperty('value', '" . $default . "');
+			$('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
 		}
 
 		function clear_" . $funcname . "()
 		{
-			jQuery('a_" . $fieldname . "').attr('value', '');
-			jQuery('a_" . $fieldname . "_name').attr('value', '').trigger('change');
-            console.log('clear funcname: ' + '" . $funcname . "');
+			$('a_" . $fieldname . "').setProperty('value', '');
+			$('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
 		}
 
-		//window.addEvent('domready', function()
-        jQuery(document).ready(function()
+		window.addEvent('domready', function()
 		{
-			jQuery('a_" . $fieldname . "_name').live('change', function()
+			$('a_" . $fieldname . "_name').addEvent('change', function()
 			{
-				if (jQuery('a_" . $fieldname . "_name').val() != '') {
-					jQuery('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + jQuery('a_" . $fieldname . "_name').val();
+				if ($('a_" . $fieldname . "_name').value!='') {
+					$('" . $fieldpreview_name . "').src='" . $baseFolder . "' + $('a_" . $fieldname . "_name').value;
 				}
 				else
 				{
-					jQuery('" . $fieldpreview_name . "').src = '../images/blank.png';
+					$('" . $fieldpreview_name . "').src='../images/blank.png';
 				}
-				if(jQuery('" . $fieldid . "')) {
-					jQuery('" . $fieldid . "').val() = jQuery('a_" . $fieldname . "_name').val();
+				if($('" . $fieldid . "')) {
+					$('" . $fieldid . "').value = $('a_" . $fieldname . "_name').value;
 				}
 			});
-			jQuery('a_" . $fieldname . "_name').trigger('change');
+			$('a_" . $fieldname . "_name').fireEvent('change');
 		});
 		";
 
-		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
+		$link =		'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
+		$link2 =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
 		$document->addScriptDeclaration( $js );
 
