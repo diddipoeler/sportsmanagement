@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -90,7 +91,7 @@ class sportsmanagementView extends HtmlView
         
     if(version_compare(JVERSION,'3.0.0','ge')) 
     {
-    $this->uri = JUri::getInstance();
+    $this->uri = Uri::getInstance();
     $this->toolbarhelper = 'JToolbarHelper';
     }
     else
@@ -103,8 +104,8 @@ class sportsmanagementView extends HtmlView
  */
         
 $this->document	= Factory::getDocument();
-$this->document->addStyleSheet(JUri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
-$this->document->addScript(JUri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
+$this->document->addStyleSheet(Uri::root() .'components/com_sportsmanagement/assets/css/flex.css', 'text/css');
+$this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/sm_functions.js');
 $this->jinput = $this->app->input;
 $this->option = $this->jinput->getCmd('option');
 $this->format = $this->jinput->getCmd('format');
@@ -195,7 +196,7 @@ if ( $this->format != 'json' )
 /**
 * dadurch werden die spaltenbreiten optimiert
 */
-$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');	
+$this->document->addStyleSheet(Uri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');	
 }
 
 
@@ -604,34 +605,29 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         
         //JToolbarHelper::title(Text::_($this->title), $this->icon);
 		$document = Factory::getDocument();
-        $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        $document->addScript(Uri::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         if(version_compare(JVERSION,'4.0.0-dev','ge')) 
         {
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons4.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         }
         elseif (version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/layout.css'.'" type="text/css" />' ."\n";    
         $document->addCustomTag($stylelink);
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/com_sportsmanagement/libraries/flag-icon/css/flag-icon.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         }
         else
         {    
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         }
         
-        
-//		$document->addStyleDeclaration(
-//				'.icon-48-' . $this->icon . ' {background-image: url('.JURI::root().'administrator/components/com_sportsmanagement/assets/images/' . $this->icon .
-//						 '.png);background-repeat: no-repeat;}');
-
 		if ( $this->layout == 'edit' 
         || $this->layout == 'edit_3' 
         || $this->layout == 'edit_4' )
