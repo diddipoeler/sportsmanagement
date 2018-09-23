@@ -90,7 +90,8 @@ static $_foldertype = '';
 			$('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
 		}
 
-		window.addEvent('domready', function()
+		//window.addEvent('domready', function()
+        $(document).ready(function()
 		{
 			$('a_" . $fieldname . "_name').addEvent('change', function()
 			{
