@@ -83,7 +83,6 @@ static $_foldertype = '';
 			jQuery('a_" . $fieldname . "').attr('value', '" . $default . "');
 			jQuery('a_" . $fieldname . "_name').attr('value', '" . $default . "').trigger('change');
             console.log('reset funcname: ' + " . $funcname . ");
-            console.log('reset fieldname: ' + " . $fieldname . ");
             console.log('reset default: ' + " . $default . ");
 		}
 
@@ -92,7 +91,6 @@ static $_foldertype = '';
 			jQuery('a_" . $fieldname . "').attr('value', '');
 			jQuery('a_" . $fieldname . "_name').attr('value', '').trigger('change');
             console.log('clear funcname: ' + " . $funcname . ");
-            console.log('clear fieldname: ' + " . $fieldname . ");
 		}
 
 		//window.addEvent('domready', function()
