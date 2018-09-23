@@ -27,21 +27,6 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('behavior.keepalive');
 
-//$params = $this->form->getFieldsets('params');
-//save and close 
-/*
-$close = JFactory::getApplication()->input->getInt('close',0);
-if($close == 1) {
-	?><script>
-	window.addEvent('domready', function() {
-		$('cancel').onclick();	
-	});
-	</script>
-	<?php 
-}
-*/
-
-
 JFactory::getDocument()->addScriptDeclaration('
 	Joomla.submitbutton = function(task)
 	{

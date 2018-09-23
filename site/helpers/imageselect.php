@@ -69,16 +69,16 @@ static $_foldertype = '';
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
-			$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-			$('a_' + field + '_name').fireEvent('change');
-      		if($(fieldid)) {
-        		$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			jQuery('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
+			jQuery('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			jQuery$('a_' + field + '_name').fireEvent('change');
+      		if(jQuery$(fieldid)) {
+        		jQuery(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
       		}
-			$('a_' + field + '_name').fireEvent('change');
-			//window.top.setTimeout('window.parent.SqueezeBox.close()', 100);
+			jQuery('a_' + field + '_name').fireEvent('change');
 		}
-		function reset_" . $funcname . "()
+		
+        function reset_" . $funcname . "()
 		{
 			$('a_" . $fieldname . "').setProperty('value', '" . $default . "');
 			$('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
@@ -94,12 +94,12 @@ static $_foldertype = '';
 		{
 			$('a_" . $fieldname . "_name').addEvent('change', function()
 			{
-				if ($('a_" . $fieldname . "_name').value!='') {
-					$('" . $fieldpreview_name . "').src='" . $baseFolder . "' + $('a_" . $fieldname . "_name').value;
+				if ($('a_" . $fieldname . "_name').value != '') {
+					$('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + $('a_" . $fieldname . "_name').value;
 				}
 				else
 				{
-					$('" . $fieldpreview_name . "').src='../images/blank.png';
+					$('" . $fieldpreview_name . "').src = '../images/blank.png';
 				}
 				if($('" . $fieldid . "')) {
 					$('" . $fieldid . "').value = $('a_" . $fieldname . "_name').value;
@@ -109,9 +109,9 @@ static $_foldertype = '';
 		});
 		";
 
-		$link =		'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
+		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-		$link2 =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
+		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
 		$document->addScriptDeclaration( $js );
 
