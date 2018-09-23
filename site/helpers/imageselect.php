@@ -93,7 +93,7 @@ static $_foldertype = '';
 		//window.addEvent('domready', function()
         jQuery(document).ready(function()
 		{
-			jQuery('a_" . $fieldname . "_name').addEvent('change', function()
+			jQuery('a_" . $fieldname . "_name').live('change', function()
 			{
 				if (jQuery('a_" . $fieldname . "_name').value != '') {
 					jQuery('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + jQuery('a_" . $fieldname . "_name').value;
