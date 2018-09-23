@@ -80,32 +80,33 @@ static $_foldertype = '';
 		
         function reset_" . $funcname . "()
 		{
-			$('a_" . $fieldname . "').setProperty('value', '" . $default . "');
-			$('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
+			jQuery('a_" . $fieldname . "').setProperty('value', '" . $default . "');
+			jQuery('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
 		}
 
 		function clear_" . $funcname . "()
 		{
-			$('a_" . $fieldname . "').setProperty('value', '');
-			$('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
+			jQuery('a_" . $fieldname . "').setProperty('value', '');
+			jQuery('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
 		}
 
-		window.addEvent('domready', function()
+		//window.addEvent('domready', function()
+        jQuery(document).ready(function()
 		{
-			$('a_" . $fieldname . "_name').addEvent('change', function()
+			jQuery('a_" . $fieldname . "_name').addEvent('change', function()
 			{
-				if ($('a_" . $fieldname . "_name').value != '') {
-					$('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + $('a_" . $fieldname . "_name').value;
+				if (jQuery('a_" . $fieldname . "_name').value != '') {
+					jQuery('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + jQuery('a_" . $fieldname . "_name').value;
 				}
 				else
 				{
-					$('" . $fieldpreview_name . "').src = '../images/blank.png';
+					jQuery('" . $fieldpreview_name . "').src = '../images/blank.png';
 				}
-				if($('" . $fieldid . "')) {
-					$('" . $fieldid . "').value = $('a_" . $fieldname . "_name').value;
+				if(jQuery('" . $fieldid . "')) {
+					jQuery('" . $fieldid . "').value = jQuery('a_" . $fieldname . "_name').value;
 				}
 			});
-			$('a_" . $fieldname . "_name').fireEvent('change');
+			jQuery('a_" . $fieldname . "_name').fireEvent('change');
 		});
 		";
 
