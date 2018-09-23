@@ -71,23 +71,23 @@ static $_foldertype = '';
 		{
 			jQuery('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 			jQuery('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-			jQuery$('a_' + field + '_name').fireEvent('change');
+			jQuery$('a_' + field + '_name').trigger('change');
       		if(jQuery$(fieldid)) {
         		jQuery(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
       		}
-			jQuery('a_' + field + '_name').fireEvent('change');
+			jQuery('a_' + field + '_name').trigger('change');
 		}
 		
         function reset_" . $funcname . "()
 		{
 			jQuery('a_" . $fieldname . "').setProperty('value', '" . $default . "');
-			jQuery('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').fireEvent('change');
+			jQuery('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').trigger('change');
 		}
 
 		function clear_" . $funcname . "()
 		{
 			jQuery('a_" . $fieldname . "').setProperty('value', '');
-			jQuery('a_" . $fieldname . "_name').setProperty('value', '').fireEvent('change');
+			jQuery('a_" . $fieldname . "_name').setProperty('value', '').trigger('change');
 		}
 
 		//window.addEvent('domready', function()
@@ -106,7 +106,7 @@ static $_foldertype = '';
 					jQuery('" . $fieldid . "').value = jQuery('a_" . $fieldname . "_name').value;
 				}
 			});
-			jQuery('a_" . $fieldname . "_name').fireEvent('change');
+			jQuery('a_" . $fieldname . "_name').trigger('change');
 		});
 		";
 
