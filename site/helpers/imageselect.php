@@ -91,7 +91,7 @@ static $_foldertype = '';
 		}
 
 		//window.addEvent('domready', function()
-        $(document).ready(function()
+        jQuery(document).ready(function()
 		{
 			$('a_" . $fieldname . "_name').addEvent('change', function()
 			{
