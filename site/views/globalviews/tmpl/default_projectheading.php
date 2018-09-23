@@ -75,7 +75,7 @@ $this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlacehold
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',
 $this->project->sport_type_picture,
-$this->project->sport_type_name,
+Text::_($this->project->sport_type_name),
 $this->overallconfig['picture_width'],
 '',
 $this->modalwidth,
@@ -191,7 +191,7 @@ else
 	if ( $this->overallconfig['show_print_button'] )
 	{
 ?>
-		<div class="row">
+		<div class="<?php echo $this->divclassrow;?>">
 			<table class="table">
 	<!--				<tbody> -->
 					<tr class="contentheading">
