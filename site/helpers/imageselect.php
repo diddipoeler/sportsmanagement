@@ -69,25 +69,25 @@ static $_foldertype = '';
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
-			jQuery('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			jQuery('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			jQuery('a_' + field).val() = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
+			jQuery('a_' + field + '_name').val() ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
 			jQuery$('a_' + field + '_name').trigger('change');
       		if(jQuery$(fieldid)) {
-        		jQuery(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+        		jQuery(fieldid).val() = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
       		}
 			jQuery('a_' + field + '_name').trigger('change');
 		}
 		
         function reset_" . $funcname . "()
 		{
-			jQuery('a_" . $fieldname . "').setProperty('value', '" . $default . "');
-			jQuery('a_" . $fieldname . "_name').setProperty('value', '" . $default . "').trigger('change');
+			jQuery('a_" . $fieldname . "').attr('value', '" . $default . "');
+			jQuery('a_" . $fieldname . "_name').attr('value', '" . $default . "').trigger('change');
 		}
 
 		function clear_" . $funcname . "()
 		{
-			jQuery('a_" . $fieldname . "').setProperty('value', '');
-			jQuery('a_" . $fieldname . "_name').setProperty('value', '').trigger('change');
+			jQuery('a_" . $fieldname . "').attr('value', '');
+			jQuery('a_" . $fieldname . "_name').attr('value', '').trigger('change');
 		}
 
 		//window.addEvent('domready', function()
@@ -95,15 +95,15 @@ static $_foldertype = '';
 		{
 			jQuery('a_" . $fieldname . "_name').live('change', function()
 			{
-				if (jQuery('a_" . $fieldname . "_name').value != '') {
-					jQuery('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + jQuery('a_" . $fieldname . "_name').value;
+				if (jQuery('a_" . $fieldname . "_name').val() != '') {
+					jQuery('" . $fieldpreview_name . "').src = '" . $baseFolder . "' + jQuery('a_" . $fieldname . "_name').val();
 				}
 				else
 				{
 					jQuery('" . $fieldpreview_name . "').src = '../images/blank.png';
 				}
 				if(jQuery('" . $fieldid . "')) {
-					jQuery('" . $fieldid . "').value = jQuery('a_" . $fieldname . "_name').value;
+					jQuery('" . $fieldid . "').val() = jQuery('a_" . $fieldname . "_name').val();
 				}
 			});
 			jQuery('a_" . $fieldname . "_name').trigger('change');
