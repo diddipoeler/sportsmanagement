@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewSeasons
@@ -35,9 +36,8 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	{
 		
         $season_id = $this->jinput->getVar('id');
-        $starttime = microtime(); 
 
-		$this->table = JTable::getInstance('season', 'sportsmanagementTable');
+		$this->table = Table::getInstance('season', 'sportsmanagementTable');
         
         //build the html options for nation
 		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -86,10 +86,7 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{ 
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-               
+              
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');

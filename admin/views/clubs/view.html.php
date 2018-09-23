@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.file');
 
@@ -34,33 +37,14 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	
-        $my_text = '';
-        
-              
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text .= ' <br><pre>'.print_r($this->state,true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        }
-        
-        $starttime = microtime(); 
+    
         $inputappend = '';
-
-
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
-	
-        
-		$this->table = JTable::getInstance('club', 'sportsmanagementTable');
+		$this->table = Table::getInstance('club', 'sportsmanagementTable');
         
         //build the html select list for seasons
-		$seasons[]	= HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
-        $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
+		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+        $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons, $allSeasons);
         $this->season = $allSeasons;
@@ -75,7 +59,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		unset($seasons);
        
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);
@@ -102,18 +86,15 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
         JToolbarHelper::apply('clubs.saveshort');
         
         JToolbarHelper::divider();
 		JToolbarHelper::addNew('club.add');
 		JToolbarHelper::editList('club.edit');
-		JToolbarHelper::custom('club.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('club.export',Text::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
 		
 	}

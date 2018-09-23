@@ -13,6 +13,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewPredictionTemplates
@@ -33,7 +35,6 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$starttime = microtime(); 
         
 		$this->prediction_id = $this->state->get('filter.prediction_id');
 		if ( isset($this->prediction_id) )
@@ -46,8 +47,8 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		$lists = array();
 
-		$mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
-		$mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
+		$mdlPredictionGame = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+		$mdlPredictionGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
  
 		if ( isset($this->prediction_id) )
 		{
@@ -58,14 +59,8 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		{
 			$this->prediction_id = $this->jinput->post->get('filter_prediction_id', 0);
 		}
-       
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-		{
-			$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-		}
-       
-        $table = JTable::getInstance('predictiontemplate', 'sportsmanagementTable');
-		$this->table	= $table;
+      
+        $this->table = Table::getInstance('predictiontemplate', 'sportsmanagementTable');
         
 		//build the html select list for prediction games
 		$predictions = array();

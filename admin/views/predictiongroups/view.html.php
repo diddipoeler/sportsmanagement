@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewpredictiongroups
@@ -33,8 +34,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	public function init ()
 	{
        
-		$table = JTable::getInstance('predictiongroup', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table = Table::getInstance('predictiongroup', 'sportsmanagementTable');
         
         if ( !$this->items )
         {

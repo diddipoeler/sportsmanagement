@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewPredictionGames
@@ -34,11 +33,6 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$starttime = microtime();
-		$modalheight = ComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
-		$modalwidth = ComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
-		$this->modalheight	= $modalheight;
-		$this->modalwidth	= $modalwidth;
 
 		$lists = array();
 

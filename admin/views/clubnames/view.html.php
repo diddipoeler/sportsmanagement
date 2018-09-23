@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewClubnames
@@ -33,15 +35,9 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	public function init ()
 	{
         $lists = array();
-        $starttime = microtime(); 
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
@@ -49,8 +45,8 @@ class sportsmanagementViewClubnames extends sportsmanagementView
         }
 		
         $lists['nation'] = $nation;
-        $this->table = JTable::getInstance('clubname', 'sportsmanagementTable');
-		$this->lists	= $lists;
+        $this->table = Table::getInstance('clubname', 'sportsmanagementTable');
+		$this->lists = $lists;
 		
 	}
 	
@@ -62,12 +58,12 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE' );
+		$this->title =  Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE' );
         
         JToolbarHelper::publish('clubnames.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolbarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         JToolbarHelper::checkin('clubnames.checkin');
-        JToolbarHelper::custom('clubnames.import', 'upload', 'upload', JText::_('JTOOLBAR_INSTALL'), false);
+        JToolbarHelper::custom('clubnames.import', 'upload', 'upload', Text::_('JTOOLBAR_INSTALL'), false);
 		JToolbarHelper::divider();
 		JToolbarHelper::addNew('clubname.add');
 		JToolbarHelper::editList('clubname.edit');

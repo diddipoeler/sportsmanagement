@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewjlextassociations
@@ -32,20 +35,12 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 	 */
 	public function init ()
 	{
-   
-$starttime = microtime(); 
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-		
         
-        $this->table = JTable::getInstance('jlextassociation', 'sportsmanagementTable');
+        $this->table = Table::getInstance('jlextassociation', 'sportsmanagementTable');
 
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);
@@ -60,7 +55,7 @@ $starttime = microtime();
 						'text',
 						$this->state->get('filter.search_nation'));
 
-$mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
         
         if ( $res = $mdlassociation->getAssociations() )
         {
@@ -81,12 +76,12 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	protected function addToolbar()
 	{
 	// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
 		JToolbarHelper::addNew('jlextassociation.add');
 		JToolbarHelper::editList('jlextassociation.edit');
-		JToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('jlextassociation.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

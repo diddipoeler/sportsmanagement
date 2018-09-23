@@ -11,6 +11,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewDivisions
@@ -34,11 +37,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 
         $lists = array();
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
-        $starttime = microtime(); 
-
-        $this->table = JTable::getInstance('division', 'sportsmanagementTable');
+        $this->table = Table::getInstance('division', 'sportsmanagementTable');
         $this->projectws = $project;
 		$this->lists = $lists;
 
@@ -52,7 +53,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
+		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
         
         JToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);

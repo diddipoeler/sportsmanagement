@@ -12,6 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewLeagues
@@ -35,17 +38,11 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	
         $inputappend = '';
         $startmemory = memory_get_usage();
-        $starttime = microtime(); 
         
-        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-
-		$this->table = JTable::getInstance('league', 'sportsmanagementTable');
+		$this->table = Table::getInstance('league', 'sportsmanagementTable');
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
@@ -61,8 +58,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 					$this->state->get('filter.search_nation'));
 
 		unset($nation);
-        $nation[] = HTMLHelper::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
-        $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+        $nation[] = HTMLHelper::_('select.option', '0' ,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+        $mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
         if ( $res = $mdlassociation->getAssociations($this->state->get('filter.federation')) )
         {
             $nation = array_merge($nation, $res);
@@ -78,7 +75,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
             }
             else
             {
-            $lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+            $lists['association'][$row->country][] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
             $lists['association'][$row->country][] = $row;    
             }
         }
@@ -92,8 +89,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         unset($myoptions);
         
-        $myoptions[] = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
             $myoptions = array_merge($myoptions, $res);
@@ -108,7 +105,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 					$this->state->get('filter.search_agegroup'));
         unset($myoptions);
 
-$mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+$mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
         
         if ( $res = $mdlassociation->getAssociations() )
         {
@@ -117,13 +114,6 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
         }
 		
 		$this->lists = $lists;
-		        
-        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
-        }
-        
-        
 		
 	}
 	
@@ -135,12 +125,12 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
         JToolbarHelper::apply('leagues.saveshort');
 		JToolbarHelper::addNew('league.add');
 		JToolbarHelper::editList('league.edit');
-		JToolbarHelper::custom('league.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('league.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('league.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('league.export', Text::_('JTOOLBAR_EXPORT'));
                 
         parent::addToolbar();
 	}

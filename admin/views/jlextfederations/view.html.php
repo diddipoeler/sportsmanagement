@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewjlextfederations
@@ -32,18 +34,11 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');	
-$starttime = microtime(); 
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
         
-		$this->table = JTable::getInstance('jlextfederation', 'sportsmanagementTable');
+		$this->table = Table::getInstance('jlextfederation', 'sportsmanagementTable');
         
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
@@ -73,13 +68,13 @@ $starttime = microtime();
 	protected function addToolbar()
 	{
 	// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_TITLE');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_TITLE');
         $this->icon = 'federations';
 
 		JToolbarHelper::addNew('jlextfederation.add');
 		JToolbarHelper::editList('jlextfederation.edit');
-		JToolbarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::custom('jlextfederation.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('jlextfederation.export',Text::_('JTOOLBAR_EXPORT'));
         
         parent::addToolbar();
 	}

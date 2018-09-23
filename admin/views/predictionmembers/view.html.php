@@ -12,7 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewPredictionMembers
@@ -111,11 +113,10 @@ $this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id
      */
 	function _display( $tpl = null )
 	{
-		$table = JTable::getInstance('predictionmember', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table = Table::getInstance('predictionmember', 'sportsmanagementTable');
 
         //build the html select list for prediction games
-        $mdlPredGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
+        $mdlPredGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
 		$predictions[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
 			{ 
