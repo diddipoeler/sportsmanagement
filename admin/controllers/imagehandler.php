@@ -12,12 +12,12 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Filter\InputFilter;
-jimport('joomla.application.component.controller');
+//jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 //require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'imageselect.php');
 
-class sportsmanagementControllerImagehandler extends JControllerLegacy
+class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 {
 	/**
 	 * Constructor
