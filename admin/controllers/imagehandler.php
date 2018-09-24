@@ -11,7 +11,7 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\CMS\Filter\InputFilter;
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 //require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
@@ -160,7 +160,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		{
 			foreach ( $images as $image )
 			{
-				if ( $image !== JFilterInput::clean( $image, 'path' ) )
+				if ( $image !== InputFilter::clean( $image, 'path' ) )
 				{
 					JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE' ) . ' ' . htmlspecialchars( $image, ENT_COMPAT, 'UTF-8' ) );
 					continue;
