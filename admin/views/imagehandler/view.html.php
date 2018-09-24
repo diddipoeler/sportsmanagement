@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewImagehandler
@@ -40,12 +41,16 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         //$uri = JFactory::getURI();
         $tpl = '';
 
+switch ( $this->getLayout() )
+{
+case 'upload':
+case 'upload_3':
+case 'upload_4':
+$this->_displayupload($tpl);
+return;		
+break;
+}
 
-		if( $this->getLayout() == 'upload' || $this->getLayout() == 'upload_3' ) 
-        {
-			$this->_displayupload($tpl);
-			return;
-		}
 
 		//get vars
 		$type     	= JFactory::getApplication()->input->getVar( 'type' );
@@ -79,9 +84,10 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 			//parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
-			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES','error');			
+			//JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
 			$this->setLayout('upload');
-			$this->form	= $this->get('form');
+			$this->form = $this->get('form');
 			$this->_displayupload($tpl);
 			return;
 		}
