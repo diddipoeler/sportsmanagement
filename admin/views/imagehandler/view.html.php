@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
+use Joomla\CMS\Application\WebApplication;
 
 /**
  * sportsmanagementViewImagehandler
@@ -57,7 +58,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$jinput->set( 'folder', $folder );
 
 		// Do not allow cache
-		JResponse::allowCache(false);
+		WebApplication::allowCache(false);
 
 		//get images
 		$images 	= $this->get('Images');
