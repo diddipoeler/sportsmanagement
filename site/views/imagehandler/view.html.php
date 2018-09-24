@@ -45,7 +45,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $field = Factory::getApplication()->input->getVar('field');
         $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $search = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
-        $search = trim(JString::strtolower($search));
+        $search = trim(\JString::strtolower($search));
 
         //add css
         //$version = urlencode(sportsmanagementHelper::getVersion());
