@@ -15,7 +15,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-<div class="container">
+<div class="container-fluid">
 <form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm" name="adminForm">
 
 <table class="table">
