@@ -11,9 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
-
+use Joomla\String\StringHelper;
 
 /**
  * sportsmanagementViewImagehandler
@@ -54,7 +52,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$field 		= JFactory::getApplication()->input->getVar( 'field' );
 		$fieldid 	= JFactory::getApplication()->input->getVar( 'fieldid' );
 		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
-		$search 	= trim(JString::strtolower( $search ) );
+		$search 	= trim(StringHelper::strtolower( $search ) );
         
 		$jinput->set( 'folder', $folder );
 
