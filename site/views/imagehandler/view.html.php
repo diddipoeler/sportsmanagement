@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\String\StringHelper;
 
 jimport('joomla.application.component.view');
 
@@ -45,7 +46,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         $field = Factory::getApplication()->input->getVar('field');
         $fieldid = Factory::getApplication()->input->getVar('fieldid');
         $search = $app->getUserStateFromRequest('com_sportsmanagement.imageselect', 'search', '', 'string');
-        $search = trim(\JString::strtolower($search));
+        $search = trim(StringHelper::strtolower($search));
 
         //add css
         //$version = urlencode(sportsmanagementHelper::getVersion());
