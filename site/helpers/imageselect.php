@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * ImageSelectSM
@@ -59,6 +60,8 @@ static $_foldertype = '';
     $app = Factory::getApplication();
     self::$_foldertype = $type;
     
+$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
     
 		HTMLHelper::_( 'behavior.modal' );
 
@@ -162,12 +165,23 @@ static $_foldertype = '';
 
 		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
+		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
+$imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',JURI::base().$link,$modalwidth,$modalheight);   		
+		$imageselect .=	 "</div></div>\n";
+		/*
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
 		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
 		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "</a></div></div>\n";
+		*/
+		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\">";
+$imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcname ,Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),Text::_('JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE'),'20',JURI::base().$link2,$modalwidth,$modalheight);   		
+		$imageselect .=	 "</div></div>\n";
+		/*
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"$link2\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
+		*/
+		
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
