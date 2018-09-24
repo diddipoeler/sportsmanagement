@@ -84,7 +84,7 @@ break;
 			//parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
-$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES','error');			
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'),'error');			
 			//JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
 			$this->setLayout('upload');
 			$this->form = $this->get('form');
