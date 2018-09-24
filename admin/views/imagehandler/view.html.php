@@ -58,7 +58,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$jinput->set( 'folder', $folder );
 
 		// Do not allow cache
-		WebApplication::allowCache(false);
+		//WebApplication::allowCache(false);
 
 		//get images
 		$images 	= $this->get('Images');
