@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      upload.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage imagehandler
@@ -15,10 +15,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-
+<div class="container">
 <form method="post" action="<?php echo $this->request_url; ?>" enctype="multipart/form-data" id="adminForm" name="adminForm">
 
-<table class="noshow">
+<table class="table">
   	<tr>
 		<td width="50%" valign="top">
 		
@@ -129,7 +129,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 <?php if ( isset($gd_info) ) { ?>
 
-<table class="noshow">
+<table class="table">
 	<tr>
 		<td>
 
@@ -157,3 +157,4 @@ use Joomla\CMS\HTML\HTMLHelper;
 <input type="hidden" name="folder" value="<?php echo $this->folder;?>" />
 <?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
+</div>
