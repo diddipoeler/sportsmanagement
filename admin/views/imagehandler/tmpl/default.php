@@ -25,7 +25,7 @@ HTMLHelper::_( 'behavior.mootools' );
 }
 
 ?>
-<div class="container">
+<div class="container-fluid">
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="imghead">
 
