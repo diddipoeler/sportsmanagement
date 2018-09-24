@@ -269,15 +269,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel', $config);
 
         $data2 = $jinput->post->getArray(array());
-        //var_dump($data2);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data2 <br><pre>'.print_r($data2,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
-        //// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_3_3');
         $this->icon = 'xmlimport';

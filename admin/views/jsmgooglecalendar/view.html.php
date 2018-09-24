@@ -60,15 +60,7 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	public function init ()
     {
-//		JToolbarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
-//
-//		$canDo = jsmGCalendarUtil::getActions();
-//		if ($canDo->get('core.admin')) {
-//			JToolbarHelper::preferences('com_gcalendar', 550);
-//			JToolbarHelper::divider();
-//		}
-//$this->addToolbar();
-//		parent::display($tpl);   
+
 	}
     
     
@@ -79,20 +71,6 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//        // Get a refrence of the page instance in joomla  
-//		$document	= JFactory::getDocument();  
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);  
-//        
-//        // Set toolbar items for the page
-//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_GCALENDAR_TITLE' ),'gcalendar' );
-//        
-//
-//		JToolbarHelper::divider();
-//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences($option);
 
 parent::addToolbar();  	
 

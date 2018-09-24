@@ -77,7 +77,6 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
-        //JToolbarHelper::archiveList('jlxmlexports.export',JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::custom('jlxmlexports.export', 'upload', 'upload', JText::_('JTOOLBAR_EXPORT'), false);
         parent::addToolbar();
         

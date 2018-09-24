@@ -143,18 +143,6 @@ $document->addScriptDeclaration( $javascript );
             $this->step = $this->step + $count;
             $app->setUserState( "$option.step", $this->step);    
         
-        
-        
-//        
-//        $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
-//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
-//        
-//        $this->assign('request_url',$uri->toString());
-//        $this->assign('items',$checktables);
-        
-        
-        
-        
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
         JToolbarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');

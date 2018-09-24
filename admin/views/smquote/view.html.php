@@ -64,27 +64,8 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	
-        $starttime = microtime(); 
-       
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
-
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		
+	        		
 		$this->item->name = $this->item->author;
-        
-		 
 
 	}
  

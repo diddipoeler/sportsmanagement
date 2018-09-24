@@ -66,11 +66,9 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 		$option = $jinput->getCmd('option');
         $this->files = $this->model->getXMLFiles();
        
-       //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditors files<br><pre>'.print_r($this->files,true).'</pre>'   ),'');
        
         $this->option = $option;
-        //$this->addToolbar();
-//		parent::display($tpl);
+
 	}
     
     /**
@@ -80,19 +78,10 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	//	// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
         // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS');
         $this->icon = 'xml-edits';
-        
-//        //JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
-        
+       
         parent::addToolbar();
         
     }    

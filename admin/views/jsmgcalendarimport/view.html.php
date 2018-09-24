@@ -56,9 +56,6 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         {
 			$this->onlineItems = $this->get('OnlineData');
 			$this->dbItems = $this->get('DBData');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dbItems<br><pre>'.print_r($this->dbItems,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
         }
         
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
@@ -66,11 +63,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         $this->setLayout('login');
         
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
-        
-        //$this->addToolbar();
-//        
-//        parent::display($tpl);
+
    }     
 
 //	protected $onlineItems = null;

@@ -70,11 +70,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
         // Initialise variables.
 		$this->form		= $this->get('Form');
         $this->source	= $this->get('Source');
-        
-       //$this->assign('contents',$model->getContents());
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
-       
+      
         $this->option = $option;
         
 	}

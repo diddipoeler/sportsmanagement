@@ -197,7 +197,6 @@ echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$
                             
                             <td class="center">
                         <?php 
-                        //echo JText::_($row->agegroup); 
                         $inputappend = $this->readonly;
                         $append = ' style="background-color:#bbffff"';
 			echo HTMLHelper::_('select.genericlist',

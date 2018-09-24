@@ -21,30 +21,6 @@ $alt = 'Lmo Logo';
 $attribs['align'] = 'left';
 $logo = HTMLHelper::_('image', $url, $alt, $attribs);
 
-//// Set toolbar items for the page
-//JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ) ) );
-//JToolbarHelper::apply();
-
-/*
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-*/
-
-//$savedfb =& $this->import; 
-
-/*
-echo '<pre>';
-print_r($this->import);
-echo '</pre>';
-*/
-
-/*
-echo '<pre>';
-print_r($this->lists['dfbday']);
-echo '</pre>';
-*/
-
 ?>
 
 

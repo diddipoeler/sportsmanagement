@@ -132,7 +132,6 @@ HTMLHelper::_('behavior.modal');
                 <td class="center"><?php echo JText::_($row->sportstype); ?></td>
                 <td class="center">
                     <?php
-                    //echo JText::_($row->agegroup); 
                     $inputappend = '';
                     $append = ' style="background-color:#bbffff"';
                     echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -141,7 +140,6 @@ HTMLHelper::_('behavior.modal');
                 </td>
                 <td class="center">
                     <?php
-                    //echo JText::_($row->fedname); 
 
                     $imageTitle = '';
                     $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';

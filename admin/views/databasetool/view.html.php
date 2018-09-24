@@ -66,9 +66,7 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
             case 'optimize':
             case 'repair':
             $jsm_tables = $model->getSportsManagementTables();
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');
-            
+           
             $this->assign('totals',count(sportsmanagementModeldatabasetool::$jsmtables) );
             if ( $this->step < count(sportsmanagementModeldatabasetool::$jsmtables) )
             {

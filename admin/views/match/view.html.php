@@ -651,21 +651,14 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
 
 		$substitutions = $model->getSubstitutions($tid, $this->item->id);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' substitutions'.'<pre>'.print_r($substitutions,true).'</pre>' ),'');
-
 		/**
 		 * staff positions
 		 */
 		$staffpositions = $model->getProjectPositionsOptions(0, 2, $this->project_id);	// get staff not already assigned to starter
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup staff projectpositions'.'<pre>'.print_r($staffpositions,true).'</pre>' ),'');
-
 		// assigned staff
         $assigned = $model->getMatchPersons($tid, 0, $this->item->id, 'staff');
 		$assigned_id = array_keys($assigned);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup assigned staff'.'<pre>'.print_r($assigned,true).'</pre>' ),'');
-        
         
 		// not assigned staff
         $not_assigned = $model->getTeamPersons($tid, $assigned_id, 2);
@@ -871,9 +864,6 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->config	= $config;
         
-//$app->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
-//    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
-//    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
 $model = $this->getModel();
 $csv_file = $model->getPressebericht(); 
 $this->csv	= $csv_file; 

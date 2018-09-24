@@ -48,9 +48,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$this->item->name = '';
 		
 		$this->app->setUserState( "$this->option.pid", $this->item->project_id );
-        
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-		 
+	 
 		// Set the document
 		$this->setDocument();
         

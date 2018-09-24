@@ -176,7 +176,6 @@ $this->readonly = '';
 
                     <td class="center">
                         <?php
-                        //echo JText::_($row->agegroup); 
                         $inputappend = $this->readonly;
                         $append = ' style="background-color:#bbffff"';
                         echo HTMLHelper::_('select.genericlist', $this->lists['agegroup'], 'agegroup' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -186,7 +185,6 @@ $this->readonly = '';
 
                     <td class="center">
                         <?php
-                        //echo JText::_($row->sportstype); 
                         $append = ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
                         echo HTMLHelper::_('select.genericlist', $this->lists['sportstype'], 'sportstype' . $row->id, $inputappend . 'class="form-control form-control-inline" style="max-width: 100px;" size="1"' . $append, 'id', 'name', $row->sports_type_id);
                         ?>

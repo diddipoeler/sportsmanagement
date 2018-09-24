@@ -55,33 +55,6 @@ $attribs['width'] = '170px';
 $attribs['height'] = '26px';
 $attribs['align'] = 'left';
 
-// Set toolbar items for the page
-//$doc = JFactory::getDocument();
-//$style = " .icon-48-fb {components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif); no-repeat; }";
-//$doc->addStyleDeclaration( $style );
-
-//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), 'generic.png' );
-
-//JToolbarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), $url16 );
-
-//JToolbarHelper::save();
-//JToolbarHelper::apply();
-
-
-/*
-echo 'default project <br>';
-echo '<pre>';
-print_r($url);
-echo '</pre>';
-*/
-
-/*
-echo 'default projectteams <br>';
-echo '<pre>';
-print_r($this->projectteams);
-echo '</pre>';
-*/
-
 ?>
 
 <div id="editcell">

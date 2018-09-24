@@ -41,34 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 
 
-/*
-$massadd=JFactory::getApplication()->input->getVar('massadd');
 
-// Set toolbar items for the page
-JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'));
-
-if (!$massadd)
-{
-	JToolbarHelper::publishList();
-	JToolbarHelper::unpublishList();
-	JToolbarHelper::divider();
-
-	JToolbarHelper::apply('saveshort');
-	JToolbarHelper::divider();
-
-	//JToolbarHelper::custom('massadd','new.png','new_f2.png',JText::_('JL_ADMIN_MATCHES_MASSADD_MATCHES'),false);
-	JToolbarHelper::addNewX('addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
-	JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'));
-	JToolbarHelper::divider();
-
-	JToolbarHelper::back('Back','index.php?option=com_joomleague&controller=match&view=matches');
-}
-else
-{
-	JToolbarHelper::custom('cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'),false);
-}
-JToolbarHelper::help('screen.joomleague',true);
-*/
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');

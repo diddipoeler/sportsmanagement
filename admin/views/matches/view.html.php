@@ -55,36 +55,14 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 			$table_info = array_shift($fieldsArray);
 		}
         
-        //$table_info = $_db->getTableFields('#__sportsmanagement_match');
      
      $this->projectteamsel = JFactory::getApplication()->input->getvar('projectteam', 0);
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
-
-        $starttime = microtime();
-        
-        // Must fix this code up one day.
-        //Notice: Undefined index: code 
-        //$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' code <br><pre>' . print_r($_GET['code'], true) . '</pre><br>', 'Notice');
-
-        //$this->state = $this->get('State'); 
-        //$this->sortDirection = $this->state->get('list.direction');
-        //$this->sortColumn = $this->state->get('list.ordering');
-        //$items = $this->get('Items');
-
-//        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-//            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-//        }
-
-        //$total = $this->get('Total');
-        //$pagination = $this->get('Pagination');
 
         $table = JTable::getInstance('match', 'sportsmanagementTable');
         $this->table = $table;
 
         $this->project_id = $app->getUserState("$option.pid", '0');
         $this->project_art_id = $app->getUserState("$option.project_art_id", '0');
-        //$this->project_id	= $app->getUserState( "$option.pid", '0' );
 
         $this->project_id = $jinput->get('pid', 0);
         if (!$this->project_id) {
@@ -97,14 +75,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         }
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
         $projectws = $mdlProject->getProject($this->project_id);
-
-//        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-//            $my_text = 'projectws <pre>' . print_r($projectws, true) . '</pre>';
-//            //$my_text .= 'inoutstats <pre>'.print_r($inoutstats,true).'</pre>';   
-//            //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
-//            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-//            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
-//        }
 
         $mdlRound = JModelLegacy::getInstance('Round', 'sportsmanagementModel');
         $roundws = $mdlRound->getRound($this->rid);
@@ -135,7 +105,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         unset($project_change_roundslist);
 
         //build the html options for teams
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' items<br><pre>'.print_r($items,true).'</pre>'),'');
         foreach ($this->items as $row) {
             if ($row->divhomeid == '') {
                 $row->divhomeid = 0;
@@ -171,11 +140,8 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             //$dest = JPATH_ROOT.'/media/com_sportsmanagement/database/matchreport/'.$row->id;
             $dest = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $row->id;
             if (JFolder::exists($dest)) {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
             } else {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad nicht vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
                 $result = JFolder::create($dest);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'');
             }
         }
 
@@ -234,9 +200,12 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         //$this->pagination	= $pagination;
         //$this->request_url = $uri->toString();
         $this->prefill = $params->get('use_prefilled_match_roster',0);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
 
-        if ($this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3') {
+switch ( $this->getLayout() )
+         {
+            case 'massadd':
+            case 'massadd_3':
+            case 'massadd_4':
             //build the html options for massadd create type
             $createTypes = array(0 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
                 1 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
@@ -261,6 +230,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             $lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);
             $this->lists = $lists;
             $this->setLayout('massadd');
+            break;
         }
     }
 
@@ -307,7 +277,6 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 
             JToolbarHelper::custom('match.massadd', 'new.png', 'new_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'), false);
             JToolbarHelper::addNew('match.addmatch', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
-//			JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
             JToolbarHelper::divider();
 
             JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=rounds');

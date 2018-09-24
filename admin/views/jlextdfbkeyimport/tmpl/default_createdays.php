@@ -14,24 +14,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 HTMLHelper::_( 'behavior.tooltip' );
 
-//// Set toolbar items for the page
-//JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ) ) );
-//JToolbarHelper::save();
-
-/*
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-*/
-
-//echo 'projekt ->'.$this->projectid.'<br>';
-
-/*
-echo '<pre>';
-print_r($this->newmatchdays);
-echo '</pre>';
-*/
-
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
