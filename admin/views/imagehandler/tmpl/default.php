@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -24,14 +25,14 @@ HTMLHelper::_( 'behavior.mootools' );
 }
 
 ?>
-<div class="row">
+<div class="container">
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="imghead">
 
-	<?php echo JText::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
+	<?php echo Text::_( 'JSEARCH_FILTER_LABEL' ).' '; ?>
 	<input type="text" name="search" id="search" value="<?php echo $this->search; ?>" class="text_area" onChange="document.getElementById('adminForm').submit();" />
-	<button onclick="this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
-	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>
+	<button onclick="this.form.submit();"><?php echo Text::_( 'JSEARCH_FILTER_SUBMIT' ); ?></button>
+	<button onclick="this.form.getElementById('search').value='';this.form.submit();"><?php echo Text::_( 'JSEARCH_FILTER_CLEAR' ); ?></button>
 
 </div>
 
@@ -49,11 +50,11 @@ HTMLHelper::_( 'behavior.mootools' );
 
 <div class="pnav"><?php echo $this->pageNav->getListFooter(); ?></div>
 
-	<input type="hidden" name="option" value="com_sportsmanagement" />
-	<input type="hidden" name="view" value="imagehandler" />
-	<input type="hidden" name="tmpl" value="component" />
-	<input type="hidden" name="task" value="imagehandler.select" />
-	<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
-	<?php echo HTMLHelper::_( 'form.token' ); ?>
+<input type="hidden" name="option" value="com_sportsmanagement" />
+<input type="hidden" name="view" value="imagehandler" />
+<input type="hidden" name="tmpl" value="component" />
+<input type="hidden" name="task" value="imagehandler.select" />
+<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
+<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 </div>
