@@ -38,7 +38,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$app	= JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$jinput = $app->input;
-        $uri = JFactory::getURI();
+        //$uri = JFactory::getURI();
         $tpl = '';
 
 
@@ -65,7 +65,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$images 	= $this->get('Images');
 		$pageNav 	= $this->get('Pagination');
         
-        $this->request_url	= $uri->toString();
+       // $this->request_url	= $uri->toString();
 
 		if (count($images) > 0 || $search) {
 			$this->images	= $images;
@@ -119,7 +119,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
 		//initialise variables
 		$document	= JFactory::getDocument();
-		$uri 		= JFactory::getURI();
+		//$uri 		= JFactory::getURI();
 		$params 	= JComponentHelper::getParams($option);
 		$type     	= $jinput->get( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
@@ -134,7 +134,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
 		//assign data to template
 		$this->params	= $params;
-		$this->request_url	= $uri->toString();
+		//$this->request_url	= $uri->toString();
 		$this->ftp	= $ftp;
 		$this->folder	= $folder;
 		$this->field	= $field;
