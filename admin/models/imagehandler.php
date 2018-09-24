@@ -10,7 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+use Joomla\String\StringHelper;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -49,7 +49,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
 		$search 	= $app->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-		$search 	= trim(JString::strtolower( $search ) );
+		$search 	= trim(StringHelper::strtolower( $search ) );
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
