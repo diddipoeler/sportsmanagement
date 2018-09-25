@@ -495,43 +495,43 @@ filter="safehtml"/>
 		
 		<field name="ph_player" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/placeholder_150_2.png"
+			default="images/com_sportsmanagement/database/persons/placeholder_150_2.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>
 
 <field name="ph_player_men_large" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/men_large.png"
+			default="images/com_sportsmanagement/database/persons/men_large.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_MEN_LARGE" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_MEN_LARGE"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 <field name="ph_player_men_small" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/men_small.png"
+			default="images/com_sportsmanagement/database/persons/men_small.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_MEN_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_MEN_SMALL"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 <field name="ph_player_woman_large" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/woman_large.png"
+			default="images/com_sportsmanagement/database/persons/woman_large.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_WOMAN_LARGE" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_WOMAN_LARGE"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>
 <field name="ph_player_woman_small" 
     type="media"
-			default="images/com_sportsmanagement/database/placeholders/woman_small.png"
+			default="images/com_sportsmanagement/database/persons/woman_small.png"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LABEL_PH_PLAYER_WOMAN_SMALL" 
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DESCR_PH_PLAYER_WOMAN_SMALL"
-			directory="images/com_sportsmanagement/database/placeholders/"
+			directory="images/com_sportsmanagement/database/persons/"
 			preview="show">			
 		</field>		
 		
