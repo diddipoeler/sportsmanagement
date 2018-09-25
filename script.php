@@ -690,6 +690,12 @@ echo self::getFxInitJSCode('steps');
             
             echo '<p>' . JText::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
             
+	switch ( $folder )
+	{
+		case 'persons':
+		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
+		break;
+	}
             //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
             
 		}
