@@ -1316,9 +1316,11 @@ catch (Exception $e) {
             break;
             
         }
+			/*
         $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+			*/
         /*
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
