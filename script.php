@@ -694,6 +694,9 @@ echo self::getFxInitJSCode('steps');
 	{
 		case 'persons':
 		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_small.png');
+		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/men_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/men_large.png');
+		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_small.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_small.png');
+		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/woman_large.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/woman_large.png');
 		break;
 	}
             //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
