@@ -551,7 +551,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			<field
 				name="picture"
 				type="media"
-				default="images/com_sportsmanagement/database/placeholders/men_small.png"					
+				default=""					
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_DESC"
 				class="inputbox"
