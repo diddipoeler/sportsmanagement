@@ -161,6 +161,14 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
 		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+		
+if (version_compare(JSM_JVERSION, '4', 'eq')) {
+$link2 = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/'.$type;
+} else {
+$link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/'.$type;
+}   		
+		
+		
 		$document->addScriptDeclaration( $js );
 
 		HTMLHelper::_( 'behavior.modal', 'a.modal' );
