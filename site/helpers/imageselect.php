@@ -135,6 +135,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 
 		console.log('ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
 		console.log('fieldname: ' + '" . $fieldname . "' );
+		console.log('fieldid: ' + '" . $fieldid . "' );
 		console.log('preview name: ' + '" . $fieldpreview_name . "' );
 		
 //			jQuery('#a_" . $fieldname . "_name').change( function()
@@ -155,9 +156,9 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 		});
 		";
 
-		$link =		'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
+		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-		$link2 =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
+		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
 		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
 		$document->addScriptDeclaration( $js );
 
