@@ -1317,7 +1317,7 @@ catch (Exception $e) {
             
         }
 			
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 			
