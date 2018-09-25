@@ -136,6 +136,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 		console.log('ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
 		console.log('fieldname: ' + '" . $fieldname . "' );
 		console.log('fieldid: ' + '" . $fieldid . "' );
+		console.log('type: ' + '" . $type . "' );
 		console.log('preview name: ' + '" . $fieldpreview_name . "' );
 		
 //			jQuery('#a_" . $fieldname . "_name').change( function()
