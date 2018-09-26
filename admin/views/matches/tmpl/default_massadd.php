@@ -35,7 +35,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 					<tbody>
 						<tr>
 							<td valign='top' width='50%'>
-								<table class="admintable">
+								<table class="table">
 									<tr>
 										<td class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TYPE'); ?></td>
 										<td><?php echo $this->lists['createTypes']; ?></td>
@@ -87,8 +87,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 									</tr>
 								</table>
 							</td>
-							<td valign='top'>
-								<table class="admintable">
+							<td valign='top' width='50%'>
+								<table class="table">
 									<tr>
 										<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_COPY2'); ?></td>
 										<td><?php echo $this->lists['project_rounds2']; ?></td>
