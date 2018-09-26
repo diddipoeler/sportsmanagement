@@ -137,8 +137,10 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print
 		
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
-$result = $this->jsmdb->loadObjectList();    
+$this->jsmdb->execute();
 $number = $this->jsmdb->getNumRows();
+$result = $this->jsmdb->loadObjectList();    
+
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
 $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
 			
