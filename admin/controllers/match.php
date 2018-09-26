@@ -40,6 +40,8 @@ class sportsmanagementControllermatch extends FormController
 
 		// Map the apply task to the save method.
 		$this->registerTask('apply', 'save');
+		$this->jsmuser = Factory::getUser(); 
+        $this->jsmdate = Factory::getDate();
 	}
     
     /**
@@ -73,7 +75,7 @@ class sportsmanagementControllermatch extends FormController
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
 		// Add matches (type=1)
-		if ( $post['addtype']==1 )
+		if ( $post['addtype'] == 1 )
 		{
 			if ($add_match_count > 0) // Only MassAdd a number of new and empty matches
 			{
@@ -140,7 +142,7 @@ class sportsmanagementControllermatch extends FormController
 			}
 		}
 		// Copy matches (type=2)
-		if ($post['addtype']==2)// Copy or mirror new matches from a selected existing round
+		if ( $post['addtype'] == 2 )// Copy or mirror new matches from a selected existing round
 		{
 			if ( $matches = $model->getRoundMatches($round_id))
 			{
@@ -150,6 +152,29 @@ class sportsmanagementControllermatch extends FormController
 				//$post['match_date'] = $this->convertUiDateTimeToMatchDate($uiDate, $uiTime, $timezone);
                 $post['match_date'] = sportsmanagementHelper::convertDate($post['date'],0).' '.$post['startTime'];
 
+if ( $post['create_new'] )
+{
+$round = new stdClass();
+$round->project_id = $post['project_id'];
+$round->roundcode = '';
+$round->name = $post['start_round_name'];
+$round->modified = $this->jsmdate->toSql();
+$round->modified_by = $this->jsmuser->get('id');	
+/**
+ * Insert the object into the table.
+ */
+try{
+$resultinsert = $db->insertObject('#__sportsmanagement_round', $round);
+$post['round_id'] = $db->insertid();
+}
+catch (Exception $e)
+{
+$this->setError('COM_SPORTSMANAGEMENT_ADMIN_ROUND_FAILED');	
+return false;
+}		
+
+}
+				
 				foreach($matches as $match)
 				{
 					//aufpassen,was uebernommen werden soll und welche daten durch die aus der post ueberschrieben werden muessen
