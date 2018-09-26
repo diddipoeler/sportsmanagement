@@ -41,7 +41,11 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	}
   
   
-  
+function cancel()
+	{
+$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}  
   
   /**
 	 * Method to add mass rounds
