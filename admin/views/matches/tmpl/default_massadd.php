@@ -110,6 +110,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 										<td><input type="text" name="start_match_number" size="4" value="" /></td>
 									</tr>
 									<tr>
+										<td width="100" align="right" class="key"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE'); ?></td>
+										<td><input type="text" name="start_round_name" size="50" value="" /></td>
+									</tr>
+									<tr>
 										<td width="100" align="right" class="key">										
 												<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CREATE_NEW'); ?>
 										</td>
