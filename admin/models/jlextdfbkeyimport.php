@@ -71,7 +71,7 @@ return $project_type;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
 //return $country;
@@ -99,7 +99,7 @@ return $country;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
 //return $country;
@@ -119,8 +119,8 @@ return $country;
 //		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
 
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
 		
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
@@ -139,8 +139,8 @@ try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $result = $this->jsmdb->loadObjectList();    
 $number = $this->jsmdb->getNumRows();
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
 			
 if ( $number > 0 )
 {
@@ -154,7 +154,7 @@ return false;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }    
         /*
@@ -196,11 +196,11 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre
  */
 function getDFBKey($number,$matchdays)
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-	$document	= JFactory::getDocument();
+//	$option = JFactory::getApplication()->input->getCmd('option');
+//		$app = JFactory::getApplication ();
+//	$document	= JFactory::getDocument();
   
-$project_id = $app->getUserState( "$option.pid", '0' );
+$project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
 	//$project_id = $app->getUserState( $option . 'project' );
 	
 	// gibt es zum land der liga schlüssel ?
@@ -255,7 +255,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	} catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
 //		if ( !$result = $this->_db->loadObjectList() )
@@ -301,7 +301,7 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
     } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
 		//if ( !$result = $this->_db->loadObjectList() )
@@ -366,7 +366,7 @@ return $count;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
     return false;
 }
 
@@ -403,8 +403,8 @@ return $count;
 	 */
 	function getSchedule($post = array(), $project_id = 0, $division_id = 0 )
 	{
-	$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
+//	$option = JFactory::getApplication()->input->getCmd('option');
+//		$app = JFactory::getApplication ();
 
 /*	
 echo '<pre>';
@@ -536,10 +536,10 @@ $this->savedfb = $result ;
 	function checkTable()
   {
   //$app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
-    require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
+    //$option = JFactory::getApplication()->input->getCmd('option');
+    require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     //$db = sportsmanagementHelper::getDBConnection();
-    $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/dfbkeys.sql';
+    $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/dfbkeys.sql';
 
 $this->jsmquery->clear();
 $this->jsmquery->select('count(*) AS count');
