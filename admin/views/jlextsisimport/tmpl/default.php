@@ -39,6 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 $option = JFactory::getApplication()->input->getCmd('option');
 $templatesToLoad = array('footer','listheader');
@@ -64,7 +65,7 @@ $attribs['align'] = 'left';
 			  <tr>
 			    <th>
 			      <?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
-			      <?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
+			      <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
 			    </th>
 			  </tr>
 			</thead>
@@ -73,21 +74,21 @@ $attribs['align'] = 'left';
 			    <td>
 				<?php
 				echo '<br />';
-				echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_EXTENTION_INFO').'</b><br />';
-				echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT1').'<br />';
-				echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT2',$this->revisionDate);
+				echo '<b>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_EXTENTION_INFO').'</b><br />';
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT1').'<br />';
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT2',$this->revisionDate);
 				/*
 				$linkParams=array();
 				$linkParams['target']='_blank';
 				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
 				$link=JRoute::_($linkURL);
-				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_FORUM');
+				$linkParams['title']=Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_FORUM');
 				$forumLink=HTMLHelper::link($link,$linkURL,$linkParams);
 				$linkURL='http://bugtracker.joomleague.net/issues/226';
 				$link=JRoute::_($linkURL);
-				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_BUGTRACKER');
+				$linkParams['title']=Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_BUGTRACKER');
 				$bugtrackerLink=HTMLHelper::link($link,$linkURL,$linkParams);
-				echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT3').'</p>';
+				echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT3').'</p>';
 				echo "<p>$forumLink</p>";
 				echo "<p>$bugtrackerLink</p>";
 				*/
@@ -106,10 +107,10 @@ $attribs['align'] = 'left';
       <fieldset>
       <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_SELECT_USE_PROJECT');
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_SELECT_USE_PROJECT');
 				?>
 			</legend>      
-      <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_USE_PROJECT'); ?>      
+      <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_USE_PROJECT'); ?>      
       </fieldset>
       </td>
       </tr>
@@ -128,13 +129,13 @@ $attribs['align'] = 'left';
       <fieldset>
             <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_FILE' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_FILE' );
 				?>
 			</legend>
 
 			
                 <input type="text" name='liganummer' value='' size="100" />
-				<input class="button" type="submit" onclick="return Joomla.submitform('jlextsisimport.save')" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_UPLOAD_BUTTON'); ?>" />
+				<input class="button" type="submit" onclick="return Joomla.submitform('jlextsisimport.save')" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_UPLOAD_BUTTON'); ?>" />
 			</fieldset>
       </td>
       </tr>

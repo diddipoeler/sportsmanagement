@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -65,7 +66,7 @@ foreach ($this->_success_text as $key => $value)
 		{ 
 			?> 
 			<fieldset> 
-				<legend><?php echo JText::_($key); ?></legend> 
+				<legend><?php echo Text::_($key); ?></legend> 
 				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table> 
 			</fieldset> 
 			<?php 

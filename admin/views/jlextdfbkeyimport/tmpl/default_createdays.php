@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_( 'behavior.tooltip' );
 
@@ -20,7 +21,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2',  $this->projectid  );
+				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_2',  $this->projectid  );
 				?>
 			</legend>
 
@@ -28,16 +29,16 @@ HTMLHelper::_( 'behavior.tooltip' );
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_3' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_3' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_4' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_4' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_5' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_5' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_6' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_6' ); ?>
 </th>
 
 </tr>
@@ -51,7 +52,7 @@ foreach($this->newmatchdays as $rowdays)
 <tr>
 <input type="hidden" name="roundcode[]" value="<?php echo $rowdays->spieltag;?> " />
 <td><?php echo $rowdays->spieltag;?></td>
-<td> <input type="text" name="name[]" value="<?php echo $rowdays->spieltag.JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_7') ;?> " /> </td>
+<td> <input type="text" name="name[]" value="<?php echo $rowdays->spieltag.Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_7') ;?> " /> </td>
 
 <td> 
 <?php

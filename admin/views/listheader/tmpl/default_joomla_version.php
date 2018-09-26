@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 echo $this->loadTemplate('joomla4');
@@ -33,7 +33,7 @@ echo $this->loadTemplate('data');
 else
 {
 echo '<div class="'.$no_items.'">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
 

@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -62,10 +62,10 @@ $i    = 1;
 	
 	?>
 	<fieldset class="adminform">
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
 		<fieldset class="adminform">
 			<?php
-			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+			echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
 			?>
 		</fieldset>
 
@@ -80,7 +80,7 @@ echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPOR
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 
     ?>

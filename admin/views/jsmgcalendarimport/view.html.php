@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.view');
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
@@ -58,11 +59,11 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 			$this->dbItems = $this->get('DBData');
         }
         
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
         
         $this->setLayout('login');
         
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
 
    }     
 

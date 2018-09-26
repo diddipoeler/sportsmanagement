@@ -38,7 +38,8 @@
 */
 
 defined('_JEXEC') or die();
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
+
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
 //class GCalendarViewGCalendar extends GCalendarView
@@ -109,11 +110,11 @@ function init( $tpl = null )
 		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
 		if ($this->gcalendar->id < 1) 
         {
-            JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_NEW_GOOGLE'),'gcalendar');
+            JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_NEW_GOOGLE'),'gcalendar');
             
 			if ($canDo->get('core.create')) 
             {
-                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
+                $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
                 
                 $this->gcalendar->username = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
                 $this->gcalendar->password = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
@@ -126,7 +127,7 @@ function init( $tpl = null )
 		} 
         else 
         {
-            JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EDIT_NEW_GOOGLE'),'gcalendar');
+            JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EDIT_NEW_GOOGLE'),'gcalendar');
             
 			if ($canDo->get('core.edit')) 
             {

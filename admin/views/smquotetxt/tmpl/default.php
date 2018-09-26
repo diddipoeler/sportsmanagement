@@ -39,7 +39,7 @@
 
 // No direct access.
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Language\Text;
 //JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -56,7 +56,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			<?php echo $this->form->getField('source')->save(); ?>
 			Joomla.submitform(task, document.getElementById('source-form'));
 		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo $this->escape(Text::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
 	}
 </script>

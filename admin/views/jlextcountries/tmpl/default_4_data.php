@@ -38,6 +38,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 ?>
 
 
@@ -45,7 +46,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -55,10 +56,10 @@ use Joomla\CMS\HTML\HTMLHelper;
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_NAME', 'objcountry.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
-                <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
+                <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_FLAG'); ?></th>
 
-                <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
-                <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
+                <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TRANSLATION'); ?></th>
+                <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></th>
 
                 <th>
                     <?php
@@ -160,7 +161,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                     </td>
                     <?php $inputappend = ''; ?>
                     <td><?php echo JSMCountries::getCountryFlag($row->alpha3); ?></td>
-                    <td><?php echo JText::_($row->name); ?></td>
+                    <td><?php echo Text::_($row->name); ?></td>
                     <td><?php echo $row->federation_name; ?></td>
                     <td><?php echo $row->alpha2; ?></td>
                     <td><?php echo $row->alpha3; ?></td>

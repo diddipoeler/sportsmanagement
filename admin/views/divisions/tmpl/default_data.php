@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
@@ -53,7 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <!--	<fieldset class="adminform"> -->
 		<legend>
 			<?php
-			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE2',
+			echo Text::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE2',
 									'<i>' . $this->projectws->name . '</i>' );
 			?>
 		</legend>
@@ -65,7 +65,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<tr>
 						<th width="5" style="vertical-align: top; ">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_RESET' );
 							?>
 						</th>
 						<th width="20" style="vertical-align: top; ">
@@ -160,7 +160,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									<?php else: ?>
 									<a href="<?php echo $link; ?>">
 										<?php
-										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS' );
+										$imageTitle = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS' );
 										echo HTMLHelper::_(	'image', 'administrator/components/com_sportsmanagement/assets/images/edit.png',
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
@@ -177,7 +177,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								echo $row->name;
 								?>
                                 <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 							</td>
 							<td>
 								<?php
@@ -193,13 +193,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

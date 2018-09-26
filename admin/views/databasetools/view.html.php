@@ -11,7 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewDatabaseTools
  * 
@@ -47,7 +47,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView {
     protected function addToolbar() {
 
 //		// Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE');
         $this->icon = 'databases';
 
 

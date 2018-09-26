@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 if ( $this->matchnumber )
 {
 
@@ -264,7 +266,7 @@ $lfdnummer = 0;
 }
 
 ?>
-<input type='submit' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVE_PRESSEBERICHT'); ?>' onclick='' />
+<input type='submit' value='<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVE_PRESSEBERICHT'); ?>' onclick='' />
 <input type="hidden" name="layout" value="savepressebericht" />
 <input type="hidden" name="view" value="match" />
 <input type="hidden" name="tmpl" value="component" />

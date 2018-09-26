@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -38,13 +40,13 @@ if($close == 1) {
 	<fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
-				<?php echo JText::_('JAPPLY');?></button>
+				<?php echo Text::_('JAPPLY');?></button>
 			<button type="button" onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			
 		</div>
 		<div class="configuration" >
-			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
+			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
 		</div>
 	</fieldset>
 	<div class="clear"></div>
@@ -59,16 +61,16 @@ $tabsOptionsJ31 = array(
         );
 
 echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
 echo $this->loadTemplate('players');
 echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
 echo $this->loadTemplate('substitutions');
 echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
 echo $this->loadTemplate('staff');
 echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
 echo $this->loadTemplate('players_trikot_numbers');
 echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.endTabSet');    
@@ -78,16 +80,16 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 		// focus on players tab 
 		$startOffset = 1;
 		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel1');
 		echo $this->loadTemplate('players');
 		
-		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel2');
 		echo $this->loadTemplate('substitutions');
 		
-		echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
+		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
 		echo $this->loadTemplate('staff');
 		
-        echo HTMLHelper::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
+        echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
 		echo $this->loadTemplate('players_trikot_numbers');
         
 		echo HTMLHelper::_('tabs.end');

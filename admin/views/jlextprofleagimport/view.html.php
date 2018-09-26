@@ -11,9 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport( 'joomla.application.component.view' );
-
+use Joomla\CMS\Language\Text;
 
 
 /**
@@ -62,7 +60,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
         $this->document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
+		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
         JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         JToolbarHelper::divider();
         parent::addToolbar();

@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -63,13 +64,13 @@ jQuery(document).ready(function () {
 });
 
 function delayRedirect(){
-    document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
     var count = 5;
     setInterval(function(){
         count--;
         document.getElementById('countDown').innerHTML = count;
         if (count == 0) {
-            document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
             window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>'; 
         }
     },1000);
@@ -100,13 +101,13 @@ jQuery(document).ready(function () {
 });
 
 function delayRedirect(){
-    document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+    document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
     var count = 5;
     setInterval(function(){
         count--;
         document.getElementById('countDown').innerHTML = count;
         if (count == 0) {
-            document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+            document.getElementById('delayMsg').innerHTML = '<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
             window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleagueagegroup'; ?>'; 
         }
     },1000);
@@ -167,7 +168,7 @@ foreach ($this->success as $key => $value)
 		{
 			?>
 			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
+				<legend><?php echo Text::_($key); ?></legend>
 				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
 			</fieldset>
 			<?php
@@ -178,7 +179,7 @@ foreach ($this->success as $key => $value)
 
 
 <fieldset>
-			<legend><?php echo JText::_('Post data from importform was:'); ?></legend>
+			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
 			<table class='adminlist'><tr><td><?php //echo '<pre>'.print_r($this->success,true).'</pre>'; ?></td></tr></table>
 		</fieldset>
         

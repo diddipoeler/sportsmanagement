@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -42,9 +42,9 @@ if($close == 1) {
 <!--	<fieldset> -->
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('matches.savestats', this.form);">
-				<?php echo JText::_('JAPPLY');?></button>
+				<?php echo Text::_('JAPPLY');?></button>
 			<button type="button" onclick="$('close').value=1; Joomla.submitform('matches.savestats', this.form);">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			
 		</div>
 		<div class="configuration" >
@@ -58,10 +58,10 @@ $tabsOptionsJ31 = array(
             "active" => "panel1" // It is the ID of the active tab.
         );
 echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_($this->teams->team1) );	
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1) );	
 echo $this->loadTemplate('home');	
 echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_($this->teams->team2) );	
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2) );	
 echo $this->loadTemplate('away');	
 echo HTMLHelper::_('bootstrap.endTab');	
 echo HTMLHelper::_('bootstrap.endTabSet'); 

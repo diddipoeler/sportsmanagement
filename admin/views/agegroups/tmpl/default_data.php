@@ -38,6 +38,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'obj.ordering');
 
@@ -50,7 +51,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -83,7 +84,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
 
-                <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+                <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
                 </th>
 
                 <th class="title">
@@ -156,7 +157,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                         <?php //echo $row->name;  ?>
                         <p class="smallsub">
-                        <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+                        <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
                     </td>
                             <?php ?>
 
@@ -170,10 +171,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td class="center">
     <?php
     if (empty($row->picture) || !JFile::exists(JPATH_SITE . DS . $row->picture)) {
-        $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
+        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . $row->picture;
         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
     } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) {
-        $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
     } else {
         //$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
@@ -187,7 +188,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         ?>
                     </td>
 
-                    <td class=""><?php echo JText::_($row->sportstype); ?></td>
+                    <td class=""><?php echo Text::_($row->sportstype); ?></td>
                     <td class="center">
                         <div class="btn-group">
                         <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'agegroups.', $canChange, 'cb'); ?>

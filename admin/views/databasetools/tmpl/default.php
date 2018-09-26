@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
@@ -63,12 +63,12 @@ echo $this->loadTemplate('joomla2');
 				<tr>
 					<th class="title" class="nowrap">
 						<?php
-						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TOOL' );
+						echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TOOL' );
 						?>
 					</th>
 					<th class="title" class="nowrap">
 						<?php
-						echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_DESCR' );
+						echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_DESCR' );
 						?>
 					</th>
 				</tr>
@@ -90,15 +90,15 @@ echo $this->loadTemplate('joomla2');
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate' );
 						?>
 						
-                        <a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
+                        <a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE_DESCR" );
 						?>
 					</td>
 				</tr>
@@ -109,15 +109,15 @@ echo $this->loadTemplate('joomla2');
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl' );
 						?>
 						
-                        <a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
+                        <a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL_DESCR" );
 						?>
 					</td>
 				</tr>
@@ -127,15 +127,15 @@ echo $this->loadTemplate('joomla2');
 						<?php
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize' );
 						?>
-						<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
+						<a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE_DESCR" );
 						?>
 					</td>
 				</tr>
@@ -146,15 +146,15 @@ echo $this->loadTemplate('joomla2');
                         $link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair' );
 						?>
 						
-							<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
+							<a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
                             <?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR_DESCR" );
 						?>
 					</td>
 				</tr>
@@ -165,15 +165,15 @@ echo $this->loadTemplate('joomla2');
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath' );
 						?>
 						
-                        <a  href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
+                        <a  href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION_DESCR" );
 						?>
 					</td>
 				</tr>
@@ -184,15 +184,15 @@ echo $this->loadTemplate('joomla2');
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters' );
 						?>
 						
-                        <a  href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">
+                        <a  href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS' );
 							?>
 						</a>
 					</td>
 					<td>
 						<?php
-						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS_DESCR" );
+						echo Text::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS_DESCR" );
 						?>
 					</td>
 				</tr>

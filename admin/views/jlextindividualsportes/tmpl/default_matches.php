@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 //save and close 
 $close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
@@ -55,7 +57,7 @@ if($close == 1) {
 ?>
 <div id="editcell">
 	<fieldset class="adminform">
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
+		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 		
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
@@ -63,15 +65,15 @@ if($close == 1) {
         <fieldset>
 		<div class="fltlft">
         <button type="button" onclick="Joomla.submitform('jlextindividualsportes.applyshort', this.form);">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="$('close').value=1; Joomla.submitform('jlextindividualsportes.saveshort', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
 			
             <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
-						<?php echo JText::_('JACTION_DELETE');?></button>
+						<?php echo Text::_('JACTION_DELETE');?></button>
             
             <button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JCANCEL');?></button>
 		
         
         </div>
@@ -91,27 +93,27 @@ if($close == 1) {
 							<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 						</th>
 
-						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR'); ?></th>
 						
 						
 
 					
-						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH_TYPE'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH_TYPE'); ?></th>
                         
-						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM_PLAYER'); ?></th>
-						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM_PLAYER'); ?></th>
-						<th style="  "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM_PLAYER'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM_PLAYER'); ?></th>
+						<th style="  "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
 						<?php
 						if ($this->projectws->allow_add_time)
 						{
 							?>
-							<th style="text-align:center;  "><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+							<th style="text-align:center;  "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
 							<?php
 						}
 						?>
 						
 						
-						<th width="1%" nowrap="nowrap" ><?php echo JTEXT::_('JSTATUS'); ?></th>
+						<th width="1%" nowrap="nowrap" ><?php echo Text::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" nowrap="nowrap" >
 							<?php echo HTMLHelper::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
@@ -158,7 +160,7 @@ if($close == 1) {
 							</td>
 							<td style="text-align:center; ">
 								<?php
-								echo JTEXT::_('COM_SPORTSMANAGEMENT_'.$row->match_type);
+								echo Text::_('COM_SPORTSMANAGEMENT_'.$row->match_type);
 								?>
 							</td>
 							
@@ -249,9 +251,9 @@ if($close == 1) {
 								
 							</td>
 							<td nowrap="nowrap" style="text-align: right; ">
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="4" class="inputbox" /> : 
-								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
+								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team2_result; ?>" size="2" tabindex="4" class="inputbox" />
 								
                                 

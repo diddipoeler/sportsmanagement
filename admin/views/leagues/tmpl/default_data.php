@@ -10,7 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 ?>
@@ -18,7 +18,7 @@ HTMLHelper::_('behavior.modal');
     <thead>
         <tr>
             <th width="5">
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?>
             </th>
             <th width="20">
                 <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
@@ -54,7 +54,7 @@ HTMLHelper::_('behavior.modal');
                 ?>
             </th>
             <th>
-                <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
             </th>
             <th width="" class="nowrap center">
                 <?php
@@ -118,7 +118,7 @@ HTMLHelper::_('behavior.modal');
                         <?php echo $this->escape($row->name); ?>
                     <?php endif; ?>
                     <div class="small">
-                        <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
+                        <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
                     </div>
                 </td>
                 <td><?php echo $row->short_name; ?></td>
@@ -129,7 +129,7 @@ HTMLHelper::_('behavior.modal');
                     echo HTMLHelper::_('select.genericlist', $this->lists['nation'], 'country' . $row->id, 'class="form-control form-control-inline" style="width:150px" size="1"' . $append, 'value', 'text', $row->country);
                     ?>
                 </td>
-                <td class="center"><?php echo JText::_($row->sportstype); ?></td>
+                <td class="center"><?php echo Text::_($row->sportstype); ?></td>
                 <td class="center">
                     <?php
                     $inputappend = '';
@@ -153,10 +153,10 @@ HTMLHelper::_('behavior.modal');
                 <td class="center">
                     <?php
                     if (empty($row->picture)) {
-                        $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture;
+                        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE') . COM_SPORTSMANAGEMENT_PICTURE_SERVER . $row->picture;
                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
                     } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player")) {
-                        $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+                        $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
                         echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                     } else {
                         ?>                                    

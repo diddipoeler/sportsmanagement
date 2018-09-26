@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <!--[if IE]>
@@ -72,10 +72,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 <!--<fieldset class="adminform">-->
 <legend>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_TITLE'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_TITLE'); ?>
 </legend>
 <!--<fieldset class="adminform">-->
-	<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_HINT'); ?>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_HINT'); ?>
 <!--</fieldset>-->
 <?php
 

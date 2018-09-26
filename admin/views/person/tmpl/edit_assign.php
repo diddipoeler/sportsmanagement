@@ -1,11 +1,12 @@
 <?php defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>		
 
 
 			<fieldset class="adminform">
 				<legend>
 					<?php
-					echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_DESCR');
+					echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_DESCR');
 					?>
 				</legend>
 				<table class="admintable" border="0">
@@ -13,7 +14,7 @@
 						<td class="key">
 							<label for="project_id">
 								<?php
-								echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_PID');
+								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_PID');
 								?>
 							</label>
 						</td>
@@ -28,7 +29,7 @@
 									//create the button code to use in form while selecting a project and team to assign a new person to
 									$button = '<a class="modal-button" title="Select" ';
 									$button .= 'href="index.php?option=com_sportsmanagement&view=person&task=person.personassign" ';
-									$button .= 'rel="{handler: \'iframe\', size: {x: 600, y: 400}}">' . JText::_('Select') . '</a>';
+									$button .= 'rel="{handler: \'iframe\', size: {x: 600, y: 400}}">' . Text::_('Select') . '</a>';
 									#echo $this->button;
 									echo $button;
 									?>
@@ -40,7 +41,7 @@
 						<td class="key">
 							<label for="team">
 								<?php
-								echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_TID');
+								echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSIGN_TID');
 								?>
 							</label>
 						</td>

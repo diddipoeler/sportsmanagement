@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
@@ -31,10 +31,10 @@ $tabsOptionsJ31 = array(
         );
 
 echo HTMLHelper::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_($this->teams->team1));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', Text::_($this->teams->team1));
 echo $this->loadTemplate('home');
 echo HTMLHelper::_('bootstrap.endTab');
-echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_($this->teams->team2));
+echo HTMLHelper::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', Text::_($this->teams->team2));
 echo $this->loadTemplate('away');
 echo HTMLHelper::_('bootstrap.endTab');
 echo HTMLHelper::_('bootstrap.endTabSet');    
@@ -43,9 +43,9 @@ echo HTMLHelper::_('bootstrap.endTabSet');
         else
         {
 		echo HTMLHelper::_('tabs.start','tabs', array('useCookie'=>1));
-		echo HTMLHelper::_('tabs.panel',JText::_($this->teams->team1), 'panel1');
+		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team1), 'panel1');
 		echo $this->loadTemplate('home');
-		echo HTMLHelper::_('tabs.panel',JText::_($this->teams->team2), 'panel2');
+		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team2), 'panel2');
 		echo $this->loadTemplate('away');
 		echo HTMLHelper::_('tabs.end');
         }

@@ -1,6 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 ?>
 <!-- import the functions to move the events between selection lists  -->
@@ -18,20 +18,20 @@ JHtml::_('behavior.tooltip');
     <fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('projectpositions.store', this.form)">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JCANCEL');?></button>
 		</div>
 	</fieldset>
     
 		<fieldset class="adminform">
-			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_LEGEND','<i>'.$this->project->name.'</i>');?></legend>
+			<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_LEGEND','<i>'.$this->project->name.'</i>');?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_AVAILABLE'); ?></th>
 					<th width="20"></th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_ASSIGNED'); ?></th>
 					
 				</tr>
 			</thead>

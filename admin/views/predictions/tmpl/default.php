@@ -40,6 +40,7 @@
 
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 
 <?php if (!empty( $this->sidebar)) : ?>
@@ -55,10 +56,10 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td width="100%" valign="top">
 			<div id="cpanel">
-				<?php echo $this->addIcon('tippspiel.png','index.php?option=com_sportsmanagement&view=predictiongames', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES'));?>
-                <?php echo $this->addIcon('tippspielgruppen.png','index.php?option=com_sportsmanagement&view=predictiongroups', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_GROUPS'));?>
-                <?php echo $this->addIcon('tippspielmitglieder.png','index.php?option=com_sportsmanagement&view=predictionmembers', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS'));?>
-                <?php echo $this->addIcon('tippspieltemplates.png','index.php?option=com_sportsmanagement&view=predictiontemplates', JText::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES'));?>
+				<?php echo $this->addIcon('tippspiel.png','index.php?option=com_sportsmanagement&view=predictiongames', Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_GAMES'));?>
+                <?php echo $this->addIcon('tippspielgruppen.png','index.php?option=com_sportsmanagement&view=predictiongroups', Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_GROUPS'));?>
+                <?php echo $this->addIcon('tippspielmitglieder.png','index.php?option=com_sportsmanagement&view=predictionmembers', Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS'));?>
+                <?php echo $this->addIcon('tippspieltemplates.png','index.php?option=com_sportsmanagement&view=predictiontemplates', Text::_('COM_SPORTSMANAGEMENT_EXT_PREDICTION_TEMPLATES'));?>
 
 			</div>
 		</td>

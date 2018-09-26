@@ -38,14 +38,14 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 
 
   
       
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<p class="nowarning"><?php echo JText::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
+<p class="nowarning"><?php echo Text::_('COM_JOOMLAUPDATE_VIEW_UPDATE_INPROGRESS') ?></p>
 <div class="joomlaupdate_spinner" ></div>
 
 

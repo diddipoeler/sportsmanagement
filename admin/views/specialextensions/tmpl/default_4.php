@@ -38,6 +38,7 @@
  */
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -53,14 +54,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <div id="dashboard-iconss" class="dashboard-icons">
                 <?php
                 foreach ($this->Extensions as $key => $value) {
-                    $logo = "components/com_sportsmanagement/assets/icons/" . JText::_($value) . '.png';
+                    $logo = "components/com_sportsmanagement/assets/icons/" . Text::_($value) . '.png';
                     if (!file_exists($logo)) {
                         $logo = JURI::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
                     }
                     ?>
-                    <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=<?php echo JText::_($value) ?>">
-                        <img src="<?php echo $logo ?>" width="125" alt="<?php echo JText::_($value) ?>" /><br />
-                        <span><?php echo JText::_($value) ?></span>
+                    <a class="btn btn-jsm-dash" href="index.php?option=com_sportsmanagement&view=<?php echo Text::_($value) ?>">
+                        <img src="<?php echo $logo ?>" width="125" alt="<?php echo Text::_($value) ?>" /><br />
+                        <span><?php echo Text::_($value) ?></span>
                     </a>
                     <?php
                 }

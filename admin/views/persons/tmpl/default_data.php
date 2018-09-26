@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.modal');
 $user		= JFactory::getUser();
@@ -30,7 +31,7 @@ $this->readonly = '';
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
@@ -50,7 +51,7 @@ $this->readonly = '';
 						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_L_NAME','pl.lastname',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+					<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
 					<th>
 						<?php
@@ -151,7 +152,7 @@ $this->readonly = '';
 							<td class="center">
 								<?php
                                 $picture = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? 'information.png' : 'ok.png'; 
-                                $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
+                                $imageTitle = ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE');
                                 
 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');

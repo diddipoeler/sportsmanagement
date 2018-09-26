@@ -11,9 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla view library
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
  
 
 /**
@@ -48,7 +46,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 //		$script = $this->get('Script');
@@ -80,7 +78,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		$jinput	= $app->input;
 		$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
+        $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
         $this->icon = 'extrafield';
 		
         parent::addToolbar();

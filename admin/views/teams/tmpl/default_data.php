@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 't.ordering');
 
@@ -31,7 +32,7 @@ $this->readonly = '';
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="1%" class="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="1%" class="center"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="1%" class="center">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -142,21 +143,21 @@ $this->readonly = '';
                             <?php echo $this->escape($row->name); ?>
                         <?php endif; ?>
                         <div class="small">
-                            <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?>
                         </div>
                     </td>
                     <?php ?>
 
-                    <td><?php echo (empty($row->clubname)) ? '<span style="color:red;">' . JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>' : $row->clubname; ?></td>
+                    <td><?php echo (empty($row->clubname)) ? '<span style="color:red;">' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_CLUB') . '</span>' : $row->clubname; ?></td>
 
                     <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 
                     <td class="center">
                         <?php
                         if ($row->website != '') {
-                            echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . JText::_('JYES') . '</span></a>';
+                            echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
                         } else {
-                            echo '<span class="label">' . JText::_('JNO') . '</span>';
+                            echo '<span class="label">' . Text::_('JNO') . '</span>';
                         }
                         ?>
                     </td>
@@ -164,9 +165,9 @@ $this->readonly = '';
                     <td class="center">
                         <?php
                         if ($row->email != '') {
-                            echo '<a href="mailto:' . $row->email . '"><span class="label label-success" title="' . $row->email . '">' . JText::_('JYES') . '</span></a>';
+                            echo '<a href="mailto:' . $row->email . '"><span class="label label-success" title="' . $row->email . '">' . Text::_('JYES') . '</span></a>';
                         } else {
-                            echo '<span class="label">' . JText::_('JNO') . '</span>';
+                            echo '<span class="label">' . Text::_('JNO') . '</span>';
                         }
                         ?>
                     </td>
@@ -192,10 +193,10 @@ $this->readonly = '';
                     <td class="center">
                         <?php
                         if ($row->picture == '') {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
                             echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team")) {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_DEFAULT_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_DEFAULT_IMAGE');
                             echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
@@ -204,7 +205,7 @@ $this->readonly = '';
                             <?PHP
                         } else {
                             if (JFile::exists(JPATH_SITE . DS . $row->picture)) {
-                                $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
+                                $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
                                 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                                 ?>
                                 <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
@@ -212,7 +213,7 @@ $this->readonly = '';
                                 </a>
                                 <?PHP
                             } else {
-                                $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
+                                $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NO_IMAGE');
                                 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             }
                         }

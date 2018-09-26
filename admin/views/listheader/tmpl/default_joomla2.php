@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 $view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
 
@@ -55,15 +56,15 @@ echo $this->loadTemplate('debug');
 		<tr>
 			<td align="left" width="100%">
 				<?php
-				echo JText::_('JSEARCH_FILTER_LABEL');
+				echo Text::_('JSEARCH_FILTER_LABEL');
 				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
 								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
                                 
-				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="this.form.submit(); "><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
 				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<?php
-					echo JText::_('JSEARCH_FILTER_CLEAR');
+					echo Text::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
 			</td>
@@ -103,7 +104,7 @@ echo $this->loadTemplate('debug');
             ?>
             <td nowrap='nowrap' align='right'>
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
                 echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>
@@ -115,7 +116,7 @@ echo $this->loadTemplate('debug');
             ?>
             <td nowrap='nowrap' align='right'>
             <select name="filter_category_id" id="filter_category_id" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
+				<option value=""><?php echo Text::_('JOPTION_SELECT_CATEGORY');?></option>
 				<?php 
                 echo HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_sportsmanagement'), 'value', 'text', $this->state->get('filter.category_id'));
                 ?>
@@ -123,7 +124,7 @@ echo $this->loadTemplate('debug');
             </td>
             <td nowrap='nowrap' align='right'>
             <select name="filter_published" id="filter_published" class="inputbox" onchange="this.form.submit()">
-				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<option value=""><?php echo Text::_('JOPTION_SELECT_PUBLISHED');?></option>
 				<?php 
                 echo HTMLHelper::_('select.options', HTMLHelper::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true);
                 ?>

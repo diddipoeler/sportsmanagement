@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'objassoc.ordering');
@@ -53,7 +54,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20" style="vertical-align: top; ">
 						<input  type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 					</th>
@@ -70,8 +71,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>					
 					
           
-          <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
-		  <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
+          <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
+		  <th width="5" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
           
           	<th width="" class="nowrap center">
 						<?php
@@ -143,7 +144,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 							</td>
 							<?php
 						
@@ -159,7 +160,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //					echo $html;
 if (empty($row->assocflag) || !JFile::exists(JPATH_SITE.DS.$row->assocflag))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
@@ -181,7 +182,7 @@ else
 //					echo $html;
 if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}

@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_( 'behavior.tooltip' );
 
@@ -29,7 +30,7 @@ $logo = HTMLHelper::_('image', $url, $alt, $attribs);
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_2', $this->dfbteams  );
+				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_2', $this->dfbteams  );
 				?>
 			</legend>
 
@@ -39,7 +40,7 @@ $logo = HTMLHelper::_('image', $url, $alt, $attribs);
       <tr>
       <th><?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
       
-      <?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11' ); ?>
+      <?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11' ); ?>
       </th>
       </tr>
       </thead>
@@ -50,25 +51,25 @@ $logo = HTMLHelper::_('image', $url, $alt, $attribs);
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_3' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_3' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_4' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_4' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_5' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_5' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_6' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_6' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_7' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_7' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_8' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_8' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_9' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_9' ); ?>
 </th>
 </tr>
 </thead>

@@ -10,30 +10,30 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <button type="button" onclick="Joomla.submitform('projectteam.storechangeteams', this.form)">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JCANCEL');?></button>
 	
 
 		<legend>
 		<?php
-		echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
+		echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
 		?>
 		</legend>
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th class="title"><?PHP echo JText::_( '' ); ?>
+					<th class="title"><?PHP echo Text::_( '' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGE' ); ?>
+					<th class="title"><?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGE' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_OLD_TEAM' ); ?>
+					<th class="title"><?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_OLD_TEAM' ); ?>
 					</th>
-					<th class="title"><?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_NEW_TEAM' ); ?>
+					<th class="title"><?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_NEW_TEAM' ); ?>
 					</th>
 				</tr>
 			</thead>

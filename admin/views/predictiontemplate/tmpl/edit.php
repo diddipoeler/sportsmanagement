@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -65,10 +65,10 @@ $i    = 1;
 	
 	?>
 	<fieldset class="adminform">
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
 		<fieldset class="adminform">
 			<?php
-			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+			echo Text::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
 			?>
 		</fieldset>
 
@@ -77,12 +77,12 @@ $i    = 1;
         $fieldSets = $this->form->getFieldsets();
         foreach ($fieldSets as $name => $fieldSet) :
             $label = $fieldSet->name;
-            echo HTMLHelper::_('tabs.panel',JText::_($label), 'panel'.$i++);
+            echo HTMLHelper::_('tabs.panel',Text::_($label), 'panel'.$i++);
 			?>
 			<fieldset class="panelform">
 				<?php
 				if (isset($fieldSet->description) && !empty($fieldSet->description)) :
-					echo '<fieldset class="adminform">'.JText::_($fieldSet->description).'</fieldset>';
+					echo '<fieldset class="adminform">'.Text::_($fieldSet->description).'</fieldset>';
 				endif;
 				?>
 				<ul class="config-option-list">

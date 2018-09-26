@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_( 'behavior.tooltip' );
 ?>
 
@@ -21,13 +21,13 @@ HTMLHelper::_( 'behavior.tooltip' );
 				<?php
 				if ( $this->pred_id > 0 )
 				{
-					$outputStr = JText::sprintf( 	'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE2',
+					$outputStr = Text::sprintf( 	'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE2',
 													'<i>' . $this->predictiongame->name . '</i>',
 													' ' . $this->predictiongame->id . ' ' );
 				}
 				else
 				{
-					$outputStr = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_DESCR' );
+					$outputStr = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_DESCR' );
 				}
 				echo $outputStr;
 				?>
@@ -45,7 +45,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 						<tr>
 							<th class='title' width='5'>
 								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
+								echo Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 								?>
 							</th>
 							<th class='title' width='20'>
@@ -56,29 +56,29 @@ HTMLHelper::_( 'behavior.tooltip' );
 							</th>
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo HTMLHelper::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TMPL_FILE' ), 'tmpl.template', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>							
 							<th class='title' nowrap='nowrap'>
 								<?php
-								echo HTMLHelper::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_TITLE3' ), 'tmpl.title', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
 
 							<th class='title' width='20' nowrap='nowrap'>
 								<?php
-								echo HTMLHelper::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
+								echo HTMLHelper::_( 'grid.sort', Text::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
                             
                             <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 						?>
 					</th>
                     
@@ -127,8 +127,8 @@ HTMLHelper::_( 'behavior.tooltip' );
 										<?php
 										echo HTMLHelper::_(	'image',
 														'administrator/components/com_sportsmanagement/assets/images/edit.png',
-														JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ),
-														'title= "' . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ) . '"' );
+														Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ),
+														'title= "' . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_EDIT_SETTINGS' ) . '"' );
 										?>
 									</a>
 								</td>
@@ -139,7 +139,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 								</td>								
 								<td style='text-align:left; ' nowrap='nowrap'>
 									<?php
-									echo JText::_( $row->title );
+									echo Text::_( $row->title );
 									?>
 								</td>
 								<td style='text-align:center; '>

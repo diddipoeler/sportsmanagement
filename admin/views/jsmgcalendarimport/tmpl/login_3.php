@@ -20,12 +20,12 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 ?>
 <fieldset>
 	<legend>
-		<?php echo JText::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
+		<?php echo Text::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
 	</legend>
 	<form action="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
 		<div class="row-fluid">
@@ -33,7 +33,7 @@ JHtml::_('behavior.tooltip');
 				<div class="control-group">
 					<div class="control-label">
 						<label id="jform_name-lbl" for="user"
-							class="hasTip required invalid" title="" aria-invalid="true"><?php echo JText::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_NAME');?><span
+							class="hasTip required invalid" title="" aria-invalid="true"><?php echo Text::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_NAME');?><span
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
@@ -45,7 +45,7 @@ JHtml::_('behavior.tooltip');
 				<div class="control-group">
 					<div class="control-label">
 						<label id="jform_name-lbl" for="pass"
-							class="hasTip required invalid" title="" aria-invalid="true"><?php echo JText::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_PASSWORD');?><span
+							class="hasTip required invalid" title="" aria-invalid="true"><?php echo Text::_('COM_GCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_PASSWORD');?><span
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
@@ -60,5 +60,5 @@ JHtml::_('behavior.tooltip');
 	</form>
 </fieldset>
 <div align="center" style="clear: both">
-	<?php echo sprintf(JText::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

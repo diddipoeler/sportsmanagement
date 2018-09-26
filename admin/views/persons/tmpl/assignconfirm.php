@@ -1,4 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 ?>
 <script>
 <!--
@@ -15,7 +16,7 @@
 	<fieldset>
 		<legend>
 			<?php
-			echo JText::sprintf('Assign persons to a team or the project [%1$s]','<i>'.$this->projectname.'</i>');
+			echo Text::sprintf('Assign persons to a team or the project [%1$s]','<i>'.$this->projectname.'</i>');
 			?>
 		</legend>
 		<ul>
@@ -33,7 +34,7 @@
 		</ul>
 		<p class="instructions">
 			<?php
-			echo JText::_('Assign selected persons as a player,staff or referee');
+			echo Text::_('Assign selected persons as a player,staff or referee');
 			?>
 		</p>
 		<?php
@@ -41,9 +42,9 @@
 		?>
 		<p class="instructions">
 			<?php
-			echo JText::_('Select the team to assign the selected persons to if you want to assign players or staff.');
+			echo Text::_('Select the team to assign the selected persons to if you want to assign players or staff.');
 			echo '<br />';
-			echo JText::_('Assigning Referees needs the following selection to be left untouched!');
+			echo Text::_('Assigning Referees needs the following selection to be left untouched!');
 			?>
 		</p>
 		<?php

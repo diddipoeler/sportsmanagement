@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
@@ -73,7 +73,7 @@ echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'
 <?PHP    
 foreach ($fieldsets as $fieldset) 
 {
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', $fieldset->name, Text::_($fieldset->label, true));    
 
 switch ($fieldset->name)
 {

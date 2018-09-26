@@ -10,12 +10,13 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 foreach ($this->importData as $key => $value)
 		{
 			?>
 			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
+				<legend><?php echo Text::_($key); ?></legend>
 				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
 			</fieldset>
 			<?php

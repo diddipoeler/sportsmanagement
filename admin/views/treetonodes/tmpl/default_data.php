@@ -39,12 +39,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_('behavior.tooltip');
 
 ?>
 <div id="editcell">
-<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 <?php
 //$style = $this->style;
 //$path=$this->path;

@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 JHtml::_( 'behavior.tooltip' );
 
@@ -24,7 +25,7 @@ JHtml::_( 'behavior.tooltip' );
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid  );
+				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_2', $this->projectid  );
 				?>
 			</legend>
 
@@ -32,20 +33,20 @@ JHtml::_( 'behavior.tooltip' );
 <thead>
 <tr>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_3' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_3' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_4' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_4' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_5' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_5' ); ?>
 </th>
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_6' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_6' ); ?>
 </th>
 
 <th class="title" nowrap="nowrap" style="vertical-align:top; ">
-<?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_7' ); ?>
+<?PHP echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_7' ); ?>
 </th>
 
 

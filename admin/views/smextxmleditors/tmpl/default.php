@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -61,7 +61,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 <!-- <fieldset class="adminform"> -->
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML'); ?></legend>
 
 <table class="<?php echo $this->table_data_class; ?>">
 <?PHP
@@ -79,7 +79,7 @@ foreach ( $this->files as $file )
                     <td class="center" nowrap="nowrap">
 								<a	href="<?php echo $link; ?>" >
                                     <?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
+									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>

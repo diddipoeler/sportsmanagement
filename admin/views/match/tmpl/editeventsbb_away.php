@@ -11,19 +11,19 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 ?>
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( $this->teams->team2 ); 
+				echo Text::_( $this->teams->team2 ); 
 				?>
 			</legend>
 	<table class='adminlist'>
 		<thead>
 			<tr>
 				<th style="text-align: left; width: 10px;"></th>
-				<th style="text-align: left; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_PERSON' ); ?></th>
+				<th style="text-align: left; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_PERSON' ); ?></th>
 				<?php
 				foreach ( $this->events as $ev)
 				{
@@ -32,11 +32,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 					<?php
 					if ( JFile::exists(JPATH_SITE.DS.$ev->icon ) )
 					{
-						$imageTitle = JText::sprintf( '%1$s', JText::_( $ev->text ) );
+						$imageTitle = Text::sprintf( '%1$s', Text::_( $ev->text ) );
 						$iconFileName = $ev->icon;
 						echo HTMLHelper::_( 'image', $iconFileName, $imageTitle, 'title= "' . $imageTitle . '"' );
 					} else {
-						echo JText::_( $ev->text ) ;
+						echo Text::_( $ev->text ) ;
 					}
 					?>
 					</th>
@@ -61,7 +61,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 						<input type="checkbox" id="cb_a<?php echo $i;?>" name="cid_a<?php echo $i;?>" value="cb_a" onclick="isChecked(this.checked);" />
 						</td>
 						<td style="text-align: left;">
-						<?php echo '('.JText::_($row->positionname).') - '.sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
+						<?php echo '('.Text::_($row->positionname).') - '.sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 14); ?>
 						</td>
 						<?php
 						//total events away player
@@ -75,11 +75,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 							<input type="hidden" name="event_type_id_a_<?php echo $i.'_'.$teap;?>" value="<?php echo $ev->value;?>" />
 							<input type="hidden" name="event_id_a_<?php echo $i.'_'.$teap;?>" value="<?php echo $this->evbb[0]->id;?>" />
 
-                            <input type="text" size="1" class="inputbox" name="event_sum_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="1" class="inputbox" name="event_sum_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_sum > 0) ? $this->evbb[0]->event_sum : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_VALUE_SUM' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
 
-                            <input type="text" size="2" class="inputbox" name="event_time_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="2" class="inputbox" name="event_time_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo (($this->evbb[0]->event_time > 0) ? $this->evbb[0]->event_time : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_TIME' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
 
-                            <input type="text" size="2" class="inputbox" name="notice_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo ((strlen($this->evbb[0]->notice) > 0) ? $this->evbb[0]->notice : '' ); ?>" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
+                            <input type="text" size="2" class="inputbox" name="notice_a_<?php echo $i.'_'.$teap; ?>" value="<?php echo ((strlen($this->evbb[0]->notice) > 0) ? $this->evbb[0]->notice : '' ); ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EE_MATCH_NOTICE' )?>" onchange="document.getElementById('cb_a<?php echo $i;?>').checked=true" />
                             &nbsp;&nbsp;
                             </td>
 

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
@@ -21,7 +22,7 @@ HTMLHelper::_('behavior.modal');
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="40" class="">
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
@@ -63,31 +64,31 @@ HTMLHelper::_('behavior.modal');
 						echo HTMLHelper::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE','p.project_type',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-                    <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+                    <th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
 					<th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
 						?>
 					</th>
                     <th class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
+						echo Text::_('COM_SPORTSMANAGEMENT_D_MENU_TEAMS');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_ROUND');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_DIVISION');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USER_FIELD');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USER_FIELD');
 						?>
 					</th>
                     
@@ -111,12 +112,12 @@ HTMLHelper::_('behavior.modal');
                     
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_LABEL');
 						?>
 					</th>
                     <th width="" class="title">
 						<?php
-						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						echo Text::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
 						?>
 					</th>
                     
@@ -165,7 +166,7 @@ HTMLHelper::_('behavior.modal');
 									<?php else: ?>
 								<a href="<?php echo $link; ?>">
                                 <?php
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
@@ -184,7 +185,7 @@ HTMLHelper::_('behavior.modal');
 							
 							?>
                             <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 						</td>
 						<td>
 							<?php 
@@ -214,7 +215,7 @@ echo $row->league.'<br>';
                         
 						<td class="center">
                         <?php 
-                        echo JText::_($row->sportstype); 
+                        echo Text::_($row->sportstype); 
                         ?>
                         </td>
                         
@@ -247,13 +248,13 @@ echo $row->league.'<br>';
 								<?php
 								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
 								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
 								{
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 								}
@@ -274,7 +275,7 @@ echo $row->league.'<br>';
                         <td class="center">
 							<?php if ($row->current_round): ?>
 								<?php echo HTMLHelper::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
-								                       HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
+								                       HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
 						<td class="center">
@@ -299,7 +300,7 @@ echo $row->league.'<br>';
                         for ($a=0; $a < sizeof($teile); $a++ )
                         {
                         echo HTMLHelper::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,
-			HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($teile[$a]))).'<br>';
+			HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))).'<br>';
 			}
                         if ( $this->state->get('filter.userfields') )
                         {

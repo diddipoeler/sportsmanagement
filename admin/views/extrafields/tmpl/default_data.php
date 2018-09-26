@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 'objcountry.ordering');
 
@@ -52,7 +54,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
@@ -161,7 +163,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
+						<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->name));?></p>
 							</td>
 							<?php
 						

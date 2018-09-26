@@ -38,9 +38,10 @@
 */
   
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>			
 <fieldset class="adminform">
-	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP'); ?>
+	<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MP'); ?>
 	</legend>
 	<table class="admintable">
 			<?php 

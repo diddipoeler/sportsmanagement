@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
  
 /**
  *  View
@@ -69,7 +70,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
 		$canDo = sportsmanagementHelper::getActions();
-		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
+		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
 		if ($canDo->get('core.admin')) 
 		{
 			JToolbarHelper::divider();           
@@ -85,7 +86,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	protected function setDocument() 
 	{
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
+		$document->setTitle(Text::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
 	}
 	
 	/**

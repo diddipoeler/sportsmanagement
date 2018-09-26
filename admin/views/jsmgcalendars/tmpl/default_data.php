@@ -2,20 +2,20 @@
 
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 JHtml::_('behavior.tooltip');
 ?>
 
 	<table class="<?php echo $this->table_data_class; ?>">
 		<thead>
 			<tr>
-				<th width="5"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_ID_LABEL' ); ?></th>
+				<th width="5"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_ID_LABEL' ); ?></th>
 				<th width="20"><input type="checkbox" name="toggle" value=""
 					onclick="checkAll(<?php echo count( $this->items ); ?>);" /></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_COLOR_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CALENDAR_ID_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION' ); ?></th>
+				<th><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_LABEL' ); ?></th>
+				<th><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_COLOR_LABEL' ); ?></th>
+				<th><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CALENDAR_ID_LABEL' ); ?></th>
+				<th><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,11 +34,11 @@ JHtml::_('behavior.tooltip');
 				<td style="border: 0;"><?php echo urldecode($item->calendar_id); ?></td>
 				<td style="border: 0;"><?php
 				if(!empty($item->magic_cookie)){
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_MAGIC_COOKIE_LABEL');
+					echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_MAGIC_COOKIE_LABEL');
 				} else if(!empty($item->username)){
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_USERNAME');
+					echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_USERNAME');
 				} else {
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_NO');
+					echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_NO');
 				}
 				?></td>
 			</tr>

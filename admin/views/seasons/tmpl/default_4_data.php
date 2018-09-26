@@ -38,7 +38,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 's.ordering');
 
@@ -55,7 +55,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -124,10 +124,10 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         <td class="center" nowrap="nowrap">
                         <?php
                         $image = 'teams.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
                         echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignteams, $modalwidth, $modalheight);
                         $image = 'players.png';
-                        $title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
+                        $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
                         echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignpersons, $modalwidth, $modalheight);
                         ?>							
                         </td>
@@ -150,7 +150,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
 
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
-    <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+    <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
                     </td>
                     <td class="center">
                         <div class="btn-group">

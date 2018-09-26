@@ -10,17 +10,17 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
 	
 	<fieldset>
-	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_COPY_DEST')?></legend>
+	<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_COPY_DEST')?></legend>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-				<label for="dest"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_PROJECT' ).':'; ?></label>
+				<label for="dest"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_PROJECT' ).':'; ?></label>
 			</td>
 			<td>
 				<?php echo $this->lists['projects']; ?>

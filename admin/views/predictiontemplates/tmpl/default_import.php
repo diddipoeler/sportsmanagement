@@ -9,7 +9,9 @@
  * @subpackage predictiontemplates
  */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
+?>
 <script type="text/javascript">
 <!--
 window.addEvent('domready', function()
@@ -28,13 +30,13 @@ window.addEvent('domready', function()
 	<form method="post" name="importform" id="importform">
 		<p>
 			<?php
-			echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_INHERITS_SETTINGS',
+			echo Text::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_INHERITS_SETTINGS',
 									$this->predictiongame->name );
 			?>
 		</p>
 		<p>
 			<?php
-			echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_OVERRIDES_SETTINGS' );
+			echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PTMPLS_OVERRIDES_SETTINGS' );
 			?>
 		</p>
 		<?php

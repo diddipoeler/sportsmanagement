@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'obj.ordering');
 
@@ -24,7 +24,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="20">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -34,7 +34,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_EVENTS_STANDARD_NAME_OF_EVENT', 'obj.name', $this->sortDirection, $this->sortColumn);
                     ?>
                 </th>
-                <th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TRANSLATION'); ?></th>
+                <th width=""><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TRANSLATION'); ?></th>
                 <th width="10%">
                     <?php
                     echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_EVENTS_ICON', 'obj.icon', $this->sortDirection, $this->sortColumn);
@@ -114,28 +114,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
                         <?php //echo $row->name;  ?>
                         <p class="smallsub">
-                        <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
+                        <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></p>
                     </td>
                             <?php ?>
 
                     <td>
                     <?php
-                    if ($row->name == JText::_($row->name)) {
+                    if ($row->name == Text::_($row->name)) {
                         echo '&nbsp;';
                     } else {
-                        echo JText::_($row->name);
+                        echo Text::_($row->name);
                     }
                     ?>
                     </td>
                     <td class="center">
                         <?php
-                        $desc = JText::_($row->name);
+                        $desc = Text::_($row->name);
                         echo sportsmanagementHelper::getPictureThumb($row->icon, $desc, 0, 21, 4);
                         ?>
                     </td>
                     <td class="center">
     <?php
-    echo JText::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id));
+    echo Text::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id));
     ?>
                     </td>
                     <td class="center">

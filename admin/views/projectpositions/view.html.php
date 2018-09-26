@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 /**
  * sportsmanagementViewprojectpositions
  * 
@@ -54,7 +54,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $items = $this->get('Items');
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         $total = $this->get('Total');
@@ -106,7 +106,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $items = $this->get('Items');
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         //build the html select list for project assigned positions
@@ -117,7 +117,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $lists = array();
         if ($items) {
             foreach ($items as $item) {
-                $project_positionslist[] = HTMLHelper::_('select.option', $item->id, JText::_($item->name));
+                $project_positionslist[] = HTMLHelper::_('select.option', $item->id, Text::_($item->name));
             }
             $lists['project_positions'] = HTMLHelper::_('select.genericlist', $project_positionslist, 'project_positionslist[]', 'style="width:250px; height:250px;" class="inputbox" multiple="true" size="' . max(15, count($items)) . '"', 'value', 'text');
         } else {
@@ -133,18 +133,18 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
             if ($ress) {
                 foreach ($ress1 as $res1) {
                     if (!in_array($res1, $ress)) {
-                        $res1->text = JText::_($res1->text);
+                        $res1->text = Text::_($res1->text);
                         $notusedpositions[] = $res1;
                     }
                 }
             } else {
                 foreach ($ress1 as $res1) {
-                    $res1->text = JText::_($res1->text);
+                    $res1->text = Text::_($res1->text);
                     $notusedpositions[] = $res1;
                 }
             }
         } else {
-            JError::raiseWarning('ERROR_CODE', '<br />' . JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />');
+            JError::raiseWarning('ERROR_CODE', '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_ASSIGN_POSITIONS_FIRST') . '<br /><br />');
         }
 
         //build the html select list for positions
@@ -184,9 +184,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
 
-        sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
+        sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 
         parent::addToolbar();
     }
@@ -197,9 +197,9 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar_Editlist() {
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
         JToolbarHelper::save('projectposition.save_positionslist');
-        JToolbarHelper::cancel('projectposition.cancel', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
+        JToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
         parent::addToolbar();
     }
 

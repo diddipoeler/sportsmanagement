@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewjoomleagueimport
@@ -145,7 +146,7 @@ $document->addScriptDeclaration( $javascript );
         
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
-        JToolbarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
+        JToolbarHelper::title(Text::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		//parent::display($tpl);
 	}
@@ -170,15 +171,15 @@ $document->addScriptDeclaration( $javascript );
         $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
         $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');
         
-        $nation[] = HTMLHelper::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
+        $nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
 		if ($res = $model->getImportPositions('sportsmanagement'))
         {
             $nation = array_merge($nation, $res);
             }
 		
-        $whichtable[] = HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
-        $whichtable[] = HTMLHelper::_('select.option', 'project_position', JText::_('project_position'));
-        $whichtable[] = HTMLHelper::_('select.option', 'person', JText::_('person'));
+        $whichtable[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
+        $whichtable[] = HTMLHelper::_('select.option', 'project_position', Text::_('project_position'));
+        $whichtable[] = HTMLHelper::_('select.option', 'person', Text::_('person'));
         
         $lists['whichtable'] = HTMLHelper::Select::genericlist(	$whichtable,
 																'filter_which_table',
@@ -190,9 +191,9 @@ $document->addScriptDeclaration( $javascript );
         
         $this->lists	= $lists;
         
-        JToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
-        JToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
-        JToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
+        JToolbarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
         
     }
 

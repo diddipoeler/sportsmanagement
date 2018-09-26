@@ -11,8 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
-//jimport( 'joomla.application.component.view' );
 
 
 /**
@@ -70,7 +70,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		
 		$model = $this->getModel('project');
 		$mdlTreetonodes = JModelLegacy::getInstance("Treetonodes", "sportsmanagementModel");
-		$team_id[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+		$team_id[] = JHtml::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 		if( $projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid) )
 		{
 			$team_id = array_merge($team_id,$projectteams);

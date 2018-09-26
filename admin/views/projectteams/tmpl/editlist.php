@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_( 'behavior.tooltip' );
 
 ?>
@@ -50,9 +50,9 @@ HTMLHelper::_( 'behavior.tooltip' );
 <fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
-<?php echo JText::_('JCANCEL');?></button>
+<?php echo Text::_('JCANCEL');?></button>
 		</div>
 	</fieldset>
 	<div class="col50">
@@ -61,11 +61,11 @@ HTMLHelper::_( 'behavior.tooltip' );
 				<?php
                 if ( $this->project->project_art_id != 3 )
                 {
-				echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
+				echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
                 }
                 else
                 {
-                echo JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
+                echo Text::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_ASSIGN_TITLE', '<i>' . $this->project->name . '</i>');
                 }
 				?>
 			</legend>
@@ -76,11 +76,11 @@ HTMLHelper::_( 'behavior.tooltip' );
 							<?php
                             if ( $this->project->project_art_id != 3 )
                             {
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_TEAMS' );
                             }
                             else
                             {
-                            echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_PERSONS' );
+                            echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_PERSONS' );
                             }
 							?>
 						</b>
@@ -91,13 +91,13 @@ HTMLHelper::_( 'behavior.tooltip' );
 					</td>
 					<td style="text-align:center; ">
                     
-<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
+<input id="moveright" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
 <br />
-<input id="moverightall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
+<input id="moverightall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
 <br />
-<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
+<input id="moveleft" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
 <br />
-<input id="moveleftall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
+<input id="moveleftall" type="button" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
 <br />						
 					</td>
 					<td>
@@ -105,11 +105,11 @@ HTMLHelper::_( 'behavior.tooltip' );
 							<?php
                             if ( $this->project->project_art_id != 3 )
                             {
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_TEAMS' );
                             }
                             else
                             {
-                            echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_PERSONS' );
+                            echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_PERSONS' );
                             }
 							?>
 						</b>

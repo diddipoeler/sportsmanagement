@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 HTMLHelper::_('behavior.tooltip');
 
 
@@ -31,15 +31,15 @@ if($close == 1) {
 
 <div id='alt_massadd_enter' style='display:block'>
 	<fieldset class='adminform'>
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
+		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 		<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
 		<div class="fltrt">
 			<button id="save" type="button" onclick="Joomla.submitform('rounds.massadd', this.form)">
-				<?php echo JText::_('JSAVE');?></button>
+				<?php echo Text::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="Joomla.submitform('rounds.cancel', this.form)">
-				<?php echo JText::_('JCANCEL');?></button>
+				<?php echo Text::_('JCANCEL');?></button>
 		</div>
 		
 	</fieldset>
@@ -48,7 +48,7 @@ if($close == 1) {
 			<input type='hidden' name='task' value='' />
 			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
-				<td class='key' nowrap='nowrap'><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
+				<td class='key' nowrap='nowrap'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td>
                 <input type='text' name='add_round_count' id='add_round_count' value='0' size='3' class='inputbox' />
                 </td>

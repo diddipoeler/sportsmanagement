@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -37,7 +38,7 @@ $attribs['align'] = 'left';
 			  <tr>
 			    <th>
 			      <?php echo HTMLHelper::_('image', $url, $alt, $attribs);; ?>
-			      <?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
+			      <?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TABLE_TITLE_1',$this->config->get('upload_maxsize')); ?>
 			    </th>
 			  </tr>
 			</thead>
@@ -46,9 +47,9 @@ $attribs['align'] = 'left';
 			    <td>
 				<?php
 				echo '<br />';
-				echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_EXTENTION_INFO').'</b><br />';
-				echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT1').'<br />';
-				echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT2',$this->revisionDate);
+				echo '<b>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_EXTENTION_INFO').'</b><br />';
+				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT1').'<br />';
+				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT2',$this->revisionDate);
 				?>
 			    </td>
 			  </tr>
@@ -66,10 +67,10 @@ $attribs['align'] = 'left';
       <fieldset>
       <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_SELECT_USE_PROJECT');
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_SELECT_USE_PROJECT');
 				?>
 			</legend>      
-      <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_USE_PROJECT'); ?>      
+      <input class='input_box' type='checkbox' id='dfbimportupdate' name='dfbimportupdate'  /><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_USE_PROJECT'); ?>      
       </fieldset>
       </td>
       </tr>
@@ -81,12 +82,12 @@ $attribs['align'] = 'left';
       <fieldset>
       <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_WHICH_FILE');
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_WHICH_FILE');
 				?>
 			</legend>
-      <input type="radio" name="whichfile" value="playerfile" checked> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'); ?><br><br>
-      <input type="radio" name="whichfile" value="matchfile"> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'); ?><br><br>
-      <input type="radio" name="whichfile" value="icsfile"> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_ICSFILE'); ?><br>
+      <input type="radio" name="whichfile" value="playerfile" checked> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE'); ?><br><br>
+      <input type="radio" name="whichfile" value="matchfile"> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE'); ?><br><br>
+      <input type="radio" name="whichfile" value="icsfile"> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_ICSFILE'); ?><br>
       </fieldset>
       </td>
       </tr>
@@ -95,7 +96,7 @@ $attribs['align'] = 'left';
       <fieldset>
       <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_WHICH_SEASON');
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_WHICH_SEASON');
 				?>
 			</legend>
      <?PHP
@@ -116,13 +117,13 @@ $attribs['align'] = 'left';
       <fieldset>
       <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER' );
 				?>
 			</legend>
 			
-      <input type="radio" name="delimiter" value=";" checked> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_SEMICOLON'); ?><br><br>
-      <input type="radio" name="delimiter" value=","> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_COMMA'); ?><br><br>
-      <input type="radio" name="delimiter" value="\t"> <?PHP echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_TABULAR'); ?><br>
+      <input type="radio" name="delimiter" value=";" checked> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_SEMICOLON'); ?><br><br>
+      <input type="radio" name="delimiter" value=","> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_COMMA'); ?><br><br>
+      <input type="radio" name="delimiter" value="\t"> <?PHP echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_DELIMITER_TABULAR'); ?><br>
       </fieldset>
       </td>
       </tr>
@@ -136,12 +137,12 @@ $attribs['align'] = 'left';
       <fieldset>
             <legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_FILE' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_FILE' );
 				?>
 			</legend>
 
 				<input class="input_box" id="import_package" name="import_package" type="file" size="57" />
-				<input class="button" type="submit" onclick="return Joomla.submitform('jlextdfbnetplayerimport.save')" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_UPLOAD_BUTTON'); ?>" />
+				<input class="button" type="submit" onclick="return Joomla.submitform('jlextdfbnetplayerimport.save')" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_UPLOAD_BUTTON'); ?>" />
 			</fieldset>
       </td>
       </tr>

@@ -39,6 +39,8 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -53,16 +55,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     switch ($value)
                     {
                         case 'soccer':
-                        echo $this->addIcon('dfbnetimport.png','index.php?option=com_sportsmanagement&view=jlextdfbnetplayerimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT'));
-                        echo $this->addIcon('dfbschluessel.png','index.php?option=com_sportsmanagement&view=jlextdfbkeyimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));
-                        echo $this->addIcon('lmoimport.png','index.php?option=com_sportsmanagement&view=jlextlmoimports', JText::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));
-                        echo $this->addIcon('profleagueimport.png','index.php?option=com_sportsmanagement&view=jlextprofleagimport', JText::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT'));
+                        echo $this->addIcon('dfbnetimport.png','index.php?option=com_sportsmanagement&view=jlextdfbnetplayerimport', Text::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT'));
+                        echo $this->addIcon('dfbschluessel.png','index.php?option=com_sportsmanagement&view=jlextdfbkeyimport', Text::_('COM_SPORTSMANAGEMENT_EXT_DFBKEY'));
+                        echo $this->addIcon('lmoimport.png','index.php?option=com_sportsmanagement&view=jlextlmoimports', Text::_('COM_SPORTSMANAGEMENT_EXT_LMO_IMPORT'));
+                        echo $this->addIcon('profleagueimport.png','index.php?option=com_sportsmanagement&view=jlextprofleagimport', Text::_('COM_SPORTSMANAGEMENT_EXT_PROF_LEAGUE_IMPORT'));
                         break;
                         case 'basketball':
-                        echo $this->addIcon('dbbimport.png','index.php?option=com_sportsmanagement&view=jlextdbbimport', JText::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));
+                        echo $this->addIcon('dbbimport.png','index.php?option=com_sportsmanagement&view=jlextdbbimport', Text::_('COM_SPORTSMANAGEMENT_EXT_DBB_IMPORT'));
                         break;
                         case 'handball':
-                        echo $this->addIcon('sisimport.png','index.php?option=com_sportsmanagement&view=jlextsisimport', JText::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'));
+                        echo $this->addIcon('sisimport.png','index.php?option=com_sportsmanagement&view=jlextsisimport', Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT'));
                         break;
                         default:
                         break;

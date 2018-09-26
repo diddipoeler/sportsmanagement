@@ -39,8 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.view');
+use Joomla\CMS\Language\Text;
 
 
 /**
@@ -76,8 +75,8 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
-        JToolbarHelper::custom('jlxmlexports.export', 'upload', 'upload', JText::_('JTOOLBAR_EXPORT'), false);
+        JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
+        JToolbarHelper::custom('jlxmlexports.export', 'upload', 'upload', Text::_('JTOOLBAR_EXPORT'), false);
         parent::addToolbar();
         
         }

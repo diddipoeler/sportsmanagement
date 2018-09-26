@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Language\Text;
 
 /**
  * This view is displayed after successfull saving of config data.
@@ -45,7 +46,7 @@ Joomla.renderMessages( msg );
         switch($this->jsminfo)
         {
             case 'truncate':
-            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->app->isAdmin(),true).'</pre>'),'');
+            $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->app->isAdmin(),true).'</pre>'),'');
             break;
         }
         

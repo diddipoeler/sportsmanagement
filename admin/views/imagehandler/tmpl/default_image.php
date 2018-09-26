@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+
 ?>
 		<div class="container-fluid">
 				<div align="center" class="imgBorder">
@@ -24,7 +26,7 @@ use Joomla\CMS\Uri\Uri;
 			<div class="controls">
 				<?php echo $this->_tmp_img->size; ?> -
 				<a class="delete-item" href="index.php?option=com_sportsmanagement&amp;task=imagehandler.delete&amp;&amp;tmpl=component&amp;type=<?php echo $this->type; ?>&amp;rm[]=<?php echo $this->_tmp_img->name; ?>">
-					<img src="<?php echo Uri::root(); ?>/media/com_sportsmanagement/jl_images/publish_x.png" width="16" height="16" border="0" alt="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_DEL_IMG' ); ?>" />
+					<img src="<?php echo Uri::root(); ?>/media/com_sportsmanagement/jl_images/publish_x.png" width="16" height="16" border="0" alt="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_DEL_IMG' ); ?>" />
 				</a>
 			</div>
 			<div class="imageinfo">

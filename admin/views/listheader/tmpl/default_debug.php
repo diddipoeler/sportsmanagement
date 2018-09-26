@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 //echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
 ?>
 
@@ -24,7 +25,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
             "active" => "slide2_id" // It is the ID of the active tab.
         );    
 echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id1', $slidesOptions);
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id1', JText::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id1', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info');
 
 echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id2', $slidesOptions);
 $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
@@ -32,12 +33,12 @@ $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
 
 for($a=0; $a < sizeof($array_schluessel); $a++ )
 {
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id2', JText::_($array_schluessel[$a]), 'debug_info_text');
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id2', Text::_($array_schluessel[$a]), 'debug_info_text');
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
 <fieldset>
-<legend><?php echo JText::_($row->methode); ?></legend>
+<legend><?php echo Text::_($row->methode); ?></legend>
 <table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
 </fieldset>
 <?php
@@ -64,18 +65,18 @@ $options = array(
     'useCookie' => true, // this must not be a string. Don't use quotes.
 );    
 echo HTMLHelper::_('sliders.start', 'debug_info',$options);   
-echo HTMLHelper::_('sliders.panel', JText::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info'); 
+echo HTMLHelper::_('sliders.panel', Text::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info'); 
 $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
 
 echo HTMLHelper::_('sliders.start', 'debug_info_text',$options);
 for($a=0; $a < sizeof($array_schluessel); $a++ )
 {
-echo HTMLHelper::_('sliders.panel', JText::_($array_schluessel[$a]), 'debug_info_text');
+echo HTMLHelper::_('sliders.panel', Text::_($array_schluessel[$a]), 'debug_info_text');
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
 			<fieldset>
-				<legend><?php echo JText::_($row->methode); ?></legend>
+				<legend><?php echo Text::_($row->methode); ?></legend>
 				<table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
 			</fieldset>
 			<?php

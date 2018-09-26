@@ -39,6 +39,7 @@
  
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -50,7 +51,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				<?php 
                 foreach ( $this->Extensions as $key => $value )
                 {
-                        echo $this->addIcon('extensions.png','index.php?option=com_sportsmanagement&view='.$value.'', JText::_($value));
+                        echo $this->addIcon('extensions.png','index.php?option=com_sportsmanagement&view='.$value.'', Text::_($value));
                 }
                 ?>
 

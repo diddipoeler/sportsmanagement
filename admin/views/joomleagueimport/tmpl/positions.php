@@ -40,6 +40,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -53,11 +55,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             <?php echo $this->lists['whichtable']; ?>
             </tr>
 				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="5"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
 
-                    <th width="" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_JOOMLEAGUE_POSITIONS'); ?></th>
-                    <th width="" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_POSITIONS'); ?></th>
+                    <th width="" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_JOOMLEAGUE_POSITIONS'); ?></th>
+                    <th width="" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_SPORTSMANAGEMENT_POSITIONS'); ?></th>
                     </tr>
             </thead>        
             <tbody>

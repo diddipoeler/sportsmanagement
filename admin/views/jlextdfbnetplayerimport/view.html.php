@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-
+use Joomla\CMS\Language\Text;
 jimport ( 'joomla.application.component.view' );
 
 
@@ -50,12 +50,12 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->revisionDate	= $revisionDate ;
 		//build the html select list for seasons
-		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+		$seasons[]	= JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
         
         if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
         }
         
 		$allSeasons = $mdlSeasons->getSeasons();
@@ -166,7 +166,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
+		JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
         JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();

@@ -39,11 +39,12 @@
 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>			
 		<fieldset class="adminform">
 			<legend>
 				<?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD' );
+				echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD' );
 				?>
 			</legend>
 			<br/>
@@ -75,7 +76,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							<?php
 							if ( $this->table_config['alternative_legs'] == '' )
 							{
-								echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS' );
+								echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SETS' );
 							}
 							else
 							{
@@ -103,7 +104,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td class="key">
 						<label>
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_BONUS' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_BONUS' );
 							?>
 						</label>
 					</td>
@@ -124,7 +125,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<td class="key">
 						<label for="match_result_detail">
 							<?php
-							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SCORE_NOTICE' );
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_SD_SCORE_NOTICE' );
 							?>
 						</label>
 					</td>

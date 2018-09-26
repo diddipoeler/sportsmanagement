@@ -44,6 +44,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // Include the component HTML helpers.
@@ -96,11 +98,11 @@ if ( $this->tmpl )
 			<fieldset>
 				<div class="fltrt">
 					<button type="button" onclick="Joomla.submitform('club.apply', this.form);">
-						<?php echo JText::_('JAPPLY');?></button>
+						<?php echo Text::_('JAPPLY');?></button>
 					<button type="button" onclick="Joomla.submitform('club.save', this.form);">
-						<?php echo JText::_('JSAVE');?></button>
+						<?php echo Text::_('JSAVE');?></button>
 					<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-						<?php echo JText::_('JCANCEL');?></button>
+						<?php echo Text::_('JCANCEL');?></button>
 				
                 
                 </div>
@@ -117,7 +119,7 @@ if ( !$this->item->id && $this->view == 'club' )
                     
                 ?>
                 <fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
                 <input type="checkbox" name="createTeam" />
                 </fieldset>
                 <?PHP

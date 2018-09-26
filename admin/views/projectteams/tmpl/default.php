@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -36,7 +36,7 @@ echo $this->loadTemplate('joomla2');
 }
 ?>
 <div>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?> 
+<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?> 
 </div>
 <div>
 <script type="text/javascript">
@@ -90,7 +90,7 @@ echo HTMLHelper::_('select.genericlist',$this->lists['country_teams'],'team_id',
 'style="width:225px;" class="test1" size="6"'.$append,'value','text',0);
     }
 ?>
-<input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
+<input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
 </div>
 <?PHP
 if ( $this->project_art_id != 3 )
@@ -105,7 +105,7 @@ echo $this->loadTemplate('teams');
 else
 {
 echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
 
@@ -122,7 +122,7 @@ echo $this->loadTemplate('persons');
 else
 {
 echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo Text::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }
   

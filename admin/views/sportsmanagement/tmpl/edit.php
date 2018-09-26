@@ -39,7 +39,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
@@ -50,7 +50,7 @@ $params = $this->form->getFieldsets('params');
  
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_( 'COM_HELLOWORLD_HELLOWORLD_DETAILS' ); ?></legend>
+			<legend><?php echo Text::_( 'COM_HELLOWORLD_HELLOWORLD_DETAILS' ); ?></legend>
 			<ul class="adminformlist">
 <?php foreach($this->form->getFieldset('details') as $field): ?>
 				<li><?php echo $field->label;echo $field->input;?></li>
@@ -61,9 +61,9 @@ $params = $this->form->getFieldsets('params');
 	<div class="width-40 fltrt">
 		<?php echo HTMLHelper::_('sliders.start', 'sportsmanagement-slider'); ?>
 <?php foreach ($params as $name => $fieldset): ?>
-		<?php echo HTMLHelper::_('sliders.panel', JText::_($fieldset->label), $name.'-params');?>
+		<?php echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $name.'-params');?>
 	<?php if (isset($fieldset->description) && trim($fieldset->description)): ?>
-		<p class="tip"><?php echo $this->escape(JText::_($fieldset->description));?></p>
+		<p class="tip"><?php echo $this->escape(Text::_($fieldset->description));?></p>
 	<?php endif;?>
 		<fieldset class="panelform" >
 			<ul class="adminformlist">

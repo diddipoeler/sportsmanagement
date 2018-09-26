@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 JFactory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
 JHtml::_('behavior.tooltip');
 
@@ -67,10 +67,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div class="well well-small">   
 <div class="module-title nav-header">
 <h2>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_WELCOME') ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_WELCOME') ?>
 </h2>
 <p>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_INTRO'); ?>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_INTRO'); ?>
 </p> 
 
 </div>
@@ -78,16 +78,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <div id="dashboard-icons" class="btn-group">
 
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendars">
-<img src="components/com_sportsmanagement/assets/images/48-calendar.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?></span>
+<img src="components/com_sportsmanagement/assets/images/48-calendar.png" width="50px"height="50px" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendarimport&layout=login">
-<img src="components/com_sportsmanagement/assets/images/admin/import.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?></span>
+<img src="components/com_sportsmanagement/assets/images/admin/import.png" width="50px"height="50px" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?></span>
 </a>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendar&layout=edit">
-<img src="components/com_sportsmanagement/assets/images/admin/add.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?></span>
+<img src="components/com_sportsmanagement/assets/images/admin/add.png" width="50px"height="50px" alt="<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?>" /><br />
+<span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?></span>
 </a>
 
      
@@ -103,20 +103,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						</div>
 						<hr class="hr-condensed">
 						<dl class="dl-horizontal">
-							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
-							<dd><?php echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
+							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_VERSION') ?>:</dt>
+							<dd><?php echo Text::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); ?></dd>
                             
-							<dt><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
-							<dd><?php echo JText::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
+							<dt><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPERS') ?>:</dt>
+							<dd><?php echo Text::_('COM_SPORTSMANAGEMENT_DEVELOPER_TEAM'); ?></dd>
 
 							
-                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
+                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>:</dt>
 							<dd><a href="http://www.fussballineuropa.de" target="_blank">fussballineuropa</a></dd>
 							
-                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
+                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_COPYRIGHT') ?>:</dt>
 							<dd>&copy; 2014 fussballineuropa, All rights reserved.</dd>
 							
-                            <dt><?php echo JText::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
+                            <dt><?php echo Text::_('COM_SPORTSMANAGEMENT_LICENSE') ?>:</dt>
 							<dd>GNU General Public License</dd>
 						</dl>
 					</div>

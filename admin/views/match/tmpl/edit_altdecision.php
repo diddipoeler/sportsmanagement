@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 ?>		
 
 <script type="text/javascript">
@@ -67,22 +68,22 @@ function toggle_altdecision() {
 </script>
 		<!-- Alt decision table START -->
 			<fieldset class="adminform">
-				<legend><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD' );?>
+				<legend><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD' );?>
 				</legend>
 				<table class='admintable'>
 					<tr>
-						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL' );?></td>
+						<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL' );?></td>
 						<td><?php echo $this->lists['count_result'];?></td>
 					</tr>
 					<tr>
-						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC' );?></td>
+						<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC' );?></td>
 						<td colspan="2">
 							<select	name="alt_decision" id="alt_decision">
 								<option	value="0"<?php if ( $this->match->alt_decision == 0 ){echo ' selected="selected"'; } ?>>
-									<?php echo JText::_('JNO');?>
+									<?php echo Text::_('JNO');?>
 								</option>
 								<option	value="1"<?php if ($this->match->alt_decision==1) echo ' selected="selected"' ?>>
-									<?php echo JText::_( 'JYES' );?>
+									<?php echo Text::_( 'JYES' );?>
 								</option>
 							</select>
 						</td>
@@ -92,7 +93,7 @@ function toggle_altdecision() {
 							<div id="alt_decision_enter" style="display:<?php echo ( $this->match->alt_decision == 0 ) ? 'none' : 'block'; ?>">
 								<table class='adminForm' cellpadding='0' cellspacing='7' border='0'>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->hometeam; ?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->hometeam; ?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team1_result_decision" name="team1_result_decision"
 													size="3"
@@ -100,7 +101,7 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->awayteam;?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->awayteam;?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team2_result_decision" name="team2_result_decision"
 													size="3" value="<?php
@@ -109,7 +110,7 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE' );?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_REASON_NEW_SCORE' );?></td>
 										<?php
 										if ( is_null( $this->match->team1_result ) or ( $this->match->alt_decision == 0 ) )
 										{
@@ -123,7 +124,7 @@ function toggle_altdecision() {
 										</td>
 									</tr>
 									<tr>
-										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON' );?></td>
+										<td class="key"><?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_TEAM_WON' );?></td>
 										<td><?php echo $this->lists['team_won']; ?></td>
 									</tr>
 								</table>

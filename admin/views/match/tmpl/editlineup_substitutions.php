@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 ?>
 <script type="text/javascript">
 
@@ -21,24 +21,24 @@ use Joomla\CMS\HTML\HTMLHelper;
 	<!-- Don't remove this "<div id"ajaxresponse"></div> as it is neede for ajax changings -->
 	<div id="ajaxresponse" >&nbsp;</div>
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_SUBST'); ?></legend>
 			<table class='adminlist' id="table-substitutions">
 				<thead>
 					<tr>
 						<th>
 							<?php
-							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',JText::_('Out'));
-							echo '&nbsp;'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/out.png',Text::_('Out'));
+							echo '&nbsp;'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_OUT');
 							?>
 						</th>
 						<th>
 							<?php
-							echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
-							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',JText::_('In'));
+							echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_IN').'&nbsp;';
+							echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets/images/in.png',Text::_('In'));
 							?>
 						</th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
-						<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_TIME'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_POS'); ?></th>
+						<th><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELUSUBST_TIME'); ?></th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
@@ -69,7 +69,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 								?>
 							</td>
 							<td>
-								<?php echo JText::_($substitution->in_position); ?>
+								<?php echo Text::_($substitution->in_position); ?>
 							</td>
 							<td>
 								<?php
@@ -79,7 +79,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 							</td>
 							<td>
 								<input	id="deletesubst-<?php echo $substitution->id; ?>" type="button" class="inputbox button-delete-subst"
-										value="<?php echo JText::_('JTOOLBAR_REMOVE'); ?>" />
+										value="<?php echo Text::_('JTOOLBAR_REMOVE'); ?>" />
 							</td>
 						</tr>
 						<?php
@@ -93,7 +93,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 						<td><?php echo $this->lists['projectpositions']; ?></td>
 						<td><input type="text" size="3" id="in_out_time" name="in_out_time" class="inputbox" /></td>
 						<td>
-						<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo JText::_('JTOOLBAR_APPLY'); ?>" />
+						<input id="save-new-subst" type="button" class="inputbox button-save-subst" value="<?php echo Text::_('JTOOLBAR_APPLY'); ?>" />
 						</td>
 					</tr>
 				</tbody>

@@ -1,12 +1,14 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-JToolbarHelper::title( JText::_( JText::_( 'DFB-Keys Mass-Add' ) ) );
+JToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
 
 $edit        = JFactory::getApplication()->input->getVar('edit',true);
-$text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
+$text = !$edit ? Text::_( 'New' ) : Text::_( 'Edit' );
 
 JToolbarHelper::save();
 

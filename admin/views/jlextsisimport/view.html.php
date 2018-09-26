@@ -46,8 +46,6 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         }
        
 		// Set toolbar items for the page
-		//JToolbarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
-		//JToolbarHelper::help ( 'screen.joomleague', true );
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');

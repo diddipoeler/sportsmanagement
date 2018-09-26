@@ -39,8 +39,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
-//jimport('joomla.application.component.view');
 
 /**
  * sportsmanagementViewsmimageimports
@@ -79,7 +79,7 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 		//$lists['state'] = JHtml::_('grid.state',$filter_state);
         
         //build the html select list
-		$folders[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
+		$folders[] = JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
         $allfolders = $this->model->getXMLFolder();
 		$folders = array_merge($folders,$allfolders);
 		$lists['folders'] = JHtml::_( 'select.genericList', 
@@ -118,9 +118,9 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 		$jinput = JFactory::getApplication()->input;
         // Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
+		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
 		$this->icon = 'images-import';
-		JToolbarHelper::custom('smimageimports.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::custom('smimageimports.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
 		JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolbarHelper::preferences($jinput->getCmd('option'));

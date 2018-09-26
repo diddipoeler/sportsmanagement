@@ -40,14 +40,14 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
         //build the html options for parent position
         		$parent_id = array();
-		$parent_id[] = HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
 			foreach ($res as $re)
 	{
-	$re->text = JText::_($re->text);
+	$re->text = Text::_($re->text);
 	}
 			$parent_id = array_merge($parent_id,$res);
 		}

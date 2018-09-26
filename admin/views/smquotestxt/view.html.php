@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewsmquotestxt
@@ -82,7 +82,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
+        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
         

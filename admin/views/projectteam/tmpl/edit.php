@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
@@ -58,7 +58,7 @@ $fieldsets = $this->form->getFieldsets();
 
 <div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
+			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('details') as $field) :?>
 				<li><?php echo $field->label; ?>
@@ -99,8 +99,8 @@ $fieldsets = $this->form->getFieldsets();
 									 class="modal">
 									<?php
 									echo HTMLHelper::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													Text::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
 									?>
 								</a>
                 
@@ -131,9 +131,9 @@ $startoffset = 0;
 			if ($fieldset->name == 'details') :
 				continue;
 			endif;
-			echo HTMLHelper::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
+			echo HTMLHelper::_('sliders.panel', Text::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+				echo '<p class="tab-description">'.Text::_($fieldset->description).'</p>';
 			endif;
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;

@@ -38,6 +38,8 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 ?>
 
 <!--[if IE]>
@@ -101,9 +103,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id='.$this->match_id.'&team1='.$this->projectteam1_id.'&team2='.$this->projectteam2_id.'&rid='.$this->rid );?>" method="post" name="matrixForm" id="matrixForm">
 
-<fieldset class="adminform"><legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SINGLE_MATCHES_TITLE','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
+<fieldset class="adminform"><legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SINGLE_MATCHES_TITLE','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 <fieldset class="adminform">
-	<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_HINT'); ?>
+	<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATRIX_HINT'); ?>
 </fieldset>
 <?php
 

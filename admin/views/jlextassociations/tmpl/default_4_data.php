@@ -38,6 +38,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'objassoc.ordering');
@@ -52,7 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="1%" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="1%" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="1%" style="vertical-align: top; ">
                     <input  type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
                 </th>
@@ -73,8 +74,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
 
-                <th width="1%" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
-                <th width="1%" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
+                <th width="1%" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
+                <th width="1%" style="vertical-align: top; "><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
 
                 <th width="5%" class="title">
                     <?php
@@ -141,7 +142,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php //echo $checked;  ?>
                         <?php //echo $row->name;  ?>
                         <div class="small">
-                            <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
                     </td>
                     <?php ?>
 

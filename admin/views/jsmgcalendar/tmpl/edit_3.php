@@ -20,7 +20,7 @@
  */
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Language\Text;
 GCalendarUtil::loadLibrary();
 
 JHtml::_('behavior.tooltip');
@@ -35,7 +35,7 @@ $input = JFactory::getApplication()->input;
 		if (task == 'gcalendar.cancel' || document.formvalidator.isValid(document.id('gcalendar-form'))) {
 			Joomla.submitform(task, document.getElementById('gcalendar-form'));
 		} else {
-			alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
+			alert('<?php echo $this->escape(Text::_('JGLOBAL_VALIDATION_FORM_FAILED'));?>');
 		}
 	}
 </script>
@@ -44,7 +44,7 @@ $input = JFactory::getApplication()->input;
 		<!-- Begin Content -->
 		<div class="span10 form-horizontal">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#general" data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_GCALENDAR_VIEW_GCALENDAR_DETAILS') : JText::sprintf('COM_GCALENDAR_VIEW_GCALENDAR_DETAILS', $this->item->id); ?></a></li>
+				<li class="active"><a href="#general" data-toggle="tab"><?php echo empty($this->item->id) ? Text::_('COM_GCALENDAR_VIEW_GCALENDAR_DETAILS') : Text::sprintf('COM_GCALENDAR_VIEW_GCALENDAR_DETAILS', $this->item->id); ?></a></li>
 			</ul>
 			<div class="tab-content">
 				<!-- Begin Tabs -->
@@ -118,7 +118,7 @@ $input = JFactory::getApplication()->input;
 		<!-- End Content -->
 		<!-- Begin Sidebar -->
 		<div class="span2">
-			<h4><?php echo JText::_('JDETAILS');?></h4>
+			<h4><?php echo Text::_('JDETAILS');?></h4>
 			<hr />
 			<fieldset class="form-vertical">
 				<div class="control-group">
@@ -149,5 +149,5 @@ $input = JFactory::getApplication()->input;
 </form>
 
 <div align="center" style="clear: both">
-	<?php echo sprintf(JText::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

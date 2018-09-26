@@ -38,6 +38,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.modal');
 $view = $this->jinput->getVar("view");
@@ -66,16 +67,16 @@ $cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('opti
 
 <div id="j-main-container" class="j-toggle-main span12 center" >      
 
-    <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target= "_blank" href="http://www.fussballineuropa.de">
+    <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target= "_blank" href="http://www.fussballineuropa.de">
         <img src= "<?php echo JURI::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>            
     <br />
-<?php echo JText::_("COM_SPORTSMANAGEMENT_DESC"); ?>
+<?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br />      
-    <?php echo JText::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy; 
+    <?php echo Text::_("COM_SPORTSMANAGEMENT_COPYRIGHT"); ?> : &copy; 
     <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
     <br />      
-    <?php echo JText::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :       
-<?php echo JText::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?> 
+    <?php echo Text::_("COM_SPORTSMANAGEMENT_VERSION"); ?> :       
+<?php echo Text::sprintf('%1$s', sportsmanagementHelper::getVersion()); ?> 
     <br />
 
     Bug-Tracker <a href="javascript:openLink('<?php echo $cfg_bugtracker_server; ?>')">Bug-Tracker</a>

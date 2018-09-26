@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementViewjlextdbbimport
@@ -146,7 +147,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
+		JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
         
         parent::addToolbar();
 

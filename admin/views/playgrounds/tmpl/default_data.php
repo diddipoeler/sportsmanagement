@@ -38,6 +38,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 //Ordering allowed ?
 $ordering = ($this->sortColumn == 'v.ordering');
 
@@ -50,7 +52,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <table class="<?php echo $this->table_data_class; ?>">
         <thead>
             <tr>
-                <th width="1%" class="nowrap center hidden-phone"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+                <th width="1%" class="nowrap center hidden-phone"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
                 <th width="1%" class="nowrap center">
                     <input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
                 </th>
@@ -80,13 +82,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     ?>
                 </th>
                 <th width="1%" class="nowrap hidden-phone">
-                    <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CITY'); ?>
+                    <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CITY'); ?>
                 </th>
                 <!-- <th width="1%" class="hidden-phone">
-                    <?php //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LATITUDE'); ?>
+                    <?php //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LATITUDE'); ?>
                 </th>
                 <th width="1%" class="hidden-phone">
-                    <?php //echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LONGITUDE'); ?>
+                    <?php //echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_LONGITUDE'); ?>
                 </th>-->
                 <th width="1%" class="hidden-phone">
                     <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_COUNTRY', 'v.country', $this->sortDirection, $this->sortColumn); ?>
@@ -147,7 +149,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php //echo $checked;  ?>
                         <?php //echo $row->name;  ?>
                         <div class="small">
-                            <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
+                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias)); ?></div>
                     </td>
                     <td class="center hidden-phone"><?php echo $row->short_name; ?></td>
                     <td class="hidden-phone"><?php echo $row->club; ?></td>
@@ -157,10 +159,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td width="5%" class="center hidden-phone">
                         <?php
                         if ($row->picture == '') {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
                             echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/delete.png', $imageTitle, 'title= "' . $imageTitle . '"');
                         } elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("team")) {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
                             echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
@@ -168,7 +170,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             </a>
                             <?PHP
                         } elseif ($row->picture !== '') {
-                            $imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
+                            $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
                             echo HTMLHelper::_('image', JURI::base() . '/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
                             <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">

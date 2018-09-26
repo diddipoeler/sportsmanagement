@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Language\Text;
 ?>
 		<!-- round selector START -->
 		<div style="width: 75%; margin-bottom: 14px;">
@@ -33,12 +33,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$lv;
 					$link=JRoute::_('index.php?'.$query);
-					$prevlink=HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
+					$prevlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
 				}
 				else
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH');
+					echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH');
 				}
 				echo '</div>';
 				echo '<div style="float: left; text-align: center; margin-right: 10px; margin-left: 10px;">';
@@ -49,12 +49,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$nv;
 					$link=JRoute::_('index.php?'.$query);
-					$nextlink=HTMLHelper::link($link,JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
+					$nextlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;
 				}
 				else
 				{
-					echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH');
+					echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH');
 				}
 				echo '</div>';
 				?>
