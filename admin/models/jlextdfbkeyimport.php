@@ -134,7 +134,31 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' division_id
 		{
 		$this->jsmquery->where('pt.division_id = ' . $division_id);	
 		}
-		$this->jsmdb->setQuery( $this->jsmquery );
+		
+try {
+$this->jsmdb->setQuery( $this->jsmquery );
+$result = $this->jsmdb->loadObjectList();    
+$number = $this->jsmdb->getNumRows();
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
+			
+if ( $number > 0 )
+{
+return $result;
+}
+else
+{
+return false;
+}
+
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    return false;
+}    
+        /*
+        $this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
 			//$this->setError( $this->_db->getErrorMsg() );
@@ -151,13 +175,7 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre
 			
 		if ( $number > 0 )
 		{
-/*	
-    if ($zahl % 2 != 0) {
-echo "Die Zahl $zahl ist ungerade";
-} else {
-echo "Die Zahl $zahl ist gerade";
-}
-*/
+
     return $result;
     }
     else
@@ -166,6 +184,7 @@ echo "Die Zahl $zahl ist gerade";
     }
 			
 		}
+        */
 	}
 
 /**
