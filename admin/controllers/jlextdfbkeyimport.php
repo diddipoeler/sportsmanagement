@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -76,7 +77,7 @@ function display($cachable = false, $urlparams = false)
     
     $projectid = $model->getProject();
     echo '_loadData projekt -> '.$projektid.'<br>';
-    $msg = JText::sprintf( 'DESCBEINGEDITTED', JText::_( 'The division' ), $projectid );
+    $msg = Text::sprintf( 'DESCBEINGEDITTED', Text::_( 'The division' ), $projectid );
 		$this->setRedirect( 'index.php?option=' . $option., $msg );
 */
 /*    
@@ -109,7 +110,7 @@ function display($cachable = false, $urlparams = false)
     {
     $post = JFactory::getApplication()->input->post->getArray(array());    
     $option = JFactory::getApplication()->input->getCmd('option');    
-     $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20' );
+     $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default&divisionid='.$post['divisionid'];
 		$this->setRedirect( $link, $msg );     
     }
@@ -130,7 +131,7 @@ function display($cachable = false, $urlparams = false)
 // function syntax is setUserState( $key, $value );
 JFactory::getApplication()->setUserState( "$option.first_post", $post );
        
-     $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
+     $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';
 		$this->setRedirect( $link, $msg );  
        
@@ -191,7 +192,7 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
     
     if ( !$row->store() )
 		{
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
         //$this->setError( $this->_db->getErrorMsg() );
 		//return false;
 		}
@@ -199,11 +200,11 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
     /*
     if ( $model->store( $post ) )
 		{
-			$msg = JText::_( 'Matchday added' );
+			$msg = Text::_( 'Matchday added' );
 		}
 		else
 		{
-			$msg = JText::_( 'Error adding Matchday' ) . $model->getError();
+			$msg = Text::_( 'Error adding Matchday' ) . $model->getError();
 		}
 		*/
     
@@ -214,7 +215,7 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
     echo '</pre>';
     */
     //JFactory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
-    $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
+    $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect( $link, $msg );
 	}
@@ -266,7 +267,7 @@ $post = JFactory::getApplication()->input->post->getArray(array());
 		
 		if ( !$row->store() )
 		{
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
         //$this->setError( $this->_db->getErrorMsg() );
 		//return false;
 		//echo 'nicht eingefügt <br>';
@@ -279,7 +280,7 @@ $post = JFactory::getApplication()->input->post->getArray(array());
 		}
     
     
-    $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_1' );
+    $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_1' );
     $link = 'index.php?option='.$option.'&view=rounds';
 		$this->setRedirect( $link, $msg );
 		

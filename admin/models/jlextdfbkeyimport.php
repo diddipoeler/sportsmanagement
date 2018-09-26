@@ -119,8 +119,8 @@ return $country;
 //		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication ();
 
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
 		
 		$this->jsmquery->clear();
     $this->jsmquery->select('pt.id AS value');
@@ -141,8 +141,8 @@ $this->jsmdb->execute();
 $number = $this->jsmdb->getNumRows();
 $result = $this->jsmdb->loadObjectList();    
 
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
-$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
 			
 if ( $number > 0 )
 {
