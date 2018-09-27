@@ -953,7 +953,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				{
 					if ( $match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname )
 					{
-						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
+						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.Text::_($match->referees[$i]->referee_position_name).'">';
 						$ref = $match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
 						$toolTipText .= $ref.' ('.Text::_($match->referees[$i]->referee_position_name).')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
