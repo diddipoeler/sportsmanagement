@@ -954,8 +954,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 					if ( $match->referees[$i]->referee_lastname != '' && $match->referees[$i]->referee_firstname )
 					{
 						$output .= '<span class="hasTip" title="'.Text::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REF_FUNCTION').'::'.$match->referees[$i]->referee_position_name.'">';
-						$ref=$match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
-						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
+						$ref = $match->referees[$i]->referee_lastname. ','.$match->referees[$i]->referee_firstname;
+						$toolTipText .= $ref.' ('.Text::_($match->referees[$i]->referee_position_name).')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
 						{
 $routeparameter = array();
@@ -981,11 +981,11 @@ $ref = HTMLHelper::link($link,$ref);
 					}
 				}
 
-				if ($this->config['show_referee']==1)
+				if ( $this->config['show_referee'] == 1 )
 				{
 					echo $output;
 				}
-				elseif ($this->config['show_referee']==2)
+				elseif ( $this->config['show_referee'] == 2 )
 				{
 					?> <span class='hasTip'
 			title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'>
