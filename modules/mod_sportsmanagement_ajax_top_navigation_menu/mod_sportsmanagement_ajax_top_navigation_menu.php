@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -37,20 +38,20 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $postarray = $app->input->post->getArray();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postarray <br><pre>'.print_r($postarray ,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput <br><pre>'.print_r($jinput ,true).'</pre>'),'');
 
-$mainframe = JFactory::getApplication();
+$mainframe = Factory::getApplication();
 /**
  * sprachdatei aus dem backend laden
  */
-$langtag = JFactory::getLanguage();
+$langtag = Factory::getLanguage();
 
-$lang = JFactory::getLanguage();
+$lang = Factory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = $langtag->getTag();
@@ -109,7 +110,7 @@ $tab_points[] = 'NON';
 $ajax = $jinput->post->get('ajaxCalMod', 0, 'INT');
 $ajaxmod = $jinput->post->get('ajaxmodid', 0, 'INT');
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 $queryvalues = $helper->getQueryValues();
 
