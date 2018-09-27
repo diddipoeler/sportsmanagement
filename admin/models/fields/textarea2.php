@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 FormHelper::loadFieldClass('textarea');
 
 /**
@@ -40,7 +40,7 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 		if(isset($this->element->description))
         {
 			$buffer .= '<label></label>';
-			$buffer .= '<div style="float:left;">'.JText::_($this->element->description).'</div>';
+			$buffer .= '<div style="float:left;">'.Text::_($this->element->description).'</div>';
 		}
 		return $buffer;
 	}

@@ -59,8 +59,6 @@ class JFormFieldpersonlist extends \JFormFieldList
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
-//    $app->enqueueMessage(JText::_('FormFieldpersonlist getOptions<br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_('FormFieldpersonlist getOptions<br><pre>'.print_r($options,true).'</pre>'),'');
     
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

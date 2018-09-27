@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
@@ -72,7 +72,7 @@ class JFormFieldTitle extends FormField
 
 		if ($value) 
         {
-			$html .= JText::_($value);
+			$html .= Text::_($value);
 		}
 
 		return $html;

@@ -6,7 +6,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 class JFormFieldJSMLink extends FormField {
@@ -27,11 +27,11 @@ class JFormFieldJSMLink extends FormField {
 		$html .= '<div style="overflow: hidden; margin: 5px 0">';
 		$html .= '<label style="margin: 0">';
 		
-		$html .= '<a href="'.$link.'" target="_blank" title="'.JText::_($title).'">';
+		$html .= '<a href="'.$link.'" target="_blank" title="'.Text::_($title).'">';
 		if ($image_src) {
-			$html .= '<img src="'.$image_src.'" alt="'.JText::_($title).'">';
+			$html .= '<img src="'.$image_src.'" alt="'.Text::_($title).'">';
 		} else {
-			$html .= JText::_($title);
+			$html .= Text::_($title);
 		}
 		$html .= '</a>';
 		
@@ -64,11 +64,11 @@ class JFormFieldJSMLink extends FormField {
 		}
 			
 		if ($titleintext) {
-			$html .= '<strong>'.JText::_($title).'</strong>: ';
+			$html .= '<strong>'.Text::_($title).'</strong>: ';
 		}
 				
 		if ($text) {
-			$html .= JText::sprintf($text, $link);
+			$html .= Text::sprintf($text, $link);
 		}
 		
 		$html .= '</div>';

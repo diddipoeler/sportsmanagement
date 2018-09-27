@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -78,7 +78,7 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
             
         if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
             
             try { 
@@ -92,7 +92,7 @@ JFactory::getApplication()->enqueueMessage($db->getErrorMsg());
 }
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

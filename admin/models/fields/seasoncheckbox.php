@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -54,9 +54,7 @@ class JFormFieldseasoncheckbox extends FormField
         $targetid = $this->element['targetid'];
         
         
-        //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
-    
+  
     
         // Initialize variables.
 		//$options = array();
@@ -73,8 +71,8 @@ class JFormFieldseasoncheckbox extends FormField
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 	$options = JFactory::getDbo()->loadObjectList();
@@ -94,8 +92,8 @@ class JFormFieldseasoncheckbox extends FormField
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			$this->value = JFactory::getDbo()->loadColumn();
@@ -105,9 +103,6 @@ class JFormFieldseasoncheckbox extends FormField
         $this->value = '';
     }
     
-    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_('FormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
    
 
 
@@ -140,7 +135,7 @@ class JFormFieldseasoncheckbox extends FormField
                 $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '[]"' . ' value="'
                     . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
     
-                $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . JText::_($option->text) . '</label>';
+                $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Text::_($option->text) . '</label>';
                 $html[] = '</li>';
             }
             $html[] = '</ul>';

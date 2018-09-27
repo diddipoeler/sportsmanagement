@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -77,7 +77,7 @@ catch (Exception $e) {
             
             foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
     
 		// Merge any additional options in the XML definition.

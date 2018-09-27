@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
@@ -70,7 +70,7 @@ class JFormFieldSubtitle extends FormField
 			$style[] = 'left: 20px; ';
 			$style[] = 'top: -6px; ';
 				
-			$html .= '<div style=\''.implode($style).'\'>'.JText::_($value).'</div>';
+			$html .= '<div style=\''.implode($style).'\'>'.Text::_($value).'</div>';
 		}
 
 		return $html;

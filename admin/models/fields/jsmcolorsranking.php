@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -61,7 +61,7 @@ class JFormFieldjsmcolorsranking extends FormField
         $html = array();
         
         //build the html options for extratime
-		$select_ranking[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+		$select_ranking[] = JHtmlSelect::option('0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
         for($a=1; $a <= $rankingteams ; $a++)
                 {
                 $select_ranking[] = JHtmlSelect::option($a,$a);    
@@ -73,7 +73,7 @@ class JFormFieldjsmcolorsranking extends FormField
         
         if ( $select_Options )
         {
-            $select_text[] = JHtmlSelect::option('',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+            $select_text[] = JHtmlSelect::option('',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
             foreach ( $select_Options as $row )
             {
                 $select_text[] = JHtmlSelect::option($row->value,$row->text); 

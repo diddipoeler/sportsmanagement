@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
@@ -44,10 +44,10 @@ class JFormFieldSYWOnlineHelp extends FormField
 
 		$html = array();
 
-		$html[] = !empty($title) ? '<' . $heading . '>' . JText::_($title) . '</' . $heading . '>' : '';
+		$html[] = !empty($title) ? '<' . $heading . '>' . Text::_($title) . '</' . $heading . '>' : '';
 
 		$html[] = '<table style="width: 100%"><tr>';
-		$html[] = !empty($description) ? '<td>'.JText::_($description).'</td>' : '';
+		$html[] = !empty($description) ? '<td>'.Text::_($description).'</td>' : '';
 		$html[] = '<td style="text-align: right"><a href="'.$url.'" target="_blank" class="btn btn-info btn-mini btn-xs"><i class="SYWicon-local-library"></i></a></td>';
 		$html[] = '</tr></table>';
 

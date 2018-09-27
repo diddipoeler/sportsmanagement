@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -58,10 +58,9 @@ class JFormFieldLeagueLevel extends \JFormFieldList
          */
 		for($a=1; $a < 21; $a++ )
         {
-            $options[] = JHtml::_('select.option', $a, JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
+            $options[] = JHtml::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
         }
 	
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
         
 		/**
          * Merge any additional options in the XML definition.

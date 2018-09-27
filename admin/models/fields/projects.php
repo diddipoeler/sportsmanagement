@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('list');
 
@@ -77,7 +77,7 @@ class JFormFieldProjects extends \JFormFieldList
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT p.id, concat(p.name, \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE').': \', l.name, \')\', \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON').': \', s.name, \' )\' ) as name 
+		$query = 'SELECT p.id, concat(p.name, \' ('.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE').': \', l.name, \')\', \' ('.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON').': \', s.name, \' )\' ) as name 
 					FROM #__'.$database_table.'_project AS p 
 					LEFT JOIN #__'.$database_table.'_season AS s ON s.id = p.season_id 
 					LEFT JOIN #__'.$database_table.'_league AS l ON l.id = p.league_id 
@@ -85,7 +85,7 @@ class JFormFieldProjects extends \JFormFieldList
 		$db->setQuery( $query );
 		$projects = $db->loadObjectList();
         
-		$options[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
+		$options[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
         
         foreach ( $projects as $project ) 
         {

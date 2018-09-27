@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die ;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.form.formfield');
 
 /**
@@ -39,7 +39,7 @@ class JFormFieldMessage extends FormField
 
 		if ($this->message_type == 'example') 
         {
-			$html .= '<label style="visibility: hidden; margin: 0">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
+			$html .= '<label style="visibility: hidden; margin: 0">'.Text::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
 		} 
         else if ($this->message_type == 'fieldwarning' || $this->message_type == 'fielderror' || $this->message_type == 'fieldinfo') 
         {
@@ -67,7 +67,7 @@ class JFormFieldMessage extends FormField
 
 		$message_label = '';
 		if ($this->element['label']) {
-			$message_label = $this->translateLabel ? JText::_(trim($this->element['label'])) : trim($this->element['label']);
+			$message_label = $this->translateLabel ? Text::_(trim($this->element['label'])) : trim($this->element['label']);
 		}
 			
 		if ($this->message_type == 'example') 
@@ -79,13 +79,13 @@ class JFormFieldMessage extends FormField
 			} 
             else 
             {
-				$html .= '<span class="label">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</span>&nbsp;';
+				$html .= '<span class="label">'.Text::_('LIB_SYW_MESSAGE_EXAMPLE').'</span>&nbsp;';
 			}
 			$html .= '<span class="muted" style="font-size: 0.8em;">';
 				
 			if ($this->message) 
             {
-				$html .= JText::_($this->message);
+				$html .= Text::_($this->message);
 			}
 			$html .= '</span>';
 				
@@ -109,7 +109,7 @@ class JFormFieldMessage extends FormField
 			$html .= '<span>';
 			if ($this->message) 
             {
-				$html .= JText::_($this->message);
+				$html .= Text::_($this->message);
 			}
 			$html .= '</span>';
 			$html .= '</div>';

@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -116,7 +116,7 @@ class JFormFieldseasonlist extends FormField
 		//// Merge any additional options in the XML definition.
 //		$options = array_merge(parent::getOptions(), $options);
 //		return $options;
-$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
+$options = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
      if ( $result )
         {
      $options = array_merge($options, $result);
