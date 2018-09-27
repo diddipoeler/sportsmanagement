@@ -228,7 +228,13 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 					$matchReferees=&$this->model->getMatchReferees($game->id);
 					foreach ($matchReferees AS $matchReferee)
 					{
-						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $game->project_id;
+$routeparameter['pid'] = $matchReferee->id;
+$referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);	
+//$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
 						echo HTMLHelper::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
