@@ -1045,7 +1045,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				break;
 				
 			case "referees":
-				$link = sportsmanagementHelperRoute::getRefereesRoute( $this->_project_slug);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['r'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
 				break;
 				
 			case "results":
