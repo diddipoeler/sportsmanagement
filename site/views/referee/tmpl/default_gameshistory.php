@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_gamehistory.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage referee
@@ -16,12 +16,15 @@ use Joomla\CMS\Factory;
 
 ?>
 <!-- Player stats History START -->
-
-
 <?php if (count($this->games))
 {
-	?>
-<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
+?>
+<h2>
+<?php 
+echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); 
+?>
+</h2>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="referee_gameshistory">
 <table class="<?php echo $this->config['history_table_class']; ?>">
 	<tr>
 		<td><br />
@@ -78,6 +81,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.
 		</td>
 	</tr>
 </table>
+</div>	
 <br />
 	<?php
 }
