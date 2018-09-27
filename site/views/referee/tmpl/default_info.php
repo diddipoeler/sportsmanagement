@@ -43,7 +43,15 @@ use Joomla\CMS\Factory;
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
 				}
 			
-echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,$picture,$imgTitle,$this->config['picture_width']);                                                       
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,
+$picture,
+$imgTitle,
+$this->config['picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);
 				
 		}
 		?>
