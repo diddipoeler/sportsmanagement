@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_career.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage referee
@@ -16,11 +16,14 @@ use Joomla\CMS\Factory;
 
 if (count($this->history) > 0)
 {
-	?>
+?>
 <h2>
-
-<?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');	?></h2>
+<?php 
+echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');
+?>
+</h2>
 <!-- staff history START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="referee_career">
 <table class="<?php echo $this->config['career_table_class']; ?>">
 	<tr>
 		<td><br />
@@ -55,6 +58,7 @@ $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routep
 		</td>
 	</tr>
 </table>
+</div>	
 <br />
 <br />
 <!-- staff history END -->
