@@ -14,7 +14,7 @@ Das Team
 
 Übersetzungen
 ================
-Alle Übersetzungen in andere Sprachen werden nur hier https://www.transifex.com/opentranslators/sportsmanagement/
+Alle Übersetzungen in andere Sprachen werden nur hier https://www.transifex.com/jsm/sportsmanagement/
 vorgenommen und in die Komponente eingepflegt.
 
 Import functions ?
