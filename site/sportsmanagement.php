@@ -141,6 +141,7 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'imageselect.php
 break;
 case 'player':
 case 'staff':  
+case 'referee':  
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'person.php' );
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'eventtypes.php');  
