@@ -33,7 +33,7 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about = new stdClass();
 		
 		//Translations Hosted by
-		$about->translations = '<a href="https://www.transifex.com/opentranslators/sportsmanagement/">https://www.transifex.com/opentranslators/sportsmanagement/</a>';
+		$about->translations = '<a href="https://www.transifex.com/jsm/sportsmanagement/">https://www.transifex.com/jsm/sportsmanagement/</a>';
 		//Repository Hosted by
 		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
 		//version
