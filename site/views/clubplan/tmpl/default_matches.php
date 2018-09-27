@@ -314,7 +314,7 @@ $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt
 $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $game->project_id;
 $routeparameter['pid'] = $matchReferee->id;
-$referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);						
+$referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);						
 //$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
 						echo HTMLHelper::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
