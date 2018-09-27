@@ -958,8 +958,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 						$toolTipText .= $ref.' ('.$match->referees[$i]->referee_position_name.')'.'&lt;br /&gt;';
 						if ($this->config['show_referee_link'])
 						{
-							$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
-							$ref=HTMLHelper::link($link,$ref);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pid'] = $match->referees[$i]->referee_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);								
+//$link=sportsmanagementHelperRoute::getRefereeRoute($this->project->slug,$match->referees[$i]->referee_id,3);
+$ref = HTMLHelper::link($link,$ref);
 						}
 						$output .= $ref;
 						$output .= '</span>';
