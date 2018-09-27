@@ -149,21 +149,7 @@ class JFormFieldDependSQL extends JFormField
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
-//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//        {
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
-//        
-//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> '.$div.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->value -> '.$this->value.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
 
-//        }
 
 		$ctrl = $this->name;
 		$id = $this->id;
@@ -369,13 +355,7 @@ $script[] = "});";
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
         //}
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
-     //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
+
      if ( $result )
         {
      $options = array_merge($options, $result);

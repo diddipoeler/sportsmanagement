@@ -13,6 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 //jimport('joomla.form.formfield');
 
 /**
@@ -43,7 +44,7 @@ class JFormFieldExtensionAuthor extends FormField {
         $lang->load($extension, $base_dir, $language_tag, $reload);
 		
 		$html = '';
-		$html .= '<div style="clear: both;">'.JText::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL').'</div>';
+		$html .= '<div style="clear: both;">'.Text::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL').'</div>';
 		return $html;
 	}
 

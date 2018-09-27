@@ -38,7 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
-
+use Joomla\CMS\Language\Text;
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -115,7 +115,7 @@ class JFormFieldDependSQL extends JFormField
 			$options = array();
 		}
 		else {
-			$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
+			$options = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, Text::_($val)));
 		}
 
 		$query = $this->element['query'];

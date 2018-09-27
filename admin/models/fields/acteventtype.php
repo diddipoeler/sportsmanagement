@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -56,7 +56,7 @@ class JFormFieldacteventtype extends \JFormFieldList
     
     foreach ( $options as $row )
             {
-                $row->text = JText::_($row->text);
+                $row->text = Text::_($row->text);
             }
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

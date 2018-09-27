@@ -86,7 +86,7 @@ class JFormFieldDependSQL extends FormField
 			$options = array();
 		}
 		else {
-			// $options = array(JHtml::_('select.option', '', JText::_('Loading..'), $key, JText::_($val)));
+
 			$options = array();
 		}
 
