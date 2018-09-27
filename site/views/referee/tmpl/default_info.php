@@ -124,61 +124,54 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 					?>
 					
 
-								<?php
-								switch ( $this->config['show_birthday'] )
-								{
-									case 	1:			// show Birthday and Age
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
-														break;
+<?php
+switch ( $this->config['show_birthday'] )
+{
+case 	1:			// show Birthday and Age
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY_AGE';
+break;
+case 	2:			// show Only Birthday
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
+break;
+case 	3:			// show Only Age
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
+break;
+case 	4:			// show Only Year of birth
+$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
+break;
+}
 
-									case 	2:			// show Only Birthday
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_BIRTHDAY';
-														break;
+?>
 
-									case 	3:			// show Only Age
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_AGE';
-														break;
+<?php
+switch ( $this->config['show_birthday'] )
+{
+case 1:	 // show Birthday and Age
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
+break;
+case 2:	 // show Only Birthday
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
+break;
+case 3:	 // show Only Age
+$birthdateStr = sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday );
+break;
+case 4:	 // show Only Year of birth
+$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
+HTMLHelper::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
+break;
+default:
+$birthdateStr = "";
+break;
+}
 
-									case 	4:			// show Only Year of birth
-														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
-														break;
-								}
-								//echo Text::_( $outputStr );
-								?>
-
-						
-							<?php
-							switch ( $this->config['show_birthday'] )
-							{
-								case 1:	 // show Birthday and Age
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
-											$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday ) . ")";
-											break;
-
-								case 2:	 // show Only Birthday
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															HTMLHelper::date( $this->referee->birthday, Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
-											break;
-
-								case 3:	 // show Only Age
-											$birthdateStr = sportsmanagementHelper::getAge( $this->referee->birthday,$this->referee->deathday );
-											break;
-
-								case 4:	 // show Only Year of birth
-											$birthdateStr =	$this->referee->birthday != "0000-00-00" ?
-															HTMLHelper::date( $this->referee->birthday, Text::_( '%Y' ) ) : "-";
-											break;
-
-								default:	$birthdateStr = "";
-											break;
-							}
-							//echo $birthdateStr;
-							?>
+?>
 						
                     
                     <address>
-			<strong><?php echo $outputStr; ?></strong>
+			<strong><?php echo Text::_( $outputStr ); ?></strong>
 			<?php echo $birthdateStr; ?>
             </address>
             
@@ -189,16 +182,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 				{
 					?>
 					                    
-                    <address>
-			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
-			<?php echo Countries::convertAddressString(	'',
-																	$this->referee->address,
-																	$this->referee->state,
-																	$this->referee->zipcode,
-																	$this->referee->location,
-																	$this->referee->address_country,
-																	'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' ); ?>
-            </address>
+<address>
+<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+<?php echo Countries::convertAddressString(	'',
+$this->referee->address,
+$this->referee->state,
+$this->referee->zipcode,
+$this->referee->location,
+$this->referee->address_country,
+'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' ); ?>
+</address>
                     
                     
 					<?php
