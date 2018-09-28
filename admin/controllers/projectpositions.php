@@ -43,7 +43,12 @@ class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
   
-  
+    function cancel()
+	{
+	$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
+	
   /**
 	 * Proxy for getModel.
 	 * @since	1.6
