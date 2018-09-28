@@ -96,9 +96,10 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 		$query->from('#__sportsmanagement_match_player');
         $query->where('match_id = '.(int)$this->matchid);
         $query->where('project_position_id = 0');
-        $db->setQuery($query);
+        
         
         try{
+		$db->setQuery($query);
         $result = $db->loadObjectList();
         }
 catch (Exception $e)
@@ -120,9 +121,10 @@ catch (Exception $e)
             $query->join('INNER','#__sportsmanagement_person AS pe ON pe.id = tp.person_id');
             $query->where('ppp.project_id = '.(int)$this->projectid);
             $query->where('tp.id = '.(int)$row->teamplayer_id);
-            $db->setQuery($query);
+            
         
  try{
+	 $db->setQuery($query);
 		$position = $db->loadResult();
 	}
 catch (Exception $e)
