@@ -9,7 +9,9 @@
  * @subpackage rosterposition
  */
 
-// Check to ensure this file is included in Joomla!
+/**
+ * Check to ensure this file is included in Joomla!
+ */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -37,10 +39,6 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-        //$document = JFactory::getDocument();
         $this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         
         $bildpositionenhome = array();
@@ -89,53 +87,28 @@ $bildpositionenaway['AWAY_POS'][9]['heim']['oben'] = 587;
 $bildpositionenaway['AWAY_POS'][9]['heim']['links'] = 179;
 $bildpositionenaway['AWAY_POS'][10]['heim']['oben'] = 587;
 $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
-
-/*
-        if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
-        {
-            $app->enqueueMessage(Text::_('jqueryeasy ist installiert'),'Notice');
-            $this->jquery = true;
-        }
-        else
-        {
-            $app->enqueueMessage(Text::_('jqueryeasy ist nicht installiert'),'Error');
-            $this->jquery = false;
-        }
-*/        
-/*
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-*/        
+       
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'rosterposition');
 		$this->extended	= $extended;
 		
 		$mdlRosterpositions = BaseDatabaseModel::getInstance("rosterpositions", "sportsmanagementModel");
     
-     // position ist vorhanden
+/**
+ * position ist vorhanden
+ */
 	if ( $this->item->id )  
 	{   
 		$count_players = $this->item->players;
         
-        // bearbeiten positionen übergeben
+/**
+ * bearbeiten positionen übergeben
+ */
 		$position = 1;
-    //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new Registry;
-		//$jRegistry->loadString($this->item->extended, 'ini');
         
-        // welche joomla version ?
+/**
+ * welche joomla version ?
+ */
         if(version_compare(JVERSION,'3.0.0','ge')) 
 		{
 			$jRegistry->loadString($this->item->extended);
@@ -237,11 +210,6 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     
 	$this->item = $object;   
 	}
-    
-    //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
-        
-
         
 	$javascript = "\n";
 	$javascript .= 'jQuery(document).ready(function() {' . "\n";
@@ -264,15 +232,8 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$this->document->addScriptDeclaration( $javascript );
     
 	$this->form	= $this->form;
-	//$this->option	= $option;
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
-        
-	//$this->setLayout('edit');
+
 	}
-
-
-    
     
 	/**
 	 * sportsmanagementViewrosterposition::addToolBar()
