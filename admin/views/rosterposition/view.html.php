@@ -119,7 +119,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$this->item = $item;
 		$this->script = $script;
 */        
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'rosterposition');
 		$this->extended	= $extended;
 		
 		$mdlRosterpositions = BaseDatabaseModel::getInstance("rosterpositions", "sportsmanagementModel");
