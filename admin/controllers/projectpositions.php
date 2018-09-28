@@ -25,6 +25,12 @@ use Joomla\CMS\Language\Text;
 class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
 {
 	
+	public function __construct($config = array())
+    {
+        parent::__construct($config);
+     
+    }
+	
   /**
 	 * Method to store projectpositions
 	 *
@@ -43,11 +49,7 @@ class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
   
-    function cancel()
-	{
-	$msg = '';
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-	}
+   
 	
   /**
 	 * Proxy for getModel.
