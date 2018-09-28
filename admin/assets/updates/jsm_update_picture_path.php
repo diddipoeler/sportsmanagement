@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 $version			= '1.0.68';
 $updateFileDate		= '2018-09-3';
@@ -33,8 +34,23 @@ if (empty($maxImportMemory))
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
 
+$this->jsmdb = sportsmanagementHelper::getDBConnection();
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$this->jsmapp = Factory::getApplication();
 
-
+$this->jsmquery = $this->jsmdb->getQuery(true);
+        // Fields to update.
+        $fields = array(
+            $this->jsmdb->quoteName('picture') . " = replace(picture, 'placeholders', 'persons') "
+        );
+// Conditions for which records should be updated.
+        $conditions = array(
+            $this->jsmdb->quoteName('picture') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in person.'), 'Notice');
 
 
 ?>
