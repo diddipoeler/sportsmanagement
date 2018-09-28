@@ -62,7 +62,8 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
 	 */
 	function __construct()
 	{
-	    // Reference global application object
+	parent::__construct();
+		// Reference global application object
         $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
@@ -72,7 +73,7 @@ class sportsmanagementModelMatchReport extends JSMModelLegacy
         sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 	sportsmanagementModelProject::$projectid = $this->projectid;
         sportsmanagementModelProject::$matchid = $this->matchid;
-	parent::__construct();
+	
 	}
 
 	
@@ -353,7 +354,7 @@ catch (Exception $e)
        $query->where('p.published = 1');
 
               
-       $db->setQuery($query);
+       
        
         if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
         {        
@@ -362,6 +363,7 @@ catch (Exception $e)
         }
 
 	    try{
+		    $db->setQuery($query);
         $result = $db->loadObjectList();
 		    }
 catch (Exception $e)
@@ -402,8 +404,9 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->where('p.published = 1');
         $query->where('tp.persontype = 3');
              
-		$db->setQuery($query);
+		
 	    try{
+		    $db->setQuery($query);
         $result = $db->loadObjectList();
 	    }
 catch (Exception $e)
@@ -527,9 +530,10 @@ catch (Exception $e)
         $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
              
-		$db->setQuery($query);
+		
         
  try{       
+	 $db->setQuery($query);
 		$res = $db->loadObjectList();
 }
 catch (Exception $e)
@@ -571,9 +575,10 @@ catch (Exception $e)
         $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
                   
-			$db->setQuery($query);
+			
            
  try{       
+	 $db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
@@ -619,9 +624,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         // Where
         $query->where('match_id = '. $match->id );
 			
-            $db->setQuery($query);
+            
             
         try{
+		$db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
@@ -669,9 +675,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         // Where
         $query->where('match_id = '. $match->id );
 		
-            $db->setQuery($query);
+            
             
 try{       
+	$db->setQuery($query);
 			$res = $db->loadObjectList();
 }
 catch (Exception $e)
