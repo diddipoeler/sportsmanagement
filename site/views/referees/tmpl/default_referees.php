@@ -1,41 +1,13 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.05
+ * @file      default_referees.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage referees
+ */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
@@ -46,6 +18,7 @@ use Joomla\CMS\Factory;
 if ( !empty( $this->rows  ) )
 {
 	?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="referees">
 	<table class="<?php echo $this->config['table_class'];?>">
 		<?php
 		$k				= 0;
@@ -90,7 +63,15 @@ if ( !empty( $this->rows  ) )
 					$refereeName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"] );
 					if ( $this->config['show_icon'] == 1)
 					{
-echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,$row->picture,$refereeName,$this->config['referee_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,
+$row->picture,
+$refereeName,
+$this->config['referee_picture_width'],
+'',
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+);
 
 					}
 					?>
@@ -125,37 +106,35 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routepa
 					?>
 					<td width="10%" class="nowrap" style="text-align:left; ">
 						<?php
-						#$this->config['show_birthday'] = 4;
-						switch ( $this->config['show_birthday'] )
-						{
-							case 1:	 // show Birthday and Age
-										$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC', 
-																										Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
-																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
-										$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $row->birthday,$row->deathday ) . ")";
-										break;
 
-							case 2:	 // show Only Birthday
-										$birthdateStr = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
-																										Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
-																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
-										break;
+switch ( $this->config['show_birthday'] )
+{
+case 1:	 // show Birthday and Age
+$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC', 
+Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
+sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
+$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $row->birthday,$row->deathday ) . ")";
+break;
+case 2:	 // show Only Birthday
+$birthdateStr = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
+Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ), 
+sportsmanagementHelper::getTimezone($this->project, $this->overallconfig)) : "-";
+break;
+case 3:	 // show Only Age
+$birthdateStr = "(" . sportsmanagementHelper::getAge( $row->birthday,$row->deathday ) . ")";
+break;
+case 4:	 // show Only Year of birth
+$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
+Text::_( '%Y' ), 
+sportsmanagementHelper::getTimezone($this->project, $this->overallconfig) ) : "-";
+break;
 
-							case 3:	 // show Only Age
-										$birthdateStr = "(" . sportsmanagementHelper::getAge( $row->birthday,$row->deathday ) . ")";
-										break;
-
-							case 4:	 // show Only Year of birth
-										$birthdateStr  = $row->birthday != "0000-00-00" ? HTMLHelper::date($row->birthday .' UTC',
-																										Text::_( '%Y' ), 
-																										sportsmanagementHelper::getTimezone($this->project, $this->overallconfig) ) : "-";
-										break;
-
-							default:	$birthdateStr = "";
-										break;
-						}
-						echo $birthdateStr;
-						?>
+default:
+$birthdateStr = "";
+break;
+}
+echo $birthdateStr;
+?>
 					</td>
 					<?php
 				}
@@ -176,6 +155,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routepa
 		}
 		?>
 	</table>
+</div>
 	<?php
 }
 ?>
