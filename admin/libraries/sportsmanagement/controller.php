@@ -45,6 +45,11 @@ class JSMControllerAdmin extends AdminController
 
     }
 
+     function cancel()
+	{
+	$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
 
 }
 
