@@ -13,8 +13,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
-JHtml::_('jquery.ui');
+use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+HTMLHelper::_('jquery.ui');
 
 /**
  * sportsmanagementViewrosterposition
@@ -35,11 +37,11 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-        $document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+        //$document = JFactory::getDocument();
+        $this->document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         
         $bildpositionenhome = array();
 $bildpositionenhome['HOME_POS'][0]['heim']['oben'] = 5;
@@ -100,6 +102,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
             $this->jquery = false;
         }
 */        
+/*
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -115,11 +118,11 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-        
+*/        
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
 		$this->extended	= $extended;
 		
-		$mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
+		$mdlRosterpositions = BaseDatabaseModel::getInstance("rosterpositions", "sportsmanagementModel");
     
      // position ist vorhanden
 	if ( $this->item->id )  
@@ -129,7 +132,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         // bearbeiten positionen übergeben
 		$position = 1;
     //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-		$jRegistry = new JRegistry;
+		$jRegistry = new Registry;
 		//$jRegistry->loadString($this->item->extended, 'ini');
         
         // welche joomla version ?
@@ -185,7 +188,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	else
 	{
         // neuanlage
-	$addposition	= $jinput->get('addposition');
+	$addposition	= $this->jinput->get('addposition');
 	$position = 1;
 	$object = new stdClass();
 	$object->id = 0;
@@ -258,10 +261,10 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	$javascript .= '  });' . "\n";
 	$javascript .= "\n";
     
-	$document->addScriptDeclaration( $javascript );
+	$this->document->addScriptDeclaration( $javascript );
     
 	$this->form	= $this->form;
-	$this->option	= $option;
+	//$this->option	= $option;
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
@@ -280,7 +283,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 	{
        
 		$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
-		$jinput->set('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
         
 		$isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
 		$this->icon = 'rosterposition';
