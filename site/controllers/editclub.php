@@ -66,6 +66,7 @@ class sportsmanagementControllerEditClub extends FormController {
                 return true;
         }
  
+     
     /**
      * sportsmanagementControllerEditClub::load()
      * 
