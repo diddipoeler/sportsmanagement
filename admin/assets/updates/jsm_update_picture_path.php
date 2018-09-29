@@ -57,6 +57,23 @@ $this->jsmquery->clear();
 $this->jsmdb->execute();
         $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in person.'), 'Notice');
 
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('picture') . " = replace(picture, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('picture') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in person.'), 'Notice');
 
 $this->jsmquery->clear();
 /**
@@ -112,7 +129,59 @@ $this->jsmquery->clear();
 $this->jsmdb->execute();
         $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
 
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('logo_big') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club big.'), 'Notice');
 
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('logo_middle') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club middle.'), 'Notice');
+
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('logo_small') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
 
 
 
