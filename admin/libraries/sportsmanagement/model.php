@@ -1141,38 +1141,24 @@ catch (Exception $e) {
         {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
-        /*
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('founded', 'type', 'calendar');
-        $form->setFieldAttribute('dissolved', 'type', 'calendar');  
-        }
-        else
-        {
-        $form->setFieldAttribute('founded', 'type', 'customcalendar');  
-        $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
-        }
-        */
-        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+
+//        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
+//        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
         $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
         $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+//        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
         $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
         $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot_home');
+//        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
-        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
+//        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 
