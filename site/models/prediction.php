@@ -2233,10 +2233,11 @@ $output .= '>'.Text::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 		else{$tipp=null;}
     }
 
-		$points		= NULL;
-		$top		= NULL;
-		$diff		= NULL;
-		$tend		= NULL;
+		$points		= 0;
+		$top		= 0;
+		$diff		= 0;
+		$tend		= 0;
+		
 
     if ( $predictionProject->mode == 1 )	// TOTO prediction Mode
 		{
