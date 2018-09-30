@@ -252,14 +252,78 @@ $this->jsmdb->execute();
         $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
 
 
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('trikot_home') . " = replace(trikot_home, 'placeholders', 'clubs/trikot') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('trikot_home') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot home.'), 'Notice');  
+
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('trikot_away') . " = replace(trikot_away, 'placeholders', 'clubs/trikot') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('trikot_away') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot away.'), 'Notice');
+
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('trikot_home') . " = replace(trikot_home, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('trikot_home') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot home.'), 'Notice');
 
 
-
-
-
-
-
-
+$this->jsmquery->clear();
+/**
+ * Fields to update.
+ */
+        $fields = array(
+            $this->jsmdb->quoteName('trikot_away') . " = replace(trikot_away, 'media', 'images') "
+        );
+/**
+ * Conditions for which records should be updated.
+ */
+        $conditions = array(
+            $this->jsmdb->quoteName('trikot_away') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
+        );
+        $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+        $this->jsmdb->setQuery($this->jsmquery);
+$this->jsmdb->execute();
+        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot away.'), 'Notice');
 
 
 
