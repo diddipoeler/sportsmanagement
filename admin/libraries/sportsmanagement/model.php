@@ -1143,23 +1143,23 @@ catch (Exception $e) {
         }
 
 //        $form->setFieldAttribute('logo_small', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
+//        $form->setFieldAttribute('logo_small', 'directory', 'com_sportsmanagement/database/clubs/small');
         $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
         
 //        $form->setFieldAttribute('logo_middle', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_medium',''));
-        $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
+//        $form->setFieldAttribute('logo_middle', 'directory', 'com_sportsmanagement/database/clubs/medium');
         $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
         
 //        $form->setFieldAttribute('logo_big', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
-        $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
+//        $form->setFieldAttribute('logo_big', 'directory', 'com_sportsmanagement/database/clubs/large');
         $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
         
 //        $form->setFieldAttribute('trikot_home', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot');
+//        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
         
 //        $form->setFieldAttribute('trikot_away', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
+//        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
 
         $this->jsmquery->clear();
@@ -1303,8 +1303,8 @@ catch (Exception $e) {
             
         }
 			
-        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+//        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($this->jsmoption)->get('ph_player_men_small',''));
+//        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
 			
         /*
