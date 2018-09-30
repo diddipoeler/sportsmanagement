@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 /**
  * JFormFieldAvatarFromComponent
  * 
@@ -67,7 +69,7 @@ class JFormFieldAvatarFromComponent extends JFormField
         
         
 		$mitems = array();
-		$mitems[] = HTMLHelper::_('select.option', 'com_users', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
+		$mitems[] = HTMLHelper::_('select.option', 'com_users', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA'));
 		
         foreach( $sel_component as $key => $value )
         {
@@ -76,7 +78,7 @@ class JFormFieldAvatarFromComponent extends JFormField
             $db->setQuery($query);
             if ( $result = $db->loadResult() )
             {
-		$mitems[] = HTMLHelper::_('select.option', $key , JText::_($value));
+		$mitems[] = HTMLHelper::_('select.option', $key , Text::_($value));
 	       }
         
         }

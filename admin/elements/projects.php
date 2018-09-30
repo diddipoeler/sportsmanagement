@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldProjects
  * 
@@ -72,7 +72,7 @@ class JFormFieldProjects extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT p.id, concat(p.name, \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE').': \', l.name, \')\', \' ('.JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON').': \', s.name, \' )\' ) as name 
+		$query = 'SELECT p.id, concat(p.name, \' ('.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_LEAGUE').': \', l.name, \')\', \' ('.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON').': \', s.name, \' )\' ) as name 
 					FROM #__'.$database_table.'_project AS p 
 					LEFT JOIN #__'.$database_table.'_season AS s ON s.id = p.season_id 
 					LEFT JOIN #__'.$database_table.'_league AS l ON l.id = p.league_id 
@@ -80,7 +80,7 @@ class JFormFieldProjects extends JFormField
 		$db->setQuery( $query );
 		$projects = $db->loadObjectList();
 		if($this->required == false) {
-			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		foreach ( $projects as $project ) {
 			$mitems[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );

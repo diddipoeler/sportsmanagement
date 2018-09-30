@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 /**
  * JFormFieldagegroups
  * 
@@ -93,19 +95,19 @@ class JFormFieldagegroups extends JFormField
 		{
 		$query='SELECT id, name FROM #__'.$database_table.'_agegroup where sportstype_id = '.$sports_type.' ORDER BY name ASC ';
 		$db->setQuery($query);
-        //$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($query,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_('JFormFieldSportsTypes<br><pre>'.print_r($query,true).'</pre>'),'');
 		if (!$result = $db->loadObjectList())
 		{
-			//$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			//$app->enqueueMessage(Text::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
       sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $sportstype)
 		{
-			$sportstype->name=JText::_($sportstype->name);
+			$sportstype->name=Text::_($sportstype->name);
 		}
 		if($this->required == false) {
-			$mitems = array(HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		
 		foreach ( $result as $item )

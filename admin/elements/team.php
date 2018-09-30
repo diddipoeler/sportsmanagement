@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldTeam
  * 
@@ -76,7 +76,7 @@ class JFormFieldTeam extends JFormField
 		$query = 'SELECT t.id, t.name FROM #__'.$database_table.'_team t ORDER BY name';
 		$db->setQuery( $query );
 		$teams = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $teams as $team ) {
 			$mitems[] = JHtml::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')' );

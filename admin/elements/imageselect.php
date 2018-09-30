@@ -69,7 +69,6 @@ class JFormFieldImageSelect extends JFormField
 		//$targetfolder = array_pop($arrPathes);
         $targetfolder = $this->element['targetfolder'];
         
-        //$app->enqueueMessage(JText::_('JFormFieldImageSelect targetfolder<br><pre>'.print_r($targetfolder,true).'</pre>'),'Notice');
         
 		$output  = ImageSelectSM::getSelector($this->name, $this->name.'_preview', $targetfolder, $this->value, $default, $this->name, $this->id);
 		$output .= '<img class="imagepreview" src="'.JURI::root(true).'/media/com_sportsmanagement/jl_images/spinner.gif" '; 

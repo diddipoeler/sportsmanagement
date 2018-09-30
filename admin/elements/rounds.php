@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldRounds
  * 
@@ -76,7 +76,7 @@ class JFormFieldRounds extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = ' SELECT id as value '
-		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
+		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '
 		       . ' FROM #__'.$database_table.'_round '
 		       . ' WHERE project_id= ' .$project_id
@@ -84,7 +84,7 @@ class JFormFieldRounds extends JFormField
 		$db->setQuery( $query );
 		$rounds = $db->loadObjectList();
 		if($required == 'false') {
-			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		foreach ( $rounds as $round ) {
 			$mitems[] = JHtml::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;'.$round->name );

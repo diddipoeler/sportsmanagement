@@ -39,6 +39,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
+
 /**
  * JFormFieldClubs
  * 
@@ -75,7 +78,7 @@ class JFormFieldClubs extends JFormField
 		$query = 'SELECT c.id, c.name FROM #__'.$database_table.'_club c ORDER BY name';
 		$db->setQuery( $query );
 		$clubs = $db->loadObjectList();
-		$mitems = array(HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $clubs as $club ) {
 			$mitems[] = HTMLHelper::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );

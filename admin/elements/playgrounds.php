@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldPlaygrounds
  * 
@@ -75,7 +75,7 @@ class JFormFieldPlaygrounds extends JFormField
 		$query = 'SELECT pl.id, pl.name FROM #__'.$database_table.'_playground pl ORDER BY name';
 		$db->setQuery( $query );
 		$playgrounds = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $playgrounds as $playground ) {
 			$mitems[] = JHtml::_('select.option',  $playground->id, '&nbsp;'.$playground->name. ' ('.$playground->id.')' );

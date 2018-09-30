@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 
 /**
  * JFormFieldMultiList
@@ -74,7 +74,7 @@ class JFormFieldMultiList extends JFormField
 		{
 			$val	= $option->attributes('value');
 			$text	= $option->data();
-			$options[] = JHtml::_('select.option', $val, JText::_($text));
+			$options[] = JHtml::_('select.option', $val, Text::_($text));
 		}
  
 		// Construct the various argument calls that are supported.

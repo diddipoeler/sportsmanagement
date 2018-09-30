@@ -79,9 +79,7 @@ class JFormFieldactseason extends JFormField
 					ORDER BY s.name DESC';
 		$db->setQuery( $query );
 		$projects = $db->loadObjectList();
-//		if($this->required == false) {
-//			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-//		}
+
 		foreach ( $projects as $project ) {
 			$mitems[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
 		}

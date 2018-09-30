@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldPredictiongame
  * 
@@ -76,7 +76,7 @@ class JFormFieldPredictiongame extends JFormField
 		$query = 'SELECT pg.id, pg.name FROM #__'.$database_table.'_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
 		$db->setQuery( $query );
 		$clubs = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $clubs as $club ) {
 			$mitems[] = JHtml::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );

@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 /**
  * JFormFieldSportsTypes
  * 
@@ -80,16 +80,16 @@ class JFormFieldSportsTypes extends JFormField
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
-			$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(Text::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
       sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $sportstype)
 		{
-			$sportstype->name=JText::_($sportstype->name);
+			$sportstype->name=Text::_($sportstype->name);
 		}
 		if($this->required == false) {
-			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		
 		foreach ( $result as $item )
