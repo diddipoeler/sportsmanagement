@@ -297,29 +297,32 @@ else
  * 
  * @return
  */
+ /*
 function getTotal() {
         // Load the content if it doesn't already exist
-        if (empty($this->_total)) {
-            $query = $this->getMatches();
-            $this->_total = $this->_getListCount($query);
-        }
+//        if (empty($this->_total)) {
+//            $query = $this->getMatches();
+//            $this->_total = $this->_getListCount($query);
+//        }
         return $this->_total;
     }
+    */
     
     /**
      * sportsmanagementModelResults::getData()
      * 
      * @return
      */
+     /*
     function getData() {
         // if data hasn't already been obtained, load it
-        if (empty($this->_data)) {
-            $query = $this->getMatches();
-            $this->_data = $this->_getList($query);
-        }
+//        if (empty($this->_data)) {
+//            $query = $this->getMatches();
+//            $this->_data = $this->_getList($query);
+//        }
         return $this->_data;
     }
-	
+	*/
 	/**
 	 * sportsmanagementModelResults::getMatches()
 	 * 
