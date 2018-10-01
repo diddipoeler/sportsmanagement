@@ -44,7 +44,7 @@ class sportsmanagementModelResults extends JSMModelList
     static $layout = '';
 var $limitstart = 0;
     var $limit = 0;
-	
+	var $_identifier = "results";
 	/**
 	 * sportsmanagementModelResults::__construct()
 	 * 
