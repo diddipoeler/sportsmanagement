@@ -20,5 +20,15 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 <?php echo $this->pagination->getLimitBox(); ?>
 </div>
+
+<div class="pagination">
+<p class="counter">
+<?php echo $this->pagination->getPagesCounter(); ?>
+</p>
+<p class="counter">
+<?php echo $this->pagination->getResultsCounter(); ?>
+</p>
+<?php echo $this->pagination->getPagesLinks(); ?>
+</div>
   
 </form>  
