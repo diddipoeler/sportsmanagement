@@ -15,6 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport( 'joomla.filesystem.file' );
 
@@ -50,9 +51,9 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
         $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
-        
+        $this->total = count($matches);
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
-		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
+		$mdlPagination = BaseDatabaseModel::getInstance("Pagination","sportsmanagementModel");
         
         $roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid,$model::$cfg_which_database);
 		
