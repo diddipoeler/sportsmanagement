@@ -268,7 +268,7 @@ else
     }
 
 	
- 
+ /*
     function getData() {
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
@@ -278,6 +278,7 @@ else
         }
         return $this->_data;
     }
+*/
 	
 	/**
 	 * sportsmanagementModelResults::getMatches()
@@ -324,6 +325,9 @@ else
 			}
 		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		if (empty($this->_data)) {
+            $this->_data = $this->_getList($query);
+        }
 		return $this->matches;
 	}
 
