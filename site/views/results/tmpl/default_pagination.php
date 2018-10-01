@@ -9,6 +9,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 ?>
 <div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultpagination">
@@ -16,6 +17,9 @@ use Joomla\CMS\Language\Text;
   
   
 <input type="hidden" name="limitstart" value="" />
+<input type="hidden" name="view" value="<?php echo Factory::getApplication()->input->getVar('view'); ?>" />
+<input type="hidden" name="option" value="<?php echo Factory::getApplication()->input->getCmd('option'); ?>" />  
+<input type="hidden" name="cfg_which_database" value="<?php echo Factory::getApplication()->input->getVar('cfg_which_database'); ?>" />
   
 <div class="display-limit">
 <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
