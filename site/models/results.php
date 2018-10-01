@@ -42,7 +42,9 @@ class sportsmanagementModelResults extends JSMModelList
 
     static $cfg_which_database = 0;
     static $layout = '';
-
+var $limitstart = 0;
+    var $limit = 0;
+	
 	/**
 	 * sportsmanagementModelResults::__construct()
 	 * 
@@ -51,7 +53,7 @@ class sportsmanagementModelResults extends JSMModelList
 	function __construct()
 	{
         parent::__construct();
-
+$this->limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
 		self::$divisionid = $this->jsmjinput->getVar('division','0');
 		self::$mode = $this->jsmjinput->getVar('mode','0');
 		self::$order = $this->jsmjinput->getVar('order','0');
