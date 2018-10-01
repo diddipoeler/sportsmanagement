@@ -301,7 +301,7 @@ else
 function getTotal() {
         // Load the content if it doesn't already exist
 //        if (empty($this->_total)) {
-//            $query = $this->getMatches();
+//            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
 //            $this->_total = $this->_getListCount($query);
 //        }
         return $this->_total;
@@ -317,7 +317,7 @@ function getTotal() {
     function getData() {
         // if data hasn't already been obtained, load it
 //        if (empty($this->_data)) {
-//            $query = $this->getMatches();
+//            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
 //            $this->_data = $this->_getList($query);
 //        }
         return $this->_data;
@@ -340,7 +340,7 @@ function getTotal() {
     $option = $app->input->getCmd('option');
 		if (is_null($this->matches))
 		{
-			$this->matches = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database);
+			$this->matches = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,false);
 		}
 		
 		$allowed = self::isAllowed($cfg_which_database,$editorgroup);
@@ -383,7 +383,7 @@ function getTotal() {
 	 * @param mixed $config
 	 * @return
 	 */
-	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0,$team = 0)
+	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0,$team = 0,$pagination = false)
 	{
 	$app = Factory::getApplication();
 	$option = $app->input->getCmd('option');
@@ -475,8 +475,14 @@ function getTotal() {
 //        {
 try{
 			$db->setQuery($query);
-            //$result = $db->loadObjectList();
+            if ( $pagination )
+            {
+            $result = $db->loadObjectList();
+            }
+            else
+            {
             $result = $db->loadObjectList('id');
+            }
             }
 catch (Exception $e)
 {
