@@ -52,6 +52,7 @@ class sportsmanagementViewResults extends sportsmanagementView
         
         $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
         $this->total = count($matches);
+	$this->state = $this->get('State');
 	$this->pagination = $this->get('Pagination');
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = BaseDatabaseModel::getInstance("Pagination","sportsmanagementModel");
