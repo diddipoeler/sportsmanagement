@@ -700,6 +700,9 @@ echo self::getFxInitJSCode('steps');
         JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150_2.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150_2.png');
 		break;
 		case 'clubs/small':
+        case 'clubs/trikot_home':
+        case 'clubs/trikot_away':
+        case 'clubs/trikot':
 		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_small.gif', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_small.gif');
 		break;
 		case 'clubs/medium':
