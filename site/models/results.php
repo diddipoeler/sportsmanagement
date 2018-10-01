@@ -28,7 +28,7 @@ HTMLHelper::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelResults extends JSMModelLegacy
+class sportsmanagementModelResults extends JSMModelList
 {
 	static $projectid	= 0;
 	static $divisionid	= 0;
