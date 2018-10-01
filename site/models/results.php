@@ -42,8 +42,8 @@ class sportsmanagementModelResults extends JSMModelList
 
     static $cfg_which_database = 0;
     static $layout = '';
-var $limitstart = 0;
-    var $limit = 0;
+static $limitstart = 0;
+static $limit = 0;
 	var $_identifier = "results";
 	/**
 	 * sportsmanagementModelResults::__construct()
@@ -53,7 +53,7 @@ var $limitstart = 0;
 	function __construct()
 	{
         parent::__construct();
-$this->limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
+//$this->limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
 		self::$divisionid = $this->jsmjinput->getVar('division','0');
 		self::$mode = $this->jsmjinput->getVar('mode','0');
 		self::$order = $this->jsmjinput->getVar('order','0');
@@ -123,14 +123,38 @@ public function getStart()
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{	
-	$value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $this->jsmapp->getCfg('list_limit', 0));
-	$this->setState('list.limit', $value);
-	$value = $this->jsmjinput->getUInt('limitstart', 0);
-	$this->setState('list.start', $value);
 	
+    
+	$value = $this->jsmapp->getUserStateFromRequest('global.list.limit', 'limit', $this->jsmapp->getCfg('list_limit'), 'uint');
+self::$limit = $value;
+$this->setState('list.limit', self::$limit);
+$value = $this->jsmapp->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0);
+self::$limitstart = (self::$limit != 0 ? (floor($value / self::$limit) * self::$limit) : 0);
+$this->setState('list.start', self::$limitstart);
 	
 	}
 	
+    /**
+     * sportsmanagementModelResults::getLimit()
+     * 
+     * @return
+     */
+    function getLimit()
+	{
+		return $this->getState('list.limit');
+	}
+	
+	
+	/**
+	 * sportsmanagementModelResults::getLimitStart()
+	 * 
+	 * @return
+	 */
+	function getLimitStart()
+	{
+		return $this->getState('list.start');
+	}
+    
 	/**
 	 * sportsmanagementModelResults::getDivisionID()
 	 * 
@@ -268,17 +292,33 @@ else
     }
 
 	
- /*
+/**
+ * sportsmanagementModelResults::getTotal()
+ * 
+ * @return
+ */
+function getTotal() {
+        // Load the content if it doesn't already exist
+        if (empty($this->_total)) {
+            $query = $this->getMatches();
+            $this->_total = $this->_getListCount($query);
+        }
+        return $this->_total;
+    }
+    
+    /**
+     * sportsmanagementModelResults::getData()
+     * 
+     * @return
+     */
     function getData() {
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
-            //$query = $this->getMatches();
-            $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
+            $query = $this->getMatches();
             $this->_data = $this->_getList($query);
         }
         return $this->_data;
     }
-*/
 	
 	/**
 	 * sportsmanagementModelResults::getMatches()
