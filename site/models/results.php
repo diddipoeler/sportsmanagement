@@ -268,7 +268,16 @@ else
     }
 
 	
-
+ 
+    function getData() {
+        // if data hasn't already been obtained, load it
+        if (empty($this->_data)) {
+            //$query = $this->getMatches();
+            $query = sportsmanagementModelPrediction::getPredictionMembersList($this->config, $this->configavatar, true);
+            $this->_data = $this->_getList($query);
+        }
+        return $this->_data;
+    }
 	
 	/**
 	 * sportsmanagementModelResults::getMatches()
