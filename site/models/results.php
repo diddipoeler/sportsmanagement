@@ -84,6 +84,37 @@ $this->limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
 	}
 
 	/**
+ * Method to get the starting number of items for the data set.
+ *
+ * @return  integer  The starting number of items available in the data set.
+ *
+ * @since   11.1
+ */
+public function getStart()
+{
+    //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
+    $this->setState('list.start', $this->limitstart );
+    
+    $store = $this->getStoreId('getstart');
+    // Try to load the data from internal storage.
+    if (isset($this->cache[$store]))
+    {
+        return $this->cache[$store];
+    }
+    $start = $this->getState('list.start');
+    $limit = $this->getState('list.limit');
+    $total = $this->getTotal();
+    if ($start > $total - $limit)
+    {
+        $start = max(0, (int) (ceil($total / $limit) - 1) * $limit);
+    }
+    
+    // Add the total to the internal cache.
+    $this->cache[$store] = $start;
+    return $this->cache[$store];
+}
+	
+	/**
 	 * sportsmanagementModelResults::getDivisionID()
 	 * 
 	 * @return
