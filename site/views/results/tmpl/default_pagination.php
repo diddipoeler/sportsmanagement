@@ -11,3 +11,14 @@ defined('_JEXEC') or die('Restricted access');
 
 
 ?>
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
+  
+  
+<input type="hidden" name="limitstart" value="" />
+  
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
+</div>
+  
+</form>  
