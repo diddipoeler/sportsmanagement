@@ -113,6 +113,23 @@ public function getStart()
     $this->cache[$store] = $start;
     return $this->cache[$store];
 }
+
+/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{	
+	$value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $this->jsmapp->getCfg('list_limit', 0));
+	$this->setState('list.limit', $value);
+	$value = $this->jsmjinput->getUInt('limitstart', 0);
+	$this->setState('list.start', $value);
+	
+	
+	}
 	
 	/**
 	 * sportsmanagementModelResults::getDivisionID()
@@ -176,7 +193,7 @@ public function getStart()
      */
     function getRssFeeds($rssfeedlink,$rssitems)
     {
-    $rssIds	= array();    
+    $rssIds = array();    
     $rssIds = explode(',',$rssfeedlink);    
     //  get RSS parsed object
 		$options = array();
