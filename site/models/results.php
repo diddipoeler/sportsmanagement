@@ -368,9 +368,9 @@ function getTotal() {
 			}
 		}
 		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		if (empty($this->_data)) {
-            $this->_data = $this->_getList($query);
-        }
+//		if (empty($this->_data)) {
+//            $this->_data = $this->_getList($query);
+//        }
 		return $this->matches;
 	}
 
