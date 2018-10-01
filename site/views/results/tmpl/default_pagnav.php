@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 ?>
 <!-- matchdays pageNav -->
 <br />
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultpagenav">
 <table class="table" >
 	<tr>
 		<td>
@@ -30,3 +31,4 @@ use Joomla\CMS\Factory;
 	</tr>
 </table>
 <!-- matchdays pageNav END -->
+</div>
