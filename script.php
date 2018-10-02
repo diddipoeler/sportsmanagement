@@ -67,6 +67,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -183,7 +184,7 @@ $this->endPanel = 'endPanel';
             try {
             //Repair table #__schema which was not used before
             //Just create a dataset with extension id and old version (before update).
-            $db = JFactory::getDbo();
+            $db = Factory::getDbo();
             $query = $db->getQuery(true);
             $query->select($db->quoteName('extension_id'))
                 ->from('#__extensions')
@@ -208,7 +209,7 @@ else
             } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
             $code = $e->getCode(); // Returns '500';
-            JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+            Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
             }
         }
     }
@@ -297,7 +298,7 @@ else
 	 * @return
 	 */
 	function getParam( $name ) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement" ');
 		$manifest = json_decode( $db->loadResult(), true );
 		return $manifest[ $name ];
@@ -313,8 +314,8 @@ else
 	 */
 	function postflight($route,  $adapter) 
 	{
-	$mainframe = JFactory::getApplication();
-    $db = JFactory::getDbo();
+	$mainframe = Factory::getApplication();
+    $db = Factory::getDbo();
     
     // sicherheitshalber dateien löschen, die ich falsch angelegt habe.
     // aber nur wenn sie vorhanden sind
@@ -550,7 +551,7 @@ echo self::getFxInitJSCode('steps');
      */
     public function deleteFolders( $adapter)
     {
-    $mainframe = JFactory::getApplication();
+    $mainframe = Factory::getApplication();
     $excludeExtension = array();
     $excludeExtension[] = 'extensions';    
     $excludeExtension[] = 'sisdata';
@@ -634,8 +635,8 @@ echo self::getFxInitJSCode('steps');
      */
     public function createImagesFolder()
 	{
-		$mainframe = JFactory::getApplication();
-  $db = JFactory::getDBO();
+		$mainframe = Factory::getApplication();
+  $db = Factory::getDBO();
   
         //echo JText::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
@@ -741,8 +742,8 @@ echo self::getFxInitJSCode('steps');
     function setParams($param_array) 
     {
         
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
         
@@ -750,7 +751,7 @@ echo self::getFxInitJSCode('steps');
                 {
                         try{
                         // read the existing component value(s)
-                        $db = JFactory::getDbo();
+                        $db = Factory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
                         
@@ -781,7 +782,7 @@ else
                         } catch (Exception $e) {
                         $msg = $e->getMessage(); // Returns "Normally you would have other code...
                         $code = $e->getCode(); // Returns '500';
-                        JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+                        Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                         }
                 }
                 
@@ -798,10 +799,10 @@ else
      */
     public function installJoomlaExtensions( $adapter)
 	{
-  $mainframe = JFactory::getApplication();
+  $mainframe = Factory::getApplication();
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
+  $db = Factory::getDBO();
   
   JFolder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
   
@@ -817,10 +818,10 @@ else
 	 */
 	public function installPlugins( $adapter)
 	{
-  $mainframe = JFactory::getApplication();
+  $mainframe = Factory::getApplication();
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
+  $db = Factory::getDBO();
   //$j = new JVersion();
 //  $joomla_version = $j->RELEASE;
   
@@ -889,7 +890,7 @@ else
         $object->extension_id = $plugin_id;
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
+        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         */
         }
   }
@@ -955,7 +956,7 @@ else
         $object->extension_id = $plugin_id;
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
+        $result = Factory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         */
         }
         
@@ -977,10 +978,10 @@ else
 	 */
 	public function installModules( $adapter)
 	{
-  $mainframe = JFactory::getApplication();
+  $mainframe = Factory::getApplication();
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
-  $db = JFactory::getDBO();
+  $db = Factory::getDBO();
   
   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
@@ -1057,7 +1058,7 @@ else
                 } catch (Exception $e) {
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
                 $code = $e->getCode(); // Returns '500';
-                JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+                Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                 }   
                 
             }
