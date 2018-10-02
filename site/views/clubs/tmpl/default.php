@@ -16,20 +16,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-	<?php 
-	echo $this->loadTemplate('projectheading');
+<div class="<?php echo $this->divclasscontainer;?>">
+<?php 
+echo $this->loadTemplate('projectheading');
 
-	if ( $this->config['show_sectionheader'] )
-	{ 
-		echo $this->loadTemplate('sectionheader');
-	}
+if ( $this->config['show_sectionheader'] )
+{ 
+echo $this->loadTemplate('sectionheader');
+}
 		
-	if ( $this->config['show_clubs'] )
-	{ 
-		echo $this->loadTemplate('clubs');
-	}
+if ( $this->config['show_clubs'] )
+{ 
+echo $this->loadTemplate('clubs');
+}
 
-	echo $this->loadTemplate('jsminfo');
-	?>
+echo $this->loadTemplate('jsminfo');
+?>
 </div>
