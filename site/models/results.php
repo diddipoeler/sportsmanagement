@@ -487,13 +487,15 @@ function getTotal() {
 //		if ( !is_null($round) ) 
 //        {
 try{
-			$db->setQuery($query);
+			
             if ( $pagination )
             {
+	$db->setQuery($query,self::$limitstart,self::$limit);
             $result = $query;
             }
             else
             {
+$db->setQuery($query);
             $result = $db->loadObjectList('id');
             }
             }
