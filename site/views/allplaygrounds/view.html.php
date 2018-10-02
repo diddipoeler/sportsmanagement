@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage allplaygrounds
@@ -18,7 +18,7 @@ if (! defined('JSM_PATH'))
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelperHtml') ) 
 {
 //add the classes for handling
@@ -55,33 +55,35 @@ class sportsmanagementViewallplaygrounds extends sportsmanagementView
 
         $starttime = microtime(); 
 
-		$this->state 		= $this->get('State');
-		$this->items 		= $this->get('Items');
-               
-		$this->pagination	= $this->get('Pagination');
+	$this->state = $this->get('State');
+	$this->items = $this->get('Items');
+	$this->pagination = $this->get('Pagination');
 	
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
+	$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+	if ($res = JSMCountries::getCountryOptions())
+	{
+		$nation = array_merge($nation,$res);
+	}
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation,
+			'filter_search_nation',
+			$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+			'value',
+			'text',
+			$this->state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE'));
+	$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ALLPLAYGROUNDS_PAGE_TITLE'));
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
         $this->filter = $this->state->get('filter.search');
-		$this->form = $form;
+	$this->form = $form;
 
-        $this->sortDirection    = $this->state->get('filter_order_Dir');
-        $this->sortColumn       = $this->state->get('filter_order');
+        $this->sortDirection = $this->state->get('filter_order_Dir');
+        $this->sortColumn = $this->state->get('filter_order');
         $this->lists = $lists;
 
 	}
