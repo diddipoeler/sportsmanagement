@@ -68,6 +68,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 if (! defined('DS'))
 {
@@ -149,7 +150,7 @@ $this->endPanel = 'endPanel';
 	 */
 	function uninstall( $adapter) 
 	{
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
+		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 	}
  
 	/**
@@ -161,7 +162,7 @@ $this->endPanel = 'endPanel';
 	 */
 	function update( $adapter) 
 	{
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
+		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
 	}
  
 
@@ -232,24 +233,24 @@ else
             <!-- This is a list with tabs names. -->
     	<ul class="nav nav-tabs" id="ID-Tabs-Group">
         	<li class="active">
-        		<a data-toggle="tab" href="#tab1_id"><?php echo $image1.JText::_(' Component'); ?></a>
+        		<a data-toggle="tab" href="#tab1_id"><?php echo $image1.Text::_(' Component'); ?></a>
         	</li>
         	<li>
-        		<a data-toggle="tab" href="#tab2_id"><?php echo $image2.JText::_(' Modules'); ?></a>
+        		<a data-toggle="tab" href="#tab2_id"><?php echo $image2.Text::_(' Modules'); ?></a>
     		</li>
             <li>
-        		<a data-toggle="tab" href="#tab3_id"><?php echo $image3.JText::_(' Plugins'); ?></a>
+        		<a data-toggle="tab" href="#tab3_id"><?php echo $image3.Text::_(' Plugins'); ?></a>
     		</li>
             <li>
-        		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.JText::_(' Create/Update Images Folders'); ?></a>
+        		<a data-toggle="tab" href="#tab4_id"><?php echo $image4.Text::_(' Create/Update Images Folders'); ?></a>
     		</li>
             
         </ul>
             
             <?PHP
             echo JHtml::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
-            echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',JText::_(' Component')); 
-            echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+            echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component')); 
+            echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
             echo JHtml::_('bootstrap.'.$this->endPanel);
  
              
@@ -262,7 +263,7 @@ else
 						true));
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
 		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
-        echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
+        echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
         }                      
         
         ?>
@@ -272,7 +273,7 @@ else
 			alt="JoomLeague" title="JoomLeague" width="180"/>
 		<?php
         $j = new JVersion();
-        echo '<h1>' . sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
+        echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
         ?>
         <img
 			src="../media/com_sportsmanagement/jl_images/compat_25.png"
@@ -282,7 +283,7 @@ else
 			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
         
          <?php       
-        echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+        echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
         
         
         
@@ -405,7 +406,7 @@ foreach ($files as $file)
 		{
 			if (JFile::exists(JPATH_ROOT . $file) && !JFile::delete(JPATH_ROOT . $file))
 			{
-				echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
+				echo Text::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
 			}
 		}
 
@@ -415,7 +416,7 @@ foreach ($files as $file)
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
 
-            echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+            echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
@@ -432,21 +433,21 @@ foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
-//$mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
+//$mainframe->enqueueMessage(Text::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
 
 
     switch ($route)        
     {
     case "install":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules')); 
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules')); 
     self::installModules($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
     self::installJoomlaExtensions($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
@@ -454,15 +455,15 @@ foreach($form->getFieldset() as $field)
     self::setParams($newparams);    
     break;
     case "update":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules'));
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
     self::installModules($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
     self::installJoomlaExtensions($adapter);
     echo JHtml::_('bootstrap.'.$this->endPanel);
@@ -480,7 +481,7 @@ foreach($form->getFieldset() as $field)
             else
             {
                    
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
+		echo '<p>' . Text::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
@@ -557,7 +558,7 @@ echo self::getFxInitJSCode('steps');
     $excludeExtension[] = 'sisdata';
     $folderAdmin  = JFolder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderAdmin<br><pre>'.print_r($folderAdmin,true).'</pre>'),'');                                                    
+    //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folderAdmin<br><pre>'.print_r($folderAdmin,true).'</pre>'),'');                                                    
     
     foreach ($folderAdmin as $key => $value )
     {
@@ -568,7 +569,7 @@ echo self::getFxInitJSCode('steps');
     }
     $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folderSite<br><pre>'.print_r($folderSite,true).'</pre>'),'');
+    //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folderSite<br><pre>'.print_r($folderSite,true).'</pre>'),'');
     
     foreach ($folderSite as $key => $value )
     {
@@ -638,7 +639,7 @@ echo self::getFxInitJSCode('steps');
 		$mainframe = Factory::getApplication();
   $db = Factory::getDBO();
   
-        //echo JText::_('Creating new Image Folder structure');
+        //echo Text::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
 		$update = JFolder::exists($dest);
 		$folders = array('agegroups',
@@ -689,7 +690,7 @@ echo self::getFxInitJSCode('steps');
 			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             
-            echo '<p>' . JText::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
+            echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
             
 	switch ( $folder )
 	{
@@ -713,7 +714,7 @@ echo self::getFxInitJSCode('steps');
 		JFile::copy(JPATH_ROOT.'/images/com_sportsmanagement/database/placeholders/placeholder_150.png', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/placeholder_150.png');
 		break;
 	}
-            //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
+            //$mainframe->enqueueMessage(Text::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
             
 		}
         
@@ -729,7 +730,7 @@ echo self::getFxInitJSCode('steps');
 				}
 			}
 		}
-		//echo ' - <span style="color:green">'.JText::_('Success').'</span><br />';
+		//echo ' - <span style="color:green">'.Text::_('Success').'</span><br />';
 	}
     
     
@@ -745,7 +746,7 @@ echo self::getFxInitJSCode('steps');
         $mainframe = Factory::getApplication();
         $db = Factory::getDbo();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
         
                 if ( count($param_array) > 0 ) 
                 {
@@ -755,15 +756,15 @@ echo self::getFxInitJSCode('steps');
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
                         
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
                         }
                         
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
+                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
                         
                         // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $params );
@@ -825,8 +826,8 @@ else
   //$j = new JVersion();
 //  $joomla_version = $j->RELEASE;
   
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
   
   $plugins = $manifest->xpath('plugins/plugin');
   $plugins3 = $manifest->xpath('plugins3/plugin');
@@ -838,10 +839,10 @@ else
         $name = (string)$plugin->attributes()->plugin;
         $group = (string)$plugin->attributes()->group;
         
-        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
+        echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
         
         // Select some fields
         $query = $db->getQuery(true);
@@ -902,10 +903,10 @@ else
         $name = (string)$plugin->attributes()->plugin;
         $group = (string)$plugin->attributes()->group;
         
-        echo '<p>' . JText::_('Plugin : ' ) . $name . ' installiert!</p>';
+        echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
         
         // Select some fields
         $query = $db->getQuery(true);
@@ -983,8 +984,8 @@ else
   $manifest = $adapter->getParent()->manifest;
   $db = Factory::getDBO();
   
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
+  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
   
   
   $modules = $manifest->xpath('modules/module');
@@ -996,10 +997,10 @@ else
             $position = (string)$module->attributes()->position;
             $published = (string)$module->attributes()->published;
             
-            echo '<p>' . JText::_('Modul : ' ) . $name . ' installiert!</p>';
+            echo '<p>' . Text::_('Modul : ' ) . $name . ' installiert!</p>';
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
+            //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
             
             if (is_null($client))
             {
