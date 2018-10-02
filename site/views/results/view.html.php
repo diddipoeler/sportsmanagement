@@ -115,10 +115,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
   
        }
       
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' showediticon'.'<pre>'.print_r($this->showediticon,true).'</pre>' ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
-            
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' showediticon'.'<pre>'.print_r($this->showediticon,true).'</pre>' ),'');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state'.'<pre>'.print_r($this->state,true).'</pre>' ),'');       
+			
             $lists['rounds'] = HTMLHelper::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->lists = $lists;
 		
