@@ -69,6 +69,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('DS'))
 {
@@ -248,21 +249,21 @@ else
         </ul>
             
             <?PHP
-            echo JHtml::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
-            echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component')); 
+            echo HTMLHelper::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
+            echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',Text::_(' Component')); 
             echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
-            echo JHtml::_('bootstrap.'.$this->endPanel);
+            echo HTMLHelper::_('bootstrap.'.$this->endPanel);
  
              
             }
             else
             {
-	   echo JHtml::_('sliders.start','steps',array(
+	   echo HTMLHelper::_('sliders.start','steps',array(
 						'allowAllClose' => true,
 						'startTransition' => true,
 						true));
        $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
-		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
+		echo HTMLHelper::_('sliders.panel', $image.' Component', 'panel-component');
         echo '<h2>' . Text::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
         }                      
         
@@ -439,34 +440,34 @@ foreach($form->getFieldset() as $field)
     switch ($route)        
     {
     case "install":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules')); 
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules')); 
     self::installModules($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
     self::installJoomlaExtensions($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
     self::setParams($newparams);    
     break;
     case "update":
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',Text::_(' Modules'));
     self::installModules($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
     
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',Text::_(' Plugins'));
     self::installPlugins($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel); 
 
-    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
+    echo HTMLHelper::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',Text::_(' Create/Update Images Folders'));  
     self::createImagesFolder();
     self::installJoomlaExtensions($adapter);
-    echo JHtml::_('bootstrap.'.$this->endPanel);
+    echo HTMLHelper::_('bootstrap.'.$this->endPanel);
     
     self::setParams($newparams);
     break;
@@ -476,7 +477,7 @@ foreach($form->getFieldset() as $field)
     }
             
             
-            echo JHtml::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
+            echo HTMLHelper::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
             }
             else
             {
@@ -502,13 +503,13 @@ switch ($route)
     self::setParams($newparams);
 //    self::installComponentLanguages();
 $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
+		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
     self::installModules($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
+		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
     self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
+		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
 //    self::migratePicturePath();
 //    self::deleteInstallFolders();
@@ -517,13 +518,13 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
     case "update":
 //    self::installComponentLanguages();
 $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
-		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
+		echo HTMLHelper::_('sliders.panel', $image.' Modules', 'panel-modules');
     self::installModules($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
-		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
+		echo HTMLHelper::_('sliders.panel', $image.' Plugins', 'panel-plugins');
     self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
-		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
+		echo HTMLHelper::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
 //    self::migratePicturePath();
       self::setParams($newparams);
@@ -535,7 +536,7 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
         
     }
 
-echo JHtml::_('sliders.end');
+echo HTMLHelper::_('sliders.end');
 echo self::getFxInitJSCode('steps');
 
 }
