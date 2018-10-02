@@ -308,7 +308,7 @@ function getTotal() {
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
-    $result = false;
+    return false;
 }
         }
         return $this->_total;
@@ -330,7 +330,7 @@ function getTotal() {
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
-    $result = false;
+    return false;
 }
         }
         return $this->_data;
