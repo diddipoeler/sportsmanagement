@@ -116,7 +116,7 @@ use Joomla\CMS\Factory;
    </style>
 <!--<![endif]--> 
 
-<div class="row table-responsive" id="defaultmatrix">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultmatrix">
  <?php
 
 	#$this->config['highlight_fav_team'] = 1;
