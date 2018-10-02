@@ -50,14 +50,14 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
-        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
+        //$matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
         //$this->total = count($matches);
         $this->limit = $this->model->getLimit();
 $this->limitstart = $this->model->getLimitStart();
 $this->ausgabestart = $this->limitstart + 1;
 $this->ausgabeende = $this->limitstart + $this->limit;
 	$this->state = $this->get('State');
-	$this->items = $matches;
+	$matches = $this->get('Data');
 	$this->pagination = $this->get('Pagination');
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = BaseDatabaseModel::getInstance("Pagination","sportsmanagementModel");
