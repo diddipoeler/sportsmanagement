@@ -297,32 +297,45 @@ else
  * 
  * @return
  */
- /*
 function getTotal() {
         // Load the content if it doesn't already exist
-//        if (empty($this->_total)) {
-//            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
-//            $this->_total = $this->_getListCount($query);
-//        }
+        if (empty($this->_total)) {
+            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
+            try{
+            $this->_total = $this->_getListCount($query);
+            }
+            catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+    $result = false;
+}
+        }
         return $this->_total;
     }
-    */
     
     /**
      * sportsmanagementModelResults::getData()
      * 
      * @return
      */
-     /*
     function getData() {
         // if data hasn't already been obtained, load it
-//        if (empty($this->_data)) {
-//            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
-//            $this->_data = $this->_getList($query);
-//        }
+        if (empty($this->_data)) {
+            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
+            try{
+		$this->_data = $this->_getList($query);
+		}
+            catch (Exception $e)
+{
+    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+    $result = false;
+}
+        }
         return $this->_data;
     }
-	*/
+
 	/**
 	 * sportsmanagementModelResults::getMatches()
 	 * 
@@ -477,7 +490,7 @@ try{
 			$db->setQuery($query);
             if ( $pagination )
             {
-            $result = $db->loadObjectList();
+            $result = $query;
             }
             else
             {
