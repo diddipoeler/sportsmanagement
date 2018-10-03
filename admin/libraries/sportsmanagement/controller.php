@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * JSMControllerAdmin
@@ -39,12 +40,17 @@ class JSMControllerAdmin extends AdminController
     public function __construct($config = array())
     {
         parent::__construct($config);
-        $this->app = JFactory::getApplication();
-        $this->jinput = $this->app->input;
-        $this->option = $this->jinput->getCmd('option');
+        $this->jsmapp = Factory::getApplication();
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
 
     }
 
+     /**
+      * JSMControllerAdmin::cancel()
+      * 
+      * @return void
+      */
      function cancel()
 	{
 	$msg = '';
@@ -79,13 +85,13 @@ class JSMControllerForm extends FormController
         parent::__construct($config);
         $this->jsmdb = sportsmanagementHelper::getDBConnection();
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
-        $this->jsmuser = JFactory::getUser();
-        $this->jsmdate = JFactory::getDate();
+        $this->jsmdocument = Factory::getDocument();
+        $this->jsmuser = Factory::getUser();
+        $this->jsmdate = Factory::getDate();
 //        $this->option = $this->jsmjinput->getCmd('option');
         //$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
 
@@ -108,7 +114,7 @@ class JSMControllerForm extends FormController
         JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Initialise variables.
-        //$app = JFactory::getApplication();
+        //$app = Factory::::getApplication();
         //$db = sportsmanagementHelper::getDBConnection();
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getVar('tmpl');

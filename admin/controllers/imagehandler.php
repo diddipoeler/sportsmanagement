@@ -11,12 +11,23 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+
 //use Joomla\CMS\Filter\InputFilter;
 //jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 //require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'imageselect.php');
 
+/**
+ * sportsmanagementControllerImagehandler
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2018
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 {
 	/**
@@ -43,25 +54,25 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 		// Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$jinput = $app->input;
+        //$option = $this->jsmjinput->getCmd('option');
 
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
-		//$file	= $jinput->getVar( 'userfile', '', 'files', 'array' );
-        $file = $jinput->files->get('userfile');
-		//$task	= $jinput->getVar( 'task' );
-		$type	= $jinput->getVar( 'type' );
+		//$file	= $this->jsmjinput->getVar( 'userfile', '', 'files', 'array' );
+        $file = $this->jsmjinput->files->get('userfile');
+		//$task	= $this->jsmjinput->getVar( 'task' );
+		$type	= $this->jsmjinput->getVar( 'type' );
 		$folder	= ImageSelectSM::getfolder($type);
-		$field	= $jinput->getVar( 'field' );
-		$linkaddress	= $jinput->getVar( 'linkaddress' );
+		$field	= $this->jsmjinput->getVar( 'field' );
+		$linkaddress	= $this->jsmjinput->getVar( 'linkaddress' );
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
 		//$ftp = JClientHelper::getCredentials( 'ftp' );
 
-		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
+		$base_Dir = JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS;
         
     //do we have an imagelink?
     if ( !empty( $linkaddress ) )
@@ -83,12 +94,12 @@ $filename = ImageSelectSM::sanitize( $base_Dir, $file['name'] );
 		
 if ( !copy($linkaddress,$filepath) )
 {
-echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED' )."'); window.history.go(-1); </script>\n";
+echo "<script> alert('".Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED' )."'); window.history.go(-1); </script>\n";
 //$app->close();
 }
 else
 {
-//echo "<script> alert('" . JText::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//echo "<script> alert('" . Text::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 //$app->close();
 }
@@ -99,7 +110,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		//do we have an upload?
 		if ( empty( $file['name'] ) )
 		{
-			echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY' )."'); window.history.go(-1); </script>\n";
+			echo "<script> alert('".Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY' )."'); window.history.go(-1); </script>\n";
 			//$app->close();
 		}
 
@@ -118,14 +129,14 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		//upload the image
 		if ( !JFile::upload( $file['tmp_name'], $filepath ) )
 		{
-			echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
+			echo "<script> alert('".Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
 			//$app->close();
 
 		}
 		else
 		{
-//			echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-//			echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
+//			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
       echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
 			//$app->close();
 		}
@@ -144,15 +155,15 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		// Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
 
 		// Get some data from the request
-		$images	= $jinput->getVar( 'rm', array(), '', 'array' );
-		$type	= $jinput->getVar( 'type' );
+		$images	= $this->jsmjinput->getVar( 'rm', array(), '', 'array' );
+		$type	= $this->jsmjinput->getVar( 'type' );
 
 		$folder	= ImageSelectSM::getfolder( $type );
 
@@ -163,12 +174,12 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 				/*
 				if ( $image !== InputFilter::clean( $image, 'path' ) )
 				{
-					JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE' ) . ' ' . htmlspecialchars( $image, ENT_COMPAT, 'UTF-8' ) );
+					JError::raiseWarning( 100, Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UNABLE_TO_DELETE' ) . ' ' . htmlspecialchars( $image, ENT_COMPAT, 'UTF-8' ) );
 					continue;
 				}
 */
-				$fullPath = JPath::clean( JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS . $image );
-				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS . 'small' . DS . $image );
+				$fullPath = JPath::clean( JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS . $image );
+				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS . 'small' . DS . $image );
 				if ( is_file( $fullPath ) )
 				{
 					JFile::delete( $fullPath );
@@ -180,7 +191,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 			}
 		}
 
-		$app->redirect( 'index.php?option='.$option.'&view=imagehandler&type=' . $type . '&tmpl=component' );
+		$app->redirect( 'index.php?option='.$this->jsmoption.'&view=imagehandler&type=' . $type . '&tmpl=component' );
 	}
 
 }
