@@ -59,8 +59,6 @@ public function __construct($config = array())
          */
         public function save($data)
 	{
-	
-    //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
     
      // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -84,9 +82,7 @@ public function __construct($config = array())
     $this->jsmquery->from('#__sportsmanagement_treeto_node AS ttn');  
     $this->jsmquery->where('ttn.id = ' . $node_id );
     $this->jsmdb->setQuery( $this->jsmquery );
-    
-    //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-    
+   
     return $this->jsmdb->loadObject();
     
     }   
@@ -120,7 +116,7 @@ public function __construct($config = array())
        
     $this->jsmquery->order('mid ASC');   
        
-       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+
        		
 		$this->jsmdb->setQuery($this->jsmquery);
 		

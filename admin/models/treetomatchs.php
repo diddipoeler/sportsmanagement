@@ -57,8 +57,6 @@ protected function getListQuery()
        
     $this->jsmquery->order('r.roundcode');   
        
-      // $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-
 		return $this->jsmquery;
     }   
     
@@ -163,10 +161,6 @@ $this->jsmsubquery1->clear();
        $this->jsmquery->where('NOT mc.projectteam1_id IN ( ' . $this->jsmsubquery1 .' )' );
 $this->jsmquery->where('NOT mc.projectteam2_id IN ( ' . $this->jsmsubquery1 .' )' );
     $this->jsmquery->order('r.id');   
-       
-       		//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-            
-
 		
 		$this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
@@ -211,8 +205,7 @@ $this->jsmquery->clear();
        
     $this->jsmquery->order('mc.id');           
         
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
-        
+       
         $this->jsmdb->setQuery( $this->jsmquery );
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{

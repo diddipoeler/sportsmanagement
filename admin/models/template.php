@@ -107,8 +107,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$template->text = JText::_($template->text);
 		}
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result1<br><pre>'.print_r($result1,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result2<br><pre>'.print_r($result2,true).'</pre>'),'Notice');
         
         if ( $result1 )
         {
@@ -170,7 +168,7 @@ return true;
 	public function delete(&$pks)
 {
 $app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    
     
     return parent::delete($pks);
     

@@ -299,7 +299,6 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

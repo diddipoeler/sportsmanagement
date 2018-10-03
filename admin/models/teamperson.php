@@ -608,11 +608,7 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_p
 {
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }  
-        
-       
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
+
         // Proceed with the save
 		return parent::save($data);   
     }

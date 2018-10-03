@@ -92,12 +92,12 @@ $this->app = JFactory::getApplication();
 
 		$query="SELECT * FROM #__sportsmanagement_version where file LIKE 'sportsmanagement'";
 		$this->_db->setQuery($query);
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Notice');			
+
 		if (!$result=$this->_db->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Notice');			
+
 		}
 		else 
 		{

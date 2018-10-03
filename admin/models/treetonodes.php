@@ -158,7 +158,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->jsmquery .= ';';
 		$this->jsmdb->setQuery($this->jsmquery);
 		//$this->_db->query($query);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query dump<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'Error');
+
 sportsmanagementModeldatabasetool::runJoomlaQuery(); 
 
 // Create an object for the record we are going to update.
@@ -234,7 +234,7 @@ $conditions = array(
 );
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+
 sportsmanagementModeldatabasetool::runJoomlaQuery();                             
                             
 						}
@@ -257,7 +257,7 @@ $conditions = array(
 );
 $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_treeto_node'))->set($fields)->where($conditions);
 $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+
 sportsmanagementModeldatabasetool::runJoomlaQuery();            
             
 		}
@@ -270,7 +270,7 @@ $object->leafed = 3 ;
 // Update their details in the users table using id as the primary key.
 $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultupdate<br><pre>'.print_r($resultupdate,true).'</pre>'),'');
+
 
 
 		return $result;
