@@ -10,7 +10,7 @@
  */
  
 defined('_JEXEC') or die;
-
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerTreetomatch
@@ -60,17 +60,17 @@ class sportsmanagementControllerTreetomatch extends JControllerForm
     $cid = $this->jsmjinput->get('cid',array(),'array');
     $post['id'] = $this->jsmjinput->get('nid');
     
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($post,true).'</pre>'),'Notice');    
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($post,true).'</pre>'),'Notice');    
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
     
 		$model = $this->getModel('treetomatchs');
 		if($model->store($post))
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_SAVED');
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_SAVED');
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_ERROR_SAVE') . $model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_ERROR_SAVE') . $model->getError();
 		}
 
     $link = 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->jsmjinput->get('nid').'&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');    

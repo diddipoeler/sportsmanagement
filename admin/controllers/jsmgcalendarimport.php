@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementControllerjsmgcalendarImport
@@ -36,7 +37,7 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 		$app = JFactory::getApplication();
 		parent::__construct($config);
 
-	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
+	//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
 	}
     
 	/**
@@ -54,11 +55,11 @@ $option = JFactory::getApplication()->input->getCmd('option');
         
         if ( $result )
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_GOOGLE_EVENT');
         }
         else
         {
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_NO_GOOGLECALENDAR_ID');
         }
         
 //$link = $result;

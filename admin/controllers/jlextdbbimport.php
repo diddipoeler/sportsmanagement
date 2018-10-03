@@ -22,6 +22,7 @@ http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=spo
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -56,12 +57,12 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
 	
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
+			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE' ) );
+			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE' ) );
 			
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE' ) );
+				JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_MATCHFILE_UPDATE' ) );
 			}
 		}
 		
@@ -90,13 +91,13 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 					JFile::delete ( $dest );
 				}
 				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
+					JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
 					return;
 				} else {
 					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
 							return false;
 						}
 						JFile::delete ( $dest );
@@ -108,21 +109,21 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 						}
 						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_TMP_DELETED' ) );
 							return;
 						}
 					} else {
 						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION' ) );
+							JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_WRONG_EXTENSION' ) );
 							return false;
 						}
 					}

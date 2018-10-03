@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 /**
  * sportsmanagementControllerjlextindividualsportes
@@ -117,7 +118,7 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
         
        
        parent::publish();
-       $msg = JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED',count($pks));;
+       $msg = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED',count($pks));;
        $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
 		$this->setRedirect($link,$msg);
         
@@ -140,7 +141,7 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
        $model = $this->getModel();
        $model->delete($pks);
        
-       $msg = JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',count($pks));
+       $msg = Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',count($pks));
        $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
 		$this->setRedirect($link,$msg);
         

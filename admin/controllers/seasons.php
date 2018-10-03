@@ -12,7 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Language\Text; 
 /**
  * sportsmanagementControllerseasons
  * 
@@ -27,7 +27,7 @@ class sportsmanagementControllerseasons extends JSMControllerAdmin
 	
  function cancel($key = NULL)
 {
-    $msg = JText::_('JLIB_HTML_BEHAVIOR_CLOSE');
+    $msg = Text::_('JLIB_HTML_BEHAVIOR_CLOSE');
     $link = 'index.php?option=com_sportsmanagement&view=close&tmpl=component';
 $this->setRedirect($link,$msg);
     }

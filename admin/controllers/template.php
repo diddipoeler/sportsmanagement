@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+ use Joomla\CMS\Language\Text;
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper; 
@@ -56,13 +56,13 @@ function remove()
 		$isMaster = JFactory::getApplication()->input->getVar('isMaster',array(),'post','array');
 		ArrayHelper::toInteger($isMaster);
 		if (count($cid) < 1){
-			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
+			JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
 		}
 		foreach ($cid AS $id)
 		{
 			if ($isMaster[$id])
 			{
-				echo "<script> alert('" . JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_DELETE_WARNING') . "'); window.history.go(-1); </script>\n";
+				echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_DELETE_WARNING') . "'); window.history.go(-1); </script>\n";
 				return;
 			}
 		}
@@ -71,7 +71,7 @@ function remove()
 		{
 			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
 		}
-		$msg = JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
+		$msg = Text::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
 		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.JFactory::getApplication()->input->getInt( "pid", 0 ), $msg);
 	}
 	
@@ -89,11 +89,11 @@ if ( $templateid )
 {
 if ($model->import($templateid,$projectid))
 {
-$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_IMPORTED_TEMPLATE');
+$msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_IMPORTED_TEMPLATE');
 }
 else
 {
-$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_ERROR_IMPORT_TEMPLATE').$model->getError();
+$msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_CTRL_ERROR_IMPORT_TEMPLATE').$model->getError();
 }
 
 }

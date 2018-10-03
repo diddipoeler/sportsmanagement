@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
@@ -55,7 +56,7 @@ class sportsmanagementControllergithub extends JControllerForm
      */
     function cancel($key = NULL)
 {
-    $msg = JText::_('JLIB_HTML_BEHAVIOR_CLOSE');
+    $msg = Text::_('JLIB_HTML_BEHAVIOR_CLOSE');
 		
         
         
@@ -74,7 +75,7 @@ class sportsmanagementControllergithub extends JControllerForm
 function addissue()
 {
   // Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
        $msg = $this->model->addissue();
        $this->setRedirect('index.php?option=com_sportsmanagement&view=github&tmpl=component&layout=github_result',$msg);    

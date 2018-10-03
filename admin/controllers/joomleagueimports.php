@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 /**
  * sportsmanagementControllerjoomleagueimports
@@ -74,7 +75,7 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 ////        $this->option = $this->jsmjinput->getCmd('option');
 //        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
         
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
         
 		// Map the apply task to the save method.
 		//$this->registerTask('apply', 'save');
@@ -91,7 +92,7 @@ function joomleaguesetagegroup()
 $model = $this->getModel();    
 $result = $model->joomleaguesetagegroup();   
 $type = ''; 
-$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP');    
+$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP');    
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false),$msg,$type);    
 }
 
@@ -110,15 +111,15 @@ function importjoomleaguenew()
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
         $sports_type_id = $this->jsmjinput->get('filter_sports_type', 0);
         
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
         
         if ( $jl_table_import_step != 'ENDE' )
         {
         $model = $this->getModel();
         $result = $model->importjoomleaguenew($jl_table_import_step,$sports_type_id);
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' model result <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' model result <br><pre>'.print_r($result,true).'</pre>'),'');
         //$result = $model->importjoomleaguenewtest($jl_table_import_step);
         $this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
         //sleep(3);

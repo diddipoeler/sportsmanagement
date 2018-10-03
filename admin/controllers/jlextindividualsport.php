@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.controller');
 
@@ -117,12 +118,12 @@ class sportsmanagementControllerjlextindividualsport extends JController
         // store to the database
 		if ($row->store($post))
 		{
-			//$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH'.$db->insertid());
-            $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH'.$db->getErrorMsg());
+			//$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH'.$db->insertid());
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH'.$db->getErrorMsg());
 		}
 		else
 		{
-			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
+			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_ADD_MATCH').$model->getError();
 		}
 		
         $link = 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&rid='.$post['round_id'].'&id='.$post['match_id'].'&team1='.$post['projectteam1_id'].'&team2='.$post['projectteam2_id'].'';
@@ -141,11 +142,11 @@ class sportsmanagementControllerjlextindividualsport extends JController
 		$model=$this->getModel('jlextindividualsport');
 		if ($model->store($post))
 		{
-			$msg=JText::_('JL_ADMIN_MATCH_CTRL_ADD_SINGLE_MATCH');
+			$msg=Text::_('JL_ADMIN_MATCH_CTRL_ADD_SINGLE_MATCH');
 		}
 		else
 		{
-			$msg=JText::_('JL_ADMIN_MATCH_CTRL_ERROR_ADD_SINGLE_MATCH').$model->getError();
+			$msg=Text::_('JL_ADMIN_MATCH_CTRL_ERROR_ADD_SINGLE_MATCH').$model->getError();
 		}
 		$link='index.php?option=com_sportsmanagement&view=jlextindividualsportes';
 		$this->setRedirect($link,$msg);

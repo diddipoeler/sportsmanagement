@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 
 jimport ( 'joomla.application.component.controller' );
 jimport ( 'joomla.filesystem.file' );
@@ -39,9 +40,9 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		$app = JFactory::getApplication ();
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
-		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
+		//JToolbarHelper::back ( Text::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
 		$post = JFactory::getApplication()->input->post->getArray(array());
@@ -52,17 +53,17 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
 		{
 		$link = 'index.php?option='.$option.'&view=jlextdfbnetplayerimport';
-		$msg = JText::_ ('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
+		$msg = Text::_ ('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
 		$app->Redirect ( $link, $msg, 'ERROR' );
 		}
 		
 		if ($whichfile == 'playerfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE' ) );
+			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE' ) );
 		} elseif ($whichfile == 'matchfile') {
-			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE' ) );
+			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE' ) );
 			
 			if (isset ( $post ['dfbimportupdate'] )) {
-				JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE' ) );
+				JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_MATCHFILE_UPDATE' ) );
 			}
 		}
 		
@@ -91,13 +92,13 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 					JFile::delete ( $dest );
 				}
 				if (! JFile::upload ( $tempFilePath, $dest )) {
-					JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
+					JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD' ) );
 					return;
 				} else {
 					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR' ) );
 							return false;
 						}
 						JFile::delete ( $dest );
@@ -109,21 +110,21 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 						}
 						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
+							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_TMP_DELETED' ) );
 							return;
 						}
 					} else {
 						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
-								JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
+								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED' ) );
 								return false;
 							}
 						} else {
-							JError::raiseWarning ( 21, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
+							JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION' ) );
 							return false;
 						}
 					}

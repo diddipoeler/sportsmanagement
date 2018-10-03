@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access'); 
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
@@ -94,7 +95,7 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	 */
 	function save()
 	{
-		//JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
+		//JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
 		$post = JFactory::getApplication()->input->post->getArray(array());
 		$file_name = JFactory::getApplication()->input->getVar('file_name');
 		$path = explode('/',$file_name);
@@ -107,14 +108,14 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 			$filepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
 		}
 		$model = $this->getModel('updates');
-		echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.$filepath.'</b>');
+		echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.$filepath.'</b>');
 		if (JFile::exists($filepath))
 		{
 			$model->loadUpdateFile($filepath,$file_name);
 		}
 		else
 		{
-			echo JText::_('Update file not found!');
+			echo Text::_('Update file not found!');
 		}
 	}
 }

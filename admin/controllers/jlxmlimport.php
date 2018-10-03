@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -55,7 +55,7 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	{
 	   $app = JFactory::getApplication();
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
        
 		switch ($this->getTask())
 		{
@@ -113,9 +113,9 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	function save()
 	{
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
-		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
 		$post = JFactory::getApplication()->input->post->getArray(array());
         
@@ -134,20 +134,20 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
         $europalink = "http://www.fussballineuropa.de/index.php?option=com_sportsmanagement&view=jlxmlexports&p=".$projectid."&update=0";    
         }
         
-        $app->enqueueMessage(JText::_('hole daten von -> '.$europalink.''),'Notice');
+        $app->enqueueMessage(Text::_('hole daten von -> '.$europalink.''),'Notice');
         //set the target directory
 		$base_Dir = JPATH_SITE . DS . 'tmp' . DS;
         $filepath = $base_Dir . 'joomleague_import.jlg';
         if ( !copy($europalink,$filepath) )
 {
-$app->enqueueMessage(JText::_('daten -> '.$europalink.' konnten nicht kopiert werden!'),'Error');
+$app->enqueueMessage(Text::_('daten -> '.$europalink.' konnten nicht kopiert werden!'),'Error');
 }
 else
 {
 $upload['name'] = $europalink;    
 $app->setUserState('com_sportsmanagement'.'uploadArray',$upload); 
 $app->setUserState('com_sportsmanagement'.'projectidimport',$projectid);     
-$app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'Notice');    
+$app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'Notice');    
 }
         }
         else
@@ -177,7 +177,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 					}
 					if (!JFile::upload($tempFilePath,$dest))
 					{
-						JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
+						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
 						return;
 					}
 					else
@@ -187,7 +187,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 							$result=JArchive::extract($dest,$extractdir);
 							if ($result === false)
 							{
-								JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
+								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
 								return false;
 							}
 							JFile::delete($dest);
@@ -202,13 +202,13 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 							{
 								if (!@ rename($src[0],$importFile))
 								{
-									JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
+									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME'));
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
+								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_TMP_DELETED'));
 								return;
 							}
 						}
@@ -218,13 +218,13 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 							{
 								if (!@ rename($dest,$importFile))
 								{
-									JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
+									JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_RENAME_FAILED'));
 									return false;
 								}
 							}
 							else
 							{
-								JError::raiseWarning(21,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
+								JError::raiseWarning(21,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_WRONG_EXTENSION'));
 								return false;
 							}
 						}
@@ -251,7 +251,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 	 */
 	function insert()
 	{
-		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
+		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
 		$post=JFactory::getApplication()->input->post->getArray(array());
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';

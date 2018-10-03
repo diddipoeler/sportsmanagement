@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
  
 /**
@@ -61,9 +61,9 @@ $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2)
 $task = $this->getTask();
 $value = ArrayHelper::getValue($values, $task, 0, 'int');    
 
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
 $model = $this->getModel();
 $model->set_state($ids,$tpids,$value,$post['pid']);  
 
@@ -83,7 +83,7 @@ $ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_TRASHED';
 break;		
 }		
 
-$this->setMessage(JText::plural($ntext, count($ids)));	
+$this->setMessage(Text::plural($ntext, count($ids)));	
 	
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
 }

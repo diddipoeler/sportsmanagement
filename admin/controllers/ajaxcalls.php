@@ -9,6 +9,10 @@
  * @subpackage controllers
  */
 
+ // No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text; 
+
 /**
  * sportsmanagementControllerajaxcalls
  * 
@@ -33,14 +37,14 @@ function removeCommentary()
         //$result = $response;
         
         // Check for request forgeries
-        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
         
         // Check for request forgeries
-        //JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+        //JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
         
  //       if (!JSession::checkToken('post')) 
 //        {
-			//$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.JText::_('JINVALID_TOKEN');
+			//$result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.Text::_('JINVALID_TOKEN');
 		//echo json_encode($result);
         //}
 //else
@@ -49,11 +53,11 @@ function removeCommentary()
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
-			$result='0'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
+			$result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.$model->getError();
 		}
 		else
 		{
-			$result='1'.'&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
+			$result='1'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
 		}
 		echo json_encode($result);
  //}       
