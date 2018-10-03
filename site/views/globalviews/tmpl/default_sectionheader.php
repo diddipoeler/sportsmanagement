@@ -66,7 +66,7 @@ switch ( $view )
 	echo Text::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
 	
 	if ( $this->showediticon )
-	{
+    {
 		
     // $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
     
@@ -79,14 +79,14 @@ $routeparameter['pid'] = $this->person->id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('editperson',$routeparameter,'person.edit');
 echo sportsmanagementHelperHtml::getBootstrapModalImage('editperson'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),
+Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
 $this->modalheight,
 $this->overallconfig['use_jquery_modal']);  	
                 
-  }
+    }
 
 	if ( isset($this->teamPlayer->injury) && $this->teamPlayer->injury )
 	{
@@ -133,7 +133,7 @@ $this->overallconfig['use_jquery_modal']);
 $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editperson&id=<?php echo $this->person->id; ?>";
 echo sportsmanagementHelperHtml::getBootstrapModalImage('personedit'.$this->person->id,
 'administrator/components/com_sportsmanagement/assets/images/edit.png',
-Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONINFO_EDIT_DETAILS'),
+Text::_('COM_SPORTSMANAGEMENT_PERSON_EDIT_DETAILS'),
 '20',
 $link,
 $this->modalwidth,
