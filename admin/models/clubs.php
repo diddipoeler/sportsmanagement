@@ -165,6 +165,11 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->jsmquery->where('a.published = '.$this->getState('filter.state'));	
 		}
         
+	if ( is_numeric($this->getState('filter.association')) )
+		{
+		$this->jsmquery->where('a.associations = '.$this->getState('filter.association'));	
+		}
+	    
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'a.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
