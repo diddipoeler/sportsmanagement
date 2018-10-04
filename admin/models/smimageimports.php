@@ -39,6 +39,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -89,7 +90,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         // Initialise variables.
         $app = JFactory::getApplication('administrator');
 
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
         // Load the filter state.
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
@@ -100,7 +101,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         $image_folder = $this->getUserStateFromRequest($this->context . '.filter.image_folder', 'filter_image_folder', '');
         $this->setState('filter.image_folder', $image_folder);
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 //		// Load the parameters.
 //		$params = JComponentHelper::getParams('com_sportsmanagement');
 //		$this->setState('params', $params);
@@ -147,7 +148,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         $query->order($db->escape($this->getState('list.ordering', 'name')) . ' ' .
                 $db->escape($this->getState('list.direction', 'ASC')));
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 
         return $query;
@@ -176,7 +177,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
             return array();
         }
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
         return $result;
     }
@@ -216,21 +217,21 @@ class sportsmanagementModelsmimageimports extends JModelList {
                 // moving to display page to display curl errors
                 //echo curl_errno($curl) ;
                 //echo curl_error($curl);
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
+                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
             } else {
                 $content = curl_exec($curl);
                 //print_r($content);
                 curl_close($curl);
             }
 
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen')) {
             $content = file_get_contents($datei);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
         } else {
             //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
         }
 
 
@@ -245,7 +246,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
             $doc = new DOMDocument();
             $doc->loadXML($content);
 
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
 
             $doc->save(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml');
         }
@@ -280,10 +281,10 @@ class sportsmanagementModelsmimageimports extends JModelList {
 
             $picturedescription = (string) $picture->picture;
 
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
             $temp = new stdClass();
             $temp->id = $i;
             $temp->picture = $picturedescription;
@@ -350,7 +351,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
           }
          */
 
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
 
         return $files;
     }

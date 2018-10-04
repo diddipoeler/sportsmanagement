@@ -77,8 +77,6 @@ function getXMLFiles()
        //$files = JFolder::files($path, $filter);
        $files = JFolder::files($path, '.xml$|.php$');
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' files<br><pre>'.print_r($files,true).'</pre>'),'');
-        
         return $files;
         
     }	

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelPositions
@@ -60,8 +61,8 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -133,7 +134,7 @@ class sportsmanagementModelPositions extends JSMModelList
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
   
 		return $this->jsmquery;
 	}
@@ -179,8 +180,8 @@ class sportsmanagementModelPositions extends JSMModelList
             return false;
 		}
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
 		return $result;
 	}
@@ -214,12 +215,12 @@ class sportsmanagementModelPositions extends JSMModelList
        $result = JFactory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
-			$position->text = JText::_($position->text);
+			$position->text = Text::_($position->text);
 		}
         }
 catch (Exception $e){
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
     $result = false;
 }
         
@@ -269,7 +270,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'er
 		else
 		{
 			foreach ($result as $position) {
-				$position->text=JText::_($position->text);
+				$position->text=Text::_($position->text);
 			}
 			return $result;
 		}
@@ -305,7 +306,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'er
 		{
 			foreach ($result as $position)
             {
-                $position->text=JText::_($position->posName).' ('.JText::_($position->sName).')';
+                $position->text=Text::_($position->posName).' ('.Text::_($position->sName).')';
             }
 			return $result;
 		}
@@ -328,14 +329,14 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'er
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
         $query->order('name');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
 		JFactory::getDbo()->setQuery($query);
 		$result = JFactory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
-            $position->text = JText::_($position->text);
+            $position->text = Text::_($position->text);
         }
 		return $result;
 	}

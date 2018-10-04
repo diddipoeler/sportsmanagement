@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelperson
@@ -59,7 +60,7 @@ $this->jsmquery->clear();
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }    
             }
@@ -103,7 +104,7 @@ $this->jsmquery->clear();
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
         
@@ -179,9 +180,9 @@ $this->jsmquery->clear();
     $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
 
     switch ($post['persontype'])
             {

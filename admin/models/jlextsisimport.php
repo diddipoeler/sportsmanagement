@@ -39,6 +39,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
+
 $option = JFactory::getApplication()->input->getCmd('option');
 
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
@@ -153,9 +155,9 @@ $params = JComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
-		//$app->enqueueMessage(JText::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
-        //$app->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
+		//$app->enqueueMessage(Text::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
         
         /**
          * test herren : 001514505501506501000000000000000003000
@@ -176,7 +178,7 @@ switch ($sis_xmllink)
 $liganummer = $post ['liganummer'];
 $teamart = substr( $liganummer , 17, 4);
 
-//$app->enqueueMessage(JText::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
 
 $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
@@ -187,7 +189,7 @@ $db = sportsmanagementHelper::getDBConnection();
         $db->setQuery($query);
 		$sp_id = $db->loadResult();
 
-//$app->enqueueMessage(JText::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('sports_type id<br><pre>'.print_r($sp_id,true).'</pre>'   ),'');
 
 $query = $db->getQuery(true);
         $query->select(array('id,name'))
@@ -197,15 +199,15 @@ $query = $db->getQuery(true);
         $db->setQuery($query);
 		$agegroup = $db->loadObject();
 
-//$app->enqueueMessage(JText::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
-//$app->enqueueMessage(JText::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('agegroup->id<br><pre>'.print_r($agegroup->id,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('agegroup->name<br><pre>'.print_r($agegroup->name,true).'</pre>'   ),'');
         
         $linkresults = self::getLink($sis_nummer,$sis_passwort,$liganummer,$this->_sis_art,$sis_xmllink);
-        //$app->enqueueMessage(JText::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('linkresults<br><pre>'.print_r($linkresults,true).'</pre>'   ),'');
         
         
         $linkspielplan = self::getSpielplan($linkresults,$liganummer,$this->_sis_art);
-//        $app->enqueueMessage(JText::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
+//        $app->enqueueMessage(Text::_('linkspielplan<br><pre>'.print_r($linkspielplan,true).'</pre>'   ),'');
 
 
   
@@ -225,7 +227,7 @@ $query = $db->getQuery(true);
 //        $projectname = $tempklasse->Name;    
 //		}
 
-//$app->enqueueMessage(JText::_('Spielklasse->Name<br><pre>'.print_r($linkspielplan->Spielklasse->Name,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('Spielklasse->Name<br><pre>'.print_r($linkspielplan->Spielklasse->Name,true).'</pre>'   ),'');
 
 $projectname = (string) $linkspielplan->Spielklasse->Name;        
         
@@ -645,9 +647,9 @@ $temp->id = 1003;
 $temp->position_id = 1003;
 $exportprojectposition[] = $temp;
 
-//$app->enqueueMessage(JText::_('exportteamplaygroundtemp<br><pre>'.print_r($exportteamplaygroundtemp,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_('exportprojectteams<br><pre>'.print_r($exportprojectteams,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_('exportteamplaygroundtemp<br><pre>'.print_r($exportteamplaygroundtemp,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_('exportclubs<br><pre>'.print_r($exportclubs,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_('exportprojectteams<br><pre>'.print_r($exportprojectteams,true).'</pre>'),'');
 
 $this->_datas['matchreferee'] = array_merge($exportmatchreferee);
 $this->_datas['position'] = array_merge($exportposition);
@@ -673,98 +675,98 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLea
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$app->enqueueMessage(JText::_('project Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('project Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$app->enqueueMessage(JText::_('league Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('league Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$app->enqueueMessage(JText::_('season Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('season Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 // set sportstype data of project
 if ( isset($this->_datas['sportstype']) )
 {
-$app->enqueueMessage(JText::_('sportstype Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('sportstype Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));
 }
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$app->enqueueMessage(JText::_('round Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('round Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$app->enqueueMessage(JText::_('team Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('team Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$app->enqueueMessage(JText::_('club Daten '.'generiert'),'');
-//$app->enqueueMessage(JText::_('club<br><pre>'.print_r($this->_datas['club'],true).'</pre>'   ),'');
+$app->enqueueMessage(Text::_('club Daten '.'generiert'),'');
+//$app->enqueueMessage(Text::_('club<br><pre>'.print_r($this->_datas['club'],true).'</pre>'   ),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$app->enqueueMessage(JText::_('match Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('match Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-$app->enqueueMessage(JText::_('position Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('position Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
-$app->enqueueMessage(JText::_('parentposition Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('parentposition Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
-$app->enqueueMessage(JText::_('projectposition Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('projectposition Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
-$app->enqueueMessage(JText::_('matchreferee Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('matchreferee Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 // set the person data
 if ( isset($this->_datas['person']) )
 {
-$app->enqueueMessage(JText::_('person Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('person Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
-$app->enqueueMessage(JText::_('projectreferee Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('projectreferee Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-$app->enqueueMessage(JText::_('projectteam Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('projectteam Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
-$app->enqueueMessage(JText::_('playground Daten '.'generiert'),'');
+$app->enqueueMessage(Text::_('playground Daten '.'generiert'),'');
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
 
@@ -816,7 +818,7 @@ JFile::write($file, $xmlfile);
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';
         
-        //$app->enqueueMessage(JText::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
         
 		//File laden
 		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
@@ -853,7 +855,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
 					$doc = DOMDocument::loadXML($content);
@@ -889,14 +891,14 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//$content = file_get_contents($linkresults);
-            //$app->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
+            //$app->enqueueMessage(Text::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
-            //$app->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
+            //$app->enqueueMessage(Text::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}

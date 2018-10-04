@@ -10,6 +10,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Language\Text;
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -51,8 +52,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         if (!$db) {
             $db = JFactory::getDbo();
         }
-        //$this->app->enqueueMessage(JText::_('Ihre Joomla Version = '.JVERSION.''),'Notice');
-        //$this->app->enqueueMessage(JText::_('Ihre PHP Version = '.PHP_VERSION .''),'Notice');
+        //$this->app->enqueueMessage(Text::_('Ihre Joomla Version = '.JVERSION.''),'Notice');
+        //$this->app->enqueueMessage(Text::_('Ihre PHP Version = '.PHP_VERSION .''),'Notice');
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $result = $db->execute();
@@ -78,7 +79,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      */
     public function getForm($data = array(), $loadData = true) {
         $cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.databasetool', 'databasetool', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
@@ -163,8 +164,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
     function getJoomleagueTablesTruncate() {
         $prefix = $this->jsmapp->getCfg('dbprefix');
         $result = $this->jsmdb->getTableList();
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
 
         foreach ($result as $key => $value) {
             if (preg_match("/joomleague/i", $value) && preg_match("/" . $prefix . "/i", $value)) {
@@ -194,9 +195,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             $prefix . 'joomleague_' => ''
         );
 
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
 
         $count = 1;
         foreach ($tables as $key => $value) {
@@ -224,14 +225,14 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
                 $check_table = str_replace(array_keys($convert2), array_values($convert2), $value->name);
 
-                //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
 
                 switch ($check_table) {
 
                     case 'project_team':
                     case 'team_player':
                     case 'team_staff':
-                        $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NEW_STRUCTUR');
+                        $temptable->info = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NEW_STRUCTUR');
                         $temptable->color = $existingInDbColor;
                         break;
                     case 'match':
@@ -249,12 +250,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                     case 'prediction_groups':
                     case 'prediction_member':
                     case 'template_config':
-                        $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_OK');
+                        $temptable->info = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_OK');
                         $temptable->color = $storeSuccessColor;
                         break;
                     default:
 
-                        $temptable->info = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NOT_IMPORT');
+                        $temptable->info = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_NOT_IMPORT');
                         $temptable->color = $storeFailedColor;
                         break;
                 }
@@ -281,7 +282,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
 
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
         return $result;
     }
@@ -354,10 +355,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $this->jsmquery->group('template');
         $this->jsmdb->setQuery($this->jsmquery);
         $record_jl = $this->jsmdb->loadObjectList();
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
 
         $defaultpath = JPATH_COMPONENT_SITE . DS . 'settings' . DS . 'default';
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
 
         foreach ($record_jl as $row) {
             $defaultvalues = array();
@@ -370,7 +371,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 $ini = $parameter->loadINI($defaultvalues[0]);
             }
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ini <br><pre>'.print_r($ini,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' ini <br><pre>'.print_r($ini,true).'</pre>'),'');
 
             /**
              * beim import kann es vorkommen, das wir in der neuen komponente
@@ -399,13 +400,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 }
                 $t_params = json_encode($newparams);
             } else {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'Error');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'Error');    
                 $ini = $parameter->toArray($ini);
                 $t_params = json_encode($ini);
             }
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
 
             $this->jsmquery = $this->jsmdb->getQuery(true);
             // Fields to update.
@@ -418,7 +419,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             );
             $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
             $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
             self::runJoomlaQuery(__CLASS__, $this->jsmdb);
         }
     }
@@ -440,9 +441,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (template_config).'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (template_config).'), 'Notice');
 
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -456,9 +457,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (rosterposition).'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (rosterposition).'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -471,9 +472,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (rosterposition).'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (rosterposition).'), 'Notice');
 
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -487,9 +488,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (eventtype).'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert (eventtype).'), 'Notice');
     }
 
     /**
@@ -509,9 +510,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -524,9 +525,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -539,10 +540,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -556,10 +557,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -572,10 +573,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -588,10 +589,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
@@ -605,10 +606,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -621,10 +622,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -637,10 +638,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -653,10 +654,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -669,10 +670,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -685,10 +686,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -701,10 +702,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
 
         $this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
@@ -717,10 +718,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         );
         $this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
         $this->jsmdb->setQuery($this->jsmquery);
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
-//$this->jsmapp->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->jsmapp->enqueueMessage(Text::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         self::runJoomlaQuery(__CLASS__, $this->jsmdb);
-        $this->jsmapp->enqueueMessage(JText::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
+        $this->jsmapp->enqueueMessage(Text::_('Wir haben ' . self::$db_num_rows . ' Datensätze aktualisiert.'), 'Notice');
     }
 
     /**
@@ -735,7 +736,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $this->jsmquery = strtoupper($command) . ' TABLE `' . $table . '`';
         $this->jsmdb->setQuery($this->jsmquery);
         if (!self::runJoomlaQuery(__CLASS__, $this->jsmdb)) {
-            $this->jsmapp->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . '<br><pre>' . print_r($this->jsmdb->getErrorMsg(), true) . '</pre>'), 'Error');
+            $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . '<br><pre>' . print_r($this->jsmdb->getErrorMsg(), true) . '</pre>'), 'Error');
             return false;
         }
 
@@ -783,10 +784,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 $quote_version = (string) $xml->$document;
 
                 $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                $this->my_text .= JText::_('Installiere Zitate') . '</strong></span><br />';
-                $this->my_text .= JText::_('Zitate ' . $temp[0] . ' Version : ' . $quote_version . ' wird installiert !') . '<br />';
+                $this->my_text .= Text::_('Installiere Zitate') . '</strong></span><br />';
+                $this->my_text .= Text::_('Zitate ' . $temp[0] . ' Version : ' . $quote_version . ' wird installiert !') . '<br />';
 
-                //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
                 if ($xml) {
                     foreach ($xml->children() as $quote) {
                         $author = '';
@@ -809,11 +810,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                             $zitat = (string) $quote->quote;
                         }
 
-                        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
-                        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
-                        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
-                        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
-                        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
 
                         if ($zitat) {
                             $insertquery = $this->jsmdb->getQuery(true);
@@ -852,8 +853,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 $quote_version = (string) $xml->$document;
 
                 $this->my_text .= '<span style="color:' . $this->existingInDbColor . '"><strong>';
-                $this->my_text .= JText::_('Installierte Zitate') . '</strong></span><br />';
-                $this->my_text .= JText::_('Zitate ' . $temp[0] . ' Version : ' . $quote_version . ' ist installiert !') . '<br />';
+                $this->my_text .= Text::_('Installierte Zitate') . '</strong></span><br />';
+                $this->my_text .= Text::_('Zitate ' . $temp[0] . ' Version : ' . $quote_version . ' ist installiert !') . '<br />';
             }
         }
         return $this->my_text;
@@ -869,8 +870,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
     function insertAgegroup($search_nation, $filter_sports_type) {
         $app = JFactory::getApplication();
 
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
 
         $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
         $p_sportstype = $mdl->getTable();
@@ -878,22 +879,22 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $temp = explode("_", $p_sportstype->name);
         $sport_type_name = strtolower(array_pop($temp));
 
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
         $filename = JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/' . 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml';
 
         if (!JFile::exists($filename)) {
-            //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+            //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
             $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>';
-            $this->my_text .= JText::_('Fehlende Altersgruppen') . '</strong></span><br />';
-            $this->my_text .= JText::sprintf('Die Datei %1$s ist nicht vorhanden!', 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml') . '<br />';
+            $this->my_text .= Text::_('Fehlende Altersgruppen') . '</strong></span><br />';
+            $this->my_text .= Text::sprintf('Die Datei %1$s ist nicht vorhanden!', 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml') . '<br />';
 
             //$this->_success_text['Altersgruppen:'] = $my_text;
-            //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+            //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
             return $this->my_text;
         } else {
             $this->my_text = '<span style="color:' . $this->existingInDbColor . '"><strong>';
-            $this->my_text .= JText::_('Installierte Altersgruppen') . '</strong></span><br />';
-            $this->my_text .= JText::sprintf('Die Datei %1$s ist vorhanden!', 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml') . '<br />';
+            $this->my_text .= Text::_('Installierte Altersgruppen') . '</strong></span><br />';
+            $this->my_text .= Text::sprintf('Die Datei %1$s ist vorhanden!', 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml') . '<br />';
 
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $xml = simplexml_load_file($filename);
@@ -907,13 +908,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
             if ($xml) {
 
-                //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
                 // schleife altersgruppen anfang
                 foreach ($xml->agegroups as $agegroups) {
 
 //   $name = $agegroup->getElementByPath('agegroup');
 //   $attributes = $name->attributes();
-                    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+                    //$this->jsmapp->enqueueMessage(Text::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
 
                     $agegroup = (string) $agegroups->agegroup;
                     $info = (string) $agegroups->agegroup->attributes()->info;
@@ -954,24 +955,24 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                         try {
                             self::runJoomlaQuery();
                             $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                            $this->my_text .= JText::_('Installierte Altersgruppen') . '</strong></span><br />';
-                            $this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!', $agegroup) . '<br />';
+                            $this->my_text .= Text::_('Installierte Altersgruppen') . '</strong></span><br />';
+                            $this->my_text .= Text::sprintf('Die Altersgruppe %1$s wurde angelegt!!', $agegroup) . '<br />';
                         } catch (Exception $e) {
-                            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
+                            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
                         }
                         /*
                           if (!self::runJoomlaQuery())
                           {
 
-                          //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+                          //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
                           $result = false;
                           }
                           else
                           {
-                          //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
+                          //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
                           $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-                          $this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
-                          $this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
+                          $this->my_text .= Text::_('Installierte Altersgruppen').'</strong></span><br />';
+                          $this->my_text .= Text::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
                           }
                          */
                     }
@@ -1019,8 +1020,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             $country_assoc_del = "'" . implode("','", $country_assoc) . "'";
         }
 
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
 
 
         /* Ein JDatabaseQuery Objekt beziehen */
@@ -1031,7 +1032,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             $result = self::runJoomlaQuery();
         }
 
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'');
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'');
 
         $image_path = 'images/' . $this->jsmoption . '/database/associations/';
 
@@ -1042,8 +1043,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             //$country = $attributes['country'];
             $country = (string) $association->assocname->attributes()->country;
 
-            //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
-            //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
+            //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
 
             if ($country_assoc) {
                 // welche l�nder m�chte denn der user haben ?
@@ -1072,7 +1073,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                         $this->jsmdb->setQuery($this->jsmquery);
                         $result = $this->jsmdb->loadResult();
 
-                        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'Notice');
+                        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmquery,true).'</pre>'),'Notice');
 
                         $export = array();
                         if (!$result) {
@@ -1092,7 +1093,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 $this->jsmdb->setQuery($insertquery);
 
                                 if (!self::runJoomlaQuery()) {
-                                    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
+                                    //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
                                     self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
                                 } else {
                                     $temp = new stdClass();
@@ -1102,7 +1103,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 }
                             } else {
                                 $parent_id = $this->_assoclist[$country][$parentmain];
-                                //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
+                                //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
                                 // Create a new query object.
                                 $insertquery = $this->jsmdb->getQuery(true);
                                 // Insert columns.
@@ -1118,7 +1119,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                                 $this->jsmdb->setQuery($insertquery);
 
                                 if (!self::runJoomlaQuery()) {
-                                    //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+                                    //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
                                     self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
                                 } else {
                                     $temp = new stdClass();
@@ -1152,7 +1153,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             }
         }
 
-        //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
+        //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
     }
 
     /**
@@ -1166,7 +1167,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //$this->option = JFactory::getApplication()->input->getCmd('option');    
         //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
         //$fileContent = JFile::read($db_table);    
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
 //    $xml = JFactory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
 
@@ -1182,7 +1183,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             return false;
         }
         //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
         // We can now step through each element of the file
         if (isset($xml->events)) {
             foreach ($xml->events as $event) {
@@ -1190,8 +1191,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 //   $attributes = $name->attributes();
                 //$main = (string)$association->assocname->attributes()->main;
                 //$icon = $event->getElementByPath('icon');
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
 
                 $temp = new stdClass();
                 $temp->name = strtoupper($this->jsmoption) . '_' . strtoupper($type) . '_E_' . strtoupper((string) $event->name);
@@ -1200,8 +1201,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 $this->_sport_types_events[$type] = array_merge($export);
             }
         }
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
 
         unset($export);
 
@@ -1210,12 +1211,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             foreach ($xml->mainpositions as $position) {
                 //$name = $position->getElementByPath('mainname');
 //   $attributes = $name->attributes();
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
 //   $switch = $position->getElementByPath('mainswitch');
 //   $parent = $position->getElementByPath('mainparent');
 //   $content = $position->getElementByPath('maincontent');
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
 
 
                 $temp = new stdClass();
@@ -1227,30 +1228,30 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 $this->_sport_types_position[$type] = array_merge($export);
             }
         }
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
 
         unset($export);
         if (isset($xml->parentpositions)) {
             foreach ($xml->parentpositions as $parent) {
                 //$name = $parent->getElementByPath('parentname');
 //   $attributes = $name->attributes();
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-                //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
 //   $switch = $parent->getElementByPath('parentswitch');
 //   $parent = $parent->getElementByPath('parentparent');
 //   $content = $parent->getElementByPath('parentcontent');
 //   $mainparentposition = $parent->getElementByPath('mainparentposition');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
-//   $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
+//   $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
 
 
                 $temp = new stdClass();
@@ -1269,7 +1270,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
 
 
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
 
         return true;
     }
@@ -1293,30 +1294,30 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         if ($cols) {
             $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
             if ($result) {
-                //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
+                //$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
                 $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>';
-                $this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR') . '</strong></span><br />';
+                $this->my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR') . '</strong></span><br />';
 
 
                 //$this->_success_text['Altersgruppen:'] = $my_text;
-                //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
                 return $this->my_text;
             } else {
-                //$this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
+                //$this->jsmapp->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
                 $this->my_text = '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                $this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS') . '</strong></span><br />';
+                $this->my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS') . '</strong></span><br />';
 
 
                 //$this->_success_text['Altersgruppen:'] = $my_text;
-                //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+                //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
                 return $this->my_text;
             }
         } else {
             $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>';
-            $this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_JOOMLEAGUE_COUNTRIES_INSERT_ERROR') . '</strong></span><br />';
+            $this->my_text .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_JOOMLEAGUE_COUNTRIES_INSERT_ERROR') . '</strong></span><br />';
             return $this->my_text;
         }
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
     }
 
     /**
@@ -1330,16 +1331,16 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //$this->option = JFactory::getApplication()->input->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         $sports_type_id = 0;
-        //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
 
         $install_standard_position = JComponentHelper::getParams($this->jsmoption)->get('install_standard_position', 0);
 
         if (!$available) {
-            //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
             $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>';
-            $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR', strtoupper($type)) . '</strong></span><br />';
+            $this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR', strtoupper($type)) . '</strong></span><br />';
             return false;
         }
 
@@ -1348,8 +1349,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $result = $this->jsmdb->loadResult();
         $sports_type_id = $result;
         if ($result) {
-            //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
-            // $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+            //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
+            // $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
             /**
              * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
              */
@@ -1377,12 +1378,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
             if (!$this->jsmdb->execute()) {
 
-                $this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>' . print_r($this->jsmdb->getErrorMsg(), true) . '</pre>'), 'Error');
+                $this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool insertSportType<br><pre>' . print_r($this->jsmdb->getErrorMsg(), true) . '</pre>'), 'Error');
                 $result = false;
             } else {
-                //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+                //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
                 $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS', strtoupper($type)) . '</strong></span><br />';
+                $this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS', strtoupper($type)) . '</strong></span><br />';
 
                 $sports_type_id = $this->jsmdb->insertid();
                 $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($type);
@@ -1413,9 +1414,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $this->option = JFactory::getApplication()->input->getCmd('option');
         // Get a db connection.
         //$db = JFactory::getDbo();
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
-        //$this->jsmapp->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
 
         $events_player = array();
         $events_staff = array();
@@ -1453,9 +1454,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 }
 
                 if (!$update) {
-                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+                    //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
                     $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                    $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS', $event->name) . '</strong></span><br />';
+                    $this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS', $event->name) . '</strong></span><br />';
                 }
                 $i++;
             }
@@ -1479,9 +1480,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 }
 
                 if (!$update) {
-                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+                    //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
                     $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                    $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS', $position->name) . '</strong></span><br />';
+                    $this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS', $position->name) . '</strong></span><br />';
                 }
 
                 // parent position
@@ -1516,13 +1517,13 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 //                {
 //                if ( $result )
 //                {
-//                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+//                    //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
 //                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-//		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
+//		$this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
 //                }   
 //                else
 //                {
-//                    //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
+//                    //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
 //                }
 //                }
 //                }
@@ -1532,9 +1533,9 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                         $j++;
 
                         if (!$update) {
-                            //$this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+                            //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
                             $this->my_text .= '<span style="color:' . $this->storeSuccessColor . '"><strong>';
-                            $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS', $parent->name) . '</strong></span><br />';
+                            $this->my_text .= Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS', $parent->name) . '</strong></span><br />';
                         }
                     }
                 }
@@ -1715,12 +1716,12 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
           // Set the query using our newly populated query object and execute it.
           $this->jsmdb->setQuery($insertquery);
 
-          //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
-          //$this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
+          //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
+          //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
 
           if (!$this->jsmdb->execute())
           {
-          $this->jsmapp->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+          $this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
           }
           else
           {

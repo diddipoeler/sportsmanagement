@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 JLoader::import('joomla.application.component.modeladmin');
 
@@ -121,9 +122,9 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
        // Get a db connection.
         $db = JFactory::getDbo();
         
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
        
        $timezone = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('timezone','');
        
@@ -159,9 +160,9 @@ $output .= "</entry>". "\n";
     $xml = str_replace('[SUMMARY]', $summary, $xml);
     $response = $gdataCal->post($xml, $uri);
     
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
     
     // die erstellte kalender id übergeben
     $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);

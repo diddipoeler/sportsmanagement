@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -78,8 +79,8 @@ $query = $db->getQuery(true);
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -97,12 +98,12 @@ $query = $db->getQuery(true);
 
 			if ($data['name'] == $orig_table->name)
 			{
-				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY');
+				$data['name'] .= ' ' . Text::_('JGLOBAL_COPY');
 				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
 			}
 		}
 
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -114,7 +115,7 @@ $query = $db->getQuery(true);
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 // Fields to update.

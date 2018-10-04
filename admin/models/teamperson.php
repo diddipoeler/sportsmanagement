@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelteamperson
@@ -128,7 +129,7 @@ $resultupdate = $this->jsmdb->execute();
 }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
         //return false;
         }
 
@@ -207,7 +208,7 @@ $resultupdate = $this->jsmdb->execute();
 }
 catch (Exception $e)
 {
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
+//$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 }
 // ###############################
@@ -290,7 +291,7 @@ $db->setQuery($query);
                 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
                 if ( self::$db_num_rows )
                 {
-                $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
+                $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
                 } 
 
                                   
@@ -353,7 +354,7 @@ $db->setQuery($query);
     
     
     
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -382,7 +383,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
             
             // delete all 
@@ -396,7 +397,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
             
 	    // delete all 
@@ -410,7 +411,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_staff').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_staff').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
 	    
             // delete all 
@@ -424,7 +425,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
             } 
             
 	    // delete all 
@@ -438,7 +439,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_staff_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_staff_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
 	    
             // delete all 
@@ -452,7 +453,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_'.strtoupper('sportsmanagement_match_event').'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_'.strtoupper('sportsmanagement_match_event').'_ITEMS_DELETED',self::$db_num_rows),'');
             }  
             
 	    // delete all 
@@ -467,7 +468,7 @@ $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_DELETED',self::$db_num_rows),'');
             } 
 	    
         }  
@@ -544,7 +545,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 	catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
         
 // update personendaten pro saison
@@ -570,7 +571,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 	catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
         
         // alten eintrag löschen
@@ -591,7 +592,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 	catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }     
 // Create and populate an object.
 $profile = new stdClass();
@@ -606,7 +607,7 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_p
 }
 	catch (Exception $e)
 {
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+//    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }  
 
         // Proceed with the save

@@ -11,6 +11,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
 
@@ -143,7 +145,7 @@ $importprojectname = $db->loadResult();
 
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus dem Projekt: ( '.$importprojectname.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
-//$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+//$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
 
             // Select some fields
 //            $query = $db->getQuery(true);
@@ -165,8 +167,8 @@ $my_text .= '<br />';
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
             $result = $db->loadObjectList();
@@ -220,11 +222,11 @@ $my_text .= '<br />';
                 // Create an object for the record we are going to joomleague update.
                 $object = new stdClass();
                 $jsm_field_array = $jsm_fields[$jsm_table];
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
                 foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
                 {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
                 if (array_key_exists($key2, $jsm_field_array)) 
                 {
                     $object->$key2 = $row->$key2;
@@ -250,7 +252,7 @@ $my_text .= '<br />';
                         $tblProjectteam->team_id = $new_id;
                         if (!$tblProjectteam->store())
 				        {
-				        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+				        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 				        }
                     }
                     /*
@@ -287,7 +289,7 @@ $my_text .= '<br />';
     $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
     
-    //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');    
+    //$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');    
     
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';  
@@ -325,12 +327,12 @@ $my_text .= '<br />';
             
             $db->setQuery($query);
             
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
             $result = $db->loadObjectList();
@@ -396,7 +398,7 @@ $my_text .= '<br />';
                     }
                     else
                     {
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                     }
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Team PLayer: ['.$row->firstname.' - '.$row->lastname.' ] ( '.$row->person_id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
 $my_text .= '<br />';                
@@ -429,11 +431,11 @@ $result_update = $db->execute();
                 
                 if ( !$result_update )
                     {
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                     }
                     else
                     {
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update team_player id: '.$row->id.' mit season_team_person id: '.$new_id),'');
+                        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' update team_player id: '.$row->id.' mit season_team_person id: '.$new_id),'');
                     }
             
 
@@ -458,7 +460,7 @@ $my_text .= '<br />';
 //    $team_staff[0] = 0;
     sportsmanagementModeljoomleagueimports::$team_staff[$project_id][0] = 0;
     
-        //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+        //$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
 
@@ -495,8 +497,8 @@ $my_text .= '<br />';
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
             $result = $db->loadObjectList();
@@ -561,7 +563,7 @@ $my_text .= '<br />';
                     }
                     else
                     {
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                     }
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Team Staff: ['.$row->firstname.' - '.$row->lastname.' ] ( '.$row->id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
 $my_text .= '<br />';                
@@ -592,11 +594,11 @@ $result_update = $db->execute();
                 
                 if ( !$result_update )
                     {
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                     }
                     else
                     {
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update team_staff id: '.$row->id.' mit season_team_person id: '.$new_id),'');
+                        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' update team_staff id: '.$row->id.' mit season_team_person id: '.$new_id),'');
                     }
 
     //$team_staff[$row->id] = $new_id;
@@ -616,7 +618,7 @@ $my_text .= '<br />';
 //        $project_referee = array();
 //    $project_referee[0] = 0;
     sportsmanagementModeljoomleagueimports::$project_referee[$project_id][0] = 0;
-        //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+        //$app->enqueueMessage(Text::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
 
@@ -705,7 +707,7 @@ $my_text .= '<br />';
 sportsmanagementModeljoomleagueimports::$project_referee[$project_id][$row->person_id] = $new_id;                
 }                
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_project_referee -> <br><pre>'.print_r($project_referee,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' __joomleague_project_referee -> <br><pre>'.print_r($project_referee,true).'</pre>'),'');
  
 sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur ('.$project_id.'):'] .= $my_text; 
     //return $project_referee;       

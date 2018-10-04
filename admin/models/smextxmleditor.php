@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -74,7 +75,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smextxmleditor', 'smextxmleditor', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -125,7 +126,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         jimport('joomla.filesystem.file');
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
         //$return = JFile::write($filePath, $data['source']);
@@ -158,7 +159,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         $configPath = JPATH_SITE.DS.'configuration.php';
         $config->source	= JFile::read($configPath);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
         
 //		if (!$this->_template) {
 //			$this->getTemplate();
@@ -177,7 +178,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 				$item->filename		= JFactory::getApplication()->input->getVar('file_name');
 				$item->source		= JFile::read($filePath);
 			} else {
-				$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
+				$this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}
 		//}
 

@@ -44,6 +44,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla  library
 //jimport('joomla.github.issues');
@@ -110,18 +111,18 @@ class sportsmanagementModelgithub extends JModelLegacy
      */
     if ( empty($this->post['gh_token']) )
     {
-    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TOKEN'),'Error');
+    $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TOKEN'),'Error');
     /**
      * wenn nicht kann es aber einen user mit passwort geben
      */
     if ( empty($this->post['api_username']) && empty($this->post['api_password']) ) 
  		{ 
-$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'),'Error');
+$this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'),'Error');
 return false;
  		} 
         else
         {
-        $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'),'Notice');    
+        $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'),'Notice');    
 
 
     /**
@@ -129,7 +130,7 @@ return false;
      */
     if ( empty($this->post['title']) )
     {
-    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'),'Error');
+    $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'),'Error');
     return false;    
     }
     else
@@ -139,7 +140,7 @@ return false;
     */    
     if ( empty($this->post['message']) )
     {
-    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
+    $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
     return false;    
     }
     else
@@ -149,7 +150,7 @@ return false;
 //    [number] => 272
 //    [title] => Backend-View: sportstypes Layout: default
     
-    //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insertresult<br><pre>'.print_r($insertresult,true).'</pre>'),'');    
+    //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insertresult<br><pre>'.print_r($insertresult,true).'</pre>'),'');    
     }    
         
     }
@@ -165,11 +166,11 @@ return false;
     
 //    if ( empty($this->post['message']) )
 //    {
-//    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
+//    $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
 //    return false;    
 //    }    
 //    
-//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post,true).'</pre>'),'');    
+//    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post,true).'</pre>'),'');    
         
     }
     
@@ -198,7 +199,7 @@ return false;
  		} 
 
 $github = new JGithub($gh_options);
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');    
+//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');    
 
 // Create an issue
 $labels = array($this->post['labels']);
@@ -249,8 +250,8 @@ $gh_options = new JRegistry();
 $github = new JGithub($gh_options);
 
 //$github = new JGithub;
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' gh_options<br><pre>'.print_r($gh_options,true).'</pre>'),'');        
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' gh_options<br><pre>'.print_r($gh_options,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');
         
 // List pull requests
 $state = 'open|closed';
@@ -258,13 +259,13 @@ $page = 0;
 $perPage = 20;
 //$pulls = $github->pulls->getList($github_user, $github_repo, $state, $page, $perPage);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pulls <br><pre>'.print_r($pulls ,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' pulls <br><pre>'.print_r($pulls ,true).'</pre>'),'');        
 
 $page = 0;
 $perPage = 30;
 $commits = $github->commits->getList($github_user, $github_repo, $page, $perPage);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' commits <br><pre>'.print_r($commits ,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' commits <br><pre>'.print_r($commits ,true).'</pre>'),'');        
 
 
 
@@ -276,7 +277,7 @@ $direction = 'asc|desc';
 $page = 0;
 $perPage = 20;
 $milestones = $github->issues->milestones->getList($github_user, $github_repo);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' milestones <br><pre>'.print_r($milestones ,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' milestones <br><pre>'.print_r($milestones ,true).'</pre>'),'');        
 
 // Create an issue
 $labels = array('bug');
@@ -284,7 +285,7 @@ $labels = array('bug');
 
 // List Stargazers.
 $starred = $github->activity->starring->getList($github_user, $github_repo);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' starred <br><pre>'.print_r($starred ,true).'</pre>'),'');        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' starred <br><pre>'.print_r($starred ,true).'</pre>'),'');        
 
 // List issues
 $filter = 'assigned|created|mentioned|subscribed';

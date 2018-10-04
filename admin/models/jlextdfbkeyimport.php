@@ -164,7 +164,7 @@ return false;
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
 			//$this->setError( $this->_db->getErrorMsg() );
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+
 			return false;
 		}
 		else

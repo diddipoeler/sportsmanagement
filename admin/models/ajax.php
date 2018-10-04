@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport( 'joomla.application.component.model' );
 
@@ -43,22 +44,22 @@ class sportsmanagementModelAjax extends JModelLegacy
         $option = $jinput->getCmd('option');
         $mitems = '';
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
         
                 if(!$required) 
                 {
-                $mitems = array(HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
+                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
                 
                 return array_merge($mitems, $elements);
                 //return $elements;
                 }
                 else
                 {
-                $mitems = array(HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                $mitems = array(HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
+                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
                 
                 if ( $elements )
                 {
@@ -270,7 +271,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         // JInput object
         $option = $app->input->getCmd('option');
        
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
        
        // Get a db connection.
         if ( !$dbase )
@@ -303,7 +304,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         $temp = new stdClass();
         $temp->value = 0;
         //$temp->text = ''; 
-        $temp->text = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
+        $temp->text = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
         $export[] = $temp;
         // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB
         // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_LEGEND
@@ -343,10 +344,10 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
 			//$options = $db->loadObjectList();
 			
 			$sections = $db->loadObjectList();
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'Notice');
             
             return self::addGlobalSelectElement($sections, $required);     
             
@@ -449,7 +450,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         {            
         $db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
         }
@@ -497,7 +498,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
                     
         $db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
             
@@ -564,7 +565,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         
 //        foreach ($result as $row)
 //        {
-//            $row->name = JText::_($row->name);
+//            $row->name = Text::_($row->name);
 //        }
         
         return self::addGlobalSelectElement($result, $required);
@@ -608,7 +609,7 @@ $option = $app->input->getCmd('option');
         
         foreach ($result as $row)
         {
-            $row->text = JText::_($row->text);
+            $row->text = Text::_($row->text);
         }
         
         return self::addGlobalSelectElement($result, $required);
@@ -668,11 +669,11 @@ $option = $app->input->getCmd('option');
         
         $result = $db->loadObjectList();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
         
 //        foreach ($result as $row)
 //        {
-//            $row->name = JText::_($row->name);
+//            $row->name = Text::_($row->name);
 //        }
            
         return self::addGlobalSelectElement($result, $required);
@@ -791,7 +792,7 @@ $option = $app->input->getCmd('option');
         // JInput object
         $option = $app->input->getCmd('option');
        
-       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+       //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
        
        // Get a db connection.
         if ( !$dbase )
@@ -1265,10 +1266,10 @@ $option = $app->input->getCmd('option');
         if ( $project_id )
         {
         // ist es ein array ? 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');  
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');  
         if ( is_array($project_id) )
         {
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
         $ids = implode(",",array_map('intval', $project_id) ) ;
         $query->where('pt.project_id IN (' . $ids .')' );    
         } 
@@ -1333,7 +1334,7 @@ try{
 		 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
         }

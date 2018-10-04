@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.modellist');
 
@@ -67,8 +68,8 @@ class sportsmanagementModelMatches extends JSMModelList
         
         if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
 
 		// Load the filter state.
@@ -88,7 +89,7 @@ class sportsmanagementModelMatches extends JSMModelList
 //		$this->setState('list.start', $value);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -118,7 +119,7 @@ class sportsmanagementModelMatches extends JSMModelList
         
         $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
         $this->_projectteam = JFactory::getApplication()->input->getvar('projectteam', 0);
-        //$app->enqueueMessage(JText::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {
@@ -308,7 +309,7 @@ $db->setQuery($query);
 		$result = $db->loadObjectList();
  }
 catch (Exception $e){
-$app->enqueueMessage(__METHOD__.' '.__LINE__.JText::_($e->getMessage()),'Error');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.Text::_($e->getMessage()),'Error');
 $result = false;
 }
 

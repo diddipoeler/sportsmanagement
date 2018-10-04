@@ -78,7 +78,7 @@ $this->app = JFactory::getApplication();
 
 		$query='SELECT id,count FROM #__sportsmanagement_version where file LIKE '.$this->_db->Quote($file);
 		$this->_db->setQuery($query);	
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Notice');			
+
 		if (!$result=$this->_db->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());

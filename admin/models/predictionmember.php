@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -70,7 +71,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 if ( !$result )
 {
 	
-  //$app->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
+  //$app->enqueueMessage(Text::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
   //$table = 'predictionmember';
   $table = 'predictionentry';
   $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
@@ -169,11 +170,11 @@ $body .= "<html>";
    
     $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
 	$body .= "<tr>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
-	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 	$body .= "</tr>";
 /**
  * schleife über die ergebnisse in der runde
@@ -208,7 +209,7 @@ $body .= "<td nowrap='nowrap' class='td_r'>";
 $body .= $result->home_name;
 $body .= "</td>";
 $body .= "<td nowrap='nowrap' class='td_c'>";
-$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->home_name);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->home_name);
 $body .=  JSMCountries::getCountryFlag($result->home_country);
 if	(($result->home_logo_big == '') || (!file_exists($result->home_logo_big)))
 {
@@ -224,7 +225,7 @@ $body .= "</td>";
  * clublogo oder vereinsflagge awayteam
  */
 $body .= "<td nowrap='nowrap' class='td_c'>";
-$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->away_name);
+$imgTitle = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->away_name);
 $body .=  ' ';
 $body .=  JSMCountries::getCountryFlag($result->away_country);
 if	(($result->away_logo_big == '') || (!file_exists($result->away_logo_big)))
@@ -303,11 +304,11 @@ $percentageA = 0;
 }
 
 $body .= "<span style='color:" . $configprediction['color_home_win'] ."' >";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount) . "</span><br />";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount) . "</span><br />";
 $body .= "<span style='color:" . $configprediction['color_draw'] ."'>";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount) . "</span><br />";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount) . "</span><br />";
 $body .= "<span style='color:" . $configprediction['color_guest_win'] ."'>";
-$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount) . "</span>";
+$body .= Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount) . "</span>";
 $body .= "</td>";
 //$body .= "<td colspan='8'>&nbsp;</td>";
 $body .= "</tr>";
@@ -328,7 +329,7 @@ $fromdate .= HTMLHelper::date($result->round_date_first, 'd.m.Y', false).'-'.HTM
    
 $body .= "<tr>";
 $body .= "<td colspan='8'>&nbsp;</td>";
-$body .= "<td class='td_c'>" . JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints) ."</td>";
+$body .= "<td class='td_c'>" . Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints) ."</td>";
 $body .= "</tr>";            	
 $body .= "<table>";   
  
@@ -345,7 +346,7 @@ $body .= "</html><br>";
  */
      $subject = addslashes(
 				sprintf(
-				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
+				Text::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
 				$predictiongame->name ) );
     $mailer->setSubject($subject);
 /**
@@ -375,9 +376,9 @@ $mailer->setBody($message);
 $send = $mailer->Send();
 
 if ( $send !== true ) {
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
 } else {
-    $this->jsmapp->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email),'notice');
+    $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK', $member_email->email),'notice');
 }
 
     }
@@ -579,14 +580,14 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 
 			$this->_db->setQuery( $query );
             
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
             
 			if ( !$this->_db->execute() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
@@ -665,13 +666,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
 					if ( $publish == 1 )
 					{
-						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
-						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
+						$mailer->setSubject( Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVED') );
+						$body = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REQ_APPROVED');
 					}
 					else
 					{
-						$mailer->setSubject( JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REJECTED') );
-						$body = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
+						$mailer->setSubject( Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_REJECTED') );
+						$body = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_APPROVEMENT_REJECTED');
 					}
 					$mailer->setBody( $body );
 					echo '<br /><pre>~' . print_r( $mailer, true ) . '~</pre><br />';
@@ -684,12 +685,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 					$send =& $mailer->Send();
 					if ( $send !== true )
 					{
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_SEND') . print_r( $recipient, true ) . '<br />';
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_ERROR_MSG') . $send->message;
 					}
 					else
 					{
-						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_MAIL_SENT');
+						echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_MODEL_MAIL_SENT');
 					}
 					echo '<br /><br />';
 				}
@@ -727,7 +728,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			if ( !$this->_db->execute() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -783,7 +784,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			if (!$this->_db->execute())
 			{
 				//$this->setError($this->_db->getErrorMsg());
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -817,7 +818,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

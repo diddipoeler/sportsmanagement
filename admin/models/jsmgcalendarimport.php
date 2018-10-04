@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 JLoader::import('joomla.application.component.model');
 
@@ -84,10 +85,10 @@ $client->setScopes(array(
 				'https://www.googleapis.com/auth/calendar'
 		));
 $client->setRedirectUri(JURI::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
 
 $uri = $client->createAuthUrl();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
 
 if (! $app->input->get('code'))
 {
@@ -106,14 +107,14 @@ $calList = $cal->calendarList->listCalendarList();
     $code = $e->getCode(); // Returns '500';
     JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
        
 /*
 foreach ( $calList->getItems() as $calendarListEntry ) 
 {
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTitle<br><pre>'.print_r($calendarListEntry->getTitle(),true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getColor<br><pre>'.print_r($calendarListEntry->getColor(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTitle<br><pre>'.print_r($calendarListEntry->getTitle(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getColor<br><pre>'.print_r($calendarListEntry->getColor(),true).'</pre>'),'Notice');
 }
 */
 
@@ -122,9 +123,9 @@ while(true)
 {
   foreach ($calList->getItems() as $calendarListEntry) 
   {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getSummary<br><pre>'.print_r($calendarListEntry->getSummary(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' backgroundColor<br><pre>'.print_r($calendarListEntry->backgroundColor,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getSummary<br><pre>'.print_r($calendarListEntry->getSummary(),true).'</pre>'),'Notice');	 
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getID<br><pre>'.print_r($calendarListEntry->getID(),true).'</pre>'),'Notice');	 
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' backgroundColor<br><pre>'.print_r($calendarListEntry->backgroundColor,true).'</pre>'),'Notice');
 
 
 $this->jsmquery->clear();

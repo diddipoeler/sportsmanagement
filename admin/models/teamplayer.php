@@ -1,7 +1,7 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
@@ -58,7 +58,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 		$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamplayer', 'teamplayer', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -174,7 +174,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$app =& JFactory::getApplication();
-    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -184,7 +184,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms,me
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as m    
@@ -199,7 +199,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
             $db->execute();
             if (!$db->execute()) 
             {
-                $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
@@ -230,8 +230,8 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	   $query	= $db->getQuery(true);
        $query2	= $db->getQuery(true);
         
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(Text::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // update personendaten
        // Fields to update.
@@ -265,7 +265,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
   
  if (!$db->execute())
 		{
-		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		    $app->enqueueMessage(Text::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
 // update personendaten pro saison
@@ -285,7 +285,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
  
  if (!$db->execute())
 		{
-		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		    $app->enqueueMessage(Text::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
                 
         

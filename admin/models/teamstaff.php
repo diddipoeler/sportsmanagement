@@ -1,7 +1,7 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
@@ -53,7 +53,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 		$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamstaff', 'teamstaff', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -167,7 +167,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$app =& JFactory::getApplication();
-    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     //$pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
@@ -179,7 +179,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as m    
@@ -192,7 +192,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
             $db->execute();
             if (!$db->execute()) 
             {
-                $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             

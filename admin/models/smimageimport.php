@@ -11,7 +11,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 // import Joomla modelform library
 
 use Joomla\Archive\Archive;
@@ -141,14 +141,14 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
             $filepath = $base_Dir . $filename;
 
             if (!copy($servercopy, $filepath)) {
-                $app->enqueueMessage(JText::_(get_class($this) . ' ' . __FUNCTION__ . 'file<br><pre>' . print_r($servercopy, true) . '</pre>'), 'Error');
+                $app->enqueueMessage(Text::_(get_class($this) . ' ' . __FUNCTION__ . 'file<br><pre>' . print_r($servercopy, true) . '</pre>'), 'Error');
             } else {
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
+                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'file<br><pre>'.print_r($servercopy,true).'</pre>'),'');
 
                 $extractdir = JPATH_SITE . DS . 'images' . DS . 'com_sportsmanagement' . DS . 'database' . DS . $directory;
                 $dest = JPATH_SITE . DS . 'tmp' . DS . $filename;
 
-                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
+                //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
 
                 if (strtolower(JFile::getExt($dest)) == 'zip') {
                     if (version_compare(JSM_JVERSION, '4', 'eq')) {
@@ -158,10 +158,10 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
                         $result = JArchive::extract($dest, $extractdir);
                     }
                     if ($result === false) {
-                        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), 'error');
+                        $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_ERROR'), 'error');
                         return false;
                     } else {
-                        $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), 'notice');
+                        $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_UNZIP_DONE', $name), 'notice');
                         // Must be a valid primary key value.
                         $object->id = $value;
                         $object->published = 1;
@@ -169,7 +169,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
                         $result = JFactory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $object, 'id');
                     }
                 } else {
-                    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');
+                    $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');
                     return false;
                 }
             }

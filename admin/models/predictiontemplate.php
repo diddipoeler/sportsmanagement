@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -49,7 +50,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
         $option = $jinput->getCmd('option');
        
        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
- //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($prediction_id,true).'</pre>'),'Notice');
+ //       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($prediction_id,true).'</pre>'),'Notice');
         
 		if ($item = parent::getItem($pk))
 		{
@@ -104,7 +105,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictiontemplate', 'predictiontemplate', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -171,7 +172,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
             
 		}
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -180,12 +181,12 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
             
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

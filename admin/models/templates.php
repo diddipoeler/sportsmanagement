@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Language\Text;
 jimport('joomla.application.component.modellist');
 
 
@@ -67,7 +67,7 @@ class sportsmanagementModelTemplates extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -79,7 +79,7 @@ class sportsmanagementModelTemplates extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -133,10 +133,10 @@ $query->order($db->escape($this->getState('list.ordering', 'tmpl.template')).' '
 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
 	}
@@ -159,7 +159,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         $path = JPATH_SITE.'/components/'.$option.'/views';
 		$predictionTemplatePrefix = 'prediction';
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
 
 		if (!$project_id)
         {
@@ -279,7 +279,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query->where('project_id = '.(int)$project_id);
 	$db->setQuery($query);
 	$resulttemplate = JFactory::getDbo()->loadResult();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');							
             if ( !$resulttemplate )
             {
         // Create and populate an object.
@@ -305,7 +305,7 @@ else
         $query->where('project_id = '.(int)$project_id);
 	$db->setQuery($query);
 	$resulttemplate = JFactory::getDbo()->loadResult();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' resulttemplate<br><pre>'.print_r($resulttemplate,true).'</pre>'),'Notice');	
 						
 // Create and populate an object.
 $object_template = new stdClass();
@@ -345,7 +345,7 @@ $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_template_
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -410,7 +410,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		$current = $db->loadObjectList();
@@ -444,7 +444,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		return ($db->loadResult());

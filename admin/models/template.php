@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Language\Text; 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
  
@@ -66,13 +66,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$current = $db->loadResultArray();
 }
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         if ( $current )
         {
         $current = implode("','",$current);
         }
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         
         
         // Select some fields
@@ -89,7 +89,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         foreach ($result1 as $template)
         {
-			$template->text = JText::_($template->text);
+			$template->text = Text::_($template->text);
 		}
         
         
@@ -104,7 +104,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         foreach ($result2 as $template)
         {
-			$template->text = JText::_($template->text);
+			$template->text = Text::_($template->text);
 		}
         
         

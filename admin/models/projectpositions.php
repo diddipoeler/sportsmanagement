@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.modellist');
 
@@ -64,7 +65,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
                 $pid = $this->jsmjinput->get('pid');
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -78,7 +79,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -137,7 +138,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
                 
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
         return $query;
@@ -168,7 +169,7 @@ $position = $this->jsmdb->loadColumn();
  }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 
@@ -196,7 +197,7 @@ $resultupdate = $this->jsmdb->execute();
 }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
         return false;
         }
 	
@@ -275,7 +276,7 @@ $result = $this->jsmdb->loadObjectList();
  }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.' '.$e->getMessage()), 'error');
         return false;
         }
         

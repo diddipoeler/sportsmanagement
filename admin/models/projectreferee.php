@@ -12,7 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper; 
-
+use Joomla\CMS\Language\Text;
  
 /**
  * SportsManagement Model
@@ -62,7 +62,7 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	public function delete(&$pks)
 	{
 	$app =& JFactory::getApplication();
-    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -72,7 +72,7 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
     if (count($pks))
 		{
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mre
             FROM #__sportsmanagement_project_referee as m    
@@ -83,7 +83,7 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
             $db->execute();
             if (!$db->execute()) 
             {
-                $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(Text::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             

@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -41,8 +42,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}	   
     
@@ -332,9 +333,9 @@ class sportsmanagementModelProject extends JSMModelAdmin
             $temp->id = $id;
             $export[] = $temp;
             }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
             $this->_tables_to_delete = array_merge($export);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
             
             // jetzt starten wir das löschen
             foreach( $this->_tables_to_delete as $row_to_delete )
@@ -345,7 +346,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
             }    
             }
             
@@ -379,7 +380,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
         $post = JFactory::getApplication()->input->post->getArray(array());
         
@@ -427,7 +428,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
 }	
 
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}
 
 	

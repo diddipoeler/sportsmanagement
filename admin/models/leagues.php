@@ -186,7 +186,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 //        $option = $jinput->getCmd('option');
         $search_nation = '';
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
+
         
         if ( $this->jsmapp->isAdmin() )
         {
@@ -211,7 +211,7 @@ class sportsmanagementModelLeagues extends JSMModelList
         if (!$result = $this->jsmdb->loadObjectList())
         {
             //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+
             return array();
         }
         foreach ($result as $league)

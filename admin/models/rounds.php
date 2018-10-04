@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModelRounds
@@ -68,8 +69,8 @@ class sportsmanagementModelRounds extends JSMModelList
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -190,7 +191,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}
@@ -204,7 +205,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
          $app = JFactory::getApplication();
         $option = $app->input->getCmd('option');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -220,12 +221,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
 		$db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		if ( !$result = $db->loadAssocList() )
 		{
-			$app->enqueueMessage(JText::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');
-			//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+			$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');
+			//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 			return false;
 		}
 		return $result[0];
@@ -240,7 +241,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
 		$app = JFactory::getApplication();
 $option = $app->input->getCmd('option');        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -256,7 +257,7 @@ $option = $app->input->getCmd('option');
         		
 		$db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		if (!$result=$db->loadAssocList())
 		{
@@ -364,7 +365,7 @@ $option = $app->input->getCmd('option');
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }		
 	}
@@ -382,7 +383,7 @@ $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
         
       // Select some fields
         //$query->select('id as value,name as text, id, name, round_date_first, round_date_last, roundcode');
@@ -397,7 +398,7 @@ $option = $app->input->getCmd('option');
 		$db->setQuery($query);
         $result = $db->loadObjectList();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'   ),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -468,7 +469,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
     
     
 		if (!$teams || !count($teams)) {
-			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM'));
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM'));
 			return false;
 		}
 		$rounds = $this->getRoundsOptions($project_id);
@@ -483,7 +484,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 		}
 		else
 		{
-			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_UNDEFINED_SCHEDULING'));
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_UNDEFINED_SCHEDULING'));
 			return false;			
 		}
 		

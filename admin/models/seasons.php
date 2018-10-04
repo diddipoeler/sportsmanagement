@@ -42,9 +42,7 @@ class sportsmanagementModelSeasons extends JSMModelList
         $this->jinput = $this->app->input;
                 
                 $layout = $this->jinput->getVar('layout');
-                
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
-                
+               
                 switch ($layout)
         {
             case 'assignteams':

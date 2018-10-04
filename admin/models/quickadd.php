@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.application.component.model');
 
@@ -208,7 +209,7 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
 	function addPlayer($projectteam_id, $personid, $name = null)
 	{		
 		if ( !$personid && empty($name) ) {
-			$this->setError(Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
 			return false;
 		}
 	
@@ -244,7 +245,7 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
 		}
 	
 		if (!$personid) {
-			$this->setError(Jtext::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_FAILED_ADDING_PERSON'));
+			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_FAILED_ADDING_PERSON'));
 			return false;
 		}
 	

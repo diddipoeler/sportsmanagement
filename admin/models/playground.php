@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 /**
  * sportsmanagementModelPlayground
@@ -162,7 +163,7 @@ $db->setQuery($query);
 $result = $db->execute();
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
     }
     
     /**
@@ -188,7 +189,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         /*
         if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');    
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');    
         }
         */
         self::updateHits($pgid,$inserthits); 

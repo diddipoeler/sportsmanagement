@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -98,7 +99,7 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
 		$app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictionproject', 'predictionproject', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -199,8 +200,8 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
        
        //$project_id = $app->getUserState( "$option.pid", '0' );
        
-       $app->enqueueMessage(JText::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       $app->enqueueMessage(JText::_('sportsmanagementModelpredictionproject post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       $app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       $app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        /*
        if ( !$data['id'] )
@@ -217,7 +218,7 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_('sportsmanagementModelpredictionproject save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -227,7 +228,7 @@ class sportsmanagementModelpredictionproject extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);
     

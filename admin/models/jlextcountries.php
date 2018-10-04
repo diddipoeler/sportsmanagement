@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModeljlextcountries
@@ -65,8 +66,8 @@ class sportsmanagementModeljlextcountries extends JSMModelList
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
 		// Load the filter state.
@@ -174,14 +175,14 @@ class sportsmanagementModeljlextcountries extends JSMModelList
         
         if (!$results)
 		{
-          $this->jsmmessage .= '<br>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL');
+          $this->jsmmessage .= '<br>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL');
 		}  
         
 		return $results;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 

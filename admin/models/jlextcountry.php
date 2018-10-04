@@ -11,6 +11,7 @@
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -62,16 +63,16 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
 
 if ( !copy($linkaddress,$filepath) )
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ERROR'),'Error');
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ERROR'),'Error');
 }
 else
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'),'Notice'); 
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_SUCCESS'),'Notice'); 
 $result = JArchive::extract($filepath,$base_Dir);  
 
 if ( $result )
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_SUCCESS'),'Notice'); 
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_SUCCESS'),'Notice'); 
 
 $file = $base_Dir.$alpha2.'.txt';
 
@@ -142,7 +143,7 @@ $source	= JFile::read($file);
 //		$temp = new stdClass();
 //		$temp->value = $value;
 //        $exportplayer[] = $temp;
-        //    $app->enqueueMessage(JText::_('value <br><pre>'.print_r($value,true).'</pre>'   ),'');
+        //    $app->enqueueMessage(Text::_('value <br><pre>'.print_r($value,true).'</pre>'   ),'');
 		}
         */
 	    $exportplayer[] = $temp;
@@ -155,7 +156,7 @@ $source	= JFile::read($file);
 	//$csv->auto($file);
 	//print_r($csv->data);
     
-	//$app->enqueueMessage(JText::_('daten <br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+	//$app->enqueueMessage(Text::_('daten <br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
     /*
     // anfang schleife csv file
 	for($a=0; $a < sizeof($csv->data); $a++  )
@@ -165,11 +166,11 @@ $source	= JFile::read($file);
 		$temp->knvbnr = $csv->data[$a];
         $exportplayer[] = $temp;
 
-//        $app->enqueueMessage(JText::_('daten <br><pre>'.print_r($csv->data[$a],true).'</pre>'   ),'');
+//        $app->enqueueMessage(Text::_('daten <br><pre>'.print_r($csv->data[$a],true).'</pre>'   ),'');
     }
     */
     
-    //$app->enqueueMessage(JText::_('daten <br><pre>'.print_r($exportplayer,true).'</pre>'   ),'');  
+    //$app->enqueueMessage(Text::_('daten <br><pre>'.print_r($exportplayer,true).'</pre>'   ),'');  
     
     foreach ($exportplayer as $value)
 		{
@@ -190,7 +191,7 @@ $source	= JFile::read($file);
 }
 else
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'),'Error');    
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'),'Error');    
 }
 
 

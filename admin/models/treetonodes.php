@@ -108,8 +108,6 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$this->jsmquery->order('a.row');
 		$this->jsmquery->group('a.id');
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-
 		return $this->jsmquery;
 	}
 

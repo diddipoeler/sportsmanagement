@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
  
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -121,7 +122,7 @@ return count($division_teams);
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
-            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
         }
         $post = JFactory::getApplication()->input->post->getArray(array());
         
@@ -151,7 +152,7 @@ return count($division_teams);
 				return false;
 			}
 		}
-		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
+		return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
 	}
     
     

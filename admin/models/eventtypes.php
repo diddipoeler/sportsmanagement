@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * Sportsmanagement Component Events Model
@@ -56,8 +57,8 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	{
 	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
-	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         
 		// Load the filter state.
@@ -132,7 +133,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
         $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 		return $this->jsmquery;
         
 	}
@@ -171,8 +172,8 @@ class sportsmanagementModelEventtypes extends JSMModelList
 		}
 		foreach ($result as $position)
         {
-            //$position->text = JText::_($position->text);
-            $position->text = JText::_($position->posname).' ('.JText::_($position->stname).')';
+            //$position->text = Text::_($position->text);
+            $position->text = Text::_($position->posname).' ('.Text::_($position->stname).')';
         }
 		return $result;
 	}
@@ -207,13 +208,13 @@ class sportsmanagementModelEventtypes extends JSMModelList
         $result = $this->jsmdb->loadObjectList();
 		foreach ($result as $event)
         {
-            $event->text = JText::_($event->posname).' ('.JText::_($event->stname).')';
+            $event->text = Text::_($event->posname).' ('.Text::_($event->stname).')';
         }
 		return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
 	}

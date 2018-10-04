@@ -1,5 +1,4 @@
 <?php
-
 /** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
  * @version 1.0.26
  * @file		components/sportsmanagement/models/cpanel.php
@@ -40,6 +39,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -78,7 +78,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
 
         $this->jsmdb->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
         $manifest_cache = json_decode($this->jsmdb->loadResult(), true);
-        //$app->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
         return $manifest_cache['version'];
     }
 
@@ -91,7 +91,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
         $paramsdata = JComponentHelper::getParams($option);
-//$app->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 // Load the parameters
         $uname = JComponentHelper::getParams($option)->get('cfg_github_username', 'diddipoeler');
         $repo = JComponentHelper::getParams($option)->get('cfg_github_repository', 'sportsmanagement');
@@ -156,7 +156,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
         //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
 //        $query='SELECT count(*) AS count
 //		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 
@@ -169,8 +169,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         $this->jsmdb->setQuery($this->jsmquery);
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         return $this->jsmdb->loadResult();
@@ -202,8 +202,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
         $this->jsmdb->setQuery($this->jsmquery);
 
         if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
-            $app->enqueueMessage(JText::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' <br><pre>' . print_r($this->jsmquery->dump(), true) . '</pre>'), 'Notice');
+            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
         }
 
         return $this->jsmdb->loadResult();
@@ -286,13 +286,13 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
                 // Check if the committer information
                 if ($o['author']['id'] != $o['committer']['id']) {
                     // The committer name formatted with link
-                    $temp->commit->committer = JText::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY') . '<a href="https://github.com/' . $o['committer']['login'] . '" target="_blank" rel="nofollow">' . $o['commit']['committer']['name'] . '</a>';
+                    $temp->commit->committer = Text::_('COM_SPORTSMANAGEMENT_GITHUB_AND_COMMITTED_BY') . '<a href="https://github.com/' . $o['committer']['login'] . '" target="_blank" rel="nofollow">' . $o['commit']['committer']['name'] . '</a>';
 
                     // The author wasn't the committer
-                    $temp->commit->author = JText::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
+                    $temp->commit->author = Text::_('COM_SPORTSMANAGEMENT_GITHUB_AUTHORED_BY');
                 } else {
                     // The author is also the committer
-                    $temp->commit->author = JText::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
+                    $temp->commit->author = Text::_('COM_SPORTSMANAGEMENT_GITHUB_COMMITTED_BY');
                 }
 
                 // The author name formatted with link
