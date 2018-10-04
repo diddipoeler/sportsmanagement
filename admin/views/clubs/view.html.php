@@ -76,7 +76,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
 
 		if ( $this->state->get('filter.search_nation') )
 		{
-		$mdlassociations = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');	
+		$mdlassociations = BaseDatabaseModel::getInstance('jlextassociations', 'sportsmanagementModel');
+		$allassociations = $mdlassociations->getAssociations();
+		$this->association = $allassociations;
 		}
 		$this->lists = $lists;
 
