@@ -40,41 +40,41 @@ class sportsmanagementViewClubs extends sportsmanagementView
     
         $inputappend = '';
         
-		$this->table = Table::getInstance('club', 'sportsmanagementTable');
+	$this->table = Table::getInstance('club', 'sportsmanagementTable');
         
         //build the html select list for seasons
-		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+	$seasons[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
-		$allSeasons = $mdlSeasons->getSeasons();
-		$seasons = array_merge($seasons, $allSeasons);
+	$allSeasons = $mdlSeasons->getSeasons();
+	$seasons = array_merge($seasons, $allSeasons);
         $this->season = $allSeasons;
-		$lists['seasons'] = HTMLHelper::_( 'select.genericList',
-									$seasons,
-									'filter_season',
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'id',
-									'name',
-									$this->state->get('filter.season'));
+	$lists['seasons'] = HTMLHelper::_( 'select.genericList',
+		$seasons,
+		'filter_season',
+		'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+		'id',
+		'name',
+		$this->state->get('filter.season'));
 
 		unset($seasons);
        
         //build the html options for nation
-		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
-		if ($res = JSMCountries::getCountryOptions())
+	$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+	if ($res = JSMCountries::getCountryOptions())
         {
-            $nation = array_merge($nation, $res);
-            $this->search_nation = $res;
-            }
+        $nation = array_merge($nation, $res);
+        $this->search_nation = $res;
+        }
 		
-		$lists['nation']	= $nation;
-		$lists['nation2']	= JHtmlSelect::genericlist(	$nation,
-									'filter_search_nation',
-									$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-									'value',
-									'text',
-									$this->state->get('filter.search_nation'));
+	$lists['nation'] = $nation;
+	$lists['nation2'] = JHtmlSelect::genericlist($nation,
+		'filter_search_nation',
+		$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+		'value',
+		'text',
+		$this->state->get('filter.search_nation'));
 
-		$this->lists		= $lists;
+		$this->lists = $lists;
 
         
 	}
