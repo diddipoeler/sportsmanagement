@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -96,7 +97,7 @@ class sportsmanagementTableRound extends JTable
 		$db->setQuery('SELECT COUNT(userid)' . ' FROM ' . $db->quoteName('#__session') . ' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $against);
 		$checkedOut = (boolean) $db->loadResult();
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' checkedOut<br><pre>'.print_r($checkedOut,true).'</pre>'),'');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' checkedOut<br><pre>'.print_r($checkedOut,true).'</pre>'),'');
 
 		// If a session exists for the user then it is checked out.
 		return $checkedOut;

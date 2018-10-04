@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -48,7 +49,7 @@ class sportsmanagementTablePlayground extends JTable
 	function check()
 	{
 		if (empty($this->name)) {
-			$this->setError(JText::_('ERROR NAME REQUIRED'));
+			$this->setError(Text::_('ERROR NAME REQUIRED'));
 			return false;
 		}
 		// setting alias

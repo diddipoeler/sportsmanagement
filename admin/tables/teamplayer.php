@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -108,7 +109,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		$res = $this->getDbo()->loadResult();
 		
 		if ($res) {
-			$this->setError(Jtext::sprintf('PLAYER ASSIGNED TO %d GAMES', $res));
+			$this->setError(Text::sprintf('PLAYER ASSIGNED TO %d GAMES', $res));
 			return false;
 		}
 		
@@ -120,7 +121,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		$res = $this->getDbo()->loadResult();
 		
 		if ($res) {
-			$this->setError(JText::sprintf('%d EVENTS ASSIGNED TO PLAYER', $res));
+			$this->setError(Text::sprintf('%d EVENTS ASSIGNED TO PLAYER', $res));
 			return false;
 		}
 		
@@ -132,7 +133,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		$res = $this->getDbo()->loadResult();
 		
 		if ($res) {
-			$this->setError(JText::sprintf('%d STATS ASSIGNED TO PLAYER', $res));
+			$this->setError(Text::sprintf('%d STATS ASSIGNED TO PLAYER', $res));
 			return false;
 		}
 		

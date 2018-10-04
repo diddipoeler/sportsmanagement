@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -50,7 +51,7 @@ class sportsmanagementTablePerson extends JTable
 	{
 		if ( empty( $this->firstname ) && empty( $this->lastname ) )
 		{
-			$this->setError( JText::_( 'ERROR FIRSTNAME OR LASTNAME REQUIRED' ) );
+			$this->setError( Text::_( 'ERROR FIRSTNAME OR LASTNAME REQUIRED' ) );
 			return false;
 		}
 		$parts = array( trim( $this->firstname ), trim( $this->lastname ) );

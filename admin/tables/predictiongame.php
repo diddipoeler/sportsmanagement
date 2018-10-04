@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -51,7 +52,7 @@ class sportsmanagementTablePredictionGame extends JTable
 	{
 		if ( trim( $this->name ) == '' )
 		{
-			$this->setError( JText::_( 'CHECK FAILED - Empty name of prediction game' ) );
+			$this->setError( Text::_( 'CHECK FAILED - Empty name of prediction game' ) );
 			return false;
 		}
 
