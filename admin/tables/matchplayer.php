@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Language\Text;
 // import Joomla table library
 jimport('joomla.database.table');
 // Include library dependencies
@@ -50,7 +51,7 @@ class sportsmanagementTableMatchplayer extends JTable
 	{
 		if ( ! ( $this->match_id && $this->teamplayer_id ) )
 		{
-			$this->setError( JText::_( 'CHECK FAILED' ) );
+			$this->setError( Text::_( 'CHECK FAILED' ) );
 			return false;
 		}
 		return true;
