@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementModeljlextassociations
@@ -64,8 +65,8 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	{
 		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -139,11 +140,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
-        }
+		
         return $this->jsmquery;
 	}
 	
@@ -184,14 +181,14 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 
         foreach ($result as $association)
         {
-            $association->name = '( '.$association->country.' ) '.   JText::_($association->name);
+            $association->name = '( '.$association->country.' ) '.   Text::_($association->name);
             $association->text = $association->name;
         }
         return $result;
         }
         catch (Exception $e)
         {
-        $this->jsmapp->enqueueMessage(JText::_($e->getMessage()), 'error');
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
         return false;
         }
     }
