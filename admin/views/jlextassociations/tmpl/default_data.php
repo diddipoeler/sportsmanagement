@@ -115,7 +115,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         
                         
                         
-                        <?php //echo $checked; ?>
+                        <?php 
+if ($row->website != '') {
+                            echo '<a href="' . $row->website . '" target="_blank"><span class="label label-success" title="' . $row->website . '">' . Text::_('JYES') . '</span></a>';
+                        } else {
+                            echo '<span class="label">' . Text::_('JNO') . '</span>';
+                        }								
+								?>
                         
                         <?php //echo $row->name; ?>
                         <p class="smallsub">
