@@ -84,6 +84,9 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
+		$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.association', 'filter_association', '');
+		$this->setState('filter.association', $temp_user_request);
+		
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.season', 'filter_season', '');
 		$this->setState('filter.season', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.geo_daten', 'filter_geo_daten', '');
