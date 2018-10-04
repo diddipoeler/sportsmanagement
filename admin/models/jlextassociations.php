@@ -40,6 +40,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
                         'objassoc.short_name',
                         'objassoc.country',
                         'objassoc.id',
+			'objassoc.website',
                         'objassoc.ordering',
                         'objassoc.published',
                         'objassoc.modified',
