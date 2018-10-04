@@ -374,7 +374,16 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			'filter_geo_daten',
 			HTMLHelper::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
 		);
-	
+			
+	if ( isset($this->search_nation) )
+        {
+        JHtmlSidebar::addFilter(
+			Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'),
+			'filter_association',
+			HTMLHelper::_('select.options', $this->association, 'value', 'text', $this->state->get('filter.association'), true)
+		);
+        }
+			
         break;    
         case 'smquotes':
         JHtmlSidebar::addFilter(
