@@ -12,9 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-jimport('joomla.application.component.modellist');
-
-
 
 /**
  * sportsmanagementModelTemplates
@@ -25,7 +22,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTemplates extends JModelList
+class sportsmanagementModelTemplates extends JSMModelList
 {
 	var $_identifier = "templates";
 	var $_project_id = 0;
@@ -408,10 +405,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		// Build in JText of template title here and sort it afterwards
 		$db->setQuery($query);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        { 
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-}
+        
 
 		$current = $db->loadObjectList();
 		return (count($current)) ? $current : array();
@@ -424,30 +418,21 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query
 	 */
 	function getMasterName()
 	{
-	   $app	= JFactory::getApplication();
-		$option = JFactory::getApplication()->input->getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $starttime = microtime(); 
-        
-        $query->select('master.name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template = master.id');
-        $query->where('p.id = '.(int)$this->_project_id);
-        
-//		$query='	SELECT master.name
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as master
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=master.id
-//					WHERE p.id='.(int) $this->_project_id;
-		$db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        { 
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('master.name');
+        $this->jsmquery->from('#__sportsmanagement_project as master');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = master.id');
+        $this->jsmquery->where('p.id = '.(int)$this->_project_id);
+        try { 
+		$this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadResult();
+        }
+catch (Exception $e) {
+$result = false;
+$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');	
 }
 
-		return ($db->loadResult());
+		return $result;
 	}
 
 }
