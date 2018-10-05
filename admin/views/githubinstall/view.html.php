@@ -35,7 +35,7 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	public function init ()
 	{
         $github_link = ComponentHelper::getParams($this->option)->get('cfg_update_server_file','');
-        $this->github_link	= $github_link;
+        $this->github_link = $github_link;
        
         $this->_success_text = $this->model->CopyGithubLink($github_link);
 
@@ -51,8 +51,8 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 */
 	protected function setDocument() 
 	{
-		$this->document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
+		$this->document->setTitle(Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'));
 		$this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
+		Text::script('COM_SPORTSMANAGEMENT_GITHUB_UPDATE');
 	}
 }
