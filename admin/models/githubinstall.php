@@ -39,7 +39,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
     var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
-    var $_success_text = '';
+    var $_success_text = array();
     
 /**
  * sportsmanagementModelgithubinstall::CopyGithubLink()
