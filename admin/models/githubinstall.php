@@ -63,7 +63,11 @@ else
         $file['name'] = basename($link);
         $filename = $file['name'];
         $filepath = $base_Dir . $filename;
-
+if ( !isset($this->_success_text['Komponente:']) )
+{
+$this->_success_text['Komponente:'] = 'text';	
+}
+	
 $my_text = '';
 if ( !copy($link,$filepath) )
 {
