@@ -3,6 +3,7 @@
 defined('_JEXEC') or die();
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 class JElementJLMLItemid extends JElement
 {
@@ -13,7 +14,7 @@ class JElementJLMLItemid extends JElement
 	{
 		$db = JFactory::getDBO();
 
-		$options 	= array(HTMLHelper::_('select.option', '', '- '.JText::_('Select Item').' -'));
+		$options 	= array(HTMLHelper::_('select.option', '', '- '.Text::_('Select Item').' -'));
 
 		$query = "SELECT menutype, title FROM #__menu_types ORDER BY title";
 		$db->setQuery( $query );

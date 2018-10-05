@@ -13,6 +13,7 @@
  //no direct access
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Language\Text;
 
 if(!defined('DS'))
 {
@@ -105,7 +106,7 @@ $list = modRquotesHelper::getTextFile2($params,$filename,$module);
 }
 break;
 default:
-echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
+echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION');
 
 
 }

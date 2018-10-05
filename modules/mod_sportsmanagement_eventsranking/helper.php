@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper; 
+use Joomla\CMS\Language\Text;
  
 /**
  * modSMEventsrankingHelper
@@ -203,7 +204,7 @@ $routeparameter['p'] = $project->slug;
 		}
 		else
 		{
-			$imgTitle=JText::_($event->name);
+			$imgTitle=Text::_($event->name);
 			$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle);
 			$txt=HTMLHelper::image($event->icon, $imgTitle, $imgTitle2);
 		}

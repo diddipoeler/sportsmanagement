@@ -40,6 +40,7 @@
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 //$css = Uri::base().'modules/mod_rquotes/assets/rquote.css';
 // $document =& JFactory::getDocument();
@@ -58,5 +59,5 @@ if ( $list )
 }
 else
 {
-    echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
+    echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
 }

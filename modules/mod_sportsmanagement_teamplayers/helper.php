@@ -14,6 +14,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * modSportsmanagementTeamPlayersHelper
@@ -58,7 +59,7 @@ class modSportsmanagementTeamPlayersHelper
         $db->setQuery( $query );
         if ( $params['debug_modus'] )
 	{		
-        $mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	}
 		$result = $db->loadRow();
 		$projectteamid = $result[0];
@@ -116,7 +117,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 		}
 		else
 		{
-			echo '<i>' . JText::sprintf( '%1$s', $flag . $text) . '</i>';
+			echo '<i>' . Text::sprintf( '%1$s', $flag . $text) . '</i>';
 		}
 
 	}

@@ -87,7 +87,7 @@ $query->order('pro.name ASC');
 $db->setQuery( $query );
 $anzahl = $db->loadObjectList();
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+
 		
 foreach ( $anzahl as $row )
 {
@@ -132,11 +132,11 @@ $article = $db->loadObject();
 
 if ( $article )
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vorhanden<pre>'.print_r($article,true).'</pre>'),'Notice');
+
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nicht vorhanden<pre>'.print_r($article,true).'</pre>'),'Error');  
+
 
 // Create and populate an object.
 $profile = new stdClass();

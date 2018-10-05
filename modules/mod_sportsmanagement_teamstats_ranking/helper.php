@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 /**
  * modSportsmanagementTeamStatHelper
@@ -49,7 +50,7 @@ class modSportsmanagementTeamStatHelper
 		$stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id,0,0)));
 		if (!$stat) 
         {
-			echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_UNDEFINED_STAT').'<br>';
+			echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_UNDEFINED_STAT').'<br>';
             
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
             return false;
@@ -161,7 +162,7 @@ $routeparameter['p'] = $project->slug;
 		}
 		else
 		{
-			$imgTitle=JText::_($stat->name);
+			$imgTitle=Text::_($stat->name);
 			$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle);
 			$txt=HTMLHelper::image($stat->icon, $imgTitle, $imgTitle2);
 		}

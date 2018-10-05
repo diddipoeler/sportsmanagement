@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 if ( !defined('DS') )
 {
@@ -120,9 +121,9 @@ $actJoomlaUser[]      = JFactory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
 $type_array    = array();
-$type_array[]  = HTMLHelper::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-$type_array[]  = HTMLHelper::_('select.option', '1', JText::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
-$type_array[]  = HTMLHelper::_('select.option', '2', JText::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '1', Text::_('COM_SPORTSMANAGEMENT_RANKING_FIRST_HALF_RANKING'));
+$type_array[]  = HTMLHelper::_('select.option', '2', Text::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING'));
 $lists['type'] = $type_array;
 unset($type_array);
 

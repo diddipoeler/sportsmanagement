@@ -38,13 +38,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 //echo 'data -><pre>'.print_r($data,true).'</pre>';
 
 // check if any results returned
 if ( $data['projectscount'] == 0 )
 {
-    echo '<p class="modjlgsports">' . JText::_('MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_NO_PROJECTS') . '</p>';
+    echo '<p class="modjlgsports">' . Text::_('MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_NO_PROJECTS') . '</p>';
 
     return;
 }
@@ -56,7 +57,7 @@ else
             <?php
             if ( $data['sportstype'][0]->icon )
             { ?><img src="<?php echo $data['sportstype'][0]->icon; ?>"
-                     alt=""/><?php } ?><?php echo JText::_($data['sportstype'][0]->name); ?>
+                     alt=""/><?php } ?><?php echo Text::_($data['sportstype'][0]->name); ?>
         </h4>
         <ul class="list-group">
             <?php if ( $params->get('show_project', 1) == 1 )
@@ -65,12 +66,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS") . '" src="administrator/components/com_sportsmanagement/assets/images/projects.png"/>';
-                        echo ' ' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
+                        echo '<img alt="' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS") . '" src="administrator/components/com_sportsmanagement/assets/images/projects.png"/>';
+                        echo ' ' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
                     }
                     else
                     {
-                        echo JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
+                        echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PROJECTS");
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectscount'] ?></span>
@@ -83,12 +84,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES") . '" src="administrator/components/com_sportsmanagement/assets/images/leagues.png"/>';
-                        echo ' ' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
+                        echo '<img alt="' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES") . '" src="administrator/components/com_sportsmanagement/assets/images/leagues.png"/>';
+                        echo ' ' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
                     }
                     else
                     {
-                        echo JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
+                        echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_LEAGUES");
                     }
                     ?>
                     <span class="badge"><?php echo $data['leaguescount'] ?></span>
@@ -101,12 +102,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS") . '" src="administrator/components/com_sportsmanagement/assets/images/seasons.png"/>';
-                        echo ' ' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
+                        echo '<img alt="' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS") . '" src="administrator/components/com_sportsmanagement/assets/images/seasons.png"/>';
+                        echo ' ' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
                     }
                     else
                     {
-                        echo JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
+                        echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SEASONS");
                     }
                     ?>
                     <span class="badge"><?php echo $data['seasonscount'] ?></span>
@@ -119,12 +120,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS") . '" src="administrator/components/com_sportsmanagement/assets/images/playground.png"/>';
-                        echo ' ' . JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
+                        echo '<img alt="' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS") . '" src="administrator/components/com_sportsmanagement/assets/images/playground.png"/>';
+                        echo ' ' . Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
                     }
                     else
                     {
-                        echo JText::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
+                        echo Text::_("MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_PLAYGROUNDS");
                     }
                     ?>
                     <span class="badge"><?php echo $data['playgroundscount'] ?></span>
@@ -138,12 +139,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_clubs')) . '" src="administrator/components/com_sportsmanagement/assets/images/clubs.png"/>';
-                        echo ' ' . JText::_($params->get('text_clubs'));
+                        echo '<img alt="' . Text::_($params->get('text_clubs')) . '" src="administrator/components/com_sportsmanagement/assets/images/clubs.png"/>';
+                        echo ' ' . Text::_($params->get('text_clubs'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_clubs'));
+                        echo Text::_($params->get('text_clubs'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['clubscount'] ?></span>
@@ -157,12 +158,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_teams')) . '" src="administrator/components/com_sportsmanagement/assets/images/teams.png"/>';
-                        echo ' ' . JText::_($params->get('text_teams'));
+                        echo '<img alt="' . Text::_($params->get('text_teams')) . '" src="administrator/components/com_sportsmanagement/assets/images/teams.png"/>';
+                        echo ' ' . Text::_($params->get('text_teams'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_teams'));
+                        echo Text::_($params->get('text_teams'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectteamscount'] ?></span>
@@ -174,12 +175,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_players')) . '" src="administrator/components/com_sportsmanagement/assets/images/players.png"/>';
-                        echo ' ' . JText::_($params->get('text_players'));
+                        echo '<img alt="' . Text::_($params->get('text_players')) . '" src="administrator/components/com_sportsmanagement/assets/images/players.png"/>';
+                        echo ' ' . Text::_($params->get('text_players'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_players'));
+                        echo Text::_($params->get('text_players'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['personscount'] ?></span>
@@ -191,12 +192,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_divisions')) . '" src="administrator/components/com_sportsmanagement/assets/images/division.png"/>';
-                        echo ' ' . JText::_($params->get('text_divisions'));
+                        echo '<img alt="' . Text::_($params->get('text_divisions')) . '" src="administrator/components/com_sportsmanagement/assets/images/division.png"/>';
+                        echo ' ' . Text::_($params->get('text_divisions'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_divisions'));
+                        echo Text::_($params->get('text_divisions'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectdivisionscount'] ?></span>
@@ -208,12 +209,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_rounds')) . '" src="administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png"/>';
-                        echo ' ' . JText::_($params->get('text_rounds'));
+                        echo '<img alt="' . Text::_($params->get('text_rounds')) . '" src="administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png"/>';
+                        echo ' ' . Text::_($params->get('text_rounds'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_rounds'));
+                        echo Text::_($params->get('text_rounds'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectroundscount'] ?></span>
@@ -225,12 +226,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_matches')) . '" src="administrator/components/com_sportsmanagement/assets/images/matches.png"/>';
-                        echo ' ' . JText::_($params->get('text_matches'));
+                        echo '<img alt="' . Text::_($params->get('text_matches')) . '" src="administrator/components/com_sportsmanagement/assets/images/matches.png"/>';
+                        echo ' ' . Text::_($params->get('text_matches'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_matches'));
+                        echo Text::_($params->get('text_matches'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectmatchescount'] ?></span>
@@ -242,12 +243,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_player_events')) . '" src="administrator/components/com_sportsmanagement/assets/images/events.png"/>';
-                        echo ' ' . JText::_($params->get('text_player_events'));
+                        echo '<img alt="' . Text::_($params->get('text_player_events')) . '" src="administrator/components/com_sportsmanagement/assets/images/events.png"/>';
+                        echo ' ' . Text::_($params->get('text_player_events'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_player_events'));
+                        echo Text::_($params->get('text_player_events'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectmatcheseventscount'] ?></span>
@@ -262,12 +263,12 @@ else
                         <li class="list-group-item"><?php
                             if ( $params->get('show_icon', 1) == 1 )
                             {
-                                echo '<img alt="' . JText::_($row->name) . '" src="' . $row->icon . '"/>';
-                                echo ' ' . JText::_($row->name);
+                                echo '<img alt="' . Text::_($row->name) . '" src="' . $row->icon . '"/>';
+                                echo ' ' . Text::_($row->name);
                             }
                             else
                             {
-                                echo JText::_($row->name);
+                                echo Text::_($row->name);
                             }
                             ?>
                             <span class="badge"><?php echo $row->total ?></span>
@@ -284,12 +285,12 @@ else
                 <li class="list-group-item"><?php
                     if ( $params->get('show_icon', 1) == 1 )
                     {
-                        echo '<img alt="' . JText::_($params->get('text_player_stats')) . '" src="administrator/components/com_sportsmanagement/assets/images/icon-48-statistics.png"/>';
-                        echo ' ' . JText::_($params->get('text_player_stats'));
+                        echo '<img alt="' . Text::_($params->get('text_player_stats')) . '" src="administrator/components/com_sportsmanagement/assets/images/icon-48-statistics.png"/>';
+                        echo ' ' . Text::_($params->get('text_player_stats'));
                     }
                     else
                     {
-                        echo JText::_($params->get('text_player_stats'));
+                        echo Text::_($params->get('text_player_stats'));
                     }
                     ?>
                     <span class="badge"><?php echo $data['projectmatchesstatscount'] ?></span>

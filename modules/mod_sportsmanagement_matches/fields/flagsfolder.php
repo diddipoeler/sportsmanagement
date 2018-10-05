@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.form.formfield');
 jimport( 'joomla.filesystem.folder' );
@@ -36,7 +37,7 @@ class JFormFieldFlagsFolder extends JFormField
 
 		$lang = JFactory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
-		$items = array(HTMLHelper::_('select.option',  '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
+		$items = array(HTMLHelper::_('select.option',  '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
 
 		foreach ( $folderlist as $folder )
 		{

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 /**
  * SportsmanagementConnector
@@ -97,12 +98,12 @@ class SportsmanagementConnector extends JSMCalendar
 		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
 		//$database = JFactory::getDbo();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$db->setQuery($query);
 		$fav = $db->loadObjectList();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'fav <br><pre>'.print_r($fav,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  'fav <br><pre>'.print_r($fav,true).'</pre>'),'Notice');
 
 		// echo '<pre>';
 		// print_r($fav);
@@ -223,7 +224,7 @@ class SportsmanagementConnector extends JSMCalendar
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		$db->setQuery($query);
@@ -416,7 +417,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' caldates<br><pre>'.print_r($caldates,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' caldates<br><pre>'.print_r($caldates,true).'</pre>'),'Notice');
 
 		$where = '';
         $teamCondition = '';
@@ -510,10 +511,10 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         }
 		$projectid = SportsmanagementConnector::$xparams->get('p') ;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');
         
         //$integerIDs = array_map('intval', $projectid );
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' integerIDs<br><pre>'.print_r($integerIDs,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' integerIDs<br><pre>'.print_r($integerIDs,true).'</pre>'),'Notice');
         
         if ( is_array($projectid) )
         {
@@ -542,11 +543,11 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $query->group('m.id');
         $query->order('m.match_date '.$ordering);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
         $db->setQuery($query,0,$limit);
@@ -561,7 +562,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 			}
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
@@ -610,7 +611,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		if ( !$result = $db->loadObjectList('teamtoolid') ) $result = Array();
@@ -650,7 +651,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
     WHERE t.id IN(p.fav_team)";
 		$db->setQuery($query);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query,true).'</pre>'),'Notice');
         
 		$result = $db->loadObjectList();
 	}

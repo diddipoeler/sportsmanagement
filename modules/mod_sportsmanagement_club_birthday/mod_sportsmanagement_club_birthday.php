@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -103,7 +104,7 @@ $height = $params->def("height");
 $width  = $params->def("width");
 $season_ids = $params->def("s");
 
-$futuremessage = htmlentities(trim(JText::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
+$futuremessage = htmlentities(trim(Text::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
 
 $clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit,$season_ids);
 if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jsm_birthday_sort($clubs,$params->def("sort_order"));
@@ -115,8 +116,8 @@ $my_text .= 'params <pre>'.print_r($params,true).'</pre>';
 sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,$module->module,__LINE__,$my_text);
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' attribs<br><pre>'.print_r($attribs,true).'</pre>'),'Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' attribs<br><pre>'.print_r($attribs,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 
 $k = 0;
@@ -193,7 +194,7 @@ $html_li = '';
         
         if ( $club->founded != '0000-00-00' )
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
             $dayformat = htmlentities(trim($params->get('dayformat')));
 		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -203,7 +204,7 @@ $html_li = '';
         }
         else
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
             $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
         }
             
@@ -286,7 +287,7 @@ $html_li = '';
         
         if ( $club->founded != '0000-00-00' )
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
             $dayformat = htmlentities(trim($params->get('dayformat')));
 		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -296,7 +297,7 @@ $html_li = '';
         }
         else
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
             $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
         }
             

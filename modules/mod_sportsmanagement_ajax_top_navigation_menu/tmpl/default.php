@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.tooltip');
 
@@ -35,7 +36,7 @@ $active = ($value==$country_federation) ? 'active' : '';
 
   
 
-<li role="presentation" class="<?php echo $active ?>"><a href="#jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" aria-controls="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" role="tab" data-toggle="tab"><?php echo JText::_( strtoupper($value) ) ?></a></li>
+<li role="presentation" class="<?php echo $active ?>"><a href="#jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" aria-controls="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" role="tab" data-toggle="tab"><?php echo Text::_( strtoupper($value) ) ?></a></li>
 
 <?PHP
 }

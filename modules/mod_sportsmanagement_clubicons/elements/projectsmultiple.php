@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * JElementProjectsmultiple
@@ -68,7 +69,7 @@ class JElementProjectsmultiple extends JElement
     $query = 'SELECT p.id, p.name FROM #__sportsmanagement_project p WHERE published=1 ORDER BY id DESC';
     $db->setQuery( $query );
     $projects = $db->loadObjectList();
-    $mitems = array(HTMLHelper::_('select.option', '', '- '.JText::_('Do not use').' -'));
+    $mitems = array(HTMLHelper::_('select.option', '', '- '.Text::_('Do not use').' -'));
 
     foreach ( $projects as $project ) {
       $mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );

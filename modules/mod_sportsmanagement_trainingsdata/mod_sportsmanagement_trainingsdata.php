@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 if (! defined('DS'))
 {
@@ -69,13 +70,13 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 }
 
 $daysOfWeek = array(
-				1 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
-				2 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
-				3 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
-				4 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
-				5 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
-				6 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
-				7 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
+				1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
+				2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
+				3 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_WEDNESDAY'),
+				4 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_THURSDAY'),
+				5 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FRIDAY'),
+				6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
+				7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
 			);
             
 $document = JFactory::getDocument();

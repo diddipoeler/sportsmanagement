@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
@@ -57,28 +58,28 @@ class modJSMCalendarHelper
 		$dayNamLen= $params->get('cal_length_days');
 
 		$cal->dayNames = array(
-		substr(JText::_( 'SUN' ),0,$dayNamLen),
-		substr(JText::_( 'MON' ),0,$dayNamLen),
-		substr(JText::_( 'TUE' ),0,$dayNamLen),
-		substr(JText::_( 'WED' ),0,$dayNamLen),
-		substr(JText::_( 'THU' ),0,$dayNamLen),
-		substr(JText::_( 'FRI' ),0,$dayNamLen),
-		substr(JText::_( 'SAT' ),0,$dayNamLen)
+		substr(Text::_( 'SUN' ),0,$dayNamLen),
+		substr(Text::_( 'MON' ),0,$dayNamLen),
+		substr(Text::_( 'TUE' ),0,$dayNamLen),
+		substr(Text::_( 'WED' ),0,$dayNamLen),
+		substr(Text::_( 'THU' ),0,$dayNamLen),
+		substr(Text::_( 'FRI' ),0,$dayNamLen),
+		substr(Text::_( 'SAT' ),0,$dayNamLen)
 		);
 
 		$cal->monthNames = array(
-		JText::_( 'JANUARY' ),
-		JText::_( 'FEBRUARY' ),
-		JText::_( 'MARCH' ),
-		JText::_( 'APRIL' ),
-		JText::_( 'MAY' ),
-		JText::_( 'JUNE' ),
-		JText::_( 'JULY' ),
-		JText::_( 'AUGUST' ),
-		JText::_( 'SEPTEMBER' ),
-		JText::_( 'OCTOBER' ),
-		JText::_( 'NOVEMBER' ),
-		JText::_( 'DECEMBER' )
+		Text::_( 'JANUARY' ),
+		Text::_( 'FEBRUARY' ),
+		Text::_( 'MARCH' ),
+		Text::_( 'APRIL' ),
+		Text::_( 'MAY' ),
+		Text::_( 'JUNE' ),
+		Text::_( 'JULY' ),
+		Text::_( 'AUGUST' ),
+		Text::_( 'SEPTEMBER' ),
+		Text::_( 'OCTOBER' ),
+		Text::_( 'NOVEMBER' ),
+		Text::_( 'DECEMBER' )
 		);
 
 		$cal->startDay = $params->get('cal_start_day'); //set the startday (this is the day that appears in the first column). Sunday = 0
@@ -129,8 +130,8 @@ class modJSMCalendarHelper
         }
         
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' timeZone<br><pre>'.print_r($timeZone,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' timeZone<br><pre>'.print_r($timeZone,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
         
 		//foreach ( $cal->matches as $row )
         foreach ( $cal::$matches as $row )
@@ -167,7 +168,7 @@ class modJSMCalendarHelper
 			else $counter[$createdDate]['count'] += 1; //$counter[$date] counts the number of articles in each day, to display it as a title in the link of the day
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' createdDate<br><pre>'.print_r($createdDate,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' createdDate<br><pre>'.print_r($createdDate,true).'</pre>'),'Notice');
         
 		foreach ($counter AS $createdDate => $val) 
         {
@@ -222,7 +223,7 @@ class modJSMCalendarHelper
         $dateformat = 'toFormat';
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
         
 		//$offset = 0; // $mainframe->getCfg('offset');
 		//$prefix = $params->get('custom_prefix');
@@ -236,7 +237,7 @@ class modJSMCalendarHelper
 		
         //$query = ($prefix != '') ? str_replace('#__', $prefix, $query) : $query;
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		$db->setQuery($query);
 		$row = $db->loadObjectList();
@@ -381,8 +382,8 @@ class JSMCalendar extends PHPCalendar
 
 		$date = $year . $month . $day;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'date <br><pre>'.print_r($date,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'linklist <br><pre>'.print_r(JSMCalendar::$linklist,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  'date <br><pre>'.print_r($date,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  'linklist <br><pre>'.print_r(JSMCalendar::$linklist,true).'</pre>'),'Notice');
         
 		if(isset(JSMCalendar::$linklist[$date]['link']))
         {
@@ -559,8 +560,8 @@ class JSMCalendar extends PHPCalendar
         // JInput object
         $jinput = $app->input;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' year<br><pre>'.print_r($year,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' month<br><pre>'.print_r($month,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' year<br><pre>'.print_r($year,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' month<br><pre>'.print_r($month,true).'</pre>'),'Notice');
         
 		$livescore = JSMCalendar::$params->get('livescore', '');
 		//$joomleague = JSMCalendar::$params->get('sportsmanagement', '');
@@ -633,7 +634,7 @@ class JSMCalendar extends PHPCalendar
         $dateoutformat = '%Y-%m-%d';
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
         
 		$language= JFactory::getLanguage(); //get the current language
 		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
@@ -683,7 +684,7 @@ class JSMCalendar extends PHPCalendar
             //$da = new DateTime($row['date'], new DateTimeZone($offset));
             
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' da<br><pre>'.print_r($da,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' da<br><pre>'.print_r($da,true).'</pre>'),'Notice');
             
 			if ($div !=$da->$dateformat($dateoutformat)) 
             {
@@ -735,10 +736,10 @@ class JSMCalendar extends PHPCalendar
 		$teamslist = array();
 		if(count(JSMCalendar::$teams) > 0 && JSMCalendar::$params->get('show_teamslist', 0) == 1) {
 			$teams = JSMCalendar::sortObject(JSMCalendar::$teamslist, 'asc', 'name');
-			$teamslist[] = HTMLHelper::_('select.option', 0, JText::_(JSMCalendar::$params->get('teamslist_option')));
+			$teamslist[] = HTMLHelper::_('select.option', 0, Text::_(JSMCalendar::$params->get('teamslist_option')));
 			foreach ($teams AS $id => $obj) 
             {
-				$teamslist[] = HTMLHelper::_('select.option', $obj->value, JText::_($obj->name));
+				$teamslist[] = HTMLHelper::_('select.option', $obj->value, Text::_($obj->name));
 			}
 		}
 		return $teamslist;

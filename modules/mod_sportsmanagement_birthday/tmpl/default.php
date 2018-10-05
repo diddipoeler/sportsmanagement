@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 switch ($mode) {
     // bootstrap mode template
@@ -60,7 +61,7 @@ switch ($mode) {
                                 break;
                         }
 
-                        $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                        $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                         $dayformat = htmlentities(trim($params->get('dayformat')));
                         $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                         $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -145,7 +146,7 @@ switch ($mode) {
                             break;
                     }
 
-                    $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                     $dayformat = htmlentities(trim($params->get('dayformat')));
                     $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -253,7 +254,7 @@ switch ($mode) {
                                 default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
                                     break;
                             }
-                            $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                            $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                             $dayformat = htmlentities(trim($params->get('dayformat')));
                             $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                             $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -275,7 +276,7 @@ switch ($mode) {
                 ?>
                 <tr>
                     <td class="birthday"><div class="bg-warning alert alert-warning">
-            <?php echo '' . str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim(JText::_($params->get('not_found_text'))))) . ''; ?>
+            <?php echo '' . str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim(Text::_($params->get('not_found_text'))))) . ''; ?>
                         </div>
                     </td>
                 </tr>

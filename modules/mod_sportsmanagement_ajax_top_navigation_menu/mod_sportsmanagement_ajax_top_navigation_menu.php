@@ -42,8 +42,7 @@ $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $postarray = $app->input->post->getArray();
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' postarray <br><pre>'.print_r($postarray ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput <br><pre>'.print_r($jinput ,true).'</pre>'),'');
+
 
 $mainframe = Factory::getApplication();
 /**
@@ -114,7 +113,7 @@ $document = Factory::getDocument();
 
 $queryvalues = $helper->getQueryValues();
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
+
 
 $assoc_id = 0;
 $subassoc_id = 0;  
@@ -197,14 +196,14 @@ $ende_if = true;
 if ( $_POST  )
 {
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
+
     
 $league_id = 0;   
 $project_id = 0;
 $team_id = 0;
 $division_id = 0;
     
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
+
 
 $project_id = $jinput->post->get('jlamtopproject', 0, 'INT');
 
@@ -213,7 +212,7 @@ if ( empty($project_id) )
 $project_id = $jinput->post->get('p', 0, 'INT');    
 }    
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+
   
 
 $assoc_id = $jinput->post->get('jlamtopassocid', 0, 'INT');
@@ -227,8 +226,6 @@ $team_id = $jinput->post->get('jlamtopteam', 0, 'INT');
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'');
 
 if ( !$country_id )
 {

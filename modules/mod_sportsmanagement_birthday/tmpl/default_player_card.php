@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 ?>
 
@@ -28,7 +29,7 @@ foreach ($persons AS $person) {
         default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
             break;
     }
-    $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+    $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
     $dayformat = htmlentities(trim($params->get('dayformat')));
     $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
     $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
@@ -102,7 +103,7 @@ $usefontawesome = $params_com->get('use_fontawesome');
         </div>
 
         <div class="position">
-            <?php echo JText::_($person['position_name']); ?> 
+            <?php echo Text::_($person['position_name']); ?> 
             <br />
             <?php echo $person['team_name']; ?></div>
         <div class="birthday-text">
@@ -112,9 +113,9 @@ $usefontawesome = $params_com->get('use_fontawesome');
         <div class="player-info">
             <a href="<?php echo $person_link; ?>" >
                 <?php if($usefontawesome){
-                    echo '<i aria-hidden class="fa fa-info-circle" title="'.JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
+                    echo '<i aria-hidden class="fa fa-info-circle" title="'.Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN').'"></i>';                
                 }?>
-                <?php echo JText::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
+                <?php echo Text::_('MOD_SPORTSMANAGEMENT_BIRTHDAY_PLAYER_CARD_INFO_BTN');?>
             </a>
         </div>
     </div>

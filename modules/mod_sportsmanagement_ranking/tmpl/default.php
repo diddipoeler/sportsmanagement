@@ -11,11 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 // check if any results returned
 $items = count($list['ranking']);
 if (!$items) {
-   echo '<p class="modjlgranking">' . JText::_('NO ITEMS') . '</p>';
+   echo '<p class="modjlgranking">' . Text::_('NO ITEMS') . '</p>';
    return;
 }
 
@@ -23,7 +24,7 @@ $columns     = explode(',', $params->get('columns', 'JL_PLAYED, JL_POINTS'));
 $column_names = explode(',', $params->get('column_names', 'MP, PTS'));
 
 if (count($columns) != count($column_names)) {
-	JError::raiseWarning(1, JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
+	JError::raiseWarning(1, Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_COUNT_MISMATCH'));
 	$columns     = array();
 	$column_name = array();
 }
@@ -47,11 +48,11 @@ $colors = $list['colors'];
 	<thead>
 		<tr class="sectiontableheader">
 			<?php if( $params->get('showRankColumn') == 1 ) { ?>
-			<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_RANK')?></th>
+			<th class="rank"><?php echo Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_RANK')?></th>
 			<?php } ?>
-			<th class="team"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_TEAM')?></th>
+			<th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_TEAM')?></th>
 			<?php foreach ($column_names as $col): ?>
-			<th class="rankcolval"><?php echo JText::_(trim($col)); ?></th>
+			<th class="rankcolval"><?php echo Text::_(trim($col)); ?></th>
 			<?php endforeach; ?>
 		</tr>
 	</thead>
@@ -154,7 +155,7 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $divisionid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
-	echo HTMLHelper::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
+	echo HTMLHelper::link($link,Text::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
 </div>
 </div>

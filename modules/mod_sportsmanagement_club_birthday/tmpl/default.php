@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 $refresh = $params->def("refresh");
 $minute = $params->def("minute");
@@ -114,7 +115,7 @@ default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($
         
 if ( $club->founded != '0000-00-00' )
 {
-$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+$birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
 $dayformat = htmlentities(trim($params->get('dayformat')));
 $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -124,7 +125,7 @@ $birthdaytext2 = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtot
 }
 else
 {
-$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+$birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
 $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
 }
             
@@ -222,7 +223,7 @@ default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($
         
 if ( $club->founded != '0000-00-00' )
 {
-$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+$birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
 $dayformat = htmlentities(trim($params->get('dayformat')));
 $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -232,7 +233,7 @@ $birthdaytext2 = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtot
 }
 else
 {
-$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+$birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
 $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
 }
             
@@ -323,7 +324,7 @@ $a++;
         
         if ( $club->founded != '0000-00-00' )
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
             $dayformat = htmlentities(trim($params->get('dayformat')));
 		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
 		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
@@ -333,7 +334,7 @@ $a++;
         }
         else
         {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+            $birthdaytext2 = htmlentities(trim(Text::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
             $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
         }
             

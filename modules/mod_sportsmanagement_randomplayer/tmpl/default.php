@@ -11,11 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 // check if any player returned
 $items = count($list['player']);
 if (!$items) {
-	echo '<p class="modjlgrandomplayer">' . JText::_('NO ITEMS') . '</p>';
+	echo '<p class="modjlgrandomplayer">' . Text::_('NO ITEMS') . '</p>';
 	return;
 }?>
 
@@ -41,13 +42,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 ?>
 
 <?php
-$picturetext = JText::_( 'MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PERSON_PICTURE' );
+$picturetext = Text::_( 'MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PERSON_PICTURE' );
 $text = sportsmanagementHelper::formatName(null, $person->firstname, 
 												$person->nickname, 
 												$person->lastname, 
 												$params->get("name_format"));
 	
-$imgTitle = JText::sprintf( $picturetext .' %1$s', $text);
+$imgTitle = Text::sprintf( $picturetext .' %1$s', $text);
 if ( isset($list['inprojectinfo']->picture) )
 {
     $picture = $list['inprojectinfo']->picture;
@@ -82,7 +83,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	}
 	else
 	{
-		echo JText::sprintf( '%1$s', $text);
+		echo Text::sprintf( '%1$s', $text);
 	}
 ?>
 </p>
@@ -110,7 +111,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 	}
 	else
 	{
-		echo JText::sprintf( '%1$s', $text);
+		echo Text::sprintf( '%1$s', $text);
 	}
 ?>
 </p>
@@ -119,7 +120,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 <p>
 <?php 
 	$positionName = $list['inprojectinfo']->position_name;
-	echo JText::_($positionName);?>
+	echo Text::_($positionName);?>
 </p>
 <?php endif; ?>
 </article>

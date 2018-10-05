@@ -39,6 +39,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 /**
  * modJSMStatistikRekordHelper
@@ -78,24 +79,24 @@ $query->from('#__sportsmanagement_match');
 $db->setQuery( $query );
 $anzahl  = $db->loadResult();
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_stat_paarungen<br><pre>'.print_r($params->get('jsm_stat_paarungen'),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsm_stat_paarungen<br><pre>'.print_r($params->get('jsm_stat_paarungen'),true).'</pre>'),'');
 
 $temp  = new stdClass();
 $temp->image  = 'modules/'.$module->module.'/images/matches.png';
 $temp->anzahl  = $anzahl;
 $temp->anzahlbis  = $params->get('jsm_stat_paarungen');
 $temp->anzahldiff  = $params->get('jsm_stat_paarungen') - $anzahl;
-$temp->text  = JText::sprintf( 'SHOW_MATCHES_DIFF',"<strong>".number_format($temp->anzahldiff,0, ",", ".")."</strong>","<strong>".number_format($temp->anzahlbis,0, ",", ".")."</strong>" );
+$temp->text  = Text::sprintf( 'SHOW_MATCHES_DIFF',"<strong>".number_format($temp->anzahldiff,0, ",", ".")."</strong>","<strong>".number_format($temp->anzahlbis,0, ",", ".")."</strong>" );
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
 
 $result[]  = $temp;
 $result  = array_merge($result);
 unset($temp);
 }
 		
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');		
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');		
 		 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 		

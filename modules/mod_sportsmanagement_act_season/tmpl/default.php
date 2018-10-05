@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
 
 $start = 1;
 foreach ( $list as $row )
@@ -44,7 +45,7 @@ echo JSMCountries::getCountryFlag( $row->country );
 ?>
 </span>
 <?PHP
-echo JText::_( $row->name  );
+echo Text::_( $row->name  );
 ?>
 </a>
 <!-- </button> -->

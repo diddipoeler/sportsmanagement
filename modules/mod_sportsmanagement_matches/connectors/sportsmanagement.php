@@ -221,8 +221,6 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         $db->setQuery($query);
         $fav = $db->loadObjectList();
 
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'fav <br><pre>'.print_r($fav,true).'</pre>'),'');
         
 		}
         

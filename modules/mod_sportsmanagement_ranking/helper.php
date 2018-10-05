@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * modJSMRankingHelper
@@ -35,7 +36,7 @@ class modJSMRankingHelper
 	public static function getData(&$params)
 	{
 		$app = JFactory::getApplication();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 		if (!class_exists('sportsmanagementModelRanking')) 
         {
@@ -59,8 +60,8 @@ class modJSMRankingHelper
 		$res   = $ranking->getRanking(null, null, $divisionid,$params->get( 'cfg_which_database' ));
 		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$params->get( 'cfg_which_database' ),__METHOD__);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
 
 		$list = array();
 		foreach ($res as $ptid => $t) 
@@ -115,7 +116,7 @@ class modJSMRankingHelper
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
     $matchestoupdate = $db->loadResult();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
     return $matchestoupdate;
             
     }

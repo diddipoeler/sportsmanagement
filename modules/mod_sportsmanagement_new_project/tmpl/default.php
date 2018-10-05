@@ -40,12 +40,13 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 jimport('joomla.html.pane');
 
 
 echo HTMLHelper::_('sliders.start' , 'neueligen', array('useCookie'=>1)   );
-echo HTMLHelper::_('sliders.panel', JText::_('Neue Ligen'), 'neueligen' );
+echo HTMLHelper::_('sliders.panel', Text::_('Neue Ligen'), 'neueligen' );
 ?>
 
 
@@ -110,7 +111,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = JRoute::_( 'index.php?' . $query, false );
-echo HTMLHelper::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
+echo HTMLHelper::link( $link, Text::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 $zeile++;
 }
@@ -131,7 +132,7 @@ echo '</tr>';
 
 //$pane =& JPane::getInstance('sliders', array('allowAllClose' => true, 'startOffset'=>2,  'startTransition' => true));
 //echo $pane->startPane("content-pane");
-//$title = JText::_('Es sind mehr neue Ligen vorhanden ! Bitte klick mich an !');
+//$title = Text::_('Es sind mehr neue Ligen vorhanden ! Bitte klick mich an !');
 //echo $pane->startPanel($title, 'jfcpanel-panel-'.'ligen');
 
 
@@ -178,7 +179,7 @@ $createroute = array(	"option" => "com_sportsmanagement",
               "r" => $row->roundcode );
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = JRoute::_( 'index.php?' . $query, false );
-echo HTMLHelper::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
+echo HTMLHelper::link( $link, Text::_( $row->name.' - ( '.$row->liganame.' )'  ) );
 echo '</td>';
 }
 $zeile++;

@@ -11,12 +11,14 @@
  
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Language\Text;
+
 $mainframe = JFactory::getApplication();
 $database = sportsmanagementHelper::getDBConnection();
 $players = array();
 $crew = array();
 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
 if (!function_exists('jsm_birthday_sort')) {
 
@@ -40,10 +42,10 @@ foreach ($array as $key => $row) {
 $sort_age = ( $arguments == '-' ) ? array_multisort($days_to_birthday, SORT_ASC, $age, SORT_ASC, $array )  : array_multisort($days_to_birthday, SORT_ASC, $age, SORT_DESC, $array );
 
 //array_multisort($days_to_birthday, SORT_ASC, $age, $sort_age, $array );     
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' array<br><pre>'.print_r($array,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' arguments <br><pre>'.print_r($arguments ,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' age<br><pre>'.print_r($age,true).'</pre>'),''); 
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' days_to_birthday<br><pre>'.print_r($days_to_birthday,true).'</pre>'),'');      
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' array<br><pre>'.print_r($array,true).'</pre>'),''); 
      
         return $array;
     }
@@ -55,7 +57,7 @@ $p = (is_array($usedp)) ? implode(",", array_map('intval', $usedp)) : (int) $use
 
 //$usedp = $params->get('teams','0');
 //$usedteams = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' usedteams<br><pre>'.print_r($usedteams,true).'</pre>'),'');
+//$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' usedteams<br><pre>'.print_r($usedteams,true).'</pre>'),'');
 
 $usedteams = "";
 
@@ -73,12 +75,12 @@ if ( $params->get('use_fav') ) {
 
     $database->setQuery($query);
 
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    //$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
     $temp = $database->loadResultArray();
 
     if (!$temp) {
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($database->getErrorMsg(),true).'</pre>'),'Error');
+        //$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($database->getErrorMsg(),true).'</pre>'),'Error');
     }
 
     if (!empty($temp)) {
@@ -171,7 +173,7 @@ if ( $params->get('use_which') <= 1 ) {
     //$query->setLimit($params->get('limit'));
     //$database->setQuery($query);
     //echo("<hr>".$database->getQuery($query));
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    //$mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
     $players = $database->loadAssocList();
 }
@@ -237,7 +239,7 @@ if ( $params->get('use_which') == 2 ) {
         $database->setQuery($query);
     }
 
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    
     //echo("<hr>".$database->getQuery($query));
     $crew = $database->loadAssocList();
 }

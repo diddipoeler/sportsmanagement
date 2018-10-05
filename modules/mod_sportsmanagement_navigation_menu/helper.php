@@ -40,6 +40,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 //jimport('joomla.application.component.model');
 //JModel::addIncludePath(JPATH_SITE.'/components/com_sportsmanagement/models', 'sportsmanagementModelAjax');
@@ -164,7 +165,7 @@ class modsportsmanagementNavigationMenuHelper
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('seasons_text'))));
 
         $query->select('s.id AS value, s.name AS text');
         $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_season AS s');
@@ -196,7 +197,7 @@ class modsportsmanagementNavigationMenuHelper
             'DIVISION_LEAGUE') {
             return false;
         }
-        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('divisions_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('divisions_text'))));
 
         $query->select('d.id AS value, d.name AS text');
         $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
@@ -227,7 +228,7 @@ class modsportsmanagementNavigationMenuHelper
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('leagues_text'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
 
         $query->select('l.id AS value, l.name AS text');
         $query->select('CONCAT_WS( \':\', l.id, l.alias ) AS league_slug');
@@ -253,7 +254,7 @@ class modsportsmanagementNavigationMenuHelper
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
 
-        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('text_project_dropdown'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_project_dropdown'))));
 
         $query->select('p.name AS text, s.name AS season_name, st.name as sports_type_name');
         $query->select('p.id AS value');
@@ -316,7 +317,7 @@ class modsportsmanagementNavigationMenuHelper
                 case 2:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
+                            Text::_($p->sports_type_name) . ')' : '';
                         $options[] = HTMLHelper::_('select.option', $p->value, $p->text . ' - ' . $p->
                             season_name . $stText);
                     }
@@ -324,7 +325,7 @@ class modsportsmanagementNavigationMenuHelper
                 case 1:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
+                            Text::_($p->sports_type_name) . ')' : '';
                         $options[] = HTMLHelper::_('select.option', $p->value, $p->season_name . ' - ' . $p->
                             text . $stText);
                     }
@@ -333,7 +334,7 @@ class modsportsmanagementNavigationMenuHelper
                 default:
                     foreach ($res as $p) {
                         $stText = ($this->getParam('project_include_sports_type_name', 0) == 1) ? ' (' .
-                            JText::_($p->sports_type_name) . ')' : '';
+                            Text::_($p->sports_type_name) . ')' : '';
                         $options[] = HTMLHelper::_('select.option', $p->value, $p->text . $stText);
                     }
             }
@@ -352,7 +353,7 @@ class modsportsmanagementNavigationMenuHelper
         if (!$this->_project_id) {
             return false;
         }
-        $options = array(HTMLHelper::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
+        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_teams_dropdown'))));
         $res = $this->getTeamsOptions();
         if ($res) {
             $options = array_merge($options, $res);

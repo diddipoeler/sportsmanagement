@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 $teamformat = $params->get('teamformat', 'name');
 $dateformat = $params->get('dateformat');
@@ -68,11 +69,11 @@ $routeparameter['p'] = $match->project_slug;
 $routeparameter['pgid'] = $playground_id ;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    
   
-$playgroundname= HTMLHelper::link($link, JText::sprintf( '%1$s', $playgroundname ) );
+$playgroundname= HTMLHelper::link($link, Text::sprintf( '%1$s', $playgroundname ) );
 }
 else
 {
-$playgroundname= JText::sprintf( '%1$s', $playgroundname);
+$playgroundname= Text::sprintf( '%1$s', $playgroundname);
 }
 $textdiv.= $playgroundname.'</div>';
 }
@@ -104,7 +105,7 @@ $textdiv.= '</div>';
     
 $textdiv .= '<div class="jlplplanedate">';
 $textdiv .= HTMLHelper::date( $match->match_date,$dateformat );
-$textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
+$textdiv .= " ".Text::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
 list($date,$time) = explode(" ",$match->match_date);
 $time = strftime("%H:%M",strtotime($time));
 $textdiv .= $time;

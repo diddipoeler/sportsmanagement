@@ -38,10 +38,11 @@
 */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 ?>
 
-<div id="turtushout-warning"><?php echo JText::_( '!Warning! JavaScript must be enabled for proper operation.' ); ?></div>
+<div id="turtushout-warning"><?php echo Text::_( '!Warning! JavaScript must be enabled for proper operation.' ); ?></div>
 <?php
 
 $display_add_box = 0;
@@ -58,7 +59,7 @@ $display_add_box = 0;
 					}
 				} else {
 					if ($display_username) { ?>
-						<label><?php echo JText::_('Name') ?></label>
+						<label><?php echo Text::_('Name') ?></label>
 						<input class="inputbox" type="text" name="created_by_alias" size="<?php echo $size;?>"><br/>
 			<?php
 					}
@@ -66,12 +67,12 @@ $display_add_box = 0;
 			?>
 
 			<?php if ($display_title) { ?>
-				<label><?php echo JText::_('Title') ?></label>
+				<label><?php echo Text::_('Title') ?></label>
 				<input class="inputbox" type="text" name="title" size="<?php echo $size;?>"><br/>
 			<?php } ?>
-				<label><?php echo JText::_('Text') ?></label>
+				<label><?php echo Text::_('Text') ?></label>
 				<textarea class="inputbox" name="text" rows="<?php echo $rows;?>" cols="<?php echo $cols; ?>"></textarea>
-			<input type="submit" name="Submit" class="button" value="<?php echo JText::_('Submit') ?>" />
+			<input type="submit" name="Submit" class="button" value="<?php echo Text::_('Submit') ?>" />
 
 		</form>
 

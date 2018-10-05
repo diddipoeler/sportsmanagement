@@ -75,7 +75,7 @@ class modTurtushoutHelper
     $query->where('match_id = '.$row->match_id);
     $query->order('event_time DESC');
 
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    
     
     $db->setQuery($query);
 	$rows = $db->loadObjectList();
@@ -168,7 +168,6 @@ class modTurtushoutHelper
         //$query->where("( jm.match_date >= '".$von."' AND jm.match_date <= '".$bis."' )");
         $query->where('jm.round_id IN ('.$round_ids.')');   
    
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();

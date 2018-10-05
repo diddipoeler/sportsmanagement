@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -56,7 +57,7 @@ $app = JFactory::getApplication();
 $document = JFactory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
     DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
@@ -165,7 +166,7 @@ switch ($mode) {
                     default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));
                         break;
                 }
-                $birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
+                $birthdaytext = htmlentities(trim(Text::_($params->get('birthdaytext'))), ENT_COMPAT, 'UTF-8');
                 $dayformat = htmlentities(trim($params->get('dayformat')));
                 $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
                 $birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);

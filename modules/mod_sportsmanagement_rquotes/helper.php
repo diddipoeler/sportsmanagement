@@ -12,7 +12,7 @@
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
-
+use Joomla\CMS\Language\Text;
 
 /**
  * modRquotesHelper
@@ -51,9 +51,9 @@ static function getRandomRquote($category,$num_of_random, &$params)
     $catid = 0;
     $row = array();
     $app = JFactory::getApplication();
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
     
         if ( $params->get('cfg_which_database') )
         {
@@ -74,7 +74,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
 
         
 //		$x = count($category);
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' x<br><pre>'.print_r($x,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' x<br><pre>'.print_r($x,true).'</pre>'),'Notice');
 	
 	if( $x == 1) // get $catid when one category is selected 	
 		{
@@ -105,7 +105,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
         	
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -181,7 +181,7 @@ static function getMultyRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 				
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -237,8 +237,8 @@ static function getSequentialRquote($category, &$params)
        $row = NULL;
        $catid = 0;
        
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
 
 
 	// by PD, not yet implemented
@@ -270,7 +270,7 @@ static function getSequentialRquote($category, &$params)
 		}	
 		elseif( $x > 1)
 		{ 
-		  echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
+		  echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_SAVE_DISPLAY_INFORMATION_ONE');
           }
 //$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
 $query = $db->getQuery(true);
@@ -287,7 +287,7 @@ $query = $db->getQuery(true);
         } 
 	$db->setQuery( $query );
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 	$rows = $db->loadObjectList();
 

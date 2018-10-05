@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 if ( !defined('DS') )
 {
@@ -41,7 +42,7 @@ if ( !class_exists('sportsmanagementHelper') )
 // get helper
 require_once( dirname(__FILE__) . DS . 'helper.php' );
 $parameter   = $params->get('sportstypes');
-$sportstypes = JText::_($params->get('sportstypes'));
+$sportstypes = Text::_($params->get('sportstypes'));
 $data        = modJSMSportsHelper::getData($params);
 
 $document = JFactory::getDocument();

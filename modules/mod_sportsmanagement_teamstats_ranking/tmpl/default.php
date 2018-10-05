@@ -14,13 +14,14 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 /**
  * check if any results returned
  */
 $items = count($list['ranking']);
 if (!$items) {
-   echo '<p class="bg-danger">' . JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_NO_ITEMS') . '</p>';
+   echo '<p class="bg-danger">' . Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_NO_ITEMS') . '</p>';
    return;
 }
 
@@ -39,9 +40,9 @@ $teamnametype = $params->get('teamnametype', 'short_name');
 <table class="<?php echo $params->get('table_class','table'); ?>">
 	<thead>
 		<tr class="sectiontableheader">
-			<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_RANK')?></th>
+			<th class="rank"><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_RANK')?></th>
 			<th class="teamlogo"></th>
-			<th class="team"><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_TEAM')?></th>
+			<th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_TEAM')?></th>
 			<th class="td_c">
 			<?php
 			if ($params->get('show_event_icon', 1))
@@ -50,7 +51,7 @@ $teamnametype = $params->get('teamnametype', 'short_name');
 			}
 			else
 			{
-				echo JText::_($list['stat']->name);
+				echo Text::_($list['stat']->name);
 			}
 			?>
 			</th>

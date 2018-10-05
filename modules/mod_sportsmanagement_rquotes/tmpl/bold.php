@@ -37,8 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
  //no direct access
- defined('_JEXEC') or die('Restricted access');  
-
+defined('_JEXEC') or die('Restricted access');  
+use Joomla\CMS\Language\Text;
 
 //$quotemarks= $params->get('quotemarks');
 if ( $list )
@@ -53,5 +53,5 @@ foreach ($list as $rquote)
 }
 else
 {
-    echo JText::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
+    echo Text::_('MOD_SPORTSMANAGEMENT_RQUOTES_NUMBER_RANDOM_QUOTES_ERROR');
 }

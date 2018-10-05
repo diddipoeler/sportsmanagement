@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.tooltip');
 ?>
@@ -94,7 +95,7 @@ $options_slider = array(
 
 
 echo HTMLHelper::_('sliders.start','menueslidername', $options_slider );
-echo HTMLHelper::_('sliders.panel', JText::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU'), 'menue-params');
+echo HTMLHelper::_('sliders.panel', Text::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU'), 'menue-params');
 
 // tabs anzeigen
 $idxTab = 100;
@@ -104,7 +105,7 @@ foreach ( $tab_points as $key => $value  )
 {
 $fed_array = strtoupper($value);
 
-echo HTMLHelper::_('tabs.panel', JText::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
+echo HTMLHelper::_('tabs.panel', Text::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
 ?>
 
 <div id="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>">

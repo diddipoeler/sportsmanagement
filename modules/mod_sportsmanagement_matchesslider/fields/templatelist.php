@@ -11,6 +11,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper; 
+use Joomla\CMS\Language\Text;
  
 jimport('joomla.form.formfield');
  
@@ -60,12 +61,12 @@ class JFormFieldTemplatelist extends JFormField
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 		if (!$this->element['hide_none'])
 		{
-			array_unshift($options, HTMLHelper::_('select.option', '-1', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
+			array_unshift($options, HTMLHelper::_('select.option', '-1', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE')));
 		}
 		
 		if (!$this->element['hide_default'])
 		{
-			array_unshift($options, HTMLHelper::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
+			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
 		}
 		
 		$doc = JFactory::getDocument();
@@ -109,7 +110,7 @@ class JFormFieldTemplatelist extends JFormField
 						   .'/modules/mod_sportsmanagement_matches/tmpl/\'+this.options[this.selectedIndex].value+\'/template.png\';"', 
 						   'value', 'text', $this->value, $this->id)
 				. '<br /><br />'
-				. JText::_($this->element['details'])
+				. Text::_($this->element['details'])
 				. '</td>'
 				. '</tr>'
 				. '<tr>'
