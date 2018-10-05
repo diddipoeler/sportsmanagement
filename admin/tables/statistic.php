@@ -12,10 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableStatistic
@@ -26,7 +23,7 @@ jimport('joomla.filter.input');
  * @version $Id$
  * @access public
  */
-class sportsmanagementTableStatistic extends JTable
+class sportsmanagementTableStatistic extends JSMTable
 {
 	/**
 	 * Constructor
@@ -61,10 +58,10 @@ class sportsmanagementTableStatistic extends JTable
 		// setting alias
 		if ( empty( $this->alias ) )
 		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe( $this->name );
 		}
 		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 		
 		return true;

@@ -11,10 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
 
 /**
  * sportsmanagementTableseasonteamperson
@@ -25,7 +21,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableseasonteamperson extends JTable
+class sportsmanagementTableseasonteamperson extends JSMTable
 {
 	/**
 	 * Constructor
@@ -38,14 +34,6 @@ class sportsmanagementTableseasonteamperson extends JTable
 	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id', 'id', $db );
 	}
-
-	
-	
-	
-    
-    
-    
-    
 
 }
 ?>
