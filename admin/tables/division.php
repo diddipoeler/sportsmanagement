@@ -11,10 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableDivision
@@ -25,7 +22,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableDivision extends JTable
+class sportsmanagementTableDivision extends JSMTable
 {
 	/**
 	 * Constructor
@@ -48,7 +45,7 @@ class sportsmanagementTableDivision extends JTable
 	function check()
 	{
 		// setting alias
-        $this->alias = JFilterOutput::stringURLSafe( $this->name );
+        $this->alias = FilterOutput::stringURLSafe( $this->name );
 		
 		//should check name unicity
 		return true;
