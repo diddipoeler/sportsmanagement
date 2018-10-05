@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if ( !defined('DS') )
 {
@@ -58,15 +59,15 @@ require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php'
  */
 require_once( dirname(__FILE__) . DS . 'helper.php' );
 
-$document = JFactory::getDocument();
-$mainframe = JFactory::getApplication();
+$document = Factory::getDocument();
+$mainframe = Factory::getApplication();
 $config    = array();
 
 /**
  * sprachdatei aus dem frontend laden
  */
-$langtag = JFactory::getLanguage();
-$lang = JFactory::getLanguage();
+$langtag = Factory::getLanguage();
+$lang = Factory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_SITE;
 $language_tag = $langtag->getTag();
@@ -117,7 +118,7 @@ $configavatar         = sportsmanagementModelPrediction::getPredictionTemplateCo
 $predictionGame[]     = sportsmanagementModelPrediction::getPredictionGame();
 $predictionMember[]   = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 $predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS();
-$actJoomlaUser[]      = JFactory::getUser();
+$actJoomlaUser[]      = Factory::getUser();
 $roundID              = sportsmanagementModelPrediction::$roundID;
 
 $type_array    = array();

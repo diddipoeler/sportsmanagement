@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMRandomplayerHelper
@@ -33,7 +34,7 @@ class modJSMRandomplayerHelper
 	 */
 	public static function getData(&$params)
 	{
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
         $usedp = $params->get('p');
 		$usedtid = $params->get('teams', '0');
 		$season_id = (int) $params->get('s', '0');

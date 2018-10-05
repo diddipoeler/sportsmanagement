@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * modTurtushoutHelper
@@ -61,7 +62,7 @@ class modTurtushoutHelper
     {
     $db	= sportsmanagementHelper::getDBConnection(); 
     $query = $db->getQuery(true);
-    $mainframe = JFactory::getApplication();  
+    $mainframe = Factory::getApplication();  
     $matches = array();
     
     foreach ( $list as $row )    
@@ -109,7 +110,7 @@ class modTurtushoutHelper
         
 		$db		= sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        $mainframe = JFactory::getApplication();
+        $mainframe = Factory::getApplication();
         
         $query->clear();
         $query->select('r.id');

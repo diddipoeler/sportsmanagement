@@ -41,7 +41,9 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$database = JFactory::getDBO();
+use Joomla\CMS\Factory;
+
+$database = Factory::getDBO();
 
 
 		

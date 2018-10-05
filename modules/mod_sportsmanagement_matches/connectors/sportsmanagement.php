@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * MatchesSportsmanagementConnector
@@ -89,8 +90,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
      */
     static function getCountGames($projectid,$ishd_update_hour)
     {
-    $db = JFactory::getDBO();
-    $app = JFactory::getApplication();
+    $db = Factory::getDBO();
+    $app = Factory::getApplication();
     $query = $db->getQuery(true);      
     $date = time();    // aktuelles Datum     
     $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
@@ -129,11 +130,11 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 	public function getMatches() 
     {
 		 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);

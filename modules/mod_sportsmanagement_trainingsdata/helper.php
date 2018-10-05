@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * modJSMTrainingsData
@@ -32,7 +33,7 @@ class modJSMTrainingsData
      */
     public static function getData($params)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         // Get a db connection.

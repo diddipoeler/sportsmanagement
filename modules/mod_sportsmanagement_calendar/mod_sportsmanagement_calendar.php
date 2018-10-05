@@ -12,8 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 if (! defined('DS'))
 {
@@ -46,7 +47,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('c
 
 
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
         
@@ -69,7 +70,7 @@ $startDate= new JDate($params->get('cal_start_date'));
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 //$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');    
-$config = JFactory::getConfig();
+$config = Factory::getConfig();
 $offset = $config->get('offset');    
 $year = $jinput->getVar('year', $startDate->toFormat('Y'));
 $month  = $jinput->getVar('month', $startDate->toFormat('m'));
@@ -77,7 +78,7 @@ $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('d'));
 }
 else
 {    
-$config = JFactory::getConfig();
+$config = Factory::getConfig();
 $offset = $config->get('offset'); 
 $year = $jinput->getVar('year', $startDate->toFormat('%Y'));
 $month  = $jinput->getVar('month', $startDate->toFormat('%m'));
@@ -87,7 +88,7 @@ $day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
 }
 
 $helper = new modJSMCalendarHelper;
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 $lightbox = $params->get('lightbox', 1);
 
 

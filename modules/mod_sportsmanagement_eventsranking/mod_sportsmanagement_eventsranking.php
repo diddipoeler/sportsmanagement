@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -56,18 +57,18 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',JComponentHelper::getParams
 /**
  * die übersetzungen laden
  */
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 // Include the syndicate functions only once
 require_once dirname(__FILE__) . '/helper.php';
 
 $list = modSMEventsrankingHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 //add css file
 $document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 

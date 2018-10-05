@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * modSMEventsrankingHelper
@@ -34,7 +35,7 @@ class modSMEventsrankingHelper
 	function getData(&$params)
 	{ 
 	  
-       $app = JFactory::getApplication();
+       $app = Factory::getApplication();
 
 		if (!class_exists('sportsmanagementModelEventsRanking')) 
         {
@@ -124,8 +125,8 @@ class modSMEventsrankingHelper
 	{
 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database', 0);
-$routeparameter['s'] = JFactory::getApplication()->input->getInt('s', 0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
 $routeparameter['p'] = $project->slug;
                
 		switch ($params->get('teamlink'))

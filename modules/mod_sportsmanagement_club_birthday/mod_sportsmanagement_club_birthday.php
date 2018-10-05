@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -67,8 +68,8 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
 require_once(dirname(__FILE__).DS.'helper.php');
 
 // Reference global application object
-$app = JFactory::getApplication();
-$document = JFactory::getDocument();
+$app = Factory::getApplication();
+$document = Factory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))

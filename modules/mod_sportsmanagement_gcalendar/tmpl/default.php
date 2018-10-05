@@ -21,10 +21,11 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 jsmGCalendarUtil::loadLibrary(array('jquery' => true, 'fullcalendar' => true));
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css');
 
 $color = $params->get('event_color', '135CAE');

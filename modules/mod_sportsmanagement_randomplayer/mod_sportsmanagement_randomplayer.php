@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -84,7 +85,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $list = modJSMRandomplayerHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 /**
  * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr  
  * //add css file

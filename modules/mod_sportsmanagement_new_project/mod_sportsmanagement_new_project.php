@@ -14,6 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -42,7 +43,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('c
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 $new_project_article   = $params->get( 'new_project_article', 0 );
 $mycategory      = $params->get( 'mycategory', 0 );

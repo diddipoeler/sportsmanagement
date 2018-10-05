@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -50,7 +51,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 /*
 // No conflict
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addScript(Uri::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
@@ -59,7 +60,7 @@ $document->addScript(Uri::root(true).'/administrator/components/com_sportsmanage
 //$jquery_ui_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuiversionfrontend',0);
 //$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addScript(Uri::base().'modules/'.$module->module.'/js/turtushout.js');
 
 $action = JRequest::getCmd('action');
@@ -83,7 +84,7 @@ $rows	            = $params->get( 'rows' );
 $use_css            = $params->get( 'use_css', 'simple' );
 $class	            = $params->get( 'moduleclass_sfx', '' );
 
-$user		     = JFactory::getUser();
+$user		     = Factory::getUser();
 $userId		     = (int) $user->get('id');
 $name		     = $user->get('name');
 $display_add_box = ($userId || $allow_unregistered);
@@ -172,11 +173,11 @@ $list_html .=  "<tr>" ;
 $list_html .= "<td colspan=\"\" align=\"middle\" >" . "aktuelle Zeit" . "</td>";
 	
 $date = new DateTime();
-$config = JFactory::getConfig();
+$config = Factory::getConfig();
 $date->setTimezone(new DateTimeZone($config->get('offset')));	
 $list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";	
 //$list_html .= "<td colspan=\"8\" align=\"left\" >" . date("H:i:s",time()). "</td>";
-//$list_html .= "<td colspan=\"8\" align=\"left\" >" . JFactory::getDate()->format('%H:%M'). "</td>";	
+//$list_html .= "<td colspan=\"8\" align=\"left\" >" . Factory::getDate()->format('%H:%M'). "</td>";	
 $list_html .= "</tr>" ;
 $list_html .=  "<tr>" ;
 

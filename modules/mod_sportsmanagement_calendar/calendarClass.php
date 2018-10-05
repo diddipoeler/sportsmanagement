@@ -20,6 +20,7 @@
 // Email: davidw@cascade.org.uk
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 class PHPCalendar
 {
@@ -98,7 +99,7 @@ class PHPCalendar
     function getMonthHTML($m, $y, $showYear = 1)
     {
       
-        $doc = JFactory::getDocument();  
+        $doc = Factory::getDocument();  
         $s = "";
         
         $a = $this->adjustDate($m, $y);
@@ -129,7 +130,7 @@ class PHPCalendar
           $nextYear = "";
         }
         $todaylink='';
-        $language= JFactory::getLanguage(); //get the current language
+        $language= Factory::getLanguage(); //get the current language
         $language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
         $header = $monthName . (($showYear > 0) ? " " . $year : "");
         $s .= '<table id="jlctableCalendar-'.$this->modid.'" class="jlcCalendar">'."\n";

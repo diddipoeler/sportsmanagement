@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementTeamPlayersHelper
@@ -36,12 +37,12 @@ class modSportsmanagementTeamPlayersHelper
 	 */
 	public static function getData(&$params)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $mainframe = Factory::getApplication();
        
 		$p = (int) $params->get('p');
 		$t = (int) $params->get('team');
         
-		$db  = JFactory::getDBO();
+		$db  = Factory::getDBO();
         $query = $db->getQuery(true);
         
         $query->select('tt.id AS id, t.name AS team_name, s.id as season_id');

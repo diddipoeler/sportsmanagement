@@ -40,6 +40,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMPlaygroundTicker
@@ -61,7 +62,7 @@ class modJSMPlaygroundTicker
      */
     public static function getData($params)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $cfg_which_database = JRequest::getInt('cfg_which_database', 0);

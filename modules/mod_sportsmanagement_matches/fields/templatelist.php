@@ -14,6 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 jimport('joomla.form.formfield');
  
@@ -45,7 +46,7 @@ class JFormFieldTemplatelist extends JFormField
 			$options[] = HTMLHelper::_('select.option', $folder, $folder);
 		}
 		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 		if (!$this->element['hide_none'])
 		{
@@ -57,7 +58,7 @@ class JFormFieldTemplatelist extends JFormField
 			array_unshift($options, HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_USE_DEFAULT')));
 		}
 		
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		$doc->addScriptDeclaration('
 			function getPosition(element)
 			{
@@ -87,7 +88,7 @@ class JFormFieldTemplatelist extends JFormField
 			}
 			');
 		
-		$mainframe = JFactory::getApplication();
+		$mainframe = Factory::getApplication();
 
 		$select = '<table>'
 				. '<tr>'

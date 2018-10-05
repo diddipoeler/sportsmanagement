@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -55,7 +56,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $list = modSportsmanagementPlaygroundplanHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * add css file

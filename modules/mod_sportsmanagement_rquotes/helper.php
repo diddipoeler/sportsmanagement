@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modRquotesHelper
@@ -50,7 +51,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
     $x = 0;
     $catid = 0;
     $row = array();
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
@@ -136,7 +137,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
  */
 static function getMultyRandomRquote($category,$num_of_random, &$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $x = 0;
        $catid = 0;
        $qrows = NULL;
@@ -232,7 +233,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
  */
 static function getSequentialRquote($category, &$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $x = 0;
        $row = NULL;
        $catid = 0;

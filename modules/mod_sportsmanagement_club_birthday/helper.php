@@ -12,6 +12,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+
 /**
 * welche joomla version ?
 */
@@ -84,7 +86,7 @@ public static function jsm_birthday_sort ($array, $sort)
  */
 public static function getClubs($limit,$season_ids)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 $birthdaytext = '';
 $database = sportsmanagementHelper::getDBConnection();
 /**
@@ -128,7 +130,7 @@ try{
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
     $database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return false;
 }

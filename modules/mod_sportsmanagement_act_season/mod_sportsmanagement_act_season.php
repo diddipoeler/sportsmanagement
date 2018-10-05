@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -56,12 +57,12 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('c
  */
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * die übersetzungen der länder laden
  */
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 $season_ids = JComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );

@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 //jimport( 'joomla.utilities.arrayhelper' );
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementAjaxTopNavigationMenuHelper
@@ -75,7 +76,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function __construct($params)
 	{
-		$this->_app = JFactory::getApplication();
+		$this->_app = Factory::getApplication();
         $this->_params = $params;
 		$this->_db = sportsmanagementHelper::getDBConnection();
         $this->_query = $this->_db->getQuery(true);
@@ -99,7 +100,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
    */
   public function getFederations()
 {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -125,7 +126,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
    */
   public function getCountrySubSubAssocSelect($assoc_id)
 {
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 
@@ -159,7 +160,7 @@ $query->order('s.name');
  */
 public function getCountrySubAssocSelect($assoc_id)
 {
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         $options = '';
@@ -195,7 +196,7 @@ $query->order('s.name');
 	 */
 	public function getCountryAssocSelect($country)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         $options = '';
@@ -232,7 +233,7 @@ $query->order('s.name');
 	 */
 	public function getFederationSelect($federation='',$federationid=0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 	$options = array();
@@ -282,7 +283,7 @@ if ($res)
 	 */
 	public function getCountryFederation($country_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        $result = FALSE;
        if ( $country_id )
        {
@@ -299,11 +300,11 @@ if ($res)
   public function getQueryValues()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
       
-       $uri = JFactory::getURI();
+       $uri = Factory::getURI();
        
        $varAdd_array = array();
        
@@ -399,7 +400,7 @@ if ($res)
    */
   public function getUserName()
 {
-$user = JFactory::getUser();
+$user = Factory::getUser();
 $this->_user_name = $user->username;
 return $user->username ;
 }
@@ -427,7 +428,7 @@ return $user->username ;
 	 */
 	public function getAssocParentId($assoc_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
        if ( $assoc_id )
@@ -463,7 +464,7 @@ return $user->username ;
 	 */
 	public function getLeagueAssocId()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
     
@@ -527,7 +528,7 @@ return $user->username ;
    */
   public function getClubId()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -568,7 +569,7 @@ return $user->username ;
 	 */
 	public function getFavTeams($project_id)
 	{
-  $app = JFactory::getApplication();
+  $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -610,7 +611,7 @@ return $user->username ;
 	 */
 	public function getTeamId($project_id,$club_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -648,7 +649,7 @@ return $user->username ;
 	 */
 	public function getSeasonSelect()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -675,7 +676,7 @@ return $user->username ;
 	 */
 	public function getDivisionSelect($project_id)
 	{		
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 $options = array();
@@ -703,7 +704,7 @@ $options = array();
 	 */
 	public function getAssocLeagueSelect($country_id,$associd)
 	{		
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -738,7 +739,7 @@ $app = JFactory::getApplication();
      */
     public function getProjectCountry($project_id)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         $query->select('l.country');
@@ -770,7 +771,7 @@ $app = JFactory::getApplication();
 	 */
 	public function getLeagueSelect($season)
 	{		
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -806,7 +807,7 @@ $app = JFactory::getApplication();
 	 */
 	public function getProjectSelect($league_id)
 	{
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -858,7 +859,7 @@ $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text
 	 */
 	protected function getTeamsOptions($project_id)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
@@ -893,7 +894,7 @@ $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text
 	 */
 	public function getProject($league_id = 0)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * SportsmanagementConnector
@@ -24,7 +25,7 @@ use Joomla\CMS\Language\Text;
  */
 class SportsmanagementConnector extends JSMCalendar
 {
-	//var $database = JFactory::getDbo();
+	//var $database = Factory::getDbo();
 	static $xparams;
     static $params;
 	static $prefix;
@@ -72,7 +73,7 @@ class SportsmanagementConnector extends JSMCalendar
 	static function getFavs()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -96,7 +97,7 @@ class SportsmanagementConnector extends JSMCalendar
 		}
 
 		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
-		//$database = JFactory::getDbo();
+		//$database = Factory::getDbo();
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
@@ -123,7 +124,7 @@ class SportsmanagementConnector extends JSMCalendar
 	static function getBirthdays ( $caldates, $ordering='ASC' )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -411,7 +412,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
     static function getMatches($caldates, $ordering='ASC')
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -577,7 +578,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 	static function getTeamsFromMatches( &$games )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -638,14 +639,14 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 	function getGlobalTeams ()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
 		$teamnames = SportsmanagementConnector::$xparams->get('team_names', 'short_name');
-		//$database = JFactory::getDbo();
+		//$database = Factory::getDbo();
 		$query = "SELECT t.".$teamnames." AS name, t.id AS value
     FROM #__joomleague_teams t, #__joomleague p
     WHERE t.id IN(p.fav_team)";

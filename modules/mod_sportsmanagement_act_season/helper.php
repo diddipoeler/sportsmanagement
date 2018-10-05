@@ -11,7 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
 /**
@@ -35,10 +35,10 @@ class modJSMActSeasonHelper
 	public static function getData($season_ids)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-    $db = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
+    $db = Factory::getDBO();
     $query = $db->getQuery(true);
         $result = array();
     

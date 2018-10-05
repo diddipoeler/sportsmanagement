@@ -43,7 +43,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 
 //$css = Uri::base().'modules/mod_rquotes/assets/rquote.css';
-// $document =& JFactory::getDocument();
+
 // $document->addStyleSheet($css); 
 
 if ( $list )

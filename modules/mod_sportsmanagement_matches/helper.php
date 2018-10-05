@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modMatchesHelper
@@ -36,7 +37,7 @@ class modMatchesSportsmanagementHelper {
 	public function __construct(& $params, $id, $match_id = 0) {
 		$this->module_id = $id;
 		$this->params = $params;
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$itemid = $this->params->get('Itemid');
 		$this->itemid = (!empty ($itemid)) ? '&amp;Itemid=' . $itemid : '';
 		$this->id = $match_id;
@@ -501,7 +502,7 @@ class modMatchesSportsmanagementHelper {
 	public function formatMatches(& $matches) 
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' iconpath<br><pre>'.print_r($this->iconpath,true).'</pre>'),'Notice');
         
         
@@ -628,7 +629,7 @@ class modMatchesSportsmanagementHelper {
 	 */
 	public function createAjaxMenu(& $row, $cnt) 
     {
-        $app = JFactory::getApplication();  
+        $app = Factory::getApplication();  
 		if ($this->params->get('next_last', 0) == 0) {
 			$row->ajax = false;
 			return false;

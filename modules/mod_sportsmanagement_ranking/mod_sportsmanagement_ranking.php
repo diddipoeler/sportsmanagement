@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -64,7 +65,7 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 
 
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
@@ -72,7 +73,7 @@ $option = $jinput->getCmd('option');
 /**
  * die übersetzungen laden
  */
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 switch ($option)
@@ -107,7 +108,7 @@ $actionsModel->getmatches($projectid);
 
 $list = modJSMRankingHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 //add css file
 $document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 

@@ -12,9 +12,11 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('behavior.tooltip');
 
-$mainframe = JFactory::getApplication();
+$mainframe = Factory::getApplication();
 
 ?>
 <?php

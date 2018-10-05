@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -61,7 +62,7 @@ $trainingsdata = modJSMTrainingsData::getData($params);
  */
 if ( !defined('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY') )
 {
-$langtag = JFactory::getLanguage();
+$langtag = Factory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_SITE;
 $language_tag = $langtag->getTag();
@@ -79,7 +80,7 @@ $daysOfWeek = array(
 				7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
 			);
             
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * add css file

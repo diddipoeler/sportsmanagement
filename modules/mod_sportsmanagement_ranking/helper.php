@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMRankingHelper
@@ -35,7 +36,7 @@ class modJSMRankingHelper
 	 */
 	public static function getData(&$params)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 		if (!class_exists('sportsmanagementModelRanking')) 
@@ -100,8 +101,8 @@ class modJSMRankingHelper
      */
     static function getCountGames($projectid,$ishd_update_hour)
     {
-    $db = JFactory::getDBO();
-    $app = JFactory::getApplication();
+    $db = Factory::getDBO();
+    $app = Factory::getApplication();
     $query = $db->getQuery(true);      
     $date = time();    // aktuelles Datum     
     $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 

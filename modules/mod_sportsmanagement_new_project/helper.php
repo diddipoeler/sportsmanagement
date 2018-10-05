@@ -39,6 +39,8 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
+
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
@@ -64,10 +66,10 @@ class modJSMNewProjectHelper
 	public static function getData($new_project_article,$mycategory)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-    $db = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
+    $db = Factory::getDBO();
     $query = $db->getQuery(true);
         $result = array();
     
@@ -172,7 +174,7 @@ $profile->introtext = '<p><a href="'.$link.'">
 $profile->publish_up = $date->toSql();
 
 
-$resultinsert = JFactory::getDbo()->insertObject('#__content', $profile);  
+$resultinsert = Factory::getDbo()->insertObject('#__content', $profile);  
 
 if ( $resultinsert )
 {
@@ -180,7 +182,7 @@ if ( $resultinsert )
 $profile = new stdClass();
 $profile->content_id = $db->insertid();
 $profile->ordering = $db->insertid();
-$resultfrontpage = JFactory::getDbo()->insertObject('#__content_frontpage', $profile);    
+$resultfrontpage = Factory::getDbo()->insertObject('#__content_frontpage', $profile);    
 }
   
 }

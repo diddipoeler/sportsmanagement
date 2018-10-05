@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -45,7 +46,7 @@ if (!class_exists('sportsmanagementHelper')) {
 /**
  * die übersetzungen laden
  */
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
   
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
@@ -53,8 +54,8 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once(dirname(__FILE__) . DS . 'helper.php');
 
 // Reference global application object
-$app = JFactory::getApplication();
-$document = JFactory::getDocument();
+$app = Factory::getApplication();
+$document = Factory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');

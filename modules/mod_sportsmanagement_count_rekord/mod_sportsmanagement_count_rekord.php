@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -41,7 +42,7 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
  */
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$document  = JFactory::getDocument();
+$document  = Factory::getDocument();
 
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">

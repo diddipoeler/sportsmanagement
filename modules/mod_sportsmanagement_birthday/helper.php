@@ -12,8 +12,9 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-$mainframe = JFactory::getApplication();
+$mainframe = Factory::getApplication();
 $database = sportsmanagementHelper::getDBConnection();
 $players = array();
 $crew = array();
@@ -31,7 +32,7 @@ if (!function_exists('jsm_birthday_sort')) {
      * @return
      */
     function jsm_birthday_sort($array, $arguments = '-', $keys = true) {
-     $mainframe = JFactory::getApplication(); 
+     $mainframe = Factory::getApplication(); 
 
 // Hole eine Liste von Spalten
 foreach ($array as $key => $row) {

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -40,7 +41,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',JComponentHelper::getParams( 'com_sportsman
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
 HTMLHelper::_('behavior.framework');
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 //add css file
 $document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 $document->addScript(Uri::base().'modules'.DS.$module->module.DS.'js'.DS.$module->module.'.js');

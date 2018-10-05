@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -92,7 +93,7 @@ $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperr
 /**
  * die übersetzungen laden
  */
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
 
@@ -106,7 +107,7 @@ else
 HTMLHelper::_('behavior.mootools');
 }
 
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 //$doc->addStyleSheet(Uri::base() . 'modules'.DS.$module->module.DS.'css/style.css');
 // Add styles
 $style = '

@@ -40,6 +40,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMStatistikRekordHelper
@@ -63,7 +64,7 @@ class modJSMStatistikRekordHelper
 	static function getData($params,$module)
 	{
 // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
     $db = sportsmanagementHelper::getDBConnection();

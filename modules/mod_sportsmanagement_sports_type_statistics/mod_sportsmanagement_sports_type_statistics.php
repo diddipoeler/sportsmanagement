@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if ( !defined('DS') )
 {
@@ -45,7 +46,7 @@ $parameter   = $params->get('sportstypes');
 $sportstypes = Text::_($params->get('sportstypes'));
 $data        = modJSMSportsHelper::getData($params);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 //add css file
 //$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css');
@@ -57,7 +58,7 @@ $document = JFactory::getDocument();
  */
 if ( !defined($data['sportstype'][0]->name) )
 {
-    $langtag      = JFactory::getLanguage();
+    $langtag      = Factory::getLanguage();
     $extension    = 'com_sportsmanagement';
     $base_dir     = JPATH_ADMINISTRATOR;
     $language_tag = $langtag->getTag();

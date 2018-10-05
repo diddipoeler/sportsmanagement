@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
@@ -46,9 +47,9 @@ class modJSMCalendarHelper
 	{
 		//global $mainframe;
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 	
-		$language= JFactory::getLanguage(); //get the current language
+		$language= Factory::getLanguage(); //get the current language
 		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
 		$article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
 		$articles= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCHES'); //this strings are used for the titles of the links
@@ -105,9 +106,9 @@ class modJSMCalendarHelper
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         $offset = $config->get('offset'); 
-        //$timeZone = JFactory::getConfig()->getValue('offset');
+        //$timeZone = Factory::getConfig()->getValue('offset');
         
 //        $dateTimeZone = new DateTimeZone($offset);
 //        $dateTime = new DateTime("now", $dateTimeZone);
@@ -117,10 +118,10 @@ class modJSMCalendarHelper
         }
         else
         {    
-		$config = JFactory::getConfig();
+		$config = Factory::getConfig();
         $offset = $config->get('offset'); 
         
-        //$timeZone = JFactory::getConfig()->getValue('offset');
+        //$timeZone = Factory::getConfig()->getValue('offset');
         
 //        $dateTimeZone = new DateTimeZone($offset);
 //        $dateTime = new DateTime("now", $dateTimeZone);
@@ -205,7 +206,7 @@ class modJSMCalendarHelper
 	{
 		//global $mainframe;
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
@@ -213,7 +214,7 @@ class modJSMCalendarHelper
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         $offset = $config->get('offset');    
         $dateformat = 'Format';    
         }
@@ -372,7 +373,7 @@ class JSMCalendar extends PHPCalendar
 	function getDateLink($day, $month, $year) //this function is called from getMonthView(month,year) to get the link of the given day
 	{										  //if this function returns nothing (""), then getMonthView wont put a link on that day
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $link = "";
 		if(strlen($month)<2)
@@ -556,7 +557,7 @@ class JSMCalendar extends PHPCalendar
     //function getMatches($month, $year)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
@@ -616,11 +617,11 @@ class JSMCalendar extends PHPCalendar
     {
 		//global $mainframe;
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         $offset = $config->get('offset');    
         $dateformat = 'Format';
         $dateoutformat = 'Y-m-d';      
@@ -628,7 +629,7 @@ class JSMCalendar extends PHPCalendar
         else
         {    
 		//$offset = 0; //$mainframe->getCfg('offset');
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         $offset = $config->get('offset'); 
         $dateformat = 'toFormat';
         $dateoutformat = '%Y-%m-%d';
@@ -636,7 +637,7 @@ class JSMCalendar extends PHPCalendar
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
         
-		$language= JFactory::getLanguage(); //get the current language
+		$language= Factory::getLanguage(); //get the current language
 		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
 		$article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
 		$articles= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCHES'); //this strings are used for the titles of the links

@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 //jimport('joomla.application.component.model');
 //JModel::addIncludePath(JPATH_SITE.'/components/com_sportsmanagement/models', 'sportsmanagementModelAjax');
@@ -83,12 +84,12 @@ class modsportsmanagementNavigationMenuHelper
     public function __construct($params)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         
         $this->_params = $params;
-        $this->_db = JFactory::getDbo();
+        $this->_db = Factory::getDbo();
 
         if (JRequest::getCmd('option') == 'com_sportsmanagement') {
             $p = JRequest::getInt('p', $params->get('default_project_id'));
@@ -161,8 +162,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getSeasonSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('seasons_text'))));
@@ -186,8 +187,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getDivisionSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $project = $this->getProject();
@@ -224,8 +225,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getLeagueSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
@@ -250,8 +251,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getProjectSelect()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_project_dropdown'))));
@@ -369,8 +370,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     protected function getTeamsOptions()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if (empty($this->_teamoptions)) {
@@ -408,8 +409,8 @@ class modsportsmanagementNavigationMenuHelper
      */
     public function getProject()
     {
-        $mainframe = JFactory::getApplication();
-        $db = JFactory::getDbo();
+        $mainframe = Factory::getApplication();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
 
         if (!$this->_project) {

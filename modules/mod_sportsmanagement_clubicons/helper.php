@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * modJSMClubiconsHelper
@@ -56,7 +57,7 @@ class modJSMClubiconsHelper
 	 */
 	private function _getData()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
 
 		$project_id = ($app->input->getVar('option','') == 'com_sportsmanagement' AND 
@@ -104,7 +105,7 @@ class modJSMClubiconsHelper
 	 */
 	function buildData( &$result )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
 		if (count($result))
@@ -128,7 +129,7 @@ class modJSMClubiconsHelper
 	 */
 	function getLogo( & $item, $class )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
@@ -161,7 +162,7 @@ $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 	 */
 	function getLink( &$item )
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
 	    $routeparameter = array();

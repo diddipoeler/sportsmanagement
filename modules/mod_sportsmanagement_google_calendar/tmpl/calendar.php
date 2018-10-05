@@ -1,9 +1,10 @@
 <?php 
 defined('_JEXEC') or die;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 // Load the FullCalendar assets
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addStyleSheet(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.css');
 $document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/lib/moment.min.js');
 $document->addScript(Uri::root() . '/modules/mod_google_calendar/media/fullcalendar/fullcalendar.min.js');

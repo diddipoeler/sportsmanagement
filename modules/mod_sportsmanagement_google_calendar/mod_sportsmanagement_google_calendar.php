@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Factory;
 
 try
 {
@@ -21,7 +22,7 @@ try
 	$helper = new ModJSMGoogleCalendarHelper($params);
 
 	// Setup joomla cache
-	$cache = JFactory::getCache();
+	$cache = Factory::getCache();
 	$cache->setCaching(true);
 	$cache->setLifeTime($params->get('api_cache_time', 60));
 
@@ -36,7 +37,7 @@ try
 }
 catch(Exception $e)
 {
-	JFactory::getApplication()->enqueueMessage(
+	Factory::getApplication()->enqueueMessage(
 		'JSM Google Calendar error: ' . $e->getMessage(), 'error'
 	);
 }

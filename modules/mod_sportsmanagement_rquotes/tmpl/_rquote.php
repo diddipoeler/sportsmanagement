@@ -40,9 +40,10 @@
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
 $css = Uri::base().'modules/'.$module->module.'/assets/rquote.css';
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addStyleSheet($css); 
 
 $quotemarks = $params->get('quotemarks');

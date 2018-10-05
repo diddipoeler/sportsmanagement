@@ -11,6 +11,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * modSportsmanagementPlaygroundplanHelper
@@ -32,7 +33,7 @@ class modSportsmanagementPlaygroundplanHelper
 	 */
 	public static function getData(&$params)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
 		$projectstring = (is_array($usedp)) ? implode(",", array_map('intval',$usedp) ) : (int)$usedp;
@@ -130,7 +131,7 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 	 */
 	public static function getTeams( $team1_id, $teamformat)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        
@@ -166,7 +167,7 @@ $app->enqueueMessage('<pre>'.print_r($query->dump(),true).'</pre>', 'error');
 	 */
 	public static function getTeamLogo($team_id,$logo = 'logo_big')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        

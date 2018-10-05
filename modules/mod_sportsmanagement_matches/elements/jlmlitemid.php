@@ -4,6 +4,7 @@ defined('_JEXEC') or die();
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 class JElementJLMLItemid extends JElement
 {
@@ -12,7 +13,7 @@ class JElementJLMLItemid extends JElement
 
 	function fetchElement($name, $value, &$node, $control_name)
 	{
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$options 	= array(HTMLHelper::_('select.option', '', '- '.Text::_('Select Item').' -'));
 

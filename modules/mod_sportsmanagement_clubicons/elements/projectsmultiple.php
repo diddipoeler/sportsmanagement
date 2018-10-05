@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * JElementProjectsmultiple
@@ -65,7 +66,7 @@ class JElementProjectsmultiple extends JElement
    * @return
    */
   function fetchElement($name, $value, &$node, $control_name){
-    $db = JFactory::getDBO();
+    $db = Factory::getDBO();
     $query = 'SELECT p.id, p.name FROM #__sportsmanagement_project p WHERE published=1 ORDER BY id DESC';
     $db->setQuery( $query );
     $projects = $db->loadObjectList();

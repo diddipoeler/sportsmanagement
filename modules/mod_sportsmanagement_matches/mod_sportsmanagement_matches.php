@@ -13,8 +13,9 @@ defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 if (! defined('DS'))
 {
@@ -71,7 +72,7 @@ require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
  */
 if ($params->get('ishd_update'))
 {
-$app = JFactory::getApplication();    
+$app = Factory::getApplication();    
 $projectid = $params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
@@ -110,7 +111,7 @@ else
 HTMLHelper::_('behavior.mootools');
 }
 
-$doc = JFactory::getDocument();
+$doc = Factory::getDocument();
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -155,7 +156,7 @@ $matches = $mod->getMatches();
 
 $cnt = ($nr >= 0) ? $nr : 0;
 if (count($matches) > 0){
-	//$user = JFactory::getUser();
+	//$user = Factory::getUser();
 	foreach ($matches AS $key => $match) {
 		if(!isset($match['project_id'])) continue; 
 		$styleclass =($cnt%2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');

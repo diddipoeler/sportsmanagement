@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 class JEventsConnector extends JLCalendar{
   var $xparams;
@@ -38,7 +39,7 @@ class JEventsConnector extends JLCalendar{
       
         foreach($row['events'] AS $event) {
           $newrow = array();
-          $user = JFactory::getUser();
+          $user = Factory::getUser();
           if ($user->id == 62) {
             /*
             echo '<pre>';
