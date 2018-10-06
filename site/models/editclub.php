@@ -126,7 +126,7 @@ catch (Exception $e)
         $show_team_community = ComponentHelper::getParams($option)->get('show_team_community',0);
  
         $app = Factory::getApplication('site');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' name<br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
  
         // Get the form.
         JForm::addFormPath(JPATH_COMPONENT_ADMINISTRATOR . '/models/forms');
