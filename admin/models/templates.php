@@ -89,7 +89,7 @@ class sportsmanagementModelTemplates extends JSMModelList
         $this->jsmquery->clear();
         //$this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
         $this->checklist($this->project_id);
-		
+		$this->jsmquery->clear();
         $this->jsmquery->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
         $this->jsmquery->select('u1.username');
         $this->jsmquery->from('#__sportsmanagement_template_config AS tmpl');
