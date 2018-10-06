@@ -53,7 +53,7 @@ static $limit = 0;
 	function __construct()
 	{
         parent::__construct();
-self::$limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
+        self::$limitstart = $this->jsmjinput->getVar('limitstart', 0, '', 'int');
 		self::$divisionid = $this->jsmjinput->getVar('division','0');
 		self::$mode = $this->jsmjinput->getVar('mode','0');
 		self::$order = $this->jsmjinput->getVar('order','0');
@@ -300,7 +300,7 @@ else
 function getTotal() {
         // Load the content if it doesn't already exist
         if (empty($this->_total)) {
-            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
+            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,self::$cfg_which_database,0,true);
             try{
             $this->_total = $this->_getListCount($query);
             }
@@ -322,7 +322,7 @@ function getTotal() {
     function getData() {
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
-            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database,0,true);
+            $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,self::$cfg_which_database,0,true);
             try{
 		$this->_data = $this->_getList($query);
 		}
