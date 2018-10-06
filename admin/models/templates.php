@@ -87,15 +87,15 @@ class sportsmanagementModelTemplates extends JSMModelList
 	{
 
         $this->jsmquery->clear();
-        $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
-        $this->checklist($this->_project_id);
+        //$this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        $this->checklist($this->project_id);
 		
         $this->jsmquery->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
         $this->jsmquery->select('u1.username');
         $this->jsmquery->from('#__sportsmanagement_template_config AS tmpl');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
         $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
-        $this->jsmquery->where('tmpl.project_id = '.(int) $this->_project_id);
+        $this->jsmquery->where('tmpl.project_id = '.(int) $this->project_id);
         
         $oldTemplates="frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
@@ -302,7 +302,7 @@ $result_update = $this->jsmdb->updateObject('#__sportsmanagement_template_config
         // get current project settings
         $this->jsmquery->select('template');
         $this->jsmquery->from('#__sportsmanagement_template_config');
-        $this->jsmquery->where('project_id = '.(int)$this->_project_id);
+        $this->jsmquery->where('project_id = '.(int)$this->project_id);
 		$this->jsmdb->setQuery($this->jsmquery);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -333,7 +333,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = pm.id');
         $this->jsmquery->join('LEFT', '#__users AS u ON u.id = t.checked_out');
         $this->jsmquery->join('LEFT', '#__users AS u1 ON u1.id = t.modified_by');
-        $this->jsmquery->where('p.id = '.(int)$this->_project_id);
+        $this->jsmquery->where('p.id = '.(int)$this->project_id);
 
 		$oldTemplates="frontpage'";
 		$oldTemplates .= ",'do_tipsl','tipranking','tipresults','user'";
@@ -365,7 +365,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $this->jsmquery->select('master.name');
         $this->jsmquery->from('#__sportsmanagement_project as master');
         $this->jsmquery->join('INNER', '#__sportsmanagement_project as p ON p.master_template = master.id');
-        $this->jsmquery->where('p.id = '.(int)$this->_project_id);
+        $this->jsmquery->where('p.id = '.(int)$this->project_id);
         try { 
 		$this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadResult();

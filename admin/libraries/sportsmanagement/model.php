@@ -1483,6 +1483,7 @@ public function __construct($config = array())
         $this->jsmpost = $this->jsmjinput->post->getArray(array());  
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
+    $this->project_id = $this->jsmjinput->getint('pid');
 
 /**
  * abfrage nach backend und frontend  
