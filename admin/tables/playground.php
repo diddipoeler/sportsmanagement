@@ -12,10 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablePlayground
@@ -26,7 +23,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablePlayground extends JTable
+class sportsmanagementTablePlayground extends JSMTable
 {
 	/**
 	 * Constructor
@@ -55,65 +52,14 @@ class sportsmanagementTablePlayground extends JTable
 		// setting alias
 		if ( empty( $this->alias ) )
 		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe( $this->name );
 		}
 		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 
 		return true;
 	}
-	
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-	 * @see JTable:bind
-	 * @since 1.5
-	 */
-/*
-	public function bind($array, $ignore = '') 
-    {
-		if (isset($array['extended']) && is_array($array['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($array['extended']);
-			$array['extended'] = (string)$parameter;
-		}
-		return parent::bind($array, $ignore);
-	}
-    */
- 
-	/**
-	 * Overloaded load function
-	 *
-	 * @param       int $pk primary key
-	 * @param       boolean $reset reset data
-	 * @return      boolean
-	 * @see JTable:load
-	 */
-	
-    /*
-    public function load($pk = null, $reset = true) 
-	{
-		if (parent::load($pk, $reset)) 
-		{
-			// Convert the params field to a registry.
-			$params = new JRegistry;
-			$params->loadJSON($this->extended);
-			//$params->toArray($this->extended);
-            $this->extended = $params->toArray($this->extended);
-            
-			return true;
-			
-		}
-		else
-		{
-			return false;
-		}
-	}
-	*/
+		
 }
 ?>

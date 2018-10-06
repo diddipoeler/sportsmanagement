@@ -11,10 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
 
 /**
  * sportsmanagementTableMatch
@@ -25,7 +21,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableMatch extends JTable
+class sportsmanagementTableMatch extends JSMTable
 {
 	/**
 	 * Constructor

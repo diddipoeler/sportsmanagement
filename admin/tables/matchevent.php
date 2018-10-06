@@ -11,10 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
 
 /**
  * sportsmanagementTableMatchEvent
@@ -25,7 +21,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableMatchEvent extends JTable
+class sportsmanagementTableMatchEvent extends JSMTable
 {
 	
 
@@ -38,7 +34,7 @@ class sportsmanagementTableMatchEvent extends JTable
 	function __construct( & $db )
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event', 'id', $db );
+		parent::__construct( '#__sportsmanagement_match_event', 'id', $db );
 	}
 
 }

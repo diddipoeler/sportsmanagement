@@ -12,10 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
 
 /**
  * sportsmanagementTablePositionStatistic
@@ -26,7 +22,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablePositionStatistic extends JTable
+class sportsmanagementTablePositionStatistic extends JSMTable
 {
 	/**
 	 * Constructor
@@ -37,7 +33,7 @@ class sportsmanagementTablePositionStatistic extends JTable
 	function __construct( & $db )
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic', 'id', $db );
+		parent::__construct( '#__sportsmanagement_position_statistic', 'id', $db );
 	}
 
 	/**

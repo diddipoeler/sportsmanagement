@@ -11,10 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTablerosterposition
@@ -25,7 +22,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablerosterposition extends JTable 
+class sportsmanagementTablerosterposition extends JSMTable 
 {
 
 	/**
@@ -52,10 +49,10 @@ class sportsmanagementTablerosterposition extends JTable
 		// setting alias
 		if ( empty( $this->alias ) )
 		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+			$this->alias = OutputFilter::stringURLSafe( $this->name );
 		}
 		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+			$this->alias = OutputFilter::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 		//should check name unicity
 		return true;

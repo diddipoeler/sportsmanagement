@@ -53,6 +53,19 @@ class JSMTable extends Table
         {
         $array['season_ids'] = implode(',', $array['season_ids']);
         }
+        
+        if ( key_exists( 'params', $array ) && is_array( $array['params'] ) )
+		{
+			$registry = new JRegistry();
+			$registry->loadArray( $array['params'] );
+			$array['params'] = $registry->toString();
+		}
+		if ( key_exists( 'comp_params', $array ) && is_array( $array['comp_params'] ) )
+		{
+			$registry = new JRegistry();
+			$registry->loadArray( $array['comp_params'] );
+			$array['comp_params'] = $registry->toString();
+		}
       
 		return parent::bind($array, $ignore);
 	}

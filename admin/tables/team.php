@@ -12,10 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
+use Joomla\CMS\Filter\OutputFilter;
 
 /**
  * sportsmanagementTableTeam
@@ -26,7 +23,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTableTeam extends JTable
+class sportsmanagementTableTeam extends JSMTable
 {
 	/**
 	 * Constructor
@@ -66,36 +63,10 @@ class sportsmanagementTableTeam extends JTable
 		}
 	
 		// setting alias
-        $this->alias = JFilterOutput::stringURLSafe( $this->name );
-        
-//		if ( empty( $this->alias ) )
-//		{
-//			$this->alias = JFilterOutput::stringURLSafe( $this->name );
-//		}
-//		else {
-//			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
-//		}
+        $this->alias = OutputFilter::stringURLSafe( $this->name );
 		
 		return true;
 	}
-	
-    /**
-     * sportsmanagementTableTeam::bind()
-     * 
-     * @param mixed $array
-     * @param string $ignore
-     * @return
-     */
-    public function bind($array, $ignore = '')
-   {
-      if (isset($array['season_ids']) && is_array($array['season_ids'])) {
-         $array['season_ids'] = implode(',', $array['season_ids']);
-      }
-      return parent::bind($array, $ignore);
-   }
-    
-    
-	
 	
 }
 ?>

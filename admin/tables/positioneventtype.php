@@ -11,10 +11,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// import Joomla table library
-jimport('joomla.database.table');
-// Include library dependencies
-jimport('joomla.filter.input');
 
 /**
  * sportsmanagementTablePositioneventtype
@@ -25,7 +21,7 @@ jimport('joomla.filter.input');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablePositioneventtype extends JTable
+class sportsmanagementTablePositioneventtype extends JSMTable
 {
 	/**
 	 * Constructor
@@ -36,20 +32,7 @@ class sportsmanagementTablePositioneventtype extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype', 'id', $db );
-	}
-
-	/**
-	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access public
-	 * @return boolean True on success
-	 * @since 1.0
-	 */
-	function check()
-	{
-		//should check name unicity
-		return true;
+		parent::__construct( '#__sportsmanagement_position_eventtype', 'id', $db );
 	}
 
 }
