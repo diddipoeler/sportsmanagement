@@ -164,6 +164,7 @@ var countryid = '';
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 
 console.log('jlamtopnewcountries country =' + countryid);
+console.log('jlamtopnewcountries href =' + location.href);
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -172,9 +173,7 @@ loadHtml = "<p id='loadingDiv-"
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
 	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
-
-console.log('jlamtopnewcountries href =' + location.href);
-    
+   
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
 ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
