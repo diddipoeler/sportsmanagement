@@ -22,7 +22,7 @@ HTMLHelper::_('behavior.tooltip');
 var ajaxmenu_baseurl = '<?php echo Uri::base() ?>';
 </script>
 
-<div>
+<div class="container-fluid">
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
