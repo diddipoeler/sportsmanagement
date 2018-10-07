@@ -157,13 +157,13 @@ var response = ajax.responseText;
 
 function jlamtopnewcountries(modid,federation)
 {
-console.log('jlamtopnewcountries modid=' + modid);
-console.log('jlamtopnewcountries federation=' + federation);
+console.log('jlamtopnewcountries modid =' + modid);
+console.log('jlamtopnewcountries federation =' + federation);
 
 var countryid = '';
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 
-console.log('jlamtopnewcountries country=' + countryid);
+console.log('jlamtopnewcountries country =' + countryid);
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -178,6 +178,8 @@ ajax.open("POST", location.href, true);
 ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 ajax.send('jlamtopcountry=' + countryid + '&ajaxmodid=' + modid);
 ajax.onreadystatechange = function() {
+
+console.log('readyState =' + ajax.readyState);
 
 if (ajax.readyState == 4) {
 
