@@ -81,12 +81,29 @@ $modaltext .= '</a>';
 }		
 	break;	
         case 0:
-            if ($url) {
-                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
-            } else {
-                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
-            }
-            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
+//            if ($url) {
+//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $url . '">';
+//            } else {
+//                $modaltext = '<a title="' . $text . '" class="modal" href="' . $picture . '">';
+//            }
+//            $modaltext .= '<img width="' . $picturewidth . '" alt="' . $text . '" src="' . $picture . '"></a>';
+            
+            $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
+        $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+        $modaltext .= '</a>';
+
+        if (!$url) {
+            $url = $picture;
+        }
+            $modaltext .= HTMLHelper::_('bootstrap.renderModal', $target, array(
+                    'title' => $text,
+                    'url' => $url,
+                    'height' => $height,
+                    'width' => $width,
+                    'footer' => '<button type="button" class="btn btn-default" data-dismiss="modal">'.Text::_('JCANCEL').'</button>'
+                        )
+        );
+
         break;
 	    
     }    
