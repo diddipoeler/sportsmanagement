@@ -14,6 +14,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if(!defined('DS'))
 {
@@ -34,7 +35,7 @@ if ( !class_exists('sportsmanagementHelper') )
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 $source = $params->get('source');

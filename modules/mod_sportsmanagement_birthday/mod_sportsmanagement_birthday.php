@@ -15,6 +15,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -39,7 +40,7 @@ if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
     $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
-    JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 

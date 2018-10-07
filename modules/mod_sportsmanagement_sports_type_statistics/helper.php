@@ -39,6 +39,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 
 /**
@@ -67,7 +68,7 @@ class modJSMSportsHelper
         {
             require_once( JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'models' . DS . 'sportstypes.php' );
         }
-        $model = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
+        $model = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
 
         return array('sportstype'                => $model->getSportsTypes(),
                      'projectscount'             => $model->getProjectsCount($params->get('sportstypes')),

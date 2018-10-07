@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $app = Factory::getApplication();
 
@@ -43,7 +44,7 @@ if ( !class_exists('sportsmanagementHelper') )
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 
@@ -75,7 +76,7 @@ if ($params->get('ishd_update'))
 $app = Factory::getApplication();    
 $projectid = $params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
-$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
+$actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
 for($a=0; $a < sizeof($projectid); $a++ )
 {
 $project_id = (int)$projectid[$a];

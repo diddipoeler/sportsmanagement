@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (! defined('DS'))
 {
@@ -32,7 +34,7 @@ if ( !class_exists('sportsmanagementHelper') )
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
@@ -60,7 +62,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 /**
  * welche tabelle soll genutzt werden
  */
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 

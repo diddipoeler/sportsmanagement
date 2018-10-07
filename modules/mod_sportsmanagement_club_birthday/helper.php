@@ -20,11 +20,6 @@ use Joomla\CMS\Factory;
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.arrayhelper', JPATH_SITE);
-////require_once(JPATH_BASE.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php');	
-////add the classes for handling
-//$classpath = JPATH_BASE.DS.'libraries'.DS.'vendor'.DS.'joomla'.DS.'utilities'.DS.'src'.DS.'ArrayHelper.php';
-//JLoader::register('ArrayHelper', $classpath);
-//JModelLegacy::getInstance("ArrayHelper");	
 }
 else
 {

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 if (! defined('DS'))
 {
@@ -41,7 +42,7 @@ if ( !class_exists('sportsmanagementHelper') )
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 
@@ -96,7 +97,7 @@ if ($params->get('ishd_update'))
 {
 $projectid = (int)$params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
-$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');   
+$actionsModel = BaseDatabaseModel::getInstance('jsminlinehockey', 'sportsmanagementModel');   
 
 $count_games = modJSMRankingHelper::getCountGames($projectid,(int)$params->get('ishd_update_hour',4)); 
 if ( $count_games )

@@ -16,6 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * modSportsmanagementTeamPlayersHelper
@@ -75,7 +76,7 @@ class modSportsmanagementTeamPlayersHelper
         {
 			require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'roster.php');
 		}
-		$model = JModelLegacy::getInstance('Roster', 'sportsmanagementModel');
+		$model = BaseDatabaseModel::getInstance('Roster', 'sportsmanagementModel');
 		sportsmanagementModelProject::$projectid = $p;
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;
