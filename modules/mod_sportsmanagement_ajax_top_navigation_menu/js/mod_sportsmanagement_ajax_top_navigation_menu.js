@@ -277,8 +277,6 @@ var response = ajax.responseText;
 
 function jlamtopdivision(modid)
 {
-//alert('jlamdivision_modid=' + modid);
-
 var seasonid = 0;
 var leagueid = 0;
 var projectid = 0;
@@ -287,19 +285,19 @@ var divisionid = 0;
 
 
 seasonid = document.getElementById("jlamseason" + modid).options[document.getElementById("jlamseason" + modid).selectedIndex].value;
-//alert('jlamdivision seasonid=' + seasonid);
+console.log('jlamtopdivision seasonid = ' + seasonid);
 
 leagueid = document.getElementById("jlamleague" + modid).options[document.getElementById("jlamleague" + modid).selectedIndex].value;
-//alert('jlamdivision leagueid=' + leagueid);
+console.log('jlamtopdivision leagueid = ' + leagueid);
 
 projectid = document.getElementById("jlamproject" + modid).options[document.getElementById("jlamproject" + modid).selectedIndex].value;
-//alert('jlamdivision projectid=' + projectid);
+console.log('jlamtopdivision projectid = ' + projectid);
 
 divisionid = document.getElementById("jlamdivisions" + modid).options[document.getElementById("jlamdivisions" + modid).selectedIndex].value;
-//alert('jlamdivision divisionid=' + divisionid);
+console.log('jlamtopdivision divisionid = ' + divisionid);
 
 teamid = document.getElementById("jlamteams" + modid).options[document.getElementById("jlamteams" + modid).selectedIndex].value;
-//alert('jlamdivision teamid=' + teamid);
+console.log('jlamtopdivision teamid = ' + teamid);
 
 
 loadHtml = "<p id='loadingDiv-"
