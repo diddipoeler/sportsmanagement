@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 jimport('joomla.application.component.model');
 
 /**
@@ -677,7 +679,7 @@ catch (Exception $e)
                 if (!empty($stat)) {
 if ( isset($stat->_showinsinglematchreports) ) {
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'statistics' . DS .$stat->_name. '.php');	
-$mdlstats = JModelLegacy::getInstance($stat->_name, "SMStatistic");   
+$mdlstats = BaseDatabaseModel::getInstance($stat->_name, "SMStatistic");   
 $mdlstats->id = $stat->id;    
 $stat->gamesstats = $mdlstats->getPlayerStatsByGame($teamplayer_ids, $project_id);
 $displaystats[] = $stat;

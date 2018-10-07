@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
@@ -156,7 +157,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 			$career['in'] = 0;
 			$career['out'] = 0;
             $career['playedtime'] = 0;
-			$player = JModelLegacy::getInstance("Person","sportsmanagementModel");
+			$player = BaseDatabaseModel::getInstance("Person","sportsmanagementModel");
       
 
 			if (count($this->historyPlayer) > 0)

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 // pagination
 //require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
@@ -85,7 +86,7 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
-			$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+			$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 			foreach ( $this->predictionProjectS as $project )
 			{
       $mdlProject->setProjectId($project->project_id);

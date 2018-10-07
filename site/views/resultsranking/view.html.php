@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
@@ -51,13 +52,13 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$this->jinput->getInt('cfg_which_database',0));
 		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database',0));
         
-        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
         
 		// add the results model		
 		$resultsmodel	= new sportsmanagementModelResults();
 		// add the results config file
 
-		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$this->jinput->getInt('cfg_which_database',0));
         $this->paramconfig = $rankingmodel::$paramconfig;
         $this->paramconfig['p'] = $project->slug;

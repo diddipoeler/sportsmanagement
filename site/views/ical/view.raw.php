@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import( 'joomla.application.component.view');
 
@@ -22,7 +23,7 @@ class sportsmanagementViewIcal extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-		$this->setModel(JModelLegacy::getInstance('Event', 'sportsmanagementModel'), true);
+		$this->setModel(BaseDatabaseModel::getInstance('Event', 'sportsmanagementModel'), true);
 
 		$this->event = $this->get('GCalendar');
 

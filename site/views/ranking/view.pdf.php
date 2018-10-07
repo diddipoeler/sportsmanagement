@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -46,10 +47,9 @@ class sportsmanagementViewRanking extends JViewLegacy
         $document->addScript ( Uri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
-        $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
-        $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
+        $mdlDivisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");
+        $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+        $mdlTeams = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();

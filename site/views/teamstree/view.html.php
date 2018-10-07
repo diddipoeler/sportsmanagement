@@ -11,6 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewTeamsTree
@@ -37,7 +38,7 @@ $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "di
 foreach( $this->teams as $rowclub )
 {
    
-$mdlClubInfo = JModelLegacy::getInstance("ClubInfo", "sportsmanagementModel");
+$mdlClubInfo = BaseDatabaseModel::getInstance("ClubInfo", "sportsmanagementModel");
 $mdlClubInfo::$tree_fusion = '';
 $mdlClubInfo::$historyhtmltree = '';
 $mdlClubInfo::$first_club_id = 0;

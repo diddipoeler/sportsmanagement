@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
 
@@ -41,7 +42,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/json2.js');
 		$this->document->addScript(Uri::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
-    $mdlPredUsers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
+    $mdlPredUsers = BaseDatabaseModel::getInstance("predictionusers", "sportsmanagementModel");
     
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         

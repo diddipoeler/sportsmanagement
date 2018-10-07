@@ -11,6 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewPlayground
@@ -33,7 +34,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	{
 	
         sportsmanagementModelProject::setProjectID($this->jinput->getInt( "p", 0 ),$this->jinput->getInt('cfg_which_database',0));
-        $mdlJSMTeams = JModelLegacy::getInstance("teams", "sportsmanagementModel");
+        $mdlJSMTeams = BaseDatabaseModel::getInstance("teams", "sportsmanagementModel");
     	$this->playground = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt( "pgid", 0 ),1);
         $this->address_string = $this->model->getAddressString();
 	$this->teams = $mdlJSMTeams->getTeams($this->playground->id);

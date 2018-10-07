@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 ?>
 
 <!-- Player stats History START -->
@@ -72,7 +73,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 				$k=0;
 				$career=array();
 				$career['played']=0;
-				$mod = JModelLegacy::getInstance('Staff','sportsmanagementModel');
+				$mod = BaseDatabaseModel::getInstance('Staff','sportsmanagementModel');
 				if (count($this->history) > 0)
 				{
 					foreach ($this->history as $player_hist)

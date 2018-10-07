@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 //require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'nextmatch.php');
 
@@ -33,11 +35,9 @@ class sportsmanagementViewical extends sportsmanagementView
 	 */
 	function init()
 	{
-	//$mdlJSMResults = JModelLegacy::getInstance("results", "sportsmanagementModel");
-	//$this->matches = $mdlJSMResults->getMatches($this->jinput->getInt('cfg_which_database',0)); 
 		
 	$this->matches = $this->model->getResultsPlan($this->jinput->getInt('p',0),$this->jinput->getInt('tid',0),0,0,'ASC',$this->jinput->getInt('cfg_which_database',0)); 	
-    $mdlJSMNextMatch = JModelLegacy::getInstance("nextmatch", "sportsmanagementModel");
+    $mdlJSMNextMatch = BaseDatabaseModel::getInstance("nextmatch", "sportsmanagementModel");
     $this->teams = $mdlJSMNextMatch->getTeamsFromMatches( $this->matches );;
 
 

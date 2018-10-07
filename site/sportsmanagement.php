@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -67,7 +69,7 @@ if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
     $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
-    JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+    BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 /**
