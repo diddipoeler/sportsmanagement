@@ -238,24 +238,22 @@ $query->order('s.name');
 	 */
 	public function getFederationSelect($federation='',$federationid=0)
 	{
-	   $app = Factory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(); 
-        $query = $db->getQuery(true);
+	  // $app = Factory::getApplication();
+//        $db = sportsmanagementHelper::getDBConnection(); 
+//        $query = $db->getQuery(true);
 	$options = array();
     
     $fedtext = $federation;
-
-$query->select('s.alpha3 AS value, s.name AS text');
-$query->from('#__sportsmanagement_countries AS s');
-$query->join('INNER','#__sportsmanagement_league AS l ON l.country = s.alpha3 ');
-$query->where('s.federation = '.$federationid);
-$query->group('s.name');
-$query->order('s.name DESC');
-$db->setQuery($query);
-
-self::$query_getFederationSelect = $query->dump();
-
-$res = $db->loadObjectList();
+$this->_query->clear();
+$this->_query->select('s.alpha3 AS value, s.name AS text');
+$this->_query->from('#__sportsmanagement_countries AS s');
+$this->_query->join('INNER','#__sportsmanagement_league AS l ON l.country = s.alpha3 ');
+$this->_query->where('s.federation = '.$federationid);
+$this->_query->group('s.name');
+$this->_query->order('s.name DESC');
+$this->_db->setQuery($this->_query);
+//self::$query_getFederationSelect = $query->dump();
+$res = $this->_db->loadObjectList();
 
 if ($res) 
     {
@@ -713,28 +711,31 @@ $options = array();
 	 */
 	public function getAssocLeagueSelect($country_id,$associd)
 	{		
-$app = Factory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(); 
-        $query = $db->getQuery(true);
-        
-        $query->select('l.id AS value, l.name AS text');
-            $query->from('#__sportsmanagement_league AS l');
-            $query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
-            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
-            $query->where('l.associations = ' . $associd );
-            $query->where('l.country = \'' . $country_id. '\'' );
-            $query->group('l.name');
-            $query->order('l.name');
+//$app = Factory::getApplication();
+//        $db = sportsmanagementHelper::getDBConnection(); 
+//        $query = $db->getQuery(true);
+        $this->_query->clear();
+        $this->_query->select('l.id AS value, l.name AS text');
+            $this->_query->from('#__sportsmanagement_league AS l');
+            $this->_query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
+            $this->_query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            if ( $associd )
+            {
+            $this->_query->where('l.associations = ' . $associd );
+            }
+            $this->_query->where('l.country = \'' . $country_id. '\'' );
+            $this->_query->group('l.name');
+            $this->_query->order('l.name');
 
-		$db->setQuery($query);
+		$this->_db->setQuery($this->_query);
         
-        $this->getAssocLeagueSelect = $query->dump();
+        //$this->getAssocLeagueSelect = $query->dump();
         
-		$res = $db->loadObjectList();
+		$res = $this->_db->loadObjectList();
 		if ($res) 
         {
         $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
-			$options = array_merge($options, $res);
+		$options = array_merge($options, $res);
 		}
 
 		return $options;
