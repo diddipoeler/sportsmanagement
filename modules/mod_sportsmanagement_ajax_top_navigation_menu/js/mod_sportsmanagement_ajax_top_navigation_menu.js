@@ -37,8 +37,8 @@ associd = document.getElementById("jlamtopassoc" + federation + modid).options[d
 subassocid = document.getElementById("jlamtopsubassoc" + federation + modid).options[document.getElementById("jlamtopsubassoc" + federation + modid).selectedIndex].value;
 subsubassocid = document.getElementById("jlamtopsubsubassoc" + federation + modid).options[document.getElementById("jlamtopsubsubassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubsubsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubsubsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -80,8 +80,8 @@ countryid = document.getElementById("jlamtopfederation" + federation + modid).op
 associd = document.getElementById("jlamtopassoc" + federation + modid).options[document.getElementById("jlamtopassoc" + federation + modid).selectedIndex].value;
 subassocid = document.getElementById("jlamtopsubassoc" + federation + modid).options[document.getElementById("jlamtopsubassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
@@ -121,8 +121,8 @@ var associd = 0;
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 associd = document.getElementById("jlamtopassoc" + federation + modid).options[document.getElementById("jlamtopassoc" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewsubassoc countryid =' + countryid );
-//alert('jlamtopnewsubassoc associd =' + associd );
+console.log('jlamtopnewsubassoc countryid =' + countryid );
+console.log('jlamtopnewsubassoc associd =' + associd );
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid
