@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version   1.0.05
  * @file      ajax.json.php
@@ -12,8 +11,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
-jimport('joomla.application.component.controller');
 
 /**
  * sportsmanagementControllerAjax
@@ -24,7 +23,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JControllerLegacy {
+class sportsmanagementControllerAjax extends BaseController {
 
     /**
      * sportsmanagementControllerAjax::__construct()

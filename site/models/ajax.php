@@ -12,8 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.application.component.model');
 
 /**
  * sportsmanagementModelAjax
@@ -24,7 +24,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModelLegacy
+class sportsmanagementModelAjax extends BaseDatabaseModel
 {
     /**
      * sportsmanagementModelAjax::getProjectsOptions()
