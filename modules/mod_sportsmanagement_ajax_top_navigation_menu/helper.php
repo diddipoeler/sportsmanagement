@@ -114,7 +114,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         $query->where('published = 1');
         $db->setQuery($query);
         
-        self::$query_getFederations = $query->dump();
+        //self::$query_getFederations = $query->dump();
         
         $result = $db->loadObjectList();
     
@@ -144,7 +144,7 @@ $query->order('s.name');
                 
 		$db->setQuery($query);
         
-        $this->getCountrySubSubAssocSelect = $query->dump();
+        //$this->getCountrySubSubAssocSelect = $query->dump();
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -177,7 +177,7 @@ $query->order('s.name');
 
 		$db->setQuery($query);
         
-        $this->getCountrySubAssocSelect = $query->dump();
+        //$this->getCountrySubAssocSelect = $query->dump();
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -214,7 +214,7 @@ $query->order('s.name');
 
 		$db->setQuery($query);
         
-        $this->getCountryAssocSelect = $query->dump();
+        //$this->getCountryAssocSelect = $query->dump();
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -446,7 +446,7 @@ return $user->username ;
 
 		$db->setQuery($query);
         
-        $this->getAssocParentId = $query->dump();
+        //$this->getAssocParentId = $query->dump();
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -483,7 +483,7 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        $this->getLeagueAssocId = $query->dump();
+        //$this->getLeagueAssocId = $query->dump();
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -549,7 +549,7 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        $this->getClubId = $query->dump();
+        //$this->getClubId = $query->dump();
         
 		$res = $db->loadObject();
     
@@ -633,7 +633,7 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        $this->getTeamId = $query->dump();
+        //$this->getTeamId = $query->dump();
         
 		$res = $db->loadResult();
     
@@ -759,7 +759,7 @@ $options = array();
 
 		$db->setQuery($query);
         
-        $this->getProjectCountry = $query->dump();
+        //$this->getProjectCountry = $query->dump();
         
 		$res = $db->loadResult();
     
@@ -798,7 +798,7 @@ $options = array();
                
 		$db->setQuery($query);
         
-        $this->getLeagueSelect = $query->dump();
+        //$this->getLeagueSelect = $query->dump();
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -831,7 +831,7 @@ $app = Factory::getApplication();
 
 		$db->setQuery($query);
         
-        $this->getProjectSelect = $query->dump();
+        //$this->getProjectSelect = $query->dump();
        
 		$res = $db->loadObjectList();
 		
