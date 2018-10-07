@@ -157,13 +157,13 @@ var response = ajax.responseText;
 
 function jlamtopnewcountries(modid,federation)
 {
-//alert('jlamtopnewcountries modid=' + modid);
-//alert('jlamtopnewcountries federation=' + federation);
+console.log('jlamtopnewcountries modid=' + modid);
+console.log('jlamtopnewcountries federation=' + federation);
 
 var countryid = '';
 countryid = document.getElementById("jlamtopfederation" + federation + modid).options[document.getElementById("jlamtopfederation" + federation + modid).selectedIndex].value;
 
-//alert('jlamtopnewcountries country=' + countryid);
+console.log('jlamtopnewcountries country=' + countryid);
 
 loadHtml = "<p id='loadingDiv-"
 			+ modid

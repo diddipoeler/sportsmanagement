@@ -12,7 +12,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-//jimport( 'joomla.utilities.arrayhelper' );
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
