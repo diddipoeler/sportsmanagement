@@ -4,6 +4,14 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		
+		<field	name="use_which_map" type="extensionradiobutton" default="0"
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_WHICH_MAP"
+				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_WHICH_MAP">
+			<option value="0">Google Map</option>
+			<option value="1">OpenStreetMap</option>
+		</field>
+		
 		<field	name="use_jquery_modal" type="extensionradiobutton" default="0"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
