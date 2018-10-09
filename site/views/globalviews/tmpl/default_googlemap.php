@@ -61,6 +61,50 @@ case 'clubinfo':
      </script>
 <?php
 break;
+case 'ranking':
+foreach ( $this->allteams as $row )
+{
+
+$latitude = $row->latitude;
+$longitude = $row->longitude;
+	
+if ( !empty($latitude) && $latitude != '0.00000000' )
+{
+$row->team_name= str_replace($find, $replace, $row->team_name);
+// logo_big
+$map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."','".$row->logo_big."']";
+$zaehler++;
+}
+
+}
+
+$comma_separated = implode(",", $map_markes);
+?>
+<script>
+  
+     var planes = [
+         <?php echo $comma_separated; ?>
+         ];
+  
+         var map = L.map('map').setView([<?php echo $latitude; ?>,<?php echo $longitude; ?>], 8);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: 18,
+             }).addTo(map);
+  
+         for (var i = 0; i < planes.length; i++) {
+             marker = new L.marker([planes[i][1],planes[i][2]])
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+              
+     </script>
+<?php
+
+break;		
 }		
 ?>	
 
