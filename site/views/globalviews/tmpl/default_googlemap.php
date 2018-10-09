@@ -30,6 +30,11 @@ $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/
 $this->document->addScript('http://www.openlayers.org/api/OpenLayers.js');
 $this->document->addScript('http://www.openstreetmap.org/openlayers/OpenStreetMap.js');	
 $this->document->addScript(Uri::root(true).'/components/com_sportsmanagement/assets/js/tom.js');	
+	
+?>	
+<div id="map">
+</div>
+<?php
 }
 else
 {
