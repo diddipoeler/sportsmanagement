@@ -19,17 +19,12 @@ $this->view = Factory::getApplication()->input->getCmd('view');
 
 if ( $this->config['use_which_map'] )
 {
-$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/map.css');	
-?>
-<!--[if IE]>
-<?php
-$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/ie_map.css');		
-?>	
-<![endif]-->
-<?php
-$this->document->addScript('http://www.openlayers.org/api/OpenLayers.js');
-$this->document->addScript('http://www.openstreetmap.org/openlayers/OpenStreetMap.js');	
-$this->document->addScript(Uri::root(true).'/components/com_sportsmanagement/assets/js/tom.js');	
+$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
+$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');	
+//$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/map.css');	
+//$this->document->addScript('http://www.openlayers.org/api/OpenLayers.js');
+//$this->document->addScript('http://www.openstreetmap.org/openlayers/OpenStreetMap.js');	
+//$this->document->addScript(Uri::root(true).'/components/com_sportsmanagement/assets/js/tom.js');	
 	
 ?>	
 <div id="map">
