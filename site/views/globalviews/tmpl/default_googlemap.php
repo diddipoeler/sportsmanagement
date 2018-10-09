@@ -27,8 +27,44 @@ $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css
 //$this->document->addScript(Uri::root(true).'/components/com_sportsmanagement/assets/js/tom.js');	
 	
 ?>	
-<div id="map">
+<h4>
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+</h4>
+<div id="map" style="height: 600px; margin-top: 50px; position: relative;">
 </div>
+<?php
+switch ($this->view)
+{
+case 'clubinfo':	
+?>
+<script>
+  
+     var planes = [
+         ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
+         ];
+  
+         var map = L.map('map').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 8);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: 18,
+             }).addTo(map);
+  
+         for (var i = 0; i < planes.length; i++) {
+             marker = new L.marker([planes[i][1],planes[i][2]])
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+              
+     </script>
+<?php
+break;
+}		
+?>	
+
+
 <?php
 }
 else
