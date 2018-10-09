@@ -17,6 +17,13 @@ use Joomla\CMS\Factory;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
 
+if ( $this->config['use_which_map'] )
+{
+$this->document->addScript('http://www.openlayers.org/api/OpenLayers.js');
+$this->document->addScript('http://www.openstreetmap.org/openlayers/OpenStreetMap.js');	
+}
+else
+{
 
 switch ($this->view)
 {
@@ -285,3 +292,6 @@ echo HTMLHelper::_('content.prepare', $params);
 ?>
 </div>
 </div>
+<?php
+}
+?>
