@@ -22,6 +22,12 @@ if ( $this->config['use_which_map'] )
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');	
 
+/**
+ * geocoderscript
+ */
+//$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
+//$this->document->addStyleSheet('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css');
+ 
 switch ( $this->mapconfig['default_map_type'] )
 {
 case 'G_NORMAL_MAP':  
@@ -73,11 +79,15 @@ var myIcon = L.icon({
                  .bindPopup(planes[i][0])
                  .addTo(map);
          }
+//L.Control.geocoder().addTo(map); 
               
      </script>
 <?php
 break;
 case 'ranking':
+$zaehler = 1;
+$find[] = "'";
+$replace[] = " ";
 foreach ( $this->allteams as $row )
 {
 
@@ -121,7 +131,8 @@ var myIcon = L.icon({
                  .bindPopup(planes[i][0])
                  .addTo(map);
          }
-         map.fitBounds([<?php echo $comma_bounds; ?>]);     
+         map.fitBounds([<?php echo $comma_bounds; ?>]);  
+//L.Control.geocoder().addTo(map);             
      </script>
 <?php
 
