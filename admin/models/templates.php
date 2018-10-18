@@ -125,7 +125,7 @@ $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'tm
 	{
 		$defaultpath = JPATH_COMPONENT_SITE.DS.'settings';
         // Get the views for this component.
-        $path = JPATH_SITE.'/components/'.$option.'/views';
+        $path = JPATH_SITE.'/components/'.$this->jsmoption.'/views';
 		$predictionTemplatePrefix = 'prediction';
 
 		if (!$project_id)
