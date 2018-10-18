@@ -102,7 +102,7 @@ $comma_bounds = implode(",", $map_bounds);
                  .bindPopup(planes[i][0])
                  .addTo(map);
          }
-         map.fitBounds(<?php echo $comma_bounds; ?>);     
+         map.fitBounds([<?php echo $comma_bounds; ?>]);     
      </script>
 <?php
 
