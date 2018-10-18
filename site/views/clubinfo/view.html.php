@@ -72,6 +72,13 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         if ( $this->config['show_maps'] )
 	  {
 /**
+ * leaflet benutzen
+ */            
+if ( $this->config['use_which_map'] )
+{
+$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0));    
+}	   
+/**
  * diddipoeler
  */
         $this->geo = new JSMsimpleGMapGeocoder();
