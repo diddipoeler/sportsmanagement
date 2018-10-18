@@ -21,16 +21,29 @@ if ( $this->config['use_which_map'] )
 {
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');	
-//$this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/map.css');	
-//$this->document->addScript('http://www.openlayers.org/api/OpenLayers.js');
-//$this->document->addScript('http://www.openstreetmap.org/openlayers/OpenStreetMap.js');	
-//$this->document->addScript(Uri::root(true).'/components/com_sportsmanagement/assets/js/tom.js');	
+
+switch ( $this->mapconfig['default_map_type'] )
+{
+case 'G_NORMAL_MAP':  
+$map_type = 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';  
+break;    
+case 'G_SATELLITE_MAP': 
+$map_type = 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}';   
+break;
+case 'G_HYBRID_MAP':  
+$map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}';  
+break;
+case 'G_TERRAIN_MAP': 
+$map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';   
+break;
+}
+	
 	
 ?>	
 <h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 </h4>
-<div id="map" style="height: 600px; margin-top: 50px; position: relative;">
+<div id="map" style="height: <?php echo $this->mapconfig['map_height']; ?>px; margin-top: 50px; position: relative;">
 </div>
 <?php
 switch ($this->view)
@@ -47,9 +60,9 @@ case 'clubinfo':
          mapLink =
              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
          L.tileLayer(
-             'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+             '<?php echo $map_type; ?>', {
              attribution: '&copy; ' + mapLink + ' Contributors',
-             maxZoom: 18,
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
              }).addTo(map);
   
          for (var i = 0; i < planes.length; i++) {
@@ -92,9 +105,9 @@ $comma_bounds = implode(",", $map_bounds);
          mapLink =
              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
          L.tileLayer(
-             'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+             '<?php echo $map_type; ?>', {
              attribution: '&copy; ' + mapLink + ' Contributors',
-             maxZoom: 18,
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
              }).addTo(map);
   
          for (var i = 0; i < planes.length; i++) {

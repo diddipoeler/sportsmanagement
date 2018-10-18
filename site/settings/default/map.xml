@@ -3,12 +3,12 @@
 	<fieldset name="details"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
-
+<!--
 		<field name="width" type="text" default="100%"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_WIDTH" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_WIDTH">
 		</field>
-
-		<field name="height" type="text" default="300"
+-->
+		<field name="map_height" type="text" default="600"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_HEIGHT" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_HEIGHT">
 		</field>
 
@@ -24,8 +24,10 @@
 			</option>
 			<option value="G_HYBRID_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION2_TYPE
 			</option>
+			<option value="G_TERRAIN_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION3_TYPE
+			</option>
 		</field>
-
+<!--
 		<field name="map_control" type="list" default="LARGE_PAN_ZOOM"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ZOOM">
 			<option value="NONE">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION0_ZOOM
@@ -122,5 +124,6 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		-->
 	</fieldset>
 </form>

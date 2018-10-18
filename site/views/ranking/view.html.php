@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -134,11 +135,6 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         // mannschaften holen
         $this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', sportsmanagementModelProject::$cfg_which_database, __METHOD__);
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text = 'divisions <pre>' . print_r($this->divisions, true) . '</pre>';
-            $my_text .= 'currentRanking <pre>' . print_r($this->currentRanking, true) . '</pre>';
-        }
-
         $no_ranking_reason = '';
         $ranking_reason = array();
         if ($this->config['show_notes']) {
@@ -165,17 +161,17 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $tomatchday = array();
         $lists = array();
 
-        $frommatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+        $frommatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
         $frommatchday = array_merge($frommatchday, $rounds);
         $lists['frommatchday'] = $frommatchday;
-        $tomatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
+        $tomatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
         $tomatchday = array_merge($tomatchday, $rounds);
         $lists['tomatchday'] = $tomatchday;
 
         $opp_arr = array();
-        $opp_arr[] = JHTML :: _('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-        $opp_arr[] = JHTML :: _('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
-        $opp_arr[] = JHTML :: _('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
+        $opp_arr[] = HTMLHelper::_('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+        $opp_arr[] = HTMLHelper::_('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
+        $opp_arr[] = HTMLHelper::_('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
         $lists['type'] = $opp_arr;
         $this->lists = $lists;
@@ -200,22 +196,16 @@ class sportsmanagementViewRanking extends sportsmanagementView {
             $short_names = $mdlClubnames->getClubNames($this->project->country);
         }
 
-        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-            $my_text .= 'overallconfig <pre>' . print_r($this->overallconfig, true) . '</pre>';
-            $my_text .= 'config <pre>' . print_r($this->config, true) . '</pre>';
-            $my_text .= 'previousRanking <pre>' . print_r($this->previousRanking, true) . '</pre>';
-            if (isset($this->homeRank)) {
-                $my_text .= 'homeRank <pre>' . print_r($this->homeRank, true) . '</pre>';
-            }
-            if (isset($this->awayRank)) {
-                $my_text .= 'awayRank <pre>' . print_r($this->awayRank, true) . '</pre>';
-            }
-            $my_text .= 'teams <pre>' . print_r($this->teams, true) . '</pre>';
-            $my_text .= 'allteams <pre>' . print_r($this->allteams, true) . '</pre>';
-            sportsmanagementHelper::setDebugInfoText(__METHOD__, __FUNCTION__, __CLASS__, __LINE__, $my_text);
-        }
-
         if ($this->config['show_ranking_maps']) {
+
+/**
+ * leaflet benutzen
+ */            
+if ( $this->config['use_which_map'] )
+{
+$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0));    
+}
+    
             $this->geo = new JSMsimpleGMapGeocoder();
             $this->geo->genkml3($this->project->id, $this->allteams);
 
