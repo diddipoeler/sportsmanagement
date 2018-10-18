@@ -69,19 +69,6 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
      * @return void
      */
     function init() {
-        //$option = Factory::getApplication()->input->getCmd('option');
-        $mainframe = Factory::getApplication();
-
-        //$db = Factory::getDBO();
-//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//            $uri = Uri::getInstance();
-//        } else {
-//            $uri = Factory::getURI();
-//        }
-        //$user = Factory::getUser();
-
-        //$model = $this->getModel();
-
 
         $this->projectid = $this->jinput->get("pid", '0');
         if (!$this->projectid) {
@@ -90,15 +77,8 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView {
 
         $this->app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' projectid -> ' . $this->projectid . ''), '');
         $this->matchlink = $this->model->getMatchLink($this->projectid);
-        //$project = sportsmanagementModelProject::getProject($projectid);
-        // if ( empty($projectid) )
-//    {
-//    $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
-//    }
-//    else
-//    {
+
         $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), '');
-//    }
 
         JToolBarHelper::title(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'), 'install');
 
@@ -112,7 +92,6 @@ switch ($this->getLayout())
         break;
         }
         
-        //$this->request_url = $uri->toString();
     }
 
     /**
@@ -121,8 +100,6 @@ switch ($this->getLayout())
      * @since	1.7
      */
     protected function addToolbar() {
-        // Get a refrence of the page instance in joomla
-        //$document = Factory::getDocument();
         // Set toolbar items for the page
         JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
         JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');

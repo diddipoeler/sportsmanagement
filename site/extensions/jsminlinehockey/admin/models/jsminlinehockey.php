@@ -214,11 +214,11 @@ if ( !$matchlink )
     $matchlink = $this->getMatchLink($projectid);
 }
 
-if($app->isAdmin()) 
-{
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
-}
+//if($app->isAdmin()) 
+//{
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
+//}
 
 $teams = array();
 
