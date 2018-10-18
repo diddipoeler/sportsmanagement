@@ -38,7 +38,7 @@ $map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
 break;
 }
 	
-	
+$map_type = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'; 	
 ?>	
 <h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
