@@ -38,7 +38,7 @@ $map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';
 break;
 }
 	
-$map_type = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'; 	
+//$map_type = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'; 	
 ?>	
 <h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
@@ -63,6 +63,7 @@ case 'clubinfo':
              '<?php echo $map_type; ?>', {
              attribution: '&copy; ' + mapLink + ' Contributors',
              maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
              }).addTo(map);
   
          for (var i = 0; i < planes.length; i++) {
@@ -108,6 +109,7 @@ $comma_bounds = implode(",", $map_bounds);
              '<?php echo $map_type; ?>', {
              attribution: '&copy; ' + mapLink + ' Contributors',
              maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
              }).addTo(map);
   
          for (var i = 0; i < planes.length; i++) {
