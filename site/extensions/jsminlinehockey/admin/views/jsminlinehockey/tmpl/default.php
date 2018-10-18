@@ -51,5 +51,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 </div>
 
 <?PHP
-echo $this->loadTemplate('jsminfo');
+//echo $this->loadTemplate('jsminfo');
 ?> 

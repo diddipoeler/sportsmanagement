@@ -817,11 +817,11 @@ $query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
 $db->setQuery( $query );
 $derlink  = $db->loadResult();
     
-if($app ->isAdmin()) 
-{
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
-}    
+//if($app ->isAdmin()) 
+//{
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
+//}    
 
 return $derlink;
 }
