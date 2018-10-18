@@ -13,6 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+$this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
+$this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
+
 /**
  * welche joomla version ?
  */
@@ -153,6 +156,9 @@ echo HTMLHelper::_('bootstrap.renderModal',
 						<div class="control-group">
 							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
 							<div id="map_canvas"  class="map_canvas"></div>
+                            
+                            <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+                            </div>
 						</div>
 					</div>
             </div>
