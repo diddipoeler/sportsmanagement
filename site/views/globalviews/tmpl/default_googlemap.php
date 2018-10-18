@@ -73,12 +73,14 @@ if ( !empty($latitude) && $latitude != '0.00000000' )
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
 $map_markes[] = "['".$row->team_name.'<br>'.JHtml::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".$row->logo_big."']";
+$map_bounds[] = "[".$latitude.",".$longitude."]";
 $zaehler++;
 }
 
 }
 
 $comma_separated = implode(",", $map_markes);
+$comma_bounds = implode(",", $map_bounds);
 ?>
 <script>
   
@@ -100,7 +102,7 @@ $comma_separated = implode(",", $map_markes);
                  .bindPopup(planes[i][0])
                  .addTo(map);
          }
-              
+         map.fitBounds(<?php echo $comma_bounds; ?>);     
      </script>
 <?php
 
