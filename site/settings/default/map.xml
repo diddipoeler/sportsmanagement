@@ -16,6 +16,10 @@
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ZOOM" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ZOOM">
 		</field>
 
+		<field name="map_icon" type="text" default="http://maps.google.com/mapfiles/kml/pal2/icon49.png"
+			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_ICON" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_ICON">
+		</field>
+		
 		<field name="default_map_type" type="list" default="G_NORMAL_MAP"
 			label="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_LABEL_TYPE" description="COM_SPORTSMANAGEMENT_FES_MAP_PARAM_DESCR_TYPE">
 			<option value="G_NORMAL_MAP">COM_SPORTSMANAGEMENT_FES_MAP_PARAM_OPTION0_TYPE
