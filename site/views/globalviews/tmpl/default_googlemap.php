@@ -111,9 +111,11 @@ $comma_bounds = implode(",", $map_bounds);
              maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
              subdomains:['mt0','mt1','mt2','mt3'],
              }).addTo(map);
-  
+var myIcon = L.icon({
+	iconUrl: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png'
+});  
          for (var i = 0; i < planes.length; i++) {
-             marker = new L.marker([planes[i][1],planes[i][2]])
+             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
                  .bindPopup(planes[i][0])
                  .addTo(map);
          }
