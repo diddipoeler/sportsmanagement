@@ -712,8 +712,8 @@ $options = array();
 	public function getAssocLeagueSelect($country_id,$associd)
 	{		
 //$app = Factory::getApplication();
-//        $db = sportsmanagementHelper::getDBConnection(); 
-//        $query = $db->getQuery(true);
+        $this->_db = sportsmanagementHelper::getDBConnection(); 
+        $this->_query = $this->_db->getQuery(true);
         $this->_query->clear();
         $this->_query->select('l.id AS value, l.name AS text');
             $this->_query->from('#__sportsmanagement_league AS l');
