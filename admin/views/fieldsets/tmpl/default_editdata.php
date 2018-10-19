@@ -228,6 +228,7 @@ switch ($fieldset->name)
     {
     case 'club':
     case 'playground':
+    case 'person':
     ?>
     <div class="span6">
     <?php
@@ -324,6 +325,7 @@ switch ($fieldset->name)
     {
     case 'club':
     case 'playground':
+    case 'person':
 ?>
              <div class="span6">
 						<div class="control-group">
@@ -337,7 +339,7 @@ switch ($fieldset->name)
          ["position",<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>]
          ];
   
-         var map = L.map('map').setView([<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>], 8);
+         var map = L.map('map').setView([<?php echo $this->item->latitude; ?>,<?php echo $this->item->longitude; ?>], 15);
          mapLink =
              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
          L.tileLayer(
