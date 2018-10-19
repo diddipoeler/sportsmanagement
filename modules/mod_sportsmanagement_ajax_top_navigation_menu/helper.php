@@ -77,8 +77,8 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	{
 		$this->_app = Factory::getApplication();
         $this->_params = $params;
-		$this->_db = sportsmanagementHelper::getDBConnection();
-        $this->_query = $this->_db->getQuery(true);
+		//$this->_db = sportsmanagementHelper::getDBConnection();
+        //$this->_query = $this->_db->getQuery(true);
         
     if ( self::$_project_id )
 		{
@@ -241,6 +241,8 @@ $query->order('s.name');
 	  // $app = Factory::getApplication();
 //        $db = sportsmanagementHelper::getDBConnection(); 
 //        $query = $db->getQuery(true);
+$this->_db = sportsmanagementHelper::getDBConnection(); 
+        $this->_query = $this->_db->getQuery(true);
 	$options = array();
     
     $fedtext = $federation;
