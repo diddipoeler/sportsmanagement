@@ -123,16 +123,28 @@ $comma_bounds = implode(",", $map_bounds);
              maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
              subdomains:['mt0','mt1','mt2','mt3'],
              }).addTo(map);
-//var myIcon = L.icon({
-//	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-//});  
-         for (var i = 0; i < planes.length; i++) {
 
+         for (var i = 0; i < planes.length; i++) {
+<?php
+if ( $this->mapconfig['map_ranking_club_icon'] )
+{
+?>
 console.log("wappen : " + planes[i][4]);  
 var myIcon = L.icon({
 	iconUrl: planes[i][4],
-    iconSize: [50, 50]
+    iconSize: [<?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>, <?php echo $this->mapconfig['map_ranking_club_icon_width']; ?>]
 });           
+<?php
+}
+else
+{
+?>
+var myIcon = L.icon({
+	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+});  
+<?php
+}
+?>
             
              marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
                  .bindPopup(planes[i][0])
