@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
@@ -78,7 +79,7 @@ switch ($fieldset->name)
 							<?php echo $field->input; ?>
 						
                         <?PHP
-                        $suchmuster = array ("jform[","]","request[");
+                        $suchmuster = array ("jform[","]","request[","params[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                         switch ($var_onlinehelp)
@@ -115,8 +116,8 @@ echo HTMLHelper::_('bootstrap.renderModal',
                 {
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo Uri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo Uri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }
@@ -231,7 +232,7 @@ switch ($fieldset->name)
 							<?php echo $field->input; ?>
 						
                         <?PHP
-                        $suchmuster = array ("jform[","]","request[");
+                        $suchmuster = array ("jform[","]","request[","params[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                         switch ($var_onlinehelp)
@@ -261,8 +262,8 @@ switch ($fieldset->name)
                 $picture = sportsmanagementHelper::getPicturePlayground($field->value);
 
 ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+<a href="<?php echo Uri::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo Uri::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
 </a>
 <?PHP                   
                 }

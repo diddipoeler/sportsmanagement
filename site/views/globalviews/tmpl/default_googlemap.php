@@ -98,7 +98,7 @@ if ( !empty($latitude) && $latitude != '0.00000000' )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
-$map_markes[] = "['".$row->team_name.'<br>'.JHtml::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".$row->logo_big."']";
+$map_markes[] = "['".$row->team_name.'<br>'.JHtml::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".Uri::root().$row->logo_big."']";
 $map_bounds[] = "[".$latitude.",".$longitude."]";
 $zaehler++;
 }
@@ -123,10 +123,17 @@ $comma_bounds = implode(",", $map_bounds);
              maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
              subdomains:['mt0','mt1','mt2','mt3'],
              }).addTo(map);
-var myIcon = L.icon({
-	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
-});  
+//var myIcon = L.icon({
+//	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+//});  
          for (var i = 0; i < planes.length; i++) {
+
+console.log("wappen : " + planes[i][4]);  
+var myIcon = L.icon({
+	iconUrl: planes[i][4],
+    iconSize: [50, 50]
+});           
+            
              marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
                  .bindPopup(planes[i][0])
                  .addTo(map);
