@@ -49,6 +49,9 @@ $view = $this->jinput->getCmd('view', 'cpanel');
  */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
+/**
+ * joomla 4
+ */     
 ?>
 <div>
 <?php
@@ -202,6 +205,9 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 }	
 elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
+/**
+ * joomla 3
+ */    
 ?> 
 <div class="form-horizontal">
 <fieldset>
@@ -217,9 +223,23 @@ switch ($fieldset->name)
     case 'details':
     ?>
     <div class="row-fluid">
-		<!--	<div class="span9"> -->
-		<!--		<div class="row-fluid form-horizontal-desktop"> -->
-					<div class="span6">
+    <?php
+    switch ($view)
+    {
+    case 'club':
+    case 'playground':
+    ?>
+    <div class="span6">
+    <?php
+    break;
+    default:
+    ?>
+    <div class="span12">
+    <?php
+    break;
+    }
+    ?>
+					
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
     {
@@ -299,8 +319,12 @@ switch ($fieldset->name)
     }
     ?>
     </div>
-		<!--		</div> -->
-		<!--	</div> -->
+<?php
+    switch ($view)
+    {
+    case 'club':
+    case 'playground':
+?>
              <div class="span6">
 						<div class="control-group">
 							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
@@ -336,6 +360,10 @@ var myIcon = L.icon({
                             
 						</div>
 					</div>
+                    <?php
+                    break;
+                    }
+                    ?>
             </div>
     <?PHP
     break;
