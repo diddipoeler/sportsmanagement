@@ -39,14 +39,13 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
+
 // Reference global application object
 $app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
-$postarray = $app->input->post->getArray();
 
-
-$mainframe = Factory::getApplication();
+$document = Factory::getDocument();
 /**
  * sprachdatei aus dem backend laden
  */
@@ -59,26 +58,6 @@ $language_tag = $langtag->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-/**
- * welche tabelle soll genutzt werden
- */
-$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
-
-//if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
-//{
-//DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-//}
-if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-}
-if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
-}
 
 
 // get helper
@@ -90,13 +69,7 @@ $helper = new modSportsmanagementAjaxTopNavigationMenuHelper($params);
 
 $points = $helper->getFederations();
 $tab_points = array();
-$countryassocselect = array();
 
-$countrysubassocselect = array();
-$countrysubsubassocselect = array();
-$countrysubsubsubassocselect = array();
-$leagueselect  = array();
-$projectselect  = array();
 
 foreach( $points as $row )
 {
@@ -107,68 +80,21 @@ $tab_points[] = $row->name;
 
 $tab_points[] = 'NON';
 
-
-$ajax = $jinput->post->get('ajaxCalMod', 0, 'INT');
-$ajaxmod = $jinput->post->get('ajaxmodid', 0, 'INT');
-
-$document = Factory::getDocument();
-
-$queryvalues = $helper->getQueryValues();
-
-
-
-$assoc_id = 0;
-$subassoc_id = 0;  
-$subsubassoc_id = 0;  
-$user_name = $helper->getUserName();
-$project_id = 0;  
-$league_id = 0;
-$division_id = 0;
-$team_id = 0;  
-$country_id  = ''; 
-$lightbox = '';
-
-//if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
-if ( $queryvalues && !$_POST )
-{
-    
 $ende_if = false;
 $league_assoc_id = 0;
 $sub_assoc_parent_id = 0;
 $sub_sub_assoc_parent_id = 0;
 
-if ( isset($queryvalues['p']) )
-{
-$project_id  = intval($queryvalues['p']);
-}
-if ( isset($queryvalues['tid']) )
-{
-$team_id  = intval($queryvalues['tid']);
-}
-if ( isset($queryvalues['division']) )
-{
-$division_id  = intval($queryvalues['division']);
-}
+$project_id = $jinput->get('p', 0, 'INT'); 
+$team_id = $jinput->get('tid', 0, 'INT'); 
+$division_id = $jinput->get('division', 0, 'INT'); 
 
 $helper->setProject( $project_id, $team_id, $division_id );
 $league_id  = $helper->getLeagueId();
 $country_id  = $helper->getProjectCountry($project_id);
-
 $league_assoc_id  = $helper->getLeagueAssocId();
 $sub_assoc_parent_id  = $helper->getAssocParentId($league_assoc_id);
 $sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
-
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-
-//echo 'league_id  => <pre>'.print_r($league_id  , true).'</pre><br>';
-//echo 'country_id  => <pre>'.print_r($country_id  , true).'</pre><br>';
-//echo 'league_assoc_id => <pre>'.print_r($league_assoc_id, true).'</pre><br>';
-//echo 'sub_assoc_parent_id => <pre>'.print_r($sub_assoc_parent_id, true).'</pre><br>';
-//echo 'sub_sub_assoc_parent_id => <pre>'.print_r($sub_sub_assoc_parent_id, true).'</pre><br>';
-
-//}
-
 
 if ( !empty($sub_sub_assoc_parent_id) && !$ende_if )
 {
@@ -190,124 +116,127 @@ if ( !empty($league_assoc_id)  && !$ende_if )
 $assoc_id = $league_assoc_id;
 $ende_if = true;
 }
- 
-}
-
-
-//if ( $_POST && !isset($_POST['reload_View']) )
-if ( $_POST  )
-{
-
-
-    
-$league_id = 0;   
-$project_id = 0;
-$team_id = 0;
-$division_id = 0;
-    
-
-
-$project_id = $jinput->post->get('jlamtopproject', 0, 'INT');
-
-if ( empty($project_id) )
-{
-$project_id = $jinput->post->get('p', 0, 'INT');    
-}    
-
-
-  
-
-$assoc_id = $jinput->post->get('jlamtopassocid', 0, 'INT');
-$subassoc_id = $jinput->post->get('jlamtopsubassocid', 0, 'INT');
-$subsubassoc_id = $jinput->post->get('jlamtopsubsubassocid', 0, 'INT');
-$country_id = $jinput->post->get('jlamtopcountry', '', 'STR');
-$season_id = $jinput->post->get('jlamtopseason', 0, 'INT');
-$league_id = $jinput->post->get('jlamtopleague', 0, 'INT');
-$team_id = $jinput->post->get('jlamtopteam', 0, 'INT');
-
-$helper->setProject( $project_id, $team_id, $division_id  );
-}
-
-
-if ( !$country_id )
-{
-$country_id  = $helper->getProjectCountry($project_id);
-$league_id  = $helper->getLeagueId();
-$league_assoc_id  = $helper->getLeagueAssocId();
-$sub_assoc_parent_id  = $helper->getAssocParentId($league_assoc_id);
-$sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
-}
-
-	
-// welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-HTMLHelper::_('behavior.framework', true);
-}
-else
-{
-HTMLHelper::_('behavior.mootools');
-}
-
-HTMLHelper::_('behavior.modal');
-
-if ( $params->get('show_favteams_nav_links') )
-{
-$favteams  = $helper->getFavTeams($project_id);
-}
 
 foreach( $points as $row )
 {
 $federationselect[$row->name] = $helper->getFederationSelect($row->name,$row->id);
-$countryassocselect[$row->name] = '';
-$leagueselect[$row->name] = '';
+?>
+<script>
+console.log('tabpoints = ' + '<?php echo $row->name;?>' );
+</script>
+<?php
 }
-
 $federationselect['NON'] = $helper->getFederationSelect('NON',0);
-$countryassocselect['NON'] = '';
-$leagueselect['NON'] = '';
 
-$country_federation	= $helper->getCountryFederation($country_id);
+$country_federation = $helper->getCountryFederation($country_id);
 
 if ( !$country_federation )
 {
     $country_federation = 'NON';
 }
 
-$startoffset = 0;
-foreach ( $tab_points as $key => $value )
-{
+?>
+<script>
+console.log('project_id = ' + '<?php echo $project_id;?>' );
+console.log('country_id = ' + '<?php echo $country_id;?>' );
+console.log('country_federation = ' + '<?php echo $country_federation;?>' );
 
-//if ( strtolower($country_federation) == $value )
-//{
-//$startoffset = $key;
-//break;
-//}
+console.log('league_id = ' + '<?php echo $league_id;?>' );
+console.log('league_assoc_id = ' + '<?php echo $league_assoc_id;?>' );
+console.log('sub_assoc_parent_id = ' + '<?php echo $sub_assoc_parent_id;?>' );
+console.log('sub_sub_assoc_parent_id = ' + '<?php echo $sub_sub_assoc_parent_id;?>' );
+
+console.log('assoc_id = ' + '<?php echo $assoc_id ;?>' );
+console.log('subassoc_id = ' + '<?php echo $subassoc_id ;?>' );
+console.log('subsubassoc_id = ' + '<?php echo $subsubassoc_id ;?>' );
+
+</script>
+<?php
+// Build the script.
+$script = array();
+$script[] = "\n";       
+$script[] = "jQuery(document).ready(function ($){";
+foreach( $points as $row )
+{
+// regionalverband
+$script[] = "$('#jlamtopfederation".$row->name.$module->id."').change(function(){";
+$script[] = "var value = $('#jlamtopfederation".$row->name.$module->id."').val();";
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getcountryassoc&country=' + value;";
+$script[] = "console.log('country value = ' + value );";
+$script[] = "console.log('country url = ' + url );";
+$script[] = "$.ajax({";
+$script[] = "url: url,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data) {";
+$script[] = "$('#jlamtopassoc".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopassoc".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopassoc".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopassoc".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+$script[] = "});";
+
+// landesverband
+$script[] = "$('#jlamtopassoc".$row->name.$module->id."').change(function(){";
+$script[] = "var value = $('#jlamtopassoc".$row->name.$module->id."').val();";
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubAssocSelect&assoc_id=' + value;";
+$script[] = "console.log('assoc_id value = ' + value );";
+$script[] = "console.log('assoc_id url = ' + url );";
+$script[] = "$.ajax({";
+$script[] = "url: url,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data) {";
+$script[] = "$('#jlamtopsubassoc".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopsubassoc".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopsubassoc".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopsubassoc".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+$script[] = "});";
 
 }
+$script[] = "});";     
+    
+// Add the script to the document head.
+Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
+// regionalverband
 if ( $country_id )
 {
-$countryassocselect[$country_federation]['assocs']	= $helper->getCountryAssocSelect($country_id);
-$leagueselect[$country_federation]['leagues']	= $helper->getAssocLeagueSelect($country_id,$assoc_id);
+$countryassocselect[$country_federation]['assocs'] = $helper->getCountryAssocSelect($country_id);
+$leagueselect[$country_federation]['leagues'] = $helper->getAssocLeagueSelect($country_id,$assoc_id );
 }
-
+// landesverband
 if ( $assoc_id )
 {
-$countrysubassocselect[$country_federation]['assocs']	= $helper->getCountrySubAssocSelect($assoc_id);
-$leagueselect[$country_federation]['leagues']	= $helper->getAssocLeagueSelect($country_id,$assoc_id);
+$countrysubassocselect[$country_federation]['assocs'] = $helper->getCountrySubAssocSelect($assoc_id);
+$leagueselect[$country_federation]['leagues'] = $helper->getAssocLeagueSelect($country_id,$assoc_id);
 }
-
+// kreisverband
 if ( $subassoc_id )
 {
-$countrysubsubassocselect[$country_federation]['subassocs']	= $helper->getCountrySubSubAssocSelect($subassoc_id);
-$leagueselect[$country_federation]['leagues']	= $helper->getAssocLeagueSelect($country_id,$subassoc_id);
+$countrysubsubassocselect[$country_federation]['subassocs'] = $helper->getCountrySubSubAssocSelect($subassoc_id);
+$leagueselect[$country_federation]['leagues'] = $helper->getAssocLeagueSelect($country_id,$subassoc_id);
 }
 
 if ( $subsubassoc_id )
 {
-$countrysubsubsubassocselect[$country_federation]['subsubassocs']	= $helper->getCountrySubSubAssocSelect($subsubassoc_id);
-$leagueselect[$country_federation]['leagues']	= $helper->getAssocLeagueSelect($country_id,$subsubassoc_id);
+$countrysubsubsubassocselect[$country_federation]['subsubassocs'] = $helper->getCountrySubSubAssocSelect($subsubassoc_id);
+$leagueselect[$country_federation]['leagues'] = $helper->getAssocLeagueSelect($country_id,$subsubassoc_id);
 }
 
 if ( $league_id )
@@ -318,18 +247,25 @@ $projectselect[$country_federation]['projects']	= $helper->getProjectSelect($lea
 if ( $project_id )
 {
 $helper->setProject($project_id,$team_id,$division_id);
-$divisionsselect[$country_federation]['divisions']	= $helper->getDivisionSelect($project_id);
-$projectselect[$country_federation]['teams']	= $helper->getTeamSelect($project_id);
+$divisionsselect[$country_federation]['divisions'] = $helper->getDivisionSelect($project_id);
+$projectselect[$country_federation]['teams'] = $helper->getTeamSelect($project_id);
 }
-	
-$inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'joomleague'):'';
-$document->addScriptDeclaration(';
-    jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\'; 
-    jlcmodal['.$module->id.'] = \''.$lightbox.'\';
-      ');
+
+
+
+
+
+
+
+  
+
+
+
+
       
 if (!defined('JLTOPAM_MODULESCRIPTLOADED')) 
 {
+/*
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {    
 	$document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
@@ -337,7 +273,8 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 else
 {
     $document->addScript( Uri::base().'modules/'.$module->module.'/js/'.$module->module.'_2.js' );
-}	
+}
+*/	
     //	$document->addScriptDeclaration(';
 //    var ajaxmenu_baseurl=\''. Uri::base() . '\';
 //      ');

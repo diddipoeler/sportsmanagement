@@ -27,7 +27,26 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelAjax extends BaseDatabaseModel
 {
     
-    
+    public function getCountrySubAssocSelect($assoc_id)
+{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        $options = '';
+        
+        $query->select('s.id AS value, s.name AS text');
+$query->from('#__sportsmanagement_associations AS s');
+$query->where('s.parent_id = '.$assoc_id);
+$query->order('s.name');
+
+		$db->setQuery($query);
+        
+        //$this->getCountrySubAssocSelect = $query->dump();
+        
+		$res = $db->loadObjectList();
+        return $res;
+        }
+        
     public function getCountryAssocSelect($country)
 	{
 $app = Factory::getApplication();
