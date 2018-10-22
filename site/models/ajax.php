@@ -26,7 +26,39 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementModelAjax extends BaseDatabaseModel
 {
-    
+
+public function getAssocLeagueSelect($country_id,$associd)
+	{		
+//$app = Factory::getApplication();
+        $this->_db = sportsmanagementHelper::getDBConnection(); 
+        $this->_query = $this->_db->getQuery(true);
+        $this->_query->clear();
+        $this->_query->select('l.id AS value, l.name AS text');
+            $this->_query->from('#__sportsmanagement_league AS l');
+            $this->_query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
+            $this->_query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            if ( $associd )
+            {
+            $this->_query->where('l.associations = ' . $associd );
+            }
+            $this->_query->where('l.country = \'' . $country_id. '\'' );
+            $this->_query->group('l.name');
+            $this->_query->order('l.name');
+
+		$this->_db->setQuery($this->_query);
+        
+        //$this->getAssocLeagueSelect = $query->dump();
+        
+		$res = $this->_db->loadObjectList();
+//		if ($res) 
+//        {
+//        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
+//		$options = array_merge($options, $res);
+//		}
+
+		return $res;
+	}
+        
     public function getCountrySubSubAssocSelect($subassoc_id)
 {
 $app = Factory::getApplication();
