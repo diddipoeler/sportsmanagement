@@ -38,6 +38,18 @@ class sportsmanagementControllerAjax extends BaseController {
         parent::__construct();
     }
 
+public function getcountryassoc()
+{
+   $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input; 
+        $country = $jinput->getVar('country');
+        $model = $this->getModel('ajax');
+        $res = $model->getCountryAssocSelect($country);
+        echo json_encode($res);
+        $app->close();
+        
+}
     /**
      * sportsmanagementControllerAjax::getprojectsoptions()
      * 
