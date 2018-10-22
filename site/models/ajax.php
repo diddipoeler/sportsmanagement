@@ -27,6 +27,34 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelAjax extends BaseDatabaseModel
 {
     
+    public function getCountrySubSubAssocSelect($subassoc_id)
+{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+
+        $query->select('s.id AS value, s.name AS text');
+$query->from('#__sportsmanagement_associations AS s');
+$query->where('s.parent_id = '.$subassoc_id);
+$query->where('s.published = 1');
+$query->order('s.name');
+
+                
+		$db->setQuery($query);
+        
+        //$this->getCountrySubSubAssocSelect = $query->dump();
+        
+		$res = $db->loadObjectList();
+//		if ($res) 
+//        {
+//		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+//			$options = array_merge($options, $res);
+//		}
+
+		return $res;
+
+}
+
     public function getCountrySubAssocSelect($assoc_id)
 {
 $app = Factory::getApplication();

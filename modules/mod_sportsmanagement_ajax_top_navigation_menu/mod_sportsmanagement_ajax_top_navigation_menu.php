@@ -208,6 +208,31 @@ $script[] = "						$('#jlamtopsubassoc".$row->name.$module->id."').trigger('lisz
 $script[] = "					});";
 $script[] = "});";
 
+// kreisverband
+$script[] = "$('#jlamtopsubassoc".$row->name.$module->id."').change(function(){";
+$script[] = "var value = $('#jlamtopsubassoc".$row->name.$module->id."').val();";
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value;";
+$script[] = "console.log('subassoc_id value = ' + value );";
+$script[] = "console.log('subassoc_id url = ' + url );";
+$script[] = "$.ajax({";
+$script[] = "url: url,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data) {";
+$script[] = "$('#jlamtopsubsubassoc".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopsubsubassoc".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopsubsubassoc".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopsubsubassoc".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+$script[] = "});";
+
 }
 $script[] = "});";     
     
