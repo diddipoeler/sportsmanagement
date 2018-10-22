@@ -81,8 +81,8 @@ echo HTMLHelper::_('select.genericlist', $federationselect[$value], 'jlamtopfede
 
 
 <?PHP
-if ( isset($countryassocselect[$fed_array]['assocs']) )
-{
+//if ( isset($countryassocselect[$fed_array]['assocs']) )
+//{
 ?>
 <tr>
 <td>
@@ -93,14 +93,14 @@ echo HTMLHelper::_('select.genericlist', $countryassocselect[$fed_array]['assocs
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 
 <?PHP
-if ( isset($countrysubassocselect[$fed_array]['assocs']) )
-{
+//if ( isset($countrysubassocselect[$fed_array]['assocs']) )
+//{
 ?>
 <tr>
 <td>
@@ -111,14 +111,14 @@ echo HTMLHelper::_('select.genericlist', $countrysubassocselect[$fed_array]['ass
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 
 <?PHP
-if ( isset($countrysubsubassocselect[$fed_array]['subassocs']) )
-{
+//if ( isset($countrysubsubassocselect[$fed_array]['subassocs']) )
+//{
 ?>
 <tr>
 <td>
@@ -129,14 +129,14 @@ echo HTMLHelper::_('select.genericlist', $countrysubsubassocselect[$fed_array]['
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 
 <?PHP
-if ( isset($countrysubsubsubassocselect[$fed_array]['subsubassocs']) )
-{
+//if ( isset($countrysubsubsubassocselect[$fed_array]['subsubassocs']) )
+//{
 ?>
 <tr>
 <td>
@@ -147,14 +147,14 @@ echo HTMLHelper::_('select.genericlist', $countrysubsubsubassocselect[$fed_array
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 
 <?PHP
-if ( isset($leagueselect[$fed_array]['leagues']) )
-{
+//if ( isset($leagueselect[$fed_array]['leagues']) )
+//{
 ?>
 <tr>
 <td>
@@ -165,14 +165,14 @@ echo HTMLHelper::_('select.genericlist', $leagueselect[$fed_array]['leagues'], '
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 
 <?PHP
-if ( isset($projectselect[$fed_array]['projects']) )
-{
+//if ( isset($projectselect[$fed_array]['projects']) )
+//{
 ?>
 <tr>
 <td>
@@ -183,13 +183,13 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['projects'],
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 
 <?PHP
-if ( isset($projectselect[$fed_array]['teams']) )
-{
+//if ( isset($projectselect[$fed_array]['teams']) )
+//{
 ?>
 <tr>
 <td>
@@ -200,7 +200,7 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 </td>
 </tr>
 <?PHP
-}
+//}
 ?>
 
 </table>
