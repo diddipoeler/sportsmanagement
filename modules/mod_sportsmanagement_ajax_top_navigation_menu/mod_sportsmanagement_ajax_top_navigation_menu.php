@@ -229,7 +229,7 @@ $script[] = "						$('#jlamtopsubassoc".$row->name.$module->id."').trigger('lisz
 $script[] = "					});";
 
 $script[] = "var valcountry = $('#jlamtopfederation".$row->name.$module->id."').val();";
-$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry + '&assoc_id' + value;";
+$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry + '&assoc_id=' + value;";
 $script[] = "$.ajax({";
 $script[] = "url: url,";
 $script[] = "dataType: 'json',";
@@ -275,7 +275,7 @@ $script[] = "						$('#jlamtopsubsubassoc".$row->name.$module->id."').trigger('l
 $script[] = "					});";
 
 $script[] = "var valcountry6 = $('#jlamtopfederation".$row->name.$module->id."').val();";
-$script[] = "var url6 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry6 + '&assoc_id' + value5;";
+$script[] = "var url6 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry6 + '&assoc_id=' + value5;";
 $script[] = "console.log('subassoc_id value5 = ' + value5 );";
 $script[] = "console.log('subassoc_id url6 = ' + url6 );";
 $script[] = "$.ajax({";
@@ -323,7 +323,7 @@ $script[] = "						$('#jlamtopsubsubsubassoc".$row->name.$module->id."').trigger
 $script[] = "					});";
 
 $script[] = "var valcountry8 = $('#jlamtopfederation".$row->name.$module->id."').val();";
-$script[] = "var url8 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry8 + '&assoc_id' + value7;";
+$script[] = "var url8 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry8 + '&assoc_id=' + value7;";
 $script[] = "console.log('subassoc_id value7 = ' + value7 );";
 $script[] = "console.log('subassoc_id url8 = ' + url8 );";
 $script[] = "$.ajax({";
