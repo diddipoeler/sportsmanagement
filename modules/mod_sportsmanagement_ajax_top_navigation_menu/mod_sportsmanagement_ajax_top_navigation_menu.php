@@ -252,12 +252,12 @@ $script[] = "});";
 
 // kreisverband
 $script[] = "$('#jlamtopsubassoc".$row->name.$module->id."').change(function(){";
-$script[] = "var value = $('#jlamtopsubassoc".$row->name.$module->id."').val();";
-$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value;";
-$script[] = "console.log('subassoc_id value = ' + value );";
-$script[] = "console.log('subassoc_id url = ' + url );";
+$script[] = "var value5 = $('#jlamtopsubassoc".$row->name.$module->id."').val();";
+$script[] = "var url5 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value5;";
+$script[] = "console.log('subassoc_id value5 = ' + value5 );";
+$script[] = "console.log('subassoc_id url5 = ' + url5 );";
 $script[] = "$.ajax({";
-$script[] = "url: url,";
+$script[] = "url: url5,";
 $script[] = "dataType: 'json',";
 $script[] = "type : 'POST'";
 $script[] = "}).done(function(data5) {";
@@ -274,10 +274,12 @@ $script[] = "						});";
 $script[] = "						$('#jlamtopsubsubassoc".$row->name.$module->id."').trigger('liszt:updated');";
 $script[] = "					});";
 
-$script[] = "var valcountry = $('#jlamtopfederation".$row->name.$module->id."').val();";
-$script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry + '&assoc_id' + value;";
+$script[] = "var valcountry6 = $('#jlamtopfederation".$row->name.$module->id."').val();";
+$script[] = "var url6 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry6 + '&assoc_id' + value5;";
+$script[] = "console.log('subassoc_id value5 = ' + value5 );";
+$script[] = "console.log('subassoc_id url6 = ' + url6 );";
 $script[] = "$.ajax({";
-$script[] = "url: url,";
+$script[] = "url: url6,";
 $script[] = "dataType: 'json',";
 $script[] = "type : 'POST'";
 $script[] = "}).done(function(data6) {";
