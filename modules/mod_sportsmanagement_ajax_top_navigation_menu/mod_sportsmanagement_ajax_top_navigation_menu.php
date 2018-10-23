@@ -158,7 +158,7 @@ $script[] = "\n";
 $script[] = "jQuery(document).ready(function ($){";
 foreach( $points as $row )
 {
-// regionalverband
+// regionalverband auswählen
 $script[] = "$('#jlamtopfederation".$row->name.$module->id."').change(function(){";
 $script[] = "var value = $('#jlamtopfederation".$row->name.$module->id."').val();";
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getcountryassoc&country=' + value;";
@@ -204,7 +204,7 @@ $script[] = "					});";
 
 $script[] = "});";
 
-// landesverband
+// landesverband auswählen
 $script[] = "$('#jlamtopassoc".$row->name.$module->id."').change(function(){";
 $script[] = "var value = $('#jlamtopassoc".$row->name.$module->id."').val();";
 $script[] = "var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubAssocSelect&assoc_id=' + value;";
@@ -250,7 +250,7 @@ $script[] = "					});";
 
 $script[] = "});";
 
-// kreisverband
+// kreisverband auswählen
 $script[] = "$('#jlamtopsubassoc".$row->name.$module->id."').change(function(){";
 $script[] = "var value5 = $('#jlamtopsubassoc".$row->name.$module->id."').val();";
 $script[] = "var url5 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value5;";
@@ -297,6 +297,57 @@ $script[] = "						$('#jlamtopleagues".$row->name.$module->id."').trigger('liszt
 $script[] = "					});";
 
 $script[] = "});";
+
+// letzte stufe auswählen
+$script[] = "$('#jlamtopsubsubassoc".$row->name.$module->id."').change(function(){";
+$script[] = "var value7 = $('#jlamtopsubsubassoc".$row->name.$module->id."').val();";
+$script[] = "var url7 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCountrySubSubAssocSelect&subassoc_id=' + value7;";
+$script[] = "console.log('subassoc_id value7 = ' + value7 );";
+$script[] = "console.log('subassoc_id url7 = ' + url7 );";
+$script[] = "$.ajax({";
+$script[] = "url: url7,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data7) {";
+$script[] = "$('#jlamtopsubsubsubassoc".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopsubsubsubassoc".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data7);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data7, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopsubsubsubassoc".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopsubsubsubassoc".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+
+$script[] = "var valcountry8 = $('#jlamtopfederation".$row->name.$module->id."').val();";
+$script[] = "var url8 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry8 + '&assoc_id' + value7;";
+$script[] = "console.log('subassoc_id value7 = ' + value7 );";
+$script[] = "console.log('subassoc_id url8 = ' + url8 );";
+$script[] = "$.ajax({";
+$script[] = "url: url8,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data8) {";
+$script[] = "$('#jlamtopleagues".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopleagues".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data8);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data8, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopleagues".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopleagues".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+
+$script[] = "});";
+
+
+
 
 }
 $script[] = "});";     
