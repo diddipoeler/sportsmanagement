@@ -81,7 +81,7 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->fax) {
                             ?>
                             <div class="jl_parentContainer">
-                                <span class="clubinfo_listing_item"> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_FAX'); ?></span>
+                                <span class="clubinfo_listing_item"><strong> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_FAX'); ?></strong></span>
                                 <span class="clubinfo_listing_value"> <?php echo $this->club->fax; ?></span>
                             </div>
                             <?php
@@ -89,7 +89,7 @@ $this->overallconfig['use_jquery_modal']);
                         if ($this->club->email) {
                             ?>
                             <div class="jl_parentContainer">
-                                <span class="clubinfo_listing_item"> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></span>
+                                <span class="clubinfo_listing_item"><strong> <?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></strong></span>
                                 <span class="clubinfo_listing_value"> <?php
                                     $user = Factory::getUser();
                                     if (($user->id) or ( !$this->overallconfig['nospam_email'])) {
