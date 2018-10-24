@@ -13,7 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
 
-<div class="row-fluid" id="default_teams">
+<div class="<?php echo $this->divclassrow;?>" id="default_teams">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">	
 <h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
@@ -96,7 +96,22 @@ use Joomla\CMS\Factory;
 			
             if ( $this->config['show_teams_picture'] )
             {
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,$team->project_team_picture,$team->team_name,$this->config['team_picture_width']);       
+if ( empty($team->project_team_picture) )
+{
+$team->project_team_picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+}                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,
+$team->project_team_picture,
+$team->team_name,
+$this->config['team_picture_width']
+,
+'',							
+$this->modalwidth,
+$this->modalheight,
+$this->overallconfig['use_jquery_modal']
+); 
+            
+                  
             }
             	
 			}
