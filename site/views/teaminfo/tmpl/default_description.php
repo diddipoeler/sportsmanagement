@@ -28,7 +28,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 	if( trim( $description != "" ) )
 	{
 		?>
-<div class="description">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="teamdescription">
 		<br />
 		<table class="table">
 			<tr class="sectiontableheader">

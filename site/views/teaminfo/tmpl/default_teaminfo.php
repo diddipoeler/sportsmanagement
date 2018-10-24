@@ -20,8 +20,8 @@ if (!isset($this->team)) {
 } else {
     ?>
 	<!-- anfang default_teaminfo -->
-    <div class="container" id="default_teaminfo">
-	<div class="row" id="default_teaminfo_row">
+    <div class="<?php echo $this->divclasscontainer;?>" id="default_teaminfo">
+	<div class="<?php echo $this->divclassrow;?>" id="default_teaminfo_row">
 	<!-- anfang default_teaminfo_left -->
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo-left">
             <?PHP
@@ -31,7 +31,10 @@ if (!isset($this->team)) {
             //dynamic object property string
             $pic = $this->config['show_picture'];
             $picture = $this->team->$pic;
-
+if ( empty($picture) )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("team");
+}
 echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo' . $this->team->id,
 $picture,
 $this->team->name,
