@@ -27,6 +27,52 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class sportsmanagementModelAjax extends BaseDatabaseModel
 {
 
+
+/**
+ * sportsmanagementModelAjax::getProjectSelect()
+ * 
+ * @param mixed $league_id
+ * @return
+ */
+public function getProjectSelect($league_id)
+	{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+        
+        $query->select('p.id AS value, p.name AS text');
+            $query->from('#__sportsmanagement_project AS p');
+            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
+            $query->where('p.published = 1');
+            $query->where('p.league_id = '. $league_id);
+            $query->order('s.name DESC, p.name ASC');
+
+		$db->setQuery($query);
+        
+        //$this->getProjectSelect = $query->dump();
+       
+		$res = $db->loadObjectList();
+		
+//		if ($res) 
+//		{
+//
+//$options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_project_dropdown'))));
+//					$options = array_merge($options, $res);
+//
+//		}
+
+        return $res;		
+	}
+    
+    
+/**
+ * sportsmanagementModelAjax::getAssocLeagueSelect()
+ * 
+ * @param mixed $country_id
+ * @param mixed $associd
+ * @return
+ */
 public function getAssocLeagueSelect($country_id,$associd)
 	{		
 //$app = Factory::getApplication();
@@ -59,6 +105,12 @@ public function getAssocLeagueSelect($country_id,$associd)
 		return $res;
 	}
         
+    /**
+     * sportsmanagementModelAjax::getCountrySubSubAssocSelect()
+     * 
+     * @param mixed $subassoc_id
+     * @return
+     */
     public function getCountrySubSubAssocSelect($subassoc_id)
 {
 $app = Factory::getApplication();
@@ -87,6 +139,12 @@ $query->order('s.name');
 
 }
 
+    /**
+     * sportsmanagementModelAjax::getCountrySubAssocSelect()
+     * 
+     * @param mixed $assoc_id
+     * @return
+     */
     public function getCountrySubAssocSelect($assoc_id)
 {
 $app = Factory::getApplication();
@@ -107,6 +165,12 @@ $query->order('s.name');
         return $res;
         }
         
+    /**
+     * sportsmanagementModelAjax::getCountryAssocSelect()
+     * 
+     * @param mixed $country
+     * @return
+     */
     public function getCountryAssocSelect($country)
 	{
 $app = Factory::getApplication();

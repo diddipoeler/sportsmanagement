@@ -38,7 +38,29 @@ class sportsmanagementControllerAjax extends BaseController {
         parent::__construct();
     }
 
-
+/**
+ * sportsmanagementControllerAjax::getProjectSelect()
+ * 
+ * @return void
+ */
+public function getProjectSelect()
+	{
+ $app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input; 
+        $league_id = $jinput->getInt('league_id');
+        $model = $this->getModel('ajax');
+        $res = $model->getProjectSelect($league_id);
+        echo json_encode($res);
+        $app->close();
+	}
+    
+    
+/**
+ * sportsmanagementControllerAjax::getAssocLeagueSelect()
+ * 
+ * @return void
+ */
 public function getAssocLeagueSelect()
 	{
  $app = Factory::getApplication();
@@ -52,6 +74,11 @@ public function getAssocLeagueSelect()
         $app->close();
 }
 
+/**
+ * sportsmanagementControllerAjax::getCountrySubSubAssocSelect()
+ * 
+ * @return void
+ */
 public function getCountrySubSubAssocSelect()
 {
    $app = Factory::getApplication();
@@ -65,6 +92,11 @@ public function getCountrySubSubAssocSelect()
         
 }
 
+/**
+ * sportsmanagementControllerAjax::getCountrySubAssocSelect()
+ * 
+ * @return void
+ */
 public function getCountrySubAssocSelect()
 {
    $app = Factory::getApplication();
@@ -78,6 +110,11 @@ public function getCountrySubAssocSelect()
         
 }
 
+/**
+ * sportsmanagementControllerAjax::getcountryassoc()
+ * 
+ * @return void
+ */
 public function getcountryassoc()
 {
    $app = Factory::getApplication();

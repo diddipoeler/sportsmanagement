@@ -346,7 +346,30 @@ $script[] = "					});";
 
 $script[] = "});";
 
-
+// liga ändern projekte wählen
+$script[] = "$('#jlamtopleagues".$row->name.$module->id."').change(function(){";
+$script[] = "var value9 = $('#jlamtopleagues".$row->name.$module->id."').val();";
+$script[] = "var url9 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectSelect&league_id=' + value9;";
+$script[] = "console.log('subassoc_id value9 = ' + value9 );";
+$script[] = "console.log('subassoc_id url9 = ' + url9 );";
+$script[] = "$.ajax({";
+$script[] = "url: url9,";
+$script[] = "dataType: 'json',";
+$script[] = "type : 'POST'";
+$script[] = "}).done(function(data9) {";
+$script[] = "$('#jlamtopprojects".$row->name.$module->id." option').each(function() {";
+$script[] = "jQuery('select#jlamtopprojects".$row->name.$module->id." option').remove();";
+$script[] = "console.log(data9);";
+$script[] = "});";
+$script[] = "";
+$script[] = "						$.each(data9, function (i, val) {";
+$script[] = "							var option = $('<option>');";
+$script[] = "							option.text(val.text).val(val.value);";
+$script[] = "							jQuery('#jlamtopprojects".$row->name.$module->id."').append(option);";
+$script[] = "						});";
+$script[] = "						$('#jlamtopprojects".$row->name.$module->id."').trigger('liszt:updated');";
+$script[] = "					});";
+$script[] = "});";
 
 
 }
