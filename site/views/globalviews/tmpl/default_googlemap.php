@@ -62,7 +62,7 @@ case 'clubinfo':
          ["<?php echo $this->club->name; ?>",<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>]
          ];
   
-         var map = L.map('map').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 8);
+         var map = L.map('map').setView([<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>], 16);
          mapLink =
              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
          L.tileLayer(
