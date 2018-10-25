@@ -14,6 +14,9 @@
  * Leaflet Routing Machine API
  * http://www.liedman.net/leaflet-routing-machine/api/
  * https://github.com/perliedman/leaflet-routing-machine
+ * 
+ * 
+ * https://github.com/Turistforeningen/leaflet-routing
  */
 
 
@@ -33,8 +36,8 @@ $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css
 $this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
 $this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');	
 
-$this->document->addScript('https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js');
-$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css');
+$this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js');
+$this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css');
 
 	
 /**
@@ -122,6 +125,36 @@ L.Routing.control({
 jQuery.get("https://ipinfo.io", function(response) {
   console.log(response.ip, response.country);
 }, "jsonp");              
+
+
+//var routing = new L.Routing({
+//  position: 'topright'
+//  ,routing: {
+//    router: myRouterFunction
+//  }
+//  ,tooltips: {
+//    waypoint: 'Waypoint. Drag to move; Click to remove.',
+//    segment: 'Drag to create a new waypoint'
+//  }
+//  ,styles: {     // see http://leafletjs.com/reference.html#polyline-options
+//    trailer: {}  // drawing line
+//    ,track: {}   // calculated route result
+//    ,nodata: {}  // line when no result (error)
+//  }
+//  ,snapping: {
+//    layers: [mySnappingLayer]
+//    ,sensitivity: 15
+//    ,vertexonly: false
+//  }
+//  ,shortcut: {
+//    draw: {
+//      enable: 68    // 'd'
+//      ,disable: 81  // 'q'
+//    }
+//  }
+//});
+//map.addControl(routing);
+
               
      </script>
 <?php
