@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -223,12 +224,12 @@ return $result;
 	 * @param	type	The table type to instantiate
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 * @since	1.6
 	 */
 	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 	
 	/**

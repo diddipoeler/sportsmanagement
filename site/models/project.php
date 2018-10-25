@@ -14,6 +14,8 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -1480,7 +1482,7 @@ $use_jquery_modal);
 		}
 		else
 		{
-			$row =& JTable::getInstance($table,'Table');
+			$row = Table::getInstance($table,'Table');
 		}
 
 		// Bind the form fields to the items table

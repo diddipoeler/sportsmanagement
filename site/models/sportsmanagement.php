@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
  
 // import Joomla modelitem library
 jimport('joomla.application.component.modelitem');
@@ -92,12 +93,12 @@ class sportsmanagementModelsportsmanagement extends JModelItem
 	 * @param	type	The table type to instantiate
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 * @since	1.6
 	 */
 	public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
  
 	/**

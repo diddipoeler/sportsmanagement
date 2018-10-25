@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementControllerEditClub
@@ -75,7 +76,7 @@ class sportsmanagementControllerEditClub extends FormController {
     function load() {
         $cid = Factory::getApplication()->input->getInt('cid', 0);
 
-        $club = & JTable::getInstance('Club', 'sportsmanagementTable');
+        $club = Table::getInstance('Club', 'sportsmanagementTable');
         $club->load($cid);
         $club->checkout($user->id);
 

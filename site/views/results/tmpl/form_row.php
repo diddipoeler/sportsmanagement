@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 if ( $this->overallconfig['use_jquery_modal'] )
 {
@@ -23,7 +24,7 @@ if ( $this->overallconfig['use_jquery_modal'] )
 }	
 		$match = $this->game;
 		$i = $this->i;
-		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
+		$thismatch = Table::getInstance('Match','sportsmanagementTable');
 		$thismatch->bind(get_object_vars($match));
 
 //echo ' thismatch<br><pre>'.print_r($thismatch,true).'</pre>';

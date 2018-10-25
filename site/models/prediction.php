@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
+
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
@@ -171,7 +173,7 @@ $query->where('id = '.(int)$roundIDnew);
 $db->setQuery( $query );
 $roundIDnew = $db->loadResult();
 
-//$tblround = JTable::getInstance("round", "sportsmanagementTable");
+//$tblround = Table::getInstance("round", "sportsmanagementTable");
 //$tblround->load((int)$roundIDnew);
 //$roundIDnew = $tblround->id.':'.$tblround->alias;
 //self::$roundID = $roundIDnew;

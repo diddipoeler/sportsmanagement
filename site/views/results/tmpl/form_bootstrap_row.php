@@ -13,10 +13,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 $match = $this->game;
 $i = $this->i;
-$thismatch = JTable::getInstance('Match','sportsmanagementTable');
+$thismatch = Table::getInstance('Match','sportsmanagementTable');
 $thismatch->bind(get_object_vars($match));
 
 list($datum,$uhrzeit) = explode(' ',$thismatch->match_date);

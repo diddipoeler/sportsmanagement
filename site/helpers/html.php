@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementHelperHtml
@@ -200,7 +201,7 @@ $modaltext .= '</a>';
          */
         if (empty($hometeam->division_id)) {
             $hometeam->division_id = $division_id;
-            $division = JTable::getInstance('division', 'sportsmanagementTable');
+            $division = Table::getInstance('division', 'sportsmanagementTable');
             $division->load((int) $division_id);
             $hometeam->division_slug = $division->id . ':' . $division->alias;
             $hometeam->division_name = $division->name;
@@ -208,7 +209,7 @@ $modaltext .= '</a>';
         }
         if (empty($guestteam->division_id)) {
             $guestteam->division_id = $division_id;
-            $division = JTable::getInstance('division', 'sportsmanagementTable');
+            $division = Table::getInstance('division', 'sportsmanagementTable');
             $division->load((int) $division_id);
             $guestteam->division_slug = $division->id . ':' . $division->alias;
             $guestteam->division_name = $division->name;
@@ -286,7 +287,7 @@ $modaltext .= '</a>';
         $query = $db->getQuery(true);
 
         $projectid = Factory::getApplication()->input->getInt('p', 0);
-        //$thisproject = JTable::getInstance('Project','sportsmanagementTable');
+        //$thisproject = Table::getInstance('Project','sportsmanagementTable');
         //$thisproject->load($projectid);
 
         $query->clear();
@@ -302,7 +303,7 @@ $modaltext .= '</a>';
 
         echo ($title != '') ? $title . ' - ' : $title;
         if ((int) $current_round > 0) {
-            //$thisround = JTable::getInstance('Round','sportsmanagementTable');
+            //$thisround = Table::getInstance('Round','sportsmanagementTable');
             //$thisround->load($current_round);
 
             $query->clear();
@@ -437,7 +438,7 @@ $modaltext .= '</a>';
                 $game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
             }
             if (empty($game->playground_id)) {
-                //$cinfo =& JTable::getInstance('Club','Table');
+                //$cinfo =& Table::getInstance('Club','Table');
                 //$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
 
                 $query->clear();
@@ -482,7 +483,7 @@ catch (Exception $e)
                 $playgroundID = self::$teams[$game->projectteam1_id]->standard_playground;
             }
 
-            //$pginfo =& JTable::getInstance('Playground','sportsmanagementTable');
+            //$pginfo =& Table::getInstance('Playground','sportsmanagementTable');
             //$pginfo->load($game->playground_id);
 
             $query->clear();
