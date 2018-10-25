@@ -22,6 +22,9 @@ if ( $this->config['use_which_map'] )
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');	
 
+$this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
+$this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');	
+	
 /**
  * geocoderscript
  */
@@ -80,7 +83,7 @@ var myIcon = L.icon({
                  .addTo(map);
          }
 //L.Control.geocoder().addTo(map); 
-              
+              L.control.locate().addTo(map);
      </script>
 <?php
 break;
