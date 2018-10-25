@@ -84,6 +84,23 @@ var myIcon = L.icon({
          }
 //L.Control.geocoder().addTo(map); 
               L.control.locate().addTo(map);
+              
+jQuery.getJSON('https://ipinfo.io/geo', function(response) { 
+    var loc = response.loc.split(',');
+    console.log(response.loc);
+    marker = new L.marker([loc[0],loc[1]]).addTo(map);
+    console.log(loc);
+    var coords = {
+        latitude: loc[0],
+        longitude: loc[1]
+    };
+    console.log(coords);
+});
+
+jQuery.get("https://ipinfo.io", function(response) {
+  console.log(response.ip, response.country);
+}, "jsonp");              
+              
      </script>
 <?php
 break;
