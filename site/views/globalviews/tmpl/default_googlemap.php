@@ -9,6 +9,14 @@
  * @subpackage globalviews
  */
 
+
+/**
+ * Leaflet Routing Machine API
+ * http://www.liedman.net/leaflet-routing-machine/api/
+ * https://github.com/perliedman/leaflet-routing-machine
+ */
+
+
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -24,6 +32,10 @@ $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css
 
 $this->document->addScript('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.js');
 $this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.63.0/dist/L.Control.Locate.min.css');	
+
+$this->document->addScript('https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js');
+$this->document->addStyleSheet('https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css');
+
 	
 /**
  * geocoderscript
@@ -89,6 +101,16 @@ jQuery.getJSON('https://ipinfo.io/geo', function(response) {
     var loc = response.loc.split(',');
     console.log(response.loc);
     marker = new L.marker([loc[0],loc[1]]).addTo(map);
+    
+L.Routing.control({
+    waypoints: [
+        L.latLng(loc[0],loc[1]),
+        L.latLng(<?php echo $this->club->latitude; ?>,<?php echo $this->club->longitude; ?>)
+    ]
+}).addTo(map);    
+    
+    
+    
     console.log(loc);
     var coords = {
         latitude: loc[0],
