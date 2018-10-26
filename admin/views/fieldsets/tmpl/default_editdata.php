@@ -351,11 +351,23 @@ switch ($fieldset->name)
 var myIcon = L.icon({
 	iconUrl: 'http://maps.google.com/mapfiles/kml/pal2/icon49.png'
 });    
-         for (var i = 0; i < planes.length; i++) {
-             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
-                 .bindPopup(planes[i][0])
-                 .addTo(map);
-         }
+
+var layerGroup = L.layerGroup().addTo(map);
+
+for (i = 0; i < planes.length; i++) {
+    marker = L.marker([planes[i][1], planes[i][2]]);
+    layerGroup.addLayer(marker);
+}
+
+var overlay = {'markers': layerGroup};
+L.control.layers(null, overlay).addTo(map);
+
+//         for (var i = 0; i < planes.length; i++) {
+//             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+//                 .bindPopup(planes[i][0])
+//                 .addTo(map);
+//         }
+
 //L.Control.geocoder().addTo(map); 
               
      </script>                            
