@@ -24,6 +24,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\Button\PopupButton;
+use Joomla\Registry\Registry;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -1041,7 +1042,7 @@ abstract class sportsmanagementHelper {
          */
         if (JFile::exists($xmlfile)) {
             try {
-                $jRegistry = new JRegistry;
+                $jRegistry = new Registry;
                 //$jRegistry->loadString($data, $format);
 
                 if ($data) {
@@ -1085,7 +1086,7 @@ abstract class sportsmanagementHelper {
 
         if (JFile::exists($xmlfile)) {
             try {
-                $jRegistry = new JRegistry;
+                $jRegistry = new Registry;
 
                 if ($data) {
                     if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -2053,7 +2054,7 @@ $output .= '</ul>';
         foreach ($divisions as $division) {
             echo '<tr>';
             echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
-            $jRegistry = new JRegistry;
+            $jRegistry = new Registry;
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $jRegistry->loadString($division->rankingparams);
             } else {
