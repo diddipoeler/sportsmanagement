@@ -17,6 +17,8 @@
  * 
  * 
  * https://github.com/Turistforeningen/leaflet-routing
+ *
+ * https://github.com/smeijer/leaflet-geosearch
  */
 
 
