@@ -34,9 +34,6 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	public function init ()
 	{
 		
-        $starttime = microtime(); 
-		$lists = array();
-
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
