@@ -45,7 +45,7 @@ class sportsmanagementTableDivision extends JSMTable
 	function check()
 	{
 		// setting alias
-        $this->alias = FilterOutput::stringURLSafe( $this->name );
+        $this->alias = OutputFilter::stringURLSafe( $this->name );
 		
 		//should check name unicity
 		return true;
