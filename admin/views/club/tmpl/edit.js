@@ -18,7 +18,7 @@ console.log('jform_geocomplete ' + inp );
    if (this.readyState == 4 && this.status == 200)
    {
     var myArr = JSON.parse(this.responseText);
-    console.log(myArr);
+    //console.log(myArr);
     //myFunction(myArr);
    }
  };
@@ -186,9 +186,21 @@ function addLayer(lat,lng) {
 	
 var markerLocation = new L.LatLng(lat,lng);
 var marker = new L.Marker(markerLocation);
-console.log(marker);
+//console.log(marker);
 console.log("Adding layer");
-	
+
+
+    
+//L.marker([lat, lng]).addTo(layerGroup);
+console.log(layerGroup);
+map.removeLayer(layerGroup);
+//Add a marker to show where you clicked.
+theMarker = L.marker([lat,lng]).addTo(map);  
+//L.marker([lat, lng]).addTo(layerGroup);
+//layerGroup.addLayer(marker);
+
+
+
 //var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 //					'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 //					'Imagery © <a href="http://mapbox.com">Mapbox</a>',
