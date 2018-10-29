@@ -29,9 +29,9 @@ class sportsmanagementViewClose extends sportsmanagementView
 	{
 	   
         $this->jsminfo = $this->jinput->getCmd('info');
-        $this->href = $this->jinput->getCmd('href');
+        $this->onlymodal = $this->jinput->getCmd('onlymodal');
  
- if ( $this->href )
+ if ( !$this->onlymodal )
  {
 		// close a modal window
         $this->document->addScriptDeclaration('
