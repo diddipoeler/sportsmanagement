@@ -57,6 +57,8 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
         //$jinput = $app->input;
         //$option = $this->jsmjinput->getCmd('option');
 
+$type = ''; 
+$msg = ''; 		
 		// Check for request forgeries
 		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
@@ -131,13 +133,16 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		{
 			echo "<script> alert('".Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
 			//$app->close();
-
+$msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' );
+$type = 'error'; 			
 		}
 		else
 		{
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
       echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.close(); </script>\n";
+			$msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' );
+			$type = 'notice'; 
 			//$app->close();
 		}
 
