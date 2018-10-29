@@ -29,7 +29,10 @@ class sportsmanagementViewClose extends sportsmanagementView
 	{
 	   
         $this->jsminfo = $this->jinput->getCmd('info');
+        $this->href = $this->jinput->getCmd('href');
  
+ if ( $this->href )
+ {
 		// close a modal window
         $this->document->addScriptDeclaration('
         window.parent.location.href=window.parent.location.href;
@@ -42,6 +45,22 @@ var msg = {
 Joomla.renderMessages( msg );
             
 		');
+		}
+		else
+		{
+// close a modal window
+        $this->document->addScriptDeclaration('
+			window.parent.SqueezeBox.close();
+		// available msg types: success, error, notice
+var msg = {
+    error: [\'it is an error!<br />\', \'it is enother error!\'],
+    success: [\'It works!!\']
+};
+Joomla.renderMessages( msg );
+            
+		');		
+		}
+		
         
         switch($this->jsminfo)
         {
