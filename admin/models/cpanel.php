@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -70,8 +71,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     public function getVersion() {
-        //$app = JFactory::getApplication();
-//       $option = JFactory::getApplication()->input->getCmd('option');
+        //$app = Factory::getApplication();
+//       $option = Factory::getApplication()->input->getCmd('option');
 //       // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -88,8 +89,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     public function getGithubRequests() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $paramsdata = JComponentHelper::getParams($option);
 //$app->enqueueMessage(Text::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 // Load the parameters
@@ -128,8 +129,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     function getInstalledPlugin($plugin) {
-        //$app = JFactory::getApplication();
-//  $option = JFactory::getApplication()->input->getCmd('option'); 
+        //$app = Factory::getApplication();
+//  $option = Factory::getApplication()->input->getCmd('option'); 
 //  $db = sportsmanagementHelper::getDBConnection();    
 //        $query = $db->getQuery(true);
         $this->jsmquery->clear();
@@ -149,8 +150,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     function checkcountry() {
-        //$app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
+        //$app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
         $starttime = microtime();
         // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
@@ -183,8 +184,8 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @return
      */
     function checksporttype($type) {
-        //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
+        //$app = Factory::getApplication();
+        //$option = Factory::getApplication()->input->getCmd('option');
         $starttime = microtime();
         // Create a new query object.		
         //	$db = sportsmanagementHelper::getDBConnection();
@@ -252,7 +253,7 @@ class sportsmanagementModelcpanel extends JSMModelLegacy {
      * @since   1.0
      */
     static function processData($obj, $params) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Initialize
         $github = array();
         $i = 0;

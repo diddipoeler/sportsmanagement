@@ -39,6 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -109,7 +111,7 @@ class JFormFieldDependSQL extends JFormField
 		}
 		$attribs	.= ' current="'.$this->value.'"';
 		
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
 		if ($required) {
 			$options = array();
@@ -128,7 +130,7 @@ class JFormFieldDependSQL extends JFormField
 		
 		if ($depends)
 		{
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
             if(version_compare(JVERSION,'3.0.0','ge')) 
             {
             $doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend_3.js' );

@@ -21,6 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.view');
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
@@ -44,14 +46,6 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
      */
     function init( $tpl = null )
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$db	= sportsmanagementHelper::getDBConnection();
-//		$uri = JFactory::getURI();
-//		$user = JFactory::getUser();
-//		$model = $this->getModel();
-//        $starttime = microtime(); 
         
         if (strpos($this->getLayout(), 'login') === false) 
         {
@@ -77,7 +71,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 	 */
 	protected function addToolbar() 
     {
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $option = $jinput->getCmd('option');
 		if (strpos($this->getLayout(), 'login') === false) {
 			$canDo = jsmGCalendarUtil::getActions();
@@ -95,7 +89,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //		JToolbarHelper::preferences($option);
 
-//		JFactory::getApplication()->input->setVar('hidemainmenu', 0);
+//		Factory::getApplication()->input->setVar('hidemainmenu', 0);
 
 		parent::addToolbar();
 	}

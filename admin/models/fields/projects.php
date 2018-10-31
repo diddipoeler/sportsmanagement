@@ -40,9 +40,9 @@ class JFormFieldProjects extends \JFormFieldList
     protected function getOptions() 
     {
         $options = array();
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		//$db = sportsmanagementHelper::getDBConnection();
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );

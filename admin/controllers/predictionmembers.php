@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerpredictionmembers
@@ -40,7 +41,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 		parent::__construct($config);
         
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
 
@@ -91,7 +92,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
  */
         $post = $this->jsmjinput->post->getArray();
         $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
-		$pgmid = JFactory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
+		$pgmid = Factory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
 
 		if ( $pgmid == 0 )
 		{
@@ -117,9 +118,9 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
      */
     function publish()
 	{
-		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
+		$cids = Factory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		ArrayHelper::toInteger( $cids );
-		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= Factory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -143,9 +144,9 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
      */
     function unpublish()
 	{
-		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
+		$cids = Factory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		ArrayHelper::toInteger( $cids );
-		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= Factory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -170,16 +171,16 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
     function remove()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     
 		$d		= ' - ';
 		$msg	= '';
-		$cid	= JFactory::getApplication()->input->getVar('cid',array(),'post','array');
+		$cid	= Factory::getApplication()->input->getVar('cid',array(),'post','array');
 		ArrayHelper::toInteger($cid);
-		$prediction_id	= JFactory::getApplication()->input->getInt('prediction_id',(-1),'post');
+		$prediction_id	= Factory::getApplication()->input->getInt('prediction_id',(-1),'post');
 		//echo '<pre>'; print_r($cid); echo '</pre>';
 
 		if (count($cid) < 1)

@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -36,13 +37,13 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
      */
     function importplz()
     {
-    $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+    $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);    
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $base_Dir = JPATH_SITE . DS . 'tmp' . DS ;
         $cfg_plz_server = JComponentHelper::getParams($option)->get('cfg_plz_server','');
         
@@ -186,7 +187,7 @@ $source	= JFile::read($file);
             $profile->longitude = $value->longitude;
             $profile->accuracy = $value->accuracy;
         // Insert the object into the table.
-        $result = JFactory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);  
+        $result = Factory::getDbo()->insertObject('#__sportsmanagement_countries_plz', $profile);  
         }  
 }
 else

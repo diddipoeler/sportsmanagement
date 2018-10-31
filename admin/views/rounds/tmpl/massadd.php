@@ -12,12 +12,14 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('behavior.tooltip');
 
 
 //$params = $this->form->getFieldsets('params');
 //save and close 
-$close = JFactory::getApplication()->input->getInt('close',0);
+$close = Factory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {

@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllermatches
@@ -63,7 +64,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function removeEvent()
     {
-		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		$event_id = Factory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result=$model->deleteevent($event_id))
 		{
@@ -74,7 +75,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_EVENTS').'&'.$event_id;
 		}
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
     }
     
     
@@ -85,7 +86,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     public function removeCommentary()
     {
-        $event_id = JFactory::getApplication()->input->getInt('event_id');
+        $event_id = Factory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -96,7 +97,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$result='1'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_DELETE_COMMENTARY').'&'.$event_id;
 		}
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
     }
     
     
@@ -107,7 +108,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function removeSubst()
 	{
-		$substid = JFactory::getApplication()->input->getInt('substid',0);
+		$substid = Factory::getApplication()->input->getInt('substid',0);
 		$model = $this->getModel();
 		if (!$result = $model->removeSubstitution($substid))
 		{
@@ -118,7 +119,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$result="1"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_REMOVE_SUBST').'&'.$substid;
 		}
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
     
     /**
@@ -128,20 +129,20 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function saveevent()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
 
 		$data = array();
-		$data['teamplayer_id']	= JFactory::getApplication()->input->getInt('teamplayer_id');
-		$data['projectteam_id']	= JFactory::getApplication()->input->getInt('projectteam_id');
-		$data['event_type_id']	= JFactory::getApplication()->input->getInt('event_type_id');
-		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
-		$data['match_id']		= JFactory::getApplication()->input->getInt('match_id');
-		$data['event_sum']		= JFactory::getApplication()->input->getVar('event_sum', '');
-		$data['notice']			= JFactory::getApplication()->input->getVar('notice', '');
-		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
+		$data['teamplayer_id']	= Factory::getApplication()->input->getInt('teamplayer_id');
+		$data['projectteam_id']	= Factory::getApplication()->input->getInt('projectteam_id');
+		$data['event_type_id']	= Factory::getApplication()->input->getInt('event_type_id');
+		$data['event_time']		= Factory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= Factory::getApplication()->input->getInt('match_id');
+		$data['event_sum']		= Factory::getApplication()->input->getVar('event_sum', '');
+		$data['notice']			= Factory::getApplication()->input->getVar('notice', '');
+		$data['notes']			= Factory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
+        $data['projecttime']			= Factory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
 		if (!$result = $model->saveevent($data)) {
@@ -151,7 +152,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 		}    
  
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
     }
     
     /**
@@ -162,13 +163,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
     function savecomment()
     {
 		$data = array();
-		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
-		$data['match_id']		= JFactory::getApplication()->input->getInt('matchid');
-		$data['type']		= JFactory::getApplication()->input->getVar('type', '');
-		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
+		$data['event_time']		= Factory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= Factory::getApplication()->input->getInt('matchid');
+		$data['type']		= Factory::getApplication()->input->getVar('type', '');
+		$data['notes']			= Factory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
+        $data['projecttime']			= Factory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
 		if (!$result = $model->savecomment($data)) {
@@ -177,7 +178,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
             $result = $result.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT');
 		}    
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
     }
     
     /**
@@ -188,13 +189,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
     function savesubst()
 	{
 		$data = array();
-		$data['in'] 					= JFactory::getApplication()->input->getInt('in');
-		$data['out'] 					= JFactory::getApplication()->input->getInt('out');
-		$data['matchid'] 				= JFactory::getApplication()->input->getInt('matchid');
-		$data['in_out_time'] 			= JFactory::getApplication()->input->getVar('in_out_time','');
-		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
+		$data['in'] 					= Factory::getApplication()->input->getInt('in');
+		$data['out'] 					= Factory::getApplication()->input->getInt('out');
+		$data['matchid'] 				= Factory::getApplication()->input->getInt('matchid');
+		$data['in_out_time'] 			= Factory::getApplication()->input->getVar('in_out_time','');
+		$data['project_position_id'] 	= Factory::getApplication()->input->getInt('project_position_id');
         // diddipoeler
-        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
+        $data['projecttime']			= Factory::getApplication()->input->getVar('projecttime','');
         $model = $this->getModel();
 		if (!$result = $model->savesubstitution($data)){
 			$result = "0"."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST').': '.$model->getError();
@@ -202,7 +203,7 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
             $result = $model->getDbo()->insertid()."&".Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST');
 		}
 		echo json_encode($result);
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
     
     
@@ -213,8 +214,8 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function savestats()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
+        $post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         if ($model->savestats($post))
 		{
@@ -225,13 +226,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
 		}
         
-        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
+        if ( Factory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.Factory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
         }
 		$this->setRedirect($link,$msg);
     }
@@ -243,8 +244,8 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function saveroster()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
+        $post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         
         $positions = $model->getProjectPositionsOptions(0, 1,$post['project_id']);
@@ -272,13 +273,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$msg .= Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_STAFF').'<br />';
 		}
         
-        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
+        if ( Factory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.Factory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
         }
 		$this->setRedirect($link,$msg);
     }    
@@ -291,8 +292,8 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
      */
     function saveReferees()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
+        $post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         $positions = $model->getProjectPositionsOptions(0, 3,$post['project_id']);
         $post['positions'] = $positions;
@@ -306,13 +307,13 @@ class sportsmanagementControllermatches extends JSMControllerAdmin
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
 		}
 
-        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
+        if ( Factory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+            $link = 'index.php?option='.$option.'&close='.Factory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
         }
 
 		$this->setRedirect($link,$msg);

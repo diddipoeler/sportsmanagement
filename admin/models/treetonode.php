@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTreetonode
@@ -42,11 +43,11 @@ public function __construct($config = array())
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
        
         }    
         
@@ -139,11 +140,11 @@ public function __construct($config = array())
 	 */
 	function setUnpublishNode()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		$id = (int) $post['id'];
 		
 		$query = ' UPDATE #__joomleague_treeto_node AS ttn ';

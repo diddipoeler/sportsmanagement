@@ -45,6 +45,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 // import Joomla  library
 //jimport('joomla.github.issues');
@@ -89,8 +90,8 @@ class sportsmanagementModelgithub extends JModelLegacy
         {  
             parent::__construct($config);
         // Reference global application object
-        $this->app = JFactory::getApplication();
-        $this->user	= JFactory::getUser();     
+        $this->app = Factory::getApplication();
+        $this->user	= Factory::getUser();     
         // JInput object
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
@@ -215,8 +216,8 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
      */
     function getGithubList()
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         
         //$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
         //JApplicationHelper::addClientInfo($this->client);

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerteampersons
@@ -36,7 +37,7 @@ class sportsmanagementControllerteampersons extends JSMControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 $this->registerTask('unpublish', 'set_season_team_state');
@@ -54,7 +55,7 @@ $this->registerTask('archive', 'set_season_team_state');
  */
 function set_season_team_state()
 {
-$post = JFactory::getApplication()->input->post->getArray(array());
+$post = Factory::getApplication()->input->post->getArray(array());
 $ids = $this->input->get('cid', array(), 'array');
 $tpids = $this->input->get('tpid', array(), 'array');
 $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2);
@@ -97,7 +98,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	 */
     function saveshort()
 	{
-	   $post = JFactory::getApplication()->input->post->getArray(array());
+	   $post = Factory::getApplication()->input->post->getArray(array());
 	   $model = $this->getModel();
        $model->saveshort();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
@@ -111,7 +112,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	 */
 	function assignplayerscountry()
 	{
-	$post = JFactory::getApplication()->input->post->getArray(array());
+	$post = Factory::getApplication()->input->post->getArray(array());
 	$model = $this->getModel();	
 	$model->assignplayerscountry(1,$post['project_team_id'],$post['team_id'],$post['pid'],$post['season_id']);	
 	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
@@ -124,8 +125,8 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 //   */
 //  function remove()
 //	{
-//	$app = JFactory::getApplication();
-//    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+//	$app = Factory::getApplication();
+//    $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
 //    $model = $this->getModel('teampersons');
 //    $model->remove($pks);
 //	

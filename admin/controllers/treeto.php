@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 //jimport('joomla.application.component.controller');
 // import Joomla controllerform library
@@ -49,11 +50,11 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 ////		$this->registerTask('apply','save');
 //        
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
 	}
 
 	// save the checked rows inside the treetos list (save division assignment)
@@ -64,8 +65,8 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	 */
 	public function saveshort()
 	{
-//		$option		= JFactory::getApplication()->input->getCmd('option');
-//		$app	= JFactory::getApplication();
+//		$option		= Factory::getApplication()->input->getCmd('option');
+//		$app	= Factory::getApplication();
  		$project_id = $this->jsmjinput->get('pid');
 		
 		$post = $this->jsmjinput->post->getArray();
@@ -95,9 +96,9 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function genNode()
 	{
 	   /*
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$document = JFactory::getDocument();
+		//$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
+//		$document = Factory::getDocument();
 		$proj = $this->jsmapp->getUserState($this->jsmoption.'.pid',0);
 		$post = $this->jsmjinput->post->getArray(array());
 		$cid = $this->jsmjinput->post->get('cid');
@@ -113,10 +114,10 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		//$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 
-		JFactory::getApplication()->input->setVar('hidemainmenu',0);
-		JFactory::getApplication()->input->setVar('layout','gennode');
-		JFactory::getApplication()->input->setVar('view','treeto');
-		JFactory::getApplication()->input->setVar('edit',true);
+		Factory::getApplication()->input->setVar('hidemainmenu',0);
+		Factory::getApplication()->input->setVar('layout','gennode');
+		Factory::getApplication()->input->setVar('view','treeto');
+		Factory::getApplication()->input->setVar('edit',true);
 
 		// Checkout the project
 		//$model=$this->getModel('treeto');
@@ -134,8 +135,8 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function generatenode()
 	{
 		JSession::checkToken() or die(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
+		//$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
 		$post = $this->jsmjinput->post->getArray(array());
 		$model = $this->getModel('treeto');
 		$project_id = $this->jsmapp->getUserState($this->jsmoption.'.pid');

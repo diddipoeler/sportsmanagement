@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTreetonodes
@@ -34,7 +34,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
         
 
         
@@ -53,10 +53,10 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 	 */
 	function _displayDefault()
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$db = JFactory::getDbo();
-//		$uri = JFactory::getURI();
+		//$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
+//		$db = Factory::getDbo();
+//		$uri = Factory::getURI();
 
 		$this->node = $this->items;
 		//$this->total = $this->get('Total');

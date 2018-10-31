@@ -14,6 +14,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
 
@@ -63,11 +65,11 @@ static $team_staff = array();
 function joomleaguesetagegroup()
 {
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;    
 $post = $jinput->post->getArray(array());   
-$db = JFactory::getDbo(); 
+$db = Factory::getDbo(); 
 $query = $db->getQuery(true);  
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');    
 $a = 0;
@@ -111,10 +113,10 @@ return $a;
  */
 function get_info_fields()
 {
-$conf = JFactory::getConfig();
-$app = JFactory::getApplication();
+$conf = Factory::getConfig();
+$app = Factory::getApplication();
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );  
-$db = JFactory::getDbo(); 
+$db = Factory::getDbo(); 
 $query = $db->getQuery(true);    
 
 $query->clear();
@@ -138,10 +140,10 @@ return $result;
  */
 function check_database()
 {
-$conf = JFactory::getConfig();
-$app = JFactory::getApplication();
+$conf = Factory::getConfig();
+$app = Factory::getApplication();
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );  
-$db = JFactory::getDbo(); 
+$db = Factory::getDbo(); 
 $query = $db->getQuery(true);
  
 /**
@@ -394,12 +396,12 @@ return self::$_success;
 function importjoomleaguenew($importstep=0,$sports_type_id=0)
 {
 // Reference global application object
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
-$date = JFactory::getDate();
-$user = JFactory::getUser();
+$date = Factory::getDate();
+$user = Factory::getUser();
 
 $modified = $date->toSql();
 $modified_by = $user->get('id');
@@ -424,10 +426,10 @@ $jinput->set('filter_sports_type', $sports_type_id);
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 
 
-$db = JFactory::getDbo(); 
+$db = Factory::getDbo(); 
 $query = $db->getQuery(true);
 
-//$post = JFactory::getApplication()->input->post->getArray(array());
+//$post = Factory::getApplication()->input->post->getArray(array());
 $exportfields1 = array();
 $exportfields2 = array();           
 $table_copy = array();        
@@ -2588,7 +2590,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try { 
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2608,7 +2610,7 @@ $object = new stdClass();
 $object->id = $row->pt_id;
 $object->team_id = $new_id;
 // Update their details in the users table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
 
 }
 
@@ -2682,7 +2684,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2723,7 +2725,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2812,7 +2814,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2852,7 +2854,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2975,7 +2977,7 @@ $temp->modified = $db->Quote(''.$modified.'');
 $temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
 }
 catch (Exception $e) {
     // catch any database errors.
@@ -2997,7 +2999,7 @@ $object = new stdClass();
 $object->id = $row->id;
 $object->person_id = $new_id;
 // Update their details in the users table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project_referee', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_referee', $object, 'id');
 
     
 }    
@@ -3165,7 +3167,7 @@ $object->id = $projekt->id;
 $object->modified_timestamp = $projekt->modified_timestamp;
 
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
 }
 
 }
@@ -3195,7 +3197,7 @@ $object = new stdClass();
 $object->id = $match->id;
 $object->match_timestamp = $match->match_timestamp;
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
 }
 
 }

@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -47,7 +48,7 @@ class SMStatisticDifference extends SMStatistic
 	function getSids($id_field = '')
 	{
 		$params = SMStatistic::getParams();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		//$add_ids = explode(',', $params->get('add_ids'));
         $add_ids = $params->get('add_ids');
 		if (!count($add_ids)) 
@@ -206,7 +207,7 @@ class SMStatisticDifference extends SMStatistic
 	{
 		$sids = self::getQuotedSids('');
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         $query_add = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['add'],'SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_sub = SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id,$sids['sub'],'SUM(ms.value) AS den, tp.id AS tpid, tp.person_id');
@@ -353,8 +354,8 @@ class SMStatisticDifference extends SMStatistic
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $sids = self::getQuotedSids();
 		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -391,8 +392,8 @@ class SMStatisticDifference extends SMStatistic
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $sids = self::getQuotedSids();
 		
 		$db = sportsmanagementHelper::getDBConnection();

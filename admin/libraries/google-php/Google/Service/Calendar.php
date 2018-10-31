@@ -28,6 +28,9 @@
  *
  * @author Google, Inc.
  */
+ 
+use Joomla\CMS\Factory;
+ 
 class Google_Service_Calendar extends Google_Service
 {
   /** Manage your calendars. */
@@ -1115,7 +1118,7 @@ class Google_Service_Calendar_CalendarList_Resource extends Google_Service_Resou
    */
   public function listCalendarList($optParams = array())
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' optParams<br><pre>'.print_r($optParams,true).'</pre>'),'Notice');
     $params = array();
     $params = array_merge($params, $optParams);
@@ -2084,7 +2087,7 @@ class Google_Service_Calendar_CalendarList extends Google_Collection
   }
   public function getItems()
   {
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
     return $this->items;
   }

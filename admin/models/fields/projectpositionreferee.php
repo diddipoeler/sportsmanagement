@@ -45,22 +45,22 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Initialize variables.
 		$options = array();
 
 		$varname = (string) $this->element['varname'];
         $project_id = $app->getUserState( "$option.pid", '0' );;
         /*
-		$project_id = JFactory::getApplication()->input->getVar($varname);
+		$project_id = Factory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}
 		*/
 		if ($project_id)
 		{		
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 		
                 

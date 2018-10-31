@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -60,13 +61,13 @@ class JFormFieldDependSQL extends JFormField
     protected function getInput()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
        $view = $jinput->getCmd('view');
        $option = $jinput->getCmd('option');
        
-       $lang = JFactory::getLanguage();
+       $lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
         
        $attribs = '';
@@ -220,7 +221,7 @@ $script[] = "				});";
 $script[] = "});";       
        
        // Add the script to the document head.
-    JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+    Factory::getDocument()->addScriptDeclaration(implode("\n", $script));
         
         $ajaxtask = 'get'.$ajaxtask;    
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);

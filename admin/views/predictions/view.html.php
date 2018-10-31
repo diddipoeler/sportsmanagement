@@ -39,7 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Factory; 
 
 /**
  * sportsmanagementViewpredictions
@@ -94,7 +94,7 @@ class sportsmanagementViewpredictions extends sportsmanagementView
 	 */
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
-		$lang		= JFactory::getLanguage();
+		$lang		= Factory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
 ?>
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">

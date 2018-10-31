@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerdivisions
@@ -34,7 +35,7 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
@@ -51,8 +52,8 @@ class sportsmanagementControllerdivisions extends JSMControllerAdmin
 	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 
 	$model = $this->getModel();
-    //$pks = JFactory::getApplication()->input->getInt( 'cid', array() );	//is sanitized
-//	$order = JFactory::getApplication()->input->getInt('order', array() );   
+    //$pks = Factory::getApplication()->input->getInt( 'cid', array() );	//is sanitized
+//	$order = Factory::getApplication()->input->getInt('order', array() );   
     
     $pks = $this->jinput->get('cid',array(),'array');
     $order = $this->jinput->get('order',array(),'array');

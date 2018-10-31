@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -138,12 +139,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function checklist($prediction_id)
 	{
 	  // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
         
 		//$prediction_id	= $this->_prediction_id;

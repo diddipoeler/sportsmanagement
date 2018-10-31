@@ -12,6 +12,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 //use Joomla\CMS\Filter\InputFilter;
 //jimport('joomla.application.component.controller');
@@ -52,7 +53,7 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 	function upload()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         //$jinput = $app->input;
         //$option = $this->jsmjinput->getCmd('option');
@@ -158,7 +159,7 @@ $type = 'error';
 	function delete()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');

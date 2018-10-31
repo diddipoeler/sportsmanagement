@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerTreetomatch
@@ -32,17 +33,17 @@ class sportsmanagementControllerTreetomatch extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-	//	$app = JFactory::getApplication();
+	//	$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$jinput->set('layout','form');
         
         parent::__construct($config);
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
 	}
 
 

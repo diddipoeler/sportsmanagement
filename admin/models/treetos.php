@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -38,8 +39,8 @@ class sportsmanagementModelTreetos extends JModelList
      */
     public function __construct($config = array())
         {
-            $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+            $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
                 self::$_project_id = $app->getUserState( "$option.pid", '0' );
                 //$config['filter_fields'] = array(
 //                        'r.name',
@@ -59,11 +60,11 @@ class sportsmanagementModelTreetos extends JModelList
 	 */
 	protected function getListQuery()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $search	= $this->getState('filter.search');
 	
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = Factory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('tt.*');
 		// From the rounds table

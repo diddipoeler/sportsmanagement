@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
 
@@ -61,7 +62,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $model = $this->getModel();
@@ -84,7 +85,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
 				$jinput->set('hidemainmenu', true);
 				parent::addToolbar();
 	JToolbarHelper::apply('smextxmleditor.apply');
@@ -92,7 +93,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	JToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 
 //        // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
+//		$document	= Factory::getDocument();
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //
@@ -111,7 +112,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 //        
 //        JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
+//        JToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
         
     }    
     

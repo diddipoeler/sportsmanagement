@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerjsmgcalendarImport
@@ -34,7 +35,7 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 	function __construct($config = array())
 	{
 	   // Initialise variables.
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		parent::__construct($config);
 
 	//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
@@ -48,8 +49,8 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 	public function import() 
     {
 
-$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         $model = $this->getModel('jsmgcalendarImport');
         $result = $model->import();
         

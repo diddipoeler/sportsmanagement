@@ -11,6 +11,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
@@ -43,8 +45,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	{
 		parent::__construct();
 
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
 		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
@@ -69,7 +71,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		static $set;
 
 		if (!$set) {
-			$folder = JFactory::getApplication()->input->getVar( 'folder' );
+			$folder = Factory::getApplication()->input->getVar( 'folder' );
 			$this->setState('folder', $folder);
 
 			$set = true;
@@ -130,8 +132,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function getList()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 		// JInput object 
          $jinput = $app->input; 
 

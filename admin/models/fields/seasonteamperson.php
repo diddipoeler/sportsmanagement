@@ -46,9 +46,9 @@ class JFormFieldseasonteamperson extends FormField
 	 */
 	protected function getInput()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $select_id = JFactory::getApplication()->input->getVar('id');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $select_id = Factory::getApplication()->input->getVar('id');
         $this->value = explode(",", $this->value);
         $targettable = $this->element['targettable'];
         $targetid = $this->element['targetid'];
@@ -62,8 +62,8 @@ class JFormFieldseasonteamperson extends FormField
     // teilnehmende saisons selektieren
     if ( $select_id )
     {
-    //$db = JFactory::getDbo();
-    $query = JFactory::getDbo()->getQuery(true);
+    //$db = Factory::getDbo();
+    $query = Factory::getDbo()->getQuery(true);
 			// saisons selektieren
 			$query->select('stp.season_id,stp.team_id, t.name as teamname, s.name as seasonname, c.logo_big as clublogo');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$targettable.' as stp');
@@ -76,7 +76,7 @@ class JFormFieldseasonteamperson extends FormField
             
             $starttime = microtime(); 
             
-			JFactory::getDbo()->setQuery($query);
+			Factory::getDbo()->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -84,7 +84,7 @@ class JFormFieldseasonteamperson extends FormField
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-            $options = JFactory::getDbo()->loadObjectList();
+            $options = Factory::getDbo()->loadObjectList();
 	}
     else
     {

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -38,7 +39,7 @@ class jsmGCalendarUtil
 
 	public static function getComponentParameter($key, $defaultValue = null) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		$params = JComponentHelper::getParams('com_sportsmanagement');
 		$value = $params->get($key, $defaultValue);
@@ -47,28 +48,28 @@ class jsmGCalendarUtil
 
 
 		if ($key == 'timezone' && empty($value)) {
-			$user = JFactory::getUser();
+			$user = Factory::getUser();
 			if ($user->get('id')) {
 				$value = $user->getParam('timezone');
 			}
 			if (empty($value)) {
-				$value = JFactory::getApplication()->getCfg('offset', 'UTC');
+				$value = Factory::getApplication()->getCfg('offset', 'UTC');
 			}
 		}
 		return $value;
 	}
 
 	public static function getFrLanguage() {
-		$conf = JFactory::getConfig();
+		$conf = Factory::getConfig();
 		return $conf->get('config.language');
 	}
 
 	public static function getItemId($calendarId, $strict = false) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		$component = JComponentHelper::getComponent('com_sportsmanagement');
-		$menu = JFactory::getApplication()->getMenu();
+		$menu = Factory::getApplication()->getMenu();
 		$items = $menu->getItems('component_id', $component->id);
         
 		$default = null;
@@ -107,7 +108,7 @@ class jsmGCalendarUtil
 
 	public static function renderEvents(array $events = null, $output, $params = null, $eventParams = array()) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		if ($events === null) {
 			$events = array();
@@ -118,7 +119,7 @@ class jsmGCalendarUtil
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
 
-		JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement');
+		Factory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement');
 
 		$lastHeading = '';
 
@@ -131,9 +132,9 @@ class jsmGCalendarUtil
 			$variables = array();
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid', null));
-			if (!empty($itemID) && JFactory::getApplication()->input->getVar('tmpl', null) != 'component' && $event != null) {
+			if (!empty($itemID) && Factory::getApplication()->input->getVar('tmpl', null) != 'component' && $event != null) {
 				$component = JComponentHelper::getComponent('com_sportsmanagement');
-				$menu = JFactory::getApplication()->getMenu();
+				$menu = Factory::getApplication()->getMenu();
 				$item = $menu->getItem($itemID);
 				if ($item !=null) 
                 {
@@ -157,7 +158,7 @@ class jsmGCalendarUtil
 			if (!empty($itemID)) {
 				$itemID = '&Itemid='.$itemID;
 			}else{
-				$menu = JFactory::getApplication()->getMenu();
+				$menu = Factory::getApplication()->getMenu();
 				$activemenu = $menu->getActive();
 				if ($activemenu != null) {
 					$itemID = '&Itemid='.$activemenu->id;
@@ -380,7 +381,7 @@ class jsmGCalendarUtil
 	}
 
 	public static function getActions($calendarId = 0) {
-		$user  = JFactory::getUser();
+		$user  = Factory::getUser();
 		$result  = new JObject;
 
 		if (empty($calendarId)) {
@@ -405,15 +406,15 @@ class jsmGCalendarUtil
 	}
 
 	public static function loadLibrary($libraries = array('jquery' => true)) {
-		if (JFactory::getDocument()->getType() != 'html') {
+		if (Factory::getDocument()->getType() != 'html') {
 			return ;
 		}
 
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		if (self::isJoomlaVersion('2.5')) {
 			if (isset($libraries['jquery'])) {
-				if (!JFactory::getApplication()->get('jquery', false)) {
-					JFactory::getApplication()->set('jquery', true);
+				if (!Factory::getApplication()->get('jquery', false)) {
+					Factory::getApplication()->set('jquery', true);
 					$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/jquery.min.js');
 				}
 				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
@@ -503,7 +504,7 @@ class jsmGCalendarUtil
 		if (empty($tz)) {
 			$tz =  jsmGCalendarUtil::getComponentParameter('timezone');
 		}
-		$dateObj = JFactory::getDate($date, $tz);
+		$dateObj = Factory::getDate($date, $tz);
 
 		if (!$allDay) {
 			$dateObj->setTimezone(new DateTimeZone(self::getComponentParameter('timezone', 'UTC')));
@@ -513,8 +514,8 @@ class jsmGCalendarUtil
 
 	public static function getDateFromString($date, $time, $allDay, $timezone, $dateFormat = null, $timeFormat = null) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         
 		$string = $date;
 		if (!empty($time)) {
@@ -554,14 +555,14 @@ class jsmGCalendarUtil
 
 		JLoader::import('components.com_languages.helpers.jsonresponse', JPATH_ADMINISTRATOR);
 		if (!$error) {
-			JFactory::getApplication()->enqueueMessage($message);
+			Factory::getApplication()->enqueueMessage($message);
 			echo new JJsonResponse($data);
 		} else {
-			JFactory::getApplication()->enqueueMessage($message, 'error');
+			Factory::getApplication()->enqueueMessage($message, 'error');
 			echo new JJsonResponse($data);
 		}
 
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
 	}
 
 	/**

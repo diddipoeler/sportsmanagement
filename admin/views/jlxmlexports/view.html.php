@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewJLXMLExports
@@ -72,7 +72,7 @@ class sportsmanagementViewJLXMLExports extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');

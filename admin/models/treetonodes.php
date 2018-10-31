@@ -10,6 +10,7 @@
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTreetonodes
@@ -46,7 +47,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
      */
     protected function populateState($ordering = null,$direction = null)
 	{
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
 
 		// Adjust the context to support modal layouts.
 		if($layout = $this->jsmjinput->get('layout'))
@@ -77,8 +78,8 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		// Create a new query object.
 //		$db = $this->getDbo();
 //		$query = $db->getQuery(true);
-//		$user = JFactory::getUser();
-		//$app = JFactory::getApplication();
+//		$user = Factory::getUser();
+		//$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 
@@ -124,7 +125,7 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		$result = 0;
 		if($project_id > 0)
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('COUNT(roundcode)');
 			$query->from('#__sportsmanagement_round');

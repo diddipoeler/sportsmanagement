@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 
@@ -50,8 +51,8 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
@@ -98,8 +99,8 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
@@ -148,8 +149,8 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
 		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );

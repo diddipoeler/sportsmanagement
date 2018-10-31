@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewpredictionproject
@@ -73,7 +73,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	{
 		$isNew = $this->item->id == 0;
         //$this->name = $this->item->name;
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");

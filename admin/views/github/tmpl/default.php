@@ -47,7 +47,7 @@ foreach( $this->commitlist as $key => $value   )
 $new_date = substr($value->commit->author->date,0,10).' '.substr($value->commit->author->date,11,8);
 //echo $value->commit->author->date;
 $timestamp = sportsmanagementHelper::getTimestamp($new_date);
-//$date = JFactory::getDate( $timestamp );
+
 //echo $date;
 //echo $new_date;
 echo date("d.m.Y H:i:s",$timestamp);  

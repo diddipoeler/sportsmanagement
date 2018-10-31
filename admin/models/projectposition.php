@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 use Joomla\Utilities\ArrayHelper;
-
+use Joomla\CMS\Factory;
 
 /**
  * Sportsmanagement Component Positionstool Model
@@ -39,7 +39,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -95,7 +95,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.projectposition.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.projectposition.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -142,7 +142,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	 */
 	function store($data)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
 		$result=true;
 		//$peid=(isset($data['project_teamslist']));
@@ -186,7 +186,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	 */
 	function getProjectPositions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$project_id=$app->getUserState('com_joomleagueproject');
 		$query='	SELECT	p.id AS value,
 							p.name AS text,

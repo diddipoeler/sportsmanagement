@@ -62,20 +62,6 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$this->project_id = $app->getUserState( "$option.pid", '0' );
-//		$uri 		= JFactory::getURI()->toString();
-//		$user		= JFactory::getUser();
-//		
-//		// Get data from the model
-//		$items		= $this->get('Data');
-//		$total		= $this->get('Total');
-//		$pagination = $this->get('Pagination');
-		
-		//$model = $this->getModel();
-		//$projectws = $this->get('Data','project');
         
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');

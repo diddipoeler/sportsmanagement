@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewprojectteams
@@ -222,7 +223,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
-		$this->config = JFactory::getConfig();
+		$this->config = Factory::getConfig();
 		$this->lists = $lists;
         $this->divisions = $projectdivisions;
 		$this->projectteam = $items;
@@ -254,11 +255,6 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   //// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
 
 	$this->app->setUserState( "$this->option.pid", $this->project_id );
         $this->app->setUserState( "$this->option.season_id", $this->season_id );

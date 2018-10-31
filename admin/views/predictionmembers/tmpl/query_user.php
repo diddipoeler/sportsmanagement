@@ -2,7 +2,7 @@
 // Set flag that this is a parent file
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 $_REQUEST['tmpl'] = '';
 include('../../../../../../../../index.php');
@@ -15,8 +15,8 @@ $result = array();
 // Datenbankobjekt laden
 $db		=& sportsmanagementHelper::getDBConnection();
 
-$document	=& JFactory::getDocument();
-$app	=& JFactory::getApplication();
+$document	=& Factory::getDocument();
+$app	=& Factory::getApplication();
  
 // Some simple validation
 if (is_string($search) && strlen($search) > 2 && strlen($search) < 64)

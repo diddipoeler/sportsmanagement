@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * JFormFieldpredictionroundid
  * 
@@ -61,7 +63,7 @@ class JFormFieldpredictionroundid extends JFormField
 	protected function getInput()
   {
 		$db = sportsmanagementHelper::getDBConnection();
-    $app			= JFactory::getApplication();
+    $app			= Factory::getApplication();
 		$option				= 'com_sportsmanagement';
         
         $prediction_id = $app->getUserState( "$option.prediction_id", '0' );

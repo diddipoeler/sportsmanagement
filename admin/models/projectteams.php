@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelProjectteams
@@ -57,7 +58,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	    
             self::$_project_id	= $this->jsmjinput->getInt('pid',0);
             self::$_division_id	= $this->jsmjinput->getInt('division',0);
-            //$post = JFactory::getApplication()->input->get( 'post' );
+            //$post = Factory::getApplication()->input->get( 'post' );
 
 if ( isset($this->jsmpost['addteam']) )
 {
@@ -250,9 +251,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
      */
     function addNewProjectTeam($team_id,$project_id)
     {
-	$db = JFactory::getDBO();
+	$db = Factory::getDBO();
     $query = $db->getQuery(true);	
-    $app = JFactory::getApplication();    
+    $app = Factory::getApplication();    
 //    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team_id,true).'</pre>'),'Notice');    
 //    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
 
@@ -282,11 +283,11 @@ $temp_season_team_id = new stdClass();
 $temp_season_team_id->team_id = $team_id;
 $temp_season_team_id->season_id = $pro_result->season_id;
 // Insert the object into the table.
-$result_season_team_id = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
+$result_season_team_id = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 if ( $result_season_team_id )
 {
@@ -300,11 +301,11 @@ $temp_project_team = new stdClass();
 $temp_project_team->team_id = $season_team_id;
 $temp_project_team->project_id = $project_id;
 // Insert the object into the table.
-$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+$result_project_team = Factory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 	
     }
@@ -319,7 +320,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 	function store( $data )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         // JInput object
         $jinput = $app->input;
@@ -340,7 +341,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }    
 
@@ -359,7 +360,7 @@ catch (Exception $e) {
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }   
 
@@ -375,7 +376,7 @@ catch (Exception $e) {
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }   
 			$query = "	UPDATE  #__sportsmanagement_match
@@ -390,7 +391,7 @@ catch (Exception $e) {
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }   
 				
@@ -410,7 +411,7 @@ catch (Exception $e) {
 catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns
-	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }   
 		}
@@ -603,7 +604,7 @@ try{
 	function setNewTeamID()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -611,9 +612,9 @@ try{
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
-		$post = JFactory::getApplication()->input->post->getArray(array());
-		$oldteamid = JFactory::getApplication()->input->getVar('oldteamid',array(),'post','array');
-		$newteamid = JFactory::getApplication()->input->getVar('newteamid',array(),'post','array');
+		$post = Factory::getApplication()->input->post->getArray(array());
+		$oldteamid = Factory::getApplication()->input->getVar('oldteamid',array(),'post','array');
+		$newteamid = Factory::getApplication()->input->getVar('newteamid',array(),'post','array');
 
 		for ($a=0; $a < sizeof($oldteamid); $a++ )
 		{
@@ -672,7 +673,7 @@ try{
 	function getAllTeams($pid)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -852,7 +853,7 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
     function getAllProjectTeams($projectid=0,$divisionid=0,$team_ids=NULL,$cfg_which_database = 0)
 	{
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -906,7 +907,7 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
 	function copy($dest, $ptids)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         // JInput object
         $jinput = $app->input;
@@ -977,11 +978,11 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
 	function getProjectTeamsCount($project_id)
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$db	= JFactory::getDbo();
+        //$db	= Factory::getDbo();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         $starttime = microtime(); 

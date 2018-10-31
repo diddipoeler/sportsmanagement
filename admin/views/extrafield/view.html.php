@@ -12,7 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
- 
+use Joomla\CMS\Factory; 
 
 /**
  * sportsmanagementViewextrafield
@@ -34,22 +34,6 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI();
-//        $starttime = microtime(); 
-        
-       // // get the Data
-//		$form = $this->get('Form');
-//		$item = $this->get('Item');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-//		$script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -74,7 +58,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        $app	= JFactory::getApplication();
+        $app	= Factory::getApplication();
 		$jinput	= $app->input;
 		$jinput->set('hidemainmenu', true);
         

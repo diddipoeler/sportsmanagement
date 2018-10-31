@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
   
@@ -21,7 +23,7 @@ $updateFileDate		= '2017-01-15';
 $updateFileTime		= '00:05';
 $updateDescription	='<span style="color:orange">Update all tables using the current install sql-file.</span>';
 $excludeFile		='false';
-$option = JFactory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->input->getCmd('option');
 
 $maxImportTime = JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -44,8 +46,8 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit'
  */
 function getUpdatePart()
 {
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$update_part = $app->getUserState($option.'update_part');
 	return $update_part;
 }
@@ -58,8 +60,8 @@ function getUpdatePart()
  */
 function setUpdatePart($val=1)
 {
-	$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$update_part=$app->getUserState($option.'update_part');
 	if ($val!=0)
 	{
@@ -87,7 +89,7 @@ function setUpdatePart($val=1)
 function ImportTables()
 {
 	$db = sportsmanagementHelper::getDBConnection();
-    $option = JFactory::getApplication()->input->getCmd('option');
+    $option = Factory::getApplication()->input->getCmd('option');
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');
 

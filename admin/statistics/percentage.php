@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -52,7 +53,7 @@ class SMStatisticPercentage extends SMStatistic
 	 */
 	function getSids($id_field = 'numerator_ids')
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$params = SMStatistic::getParams();
 		
         //$numerator_ids = explode(',', $params->get('numerator_ids'));
@@ -98,7 +99,7 @@ class SMStatisticPercentage extends SMStatistic
 	 */
 	function getQuotedSids($id_field = 'numerator_ids')
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $params = SMStatistic::getParams();
 
         $numerator_ids = $params->get('numerator_ids');
@@ -248,13 +249,13 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = self::getQuotedSids();
 		
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $query_num = JFactory::getDbo()->getQuery(true);
-        $query_den = JFactory::getDbo()->getQuery(true);
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $query_num = Factory::getDbo()->getQuery(true);
+        $query_den = Factory::getDbo()->getQuery(true);
+        $query_core = Factory::getDbo()->getQuery(true);
         
         $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
         $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -380,7 +381,7 @@ class SMStatisticPercentage extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{
 		$sids = self::getQuotedSids();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
         $query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids['num']);
@@ -396,7 +397,7 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 
 		if (!empty($res))

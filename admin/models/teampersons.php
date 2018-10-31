@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTeamPersons
@@ -78,27 +79,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         
-        if ( JFactory::getApplication()->input->getVar('team_id') )
+        if ( Factory::getApplication()->input->getVar('team_id') )
         {
-        $this->setState('filter.team_id', JFactory::getApplication()->input->getVar('team_id') );    
+        $this->setState('filter.team_id', Factory::getApplication()->input->getVar('team_id') );    
         }
         else
         {
 		$this->setState('filter.team_id', $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' ) );
         }
         
-        if ( JFactory::getApplication()->input->getVar('persontype') )
+        if ( Factory::getApplication()->input->getVar('persontype') )
         {
-        $this->setState('filter.persontype', JFactory::getApplication()->input->getVar('persontype') );    
+        $this->setState('filter.persontype', Factory::getApplication()->input->getVar('persontype') );    
         }
         else
         {
         $this->setState('filter.persontype', $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' ) );
         }
         
-        if ( JFactory::getApplication()->input->getVar('project_team_id') )
+        if ( Factory::getApplication()->input->getVar('project_team_id') )
         {
-        $this->setState('filter.project_team_id', JFactory::getApplication()->input->getVar('project_team_id') );    
+        $this->setState('filter.project_team_id', Factory::getApplication()->input->getVar('project_team_id') );    
         }
         else
         {
@@ -200,7 +201,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
     function PersonProjectPosition($project_id,$_persontype)
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -241,7 +242,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
     function checkProjectPositions($project_id,$persontype,$team_id,$season_id,$insert=1)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -249,8 +250,8 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		//$db	= sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        $date = JFactory::getDate();
-	    $user = JFactory::getUser();
+        $date = Factory::getDate();
+	    $user = Factory::getUser();
         $modified = $date->toSql();
 	    $modified_by = $user->get('id');
        
@@ -361,14 +362,14 @@ catch (Exception $e) {
 	function getProjectTeamplayers($team_id = 0,$season_id = 0)
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
 		
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id -> '.$project_team_id.'<br>','Notice');
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id -> '.$season_id.'<br>','Notice');

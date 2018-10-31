@@ -11,6 +11,7 @@
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -53,13 +54,13 @@ class sportsmanagementModelleague extends JSMModelAdmin
 	function saveshort()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get the input
         $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $post = Factory::getApplication()->input->post->getArray(array());
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

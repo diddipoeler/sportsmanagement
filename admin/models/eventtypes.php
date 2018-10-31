@@ -146,8 +146,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	 */
 	public static function getEvents($sports_type_id  = 0)
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-		//$app = JFactory::getApplication();
         $jsmdb = sportsmanagementHelper::getDBConnection();
         $jsmquery = $jsmdb->getQuery(true);
         // Select some fields
@@ -167,7 +165,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
 		$jsmdb->setQuery($jsmquery);
 		if ( !$result = $jsmdb->loadObjectList() )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $position)

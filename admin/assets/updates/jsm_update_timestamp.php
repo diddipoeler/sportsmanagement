@@ -11,6 +11,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.filter.output');
 
@@ -23,9 +24,9 @@ JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-$uri	= JFactory::getUri();
+$uri	= Factory::getUri();
 
-$table = JFactory::getApplication()->input->getVar('table');
+$table = Factory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
 
@@ -92,7 +93,7 @@ $object->modified_timestamp = $projekt->modified_timestamp;
 
 //echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
 }
 
 }
@@ -120,7 +121,7 @@ $object = new stdClass();
 $object->id = $match->id;
 $object->match_timestamp = $match->match_timestamp;
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
 }
 
 }

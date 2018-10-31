@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
@@ -62,8 +63,8 @@ class sportsmanagementControllerjlextindividualsport extends JController
     
 //    function apply($data)
 //    {
-//        $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
+//        $app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->apply($data);
 //    
@@ -72,8 +73,8 @@ class sportsmanagementControllerjlextindividualsport extends JController
     
 //    function save($data)
 //    {
-//        $app = JFactory::getApplication();
-//        $option = JFactory::getApplication()->input->getCmd('option');
+//        $app = Factory::getApplication();
+//        $option = Factory::getApplication()->input->getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->save($data);
 //    
@@ -89,12 +90,12 @@ class sportsmanagementControllerjlextindividualsport extends JController
 	 */
 	function addmatch()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $db = Factory::getDbo(); 
         
         //option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         //$post['match_id'] = $post['id'];
@@ -132,9 +133,9 @@ class sportsmanagementControllerjlextindividualsport extends JController
         
         
         /*
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->post->getArray(array());
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+		$post=Factory::getApplication()->input->post->getArray(array());
 		
 		$post['match_id']		= $app->getUserState( $option . 'match_id',0 );
 		$post['project_id']=$app->getUserState($option.'project',0);

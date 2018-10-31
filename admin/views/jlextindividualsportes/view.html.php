@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewjlextindividualsportes
@@ -55,7 +56,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 {
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 
 		if ($this->getLayout() == 'default')
 		{
@@ -68,17 +69,16 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 
 	function _displayDefault($tpl)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $model = $this->getModel();
-		$uri = JFactory::getURI();
+		$uri = Factory::getURI();
 
 		$this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-		//$cid = JFactory::getApplication()->input->getVar('cid', 'request', 'array');
 		$cid = $jinput->request->get('cid', null, ARRAY)
 
 		

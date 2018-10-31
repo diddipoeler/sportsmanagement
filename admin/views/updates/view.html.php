@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
  * @version         1.0.05
  * @file                agegroup.php
@@ -40,6 +39,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.html.html.bootstrap');
 jimport('joomla.application.component.view');
 
@@ -60,9 +61,6 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        //	$app = JFactory::getApplication();
-//		$jinput = $app->input;
-        //	$option = $jinput->getCmd('option');
         $this->app->setUserState($this->option . 'update_part', 0); // 0
         $filter_order = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order', 'filter_order', 'dates', 'cmd');
         $filter_order_Dir = $this->app->getUserStateFromRequest($this->option . 'updates_filter_order_Dir', 'filter_order_Dir', '', 'word');
@@ -73,7 +71,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
         $model = $this->getModel();
         $versions = $model->getVersions();
@@ -122,7 +120,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
      */
     protected function addToolbar() {
         //// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
+//        $document = Factory::getDocument();
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
@@ -130,7 +128,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
         $this->icon = 'updates';
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
+//        JToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
 
         parent::addToolbar();
     }

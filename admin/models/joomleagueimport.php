@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
@@ -42,9 +43,9 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 // */
 //function getImportPositions($component = 'joomleague',$which_table='project_position')
 //{
-//    $app = JFactory::getApplication();
-//    $db = JFactory::getDbo(); 
-//    $option = JFactory::getApplication()->input->getCmd('option');
+//    $app = Factory::getApplication();
+//    $db = Factory::getDbo(); 
+//    $option = Factory::getApplication()->input->getCmd('option');
 //    
 //    // Select some fields
 //            $query = $db->getQuery(true);
@@ -83,9 +84,9 @@ class sportsmanagementModeljoomleagueimport extends JModelList
  */
 function newstructurjlimport($season_id,$jl_table,$jsm_table,$project_id)
 {
-    $app = JFactory::getApplication();
-    $db = JFactory::getDbo(); 
-    $option = JFactory::getApplication()->input->getCmd('option');
+    $app = Factory::getApplication();
+    $db = Factory::getDbo(); 
+    $option = Factory::getApplication()->input->getCmd('option');
     $starttime = microtime(); 
     $query = $db->getQuery(true);
         
@@ -191,7 +192,7 @@ $my_text .= '<br />';
                 $temp->season_id = $row->season_id;
                 $temp->team_id = $row->team_id;
                 // Insert the object into table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
                 if ( $result )
                 {
                     $new_id = $db->insertid();
@@ -217,7 +218,7 @@ $my_text .= '<br />';
 //                $object->id = $row->id;
 //                $object->import = 1;
 //                // Update their details in the users table using id as the primary key.
-//                $result = JFactory::getDbo()->updateObject($jl_table, $object, 'id'); 
+//                $result = Factory::getDbo()->updateObject($jl_table, $object, 'id'); 
                 
                 // Create an object for the record we are going to joomleague update.
                 $object = new stdClass();
@@ -235,7 +236,7 @@ $my_text .= '<br />';
                 // jetzt die neue team_id
                 $object->team_id = $new_id;
                 // Insert the object into table.
-                $result2 = JFactory::getDbo()->insertObject($jsm_table, $object);
+                $result2 = Factory::getDbo()->insertObject($jsm_table, $object);
                 
                 if ( $result2 )
                 {
@@ -263,7 +264,7 @@ $my_text .= '<br />';
                     $object->id = $row->id;
                     $object->team_id = $new_id;
                     // Update their details in the users table using id as the primary key.
-                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');
+                    $result = Factory::getDbo()->updateObject($jsm_table, $object, 'id');
                     */
                 }
                 
@@ -362,7 +363,7 @@ $my_text .= '<br />';
                 $temp->picture = $row->picture;
                 $temp->persontype = 1;
                 // Insert the object into the user profile table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
                 }
                 
                 // ist der spieler schon in der season team person tabelle ?
@@ -391,7 +392,7 @@ $my_text .= '<br />';
                     $temp->active = 1;
                     $temp->published = 1;
                     // Insert the object into the user profile table.
-                    $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+                    $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
                     if ( $result )
                     {
                         $new_id = $db->insertid();
@@ -415,7 +416,7 @@ $my_text .= '<br />';
 //                $object->id = $row->id;
 //                $object->import = $new_id;
 //                // Update their details in the users table using id as the primary key.
-//                $result_update = JFactory::getDbo()->updateObject('#__joomleague_team_player', $object, 'id'); 
+//                $result_update = Factory::getDbo()->updateObject('#__joomleague_team_player', $object, 'id'); 
                 
                 // kein update, sondern den datensatz aus der importierten tabelle löschen
                 // delete all custom keys for user 1001.
@@ -527,7 +528,7 @@ $my_text .= '<br />';
                 $temp->picture = $row->picture;
                 $temp->persontype = 2;
                 // Insert the object into the user profile table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
                 }
                 
                 // ist der spieler schon in der season team person tabelle ?
@@ -556,7 +557,7 @@ $my_text .= '<br />';
                     $temp->active = 1;
                     $temp->published = 1;
                     // Insert the object into the user profile table.
-                    $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+                    $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
                     if ( $result )
                     {
                         $new_id = $db->insertid();
@@ -580,7 +581,7 @@ $my_text .= '<br />';
 //                $object->id = $row->id;
 //                $object->import = $new_id;
 //                // Update their details in the users table using id as the primary key.
-//                $result_update = JFactory::getDbo()->updateObject('#__joomleague_team_staff', $object, 'id'); 
+//                $result_update = Factory::getDbo()->updateObject('#__joomleague_team_staff', $object, 'id'); 
 
 $query->clear();
 $conditions = array(
@@ -678,7 +679,7 @@ foreach ( $result as $row )
                 $temp->persontype = 3;
                 $temp->published = 1;
                 // Insert the object into the table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
                 }
                 
                 if ( $result )

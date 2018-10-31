@@ -1,4 +1,3 @@
-
 <?php
 $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
@@ -6,6 +5,7 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 // no direct access
 defined('_JEXEC') or die ;
+use Joomla\CMS\Factory;
 
 jimport('joomla.form.formfield');
 
@@ -14,7 +14,7 @@ class JFormFieldserialnumber extends FormField {
 	public $type = 'serialnumber';
 
 	protected function getInput() {
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' element <pre>'.print_r($this->element, true).'</pre><br>','');
 	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' name<pre>'.print_r($this->name, true).'</pre><br>','');
 	//$app->enqueueMessage(__METHOD__.' '.__LINE__.' id<pre>'.print_r($this->id, true).'</pre><br>','');

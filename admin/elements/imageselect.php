@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 /**
  * JFormFieldImageSelect
@@ -60,8 +60,8 @@ class JFormFieldImageSelect extends JFormField
 	 */
 	function getInput() 
     {
-		$app	= JFactory::getApplication();
-		$option = JFactory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
         
         $default = $this->value;
 		$arrPathes = explode('/', $default);

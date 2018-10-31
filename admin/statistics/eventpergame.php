@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -60,8 +61,8 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		$sids = SMStatistic::getSids($this->_ids);
 		$num = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
@@ -119,11 +120,11 @@ class SMStatisticEventPergame extends SMStatistic
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         
-        $query_core = JFactory::getDbo()->getQuery(true);
+        $query_core = Factory::getDbo()->getQuery(true);
         
         $query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
         $query_num	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'event');
@@ -204,7 +205,7 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = NULL)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $sids = SMStatistic::getQuotedSids($this->_ids);
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -279,8 +280,8 @@ class SMStatisticEventPergame extends SMStatistic
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
 		$db = sportsmanagementHelper::getDBConnection();
-        $query = JFactory::getDbo()->getQuery(true);
-        $app = JFactory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
         
         $select = 'SUM(ms.value) AS value, tp.person_id';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sids,$select,FALSE);

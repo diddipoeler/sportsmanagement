@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelclubname
@@ -32,16 +33,16 @@ class sportsmanagementModelclubname extends JSMModelAdmin
     public function import()
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // Create a new query object.		 
 	$db = sportsmanagementHelper::getDBConnection(); 
 $query = $db->getQuery(true);
 
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $option = Factory::getApplication()->input->getCmd('option');
         // JInput object
         $jinput = $app->input;    
 
-$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
+$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
     
      foreach( $xml->children() as $quote )  
              { 

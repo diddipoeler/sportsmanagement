@@ -58,7 +58,7 @@ class JFormFieldsportstypelist extends \JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-    $lang = JFactory::getLanguage();
+    $lang = Factory::getLanguage();
     $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
 			$query = $db->getQuery(true);
 			

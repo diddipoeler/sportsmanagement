@@ -32,13 +32,13 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         //if (version_compare(JSM_JVERSION, '4', 'eq')) {
 //            $uri = JUri::getInstance();
 //        } else {
-//            $uri = JFactory::getURI();
+//            $uri = Factory::getURI();
 //        }
         $model = $this->getModel();
 
@@ -90,7 +90,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
      */
     protected function addToolbar() {
 
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
         $this->app->setUserState("$this->option.persontype", $this->_persontype);

@@ -46,8 +46,8 @@ class JFormFieldFederationsList extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        //$option = Factory::getApplication()->input->getCmd('option');
         $selected = 0;
 
         // Initialize variables.
@@ -64,7 +64,7 @@ class JFormFieldFederationsList extends \JFormFieldList
 		
 		if ($select_id)
 		{		
-//		$db = JFactory::getDbo();
+//		$db = Factory::getDbo();
 //		$query = $db->getQuery(true);
 //		$query->select('country');		
 //		$query->from('#__sportsmanagement_'.$vartable.' AS t');
@@ -73,7 +73,7 @@ class JFormFieldFederationsList extends \JFormFieldList
 //		$country = $db->loadResult();
 		//echo 'country<br /><pre>~' . print_r($country,true) . '~</pre><br />';
 				
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id,t.id AS value, t.name AS text');

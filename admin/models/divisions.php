@@ -146,8 +146,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-	   //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 	//	$db = sportsmanagementHelper::getDBConnection();
@@ -185,8 +183,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-	   //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();

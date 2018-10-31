@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Factory;
 
 /**
  * FormFieldNameFormat
@@ -34,7 +35,7 @@ class JFormFieldNameFormat extends FormField
 	 * @return
 	 */
 	function getInput() {
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
 		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)

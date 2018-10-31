@@ -64,12 +64,12 @@ class JFormFieldseasonlist extends FormField
 		// Initialize variables.
 		$options = array();
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
        $view = $jinput->getCmd('view');
        $option = $jinput->getCmd('option');
-       $lang = JFactory::getLanguage();
+       $lang = Factory::getLanguage();
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR); 
         
         

@@ -50,9 +50,9 @@ class JFormFieldjsmcolorsranking extends FormField
 	 */
 	public function getInput()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $select_id = JFactory::getApplication()->input->getVar('id');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $select_id = Factory::getApplication()->input->getVar('id');
         //$this->value = explode(",", $this->value);
         $rankingteams = $this->element['rankingteams'];
         $templatename = $this->element['templatename'];

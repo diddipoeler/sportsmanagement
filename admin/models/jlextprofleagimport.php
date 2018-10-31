@@ -12,7 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
-$option = JFactory::getApplication()->input->getCmd('option');
+use Joomla\CMS\Factory;
+
+$option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
@@ -68,7 +70,7 @@ class sportsmanagementModeljlextprofleagimport extends JModelLegacy
  */
 function __construct( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
+	   $option = Factory::getApplication()->input->getCmd('option');
 	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
@@ -167,7 +169,7 @@ private function dump_header($text)
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
+		$data = Factory::getApplication()->getUserState('com_joomleague.edit.'.$this->name.'.data', array());
 		if (empty($data))
 		{
 			$data = $this->getData();
@@ -252,21 +254,21 @@ Function DumpStructure(&$structure,&$positions,$path)
  */
 function getData()
 	{
-$option = JFactory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->input->getCmd('option');
 
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
   
-  $lang = JFactory::getLanguage();
+  $lang = Factory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JFactory::getApplication()->input->post->getArray(array());
+  $post = Factory::getApplication()->input->post->getArray(array());
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
   $app->enqueueMessage(Text::_('land '.$country.''),'');
   
-  $option = JFactory::getApplication()->input->getCmd('option');
+  $option = Factory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
 	
 		

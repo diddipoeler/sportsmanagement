@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewPersons
@@ -118,21 +119,7 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	 */
 	function _displayAssignPlayers($tpl=null)
 	{
-		// Reference global application object
-        //$app = JFactory::getApplication();
-        // JInput object
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
-        //$user	= JFactory::getUser();
-		//$model = $this->getModel();
         
-//        $this->state = $this->get('State'); 
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        
-		//$project_id = $app->getUserState($option.'project');
         $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
         $this->persontype	= $this->app->getUserState( "$this->option.persontype", '0' );
 		$mdlProject = BaseDatabaseModel::getInstance('project', 'sportsmanagementModel');
@@ -141,7 +128,6 @@ class sportsmanagementViewPersons extends sportsmanagementView
 		$project_team_id = $this->app->getUserState($this->option.'project_team_id');
 		$team_name = $this->model->getProjectTeamName($project_team_id);
         
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($this->persontype,true).'</pre>'),'');
         
 		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
@@ -217,7 +203,7 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	//	$this->items	= $items;
 //        $this->user	= $user;
 //		$this->pagination	= $pagination;
-//		$this->request_url	= JFactory::getURI()->toString();
+//		$this->request_url	= Factory::getURI()->toString();
 		$this->type	= $type;
         
         $this->setLayout('assignplayers');
@@ -240,7 +226,7 @@ class sportsmanagementViewPersons extends sportsmanagementView
 		HTMLHelper::_('behavior.calendar'); //load the calendar behavior
 
 		if (is_array($attribs)){$attribs=ArrayHelper::toString($attribs);}
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScriptDeclaration('window.addEvent(\'domready\',function() {Calendar.setup({
 	        inputField     :    "'.$id.'",    // id of the input field
 	        ifFormat       :    "'.$format.'",     // format of the input field

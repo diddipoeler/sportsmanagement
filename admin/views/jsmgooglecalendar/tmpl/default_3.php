@@ -39,7 +39,9 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
-JFactory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
+use Joomla\CMS\Factory;
+
+Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
 JHtml::_('behavior.tooltip');
 
 //JHtml::_('behavior.modal');

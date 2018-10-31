@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
@@ -34,7 +35,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         public function __construct()
         {
                 parent::__construct();
-                $this->app = JFactory::getApplication();
+                $this->app = Factory::getApplication();
                 // JInput object
         $this->jinput = $this->app->input;
         }
@@ -933,7 +934,7 @@ try
         public function sportstypesoptions()
         {
                 echo json_encode((array) JoomleagueModelSportsTypes::getSportsTypes());
-                JFactory::getApplication()->close();
+                Factory::getApplication()->close();
         }
 
 }

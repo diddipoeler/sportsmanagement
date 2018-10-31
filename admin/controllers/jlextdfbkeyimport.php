@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -54,10 +55,10 @@ function display($cachable = false, $urlparams = false)
 
 //global $app,$option;
 
-//$document	=& JFactory::getDocument();
-//		$app	=& JFactory::getApplication();
+//$document	=& Factory::getDocument();
+//		$app	=& Factory::getApplication();
 //    $model = $this->getModel('jlextdfbkeyimport');
-//    $post = JFactory::getApplication()->input->get( 'post' );
+//    $post = Factory::getApplication()->input->get( 'post' );
     
     /*
     echo '<pre>';
@@ -86,10 +87,10 @@ function display($cachable = false, $urlparams = false)
     
     case 'apply'	 :
 			{
-				//JFactory::getApplication()->input->setVar( 'hidemainmenu', 1 );
-				JFactory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
-				JFactory::getApplication()->input->setVar( 'view', 'jlextdfbkeyimport' );
-				//JFactory::getApplication()->input->setVar( 'edit', false );
+				//Factory::getApplication()->input->setVar( 'hidemainmenu', 1 );
+				Factory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
+				Factory::getApplication()->input->setVar( 'view', 'jlextdfbkeyimport' );
+				//Factory::getApplication()->input->setVar( 'edit', false );
 				
 				
 			} break;
@@ -108,8 +109,8 @@ function display($cachable = false, $urlparams = false)
      */
     function getdivisionfirst()
     {
-    $post = JFactory::getApplication()->input->post->getArray(array());    
-    $option = JFactory::getApplication()->input->getCmd('option');    
+    $post = Factory::getApplication()->input->post->getArray(array());    
+    $option = Factory::getApplication()->input->getCmd('option');    
      $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_20' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default&divisionid='.$post['divisionid'];
 		$this->setRedirect( $link, $msg );     
@@ -122,14 +123,14 @@ function display($cachable = false, $urlparams = false)
    */
   function apply()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-       //$post = JFactory::getApplication()->input->get( 'post' );
-       $post = JFactory::getApplication()->input->post->getArray(array());
-       //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+	   $option = Factory::getApplication()->input->getCmd('option');
+       //$post = Factory::getApplication()->input->get( 'post' );
+       $post = Factory::getApplication()->input->post->getArray(array());
+       //Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 
 // store the variable that we would like to keep for next time
 // function syntax is setUserState( $key, $value );
-JFactory::getApplication()->setUserState( "$option.first_post", $post );
+Factory::getApplication()->setUserState( "$option.first_post", $post );
        
      $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_12' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_savematchdays';
@@ -145,11 +146,11 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
    */
   function save()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-        //$post = JFactory::getApplication()->input->get( 'post' );
-	$post = JFactory::getApplication()->input->post->getArray(array());
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');	
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+        //$post = Factory::getApplication()->input->get( 'post' );
+	$post = Factory::getApplication()->input->post->getArray(array());
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');	
     /*
     echo '<pre>';
     print_r($post);
@@ -214,7 +215,7 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
     print_r($model);
     echo '</pre>';
     */
-    //JFactory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
+    //Factory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
     $msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect( $link, $msg );
@@ -228,11 +229,11 @@ JFactory::getApplication()->setUserState( "$option.first_post", $post );
    */
   function insert()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-//        $post = JFactory::getApplication()->input->get( 'post' );
-$post = JFactory::getApplication()->input->post->getArray(array());
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+//        $post = Factory::getApplication()->input->get( 'post' );
+$post = Factory::getApplication()->input->post->getArray(array());
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' post <pre>'.print_r($post,true).'</pre>', 'warning');
 	  
     /*    
     echo '<pre>';

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 class GCalendar_Entry extends Zend_Gdata_Calendar_EventEntry{
 
@@ -89,7 +90,7 @@ class GCalendar_Entry extends Zend_Gdata_Calendar_EventEntry{
 
 	public function getModifiedDate() {
 		if($this->modifiedDate == null) {
-			$this->modifiedDate = JFactory::getDate($this->getPublished());
+			$this->modifiedDate = Factory::getDate($this->getPublished());
 			$this->modifiedDate->setTimezone(new DateTimeZone(jsmGCalendarUtil::getComponentParameter('timezone')));
 		}
 		return $this->modifiedDate;
@@ -185,14 +186,14 @@ class GCalendar_Entry extends Zend_Gdata_Calendar_EventEntry{
 						continue;
 					}
 					if(strpos($part, 'DTSTART;VALUE=DATE:') !== false) {
-						$date = JFactory::getDate(substr($part, 19).' 00:00:00');
+						$date = Factory::getDate(substr($part, 19).' 00:00:00');
 					} else {
-						$date = JFactory::getDate(substr($part, 8));
+						$date = Factory::getDate(substr($part, 8));
 					}
 				}
 			} else if(is_array($when)) {
 				$when = reset($when);
-				$date = JFactory::getDate($when->getStartTime());
+				$date = Factory::getDate($when->getStartTime());
 			}
 		} else {
 			$when = $this->getWhen();
@@ -203,14 +204,14 @@ class GCalendar_Entry extends Zend_Gdata_Calendar_EventEntry{
 						continue;
 					}
 					if(strpos($part, 'DTEND;VALUE=DATE:') !== false) {
-						$date = JFactory::getDate(substr($part, 17).' 00:00:00');
+						$date = Factory::getDate(substr($part, 17).' 00:00:00');
 					} else {
-						$date = JFactory::getDate(substr($part, 6));
+						$date = Factory::getDate(substr($part, 6));
 					}
 				}
 			} else if(is_array($when)) {
 				$when = reset($when);
-				$date = JFactory::getDate($when->getEndTime());
+				$date = Factory::getDate($when->getEndTime());
 			}
 		}
 		return $date;

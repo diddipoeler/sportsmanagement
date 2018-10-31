@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewstatistic
@@ -33,7 +34,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -77,7 +78,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		Factory::getApplication()->input->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
         $this->icon = 'statistic';

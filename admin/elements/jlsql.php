@@ -39,6 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -80,7 +81,7 @@ class JFormFieldJLSQL extends JFormField
 		$db->setQuery($this->elements['query']);
 		$key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
 		$val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);
-		$doc = JFactory::getDocument();
+		$doc = Factory::getDocument();
 		$updates = $this->elements['updates'];
 		$depends = $this->elements['depends'];
 		if($updates){

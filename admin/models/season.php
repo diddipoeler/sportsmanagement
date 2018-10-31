@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelseason
@@ -48,18 +49,18 @@ class sportsmanagementModelseason extends JSMModelAdmin
     function saveshortpersons()
     {
         // Reference global application object
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         // JInput object
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection();
         
-        //$date = JFactory::getDate();
-//	   $user = JFactory::getUser();
+        //$date = Factory::getDate();
+//	   $user = Factory::getUser();
        $modified = $this->jsmdate->toSql();
 	   $modified_by = $this->jsmuser->get('id');
        
-        //$post = JFactory::getApplication()->input->post->getArray(array());
+        //$post = Factory::getApplication()->input->post->getArray(array());
         //$post = $jinput->post;
         $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
         $teams = $this->jsmjinput->getVar('team_id', null, 'post', 'array');
@@ -179,12 +180,12 @@ $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()
     function saveshortteams()
     {
         // Reference global application object
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         // JInput object
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection();
-        //$post = JFactory::getApplication()->input->post->getArray(array());
+        //$post = Factory::getApplication()->input->post->getArray(array());
         //$post = $jinput->post;
         $pks = $this->jsmjinput->getVar('cid', null, 'post', 'array');
         $season_id = $this->jsmjinput->getVar('season_id', 0, 'post', 'array');

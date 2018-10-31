@@ -45,11 +45,11 @@ class JFormFieldprojectlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         // Initialize variables.
 		$options = array();
     
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('l.id AS value, l.name AS text');

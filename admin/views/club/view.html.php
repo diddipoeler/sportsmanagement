@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
-
+use Joomla\CMS\Plugin\PluginHelper;
 /**
  * sportsmanagementViewClub
  * 
@@ -112,6 +112,13 @@ $this->document->addScript(Uri::base() . 'components/'.$this->option.'/assets/js
 		{
 $this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/club/tmpl/edit.js');
 		}
+
+
+if ( PluginHelper::isEnabled( 'system', 'jsm_soccerway' ) )
+{
+$this->document->addScript(Uri::base() . 'components/'.$this->option.'/views/club/tmpl/soccerway.js');    
+}
+
                             
 	}
  

@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerprojectteams
@@ -45,10 +46,10 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	 */
   function assign()
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
-		//$post = JFactory::getApplication()->input->post->getArray(array());
+		//$post = Factory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray();
         $option = $jinput->getCmd('option');
 
@@ -66,7 +67,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
   function matchgroups()
 	{
 	   $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->matchgroups();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
@@ -80,7 +81,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function setseasonid()
 	{
 	   $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->setseasonid();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
@@ -94,7 +95,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function use_table_yes()
     {
        $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetable(1);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
@@ -107,7 +108,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function use_table_no()
     {
        $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetable(0);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
@@ -120,7 +121,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function use_table_points_yes()
     {
        $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetablepoints(1);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
@@ -133,7 +134,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function use_table_points_no()
     {
        $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetablepoints(0);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
@@ -148,7 +149,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
     function saveshort()
 	{
 	   $model = $this->getModel();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $model->saveshort();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 

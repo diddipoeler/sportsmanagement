@@ -21,6 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 $calendar = $this->gcalendar;
 
 JHtml::_('behavior.tooltip');
@@ -52,5 +54,5 @@ JHtml::_('behavior.tooltip');
 </form>
 
 <div align="center" style="clear: both">
-	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), Factory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementModelPlayground
@@ -78,10 +79,10 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
      */
     function getNextGames( $project = 0, $pgid = 0, $played = 0, $allproject = 0 )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         
         $result = array();
@@ -149,9 +150,9 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
      */
     public static function updateHits($pgid=0,$inserthits=0)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
-    $db = JFactory::getDbo();
+        $option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+    $db = Factory::getDbo();
  $query = $db->getQuery(true);
  
  if ( $inserthits )
@@ -175,8 +176,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      */
     public static function getPlayground( $pgid = 0,$inserthits=0 )
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-	    $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+	    $app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
@@ -198,7 +199,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         {
             if ( $pgid < 1 )
             {
-            $pgid = JFactory::getApplication()->input->getInt( "pgid", 0 );
+            $pgid = Factory::getApplication()->input->getInt( "pgid", 0 );
             }    
             
             if ( $pgid > 0 )

@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewsportsmanagements
@@ -88,7 +89,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -119,7 +120,7 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
 	 */
 	protected function setDocument() 
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_HELLOWORLD_ADMINISTRATION'));
 	}
 }

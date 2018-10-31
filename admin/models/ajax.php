@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.model' );
 
@@ -38,7 +39,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         public static function addGlobalSelectElement($elements, $required=false) 
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -87,7 +88,7 @@ class sportsmanagementModelAjax extends JModelLegacy
 static function getPredictionId($dabse = false, $required = false, $slug = false)
         {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         //$required = 0;
@@ -134,7 +135,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
   */
  public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	         $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -181,7 +182,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
  */
 public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 	   $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -267,7 +268,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false,$dbase = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
        
@@ -327,10 +328,10 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getassociationsoptions($country = NULL, $required = false, $slug = false,$dabse = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 		$query = $db->getQuery(true);
         
         
@@ -363,7 +364,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getseasons($dabse = false, $required = false, $slug = false)
         {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         //$required = 0;
@@ -411,7 +412,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getlocationzipcodeoptions($zipcode, $required = false, $slug = false, $dabse = false, $country = NULL)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -472,7 +473,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         static function getcountryzipcodeoptions($country, $required = false, $slug = false, $dabse = false, $project_id = 0)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -517,7 +518,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC' , $round_ids = NULL,  $dabse = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
        
@@ -581,7 +582,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 $option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dbase )
@@ -625,7 +626,7 @@ $option = $app->input->getCmd('option');
         public static function getpersonagegroupoptions($sports_type_id=0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = '' )
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         
@@ -692,7 +693,7 @@ $option = $app->input->getCmd('option');
         static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false)
         {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(); 
@@ -717,7 +718,7 @@ $option = $app->input->getCmd('option');
         static function getpersonlistoptions($person_art, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -751,7 +752,7 @@ $option = $app->input->getCmd('option');
         function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -788,7 +789,7 @@ $option = $app->input->getCmd('option');
         function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $option = $app->input->getCmd('option');
        
@@ -832,7 +833,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
           
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dabse )
@@ -881,7 +882,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
@@ -928,7 +929,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -976,7 +977,7 @@ $option = $app->input->getCmd('option');
         public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -1026,7 +1027,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
@@ -1093,7 +1094,7 @@ $option = $app->input->getCmd('option');
         function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1140,7 +1141,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1187,7 +1188,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectStaffOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1233,7 +1234,7 @@ $option = $app->input->getCmd('option');
         public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1302,7 +1303,7 @@ $db->setQuery($query);
         public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1350,7 +1351,7 @@ try{
         public static function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1392,7 +1393,7 @@ try{
         public static function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1440,7 +1441,7 @@ try{
         function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
@@ -1479,7 +1480,7 @@ try{
         public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )

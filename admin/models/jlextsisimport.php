@@ -40,8 +40,9 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-$option = JFactory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->input->getCmd('option');
 
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -106,10 +107,10 @@ var $_sis_datei = '';
 function getData()
 	{
   //global $app, $option;
-  $option = JFactory::getApplication()->input->getCmd('option');
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
-  $post = JFactory::getApplication()->input->get ( 'post' );
+  $option = Factory::getApplication()->input->getCmd('option');
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
+  $post = Factory::getApplication()->input->get ( 'post' );
 
 $country = '';
 $exportpositioneventtype = array();  
@@ -813,8 +814,8 @@ JFile::write($file, $xmlfile);
 	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-  $app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+  $app = Factory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';
         

@@ -11,12 +11,13 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.filter.output');
 
-$uri	= JFactory::getUri();
+$uri	= Factory::getUri();
 
-$table = JFactory::getApplication()->input->getVar('table');
+$table = Factory::getApplication()->input->getVar('table');
 $uri->delVar( 'table' );
 $link = $uri->toString();
 
@@ -76,7 +77,7 @@ $object = new stdClass();
 $object->id = $row->id;  
 $object->alias = JFilterOutput::stringURLSafe( $row->firstname ).'-'.JFilterOutput::stringURLSafe( $row->lastname );
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }		
 		
 break;
@@ -103,7 +104,7 @@ $object = new stdClass();
 $object->id = $row->id;  
 $object->alias = JFilterOutput::stringURLSafe( $row->name );
 // Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
+$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_'.$table, $object, 'id', true);	
 }
 break;
 

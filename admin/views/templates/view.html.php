@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTemplates
@@ -32,14 +33,14 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
-        //$document = JFactory::getDocument();
+        //$document = Factory::getDocument();
 //        if (version_compare(JSM_JVERSION, '4', 'eq')) {
 //            $uri = JUri::getInstance();
 //        } else {
-//            $uri = JFactory::getURI();
+//            $uri = Factory::getURI();
 //        }
         //$model = $this->getModel();
         $starttime = microtime();
@@ -83,7 +84,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         }
 
         $pagination = $this->get('Pagination');
-        //$this->user = JFactory::getUser();
+        //$this->user = Factory::getUser();
         $this->lists = $lists; //otherwise no indication of the list in default_data.php on line 64!
         $this->templates = $templates;
         $this->projectws = $project;

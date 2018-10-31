@@ -45,7 +45,7 @@ class JFormFieldFavteam extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-	    $app = JFactory::getApplication();
+	    $app = Factory::getApplication();
        // JInput object
         $jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -70,7 +70,7 @@ class JFormFieldFavteam extends \JFormFieldList
 
 		if ($project_id)
 		{		
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id AS value, t.name AS text');

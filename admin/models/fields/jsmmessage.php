@@ -66,9 +66,6 @@ class JFormFieldJSMMessage extends FormField {
 		
 		$html = '';
 		
-		//$lang = JFactory::getLanguage();
-		//$lang->load('lib_syw.sys', JPATH_SITE);
-			
 		$version = new JVersion();
 		$jversion = explode('.', $version->getShortVersion());
 		

@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * JFormFieldSportsTypes
  * 
@@ -62,9 +64,9 @@ class JFormFieldSportsTypes extends JFormField
 	{
 		$result = array();
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-		$lang = JFactory::getLanguage();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+		$lang = Factory::getLanguage();
+        $option = Factory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( $option );
         //$database_table	= $params->get( 'cfg_which_database_table' );

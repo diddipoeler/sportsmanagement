@@ -12,6 +12,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
  
@@ -62,8 +64,8 @@ class sportsmanagementControllersmquotetxt extends JControllerForm
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app		= JFactory::getApplication();
-		$data		= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+		$app		= Factory::getApplication();
+		$data		= Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 		//$context	= 'com_templates.edit.source';
 		$task		= $this->getTask();
 		$model		= $this->getModel();

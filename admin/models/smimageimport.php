@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-// import Joomla modelform library
-
+use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
 
 jimport('joomla.application.component.model');
@@ -56,7 +55,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      */
     protected function allowEdit($data = array(), $key = 'id') {
         // Check specific edit permission then general edit permission.
-        return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+        return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
     }
 
     /**
@@ -98,7 +97,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      */
     protected function loadFormData() {
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
+        $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.smimageimport.data', array());
         if (empty($data)) {
             $data = $this->getItem();
         }
@@ -111,9 +110,9 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
      * @return
      */
     function import() {
-        $app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
-        //$post = JFactory::getApplication()->input->post->getArray(array());
+        $app = Factory::getApplication();
+        //$option = Factory::getApplication()->input->getCmd('option');
+        //$post = Factory::getApplication()->input->post->getArray(array());
         $option = $app->input->getCmd('option');
         $post = $app->input->post->getArray(array());
 
@@ -166,7 +165,7 @@ class sportsmanagementModelsmimageimport extends JModelLegacy {
                         $object->id = $value;
                         $object->published = 1;
                         // Update their details in the users table using id as the primary key.
-                        $result = JFactory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $object, 'id');
+                        $result = Factory::getDbo()->updateObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $object, 'id');
                     }
                 } else {
                     $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_NO_ZIP_ERROR'), 'error');

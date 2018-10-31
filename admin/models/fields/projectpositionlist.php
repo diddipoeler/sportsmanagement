@@ -46,7 +46,7 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -59,8 +59,8 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
         // Initialize variables.
 		$options = array();
 //    $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
-        $db = JFactory::getDbo();
+		$select_id = Factory::getApplication()->input->getVar('id');
+        $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pp.id AS value, pos.name AS text');
@@ -88,7 +88,7 @@ catch (Exception $e) {
 //    // catch any database errors.
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
-JFactory::getApplication()->enqueueMessage($db->getErrorMsg());
+Factory::getApplication()->enqueueMessage($db->getErrorMsg());
 }
             foreach ( $options as $row )
             {

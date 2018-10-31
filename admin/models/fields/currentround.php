@@ -58,7 +58,7 @@ class JFormFieldCurrentround extends \JFormFieldList
         //$project_id = $app->getUserState( "$option.pid", '0' );
          $project_id = $jinput->get->get('id');
 		/*
-        $project_id = JFactory::getApplication()->input->getVar($varname);
+        $project_id = Factory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}

@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewteampersons
@@ -33,21 +34,9 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        // Reference global application object
-//        $app = JFactory::getApplication();
-        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-
-//        $document = JFactory::getDocument();
-
 
         $this->restartpage = FALSE;
-//        $this->state = $this->get('State');
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
 
-//        $items = $this->get('Items');
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
         $this->_persontype = $this->jinput->getVar('persontype');
         if (empty($this->_persontype)) {
@@ -123,8 +112,8 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
 		
         $lists['nation'] = $nation;
 
-//        $this->user = JFactory::getUser();
-//        $this->config = JFactory::getConfig();
+//        $this->user = Factory::getUser();
+//        $this->config = Factory::getConfig();
         $this->lists = $lists;
 //        $this->items = $items;
 //        $this->pagination = $pagination;
@@ -140,7 +129,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time

@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport ( 'joomla.application.component.controller' );
 jimport ( 'joomla.filesystem.file' );
@@ -36,19 +37,19 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 	 * @return
 	 */
 	function save() {
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-		$document = JFactory::getDocument ();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
 		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
 		//JToolbarHelper::back ( Text::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $app = JFactory::getApplication();
+		// $app = Factory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
 		
-		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
-		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
+		//$delimiter = Factory::getApplication()->input->getVar ( 'delimiter', null );
+		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
 		
 		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
 		{
@@ -69,9 +70,9 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		
 		// first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			//$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
+			//$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			$upload = $app->input->files->get('import_package');
-			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
+			$lmoimportuseteams = Factory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
 			$app->setUserState ( $option . 'whichfile', $whichfile );

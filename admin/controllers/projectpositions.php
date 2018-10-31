@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerprojectpositions
@@ -40,7 +41,7 @@ class sportsmanagementControllerprojectpositions extends JSMControllerAdmin
 	 */
   function store()
 	{
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
 		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 

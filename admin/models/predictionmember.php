@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -42,9 +43,9 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
     function save_memberlist()
 	{
 	// Reference global application object
-        $app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+        $app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -52,8 +53,8 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 	
-  $post	= JFactory::getApplication()->input->post->getArray(array());
-	$cid	= JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
+  $post	= Factory::getApplication()->input->post->getArray(array());
+	$cid	= Factory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
   $prediction_id = $post['cid'];
   //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
   
@@ -107,9 +108,9 @@ if ( !$result )
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
   
-$language = JFactory::getLanguage();
+$language = Factory::getLanguage();
 $language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
 
 sportsmanagementModelPrediction::$predictionGameID = $prediction_id;
@@ -148,7 +149,7 @@ $predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id)
  */
   foreach ( $cid as $key => $value )
     {
-$mailer = JFactory::getMailer();
+$mailer = Factory::getMailer();
 /**
  * als html
  */
@@ -397,8 +398,8 @@ if ( $send !== true ) {
 	 */
 	function getSystemAdminsEMailAdresses()
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
 		$query =	'	SELECT u.email
 						FROM #__users AS u
@@ -429,8 +430,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getPredictionGameAdminsEMailAdresses( $predictionGameID )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
 		$query =	'	SELECT u.email
@@ -465,8 +466,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getPredictionMembersEMailAdresses( $cids )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
@@ -543,8 +544,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
      */
     function getPredictionGroups()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
 		$this->_db->setQuery($query);
@@ -565,10 +566,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function publishpredmembers( $cid = array(), $publish = 1, $predictionGameID )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
-		$user =& JFactory::getUser();
+		$user =& Factory::getUser();
 		if ( count( $cid ) )
 		{
 			$cids = implode( ',', $cid );
@@ -612,10 +613,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 				if ( count( $predictionGameMemberMail ) > 0 )
 				{
 					//Fetch the mail object
-					$mailer =& JFactory::getMailer();
+					$mailer =& Factory::getMailer();
 
 					//Set a sender
-					$config =& JFactory::getConfig();
+					$config =& Factory::getConfig();
 					$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
 					//echo '<br /><pre>~' . print_r( $sender, true ) . '~</pre><br />';
 					$mailer->setSender( $sender );
@@ -716,8 +717,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function deletePredictionMembers( $cid = array() )
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         
 		if ( count( $cid ) )
 		{
@@ -746,8 +747,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function deletePredictionResults($cid=array(),$prediction_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
     $db = sportsmanagementHelper::getDBConnection();
         
 		if (count($cid))
@@ -800,10 +801,10 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->post->getArray(array());
+	   $app = Factory::getApplication();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

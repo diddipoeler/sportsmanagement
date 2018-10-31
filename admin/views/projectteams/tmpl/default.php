@@ -12,10 +12,12 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

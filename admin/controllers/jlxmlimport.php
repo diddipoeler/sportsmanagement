@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -53,31 +55,31 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-	   $app = JFactory::getApplication();
+	   $app = Factory::getApplication();
        
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
        
 		switch ($this->getTask())
 		{
 			case 'edit':
-				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->set('layout','form');
-				JFactory::getApplication()->input->set('view','jlxmlimports');
-				JFactory::getApplication()->input->set('edit',true);
+				//Factory::getApplication()->input->setVar('hidemainmenu',0);
+				Factory::getApplication()->input->set('layout','form');
+				Factory::getApplication()->input->set('view','jlxmlimports');
+				Factory::getApplication()->input->set('edit',true);
 				break;
 
 			case 'insert':
-				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->set('layout','info');
-				JFactory::getApplication()->input->set('view','jlxmlimports');
-				JFactory::getApplication()->input->set('edit',true);
+				//Factory::getApplication()->input->setVar('hidemainmenu',0);
+				Factory::getApplication()->input->set('layout','info');
+				Factory::getApplication()->input->set('view','jlxmlimports');
+				Factory::getApplication()->input->set('edit',true);
 				break;
                 
            case 'update':
-				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
-				JFactory::getApplication()->input->set('layout','update');
-				JFactory::getApplication()->input->set('view','jlxmlimports');
-				JFactory::getApplication()->input->set('edit',true);
+				//Factory::getApplication()->input->setVar('hidemainmenu',0);
+				Factory::getApplication()->input->set('layout','update');
+				Factory::getApplication()->input->set('view','jlxmlimports');
+				Factory::getApplication()->input->set('edit',true);
 				break;     
 		}
 
@@ -91,16 +93,16 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	 */
 	function select()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$selectType=JFactory::getApplication()->input->getVar('type',0,'get','int');
-		$recordID=JFactory::getApplication()->input->getVar('id',0,'get','int');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$selectType=Factory::getApplication()->input->getVar('type',0,'get','int');
+		$recordID=Factory::getApplication()->input->getVar('id',0,'get','int');
 		$app->setUserState($option.'selectType',$selectType);
 		$app->setUserState($option.'recordID',$recordID);
 
-		JFactory::getApplication()->input->set('hidemainmenu',1);
-		JFactory::getApplication()->input->set('layout','selectpage');
-		JFactory::getApplication()->input->set('view','jlxmlimports');
+		Factory::getApplication()->input->set('hidemainmenu',1);
+		Factory::getApplication()->input->set('layout','selectpage');
+		Factory::getApplication()->input->set('view','jlxmlimports');
 
 		parent::display();
 	}
@@ -116,10 +118,10 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
 		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
-		$app = JFactory::getApplication();
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$app = Factory::getApplication();
+		$post = Factory::getApplication()->input->post->getArray(array());
         
-        $projectid = JFactory::getApplication()->input->getVar('projektfussballineuropa',null);
+        $projectid = Factory::getApplication()->input->getVar('projektfussballineuropa',null);
 
 		
         if ( $projectid )
@@ -155,7 +157,7 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
         // first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			//$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+			//$upload=Factory::getApplication()->input->getVar('import_package',null,'files','array');
 			$upload = $app->input->files->get('import_package');
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
@@ -252,7 +254,7 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 	function insert()
 	{
 		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
-		$post=JFactory::getApplication()->input->post->getArray(array());
+		$post=Factory::getApplication()->input->post->getArray(array());
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
 		//echo $link;

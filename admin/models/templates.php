@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTemplates
@@ -212,7 +213,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
                             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $xml = simplexml_load_file($metafile);
             } else {
-                        $xml = JFactory::getXML($metafile,true);
+                        $xml = Factory::getXML($metafile,true);
                         }
                         
                         $attributetitle = (string)$xml->layout->attributes()->title;

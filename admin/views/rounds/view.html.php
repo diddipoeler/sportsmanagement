@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewRounds
@@ -34,7 +35,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
      * @return
      */
     public function init() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $this->massadd = 0;
         $this->populate = 0;
         $tpl = NULL;

@@ -1,6 +1,7 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -22,7 +23,7 @@ class sportsmanagementModeltrainingsdata extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -74,7 +75,7 @@ class sportsmanagementModeltrainingsdata extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.trainingsdata.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.trainingsdata.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();

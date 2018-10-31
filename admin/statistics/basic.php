@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -144,9 +145,9 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getPlayersRanking($project_id = 0, $division_id = 0, $team_id = 0, $limit = 20, $limitstart = 0, $order = null)
 	{		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		$query_core = JFactory::getDbo()->getQuery(true);
+		$query_core = Factory::getDbo()->getQuery(true);
 		
 		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
@@ -229,7 +230,7 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{		
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'SUM(ms.value) AS total, st.team_id ';
@@ -243,12 +244,10 @@ try{
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' query<pre>'.print_r($query->dump(),true).'</pre>', 'error');
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' res<pre>'.print_r($res,true).'</pre>', 'error');
-		
+	
 		if ($res)
 		{
 			$precision = SMStatistic::getPrecision();
@@ -300,8 +299,8 @@ try{
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id,$select,FALSE);
@@ -320,8 +319,8 @@ try{
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'SUM(ms.value) AS value ';

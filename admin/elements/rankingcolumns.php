@@ -40,6 +40,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * JFormFieldrankingcolumns
  * 
@@ -64,9 +66,9 @@ class JFormFieldrankingcolumns extends JFormField
 	{
 		$result = array();
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-		$lang = JFactory::getLanguage();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+		$lang = Factory::getLanguage();
+        $option = Factory::getApplication()->input->getCmd('option');
         
         $selrankingcol = (int) ($this->element['selrankingcol']);
 

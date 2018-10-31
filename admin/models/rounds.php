@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelRounds
@@ -203,7 +204,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getFirstRound($projectid,$cfg_which_database = 0) 
     {
-         $app = JFactory::getApplication();
+         $app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -239,7 +240,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getLastRound($projectid,$cfg_which_database = 0) 
     {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 $option = $app->input->getCmd('option');        
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
@@ -275,7 +276,7 @@ $option = $app->input->getCmd('option');
 	 */
 	public static function getPreviousRound($roundid, $projectid,$cfg_which_database = 0) 
     {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -312,7 +313,7 @@ $option = $app->input->getCmd('option');
 	 */
 	public static function getNextRound($roundid, $projectid,$cfg_which_database = 0) 
     {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -378,7 +379,7 @@ $option = $app->input->getCmd('option');
 	 */
 	public static function getRoundsOptions($project_id, $ordering='ASC',$cfg_which_database = 0)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -412,8 +413,8 @@ $option = $app->input->getCmd('option');
 function populate($project_id, $scheduling, $time, $interval, $start, $roundname, $teamsorder = null)
 	{		
 	$db = sportsmanagementHelper::getDBConnection();
-	$date = JFactory::getDate();
-        $user = JFactory::getUser();
+	$date = Factory::getDate();
+        $user = Factory::getUser();
 	require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'class.roundrobin.php');	
 	if (!strtotime($start)) {
 			$start = strftime('%Y-%m-%d');

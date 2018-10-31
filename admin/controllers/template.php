@@ -11,7 +11,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- use Joomla\CMS\Language\Text;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory; 
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper; 
@@ -35,8 +36,8 @@ class sportsmanagementControllertemplate extends JControllerForm
  */
 function __construct()
 	{
-		$app	= JFactory::getApplication();
-		$option = JFactory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
 		parent::__construct();
 
 	
@@ -51,9 +52,9 @@ function __construct()
  */
 function remove()
 	{
-		$cid = JFactory::getApplication()->input->getVar('cid',array(0),'post','array');
+		$cid = Factory::getApplication()->input->getVar('cid',array(0),'post','array');
 		ArrayHelper::toInteger($cid);
-		$isMaster = JFactory::getApplication()->input->getVar('isMaster',array(),'post','array');
+		$isMaster = Factory::getApplication()->input->getVar('isMaster',array(),'post','array');
 		ArrayHelper::toInteger($isMaster);
 		if (count($cid) < 1){
 			JError::raiseError(500,Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
@@ -72,7 +73,7 @@ function remove()
 			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
 		}
 		$msg = Text::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.JFactory::getApplication()->input->getInt( "pid", 0 ), $msg);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.Factory::getApplication()->input->getInt( "pid", 0 ), $msg);
 	}
 	
 	/**
@@ -82,8 +83,8 @@ function remove()
 	 */
 	function masterimport()
 {
-$templateid = JFactory::getApplication()->input->getVar('templateid',0,'post','int');
-$projectid = JFactory::getApplication()->input->getVar('pid',0,'post','int');
+$templateid = Factory::getApplication()->input->getVar('templateid',0,'post','int');
+$projectid = Factory::getApplication()->input->getVar('pid',0,'post','int');
 $model = $this->getModel('template');
 if ( $templateid )
 {

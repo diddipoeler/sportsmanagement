@@ -39,6 +39,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 switch ($this->fieldset) {
     case 'playground_jquery':
@@ -77,7 +78,7 @@ switch ($this->fieldset) {
 
         break;
     case 'training':
-        $view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
+        $view = Factory::getApplication()->input->getCmd('view', 'cpanel');
         ?>                
         <fieldset class="adminform">
 
@@ -320,7 +321,7 @@ marker='1'\|align='center' } ";
 
 // für google maps    
     case 'maps2':
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
 //$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp');
         ?>
@@ -496,7 +497,7 @@ marker='1'\|align='center' } ";
                     default:
                         ?>
                                     <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-                                       href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . JFactory::getApplication()->input->getVar("view") . '-' . $var_onlinehelp; ?>"
+                                       href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER . 'SM-Backend-Felder:' . Factory::getApplication()->input->getVar("view") . '-' . $var_onlinehelp; ?>"
                                        class="modal">
                     <?php
                     echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/help.png', Text::_('COM_SPORTSMANAGEMENT_HELP_LINK'), 'title= "' .

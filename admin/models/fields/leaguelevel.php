@@ -51,7 +51,7 @@ class JFormFieldLeagueLevel extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $option = $app->input->getCmd('option');
         /**
          * Initialize variables.

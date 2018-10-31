@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 JLoader::import('joomla.application.component.modeladmin');
 
@@ -51,7 +52,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.calendar.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
 
 	/**
@@ -94,7 +95,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.jsmGCalendar.data', array());
 		if (empty($data))
 		{
 			$data = $this->getItem();
@@ -115,18 +116,18 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $config = JFactory::getConfig();
-       $option = JFactory::getApplication()->input->getCmd('option');
-       $post = JFactory::getApplication()->input->post->getArray(array());
+	   $app = Factory::getApplication();
+       $config = Factory::getConfig();
+       $option = Factory::getApplication()->input->getCmd('option');
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
        
-       $timezone = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('timezone','');
+       $timezone = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
        
        if ( empty($data['id']) )
        {
@@ -146,8 +147,8 @@ $output .= "</entry>". "\n";
         $xmlfile = $xmlfile.$output;
         JFile::write($file, $xmlfile);
 
-        $username = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
-        $password = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
+        $username = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+        $password = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
                 
          $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
     $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);

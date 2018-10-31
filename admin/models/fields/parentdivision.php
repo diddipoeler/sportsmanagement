@@ -45,13 +45,13 @@ class JFormFieldparentdivision extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app= JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app= Factory::getApplication();
         $project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Initialize variables.
 		$options = array();
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 		$query = $db->getQuery(true);
                             
         $query->select('dv.id AS value, dv.name AS text');

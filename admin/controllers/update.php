@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
@@ -77,7 +78,7 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	 */
 	function display($cachable = false, $urlparams = false)
 	{
-//		$document = JFactory::getDocument();
+//		$document = Factory::getDocument();
 //		$model=$this->getModel('updates');
 		$viewType=$document->getType();
 		$view=$this->getView('updates',$viewType);
@@ -96,8 +97,8 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	function save()
 	{
 		//JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
-		$post = JFactory::getApplication()->input->post->getArray(array());
-		$file_name = JFactory::getApplication()->input->getVar('file_name');
+		$post = Factory::getApplication()->input->post->getArray(array());
+		$file_name = Factory::getApplication()->input->getVar('file_name');
 		$path = explode('/',$file_name);
 		if (count($path) > 1)
 		{

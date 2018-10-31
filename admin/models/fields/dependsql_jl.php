@@ -78,7 +78,7 @@ class JFormFieldDependSQL extends FormField
 		$attribs	.= ' current="'.$this->value.'"';
 		
 	//	// language
-//		$lang = JFactory::getLanguage();
+//		$lang = Factory::getLanguage();
 //		$lang->load("com_joomleague", JPATH_ADMINISTRATOR);
 		
 		
@@ -93,14 +93,14 @@ class JFormFieldDependSQL extends FormField
 		$query = $this->element['query'];
 		if ($query!='')
 		{
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$db->setQuery($query);
 			$options = array_merge($options, $db->loadObjectList());
 		}
 		
 		if ($depends)
 		{
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 

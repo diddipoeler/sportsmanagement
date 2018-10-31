@@ -39,6 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * JFormFieldRounds
  * 
@@ -63,7 +65,7 @@ class JFormFieldRounds extends JFormField
 		$required 	= $this->element['required'] == 'true' ? 'true' : 'false';
 		$order 		= $this->element['order'] == 'DESC' ? 'DESC' : 'ASC';
 		$db 		= sportsmanagementHelper::getDBConnection();
-		$lang 		= JFactory::getLanguage();
+		$lang 		= Factory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );

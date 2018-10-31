@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewsmimageimports
@@ -61,22 +61,8 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-		//$jinput = $app->input;
-		//$option = $jinput->getCmd('option');
-        //$model = $this->getModel();
-        //$uri = JFactory::getURI();
-        
 		$checkimages = $this->model->getimagesxml();
 		$this->files = $this->model->getXMLFiles();
-		//$this->state = $this->get('State');
-        
-		//$this->sortDirection = $this->state->get('list.direction');
-		//$this->sortColumn = $this->state->get('list.ordering');
-        
-        //$filter_state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
-        // state filter
-		//$lists['state'] = JHtml::_('grid.state',$filter_state);
         
         //build the html select list
 		$folders[] = JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
@@ -113,10 +99,10 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	protected function addToolbar()
 	{
 		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
+//		$document	= Factory::getDocument();
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
 		$this->icon = 'images-import';

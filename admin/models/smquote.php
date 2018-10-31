@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -68,13 +69,13 @@ static $db_num_rows  = 0;
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-	   $db = JFactory::getDbo();
+	   $app = Factory::getApplication();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
+	   $db = Factory::getDbo();
 $query = $db->getQuery(true);
 
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

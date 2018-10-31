@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -86,10 +86,10 @@ class sportsmanagementModelrosterpositions extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
         
 
 
@@ -117,8 +117,8 @@ class sportsmanagementModelrosterpositions extends JModelList
         
 	protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $search	= $this->getState('filter.search');
         
         // Create a new query object.		

@@ -50,10 +50,6 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 	 */
 	function _displayForm(  )
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-
-		//$app	= JFactory::getApplication();
-		//$project_id = $this->jinput->get('pid');
         $pid = $this->app->getUserState( $this->option . '.pid' );
         $tid = $this->app->getUserState( $this->option . '.tid' );
 
@@ -78,15 +74,11 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 		$lists['team'] = $team_id;
 		unset($team_id);
 
-		//$this->assignRef( 'user',		JFactory::getUser() );
 		$this->projectws = $projectws;
 		$this->lists = $lists;
-		//$this->assignRef( 'division',		$division );
-//		$this->assignRef( 'division_id',	$division_id );
 		$this->node = $this->item;
 		$this->match = $match;
-		//$this->pagination = $this->pagination;
-		//parent::display( $tpl );
+
 	}
 
 }

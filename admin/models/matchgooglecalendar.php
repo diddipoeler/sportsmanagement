@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -102,7 +103,7 @@ static $_project_id = 0;
     function insertgooglecalendar()
     {
     // Reference global application object
-    $app = JFactory::getApplication();
+    $app = Factory::getApplication();
     // JInput object
     $jinput = $app->input;
     $option = $jinput->getCmd('option');

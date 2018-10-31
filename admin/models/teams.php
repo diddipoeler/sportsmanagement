@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelTeams
@@ -51,7 +52,7 @@ class sportsmanagementModelTeams extends JSMModelList {
         );
         parent::__construct($config);
 
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         $this->jinput = $this->app->input;
         $this->option = $this->jinput->getCmd('option');
 
@@ -63,7 +64,7 @@ class sportsmanagementModelTeams extends JSMModelList {
         $getDBConnection = sportsmanagementHelper::getDBConnection();
         parent::setDbo($getDBConnection);
 
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->jsmdb = $this->getDbo();
         $this->query = $this->jsmdb->getQuery(true);
     }

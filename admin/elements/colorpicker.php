@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 /**
  * 
@@ -66,7 +66,7 @@ class JFormFieldColorpicker extends JFormField
 	function getInput() {
 			// add javascript
 		//$method = (stripos($node->_attributes['name'] , 'JL_EXT') !== false)? 'extended' : 'params';
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addStylesheet(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.css');
 		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/color_functions.js');
 		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/js_color_picker_v2/js_color_picker_v2.js');

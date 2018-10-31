@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 
 jimport('joomla.application.component.model');
@@ -68,7 +68,7 @@ class sportsmanagementModelsmextxmleditors extends JModelLegacy
 function getXMLFiles()
     {
         // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

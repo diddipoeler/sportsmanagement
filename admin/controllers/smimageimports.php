@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllersmimageimports
@@ -31,8 +32,8 @@ class sportsmanagementControllersmimageimports extends JSMControllerAdmin
    */
   function import()
     {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $model	= $this->getModel();
         $result = $model->import();
         

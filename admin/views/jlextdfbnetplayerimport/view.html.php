@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport ( 'joomla.application.component.view' );
 
 
@@ -84,13 +86,13 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	function _displayDefault($tpl) 
     {
 		//global $option;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
 		$db		= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		
 		// $model = $this->getModel('project') ;
 		// $projectdata = $this->get('Data');
@@ -122,13 +124,13 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
 		$db		= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
@@ -155,12 +157,12 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	protected function addToolbar() 
     {
         // global $app, $option;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         // Set toolbar items for the page
 		$stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 		$document->addCustomTag($stylelink);

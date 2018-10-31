@@ -179,11 +179,7 @@ class sportsmanagementModelLeagues extends JSMModelList
     //public static function getLeagues()
     function getLeagues()
     {
-        // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
+
         $search_nation = '';
         
 

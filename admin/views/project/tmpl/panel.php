@@ -10,14 +10,16 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 // Get a refrence of the page instance in joomla
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 $document->addCustomTag($stylelink);$path='/administrator/components/com_sportsmanagement/assets/icons/';
-$user = JFactory::getUser();
+$user = Factory::getUser();
 JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_TITLE'),'projects');
 
 ?>

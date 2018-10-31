@@ -14,11 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 $view = $this->jinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));

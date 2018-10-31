@@ -1,5 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php 
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 ?>
 <script>
 <!--
@@ -51,7 +53,7 @@ use Joomla\CMS\Language\Text;
 		echo $this->lists['teams'];
 		?>
 	</fieldset>
-	<input type="hidden" name="project_id"	value="<?php echo JFactory::getApplication()->input->getVar('project_id'); ?>" />
+	<input type="hidden" name="project_id"	value="<?php echo Factory::getApplication()->input->getVar('project_id'); ?>" />
 	<input type="hidden" name="task"		value="" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

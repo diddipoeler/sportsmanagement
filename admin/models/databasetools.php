@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Factory;
 
 
 jimport('joomla.application.component.model');
@@ -69,11 +69,11 @@ class sportsmanagementModelDatabaseTools extends JModelLegacy
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
+		$app = Factory::getApplication('administrator');
+        $value = Factory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
     }    	
 

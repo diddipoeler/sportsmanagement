@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewImagehandler
@@ -35,10 +36,9 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
      */
     public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$document = JFactory::getDocument();
+		$app	= Factory::getApplication();
+		$document = Factory::getDocument();
 		$jinput = $app->input;
-        //$uri = JFactory::getURI();
         $tpl = '';
 
 switch ( $this->getLayout() )
@@ -53,10 +53,10 @@ break;
 
 
 		//get vars
-		$type     	= JFactory::getApplication()->input->getVar( 'type' );
+		$type     	= Factory::getApplication()->input->getVar( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
-		$field 		= JFactory::getApplication()->input->getVar( 'field' );
-		$fieldid 	= JFactory::getApplication()->input->getVar( 'fieldid' );
+		$field 		= Factory::getApplication()->input->getVar( 'field' );
+		$fieldid 	= Factory::getApplication()->input->getVar( 'fieldid' );
 		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(StringHelper::strtolower( $search ) );
         
@@ -117,13 +117,13 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_I
 	 */
 	function _displayupload($tpl = null)
 	{
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
 		//initialise variables
-		$document	= JFactory::getDocument();
-		//$uri 		= JFactory::getURI();
+		$document	= Factory::getDocument();
+		//$uri 		= Factory::getURI();
 		$params 	= JComponentHelper::getParams($option);
 		$type     	= $jinput->get( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);

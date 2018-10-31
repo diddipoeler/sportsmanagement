@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerteams
@@ -34,8 +35,8 @@ class sportsmanagementControllerteams extends JSMControllerAdmin {
         JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Get the arrays from the Request
-        $order = JFactory::getApplication()->input->getVar('order', null, 'post', 'array');
-        $originalOrder = explode(',', JFactory::getApplication()->input->getString('original_order_values'));
+        $order = Factory::getApplication()->input->getVar('order', null, 'post', 'array');
+        $originalOrder = explode(',', Factory::getApplication()->input->getString('original_order_values'));
 
         // Make sure something has changed
         if (!($order === $originalOrder)) {

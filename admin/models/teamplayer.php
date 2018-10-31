@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
@@ -27,7 +29,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	protected function allowEdit($data = array(), $key = 'id')
 	{
         // Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
 	/**
@@ -55,8 +57,8 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -92,7 +94,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	protected function loadFormData() 
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.teamplayer.data', array());
+		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.teamplayer.data', array());
 		if (empty($data)) 
 		{
 			$data = $this->getItem();
@@ -110,10 +112,10 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
+		$app =& Factory::getApplication();
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
         
         $app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -173,10 +175,10 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$app =& JFactory::getApplication();
+	$app =& Factory::getApplication();
     $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
     
@@ -222,10 +224,10 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        $season_id = $app->getUserState( "$option.season_id");
-       $post=JFactory::getApplication()->input->post->getArray(array());
+       $post=Factory::getApplication()->input->post->getArray(array());
        $db		= $this->getDbo();
 	   $query	= $db->getQuery(true);
        $query2	= $db->getQuery(true);

@@ -16,6 +16,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
 
 /**
  * @package		Joomla
@@ -648,11 +649,11 @@ class JInstallationHelper
 		 */
 		if( $migration )
 		{
-			$sqlFile	= JFactory::getApplication()->input->getVar('migrationFile', '', 'files', 'array');
+			$sqlFile	= Factory::getApplication()->input->getVar('migrationFile', '', 'files', 'array');
 		}
 		else
 		{
-			$sqlFile	= JFactory::getApplication()->input->getVar('sqlFile', '', 'files', 'array');
+			$sqlFile	= Factory::getApplication()->input->getVar('sqlFile', '', 'files', 'array');
 		}
 
 		/*

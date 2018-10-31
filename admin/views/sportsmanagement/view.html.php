@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
  
 /**
  * SportsManagement View
@@ -58,13 +59,13 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
@@ -110,7 +111,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	protected function setDocument() 
 	{
 		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");

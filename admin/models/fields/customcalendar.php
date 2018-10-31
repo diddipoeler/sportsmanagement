@@ -40,7 +40,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
      */
     protected function getInput()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         parent::getInput();
 
         // Build the attributes array.

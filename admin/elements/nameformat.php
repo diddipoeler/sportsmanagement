@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * JFormFieldNameFormat
@@ -60,7 +61,7 @@ class JFormFieldNameFormat extends JFormField
 	 * @return
 	 */
 	function getInput() {
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)

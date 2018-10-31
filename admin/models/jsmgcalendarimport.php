@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 JLoader::import('joomla.application.component.model');
 
@@ -53,7 +54,7 @@ class sportsmanagementModeljsmgcalendarImport extends JModelLegacy
     public function import()
 	{
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 // JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
@@ -75,7 +76,7 @@ $google_mail_account = JComponentHelper::getParams($option)->get('google_mail_ac
 //$client = new Google_Client();
 $client = new Google_Client(
 				array(
-						'ioFileCache_directory' => JFactory::getConfig()->get('tmp_path')
+						'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
 				));
 $client->setApprovalPrompt('force');
 $client->setClientId($google_client_id);
@@ -105,7 +106,7 @@ $calList = $cal->calendarList->listCalendarList();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' calList<br><pre>'.print_r($calList,true).'</pre>'),'Notice');	   
        
@@ -144,7 +145,7 @@ $newcalendar->name = $calendarListEntry->getSummary();
 $newcalendar->color = $calendarListEntry->backgroundColor;
 $newcalendar->username = $google_mail_account;
 // Insert the object
-$result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_gcalendar', $newcalendar);
+$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_gcalendar', $newcalendar);
 }
 
 	 

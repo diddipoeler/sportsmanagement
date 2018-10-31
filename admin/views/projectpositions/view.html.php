@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * sportsmanagementViewprojectpositions
  * 
@@ -30,13 +32,13 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
      * @return
      */
     public function init() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
         $model = $this->getModel();
         $starttime = microtime();
@@ -75,8 +77,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 //		$lists['order_Dir']=$filter_order_Dir;
 //		$lists['order']=$filter_order;
 
-        $this->user = JFactory::getUser();
-        $this->config = JFactory::getConfig();
+        $this->user = Factory::getUser();
+        $this->config = Factory::getConfig();
         //$this->lists	= $lists;
         $this->positiontool = $items;
         $this->pagination = $pagination;
@@ -91,16 +93,16 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
      * @return void
      */
     function _displayEditlist($tpl) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
         $model = $this->getModel();
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $starttime = microtime();
 
         $items = $this->get('Items');
@@ -158,7 +160,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
         $document->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
         $this->request_url = $uri->toString();
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->project = $project;
         $this->lists = $lists;
         $this->addToolbar_Editlist();
@@ -178,12 +180,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-        //// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//		// Set toolbar items for the page
+
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
 
         sportsmanagementHelper::ToolbarButton('editlist', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));

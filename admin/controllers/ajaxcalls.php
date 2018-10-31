@@ -12,6 +12,7 @@
  // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerajaxcalls
@@ -49,7 +50,7 @@ function removeCommentary()
         //}
 //else
 //{
-		$event_id = JFactory::getApplication()->input->getInt('event_id');
+		$event_id = Factory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -62,10 +63,10 @@ function removeCommentary()
 		echo json_encode($result);
  //}       
         // Close the application
-		JFactory::getApplication()->close();
+		Factory::getApplication()->close();
         
         //jexit();
-		//JFactory::getApplication()->close();
+		//Factory::getApplication()->close();
     }
         
     

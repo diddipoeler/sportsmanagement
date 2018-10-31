@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewjlextprofleagimport
@@ -32,7 +32,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
    
 		$config = JComponentHelper::getParams('com_media');
 		$post = $this->jinput->post->getArray(array());

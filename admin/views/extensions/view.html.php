@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  *  View
@@ -63,8 +64,8 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	protected function addToolBar() 
 	{ 
   		// Get a refrence of the page instance in joomla
-	$document	= JFactory::getDocument();
-    $option = JFactory::getApplication()->input->getCmd('option');
+	$document	= Factory::getDocument();
+    $option = Factory::getApplication()->input->getCmd('option');
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
@@ -85,7 +86,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	protected function setDocument() 
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle(Text::_('COM_SPORTSMANAGEMENT_EXTENSIONS'));
 	}
 	
@@ -100,7 +101,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	public function addIcon( $image , $url , $text , $newWindow = false )
 	{
-		$lang		= JFactory::getLanguage();
+		$lang		= Factory::getLanguage();
 		$newWindow	= ( $newWindow ) ? ' target="_blank"' : '';
 ?>
 		<div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">

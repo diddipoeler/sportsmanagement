@@ -44,10 +44,10 @@ class JFormFieldprojectrounds extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
         $options = array();
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('a.id AS value, a.name AS text')
 			->from('#__sportsmanagement_round AS a')

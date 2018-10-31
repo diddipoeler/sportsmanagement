@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * sportsmanagementViewDatabaseTools
  * 
@@ -33,7 +35,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView {
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
 
         $this->assign('request_url', $uri->toString());

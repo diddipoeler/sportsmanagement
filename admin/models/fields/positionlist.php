@@ -47,15 +47,15 @@ class JFormFieldpositionlist extends \JFormFieldList
 	protected function getOptions()
 	{
 		// Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
-		$select_id = JFactory::getApplication()->input->getVar('id');
-    $db = JFactory::getDbo();
+		$select_id = Factory::getApplication()->input->getVar('id');
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');

@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 JLoader::import('joomla.filesystem.file');
 
@@ -39,7 +40,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getCalendars($username, $password) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         
 		try {
@@ -67,20 +68,20 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getEvents($calendar, $startDate = null, $endDate = null, $max = 1000, $filter = null, $orderBy = jsmGCalendarZendHelper::ORDER_BY_START_TIME, $pastEvents = false, $sortOrder = jsmGCalendarZendHelper::SORT_ORDER_ASC, $startIndex = 1) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendar<br><pre>'.print_r($calendar,true).'</pre>'),'Notice');
         
 		// Implement View Level Access
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access, $user->getAuthorisedViewLevels())) {
 			return array();
 		}
 
-		$cache = JFactory::getCache('com_sportsmanagement');
+		$cache = Factory::getCache('com_sportsmanagement');
 		$cache->setCaching(jsmGCalendarUtil::getComponentParameter('gc_cache', 1) == '1');
 		if(jsmGCalendarUtil::getComponentParameter('gc_cache', 1) == 2){
-			$conf = JFactory::getConfig();
+			$conf = Factory::getConfig();
 			$cache->setCaching($conf->get('config.caching'));
 		}
 		$cache->setLifeTime(jsmGCalendarUtil::getComponentParameter('gc_cache_time', 900));
@@ -99,7 +100,7 @@ class jsmGCalendarZendHelper {
 		$cache->gc();
 
 		// Implement View Level Access
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access_content, $user->getAuthorisedViewLevels())) {
 			foreach ($events as $event) {
 				$event->setTitle(JText::_('COM_GCALENDAR_EVENT_BUSY_LABEL'));
@@ -122,18 +123,18 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getEvent($calendar, $eventId) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		// Implement View Level Access
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access, $user->getAuthorisedViewLevels())) {
 			return null;
 		}
 
-		$cache = JFactory::getCache('com_sportsmanagement');
+		$cache = Factory::getCache('com_sportsmanagement');
 		$cache->setCaching(jsmGCalendarUtil::getComponentParameter('gc_cache', 1) == '1');
 		if(jsmGCalendarUtil::getComponentParameter('gc_cache', 1) == 2){
-			$conf = JFactory::getConfig();
+			$conf = Factory::getConfig();
 			$cache->setCaching($conf->get('config.caching'));
 		}
 		$cache->setLifeTime(jsmGCalendarUtil::getComponentParameter('gc_cache_time', 900));
@@ -152,7 +153,7 @@ class jsmGCalendarZendHelper {
 		$cache->gc();
 
 		// Implement View Level Access
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access_content, $user->getAuthorisedViewLevels())) {
 			$event->setTitle(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EVENT_BUSY_LABEL'));
 			$event->setContent(null);
@@ -170,7 +171,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function internalGetEvents($calendar, $startDate = null, $endDate = null, $max = 1000, $filter = null, $orderBy = jsmGCalendarZendHelper::ORDER_BY_START_TIME, $pastEvents = false, $sortOrder = jsmGCalendarZendHelper::SORT_ORDER_ASC, $startIndex = 1)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		try {
 			$client = new Zend_Http_Client();
@@ -194,10 +195,10 @@ class jsmGCalendarZendHelper {
 				$query->setQuery($filter);
 			}
 			if($startDate != null){
-				$query->setStartMin(JFactory::getDate($startDate)->format('Y-m-d\TH:i:s'));
+				$query->setStartMin(Factory::getDate($startDate)->format('Y-m-d\TH:i:s'));
 			}
 			if($endDate != null){
-				$query->setStartMax(JFactory::getDate($endDate)->format('Y-m-d\TH:i:s'));
+				$query->setStartMax(Factory::getDate($endDate)->format('Y-m-d\TH:i:s'));
 			}
 			if($startDate == null && $endDate == null){
 				$query->setFutureEvents($pastEvents ? 'false': 'true');
@@ -226,7 +227,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function internalGetEvent($calendar, $eventId) 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		try {
 			$client = new Zend_Http_Client();
@@ -261,7 +262,7 @@ class jsmGCalendarZendHelper {
 
 	public static function loadZendClasses() 
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         
 		static $zendLoaded;
 		if($zendLoaded == null){

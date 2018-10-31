@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 
 /**
@@ -61,7 +61,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$model = $this->getModel();
@@ -83,7 +83,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_SMQUOTE_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
         $this->icon = 'quote';

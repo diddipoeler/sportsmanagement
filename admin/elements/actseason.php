@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * JFormFieldactseason
@@ -61,8 +62,8 @@ class JFormFieldactseason extends JFormField
 	protected function getInput() 
     {
 		$db = sportsmanagementHelper::getDBConnection();
-		$lang = JFactory::getLanguage();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$lang = Factory::getLanguage();
+        $option = Factory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'COM_SPORTSMANAGEMENT' );
         $database_table	= $params->get( 'cfg_which_database_table' );

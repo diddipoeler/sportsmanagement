@@ -44,8 +44,8 @@ class JFormFieldpersonagegroup extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
-		$db = JFactory::getDbo();
+		$app = Factory::getApplication();
+		$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$personquery = $db->getQuery(true);
 			$personquery2 = $db->getQuery(true);

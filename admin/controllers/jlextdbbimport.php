@@ -23,6 +23,7 @@ http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=spo
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -45,16 +46,16 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 	 * @return
 	 */
 	function save() {
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-		$document = JFactory::getDocument ();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
-		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		Factory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 		$model = $this->getModel ( 'jlextdbbimport' );
-		$post = JFactory::getApplication()->input->get ( 'post' );
+		$post = Factory::getApplication()->input->get ( 'post' );
 		
-		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
+		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
 	
 		if ($whichfile == 'playerfile') {
 			JError::raiseNotice ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
@@ -68,9 +69,9 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 		
 		// first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
+			$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			
-			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
+			$lmoimportuseteams = Factory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
 			$app->setUserState ( $option . 'whichfile', $whichfile );

@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.filesystem.folder');
 
 /**
@@ -32,17 +34,17 @@ class sportsmanagementViewMatches extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 //        if (version_compare(JSM_JVERSION, '4', 'eq')) {
 //            $uri = JUri::getInstance();
 //        } else {
-//            $uri = JFactory::getURI();
+//            $uri = Factory::getURI();
 //        }
         $model = $this->getModel();
         $params = JComponentHelper::getParams($option);
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         
@@ -57,7 +59,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 		}
         
      
-     $this->projectteamsel = JFactory::getApplication()->input->getvar('projectteam', 0);
+     $this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
 
         $table = JTable::getInstance('match', 'sportsmanagementTable');
         $this->table = $table;
@@ -190,7 +192,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 
         //$this->assignRef('division',$division);
 
-        $this->user = JFactory::getUser();
+        $this->user = Factory::getUser();
         $this->lists = $lists;
         $this->selectlist = $selectlist;
         $this->option = $option;
@@ -242,12 +244,12 @@ switch ( $this->getLayout() )
      */
     protected function addToolbar() {
         //// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
+//		$document	= Factory::getDocument();
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time

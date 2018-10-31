@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
@@ -39,7 +40,7 @@ class sportsmanagementControllerpredictionproject extends JControllerForm
 	 */
   function store()
 	{
-		$post = JFactory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
 		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 

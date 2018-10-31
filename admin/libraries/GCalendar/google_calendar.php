@@ -2,7 +2,7 @@
 
 
 defined('_JEXEC') or die();
-
+use Joomla\CMS\Factory;
 JLoader::import('joomla.filesystem.file');
 
 //JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
@@ -21,7 +21,7 @@ class jsmGoogleCalendarHelper
 
 		$client = new Google_Client(
 				array(
-						'ioFileCache_directory' => JFactory::getConfig()->get('tmp_path') . '/plg_dpcalendar_google/Google_Client'
+						'ioFileCache_directory' => Factory::getConfig()->get('tmp_path') . '/plg_dpcalendar_google/Google_Client'
 				));
 		$client->setApplicationName("sportsmanagement");
 		$client->setClientId($clientId);
@@ -31,7 +31,7 @@ class jsmGoogleCalendarHelper
 		));
 		$client->setAccessType('offline');
 
-		$uri = JFactory::getURI();
+		$uri = Factory::getURI();
 		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
 		{
 			$uri->setHost('localhost');

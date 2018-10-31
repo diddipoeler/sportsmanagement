@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTreeto
@@ -54,35 +55,8 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	function _displayForm()
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$db = JFactory::getDbo();
-//		$uri = JFactory::getURI();
-//		$user = JFactory::getUser();
-//		$model = $this->getModel();
-//		$lists = array();
-
-		//$treeto = $this->get('data');
-		//$script = $this->get('Script');
-//		$this->script = $script;
-		//if there is no image selected, use default picture
-		//		$default = JoomleagueHelper::getDefaultPlaceholder("team");
-		//		if (empty($treeto->trophypic)){$treeto->trophypic=$default;}
-
-		// fail if checked out not by 'me'
-		//if ($model->isCheckedOut($user->get('id')))
-//		{
-
-//			$app->redirect('index.php?option='.$option,$msg);
-//		}
-
-		//$this->assignRef('form' 	,$this->get('form'));
-//		$this->assignRef('treeto',$treeto);
-
-		//$this->addToolBar();
-		//parent::display($tpl);
 		$this->setDocument();
-        //$this->setLayout('edit');  
+
 	}
 
 	/**
@@ -92,11 +66,11 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	function _displayGennode()
 	{
-		//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$db = JFactory::getDbo();
-//		$uri = JFactory::getURI();
-//		$user = JFactory::getUser();
+		//$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
+//		$db = Factory::getDbo();
+//		$uri = Factory::getURI();
+//		$user = Factory::getUser();
 //		$model = $this->getModel();
 		
         $this->form = $this->get('Form');
@@ -151,7 +125,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	protected function setDocument()
 	{
-		//$document = JFactory::getDocument();
+		//$document = Factory::getDocument();
 //		$version = urlencode(JoomleagueHelper::getVersion());
 //		$document->addScript(JUri::root() . $this->script);
 	}

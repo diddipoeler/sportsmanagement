@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
@@ -234,7 +235,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI
 			"fillTable" => 'true',
 			"singleHeader" => 'false',
 		);
-	echo HTMLHelper::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+	echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 

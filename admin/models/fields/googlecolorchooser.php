@@ -20,6 +20,7 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 class JFormFieldGoogleColorChooser extends FormFieldText
 {
@@ -50,7 +51,7 @@ class JFormFieldGoogleColorChooser extends FormFieldText
 
 	public function getInput()
 	{
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->addScript(JURI::base(). 'components/com_sportsmanagement/libraries/jscolor/jscolor.js' );
 
 		$buffer = "<input type=\"text\" name=\"".$this->name."\" id=\"".$this->id."\" readonly=\"readonly\" class=\"inputbox\" \n";

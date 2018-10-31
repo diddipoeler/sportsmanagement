@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelSeasons
@@ -37,7 +38,7 @@ class sportsmanagementModelSeasons extends JSMModelList
     public function __construct($config = array())
         {   
         // Reference global application object
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
                 
@@ -85,7 +86,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 		
         $layout = $this->jsmjinput->getVar('layout');
         // Initialise variables.
-		//$app = JFactory::getApplication('administrator');
+		//$app = Factory::getApplication('administrator');
         $order = '';
         
         if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )

@@ -126,8 +126,6 @@ $result = $this->jsmdb->insertObject('#__sportsmanagement_treeto_match', $profil
 	 */
 	function getMatches()
 	{
-	//	$option = $this->input->getCmd('option');
-//		$app	= JFactory::getApplication();
 		$node_id = $this->jsmjinput->get('nid');
 		$treeto_id = $this->jsmjinput->get('tid');
 		$project_id = $this->jsmjinput->get('pid');

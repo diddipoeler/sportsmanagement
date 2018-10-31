@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 //jimport( 'joomla.application.component.model' );
 //require_once ( JPATH_COMPONENT . DS . 'models' . DS . 'item.php' );
@@ -51,11 +52,11 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
         $this->jsmsubquery2 = $this->jsmdb->getQuery(true); 
         $this->jsmsubquery3 = $this->jsmdb->getQuery(true);  
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
         
         }    
     
@@ -89,7 +90,7 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
      */
     function setGenerateNode()
 	{
-		//$post	= 			JFactory::getApplication()->input->get( 'post' );
+		//$post	= 			Factory::getApplication()->input->get( 'post' );
 		$treeto_id = (int) $this->jsmjinput->post->get('id');
         // Get the form data
         $formData = new JRegistry($this->jsmjinput->get('jform', '', 'array'));

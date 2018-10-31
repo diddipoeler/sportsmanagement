@@ -21,6 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 GCalendarUtil::loadLibrary();
 
 JHtml::_('behavior.tooltip');
@@ -28,7 +30,7 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 
 $calendar = $this->gcalendar;
-$input = JFactory::getApplication()->input;
+$input = Factory::getApplication()->input;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task) {
@@ -149,5 +151,5 @@ $input = JFactory::getApplication()->input;
 </form>
 
 <div align="center" style="clear: both">
-	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), Factory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

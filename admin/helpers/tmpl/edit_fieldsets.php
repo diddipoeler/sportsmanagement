@@ -1,5 +1,6 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 switch($this->fieldset)
 {
@@ -34,7 +35,7 @@ break;
 
 // für google maps    
 case 'maps':
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addScript('http://maps.google.com/maps/api/js?&sensor=false');
 ?>
 <script language="javascript" type="text/javascript">

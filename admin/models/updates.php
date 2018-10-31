@@ -39,6 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
@@ -71,7 +72,7 @@ class sportsmanagementModelUpdates extends JModelLegacy
 		$data=array();
 		$updateArray=array();
 		$file_name=$file;
-$this->app = JFactory::getApplication();
+$this->app = Factory::getApplication();
 		if ($file=='jl_upgrade-0_93b_to_1_5.php'){return '';}
 		$data['id'] = 0;
 		$data['count'] = 0;
@@ -117,7 +118,7 @@ $object->file = $data['file'];
 if ( $data['id'] ) 
 {
 // Update their details in the table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
 }
 else
 {
@@ -207,8 +208,8 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 	 */
 	function loadUpdateFiles()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 		//$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
 		$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');
 		// installer for extensions

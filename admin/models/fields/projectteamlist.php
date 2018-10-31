@@ -45,8 +45,8 @@ class JFormFieldprojectteamlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Initialize variables.
 		$options = array();
         
@@ -54,7 +54,7 @@ class JFormFieldprojectteamlist extends \JFormFieldList
     
     if ($project_id)
 		{
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('pt.team_id AS value, t.name AS text');
 			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');

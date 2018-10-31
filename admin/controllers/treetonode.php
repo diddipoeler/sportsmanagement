@@ -16,6 +16,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controllerform');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllerTreetonode
@@ -39,17 +40,17 @@ class sportsmanagementControllerTreetonode extends JControllerForm
 	 */
 	public function __construct($config = array())
 	{
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
 //		$jinput = $app->input;
 		//$jinput->set('layout','form');
 
 		parent::__construct($config);
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
-        $this->jsmdocument = JFactory::getDocument();
+        $this->jsmdocument = Factory::getDocument();
        
         $this->jsmapp->setUserState($this->jsmoption.'.pid',$this->jsmjinput->get('pid') );
         $this->jsmapp->setUserState($this->jsmoption.'.tid',$this->jsmjinput->get('tid') );
@@ -88,7 +89,7 @@ $this->setRedirect($link,$msg);
  */
 function save($key = NULL, $urlVar = NULL)
 	{
-	   //$data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+	   //$data = Factory::getApplication()->input->getVar('jform', array(), 'post', 'array');
        $data = $this->jsmjinput->post->getArray();
        
        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -152,7 +153,7 @@ function save($key = NULL, $urlVar = NULL)
 	 */
 	public function removenode()
 	{
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 		$post = $this->jsmjinput->post->getArray();
@@ -184,7 +185,7 @@ function save($key = NULL, $urlVar = NULL)
 		// Check for token
 		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 		//$cid = $jinput->get('cid',array(),'array');
@@ -248,7 +249,7 @@ function save($key = NULL, $urlVar = NULL)
 		// Check for token
 		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
-	//	$app = JFactory::getApplication();
+	//	$app = Factory::getApplication();
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 		$cid = $this->jsmjinput->get('cid',array(),'array');

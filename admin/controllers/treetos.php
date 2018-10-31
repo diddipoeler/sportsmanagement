@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
  
 use Joomla\Utilities\ArrayHelper; 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementControllertreetos
@@ -37,7 +38,7 @@ public function __construct($config = array())
 	{
 		parent::__construct($config);
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -69,7 +70,7 @@ public function save()
 		// Check for token
 		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		
-		//$app = JFactory::getApplication();
+		//$app = Factory::getApplication();
 		//$jinput = $app->input;
 		$cid = $this->jsmjinput->get('cid',array(),'array');
 		ArrayHelper::toInteger($cid);

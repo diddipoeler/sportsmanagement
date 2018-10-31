@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -27,7 +29,7 @@ $params = $this->form->getFieldsets('params');
 ?>
 <?php
 //save and close 
-$close = JFactory::getApplication()->input->getInt('close',0);
+$close = Factory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {

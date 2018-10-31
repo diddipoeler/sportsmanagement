@@ -40,6 +40,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.modellist');
 
 
@@ -62,16 +64,16 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function getListQuery()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		        
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_team_id = JFactory::getApplication()->input->getVar('team_id');
-        $this->_project_team_id = JFactory::getApplication()->input->getVar('project_team_id');
+        $this->_team_id = Factory::getApplication()->input->getVar('team_id');
+        $this->_project_team_id = Factory::getApplication()->input->getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
@@ -139,8 +141,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function _buildContentOrderBy()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         $filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order','filter_order','tp.ordering','cmd');
 		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='ppl.lastname')
@@ -156,8 +158,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function _buildContentWhere()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 		
         //$project_id=$app->getUserState($option.'project');
 		//$team_id=$app->getUserState($option.'project_team_id');
@@ -216,12 +218,12 @@ class sportsmanagementModelTeamPlayers extends JModelList
 
 	function getProjectTeamplayers($project_team_id = 0)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$user	= Factory::getUser(); 
 		
         //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
         

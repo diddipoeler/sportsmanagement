@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 // import Joomla controllerform library
 jimport('joomla.application.component.controllerform');
@@ -39,7 +40,7 @@ class sportsmanagementControllergithub extends JControllerForm
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->model = $this->getModel();

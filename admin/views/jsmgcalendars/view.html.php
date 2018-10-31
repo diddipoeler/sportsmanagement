@@ -38,6 +38,7 @@
 */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 //JLoader::import('components.com_sportsmanagement.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 jimport('joomla.application.component.view');
@@ -63,23 +64,8 @@ class sportsmanagementViewjsmgcalendars extends sportsmanagementView
  */
 public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getUri();
-//        
-//        $this->items = $this->get('Items');
-//		$this->pagination = $this->get('Pagination');
-        
-        //$this->addToolbar();
-        
-        //parent::display($tpl);
+
         }
-//	protected $icon = 'calendar';
-//	protected $title = 'COM_GCALENDAR_MANAGER_GCALENDAR';
-//
-//	protected $items = null;
-//	protected $pagination = null;
 
 	/**
 	 * sportsmanagementViewjsmgcalendars::addToolbar()
@@ -88,7 +74,7 @@ public function init ()
 	 */
 	protected function addToolbar() 
     {
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         $option = $jinput->getCmd('option');
         $canDo = jsmGCalendarUtil::getActions();
 		if ($canDo->get('core.create')) {

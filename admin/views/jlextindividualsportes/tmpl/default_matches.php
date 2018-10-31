@@ -40,9 +40,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 //save and close 
-$close = JFactory::getApplication()->input->getInt('close',0);
+$close = Factory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -72,7 +73,7 @@ if($close == 1) {
             <button type="button" onclick="Joomla.submitform('jlextindividualsportes.delete', this.form);">
 						<?php echo Text::_('JACTION_DELETE');?></button>
             
-            <button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+            <button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo Text::_('JCANCEL');?></button>
 		
         

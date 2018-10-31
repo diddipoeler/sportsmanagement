@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -110,8 +111,8 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$option = JFactory::getApplication()->input->getCmd('option');
-	$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 
 		$query_num = SMStatistic::getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id,$sids);
@@ -183,7 +184,7 @@ catch (Exception $e)
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
 		$db = sportsmanagementHelper::getDBConnection();

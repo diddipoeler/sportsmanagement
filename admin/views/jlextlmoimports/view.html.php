@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewjlextlmoimports
@@ -31,7 +32,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 
 		$config = JComponentHelper::getParams('com_media');
 		$post = $this->jinput->post->getArray(array());

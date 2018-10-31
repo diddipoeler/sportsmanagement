@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-
+use Joomla\CMS\Factory;
 
 
 
@@ -46,10 +46,10 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         }
        
 		// Set toolbar items for the page
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI ();
+		$uri = Factory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
 		$post = $jinput->post->getArray(array());
 		$files = $jinput->get('files');
@@ -72,12 +72,12 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	function _displayDefault($tpl) 
     {
 		//global $option;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$db = JFactory::getDBO ();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$db = Factory::getDBO ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		
 		// $model = $this->getModel('project') ;
 		// $projectdata = $this->get('Data');
@@ -110,13 +110,13 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		$db = JFactory::getDBO ();
-		$uri = JFactory::getURI ();
-		$user = JFactory::getUser ();
+		$db = Factory::getDBO ();
+		$uri = Factory::getURI ();
+		$user = Factory::getUser ();
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );

@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerjlextindividualsportes
@@ -62,9 +63,9 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
     function saveshort()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->post->getArray(array());
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -87,9 +88,9 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
 	 */
     function applyshort()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->post->getArray(array());
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -109,10 +110,10 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
      */
     function publish() 
     {
-           $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+           $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -131,10 +132,10 @@ class sportsmanagementControllerjlextindividualsportes extends JSMControllerAdmi
      */
     function delete()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         

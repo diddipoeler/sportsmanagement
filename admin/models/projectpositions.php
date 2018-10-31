@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -60,10 +61,10 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
                 $pid = $this->jsmjinput->get('pid');
         //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
@@ -98,8 +99,8 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
 //        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
@@ -214,7 +215,7 @@ $resultupdate = $this->jsmdb->execute();
      */
     function insertStandardProjectPositions($project_id = 0,$sports_type_id = 0)
     {
-    $app = JFactory::getApplication();    
+    $app = Factory::getApplication();    
     $db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
     $query->select('id');
@@ -292,7 +293,7 @@ $result = $this->jsmdb->loadObjectList();
 	 */
 	function getProjectPositions()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$project_id=$app->getUserState('com_joomleagueproject');
 		$query='	SELECT	p.id AS value,
 							p.name AS text,

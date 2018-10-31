@@ -1,5 +1,4 @@
 <?php
-
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
  * @version         1.0.05
  * @file                agegroup.php
@@ -40,6 +39,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -85,10 +85,10 @@ class sportsmanagementModelsmimageimports extends JModelList {
      * @since	1.6
      */
     protected function populateState($ordering = null, $direction = null) {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Initialise variables.
-        $app = JFactory::getApplication('administrator');
+        $app = Factory::getApplication('administrator');
 
         //$app->enqueueMessage(Text::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
         // Load the filter state.
@@ -115,8 +115,8 @@ class sportsmanagementModelsmimageimports extends JModelList {
      * @return
      */
     protected function getListQuery() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 
         //$search	= $this->getState('filter.search');
         //$filter_state = $this->getState('filter.state');
@@ -160,8 +160,8 @@ class sportsmanagementModelsmimageimports extends JModelList {
      * @return
      */
     function getXMLFolder() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
 // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
@@ -189,8 +189,8 @@ class sportsmanagementModelsmimageimports extends JModelList {
      * @return
      */
     function getimagesxml() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // sind neue bilder pakete vorhanden ?
         //$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
         //$datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
@@ -258,18 +258,18 @@ class sportsmanagementModelsmimageimports extends JModelList {
      * @return
      */
     function getXMLFiles() {
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
-        $query = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+        $query = Factory::getDbo()->getQuery(true);
         $files = array();
         $path = JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml';
-//        $xml = JFactory::getXMLParser( 'Simple' );
+//        $xml = Factory::getXMLParser( 'Simple' );
 //       $xml->loadFile($path); 
 
         if(version_compare(JVERSION,'4','ge'))  {
             $xml = simplexml_load_file($path);
         } else {
-            $xml = JFactory::getXML($path);
+            $xml = Factory::getXML($path);
         }
         
         $i = 0;
@@ -300,9 +300,9 @@ class sportsmanagementModelsmimageimports extends JModelList {
             $query->select('id');
             // From the table
             $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures');
-            $query->where('name LIKE ' . JFactory::getDbo()->Quote('' . $picturedescription . ''));
-            JFactory::getDbo()->setQuery($query);
-            if (!JFactory::getDbo()->loadResult()) {
+            $query->where('name LIKE ' . Factory::getDbo()->Quote('' . $picturedescription . ''));
+            Factory::getDbo()->setQuery($query);
+            if (!Factory::getDbo()->loadResult()) {
                 // Create and populate an object.
                 $temp = new stdClass();
                 $temp->name = $picturedescription;
@@ -311,7 +311,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
                 $temp->folder = $folder;
                 $temp->published = 0;
                 // Insert the object
-                $result = JFactory::getDbo()->insertObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $temp);
+                $result = Factory::getDbo()->insertObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $temp);
             }
         }
 
@@ -343,7 +343,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
           $temp->folder = $folder;
           $temp->published = 0;
           // Insert the object
-          $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $temp);
+          $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_pictures', $temp);
 
 
 

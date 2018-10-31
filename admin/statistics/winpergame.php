@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.'base.php');
 
@@ -51,8 +52,8 @@ class SMStatisticWinpergame extends SMStatistic
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{		
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         
         $query->select('COUNT(m.id) AS value, tp.person_id');
         $query->from('#__sportsmanagement_season_team_person_id AS tp');
@@ -101,8 +102,8 @@ class SMStatisticWinpergame extends SMStatistic
 	function getRosterStats($team_id, $project_id, $position_id)
 	{		
 		$db = sportsmanagementHelper::getDBConnection();
-        $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
 
 		// Determine the wins per game for each project team player
         $query->select('COUNT(m.id) AS value, tp.person_id');

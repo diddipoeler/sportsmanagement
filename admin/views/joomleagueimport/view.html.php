@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewjoomleagueimport
@@ -61,12 +62,12 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $model = $this->getModel();
-        $uri = JFactory::getURI();
+        $uri = Factory::getURI();
         $this->task = $jinput->getCmd('task');
         $this->request_url	= $uri->toString();
         
@@ -158,15 +159,15 @@ $document->addScriptDeclaration( $javascript );
      */
     function initPositions()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $model = $this->getModel();
-        $uri = JFactory::getURI();
+        $uri = Factory::getURI();
         
         $inputappend = '';
-        $which_table = JFactory::getApplication()->input->getVar('filter_which_table','');
+        $which_table = Factory::getApplication()->input->getVar('filter_which_table','');
         
         $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
         $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');

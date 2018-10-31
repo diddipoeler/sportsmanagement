@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerjlxmlexports
@@ -61,7 +62,7 @@ class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
   public function export()
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;    
         $project_id = $jinput->getVar('pid');

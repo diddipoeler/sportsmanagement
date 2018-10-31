@@ -12,6 +12,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
  
@@ -38,8 +40,8 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
     function getAllTemplatesList($project_id,$master_id)
 	{
 		
-        $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db	= $this->getDbo();
 		$query1	= $db->getQuery(true);
@@ -167,7 +169,7 @@ return true;
 	 */
 	public function delete(&$pks)
 {
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
     
     
     return parent::delete($pks);

@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 //jimport('joomla.application.component.modeladmin');
 
 
@@ -64,13 +65,13 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-	$app	= JFactory::getApplication();
-    $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+	   $option = Factory::getApplication()->input->getCmd('option');
+	$app	= Factory::getApplication();
+    $date = Factory::getDate();
+	   $user = Factory::getUser();
     // Get a db connection.
-        $db = JFactory::getDbo();
-       $post=JFactory::getApplication()->input->post->getArray(array());
+        $db = Factory::getDbo();
+       $post=Factory::getApplication()->input->post->getArray(array());
     
     
     if (isset($post['extended']) && is_array($post['extended'])) 

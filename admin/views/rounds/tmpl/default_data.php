@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -113,7 +115,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			"fillTable" => 'true',
 			"singleHeader" => 'false',
 		);
-	echo HTMLHelper::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+	echo HTMLHelper::_('calendar', Factory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
  */
 
                                 

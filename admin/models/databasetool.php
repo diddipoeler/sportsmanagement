@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -50,7 +51,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $result = false;
 
         if (!$db) {
-            $db = JFactory::getDbo();
+            $db = Factory::getDbo();
         }
         //$this->app->enqueueMessage(Text::_('Ihre Joomla Version = '.JVERSION.''),'Notice');
         //$this->app->enqueueMessage(Text::_('Ihre PHP Version = '.PHP_VERSION .''),'Notice');
@@ -381,7 +382,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 
             if (file_exists($xmlfile)) {
                 $newparams = array();
-                $xml = JFactory::getXML($xmlfile, true);
+                $xml = Factory::getXML($xmlfile, true);
                 foreach ($xml->fieldset as $paramGroup) {
                     foreach ($paramGroup->field as $param) {
                         $newparams[(string) $param->attributes()->name] = (string) $param->attributes()->default;
@@ -776,7 +777,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                     $document = 'version';
                     $quotes = 'children()';
                 } else {
-                    $xml = JFactory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+                    $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
                     $document = 'version';
                     $quotes = 'children()';
                 }
@@ -843,10 +844,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                 // joomla versionen
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
                     $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
-                    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
+                    //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
                     $document = 'version';
                 } else {
-                    $xml = JFactory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
+                    $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/quote_' . $temp[0] . '.xml');
                     $document = 'version';
                 }
 
@@ -868,7 +869,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function insertAgegroup($search_nation, $filter_sports_type) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
         //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
@@ -899,11 +900,11 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $xml = simplexml_load_file($filename);
             } else {
-//                $xml = JFactory::getXMLParser( 'Simple' );
+//                $xml = Factory::getXMLParser( 'Simple' );
 //    $xml->loadFile($filename);
-                $xml = JFactory::getXML($filename);
+                $xml = Factory::getXML($filename);
             }
-//        $xml = JFactory::getXMLParser( 'Simple' );
+//        $xml = Factory::getXMLParser( 'Simple' );
 //       $xml->loadFile($filename); 
 
             if ($xml) {
@@ -937,7 +938,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
                     // altersgruppe nicht vorhanden ?
                     if (!$this->jsmdb->loadResult()) {
 //   // Get a db connection.
-//        $db = JFactory::getDbo();
+//        $db = Factory::getDbo();
                         // Create a new query object.
                         $this->jsmquery = $this->jsmdb->getQuery(true);
                         // Insert columns.
@@ -991,21 +992,21 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function checkAssociations() {
-        //$app = JFactory::getApplication();
-//    $this->option = JFactory::getApplication()->input->getCmd('option');    
+        //$app = Factory::getApplication();
+//    $this->option = Factory::getApplication()->input->getCmd('option');    
         /* Ein Datenbankobjekt beziehen */
-        //$db = JFactory::getDbo();  
+        //$db = Factory::getDbo();  
 
         $country_assoc_del = '';
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
-            //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/associations.xml'); 
+            //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/associations.xml'); 
             $document = 'associations';
         } else {
-//                $xml = JFactory::getXMLParser( 'Simple' );
+//                $xml = Factory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/associations.xml');
-            $xml = JFactory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
+            $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml');
             $document = 'associations';
         }
 
@@ -1163,26 +1164,26 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function checkSportTypeStructur($type) {
-        $app = JFactory::getApplication();
-        //$this->option = JFactory::getApplication()->input->getCmd('option');    
+        $app = Factory::getApplication();
+        //$this->option = Factory::getApplication()->input->getCmd('option');    
         //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
         //$fileContent = JFile::read($db_table);    
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
-//    $xml = JFactory::getXMLParser( 'Simple' );
+//    $xml = Factory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             $xml = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
         } else {
-//                $xml = JFactory::getXMLParser( 'Simple' );
+//                $xml = Factory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');
-            $xml = JFactory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
+            $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
         }
 
         if (!JFile::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml')) {
             return false;
         }
-        //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
+        //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
         // We can now step through each element of the file
         if (isset($xml->events)) {
@@ -1281,8 +1282,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function insertCountries() {
-        $app = JFactory::getApplication();
-        //$this->option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        //$this->option = Factory::getApplication()->input->getCmd('option');
         require_once( JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/' . 'helpers' . DS . 'jinstallationhelper.php' );
         $db = sportsmanagementHelper::getDBConnection();
         $db_table = JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/sql/countries.sql';
@@ -1327,8 +1328,8 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return
      */
     function insertSportType($type) {
-        $app = JFactory::getApplication();
-        //$this->option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        //$this->option = Factory::getApplication()->input->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         $sports_type_id = 0;
         //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
@@ -1361,7 +1362,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             }
         } else {
             //// Get a db connection.
-//        $db = JFactory::getDbo();
+//        $db = Factory::getDbo();
             // Create a new query object.
             $this->jsmquery = $this->jsmdb->getQuery(true);
             // Insert columns.
@@ -1410,10 +1411,10 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @return void
      */
     function addStandardForSportType($name, $id, $type, $update = 0) {
-        $app = JFactory::getApplication();
-        $this->option = JFactory::getApplication()->input->getCmd('option');
+        $app = Factory::getApplication();
+        $this->option = Factory::getApplication()->input->getCmd('option');
         // Get a db connection.
-        //$db = JFactory::getDbo();
+        //$db = Factory::getDbo();
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
@@ -1505,7 +1506,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
 //                foreach ( $this->_sport_types_events[$type] as $event )
 //                {
 //                $this->query	= self::build_InsertQuery_PositionEventType($parent->tableid,$event->tableid);
-//                JFactory::getDbo()->setQuery($this->query);
+//                Factory::getDbo()->setQuery($this->query);
 //				$result = self::runJoomlaQuery(); 
 //                if ( !$result )
 //                {
@@ -1575,7 +1576,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      */
     function build_InsertQuery_Position($tablename, $param1, $param2, $param3, $param4, $sports_type_id, $order_count) {
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 //    $this->query = $this->jsmdb->getQuery(true);
 //    // Select some fields
 //    $this->query->select('max(import_id) AS count');
@@ -1618,7 +1619,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      */
     function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count) {
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 //    $this->query = $this->jsmdb->getQuery(true);
 //    // Select some fields
 //    $this->query->select('max(import_id) AS count');
@@ -1657,7 +1658,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      */
     function build_InsertQuery_PositionEventType($param1, $param2) {
         // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 //    $this->query = $this->jsmdb->getQuery(true);
 //    // Select some fields
 //    $this->query->select('max(import_id) AS count');

@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -18,7 +19,7 @@ if (! defined('DS'))
 }
  
 // Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
+if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -74,9 +75,9 @@ if(version_compare($baseVersion,'2.5','ge'))
 {
 // Joomla! 2.5 code here
 defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
+//Factory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 } 
 elseif(version_compare($baseVersion,'1.7.0','ge')) 
 {
@@ -95,11 +96,11 @@ else
 // welche joomla version ?
 //sportsmanagementHelper::isJoomlaVersion('2.5');
 
-$jinput = JFactory::getApplication()->input;
+$jinput = Factory::getApplication()->input;
 $command = $jinput->get('task', 'display');
 $view = $jinput->get('view');
-$lang = JFactory::getLanguage();
-$app = JFactory::getApplication();
+$lang = Factory::getLanguage();
+$app = Factory::getApplication();
 
 
 // welche tabelle soll genutzt werden

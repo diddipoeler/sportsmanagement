@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.modellist');
 
@@ -59,12 +60,12 @@ class sportsmanagementModelMatches extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Initialise variables.
-		//$app = JFactory::getApplication('administrator');
+		//$app = Factory::getApplication('administrator');
         
         if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
@@ -83,7 +84,7 @@ class sportsmanagementModelMatches extends JSMModelList
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
-//        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
+//        $value = Factory::getApplication()->input->getUInt('limitstart', 0);
 //		$this->setState('list.start', $value);
 //        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 //		$this->setState('list.start', $value);
@@ -110,15 +111,15 @@ class sportsmanagementModelMatches extends JSMModelList
 	protected function getListQuery()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         //$search_division	= $this->getState('filter.division');
         
-        $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
-        $this->_projectteam = JFactory::getApplication()->input->getvar('projectteam', 0);
+        $this->_rid = Factory::getApplication()->input->getvar('rid', 0);
+        $this->_projectteam = Factory::getApplication()->input->getvar('projectteam', 0);
         //$app->enqueueMessage(Text::_('sportsmanagementViewMatches _projectteam<br><pre>'.print_r($this->_projectteam,true).'</pre>'),'');
         
         if ( !$this->_rid )
@@ -296,8 +297,8 @@ $db->setQuery($query);
 	 */
 	function getMatchesByRound($roundId)
 	{
-	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');    
+	   $app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');    
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

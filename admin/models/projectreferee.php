@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper; 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * SportsManagement Model
@@ -29,10 +30,10 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
+		$app =& Factory::getApplication();
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = Factory::getApplication()->input->post->getArray(array());
         
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -61,10 +62,10 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$app =& JFactory::getApplication();
+	$app =& Factory::getApplication();
     $app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
     

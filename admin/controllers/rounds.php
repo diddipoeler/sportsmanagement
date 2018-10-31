@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerrounds
@@ -35,7 +36,7 @@ class sportsmanagementControllerrounds extends JSMControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
+        $this->app = Factory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
 
@@ -78,7 +79,7 @@ $msg = '';
     function deleteRoundMatches()
 	{
 	   $model = $this->getModel();
-       $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+       $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
        $msg = $model->deleteRoundMatches($pks);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        //$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
@@ -106,7 +107,7 @@ $msg = '';
 	 */
 	public function populate()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$division_id = $jinput->getInt('division_id',0);
 		

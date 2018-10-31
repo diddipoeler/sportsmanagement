@@ -40,8 +40,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-$view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
+$view = Factory::getApplication()->input->getCmd('view', 'cpanel');
 
 ?>
 <div id="j-main-container" class="span10">
@@ -144,8 +145,8 @@ echo $this->loadTemplate('debug');
             ?>
 			<td align="center" colspan="4">
 				<?php
-                $startRange = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
+                $startRange = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('character_filter_end_hex', '0');
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
             printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');

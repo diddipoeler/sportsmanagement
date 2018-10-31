@@ -76,6 +76,7 @@
 */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 class parseCSV {
 	
@@ -363,7 +364,7 @@ class parseCSV {
 	 * @return  2D array with CSV data, or false on failure
 	 */
 	function parse_string ($data = null) {
-	$app	=& JFactory::getApplication();
+	$app	=& Factory::getApplication();
 		if ( empty($data) ) {
 			if ( $this->_check_data() ) {
 				$data = &$this->file_data;

@@ -12,8 +12,9 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
-$option = JFactory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->input->getCmd('option');
 
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
@@ -74,7 +75,7 @@ var $_project_id = 0;
  */
 function __construct( )
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
+	   $option = Factory::getApplication()->input->getCmd('option');
 	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
@@ -221,11 +222,11 @@ function property_value_in_array($array, $property, $value)
  */
 function getUpdateData()
 	{
-  $option = JFactory::getApplication()->input->getCmd('option');
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
+  $option = Factory::getApplication()->input->getCmd('option');
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
 
-  $lang = JFactory::getLanguage();
+  $lang = Factory::getLanguage();
   $this->_success_text = '';
   $my_text = '';
    
@@ -372,8 +373,8 @@ $my_text .= '<span style="color:green">';
 function getProjectUpdateData($csvdata,$project)
 	{
   //global $app, $option;
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
   $exportmatch = array();
   
   
@@ -453,11 +454,11 @@ $exportmatch[] = $tempmatch;
 function getData()
 	{
   //global $app, $option;
-  $option = JFactory::getApplication()->input->getCmd('option');
-  $app = JFactory::getApplication();
-  $document	= JFactory::getDocument();
+  $option = Factory::getApplication()->input->getCmd('option');
+  $app = Factory::getApplication();
+  $document	= Factory::getDocument();
 
-  //$lang = JFactory::getLanguage();
+  //$lang = Factory::getLanguage();
 
 if ( $this->debug_info )
 {
@@ -486,7 +487,7 @@ echo $this->pane->startPane('pane');
   $app->enqueueMessage(Text::_('Welche Art von Datei? '.$whichfile),'');
   
   //$delimiter=$app->getUserState($option.'delimiter');
-  $post = JFactory::getApplication()->input->post->getArray(array());
+  $post = Factory::getApplication()->input->post->getArray(array());
   
   $this->_league_new_country = $country;
   

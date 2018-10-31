@@ -45,12 +45,12 @@ class JFormFieldpersonlist extends \JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         // Initialize variables.
 		$options = array();
     
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select("id AS value, concat(lastname,' - ',firstname,'' ) AS text");

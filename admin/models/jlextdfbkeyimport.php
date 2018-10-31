@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Factory;
 
 //jimport( 'joomla.application.component.model' );
 //require_once( JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'helpers' . DS . 'helper.php' );
@@ -66,7 +67,7 @@ $this->jsmquery->where('id = ' . $project_id);
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $project_type = $this->jsmdb->loadResult();
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
 return $project_type;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -94,7 +95,7 @@ $this->jsmquery->where('p.id = ' . $project_id);
 try {
 $this->jsmdb->setQuery( $this->jsmquery );
 $country = $this->jsmdb->loadResult();
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' country <pre>'.print_r($country,true).'</pre>', 'warning');	
 return $country;
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -116,8 +117,8 @@ return $country;
 	 */
 	function getProjectteams($project_id = 0, $division_id = 0)
 	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication ();
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication ();
 
 //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' project_id <pre>'.print_r($project_id,true).'</pre>', 'warning');
 //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' division_id <pre>'.print_r($division_id,true).'</pre>', 'warning');
@@ -172,8 +173,8 @@ return false;
 		$this->jsmdb->execute();
 		$number = $this->jsmdb->getNumRows();		
 
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
-JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
+Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' number <pre>'.print_r($number,true).'</pre>', 'warning');
+Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result,true).'</pre>', 'warning');
 			
 		if ( $number > 0 )
 		{
@@ -198,9 +199,9 @@ JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre
  */
 function getDFBKey($number,$matchdays)
 	{
-//	$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication ();
-//	$document	= JFactory::getDocument();
+//	$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication ();
+//	$document	= Factory::getDocument();
   
 $project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
 	//$project_id = $app->getUserState( $option . 'project' );
@@ -252,7 +253,7 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
 	try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');		
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');		
     return $result;
 	} catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -283,8 +284,8 @@ $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$country.'') );
    */
   function getMatchdays($project_id = 0)
 	{
-	//$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication ();
+	//$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication ();
 	
     $this->jsmquery->clear();
     $this->jsmquery->select('*');
@@ -298,7 +299,7 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
     try{
 	$this->jsmdb->setQuery( $this->jsmquery );
     $result = $this->jsmdb->loadObjectList();
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');			    
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' result <pre>'.print_r($result ,true).'</pre>', 'warning');			    
     return $result;
     } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
@@ -329,8 +330,8 @@ $this->jsmquery->where('project_id = ' . (int)$project_id);
 	 */
 	function getMatches($project_id = 0, $division_id = 0)
 	{
-//	   $option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication ();
+//	   $option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication ();
 //    $db = sportsmanagementHelper::getDBConnection();
 
 $this->jsmquery->clear();
@@ -362,7 +363,7 @@ $this->jsmquery->from('#__sportsmanagement_match');
 $this->jsmquery->where('round_id in (' . $rounds . ')' );
 $this->jsmdb->setQuery( $this->jsmquery );
 $count = $this->jsmdb->loadResult();
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' count <pre>'.print_r($count ,true).'</pre>', 'warning');			
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' count <pre>'.print_r($count ,true).'</pre>', 'warning');			
 return $count;
 
 } catch (Exception $e) {
@@ -405,8 +406,8 @@ return $count;
 	 */
 	function getSchedule($post = array(), $project_id = 0, $division_id = 0 )
 	{
-//	$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication ();
+//	$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication ();
 
 /*	
 echo '<pre>';
@@ -449,7 +450,7 @@ $query = 'select team.name
 
 }
 
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' chooseteam <pre>'.print_r($chooseteam ,true).'</pre>', 'warning');		
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' chooseteam <pre>'.print_r($chooseteam ,true).'</pre>', 'warning');		
 		
 /*
 echo '<pre>';
@@ -493,7 +494,7 @@ print_r($dfbresult);
 echo '</pre>';
 */
 
-//JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' dfbresult <pre>'.print_r($dfbresult ,true).'</pre>', 'warning');		
+//Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' dfbresult <pre>'.print_r($dfbresult ,true).'</pre>', 'warning');		
 
 $result = array();
 
@@ -523,8 +524,8 @@ $result = array_merge($result);
 }
 
 $this->savedfb = $result ;
-//  JFactory::getApplication()->input->setVar( 'savedfb', $result,'post' );
-//    JFactory::getApplication()->input->set( $result,'post' );
+//  Factory::getApplication()->input->setVar( 'savedfb', $result,'post' );
+//    Factory::getApplication()->input->set( $result,'post' );
 	return $result;
 	}
 	
@@ -537,8 +538,8 @@ $this->savedfb = $result ;
 	 */
 	function checkTable()
   {
-  //$app = JFactory::getApplication();
-    //$option = JFactory::getApplication()->input->getCmd('option');
+  //$app = Factory::getApplication();
+    //$option = Factory::getApplication()->input->getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     //$db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/dfbkeys.sql';

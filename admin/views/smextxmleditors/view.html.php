@@ -61,7 +61,7 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $this->files = $this->model->getXMLFiles();

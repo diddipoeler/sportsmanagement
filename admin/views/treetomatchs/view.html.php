@@ -4,7 +4,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\Factory;
 
 
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
@@ -31,12 +31,12 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
 	function _displayEditlist()
 	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
 		$project_id = $this->jinput->get('pid');
 		$node_id = $this->jinput->get('nid');
 		
-		//$uri = JFactory::getURI();
+		//$uri = Factory::getURI();
 
 		//$treetomatchs = $this->get('Data');
         $treetomatchs = $this->items;
@@ -142,7 +142,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		unset($res1);
 		unset($notusedmatches);
 
-		//$this->assignRef('user',JFactory::getUser());
+		//$this->assignRef('user',Factory::getUser());
 		$this->lists = $lists;
 		$this->treetomatchs = $treetomatchs;
 		$this->projectws = $projectws;
@@ -158,9 +158,9 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
 	function _displayDefault()
 	{
-//		$option = JFactory::getApplication()->input->getCmd('option');
-//		$app = JFactory::getApplication();
-//		$uri = JFactory::getURI();
+//		$option = Factory::getApplication()->input->getCmd('option');
+//		$app = Factory::getApplication();
+//		$uri = Factory::getURI();
 
 		//$match = $this->get('Data');
 		//$total = $this->get('Total');

@@ -11,6 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.controller');
 
@@ -33,7 +34,7 @@ class sportsmanagementControllerDatabaseTool extends JControllerLegacy
  */
 function repair()  
 {  
-$app = JFactory::getApplication();  
+$app = Factory::getApplication();  
 $model = $this->getModel('databasetool');  
 $jsm_tables = $model->getSportsManagementTables();  
   
@@ -55,7 +56,7 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$m
  */
 function optimize()  
 {  
-$app = JFactory::getApplication();  
+$app = Factory::getApplication();  
 $model = $this->getModel('databasetool');  
 $jsm_tables = $model->getSportsManagementTables();  
 
@@ -77,7 +78,7 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$m
  */
 function truncate()  
 {  
-$app = JFactory::getApplication();  
+$app = Factory::getApplication();  
 $model = $this->getModel('databasetool');  
 $jsm_tables = $model->getSportsManagementTables();  
   
@@ -98,7 +99,7 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$m
  */
 function truncatejl()
 {
-$app = JFactory::getApplication();  
+$app = Factory::getApplication();  
 $model = $this->getModel('databasetool');      
 $jl_tables = $model->getJoomleagueTablesTruncate();  
 
@@ -131,7 +132,7 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$m
  */
 function picturepath()
 {
-$app = JFactory::getApplication();  
+$app = Factory::getApplication();  
 $model = $this->getModel('databasetool');    
 $model->setNewPicturePath();
 $msg = 'Alle Bilderpfade angepasst';   

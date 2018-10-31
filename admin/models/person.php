@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelperson
@@ -161,14 +162,14 @@ $this->jsmquery->clear();
     function storeAssign($post)
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db = JFactory::getDbo();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $modified = JFactory::getDate();
+        $db = Factory::getDbo();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
+       $modified = Factory::getDate();
 	   $modified_by = $user->get('id');
        
     $this->_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -218,7 +219,7 @@ $this->jsmquery->clear();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }				
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
@@ -233,7 +234,7 @@ $this->jsmquery->clear();
                 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
                  if ( !$res )
                 {
@@ -259,7 +260,7 @@ $this->jsmquery->clear();
                 catch (Exception $e){
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
                  
 		        }
@@ -296,7 +297,7 @@ $this->jsmquery->clear();
 } catch (Exception $e) {
     $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }			
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
@@ -312,7 +313,7 @@ $this->jsmquery->clear();
                 catch (Exception $e){
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
 			
 		 if ( !$res )
@@ -339,7 +340,7 @@ $this->jsmquery->clear();
                 catch (Exception $e){
                 $msg = $e->getMessage(); // Returns "Normally you would have other code...
     $code = $e->getCode(); // Returns '500';
-    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
                  
 		        }
@@ -406,7 +407,7 @@ catch (Exception $e){
                 $profile->modified_by = $modified_by;
  try{
 			// Insert the object into the user profile table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
 			}
 catch (Exception $e){
     $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');

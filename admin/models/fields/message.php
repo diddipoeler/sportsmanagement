@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -34,7 +36,7 @@ class JFormFieldMessage extends FormField
 	{
 		$html = '';
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('lib_syw.sys', JPATH_SITE);
 
 		if ($this->message_type == 'example') 
@@ -62,7 +64,7 @@ class JFormFieldMessage extends FormField
 	{
 		$html = '';
 
-		$lang = JFactory::getLanguage();
+		$lang = Factory::getLanguage();
 		$lang->load('lib_syw.sys', JPATH_SITE);
 
 		$message_label = '';

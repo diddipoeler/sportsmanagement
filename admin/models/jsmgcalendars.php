@@ -2,6 +2,7 @@
 
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
 
 if (! defined('JSM_PATH'))
 {
@@ -38,7 +39,7 @@ class sportsmanagementModeljsmGCalendars extends JModelList
     {
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-		$user	= JFactory::getUser();
+		$user	= Factory::getUser();
 
 		$query->select('*');
 		$calendarIDs = $this->getState('ids', null);

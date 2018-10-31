@@ -1,13 +1,14 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
 JToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
 
-$edit        = JFactory::getApplication()->input->getVar('edit',true);
+$edit        = Factory::getApplication()->input->getVar('edit',true);
 $text = !$edit ? Text::_( 'New' ) : Text::_( 'Edit' );
 
 JToolbarHelper::save();
@@ -24,7 +25,7 @@ else
 }
 JToolbarHelper::help( 'screen.joomleague', true );
 
-$uri     =& JFactory::getURI();
+$uri     =& Factory::getURI();
 
 DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT1','Nachdem die Mannschaften dem Projekt zugeordnet wurden, k�nnen die Schl�sselzahlen vergeben werden. Im Augenblick d�rfen noch keine Spielpaarungen pro Spieltag vorhanden sein, sonst kommt es zu doppelten
 Eintr�gen !');

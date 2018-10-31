@@ -39,6 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -137,7 +139,7 @@ class JFormFieldMultiDependSQL extends JFormField
 
 		if ($depends)
 		{
-			$doc = JFactory::getDocument();
+			$doc = Factory::getDocument();
 			$doc->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 

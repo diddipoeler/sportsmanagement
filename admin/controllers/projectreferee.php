@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 // import Joomla controllerform library
 //jimport('joomla.application.component.controllerform');
@@ -65,8 +66,8 @@ class sportsmanagementControllerprojectreferee extends JSMControllerForm
 	 */
 	function remove()
 	{
-	$app =& JFactory::getApplication();
-    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
+	$app =& Factory::getApplication();
+    $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('projectreferee');
     $model->delete($pks);
 	

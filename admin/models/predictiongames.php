@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelPredictionGames
@@ -141,7 +142,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getChilds( $pred_id, $all = false )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -206,7 +207,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	static function getAdmins( $pred_id = 0, $list = false )
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

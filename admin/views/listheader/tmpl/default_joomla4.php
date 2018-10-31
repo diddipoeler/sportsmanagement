@@ -12,12 +12,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $view = $jinput->getCmd('view', 'cpanel');
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 
 /**
  * retrieve the value of the state variable. If no value is specified,

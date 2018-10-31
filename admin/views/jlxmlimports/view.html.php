@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.html.parameter.element.timezones');
 
 /**
@@ -33,14 +35,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      * @return
      */
     public function init($tpl = null) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $filter_season = $jinput->getInt('filter_season', 0);
         $this->filter_season = $filter_season;
 
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript(JUri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
 
@@ -51,7 +53,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $uri = JUri::getInstance();
         } else {
-            $uri = JFactory::getURI();
+            $uri = Factory::getURI();
         }
         $config = JComponentHelper::getParams('com_media');
         $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize', '200');
@@ -93,7 +95,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      * @return void
      */
     private function _displayUpdate($tpl) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         //$project_id = (int) $app->getUserState($option.'project', 0);
@@ -107,7 +109,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->option = $option;
 
         // Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
@@ -133,12 +135,11 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $mtime = $mtime[1] + $mtime[0];
         $starttime = $mtime;
 
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
-        //$uri = JFactory::getURI();
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $data = $model->getData();
@@ -151,18 +152,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $zones = DateTimeZone::listIdentifiers();
 
         $projectid = $jinput->getInt('project_id', 0);
-        //$app->enqueueMessage(Text::_('_displayForm projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Error');
-        //$app->enqueueMessage(Text::_('_displayForm groups<br><pre>'.print_r($groups,true).'</pre>'),'Error');
-        //$lists['timezone']=$groups;
         $lists['timezone'] = HTMLHelper::_('select.genericList', $zones, 'timezone', 'class="inputbox" ', 'value', 'text', $value);
-        //$lists['timezone']= HTMLHelper::_('select.genericlist', array(), 'timezone', ' class="inputbox"', 'value', 'text', $value);
 
         $whichfile = $app->getUserState($option . 'whichfile');
         $this->option = $option;
         $this->whichfile = $whichfile;
         $projectidimport = $app->getUserState($option . 'projectidimport');
         $this->projectidimport = $projectidimport;
-        //$countries=new Countries();
         $this->uploadArray = $uploadArray;
         $this->starttime = $starttime;
         // diddi
@@ -229,7 +225,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->lists = $lists;
 
         //	// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
+//		$document	= Factory::getDocument();
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
@@ -258,7 +254,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      * @return void
      */
     private function _displayInfo($tpl) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $mtime = microtime();
@@ -300,12 +296,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
      * @return void
      */
     private function _displaySelectpage($tpl) {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
+        $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
-        $uri = JFactory::getURI();
+        $uri = Factory::getURI();
         $model = JModelLegacy::getInstance('JLXMLImport', 'sportsmanagementmodel');
         $lists = array();
 

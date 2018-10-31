@@ -355,7 +355,7 @@ class JFormFieldGoogletimezones extends \JFormFieldList
 
 		/*
 		if(empty($value)){
-			$conf =& JFactory::getConfig();
+			$conf =& Factory::getConfig();
 			$globalTz = $conf->getValue('config.offset');
 			switch ($globalTz) {
 				case -11:

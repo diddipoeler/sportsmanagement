@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelteamperson
@@ -72,7 +73,7 @@ foreach ( $this->person_list as $row )
 $rowInsert = new stdClass();
 $rowInsert->id = $row->person_id ;
 $rowInsert->country = $this->country;
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $rowInsert, 'id'); 	
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_person', $rowInsert, 'id'); 	
 }
 	
 	
@@ -91,8 +92,8 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $rowIns
  */
 function set_state($ids,$tpids,$state,$pid=0)
 {	
-$this->jsmuser = JFactory::getUser(); 
-$this->jsmdate = JFactory::getDate();
+$this->jsmuser = Factory::getUser(); 
+$this->jsmdate = Factory::getDate();
 
 for ($x=0; $x < count($ids); $x++)
 {
@@ -106,7 +107,7 @@ $object->published = $state;
 $object->modified = $this->jsmdate->toSql();
 $object->modified_by = $this->jsmuser->get('id');
 // Update their details in the table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id'); 
+$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id'); 
 
 $this->jsmquery->clear();
 // Fields to update.
@@ -148,18 +149,18 @@ $resultupdate = $this->jsmdb->execute();
 	 */
 	function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+		$app = Factory::getApplication();
+        $date = Factory::getDate();
+	   $user = Factory::getUser();
         /* Ein Datenbankobjekt beziehen */
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $query = $db->getQuery(true);
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get the input
-        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        //$post = JFactory::getApplication()->input->post->getArray(array());
+        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        //$post = Factory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray(array());
         $this->_project_id	= $post['pid'];
         $this->persontype	= $post['persontype'];
@@ -304,7 +305,7 @@ $db->setQuery($query);
                 $profile->persontype = $this->persontype;
                 $profile->published = 1;
                 // Insert the object into table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
                 
                 if (!$result)
 	            {
@@ -330,7 +331,7 @@ $db->setQuery($query);
 	 */
 	public function delete(&$pks)
 	{
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
     
     // JInput object
         $jinput = $app->input;
@@ -356,7 +357,7 @@ $db->setQuery($query);
     
     //$app->enqueueMessage(Text::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
     
@@ -490,14 +491,14 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $option = JFactory::getApplication()->input->getCmd('option');
+	   $app = Factory::getApplication();
+       $option = Factory::getApplication()->input->getCmd('option');
        $season_id = $app->getUserState( "$option.season_id");
-       $post = JFactory::getApplication()->input->post->getArray(array());
+       $post = Factory::getApplication()->input->post->getArray(array());
        $db = $this->getDbo();
 	   $query = $db->getQuery(true);
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
+       $date = Factory::getDate();
+	   $user = Factory::getUser();
        //$query2 = $db->getQuery(true);
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -603,7 +604,7 @@ $profile->project_position_id = $data['project_position_id'];
 $profile->persontype = $post['persontype'];
 try{		
 // Insert the object into table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
+$result = Factory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
 }
 	catch (Exception $e)
 {

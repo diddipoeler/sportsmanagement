@@ -21,6 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 if(!is_array($this->onlineItems)){
 	echo 'No data found!';
 	return;
@@ -92,5 +94,5 @@ if(!is_array($this->onlineItems)){
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 <div align="center" style="clear: both">
-	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), JFactory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
+	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), Factory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>
 </div>

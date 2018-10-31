@@ -41,6 +41,8 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport( 'joomla.application.component.controller' );
 
 
@@ -63,15 +65,15 @@ class sportsmanagementControllerjlextsisimport extends JControllerLegacy
      */
     function save() 
     {
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication ();
-		$document = JFactory::getDocument ();
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication ();
+		$document = Factory::getDocument ();
 		// Check for request forgeries
-		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		Factory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
-		// $app = JFactory::getApplication();
+		// $app = Factory::getApplication();
 		$model = $this->getModel ( 'jlextsisimport' );
-		$post = JFactory::getApplication()->input->get ( 'post' );
+		$post = Factory::getApplication()->input->get ( 'post' );
 		
 
 		

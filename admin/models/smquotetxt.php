@@ -2,6 +2,8 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
+use Joomla\CMS\Factory;
+
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
@@ -21,8 +23,8 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -48,8 +50,8 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		//$data = JFactory::getApplication()->getUserState('com_templates.edit.source.data', array());
-        $data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.source.data', array());
+		//$data = Factory::getApplication()->getUserState('com_templates.edit.source.data', array());
+        $data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.source.data', array());
 
 		if (empty($data)) {
 			$data = $this->getSource();
@@ -69,8 +71,8 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         jimport('joomla.filesystem.file');
         
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -96,15 +98,15 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 	 */
 	public function &getSource()
 	{
-		$app = JFactory::getApplication();
-    $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+    $option = Factory::getApplication()->input->getCmd('option');
         $item = new stdClass;
 //		if (!$this->_template) {
 //			$this->getTemplate();
 //		}
 
 		//if ($this->_template) {
-			$file_name	= JFactory::getApplication()->input->getVar('file_name');
+			$file_name	= Factory::getApplication()->input->getVar('file_name');
 			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
 			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
             $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$file_name;
@@ -113,7 +115,7 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 				jimport('joomla.filesystem.file');
 
 				//$item->extension_id	= $this->getState('extension.id');
-				$item->filename		= JFactory::getApplication()->input->getVar('file_name');
+				$item->filename		= Factory::getApplication()->input->getVar('file_name');
 				$item->source		= JFile::read($filePath);
 			} else {
 				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));

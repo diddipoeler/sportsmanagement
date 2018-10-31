@@ -40,6 +40,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
@@ -73,12 +75,12 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
         
     protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
         $project_id			= $app->getUserState( "$option.pid", '0' );
-		$match_id		= JFactory::getApplication()->input->getvar('id', 0);;
-		$projectteam1_id		= JFactory::getApplication()->input->getvar('team1', 0);;
-		$projectteam2_id		= JFactory::getApplication()->input->getvar('team2', 0);;
+		$match_id		= Factory::getApplication()->input->getvar('id', 0);;
+		$projectteam1_id		= Factory::getApplication()->input->getvar('team1', 0);;
+		$projectteam2_id		= Factory::getApplication()->input->getvar('team2', 0);;
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
@@ -105,8 +107,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 	function checkGames($project,$match_id,$rid,$projectteam1_id,$projectteam2_id)
     {
-        $option = JFactory::getApplication()->input->getCmd('option');
-		$app	= JFactory::getApplication();
+        $option = Factory::getApplication()->input->getCmd('option');
+		$app	= Factory::getApplication();
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -142,7 +144,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
               $temp->match_type = 'SINGLE';
               $temp->published = 1;
               // Insert the object
-              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+              $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
 		    }  
         }
         
@@ -177,7 +179,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
               $temp->match_type = 'DOUBLE';
               $temp->published = 1;
               // Insert the object
-              $result = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
+              $result = Factory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single', $temp);
 		    } 
             
         }
@@ -197,14 +199,14 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	 */
 	function getProjectTeams($project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 
-		$app	= JFactory::getApplication();
+		$app	= Factory::getApplication();
 		//$project_id = $app->getUserState($option . 'project');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-//$projectteam1_id		= JFactory::getApplication()->input->getvar('team1', 0);
+//$projectteam1_id		= Factory::getApplication()->input->getvar('team1', 0);
 
 // Select some fields
 		$query->select('pt.id AS value');
@@ -248,9 +250,9 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	 */
 	function getProjectTeamsOptions($iDivisionId=0)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->input->getCmd('option');
 
-		$app	=& JFactory::getApplication();
+		$app	=& Factory::getApplication();
 		$project_id = $app->getUserState($option . 'project');
 
 		$query = ' SELECT	pt.id AS value, '
@@ -293,8 +295,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	
 	function getPlayer($teamid,$project_id)
 	{
-  $option = JFactory::getApplication()->input->getCmd('option');
-	$app	= JFactory::getApplication();
+  $option = Factory::getApplication()->input->getCmd('option');
+	$app	= Factory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -330,8 +332,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
  
   function getSportType($id)
   {
-  $option = JFactory::getApplication()->input->getCmd('option');
-	$app	=& JFactory::getApplication();
+  $option = Factory::getApplication()->input->getCmd('option');
+	$app	=& Factory::getApplication();
   $query='SELECT name
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
 					WHERE id='. $this->_db->Quote($id);
@@ -354,8 +356,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   
   function _getSinglefile()
   {
-  $option = JFactory::getApplication()->input->getCmd('option');
-	$app	=& JFactory::getApplication();
+  $option = Factory::getApplication()->input->getCmd('option');
+	$app	=& Factory::getApplication();
 	
 	$match_id		= $app->getUserState( $option . 'match_id' );
 	$query='SELECT match_number

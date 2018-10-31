@@ -54,7 +54,7 @@ class JFormFieldeventtypelist extends \JFormFieldList
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         // Initialize variables.
 		$options = array();
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');

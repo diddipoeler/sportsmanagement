@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 /**
  * sportsmanagementViewTeamPerson
  * 
@@ -143,7 +145,7 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSI
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 	   
@@ -158,7 +160,7 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSI
 		$app->setUserState( "$option.team_id", $this->team_id );
 		$app->setUserState( "$option.season_id", $this->season_id );
         
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);

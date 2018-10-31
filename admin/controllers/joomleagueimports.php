@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerjoomleagueimports
@@ -65,13 +66,13 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 		parent::__construct($config);
         //$this->jsmdb = sportsmanagementHelper::getDBConnection();
         // Reference global application object
-        $this->jsmapp = JFactory::getApplication();
+        $this->jsmapp = Factory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         //$this->jsmoption = $this->jsmjinput->getCmd('option');
-//        $this->jsmdocument = JFactory::getDocument();
-//        $this->jsmuser = JFactory::getUser();
-//        $this->jsmdate = JFactory::getDate();
+//        $this->jsmdocument = Factory::getDocument();
+//        $this->jsmuser = Factory::getUser();
+//        $this->jsmdate = Factory::getDate();
 ////        $this->option = $this->jsmjinput->getCmd('option');
 //        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
         
@@ -104,8 +105,8 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
  */
 function importjoomleaguenew()
 {
-        //$app = JFactory::getApplication();
-        //$option = JFactory::getApplication()->input->getCmd('option');
+        //$app = Factory::getApplication();
+        //$option = Factory::getApplication()->input->getCmd('option');
         
         //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);

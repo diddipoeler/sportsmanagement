@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
 
@@ -140,11 +142,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEditEeventsBB()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$project_id = $app->getUserState( "$option.pid", '0' );
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$params = JComponentHelper::getParams( $option );
 		$default_name_format = $params->get("name_format");
 
@@ -191,14 +193,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEdit()
 	{
-	//	$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//	$document = JFactory::getDocument();
-   // $model = $this->getModel();
-   // $project_id = $app->getUserState( "$option.pid", '0' );
-    
-    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
     
     // match relation tab
 		//$mdlMatch = JModelLegacy::getInstance ( 'match', 'JoomleagueModel' );
@@ -250,9 +244,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initPicture()
 	{
-//		$jinput = JFactory::getApplication()->input;
+//		$jinput = Factory::getApplication()->input;
 //        $option = $jinput->getCmd('option');
-//		$document = JFactory::getDocument();
+//		$document = Factory::getDocument();
 //		$model = $this->getModel();
     
 
@@ -267,10 +261,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initPressebericht()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$model = $this->getModel();
     
     //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
@@ -358,10 +352,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEditStats()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$model = $this->getModel();
         $lists = array();
     
@@ -426,10 +420,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEditEevents()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
     $model = $this->getModel();
     $params = JComponentHelper::getParams ( $option );
     $default_name_dropdown_list_order = $params->get ( "cfg_be_name_dropdown_list_order", "lastname" );
@@ -518,10 +512,10 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
      */
     public function initEditLineup()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
     $model = $this->getModel();
     $default_name_format = '';
     $lists = array();
@@ -530,7 +524,7 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');  
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editlineup.js');
-        $tid = JFactory::getApplication()->input->getVar('team','0');
+        $tid = Factory::getApplication()->input->getVar('team','0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         $this->teamname	= $teamname;
@@ -730,10 +724,10 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
      */
     public function initEditReferees()
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
     $model = $this->getModel();
     $default_name_format = '';
     
@@ -833,10 +827,10 @@ $javascript .= "var baseajaxurl = '".JUri::root()."administrator/index.php?optio
      */
     function _displaySavePressebericht()
     {
-	$app = JFactory::getApplication();
+	$app = Factory::getApplication();
 	$jinput = $app->input;
 	$option = $jinput->getCmd('option');
-	$document = JFactory::getDocument();
+	$document = Factory::getDocument();
 $post = $app->input->post->getArray(array());
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),''); 	    
     $project_id = $app->getUserState( "$option.pid", '0' );;
@@ -856,10 +850,10 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($p
      */
     function _displayPressebericht()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
         $project_id = $app->getUserState( "$option.pid", '0' );;
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->config	= $config;
@@ -955,7 +949,7 @@ $this->csvstaff	= $model->csv_staff;
 	protected function setDocument() 
 	{
 		$isNew = $this->item->id == 0;
-		$document = JFactory::getDocument();
+		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
@@ -968,15 +962,15 @@ $this->csvstaff	= $model->csv_staff;
 	protected function addToolBar() 
 	{ 
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document	= Factory::getDocument();
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-		//JFactory::getApplication()->input->setVar('hidemainmenu', true);
-		$jinput = JFactory::getApplication()->input;
+		//Factory::getApplication()->input->setVar('hidemainmenu', true);
+		$jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);

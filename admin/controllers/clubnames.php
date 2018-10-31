@@ -11,6 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
  
 /**
  * sportsmanagementControllerclubnames
@@ -32,7 +33,7 @@ class sportsmanagementControllerclubnames extends JSMControllerAdmin
   public function import()
     {
     // Reference global application object
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         // JInput object
         $jinput = $app->input;    
         

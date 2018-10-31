@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 if (! defined('DS'))
 {
@@ -76,7 +77,7 @@ class SportsManagementController extends JControllerLegacy
 	 */
 	function display($cachable = false, $urlparams = false) 
 	{
-		$jinput = JFactory::getApplication()->input;
+		$jinput = Factory::getApplication()->input;
         
 /**
  * set default view if not set

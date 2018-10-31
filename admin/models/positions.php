@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementModelPositions
@@ -153,11 +154,11 @@ class sportsmanagementModelPositions extends JSMModelList
 	function getParentsPositions()
 	{
 		// Reference global application object
-        //$app = JFactory::getApplication();
+        //$app = Factory::getApplication();
         // JInput object
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
-        //$query = JFactory::getDbo()->getQuery(true);
+        //$query = Factory::getDbo()->getQuery(true);
         //$results = array();
 		//$project_id=$app->getUserState($option.'project');
         
@@ -175,7 +176,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		$this->jsmdb->setQuery($this->jsmquery);
 		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 			//return false;
             return false;
 		}
@@ -198,9 +199,9 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     function getProjectPositions($project_id,$persontype=1)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         
         // Select some fields
         $query->select('ppos.id AS value, pos.name AS text, ppos.position_id as position_id');
@@ -211,8 +212,8 @@ class sportsmanagementModelPositions extends JSMModelList
         $query->where('pos.persontype = '.(int)$persontype);  
         $query->order('pos.ordering');  
         try{		
-		JFactory::getDbo()->setQuery($query);
-       $result = JFactory::getDbo()->loadObjectList();
+		Factory::getDbo()->setQuery($query);
+       $result = Factory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
 			$position->text = Text::_($position->text);
@@ -241,9 +242,9 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 		*/
 	function getPositions($project_id)
 	{
-		$option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+		$option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         
 		//$project_id=$app->getUserState($option.'project');
         
@@ -261,10 +262,10 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 //				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS pp ON pp.position_id=p.id
 //				WHERE pp.project_id='.$project_id.'
 //						ORDER BY ordering ';
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadObjectList())
+		Factory::getDbo()->setQuery($query);
+		if (!$result=Factory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -299,7 +300,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
 		$this->jsmdb->setQuery($this->jsmquery);
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getDbo()->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -320,9 +321,9 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
      */
     public function getPositionListSelect()
 	{
-	   $option = JFactory::getApplication()->input->getCmd('option');
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+	   $option = Factory::getApplication()->input->getCmd('option');
+		$app = Factory::getApplication();
+        $query = Factory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id');
         // From the table
@@ -332,8 +333,8 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'err
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
-		JFactory::getDbo()->setQuery($query);
-		$result = JFactory::getDbo()->loadObjectList();
+		Factory::getDbo()->setQuery($query);
+		$result = Factory::getDbo()->loadObjectList();
 		foreach ($result as $position)
         {
             $position->text = Text::_($position->text);
