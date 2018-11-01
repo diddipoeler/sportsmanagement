@@ -40,10 +40,12 @@
 // No direct access.
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
-//JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+use Joomla\CMS\HTML\HTMLHelper;
+
+//HTMLHelper::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.keepalive');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -72,7 +74,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<?php echo $this->form->getInput('source'); ?>
 		</div>
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</fieldset>
 
 	

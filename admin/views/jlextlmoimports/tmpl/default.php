@@ -39,8 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -75,7 +75,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		<input type='hidden' name='sent' value='1' />
 		<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
 		<input type='hidden' name='task' value='jlextlmoimports.save' />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</form>
 </div>
 <?PHP

@@ -14,6 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('list');
 
@@ -85,11 +87,11 @@ class JFormFieldProjects extends \JFormFieldList
 		$db->setQuery( $query );
 		$projects = $db->loadObjectList();
         
-		$options[] = JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
+		$options[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
         
         foreach ( $projects as $project ) 
         {
-			$options[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
+			$options[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
 		}
 
 $options = array_merge(parent::getOptions(), $options);

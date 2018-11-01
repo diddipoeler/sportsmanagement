@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('calendar');
@@ -87,7 +88,7 @@ class JFormFieldCustomCalendar extends FormFieldCalendar
 
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' value nachher -> <br><pre>'.print_r($this->value, true).'</pre><br>','Notice');
         
-        return JHtml::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
+        return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
     }
 
 }

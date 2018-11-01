@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 jimport('joomla.filesystem.folder');
@@ -73,7 +74,7 @@ class JFormFieldlanguagecharacter extends \JFormFieldList
         $endRange = hexdec($character[1]);
 
         for ($i = $startRange; $i <= $endRange; $i++) {
-            $options[] = JHtml::_('select.option', $i , '&#'.$i.';', 'value', 'text');
+            $options[] = HTMLHelper::_('select.option', $i , '&#'.$i.';', 'value', 'text');
         }
            
         // Merge any additional options in the XML definition.

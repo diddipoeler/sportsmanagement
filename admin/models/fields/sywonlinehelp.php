@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.form.formfield');
 
 /**
@@ -33,7 +35,7 @@ class JFormFieldSYWOnlineHelp extends FormField
 	protected function getLabel()
 	{
 
-		JHtml::_('stylesheet', 'syw/fonts-min.css', false, true);
+		HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
 
 		$title = $this->element['label'] ? (string) $this->element['label'] : ($this->element['title'] ? (string) $this->element['title'] : '');
 		$heading = $this->element['heading'] ? (string) $this->element['heading'] : 'h4';

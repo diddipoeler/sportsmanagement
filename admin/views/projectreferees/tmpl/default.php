@@ -11,16 +11,17 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 ?>
 <style>
@@ -89,7 +90,7 @@ echo $this->loadTemplate('joomla2');
 			<td><input type="submit" name="submit" id="submit" value="<?php echo Text::_('Add');?>" /></td>
 		</tr>
 	</table>
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 <!-- </fieldset> -->
 
@@ -112,7 +113,7 @@ echo '</div>';
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";

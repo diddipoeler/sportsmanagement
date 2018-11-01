@@ -9,12 +9,14 @@
  * @subpackage jlextdfbkeyimport
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_( 'behavior.tooltip' );
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
 <?php
-echo '<br>'.JHtml::_('select.genericlist',
+echo '<br>'.HTMLHelper::_('select.genericlist',
 					$this->lists['divisions'],
 					'divisionid',
 					'class="inputbox" size="1" onchange=""',

@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <button type="button" onclick="Joomla.submitform('projectteam.storechangeteams', this.form)">
@@ -46,7 +47,7 @@ use Joomla\CMS\Language\Text;
 
 			foreach ( $this->projectteam as $row )
 			{
-				$checked = JHtml::_( 'grid.id', 'oldteamid'.$i, $row->id, $row->checked_out, 'oldteamid' );
+				$checked = HTMLHelper::_( 'grid.id', 'oldteamid'.$i, $row->id, $row->checked_out, 'oldteamid' );
 				$append=' style="background-color:#bbffff"';
 				$inputappend	= '';
 				$selectedvalue = 0;
@@ -65,7 +66,7 @@ use Joomla\CMS\Language\Text;
 				?>
 				</td>
 				<td class="nowrap" class="center"><?php
-				echo JHtml::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+				echo HTMLHelper::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 				?>
 				</td>
 			</tr>
@@ -78,5 +79,5 @@ use Joomla\CMS\Language\Text;
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option"				value="com_sportsmanagement" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>

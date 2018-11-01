@@ -2,6 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <script>
 <!--
@@ -55,5 +56,5 @@ use Joomla\CMS\Factory;
 	</fieldset>
 	<input type="hidden" name="project_id"	value="<?php echo Factory::getApplication()->input->getVar('project_id'); ?>" />
 	<input type="hidden" name="task"		value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.form.formfield');
 
 /**
@@ -66,7 +67,7 @@ class JFormFieldTitle extends FormField
 		} 
         else if ($icon) 
         {
-			JHtml::_('stylesheet', 'syw/fonts-min.css', false, true);
+			HTMLHelper::_('stylesheet', 'syw/fonts-min.css', false, true);
 			$html .= '<i style="font-size: inherit; vertical-align: baseline" class="SYWicon-'.$icon.'">&nbsp;</i>';
 		}
 

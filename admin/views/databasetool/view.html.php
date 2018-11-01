@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewDatabaseTool
  * 
@@ -124,7 +124,7 @@ $document->addScriptDeclaration( $javascript );
         }
         
         // Load mooTools
-		//JHtml::_('behavior.framework', true);
+		//HTMLHelper::_('behavior.framework', true);
         
         // Load our Javascript
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
@@ -136,8 +136,8 @@ $document->addScriptDeclaration( $javascript );
 		$document->addScript('../media/com_joomlaupdate/json2.js');
 		$document->addScript('../media/com_joomlaupdate/encryption.js');
 		$document->addScript('../media/com_joomlaupdate/update.js');
-		JHtml::_('script', 'system/progressbar.js', true, true);
-        JHtml::_('stylesheet', 'media/mediamanager.css', array(), true);
+		HTMLHelper::_('script', 'system/progressbar.js', true, true);
+        HTMLHelper::_('stylesheet', 'media/mediamanager.css', array(), true);
 */
 		//$this->addToolbar();		
 		//parent::display( $tpl );

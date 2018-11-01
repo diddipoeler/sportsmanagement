@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewjlextlmoimports
  * 
@@ -44,7 +44,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$country = JSMCountries::convertIso2to3($teile[1]);
 		$this->country	= $country;
 		$countries = JSMCountries::getCountryOptions();
-		$lists['countries'] = JHtml::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
+		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries	= $lists['countries'];
    
 	}

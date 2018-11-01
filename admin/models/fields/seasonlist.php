@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -116,7 +118,7 @@ class JFormFieldseasonlist extends FormField
 		//// Merge any additional options in the XML definition.
 //		$options = array_merge(parent::getOptions(), $options);
 //		return $options;
-$options = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
+$options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));
      if ( $result )
         {
      $options = array_merge($options, $result);
@@ -125,8 +127,8 @@ $options = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLO
 //		$options = array_merge(parent::getOptions(), $options);
 //
 //		return $options;   
-    //return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
-    return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
+    //return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
+    return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
     
 	}
 }

@@ -40,8 +40,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_( 'behavior.tooltip' );
 
 //save and close 
 $close = Factory::getApplication()->input->getInt('close',0);
@@ -135,6 +135,6 @@ if($close == 1) {
         <input type="hidden" name="option"				value="com_sportsmanagement" />
 		<input type="hidden" name="cid"				value="<?php echo $this->prediction_id; ?>" />
         <input type="hidden" name="component" value="com_sportsmanagement" />
-		<?php echo JHtml::_('form.token')."\n"; ?>
+		<?php echo HTMLHelper::_('form.token')."\n"; ?>
 	</div>
 </form>

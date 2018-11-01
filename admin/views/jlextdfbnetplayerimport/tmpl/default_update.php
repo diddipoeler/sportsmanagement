@@ -11,8 +11,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 ?>
 
 <div id='editcell'>

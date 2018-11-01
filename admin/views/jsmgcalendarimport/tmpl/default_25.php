@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if(!is_array($this->onlineItems)){
 	echo 'No data found!';
@@ -63,7 +64,7 @@ if(!is_array($this->onlineItems)){
 		<tr class="row<?php echo $i % 2; ?>">
 				<td class="center hidden-phone">
 				<?php
-					echo JHtml::_('grid.id', $i, base64_encode(serialize(array('id' => $item->calendar_id, 'color' => $item->color, 'name' => $item->name))));
+					echo HTMLHelper::_('grid.id', $i, base64_encode(serialize(array('id' => $item->calendar_id, 'color' => $item->color, 'name' => $item->name))));
 				?>
 				</td>
 				<td class="nowrap has-context">
@@ -91,7 +92,7 @@ if(!is_array($this->onlineItems)){
 	</tbody>
 </table>
 	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <div align="center" style="clear: both">
 	<?php echo sprintf(Text::_('COM_GCALENDAR_FOOTER'), Factory::getApplication()->input->getVar('GCALENDAR_VERSION'));?>

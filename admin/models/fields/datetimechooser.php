@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class JFormFieldDatetimechooser extends FormField
 {
@@ -108,6 +109,6 @@ class JFormFieldDatetimechooser extends FormField
 				break;
 		}
 
-		return JHtml::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
+		return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
 	}
 }

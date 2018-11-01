@@ -1,8 +1,8 @@
 <?php 
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_( 'behavior.tooltip' );
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -11,7 +11,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <!-- import the functions to move the events between selection lists  -->
 <?php
 //$version = urlencode(sportsmanagementHelper::getVersion());
-//echo JHtml::script( 'administrator/components/com_joomleague/assets/js/sm_functions.js');
+//echo HTMLHelper::script( 'administrator/components/com_joomleague/assets/js/sm_functions.js');
 ?>
 <script>
 Joomla.submitbutton = function(task)    {

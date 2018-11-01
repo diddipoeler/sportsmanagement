@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -60,7 +60,7 @@ echo $this->loadTemplate('joomla2');
 
 	<input type="hidden" name="task" value="" />
 
-	<?php echo JHtml::_('form.token')."\n"; ?>
+	<?php echo HTMLHelper::_('form.token')."\n"; ?>
     <?php echo $this->table_data_div; ?>
 </form>
 <?PHP

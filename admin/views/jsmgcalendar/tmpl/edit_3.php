@@ -22,12 +22,13 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 GCalendarUtil::loadLibrary();
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.keepalive');
 
 $calendar = $this->gcalendar;
 $input = Factory::getApplication()->input;
@@ -115,7 +116,7 @@ $input = Factory::getApplication()->input;
 			</div>
 			<input type="hidden" name="task" value="" />
 			<input type="hidden" name="return" value="<?php echo $input->getCmd('return');?>" />
-			<?php echo JHtml::_('form.token'); ?>
+			<?php echo HTMLHelper::_('form.token'); ?>
 		</div>
 		<!-- End Content -->
 		<!-- Begin Sidebar -->

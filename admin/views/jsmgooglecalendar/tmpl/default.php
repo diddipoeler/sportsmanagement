@@ -40,12 +40,12 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 
-//JHtml::_('behavior.modal');
-JHtml::_('behavior.modal', 'a.modal');
+//HTMLHelper::_('behavior.modal');
+HTMLHelper::_('behavior.modal', 'a.modal');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);

@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -61,7 +62,7 @@ class JFormFieldStatstypelist extends \JFormFieldList
 		{
 			$parts = explode('.', $file);
 			if ($parts[0] != 'base') {
-				$options[] = JHtml::_('select.option', $parts[0], $parts[0]);
+				$options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
 			}
 		}
 		
@@ -79,7 +80,7 @@ class JFormFieldStatstypelist extends \JFormFieldList
 			{
 				$parts = explode('.', $file);
 				if ($parts[0] != 'base') {
-					$options[] = JHtml::_('select.option', $parts[0], $parts[0]);
+					$options[] = HTMLHelper::_('select.option', $parts[0], $parts[0]);
 				}
 			}	
 		}

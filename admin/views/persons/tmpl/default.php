@@ -12,9 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.filesystem.file');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.modal');
 $user		= Factory::getUser();
 $userId		= $user->get('id');
 $templatesToLoad = array('footer','listheader');
@@ -67,7 +67,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="persontype" value="<?php echo $this->persontype; ?>" />	
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

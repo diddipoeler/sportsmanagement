@@ -1,8 +1,8 @@
 <?php 
 
 defined('_JEXEC') or die('Restricted access');
-
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 jimport('joomla.html.pane');
 
 
@@ -32,5 +32,5 @@ echo $this->loadTemplate('data');
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="act" value="" />
 <input type="hidden" name="task" value="treetomatchs.display" id="task" />
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>

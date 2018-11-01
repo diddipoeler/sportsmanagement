@@ -1,6 +1,7 @@
-<?php defined('_JEXEC') or die('Restricted access'); // Check to ensure this file is included in Joomla!
+<?php 
+defined('_JEXEC') or die('Restricted access'); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.application.component.view');
 
 /**
@@ -30,7 +31,7 @@ class JoomleagueViewMatches extends JLGView
 							WHERE m.project_id='".Factory::getApplication()->input->getVar('p')."'
 							ORDER BY t1.short_name");
 
-		$dropdrowlistoptions=JHTML::_('select.options',$db->loadObjectList(),'value','mid');
+		$dropdrowlistoptions=HTMLHelper::_('select.options',$db->loadObjectList(),'value','mid');
 		echo $dropdrowlistoptions;
 	}
 

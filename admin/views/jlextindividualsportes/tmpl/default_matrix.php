@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 
 <!--[if IE]>
@@ -193,5 +193,5 @@ echo $matrix;
 
 <input type='hidden' name='published' value='1' />
 <input type='hidden' name='task' value='jlextindividualsport.addmatch' />
-<?php echo JHTML::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>

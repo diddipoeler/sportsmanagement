@@ -10,14 +10,14 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 // welche joomla version
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-    JHtml::_('behavior.framework', true);
+    HTMLHelper::_('behavior.framework', true);
 } else {
-    JHtml::_('behavior.mootools');
+    HTMLHelper::_('behavior.mootools');
 }
 $modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
@@ -32,7 +32,7 @@ echo $this->loadTemplate('joomla_version');
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-    <?php echo JHtml::_('form.token') . "\n"; ?>
+    <?php echo HTMLHelper::_('form.token') . "\n"; ?>
 <?php echo $this->table_data_div; ?>
 </form>
 <?PHP

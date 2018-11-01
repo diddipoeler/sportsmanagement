@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <script type="text/javascript">
 <!--
@@ -47,6 +48,6 @@ window.addEvent('domready', function()
 		-->
 		<input type='hidden' name='controller'	value='predictiontemplate' />
 		<input type='hidden' name='task' 		value='masterimport' />
-		<?php echo JHtml::_( 'form.token' ); ?>
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</form>
 </div>

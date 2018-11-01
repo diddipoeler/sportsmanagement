@@ -11,9 +11,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -38,7 +38,7 @@ window.addEvent('domready',function(){
 		<form id='copyform' method='post' style='display:inline' id='copyform'>
 			<input type='hidden' name='project_id' value='<?php echo $this->project->id; ?>' />
 			<input type='hidden' name='task' value='round.copyfrom' />
-			<?php echo JHtml::_('form.token')."\n"; ?>
+			<?php echo HTMLHelper::_('form.token')."\n"; ?>
 			<table class='admintable'><tbody><tr>
 				<td class='key' nowrap='nowrap'><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_COUNT'); ?></td>
 				<td><input type='text' name='add_round_count' id='add_round_count' value='0' size='3' class='inputbox' /></td>
@@ -61,7 +61,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 <?php echo $this->table_data_div; ?>
 </form>
 <div>

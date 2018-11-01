@@ -21,7 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 ?>
 <fieldset>
 	<legend>
@@ -88,7 +89,7 @@ JHtml::_('behavior.tooltip');
 		</div>
 		<input type="submit" value="Login" class="btn"/>
         <input type="" name="task" value="jsmgcalendarimport.login" />
-        <?php echo JHtml::_('form.token'); ?>
+        <?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </fieldset>
 

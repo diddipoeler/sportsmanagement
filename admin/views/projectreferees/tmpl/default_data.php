@@ -17,11 +17,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 ?>
 

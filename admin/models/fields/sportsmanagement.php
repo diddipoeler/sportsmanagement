@@ -14,6 +14,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
  
 // import the list field type
 jimport('joomla.form.helper');
@@ -50,7 +51,7 @@ class JFormFieldsportsmanagement extends \JFormFieldList
 		{
 			foreach($messages as $message) 
 			{
-				$options[] = JHtml::_('select.option', $message->id, $message->greeting . ($message->catid ? ' (' . $message->category . ')' : ''));
+				$options[] = HTMLHelper::_('select.option', $message->id, $message->greeting . ($message->catid ? ' (' . $message->category . ')' : ''));
 			}
 		}
 		$options = array_merge(parent::getOptions(), $options);

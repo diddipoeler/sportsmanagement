@@ -40,15 +40,16 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 /**
@@ -117,7 +118,7 @@ class JFormFieldDependSQL extends JFormField
 			$options = array();
 		}
 		else {
-			$options = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, Text::_($val)));
+			$options = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, Text::_($val)));
 		}
 
 		$query = $this->element['query'];
@@ -141,6 +142,6 @@ class JFormFieldDependSQL extends JFormField
             }
 		}
 
-		return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, $key, $val, $this->value, $this->id);
 	}
 }

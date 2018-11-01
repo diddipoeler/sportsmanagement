@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -58,7 +60,7 @@ class JFormFieldLeagueLevel extends \JFormFieldList
          */
 		for($a=1; $a < 21; $a++ )
         {
-            $options[] = JHtml::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
+            $options[] = HTMLHelper::_('select.option', $a, Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
         }
 	
         

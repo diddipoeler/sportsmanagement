@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 //require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 jimport('joomla.filesystem.folder');
@@ -56,7 +57,7 @@ class JFormFieldsortorder extends \JFormFieldList
         $template_sort_orders = JComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders',0);
 
         for ($i = 1; $i <= $template_sort_orders; $i++) {
-            $options[] = JHtml::_('select.option', $i , $i, 'value', 'text');
+            $options[] = HTMLHelper::_('select.option', $i , $i, 'value', 'text');
         }
            
         // Merge any additional options in the XML definition.

@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -108,7 +110,7 @@ class JFormFieldseasonteamperson extends FormField
             $html .= '<tr>';
             $html .= '<td>'.$option->seasonname.'</td>';
             
-            $html .= '<td>'.JHtml::image($option->clublogo, '',	$attribs).'</td>';
+            $html .= '<td>'.HTMLHelper::image($option->clublogo, '',	$attribs).'</td>';
             $html .= '<td>'.$option->teamname.'</td>';
             
             $html .= '</tr>';    

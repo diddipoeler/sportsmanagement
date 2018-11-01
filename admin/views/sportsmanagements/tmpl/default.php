@@ -39,8 +39,10 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
+use Joomla\CMS\HTML\HTMLHelper;
+
 // load tooltip behavior
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method="post" name="adminForm">
 	<table class="<?php echo $this->table_data_class; ?>">
@@ -51,6 +53,6 @@ JHtml::_('behavior.tooltip');
 	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>

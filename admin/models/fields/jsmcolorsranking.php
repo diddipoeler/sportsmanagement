@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 jimport('joomla.html.html');
@@ -109,12 +111,12 @@ class JFormFieldjsmcolorsranking extends FormField
  
                $html[] = '<tr>';
                 $html[] = '<td>';    
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+                $html[] = HTMLHelper::_(	'select.genericlist',$select_ranking,
 													$this->name . '['. $a .'][von]"','class="inputbox" size="1"','value','text',
 													$this->value[$a]['von']);
                 $html[] = '</td>'; 
                 $html[] = '<td>';    
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
+                $html[] = HTMLHelper::_(	'select.genericlist',$select_ranking,
 													$this->name . '['. $a .'][bis]"','class="inputbox" size="1"','value','text',
 													$this->value[$a]['bis']);
                 
@@ -125,7 +127,7 @@ class JFormFieldjsmcolorsranking extends FormField
                 $html[] = '<td>'; 
                 if ( $select_Options )
         {
-            $html[] = JHtml::_(	'select.genericlist',$select_text,
+            $html[] = HTMLHelper::_(	'select.genericlist',$select_text,
 													$this->name . '['. $a .'][text]"','class="inputbox" size="1"','value','text',
 													$this->value[$a]['text']);
             }

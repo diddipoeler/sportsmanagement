@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 FormHelper::loadFieldClass('list');
@@ -42,7 +43,7 @@ class JFormFieldGCalendar extends \JFormFieldList
 		$options = array();
 		foreach($accounts as $account)
 		{
-			$options[] = JHtml::_('select.option', $account->id, $account->name);
+			$options[] = HTMLHelper::_('select.option', $account->id, $account->name);
 		}
 		$options = array_merge(parent::getOptions(), $options);
 		return $options;

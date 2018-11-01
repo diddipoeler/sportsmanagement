@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewsmimageimports
  * 
@@ -65,10 +65,10 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 		$this->files = $this->model->getXMLFiles();
         
         //build the html select list
-		$folders[] = JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
+		$folders[] = HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
         $allfolders = $this->model->getXMLFolder();
 		$folders = array_merge($folders,$allfolders);
-		$lists['folders'] = JHtml::_( 'select.genericList', 
+		$lists['folders'] = HTMLHelper::_( 'select.genericList', 
 										$folders, 
 										'filter_image_folder', 
 										'class="inputbox" onChange="this.form.submit();" style="width:220px"', 

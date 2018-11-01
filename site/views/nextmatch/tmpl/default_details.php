@@ -33,7 +33,7 @@ use Joomla\CMS\Factory;
                     $routeparameter['p'] = $this->project->slug;
                     $routeparameter['mid'] = $this->match->old_match_id;
                     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
-                    echo JHTML:: link($link, $this->oldmatchtext);
+                    echo HTMLHelper:: link($link, $this->oldmatchtext);
                     ?></span></td>
         </tr>
         <?php

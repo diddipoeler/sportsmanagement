@@ -14,6 +14,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+
 /**
  * FormFieldKunenaCategoryList
  * 
@@ -39,7 +41,7 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 		}
         else
         {
-            JHtml::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
+            HTMLHelper::addIncludePath(KPATH_ADMIN . '/libraries/html/html');
         }
 
 		KunenaFactory::loadLanguage('com_kunena');
@@ -65,7 +67,7 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 		// Get the field options.
 		$options = $this->getOptions();
 
-		return JHtml::_('kunenaforum.categorylist', $this->name, 0, $options, $this->element, $attribs, 'value', 'text', $this->value);
+		return HTMLHelper::_('kunenaforum.categorylist', $this->name, 0, $options, $this->element, $attribs, 'value', 'text', $this->value);
 	}
 
 	/**
@@ -87,7 +89,7 @@ class JFormFieldKunenaCategoryList extends \JFormFieldList
 			}
 
 			// Create a new option object based on the <option /> element.
-			$tmp = JHtml::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled']=='true'));
+			$tmp = HTMLHelper::_('select.option', (string) $option['value'], Text::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', ((string) $option['disabled']=='true'));
 
 			// Set some option attributes.
 			$tmp->class = (string) $option['class'];

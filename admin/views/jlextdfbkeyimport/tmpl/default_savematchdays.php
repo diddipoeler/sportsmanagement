@@ -12,8 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_( 'behavior.tooltip' );
 
 
 
@@ -79,7 +79,7 @@ foreach($this->import as $rowdays)
 $date1 =  Factory::getDate( $rowdays->match_date)->format( '%d-%m-%Y' );
 $append = ' style="background-color:#bbffff;" ';
 
-echo JHtml::calendar(	$date1,
+echo HTMLHelper::calendar(	$date1,
 			'match_date['.$i.']',
 			'match_date['.$i.']',
 			'%d-%m-%Y',

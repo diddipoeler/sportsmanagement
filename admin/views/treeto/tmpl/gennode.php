@@ -1,7 +1,9 @@
 <?php 
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+
+HTMLHelper::_('behavior.tooltip');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -27,7 +29,7 @@ echo $this->loadTemplate('data');
 	<input type="hidden" name="pid" 	value='<?php echo $this->projectws->id; ?>' />
 	<input type="hidden" name="id" 			value='<?php echo $this->treeto->id; ?>' />
 	<input type="hidden" name="task" 		value="treeto.generatenode" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo HTMLHelper::_( 'form.token' ); ?>
 </form>
 <?PHP
 echo "<div>";

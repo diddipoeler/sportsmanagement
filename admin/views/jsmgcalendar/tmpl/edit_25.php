@@ -22,10 +22,11 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $calendar = $this->gcalendar;
 
-JHtml::_('behavior.tooltip');
+HTMLHelper::_('behavior.tooltip');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_gcalendar&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form">
@@ -49,7 +50,7 @@ JHtml::_('behavior.tooltip');
 	</div>
 	<div>
 		<input type="hidden" name="task" value="gcalendar.edit" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</div>
 </form>
 

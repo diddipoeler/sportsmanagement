@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
@@ -101,7 +102,7 @@ foreach ( $list as $item )
       {
 				$selected = $item->id;
 			}
-			$options [] = JHtml::_ ( 'select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
+			$options [] = HTMLHelper::_ ( 'select.option', $item->id, $item->treename, 'value', 'text', !$sections && $item->section);
 		}
 		
 		

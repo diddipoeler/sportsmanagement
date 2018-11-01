@@ -13,9 +13,7 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-jimport ( 'joomla.application.component.view' );
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewjlextdfbnetplayerimport
@@ -52,7 +50,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->revisionDate	= $revisionDate ;
 		//build the html select list for seasons
-		$seasons[]	= JHtml::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
         
         if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
@@ -63,7 +61,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons, $allSeasons);
         //$this->season = $allSeasons;
-		$lists['seasons'] = JHtml::_( 'select.genericList',
+		$lists['seasons'] = HTMLHelper::_( 'select.genericList',
 									$seasons,
 									'filter_season',
 									'class="inputbox" style="width:220px"',

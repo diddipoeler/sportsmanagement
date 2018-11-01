@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -72,7 +72,7 @@ echo $value->info;
 </td>
 <td class="nowrap" align="center">
 <?PHP
-echo JHtml::_(	'select.genericlist',
+echo HTMLHelper::_(	'select.genericlist',
 $this->lists['agegroup'],
 'agegroup['.$value->info.']',
 $inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
@@ -99,7 +99,7 @@ echo '<br>';
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>" />
 
-<?php echo JHtml::_('form.token')."\n"; ?>
+<?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 
 <?PHP

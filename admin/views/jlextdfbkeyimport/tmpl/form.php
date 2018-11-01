@@ -2,8 +2,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-JHtml::_( 'behavior.tooltip' );
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
 JToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );

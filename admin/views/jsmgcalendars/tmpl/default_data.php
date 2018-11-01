@@ -3,7 +3,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
-JHtml::_('behavior.tooltip');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
 ?>
 
 	<table class="<?php echo $this->table_data_class; ?>">
@@ -23,7 +24,7 @@ JHtml::_('behavior.tooltip');
 			<tr class="row<?php echo $i % 2; ?>">
 				<td><?php echo $item->id; ?></td>
 				<td>
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
 					<a href="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&task=jsmgcalendar.edit&id='. $item->id ); ?>">

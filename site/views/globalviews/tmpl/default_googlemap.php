@@ -175,7 +175,7 @@ if ( !empty($latitude) && $latitude != '0.00000000' )
 {
 $row->team_name= str_replace($find, $replace, $row->team_name);
 // logo_big
-$map_markes[] = "['".$row->team_name.'<br>'.JHtml::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".Uri::root().$row->logo_big."']";
+$map_markes[] = "['".$row->team_name.'<br>'.HTMLHelper::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".Uri::root().$row->logo_big."']";
 $map_bounds[] = "[".$latitude.",".$longitude."]";
 $zaehler++;
 }

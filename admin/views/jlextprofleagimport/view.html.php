@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewjlextprofleagimport
  * 
@@ -43,7 +43,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 		$country = JSMCountries::convertIso2to3($teile[1]);
 		$this->country	= $country;
 		$countries = JSMCountries::getCountryOptions();
-		$lists['countries'] = JHtml::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
+		$lists['countries'] = HTMLHelper::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries	= $lists['countries'];
     
 	}

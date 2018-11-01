@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -80,7 +81,7 @@ foreach ( $this->files as $file )
 								<a	href="<?php echo $link; ?>" >
                                     <?php
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_XML_EDIT');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
                     </a>                 

@@ -11,9 +11,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -64,7 +65,7 @@ echo $this->loadTemplate('joomla_version');
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="club_id" value="<?php echo $this->club_id; ?>" />
-<?php echo JHtml::_('form.token'); ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";

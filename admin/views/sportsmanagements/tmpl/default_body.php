@@ -39,6 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
+use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <?php foreach($this->items as $i => $item): ?>
 	<tr class="row<?php echo $i % 2; ?>">
@@ -46,7 +47,7 @@ defined('_JEXEC') or die('Restricted Access');
 			<?php echo $item->id; ?>
 		</td>
 		<td>
-			<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+			<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 		</td>
 		<td>
 			<?php echo $item->greeting; ?>

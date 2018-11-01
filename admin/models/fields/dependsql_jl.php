@@ -13,10 +13,11 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 FormHelper::loadFieldClass('list');
 
-JHtml::_( 'behavior.framework' );
+HTMLHelper::_( 'behavior.framework' );
 
 
 /**
@@ -104,7 +105,7 @@ class JFormFieldDependSQL extends FormField
 			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
-		return JHtml::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
+		return HTMLHelper::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);
 		
 	}
 }

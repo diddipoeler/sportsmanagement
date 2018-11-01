@@ -11,9 +11,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
+use Joomla\CMS\HTML\HTMLHelper;
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('behavior.modal');
 $massadd=Factory::getApplication()->input->getInt('massadd',0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
