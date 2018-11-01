@@ -46,6 +46,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
  
 // import Joomla  library
 //jimport('joomla.github.issues');
@@ -183,8 +184,8 @@ return false;
      */
     function insertissue()
     {
-    $github_user = JComponentHelper::getParams($this->option)->get('cfg_github_username','');
-        $github_repo = JComponentHelper::getParams($this->option)->get('cfg_github_repository','');    
+    $github_user = ComponentHelper::getParams($this->option)->get('cfg_github_username','');
+        $github_repo = ComponentHelper::getParams($this->option)->get('cfg_github_repository','');    
     $gh_options = new JRegistry();
 // If an API token is set in the params, use it for authentication 
  		if ( $this->post['gh_token'] ) 
@@ -223,11 +224,11 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
         //JApplicationHelper::addClientInfo($this->client);
         $this->client = JApplicationHelper::getClientInfo();
         
-        $github_user = JComponentHelper::getParams($option)->get('cfg_github_username','');
-        $github_repo = JComponentHelper::getParams($option)->get('cfg_github_repository','');
+        $github_user = ComponentHelper::getParams($option)->get('cfg_github_username','');
+        $github_repo = ComponentHelper::getParams($option)->get('cfg_github_repository','');
         
         
-        $params = \JComponentHelper::getParams($option);
+        $params = \ComponentHelper::getParams($option);
 
 
 $gh_options = new JRegistry();

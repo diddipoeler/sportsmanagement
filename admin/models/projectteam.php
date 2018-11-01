@@ -6,13 +6,14 @@
  * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
- * @subpackage projectteam
+ * @subpackage models
  */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelprojectteam
@@ -37,7 +38,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 	{
 		$app =& Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
@@ -311,7 +312,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
         $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
         $query = Factory::getDbo()->getQuery(true);
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_backend') )
+        if ( ComponentHelper::getParams($option)->get('show_debug_info_backend') )
         {
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         }

@@ -12,6 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Registry\Registry;
+
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -79,7 +82,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
      * @since	1.6
      */
     public function getForm($data = array(), $loadData = true) {
-        $cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
+        $cfg_which_media_tool = ComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool', 0);
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
         $form = $this->loadForm('com_sportsmanagement.databasetool', 'databasetool', array('control' => 'jform', 'load_data' => $loadData));
@@ -364,7 +367,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         foreach ($record_jl as $row) {
             $defaultvalues = array();
             $defaultvalues = explode('\n', $row->params);
-            $parameter = new JRegistry;
+            $parameter = new Registry;
 
             if (version_compare(JVERSION, '3.0.0', 'ge')) {
                 $ini = $parameter->loadString($defaultvalues[0]);
@@ -1015,7 +1018,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             return false;
         }
 
-        $params = JComponentHelper::getParams($this->jsmoption);
+        $params = ComponentHelper::getParams($this->jsmoption);
         $country_assoc = $params->get('cfg_country_associations');
         if ($country_assoc) {
             $country_assoc_del = "'" . implode("','", $country_assoc) . "'";
@@ -1336,7 +1339,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
 
-        $install_standard_position = JComponentHelper::getParams($this->jsmoption)->get('install_standard_position', 0);
+        $install_standard_position = ComponentHelper::getParams($this->jsmoption)->get('install_standard_position', 0);
 
         if (!$available) {
             //$this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');

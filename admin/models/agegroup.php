@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelagegroup
@@ -38,7 +39,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
@@ -57,11 +58,11 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
     {
     $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");    
     $cpaneltool = JModelLegacy::getInstance("cpanel", "sportsmanagementModel");
-    $params = JComponentHelper::getParams( $this->jsmoption );
+    $params = ComponentHelper::getParams( $this->jsmoption );
     $sporttypes = $params->get( 'cfg_sport_types' );
     $country = $params->get( 'cfg_country_associations' );    
     
-    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' sporttypes<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
@@ -72,7 +73,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         {
         $checksporttype = $cpaneltool->checksporttype($type);   
         $insert_sport_type = $databasetool->insertSportType($type);  
-	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+	    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insert_sport_type<br><pre>'.print_r($insert_sport_type,true).'</pre>'),'Notice');	    
 	    $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type ,true).'</pre>'),'Notice');	    
@@ -81,7 +82,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
-		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 	$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' insert_agegroup<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'Notice');		
 		}
@@ -106,7 +107,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');

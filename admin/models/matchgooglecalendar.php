@@ -40,6 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -107,10 +108,10 @@ static $_project_id = 0;
     // JInput object
     $jinput = $app->input;
     $option = $jinput->getCmd('option');
-    //$params = \JComponentHelper::getParams($option);
+    //$params = \ComponentHelper::getParams($option);
     
-    $google_client_id = JComponentHelper::getParams($option)->get('google_api_clientid','');
-    $google_client_secret = JComponentHelper::getParams($option)->get('google_api_clientsecret','');
+    $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid','');
+    $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret','');
         
     $options = new JRegistry();  
     $input = new JInput;  

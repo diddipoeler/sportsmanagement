@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * sportsmanagementModelPersons
  * 
@@ -65,7 +67,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+	   if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');

@@ -13,19 +13,23 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Utility\Utility;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 
 $option = Factory::getApplication()->input->getCmd('option');
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
-	$maxImportTime=480;
+	$maxImportTime = 480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
-	$maxImportMemory='350M';
+	$maxImportMemory = '350M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
@@ -34,9 +38,9 @@ jimport('joomla.application.component.model');
 jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
-// import JFile
+// import File
 jimport('joomla.filesystem.file');
-jimport( 'joomla.utilities.utility' );
+//jimport( 'joomla.utilities.utility' );
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
 /**
@@ -50,17 +54,17 @@ jimport( 'joomla.utilities.utility' );
  */
 class sportsmanagementModeljlextlmoimports extends JModelLegacy
 {
-  var $_datas=array();
-	var $_league_id=0;
-	var $_season_id=0;
-	var $_sportstype_id=0;
-	var $import_version='';
-  var $debug_info = false;
+    var $_datas = array();
+    var $_league_id = 0;
+    var $_season_id = 0;
+    var $_sportstype_id = 0;
+    var $import_version = '';
+    var $debug_info = false;
 
 function __construct( )
 	{
 	   $option = Factory::getApplication()->input->getCmd('option');
-	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
+	$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
   $this->debug_info = true;
@@ -93,15 +97,15 @@ $user = Factory::getUser();
 $fileextension = JPATH_SITE.DS.'tmp'.DS.'lmoimport-2-0.txt';
 $xmlfile = '';
 
-if( !JFile::exists($fileextension) )
+if( !File::exists($fileextension) )
 {
 $to = 'diddipoeler@gmx.de';
 $subject = 'LMO-Import Extension';
-$message = 'LMO-Import Extension wurde auf der Seite : '.JURI::base().' gestartet.';
-JUtility::sendMail( '', JURI::base(), $to, $subject, $message );
+$message = 'LMO-Import Extension wurde auf der Seite : '.Uri::base().' gestartet.';
+Utility::sendMail( '', Uri::base(), $to, $subject, $message );
 
 $xmlfile = $xmlfile.$message;
-JFile::write($fileextension, $xmlfile);
+File::write($fileextension, $xmlfile);
 
 }
 
@@ -110,13 +114,13 @@ JFile::write($fileextension, $xmlfile);
 	
 function parse_ini_file_ersatz($f)
 {
- $r=null;
- $sec=null;
- $f=@file($f);
- for ($i=0;$i<@count($f);$i++)
+ $r = null;
+ $sec = null;
+ $f = @file($f);
+ for ($i = 0;$i <@count($f);$i++)
  {
-  $newsec=0;
-  $w=@trim($f[$i]);
+  $newsec = 0;
+  $w = @trim($f[$i]);
   if ($w)
   {
    if ((!$r) or ($sec))
@@ -125,7 +129,7 @@ function parse_ini_file_ersatz($f)
    }
    if (!$newsec)
    {
-   $w=@explode("=",$w);$k=@trim($w[0]);unset($w[0]); $v=@trim(@implode("=",$w));
+   $w = @explode("=",$w);$k=@trim($w[0]);unset($w[0]); $v=@trim(@implode("=",$w));
    if ((@substr($v,0,1)=="\"") and (@substr($v,-1,1)=="\"")) {$v=@substr($v,1,@strlen($v)-2);}
    if ($sec) {$r[$sec][$k]=$v;} else {$r[$k]=$v;}
    }
@@ -137,7 +141,7 @@ function parse_ini_file_ersatz($f)
 
  function _getXml()
 	{
-		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98'))
+		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
@@ -920,7 +924,7 @@ $output .= '</project>';
 // mal als test
 $xmlfile = $output;
 $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 
 if ( $this->debug_info )

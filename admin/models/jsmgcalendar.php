@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 JLoader::import('joomla.application.component.modeladmin');
 
@@ -127,7 +128,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
        
-       $timezone = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
+       $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
        
        if ( empty($data['id']) )
        {
@@ -147,8 +148,8 @@ $output .= "</entry>". "\n";
         $xmlfile = $xmlfile.$output;
         JFile::write($file, $xmlfile);
 
-        $username = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
-        $password = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
+        $username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+        $password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
                 
          $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
     $client = Zend_Gdata_ClientLogin::getHttpClient($username, $password,$service);

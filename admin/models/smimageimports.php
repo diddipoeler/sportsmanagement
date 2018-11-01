@@ -1,45 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version         1.0.05
- * @file                agegroup.php
- * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
- * @license                This file is part of SportsManagement.
- *
- * SportsManagement is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * SportsManagement is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Diese Datei ist Teil von SportsManagement.
- *
- * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
- * der GNU General Public License, wie von der Free Software Foundation,
- * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
- * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
- *
- * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
- * OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
- * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- * Siehe die GNU General Public License für weitere Details.
- *
- * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
- *
- * Note : All ini files need to be saved as UTF-8 without BOM
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      smimageimports.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
  */
+ 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -103,7 +77,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
 
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 //		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
+//		$params = ComponentHelper::getParams('com_sportsmanagement');
 //		$this->setState('params', $params);
         // List state information.
         parent::populateState('obj.name', 'asc');
@@ -129,7 +103,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         // Select some fields
         $query->select('obj.*');
         // From the hello table
-        $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures as obj');
+        $query->from('#__sportsmanagement_pictures as obj');
         // Join over the users for the checked out user.
         $query->select('uc.name AS editor');
         $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
@@ -167,7 +141,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('folder as id', 'folder as name'))
-                ->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures')
+                ->from('#__sportsmanagement_pictures')
                 ->order('folder ASC')
                 ->group('folder ASC');
 
@@ -198,7 +172,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
         // wenn im github was geändert wird, gibt es immer einen abbruch
         //$datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
 
-        $datei = JComponentHelper::getParams($option)->get('cfg_images_server', '');
+        $datei = ComponentHelper::getParams($option)->get('cfg_images_server', '');
 
         if (function_exists('curl_version')) {
             $curl = curl_init();
@@ -299,7 +273,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
             // Select some fields
             $query->select('id');
             // From the table
-            $query->from('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures');
+            $query->from('#__sportsmanagement_pictures');
             $query->where('name LIKE ' . Factory::getDbo()->Quote('' . $picturedescription . ''));
             Factory::getDbo()->setQuery($query);
             if (!Factory::getDbo()->loadResult()) {
@@ -311,7 +285,7 @@ class sportsmanagementModelsmimageimports extends JModelList {
                 $temp->folder = $folder;
                 $temp->published = 0;
                 // Insert the object
-                $result = Factory::getDbo()->insertObject('#__' . COM_SPORTSMANAGEMENT_TABLE . '_pictures', $temp);
+                $result = Factory::getDbo()->insertObject('#__sportsmanagement_pictures', $temp);
             }
         }
 

@@ -13,19 +13,20 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
-	$maxImportTime=480;
+	$maxImportTime = 480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
-	$maxImportMemory='150M';
+	$maxImportMemory = '150M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
@@ -552,7 +553,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player','');
                 }
             }    
             }
@@ -565,7 +566,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player','');
                 }
             }    
             }
@@ -578,7 +579,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player','');
                 }
             }    
             }
@@ -591,7 +592,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_player','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_player','');
                 }
             }    
             }
@@ -604,7 +605,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if ( preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_team','');
                 }
             }    
             }
@@ -617,7 +618,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->picture = str_replace('media', 'images', $temppicture->picture);
                 if (preg_match("/placeholders/i", $temppicture->picture) || empty($temppicture->picture) ) 
                 {
-                      $temppicture->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                      $temppicture->picture = ComponentHelper::getParams($option)->get('ph_team','');
                 }
             }    
             }
@@ -636,15 +637,15 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $temppicture->logo_small = str_replace('media', 'images', $temppicture->logo_small);
                 if (preg_match("/placeholders/i", $temppicture->logo_big) || empty($temppicture->logo_big) ) 
                 {
-                      $temppicture->logo_big = JComponentHelper::getParams($option)->get('ph_logo_big','');
+                      $temppicture->logo_big = ComponentHelper::getParams($option)->get('ph_logo_big','');
                 }
                 if (preg_match("/placeholders/i", $temppicture->logo_middle) || empty($temppicture->logo_middle) ) 
                 {
-                      $temppicture->logo_middle = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+                      $temppicture->logo_middle = ComponentHelper::getParams($option)->get('ph_logo_medium','');
                 }
                 if (preg_match("/placeholders/i", $temppicture->logo_small) || empty($temppicture->logo_small) ) 
                 {
-                      $temppicture->logo_small = JComponentHelper::getParams($option)->get('ph_logo_small','');
+                      $temppicture->logo_small = ComponentHelper::getParams($option)->get('ph_logo_small','');
                 }
                 
             }    
@@ -784,7 +785,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 $playground->picture = str_replace('media', 'images', $playground->picture);
                 if (preg_match("/placeholders/i", $playground->picture) || empty($playground->picture) ) 
                 {
-                      $playground->picture = JComponentHelper::getParams($option)->get('ph_team','');
+                      $playground->picture = ComponentHelper::getParams($option)->get('ph_team','');
                 }
             }    
             }
@@ -5579,7 +5580,7 @@ $query->clear();
 //       $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
        
 		$option = Factory::getApplication()->input->getCmd('option');
-        $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $this->_datas=$this->getData();
 
 		$this->_newteams=array();
@@ -5961,7 +5962,7 @@ $query->clear();
 			 * ab hier startet der import
 			 *
 			 */
-             $step = JComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step',1);
+             $step = ComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step',1);
              
 			if ( $post['importProject'] || $post['importType']=='events' || $post['importType'] == 'positions' )
 			{

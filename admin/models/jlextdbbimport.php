@@ -13,17 +13,18 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';
@@ -77,7 +78,7 @@ var $_project_id = 0;
 function __construct( )
 	{
 	   $option = Factory::getApplication()->input->getCmd('option');
-	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
+	$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
   $this->debug_info = true;

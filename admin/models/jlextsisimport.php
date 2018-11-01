@@ -41,20 +41,21 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
-	$maxImportTime=480;
+	$maxImportTime = 480;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory=ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
-	$maxImportMemory='150M';
+	$maxImportMemory = '150M';
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
@@ -89,11 +90,11 @@ jimport( 'joomla.utilities.utility' );
 class sportsmanagementModeljlextsisimport extends JModelLegacy
 {
 
-var $_datas=array();
-var $_league_id=0;
-var $_season_id=0;
-var $_sportstype_id=0;
-var $import_version='';
+var $_datas = array();
+var $_league_id = 0;
+var $_season_id = 0;
+var $_sportstype_id = 0;
+var $import_version = '';
 var $debug_info = false;
 var $_project_id = 0;
 var $_sis_art = 1;
@@ -152,7 +153,7 @@ $lfdnumberperson = 1;
 $lfdnumbermatchreferee = 1;
 
 
-$params = JComponentHelper::getParams( $option );
+$params = ComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
