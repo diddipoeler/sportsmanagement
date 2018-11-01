@@ -15,6 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
@@ -76,7 +78,7 @@ class JFormFieldprojectpositionlist extends \JFormFieldList
             $query->group('pos.id');
 			$db->setQuery($query);
             
-        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }

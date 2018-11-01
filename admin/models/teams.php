@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelTeams
@@ -78,7 +79,7 @@ class sportsmanagementModelTeams extends JSMModelList {
      */
     protected function populateState($ordering = 't.name', $direction = 'asc') {
 
-        if (JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
+        if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' context -> ' . $this->context . ''), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' identifier -> ' . $this->_identifier . ''), '');
         }

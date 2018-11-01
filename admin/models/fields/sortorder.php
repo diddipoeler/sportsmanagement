@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 //require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
 jimport('joomla.filesystem.folder');
@@ -54,7 +55,7 @@ class JFormFieldsortorder extends \JFormFieldList
         $character = array();
         $languages = $lang->getTag();
         
-        $template_sort_orders = JComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders',0);
+        $template_sort_orders = ComponentHelper::getParams('com_sportsmanagement')->get('template_sort_orders',0);
 
         for ($i = 1; $i <= $template_sort_orders; $i++) {
             $options[] = HTMLHelper::_('select.option', $i , $i, 'value', 'text');

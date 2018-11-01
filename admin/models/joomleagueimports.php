@@ -15,6 +15,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
@@ -115,7 +116,7 @@ function get_info_fields()
 {
 $conf = Factory::getConfig();
 $app = Factory::getApplication();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );  
+$params = ComponentHelper::getParams( 'com_sportsmanagement' );  
 $db = Factory::getDbo(); 
 $query = $db->getQuery(true);    
 
@@ -142,7 +143,7 @@ function check_database()
 {
 $conf = Factory::getConfig();
 $app = Factory::getApplication();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );  
+$params = ComponentHelper::getParams( 'com_sportsmanagement' );  
 $db = Factory::getDbo(); 
 $query = $db->getQuery(true);
  

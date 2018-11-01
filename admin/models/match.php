@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -229,10 +230,10 @@ $result = false;
     // JInput object
     $jinput = $app->input;
     $option = $jinput->getCmd('option');
-    //$params = \JComponentHelper::getParams($option);
+    //$params = \ComponentHelper::getParams($option);
     
-    $google_client_id = JComponentHelper::getParams($option)->get('google_api_clientid','');
-    $google_client_secret = JComponentHelper::getParams($option)->get('google_api_clientsecret','');
+    $google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid','');
+    $google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret','');
         
     $options = new JRegistry();  
     $input = new JInput;  
@@ -331,7 +332,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $timezone = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
+        $timezone = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('timezone','');
         
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
         
@@ -739,7 +740,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        //$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
@@ -1959,7 +1960,7 @@ return $result;
 		$result = true;
 		$positions = $post['positions'];
 
-$paramsmail = JComponentHelper::getParams($option)->get('ishd_referee_insert_match_mail');
+$paramsmail = ComponentHelper::getParams($option)->get('ishd_referee_insert_match_mail');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' paramsmail <br><pre>'.print_r($paramsmail ,true).'</pre>'),'');    
 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
@@ -2835,7 +2836,7 @@ return false;
         $mailer = Factory::getMailer();
         $user	= Factory::getUser();
         // get settings from com_issuetracker parameters
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdl = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdl->getProject($this->project_id);

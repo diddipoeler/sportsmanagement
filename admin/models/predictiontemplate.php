@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -104,7 +105,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictiontemplate', 'predictiontemplate', array('control' => 'jform', 'load_data' => $loadData));

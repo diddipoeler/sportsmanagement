@@ -12,6 +12,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 JLoader::import('joomla.application.component.model');
 
@@ -60,18 +61,18 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 // Create an instance of a default Http object.
 $http = JHttpFactory::getHttp();
-//$params = \JComponentHelper::getParams($option);
+//$params = \ComponentHelper::getParams($option);
 
 //$google = new Google;
 $this->jsmdb = sportsmanagementHelper::getDBConnection();
 $this->jsmquery = $this->jsmdb->getQuery(true);
 
 // Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/).    
-$google_client_id = JComponentHelper::getParams($option)->get('google_api_clientid','');
-$google_client_secret = JComponentHelper::getParams($option)->get('google_api_clientsecret','');
-$google_api_key = JComponentHelper::getParams($option)->get('google_api_developerkey','');
-$google_api_redirecturi = JComponentHelper::getParams($option)->get('google_api_redirecturi','');
-$google_mail_account = JComponentHelper::getParams($option)->get('google_mail_account','');
+$google_client_id = ComponentHelper::getParams($option)->get('google_api_clientid','');
+$google_client_secret = ComponentHelper::getParams($option)->get('google_api_clientsecret','');
+$google_api_key = ComponentHelper::getParams($option)->get('google_api_developerkey','');
+$google_api_redirecturi = ComponentHelper::getParams($option)->get('google_api_redirecturi','');
+$google_mail_account = ComponentHelper::getParams($option)->get('google_mail_account','');
 
 //$client = new Google_Client();
 $client = new Google_Client(

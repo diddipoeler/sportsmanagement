@@ -40,11 +40,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Factory;
+
 
 //jimport('joomla.application.component.model');
 //require_once(JPATH_COMPONENT.DS.'models'.DS.'item.php');
@@ -84,13 +87,13 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	 * @param	type	The table type to instantiate
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 * @since	1.6
 	 */
 	public function getTable($type = 'MatchSingle', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
     
@@ -123,7 +126,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
@@ -543,7 +546,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             
         }
         
-        $rowmatch = JTable::getInstance( 'match', 'sportsmanagementTable' );
+        $rowmatch = Table::getInstance( 'match', 'sportsmanagementTable' );
         $rowmatch->load($match_id);
         $rowmatch->team1_result = $temp->team1_result;
         $rowmatch->team2_result = $temp->team2_result;
@@ -1011,7 +1014,7 @@ $defaultvalues[] = $key . '=' . $value;
 }
 $temp = implode( "\n", $defaultvalues );
 
-  $rowupdate =& JTable::getInstance('match', 'Table');
+  $rowupdate =& Table::getInstance('match', 'Table');
   $rowupdate->load( $match_id );
   $rowupdate->team1_result = $update['resulthome'];
   $rowupdate->team2_result = $update['resultaway'];
@@ -1098,7 +1101,7 @@ $defaultvalues[] = $key . '=' . $value;
 $temp = implode( "\n", $defaultvalues );
 
 
-  $rowupdate =& JTable::getInstance('match', 'Table');
+  $rowupdate =& Table::getInstance('match', 'Table');
   $rowupdate->load( $match_id );
   $rowupdate->team1_result = $row['resulthome'];
   $rowupdate->team2_result = $row['resultaway'];

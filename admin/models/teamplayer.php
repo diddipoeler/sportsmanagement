@@ -3,6 +3,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\Registry\Registry;
+use Joomla\CMS\Component\ComponentHelper;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -59,7 +61,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamplayer', 'teamplayer', array('control' => 'jform', 'load_data' => $loadData));
@@ -68,7 +70,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 			return false;
 		}
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teamplayers');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
@@ -150,12 +152,12 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
+		for ($i = 0; $i < count($pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
-				$row->ordering=$order[$i];
+				$row->ordering = $order[$i];
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
@@ -189,12 +191,12 @@ class sportsmanagementModelteamplayer extends JModelAdmin
             $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms,me
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mp
+            FROM #__sportsmanagement_team_player as m    
+            LEFT JOIN #__sportsmanagement_match_player as mp
             ON mp.teamplayer_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
+            LEFT JOIN #__sportsmanagement_match_statistic as ms
             ON ms.teamplayer_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me
+            LEFT JOIN #__sportsmanagement_match_event as me
             ON me.teamplayer_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
@@ -261,7 +263,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
     $conditions = array(
     $db->quoteName('id') .'='. $data['person_id']
     );
-     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
      $db->setQuery($query);   
  
   
@@ -282,7 +284,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
     $db->quoteName('person_id') .'='. $data['person_id'],
     $db->quoteName('season_id') .'='. $season_id
     );
-     $query2->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))->set($fields)->where($conditions);
+     $query2->update($db->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
      $db->setQuery($query2);   
  
  if (!$db->execute())
@@ -296,14 +298,14 @@ class sportsmanagementModelteamplayer extends JModelAdmin
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
         
         
         // Proceed with the save
-		return parent::save($data);   
+		return parent::save($data);
     }
     
     

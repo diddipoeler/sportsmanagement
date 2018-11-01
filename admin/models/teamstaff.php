@@ -3,6 +3,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
+use Joomla\Registry\Registry;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -33,13 +36,13 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 * @param	type	The table type to instantiate
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
+	 * @return	Table	A database object
 	 * @since	1.6
 	 */
 	public function getTable($type = 'teamstaff', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+	$config['dbo'] = sportsmanagementHelper::getDBConnection();
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**
@@ -54,7 +57,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	{
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+        $cfg_which_media_tool = ComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(Text::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamstaff', 'teamstaff', array('control' => 'jform', 'load_data' => $loadData));
@@ -63,7 +66,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 			return false;
 		}
         
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'default', ComponentHelper::getParams($option)->get('ph_player',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teamstaffs');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
@@ -143,7 +146,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 		$row =& $this->getTable();
 		
 		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
+		for ($i = 0; $i < count($pks); $i++)
 		{
 			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
@@ -184,10 +187,10 @@ class sportsmanagementModelteamstaff extends JModelAdmin
             $app->enqueueMessage(Text::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mp
+            FROM #__sportsmanagement_team_staff as m    
+            LEFT JOIN #__sportsmanagement_match_staff as mp
             ON mp.team_staff_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as ms
+            LEFT JOIN #__sportsmanagement_match_staff_statistic as ms
             ON ms.team_staff_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
@@ -224,7 +227,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
-			$parameter = new JRegistry;
+			$parameter = new Registry;
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
