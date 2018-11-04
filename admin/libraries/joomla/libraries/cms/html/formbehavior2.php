@@ -9,6 +9,7 @@
 
 defined('JPATH_PLATFORM') or die;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Utility class for form related behaviors
@@ -44,7 +45,7 @@ abstract class JHtmlFormbehavior2
 		}
 
 		// Include jQuery
-		JHtml::_('jquery.framework');
+		HTMLHelper::_('jquery.framework');
 
    	// If no debugging value is set, use the configuration setting
 		if ($debug === null)
@@ -53,9 +54,9 @@ abstract class JHtmlFormbehavior2
 			$debug  = (boolean) $config->get('debug');
 		}
 
-		JHtml::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
-		JHtml::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
-		JHtml::_('stylesheet', 'jui/select2.css', false, true);
+		HTMLHelper::_('script', 'jui/select2.min.js', false, true, false, false, $debug);
+		HTMLHelper::_('script', 'jui/select2_locale_cs.js', false, true, false, false, $debug);
+		HTMLHelper::_('stylesheet', 'jui/select2.css', false, true);
 		Factory::getDocument()->addScriptDeclaration("
 				jQuery(document).ready(function (){
 					jQuery('" . $selector . "').select2({

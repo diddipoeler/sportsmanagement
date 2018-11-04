@@ -21,6 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -445,7 +446,7 @@ class jsmGCalendarUtil
 			}
 		} else {
 			if (isset($libraries['jquery'])) {
-				JHtml::_('jquery.framework');
+				HTMLHelper::_('jquery.framework');
 				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
 			}
 
@@ -461,11 +462,11 @@ class jsmGCalendarUtil
 			}
 
 			if (isset($libraries['bootstrap'])) {
-				JHtml::_('bootstrap.framework');
+				HTMLHelper::_('bootstrap.framework');
 			}
 
 			if (isset($libraries['chosen'])) {
-				JHtml::_('formbehavior.chosen', 'select');
+				HTMLHelper::_('formbehavior.chosen', 'select');
 			}
 		}
 

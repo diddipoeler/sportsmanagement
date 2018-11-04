@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldpredictionroundid
@@ -104,11 +105,11 @@ class JFormFieldpredictionroundid extends JFormField
     $mitems = array();
     
 		foreach ( $teams as $team ) {
-			$mitems[] = JHTML::_('select.option',  $team->id, '&nbsp;'. ' ( '.$team->roundname.' ) '  );
+			$mitems[] = HTMLHelper::_('select.option',  $team->id, '&nbsp;'. ' ( '.$team->roundname.' ) '  );
 		}
 		
-		//$output= JHTML::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" size="50" multiple="multiple" ', 'value', 'text', $value );
-        $output= JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="'.count($mitems).'"', 'value', 'text', $this->value, $this->id );
+		//$output= HTMLHelper::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" size="50" multiple="multiple" ', 'value', 'text', $value );
+        $output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="'.count($mitems).'"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

@@ -40,15 +40,16 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 /**
@@ -127,7 +128,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		}
 		else
 		{
-			$options = array(JHtml::_('select.option', '', Text::_('Select'), $key, $val));
+			$options = array(HTMLHelper::_('select.option', '', Text::_('Select'), $key, $val));
 		}
 
 		if ($query!='')
@@ -144,7 +145,7 @@ class JFormFieldMultiDependSQL extends JFormField
 		}
 
 		// Render the HTML SELECT list.
-		$text = JHtml::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
+		$text = HTMLHelper::_('select.genericlist', $options, 'l'.$ctrl, $attribs, $key, $val, $selected );
 		$text .= '<input type="hidden" name="'.$ctrl.'" id="'.$this->id.'" value="'.$value.'"/>';
 		return $text;
 	}

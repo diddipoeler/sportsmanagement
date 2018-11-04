@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * SMStatistic
@@ -704,7 +705,7 @@ class SMStatistic extends JObject
 			{
 				$iconPath = "images/com_sportsmanagement/database/statistics/" . $iconPath;
 			}
-			return JHtml::image($iconPath, Text::_($this->name),	array( "title" => Text::_($this->name) ));
+			return HTMLHelper::image($iconPath, Text::_($this->name),	array( "title" => Text::_($this->name) ));
 		}
 		return '<span class="stat-alternate hasTip" title="'.Text::_($this->name).'">'.Text::_($this->short).'</span>';
 	}

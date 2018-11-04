@@ -724,7 +724,7 @@ $modal_params = array();
 $modal_params['url'] = 'index.php?option=com_sportsmanagement&view=github&layout=addissue&tmpl=component&issuelayout='.$this->layout.'&issueview='.$this->view  ;
 $modal_params['height'] = $this->modalheight;
 $modal_params['width'] = $this->modalwidth;	
-echo JHTML::_('bootstrap.renderModal', 'collapseModal', $modal_params);
+echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', $modal_params);
 		
 		
 		

@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldPlaygrounds
@@ -77,13 +78,13 @@ class JFormFieldPlaygrounds extends JFormField
 		$query = 'SELECT pl.id, pl.name FROM #__'.$database_table.'_playground pl ORDER BY name';
 		$db->setQuery( $query );
 		$playgrounds = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $playgrounds as $playground ) {
-			$mitems[] = JHtml::_('select.option',  $playground->id, '&nbsp;'.$playground->name. ' ('.$playground->id.')' );
+			$mitems[] = HTMLHelper::_('select.option',  $playground->id, '&nbsp;'.$playground->name. ' ('.$playground->id.')' );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

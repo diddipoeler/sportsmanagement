@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 if (! defined('DS'))
 {
@@ -26,11 +27,11 @@ jimport('joomla.form.helper');
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+HTMLHelper::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+HTMLHelper::_( 'behavior.mootools' );    
 }
 
 /**
@@ -231,7 +232,7 @@ $script[] = "});";
      $options = array_merge($options, $result);
      }
 
-    return JHtml::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
+    return HTMLHelper::_('select.genericlist',  $options, $ctrl, $attribs, 'value', 'text', $this->value, $this->id);
     }    
 
 

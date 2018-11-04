@@ -39,6 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldactseason
@@ -82,10 +83,10 @@ class JFormFieldactseason extends JFormField
 		$projects = $db->loadObjectList();
 
 		foreach ( $projects as $project ) {
-			$mitems[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
+			$mitems[] = HTMLHelper::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" ', 'value', 'text', $this->value, $this->id );
+		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" ', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

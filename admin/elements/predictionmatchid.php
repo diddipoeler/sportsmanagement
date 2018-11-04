@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldpredictionmatchid
@@ -112,11 +113,11 @@ class JFormFieldpredictionmatchid extends JFormField
     $mitems = array();
     
 		foreach ( $teams as $team ) {
-			$mitems[] = JHTML::_('select.option',  $team->id, '&nbsp;'.$team->match_date. ' ( '.$team->roundname.' ) ' . ' -> [ ' .$team->home .' - '.  $team->away . ' ] ' );
+			$mitems[] = HTMLHelper::_('select.option',  $team->id, '&nbsp;'.$team->match_date. ' ( '.$team->roundname.' ) ' . ' -> [ ' .$team->home .' - '.  $team->away . ' ] ' );
 		}
 		
-		//$output= JHTML::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" size="50" multiple="multiple" ', 'value', 'text', $value );
-        $output= JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		//$output= HTMLHelper::_('select.genericlist',  $mitems, ''.$control_name.'['.$name.'][]', 'class="inputbox" size="50" multiple="multiple" ', 'value', 'text', $value );
+        $output= HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

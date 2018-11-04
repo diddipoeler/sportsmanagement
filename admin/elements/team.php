@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldTeam
@@ -78,13 +79,13 @@ class JFormFieldTeam extends JFormField
 		$query = 'SELECT t.id, t.name FROM #__'.$database_table.'_team t ORDER BY name';
 		$db->setQuery( $query );
 		$teams = $db->loadObjectList();
-		$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+		$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
 		foreach ( $teams as $team ) {
-			$mitems[] = JHtml::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')' );
+			$mitems[] = HTMLHelper::_('select.option',  $team->id, '&nbsp;'.$team->name. ' ('.$team->id.')' );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id );
+		$output= HTMLHelper::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" size="1"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }

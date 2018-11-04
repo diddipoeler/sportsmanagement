@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -47,7 +46,7 @@ use Joomla\CMS\Factory;
             <td colspan="3"><span class=""><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH'); ?></span>
                 <span>
         <?php
-        echo JHTML:: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $this->match->new_match_id, Factory::getApplication()->input->getInt('cfg_which_database', 0)), $this->newmatchtext);
+        echo HTMLHelper:: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $this->match->new_match_id, Factory::getApplication()->input->getInt('cfg_which_database', 0)), $this->newmatchtext);
         ?>
         </span></td>
         </tr>

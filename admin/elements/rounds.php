@@ -40,6 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * JFormFieldRounds
@@ -86,13 +87,13 @@ class JFormFieldRounds extends JFormField
 		$db->setQuery( $query );
 		$rounds = $db->loadObjectList();
 		if($required == 'false') {
-			$mitems = array(JHtml::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+			$mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 		}
 		foreach ( $rounds as $round ) {
-			$mitems[] = JHtml::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;'.$round->name );
+			$mitems[] = HTMLHelper::_('select.option',  $round->id, '&nbsp;&nbsp;&nbsp;'.$round->name );
 		}
 		
-		$output = JHtml::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output = HTMLHelper::_('select.genericlist',  $mitems, $this->name.'[]', 'class="inputbox" style="width:90%;" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }
