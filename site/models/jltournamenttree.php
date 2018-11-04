@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
-Factory::('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 Factory::('joomla.filesystem.file');
 Factory::('joomla.utilities.array');
 Factory::('joomla.utilities.arrayhelper') ;
@@ -58,7 +58,7 @@ Factory::( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljltournamenttree extends JModelLegacy
+class sportsmanagementModeljltournamenttree extends BaseDatabaseModel
 {
 var $projectid = 0;
 var $project_art_id = 0;

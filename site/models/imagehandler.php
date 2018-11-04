@@ -5,12 +5,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 
-class sportsmanagementModelImagehandler extends JModelLegacy
+class sportsmanagementModelImagehandler extends BaseDatabaseModel
 {
 	/**
 	 * Pagination object

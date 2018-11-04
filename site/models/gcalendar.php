@@ -22,10 +22,10 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 
-JLoader::import( 'joomla.application.component.model' );
-//JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-class sportsmanagementModelGCalendar extends JModelLegacy 
+
+class sportsmanagementModelGCalendar extends BaseDatabaseModel 
 {
 
 	private $cached_data = null;

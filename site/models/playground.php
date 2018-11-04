@@ -10,8 +10,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPlayground
@@ -22,7 +21,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayground extends JModelLegacy
+class sportsmanagementModelPlayground extends BaseDatabaseModel
 {
     static $playgroundid = 0;
     var $playground = null;

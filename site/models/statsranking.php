@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelStatsRanking
@@ -24,7 +23,7 @@ jimport( 'joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelStatsRanking extends JModelLegacy
+class sportsmanagementModelStatsRanking extends BaseDatabaseModel
 {
 	/**
 	 * players total

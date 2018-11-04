@@ -22,9 +22,9 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-JLoader::import( 'joomla.application.component.model' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-class sportsmanagementModelJSONFeed extends JModelLegacy 
+class sportsmanagementModelJSONFeed extends BaseDatabaseModel 
 {
 
 	public function getGoogleCalendarFeeds() 

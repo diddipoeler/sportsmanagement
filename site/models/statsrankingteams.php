@@ -10,9 +10,9 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-class sportsmanagementModelStatsRankingTeams extends JModelLegacy
+class sportsmanagementModelStatsRankingTeams extends BaseDatabaseModel
 {
 
   /**

@@ -5,13 +5,13 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.filesystem.file');
 jimport( 'joomla.utilities.array' );
 jimport( 'joomla.utilities.arrayhelper' ) ;
 
 
-class sportsmanagementModelJLXMLExports extends JModelLegacy
+class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 {
 	/**
 	 * @var int

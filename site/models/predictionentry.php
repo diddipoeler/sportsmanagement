@@ -14,8 +14,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
-
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPredictionEntry
@@ -26,7 +25,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionEntry extends JModelLegacy
+class sportsmanagementModelPredictionEntry extends BaseDatabaseModel
 {
 
 public $_predictionGame	= null;

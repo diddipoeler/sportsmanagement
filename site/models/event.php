@@ -22,10 +22,10 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 
-JLoader::import('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 
-class sportsmanagementModelEvent extends JModelLegacy 
+class sportsmanagementModelEvent extends BaseDatabaseModel 
 {
 
 	public function getGCalendar() 

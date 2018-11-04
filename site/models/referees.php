@@ -12,8 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelReferees
@@ -24,7 +23,7 @@ jimport( 'joomla.application.component.model' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelReferees extends JModelLegacy
+class sportsmanagementModelReferees extends BaseDatabaseModel
 {
     
     static $cfg_which_database = 0;

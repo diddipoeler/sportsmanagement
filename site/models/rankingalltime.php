@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
 
@@ -37,7 +37,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime) {
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRankingAllTime extends JModelLegacy
+class sportsmanagementModelRankingAllTime extends BaseDatabaseModel
 {
 
     var $teams = array();

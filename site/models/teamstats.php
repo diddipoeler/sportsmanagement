@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-jimport( 'joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelTeamStats
@@ -24,7 +24,7 @@ jimport( 'joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeamStats extends JModelLegacy
+class sportsmanagementModelTeamStats extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $teamid = 0;

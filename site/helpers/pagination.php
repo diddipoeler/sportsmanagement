@@ -16,8 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementPagination
@@ -28,7 +27,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPagination extends JModelLegacy
+class sportsmanagementModelPagination extends BaseDatabaseModel
 {
     public static $nextlink = '';
     public static $prevlink = '';

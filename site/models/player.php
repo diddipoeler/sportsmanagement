@@ -13,8 +13,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.application.component.model');
-
 /**
  * sportsmanagementModelPlayer
  * 
@@ -24,7 +22,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayer extends JModelLegacy {
+class sportsmanagementModelPlayer extends BaseDatabaseModel {
 
     static $projectid = 0;
     static $personid = 0;

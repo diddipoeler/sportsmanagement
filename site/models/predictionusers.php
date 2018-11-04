@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-jimport('joomla.application.component.model');
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 
 /**
  * sportsmanagementModelPredictionUsers
@@ -24,7 +24,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionUsers extends JModelLegacy
+class sportsmanagementModelPredictionUsers extends BaseDatabaseModel
 {
     
     static $config = null;

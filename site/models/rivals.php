@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRivals
@@ -22,7 +23,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRivals extends JModelLegacy
+class sportsmanagementModelRivals extends BaseDatabaseModel
 {
 	var $project = null;
 	var $projectid = 0;

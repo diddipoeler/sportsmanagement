@@ -42,7 +42,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 
 /**
@@ -54,7 +54,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsishandball extends JModelLegacy 
+class sportsmanagementModelsishandball extends BaseDatabaseModel 
 {
 
 

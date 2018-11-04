@@ -11,9 +11,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.application.component.model');
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 
 /**
@@ -25,7 +24,7 @@ jimport('joomla.application.component.model');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionRules extends JModelLegacy
+class sportsmanagementModelPredictionRules extends BaseDatabaseModel
 {
 	/**
 	 * sportsmanagementModelPredictionRules::__construct()

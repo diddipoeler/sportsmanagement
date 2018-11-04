@@ -10,7 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelAbout
@@ -21,7 +21,7 @@ jimport('joomla.application.component.model');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelAbout extends JModelLegacy
+class sportsmanagementModelAbout extends BaseDatabaseModel
 {
 	/**
 	 * sportsmanagementModelAbout::getAbout()

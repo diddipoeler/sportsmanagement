@@ -13,8 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -32,7 +31,7 @@ jimport('joomla.utilities.arrayhelper') ;
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallprojectrounds extends JModelLegacy
+class sportsmanagementModelallprojectrounds extends BaseDatabaseModel
 {
 	var $projectid = 0;
 	var $project_ids = 0;

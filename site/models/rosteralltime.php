@@ -54,7 +54,6 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-//class sportsmanagementModelRosteralltime extends JModelLegacy
 class sportsmanagementModelRosteralltime extends JModelList
 {
 	static $projectid = 0;

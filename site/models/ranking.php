@@ -12,8 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.model' );
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRanking
@@ -24,7 +23,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRanking extends JModelLegacy
+class sportsmanagementModelRanking extends BaseDatabaseModel
 {
 	static $projectid = 0;
 	static $round = 0;

@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -36,7 +36,7 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPrediction extends JModelLegacy
+class sportsmanagementModelPrediction extends BaseDatabaseModel
 {
 	static $_predictionGame		= null;
 	static $predictionGameID		= 0;
