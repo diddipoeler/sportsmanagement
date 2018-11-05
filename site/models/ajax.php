@@ -97,13 +97,13 @@ public function getAssocLeagueSelect($country_id,$associd)
         //$this->getAssocLeagueSelect = $query->dump();
         
 		$res = $this->_db->loadObjectList();
-//		if ($res) 
-//        {
-//        $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('leagues_text'))));
-//		$options = array_merge($options, $res);
-//		}
+		if ($res) 
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Liga selektieren --')));
+		$options = array_merge($options, $res);
+		}
 
-		return $res;
+		return $options;
 	}
         
     /**
@@ -130,13 +130,13 @@ $query->order('s.name');
         //$this->getCountrySubSubAssocSelect = $query->dump();
         
 		$res = $db->loadObjectList();
-//		if ($res) 
-//        {
-//		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
-//			$options = array_merge($options, $res);
-//		}
+		if ($res) 
+        {
+		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
+			$options = array_merge($options, $res);
+		}
 
-		return $res;
+		return $options;
 
 }
 
@@ -188,16 +188,16 @@ $query->order('s.name');
 		$db->setQuery($query);
        
 		$res = $db->loadObjectList();
-//		if ($res) {
-//		  $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
-//			$options = array_merge($options, $res);
-//		}
+		if ($res) {
+		  $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
+			$options = array_merge($options, $res);
+		}
 //        else
 //        {
 //            $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
 //        }
 
-		return $res;
+		return $options;
 	}
     
     
