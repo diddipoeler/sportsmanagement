@@ -1598,13 +1598,17 @@ $use_jquery_modal);
 	$query->from('#__sportsmanagement_project_position AS ppos');
     $query->where('ppos.position_id = '.$result1->id );
     $query->where('ppos.project_id = '.(int)self::$projectid );
-	$db->setQuery($query);
+
+		try {
+$db->setQuery($query);
     $result2 = $db->loadObject();
-    
-//$app->enqueueMessage(__METHOD__.' '.__LINE__.' result2<pre>'.print_r($result2, true).'</pre><br>','Error');
-    
 	$inout->pposid1 = $result2->id;
-    	
+}
+catch (Exception $e) {
+    // catch any database errors.
+	$inout->pposid1 = 0;
+	$app->enqueueMessage(__METHOD__.' '.__LINE__.' <pre>'.print_r($e->getMessage(), true).'</pre><br>','Error');
+}    	
 	$query->clear();
     $query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
 	$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
