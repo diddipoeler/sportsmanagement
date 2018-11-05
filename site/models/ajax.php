@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementModelAjax
@@ -54,15 +54,15 @@ $app = Factory::getApplication();
        
 		$res = $db->loadObjectList();
 		
-//		if ($res) 
-//		{
-//
-//$options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text_project_dropdown'))));
-//					$options = array_merge($options, $res);
-//
-//		}
+		if ($res) 
+		{
 
-        return $res;		
+$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Projekt selektieren --')));
+					$options = array_merge($options, $res);
+
+		}
+
+        return $options;		
 	}
     
     
