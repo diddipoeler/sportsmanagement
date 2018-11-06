@@ -21,6 +21,8 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -41,7 +43,7 @@ class jsmGCalendarUtil
     {
         $app = Factory::getApplication();
         
-		$params = JComponentHelper::getParams('com_sportsmanagement');
+		$params = ComponentHelper::getParams('com_sportsmanagement');
 		$value = $params->get($key, $defaultValue);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
@@ -68,7 +70,7 @@ class jsmGCalendarUtil
     {
         $app = Factory::getApplication();
         
-		$component = JComponentHelper::getComponent('com_sportsmanagement');
+		$component = ComponentHelper::getComponent('com_sportsmanagement');
 		$menu = Factory::getApplication()->getMenu();
 		$items = $menu->getItems('component_id', $component->id);
         
@@ -133,7 +135,7 @@ class jsmGCalendarUtil
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid', null));
 			if (!empty($itemID) && Factory::getApplication()->input->getVar('tmpl', null) != 'component' && $event != null) {
-				$component = JComponentHelper::getComponent('com_sportsmanagement');
+				$component = ComponentHelper::getComponent('com_sportsmanagement');
 				$menu = Factory::getApplication()->getMenu();
 				$item = $menu->getItem($itemID);
 				if ($item !=null) 
@@ -148,7 +150,7 @@ class jsmGCalendarUtil
 						$dateHash = '#year='.$year.'&month='.$month.'&day='.$day;
 					}
 				}
-				$variables['calendarLink'] = JRoute::_('index.php?option=com_sportsmanagement&Itemid='.$itemID.$dateHash);
+				$variables['calendarLink'] = Route::_('index.php?option=com_sportsmanagement&Itemid='.$itemID.$dateHash);
 			}
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid'));
@@ -165,7 +167,7 @@ class jsmGCalendarUtil
 				}
 			}
 
-			$variables['backlink'] = JRoute::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').$itemID);
+			$variables['backlink'] = Route::_('index.php?option=com_sportsmanagement&view=event&eventID='.$event->getGCalId().'&gcid='.$event->getParam('gcid').$itemID);
 
 			$variables['link'] = $event->getLink('alternate')->getHref();
 			$variables['calendarcolor'] = $event->getParam('gccolor');
@@ -258,7 +260,7 @@ class jsmGCalendarUtil
 			$ical_timeString_end =  $endTime.' '.$endDate;
 			$ical_timeString_end = strtotime($ical_timeString_end);
 			$loc = $event->getLocation();
-			$variables['copyOutlookUrl'] = JRoute::_("index.php?option=com_sportsmanagement&view=ical&format=raw&eventID=".$event->getGCalId().'&gcid='.$event->getParam('gcid'));
+			$variables['copyOutlookUrl'] = Route::_("index.php?option=com_sportsmanagement&view=ical&format=raw&eventID=".$event->getGCalId().'&gcid='.$event->getParam('gcid'));
 
 			$groupHeading = $event->getStartDate()->format($params->get('grouping', ''), true);
 			if ($groupHeading != $lastHeading) {

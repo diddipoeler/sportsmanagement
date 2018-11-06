@@ -16,6 +16,9 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Session\Session;
+use Joomla\CMS\Router\Route;
 
 /**
  * JSMControllerAdmin
@@ -111,7 +114,7 @@ class JSMControllerForm extends FormController
     function save($key = null, $urlVar = null)
     {
         // Check for request forgeries.
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Initialise variables.
         //$app = Factory::::getApplication();
@@ -133,7 +136,7 @@ class JSMControllerForm extends FormController
             $id = $this->jsmjinput->getInt('insert_id');
         }
 
-        if (JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
+        if (Registry::getParams($this->jsmoption)->get('show_debug_info_backend')) {
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->club_id<br><pre>' . print_r($this->club_id, true) . '</pre>'), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->team_id<br><pre>' . print_r($this->team_id, true) . '</pre>'), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_item <br><pre>' . print_r($this->view_item, true) . '</pre>'), '');
@@ -184,28 +187,28 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.p
                     } else {
                         switch ($this->view_item) {
                             case 'club':
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->club_id) . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->club_id) . $setRedirect, false), $message);
                                 break;
                             case 'person':
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->person_id) . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->person_id) . $setRedirect, false), $message);
                                 break;
                             case 'team':
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->team_id) . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($this->team_id) . $setRedirect, false), $message);
                                 break;
                             default:
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
                                 break;
                         }
 
                     }
                     break;
                 case 'save2copy':
-                    $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false));
+                    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false));
                     break;
 
                 case 'save2new':
                     $message = Text::_('JLIB_APPLICATION_SAVE_SUCCESS');
-                    $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend(null, $urlVar) . $setRedirect, false), $message);
+                    $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend(null, $urlVar) . $setRedirect, false), $message);
 
                     break;
                 default:
@@ -215,13 +218,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.p
                     } else {
                         switch ($this->view_item) {
                             case 'club':
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&club_id=' . $this->club_id . $this->getRedirectToListAppend(), false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&club_id=' . $this->club_id . $this->getRedirectToListAppend(), false), $message);
                                 break;
                             case 'team':
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&team_id=' . $this->team_id . $this->getRedirectToListAppend(), false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . '&team_id=' . $this->team_id . $this->getRedirectToListAppend(), false), $message);
                                 break;
                             default:
-                                $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend() . $setRedirect, false), $message);
+                                $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend() . $setRedirect, false), $message);
                                 break;
                         }
                     }
@@ -230,7 +233,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.p
 
             return true;
         } else {
-            $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
+            $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id) . $setRedirect, false), $message);
             //JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
             return false;
         }

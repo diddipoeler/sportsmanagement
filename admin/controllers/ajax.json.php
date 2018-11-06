@@ -12,6 +12,8 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
+use Joomla\CMS\Factory\Response\JsonResponse;
+use Joomla\CMS\\MVC\Controller\BaseController;
 
 jimport('joomla.application.component.controller');
 
@@ -24,7 +26,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerAjax extends JControllerLegacy
+class sportsmanagementControllerAjax extends BaseController
 {
 
         /**
@@ -66,11 +68,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 $this->app->enqueueMessage('Projekte gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -100,11 +102,11 @@ $this->app->enqueueMessage('Projekte gefunden','Message');
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -124,11 +126,11 @@ try
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                      
         }   
@@ -157,11 +159,11 @@ try
 $this->app->enqueueMessage('Benutzer gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }         
             
             
@@ -193,11 +195,11 @@ try
 //$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
             
         } 
@@ -229,11 +231,11 @@ try
 //$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }                
         
         } 
@@ -266,11 +268,11 @@ try
 $this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
             
         }
@@ -301,11 +303,11 @@ $this->app->enqueueMessage('Altersgruppen gefunden','Message');
 $this->app->enqueueMessage('Landesverbände gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }    
             
             
@@ -336,11 +338,11 @@ $this->app->enqueueMessage('Landesverbände gefunden','Message');
 $this->app->enqueueMessage('Projekte gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
 
         } 
@@ -362,11 +364,11 @@ try
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                      
         }    
@@ -385,11 +387,11 @@ try
       $this->jinput->get->getString('required'),
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
-        echo new JResponseJson($result);
+        echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -419,11 +421,11 @@ try
 $this->app->enqueueMessage('Positionen gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }    
                     
         }
@@ -455,11 +457,11 @@ $this->app->enqueueMessage('Positionen gefunden','Message');
 $app->enqueueMessage('Altersgruppe gefunden','Message');    
  }
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
         
         }
@@ -489,11 +491,11 @@ $app->enqueueMessage('Altersgruppe gefunden','Message');
  {
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
           
         }
@@ -521,11 +523,11 @@ $this->app->enqueueMessage('Gruppen gefunden','Message');
  {
 $this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }                
         }
 
@@ -552,11 +554,11 @@ $this->app->enqueueMessage('Gruppen gefunden','Message');
  {
 //$this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }  
                    
         }
@@ -578,11 +580,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                     
         }
@@ -603,11 +605,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
         
         
@@ -629,11 +631,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }      
             
         }
@@ -654,11 +656,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }            
         
         }
@@ -679,11 +681,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
                     
         }
@@ -705,11 +707,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
         }
@@ -730,11 +732,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
        
@@ -756,11 +758,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -781,11 +783,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -806,11 +808,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -831,11 +833,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
@@ -856,11 +858,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
            
         }
@@ -891,11 +893,11 @@ try
  {
 $this->app->enqueueMessage('Runden gefunden','Message');    
  }
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }        
                 
         }
@@ -917,11 +919,11 @@ try
       $this->jinput->get->getString('slug'),
       $this->jinput->get->getString('dbase') );
  
-      echo new JResponseJson($result);
+      echo new JsonResponse($result);
     }
     catch(Exception $e)
     {
-      echo new JResponseJson($e);
+      echo new JsonResponse($e);
     }
             
         }
