@@ -136,7 +136,7 @@ class JSMControllerForm extends FormController
             $id = $this->jsmjinput->getInt('insert_id');
         }
 
-        if (Registry::getParams($this->jsmoption)->get('show_debug_info_backend')) {
+        if (ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend')) {
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->club_id<br><pre>' . print_r($this->club_id, true) . '</pre>'), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->team_id<br><pre>' . print_r($this->team_id, true) . '</pre>'), '');
             $this->jsmapp->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' this->view_item <br><pre>' . print_r($this->view_item, true) . '</pre>'), '');

@@ -22,6 +22,14 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Version;
+use Joomla\CMS\Environment\Browser;
+use Joomla\CMS\Factory\Response\JsonResponse;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -29,7 +37,7 @@ if (!defined('DS')) {
 
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
-JLoader::import('joomla.environment.browser');
+//JLoader::import('joomla.environment.browser');
 
 if (!class_exists('Mustache')) {
 	JLoader::import('components.com_sportsmanagement.libraries.mustache.Mustache', JPATH_ADMINISTRATOR);
@@ -42,10 +50,10 @@ class jsmGCalendarUtil
     {
         $app = Factory::getApplication();
         
-		$params = JComponentHelper::getParams('com_sportsmanagement');
+		$params = ComponentHelper::getParams('com_sportsmanagement');
 		$value = $params->get($key, $defaultValue);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 
 		if ($key == 'timezone' && empty($value)) {
@@ -69,7 +77,7 @@ class jsmGCalendarUtil
     {
         $app = Factory::getApplication();
         
-		$component = JComponentHelper::getComponent('com_sportsmanagement');
+		$component = ComponentHelper::getComponent('com_sportsmanagement');
 		$menu = Factory::getApplication()->getMenu();
 		$items = $menu->getItems('component_id', $component->id);
         
@@ -115,10 +123,10 @@ class jsmGCalendarUtil
 			$events = array();
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
 
 		Factory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement');
 
@@ -134,7 +142,7 @@ class jsmGCalendarUtil
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid', null));
 			if (!empty($itemID) && Factory::getApplication()->input->getVar('tmpl', null) != 'component' && $event != null) {
-				$component = JComponentHelper::getComponent('com_sportsmanagement');
+				$component = ComponentHelper::getComponent('com_sportsmanagement');
 				$menu = Factory::getApplication()->getMenu();
 				$item = $menu->getItem($itemID);
 				if ($item !=null) 
@@ -154,7 +162,7 @@ class jsmGCalendarUtil
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid'));
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' itemID<br><pre>'.print_r($itemID,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' itemID<br><pre>'.print_r($itemID,true).'</pre>'),'Notice');
             
 			if (!empty($itemID)) {
 				$itemID = '&Itemid='.$itemID;
@@ -229,7 +237,7 @@ class jsmGCalendarUtil
 			$location = $event->getLocation();
 			$variables['location'] = $location;
 			if (!empty($location)) {
-				$variables['maplink'] = (JBrowser::getInstance()->isSSLConnection() ? 'https' : 'http')."://maps.google.com/?q=".urlencode($location).'&hl='.substr(jsmGCalendarUtil::getFrLanguage(),0,2).'&output=embed';
+				$variables['maplink'] = (Browser::getInstance()->isSSLConnection() ? 'https' : 'http')."://maps.google.com/?q=".urlencode($location).'&hl='.substr(jsmGCalendarUtil::getFrLanguage(),0,2).'&output=embed';
 			}
 
 			$variables['description'] = (string)$event->getContent();
@@ -271,23 +279,23 @@ class jsmGCalendarUtil
 			$configuration['events'][] = $variables;
 		}
 
-		$configuration['eventLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL');
-		$configuration['calendarLinkLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_CALENDAR_BACK_LINK');
-		$configuration['calendarNameLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_CALENDAR_NAME');
-		$configuration['titleLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_EVENT_TITLE');
-		$configuration['dateLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_WHEN');
-		$configuration['attendeesLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_ATTENDEES');
-		$configuration['locationLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_LOCATION');
-		$configuration['descriptionLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_DESCRIPTION');
-		$configuration['authorLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_AUTHOR');
-		$configuration['copyLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY');
-		$configuration['copyGoogleLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY_TO_MY_CALENDAR');
-		$configuration['copyOutlookLabel'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY_TO_MY_CALENDAR_ICS');
+		$configuration['eventLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL');
+		$configuration['calendarLinkLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_CALENDAR_BACK_LINK');
+		$configuration['calendarNameLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_CALENDAR_NAME');
+		$configuration['titleLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_EVENT_TITLE');
+		$configuration['dateLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_WHEN');
+		$configuration['attendeesLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_ATTENDEES');
+		$configuration['locationLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_LOCATION');
+		$configuration['descriptionLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_DESCRIPTION');
+		$configuration['authorLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_AUTHOR');
+		$configuration['copyLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY');
+		$configuration['copyGoogleLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY_TO_MY_CALENDAR');
+		$configuration['copyOutlookLabel'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_COPY_TO_MY_CALENDAR_ICS');
 		$configuration['language'] = substr(jsmGCalendarUtil::getFrLanguage(),0,2);
 
-		$configuration['emptyText'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_NO_EVENT_TEXT');
+		$configuration['emptyText'] = Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_NO_EVENT_TEXT');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configuration<br><pre>'.print_r($configuration,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' configuration<br><pre>'.print_r($configuration,true).'</pre>'),'Notice');
 
 		try{
 			$m = new Mustache();
@@ -313,25 +321,25 @@ class jsmGCalendarUtil
 		$name = '';
 		switch ($day) {
 			case 0:
-				$name = $abbr ? JText::_('SUN') : JText::_('SUNDAY');
+				$name = $abbr ? Text::_('SUN') : Text::_('SUNDAY');
 				break;
 			case 1:
-				$name = $abbr ? JText::_('MON') : JText::_('MONDAY');
+				$name = $abbr ? Text::_('MON') : Text::_('MONDAY');
 				break;
 			case 2:
-				$name = $abbr ? JText::_('TUE') : JText::_('TUESDAY');
+				$name = $abbr ? Text::_('TUE') : Text::_('TUESDAY');
 				break;
 			case 3:
-				$name = $abbr ? JText::_('WED') : JText::_('WEDNESDAY');
+				$name = $abbr ? Text::_('WED') : Text::_('WEDNESDAY');
 				break;
 			case 4:
-				$name = $abbr ? JText::_('THU') : JText::_('THURSDAY');
+				$name = $abbr ? Text::_('THU') : Text::_('THURSDAY');
 				break;
 			case 5:
-				$name = $abbr ? JText::_('FRI') : JText::_('FRIDAY');
+				$name = $abbr ? Text::_('FRI') : Text::_('FRIDAY');
 				break;
 			case 6:
-				$name = $abbr ? JText::_('SAT') : JText::_('SATURDAY');
+				$name = $abbr ? Text::_('SAT') : Text::_('SATURDAY');
 				break;
 		}
 		return addslashes($name);
@@ -342,40 +350,40 @@ class jsmGCalendarUtil
 		$name = '';
 		switch ($month) {
 			case 1:
-				$name = $abbr ? JText::_('JANUARY_SHORT')	: JText::_('JANUARY');
+				$name = $abbr ? Text::_('JANUARY_SHORT')	: Text::_('JANUARY');
 				break;
 			case 2:
-				$name = $abbr ? JText::_('FEBRUARY_SHORT')	: JText::_('FEBRUARY');
+				$name = $abbr ? Text::_('FEBRUARY_SHORT')	: Text::_('FEBRUARY');
 				break;
 			case 3:
-				$name = $abbr ? JText::_('MARCH_SHORT')		: JText::_('MARCH');
+				$name = $abbr ? Text::_('MARCH_SHORT')		: Text::_('MARCH');
 				break;
 			case 4:
-				$name = $abbr ? JText::_('APRIL_SHORT')		: JText::_('APRIL');
+				$name = $abbr ? Text::_('APRIL_SHORT')		: Text::_('APRIL');
 				break;
 			case 5:
-				$name = $abbr ? JText::_('MAY_SHORT')		: JText::_('MAY');
+				$name = $abbr ? Text::_('MAY_SHORT')		: Text::_('MAY');
 				break;
 			case 6:
-				$name = $abbr ? JText::_('JUNE_SHORT')		: JText::_('JUNE');
+				$name = $abbr ? Text::_('JUNE_SHORT')		: Text::_('JUNE');
 				break;
 			case 7:
-				$name = $abbr ? JText::_('JULY_SHORT')		: JText::_('JULY');
+				$name = $abbr ? Text::_('JULY_SHORT')		: Text::_('JULY');
 				break;
 			case 8:
-				$name = $abbr ? JText::_('AUGUST_SHORT')	: JText::_('AUGUST');
+				$name = $abbr ? Text::_('AUGUST_SHORT')	: Text::_('AUGUST');
 				break;
 			case 9:
-				$name = $abbr ? JText::_('SEPTEMBER_SHORT')	: JText::_('SEPTEMBER');
+				$name = $abbr ? Text::_('SEPTEMBER_SHORT')	: Text::_('SEPTEMBER');
 				break;
 			case 10:
-				$name = $abbr ? JText::_('OCTOBER_SHORT')	: JText::_('OCTOBER');
+				$name = $abbr ? Text::_('OCTOBER_SHORT')	: Text::_('OCTOBER');
 				break;
 			case 11:
-				$name = $abbr ? JText::_('NOVEMBER_SHORT')	: JText::_('NOVEMBER');
+				$name = $abbr ? Text::_('NOVEMBER_SHORT')	: Text::_('NOVEMBER');
 				break;
 			case 12:
-				$name = $abbr ? JText::_('DECEMBER_SHORT')	: JText::_('DECEMBER');
+				$name = $abbr ? Text::_('DECEMBER_SHORT')	: Text::_('DECEMBER');
 				break;
 		}
 		return addslashes($name);
@@ -383,7 +391,7 @@ class jsmGCalendarUtil
 
 	public static function getActions($calendarId = 0) {
 		$user  = Factory::getUser();
-		$result  = new JObject;
+		$result  = new CMSObject;
 
 		if (empty($calendarId)) {
 			$assetName = 'com_sportsmanagement';
@@ -402,7 +410,7 @@ class jsmGCalendarUtil
 	}
 
 	public static function isJoomlaVersion($version) {
-		$j = new JVersion();
+		$j = new Version();
 		return substr($j->RELEASE, 0, strlen($version)) == $version;
 	}
 
@@ -416,9 +424,9 @@ class jsmGCalendarUtil
 			if (isset($libraries['jquery'])) {
 				if (!Factory::getApplication()->get('jquery', false)) {
 					Factory::getApplication()->set('jquery', true);
-					$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/jquery.min.js');
+					$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/jquery.min.js');
 				}
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
+				$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
 			}
 
 			if (isset($libraries['jqueryui'])) {
@@ -429,25 +437,25 @@ class jsmGCalendarUtil
 				if ($theme == 'bootstrap') {
 					$libraries['bootstrap'] = true;
 				}
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
+				$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
+				$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
 			}
 
 			if (isset($libraries['bootstrap'])) {
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+				$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
 				if ($libraries['bootstrap'] == 'javscript') {
-					$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+					$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 				}
 			}
 
 			if (isset($libraries['chosen'])) {
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.min.js');
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.css');
+				$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.min.js');
+				$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.chosen.css');
 			}
 		} else {
 			if (isset($libraries['jquery'])) {
 				HTMLHelper::_('jquery.framework');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
+				$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/gcNoConflict.js');
 			}
 
 			if (isset($libraries['jqueryui'])) {
@@ -457,8 +465,8 @@ class jsmGCalendarUtil
 				} else {
 					$libraries['bootstrap'] = true;
 				}
-				$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
-				$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
+				$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/jquery/themes/'.$theme.'/jquery-ui.custom.css');
+				$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/ui/jquery-ui.custom.min.js');
 			}
 
 			if (isset($libraries['bootstrap'])) {
@@ -471,21 +479,21 @@ class jsmGCalendarUtil
 		}
 
 		if (isset($libraries['gcalendar'])) {
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.css');
+			$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.js');
+			$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/gcalendar/gcalendar.css');
 		}
 
 		if (isset($libraries['maps'])) {
-			$document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http").'://maps.googleapis.com/maps/api/js?sensor=true&language='.self::getGoogleLanguage());
+			$document->addScript((Browser::getInstance()->isSSLConnection() ? "https" : "http").'://maps.googleapis.com/maps/api/js?sensor=true&language='.self::getGoogleLanguage());
 		}
 
 		if (isset($libraries['fullcalendar'])) {
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css');
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/fancybox/jquery.fancybox-1.3.4.css');
-			$document->addStyleSheet(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/tipTip.css');
-			$document->addScript(JURI::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.tipTip.minified.js');
+			$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.min.js');
+			$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/fullcalendar/fullcalendar.css');
+			$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/gcalendar/jquery.gcalendar-all.min.js');
+			$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/jquery/fancybox/jquery.fancybox-1.3.4.css');
+			$document->addStyleSheet(Uri::root().'components/com_sportsmanagement/libraries/jquery/ext/tipTip.css');
+			$document->addScript(Uri::root().'components/com_sportsmanagement/libraries/jquery/ext/jquery.tipTip.minified.js');
 		}
 	}
 
@@ -525,9 +533,9 @@ class jsmGCalendarUtil
 
 		$months = array('JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER');
 		$monthsShort = array('JANUARY_SHORT', 'FEBRUARY_SHORT', 'MARCH_SHORT', 'APRIL_SHORT', 'MAY_SHORT', 'JUNE_SHORT', 'JULY_SHORT', 'AUGUST_SHORT', 'SEPTEMBER_SHORT', 'OCTOBER_SHORT', 'NOVEMBER_SHORT', 'DECEMBER_SHORT');
-		$lang = JLanguage::getInstance('en-GB');
+		$lang = Language::getInstance('en-GB');
 		foreach (array_merge($months, $monthsShort) as $month) {
-			$string = str_replace(JText::_($month), $lang->_($month), $string);
+			$string = str_replace(Text::_($month), $lang->_($month), $string);
 		}
 
 		if (empty($dateFormat)) {
@@ -554,13 +562,13 @@ class jsmGCalendarUtil
 	public static function sendMessage($message, $error = false, array $data = array()) {
 		ob_clean();
 
-		JLoader::import('components.com_languages.helpers.jsonresponse', JPATH_ADMINISTRATOR);
+		//JLoader::import('components.com_languages.helpers.jsonresponse', JPATH_ADMINISTRATOR);
 		if (!$error) {
 			Factory::getApplication()->enqueueMessage($message);
-			echo new JJsonResponse($data);
+			echo new JsonResponse($data);
 		} else {
 			Factory::getApplication()->enqueueMessage($message, 'error');
-			echo new JJsonResponse($data);
+			echo new JsonResponse($data);
 		}
 
 		Factory::getApplication()->close();
