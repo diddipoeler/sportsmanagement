@@ -89,9 +89,7 @@ $app = Factory::getApplication();
             $query->order('s.name DESC, p.name ASC');
 
 		$db->setQuery($query);
-        
-        //$this->getProjectSelect = $query->dump();
-       
+      
 		$res = $db->loadObjectList();
 		
 		if ($res) 
@@ -99,7 +97,6 @@ $app = Factory::getApplication();
 
 $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Projekt selektieren --')));
 					$options = array_merge($options, $res);
-
 		}
 
         return $options;		
@@ -169,6 +166,10 @@ $query->order('s.name');
 		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Kreisverbände -- ')));
 			$options = array_merge($options, $res);
 		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Kreisverbände -- ')));    
+        }
 
 		return $options;
 
