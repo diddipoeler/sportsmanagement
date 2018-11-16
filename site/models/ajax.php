@@ -29,6 +29,45 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 {
 
 
+
+/**
+ * sportsmanagementModelAjax::getProjectTeams()
+ * 
+ * @param mixed $project_id
+ * @return
+ */
+public function getProjectTeams($project_id)
+	{
+$app = Factory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);
+
+$query->select('t.id AS value,t.name AS text'); 
+// From 
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
+$query->where('pt.project_id = ' . (int)$project_id );
+$query->group('t.id,t.alias,t.name');
+        // order
+        $query->order('t.name');
+$db->setQuery($query);
+      
+		$res = $db->loadObjectList();
+
+if ($res) 
+		{
+
+$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Team selektieren --')));
+					$options = array_merge($options, $res);
+
+		}
+
+        return $options;
+}
+
+
 /**
  * sportsmanagementModelAjax::getProjectSelect()
  * 
@@ -94,8 +133,6 @@ public function getAssocLeagueSelect($country_id,$associd)
 
 		$this->_db->setQuery($this->_query);
         
-        //$this->getAssocLeagueSelect = $query->dump();
-        
 		$res = $this->_db->loadObjectList();
 		if ($res) 
         {
@@ -123,12 +160,9 @@ $query->from('#__sportsmanagement_associations AS s');
 $query->where('s.parent_id = '.$subassoc_id);
 $query->where('s.published = 1');
 $query->order('s.name');
-
                 
 		$db->setQuery($query);
-        
-        //$this->getCountrySubSubAssocSelect = $query->dump();
-        
+       
 		$res = $db->loadObjectList();
 		if ($res) 
         {
@@ -159,11 +193,15 @@ $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
 		$db->setQuery($query);
-        
-        //$this->getCountrySubAssocSelect = $query->dump();
-        
+       
 		$res = $db->loadObjectList();
-        return $res;
+        if ($res) 
+        {
+		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Landesverbände -- ')));
+			$options = array_merge($options, $res);
+		}
+
+		return $options;
         }
         
     /**
