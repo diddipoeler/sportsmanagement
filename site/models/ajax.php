@@ -58,11 +58,13 @@ $db->setQuery($query);
 
 if ($res) 
 		{
-
 $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Team selektieren --')));
 					$options = array_merge($options, $res);
-
 		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Teams -- ')));    
+        }
 
         return $options;
 }
@@ -94,10 +96,13 @@ $app = Factory::getApplication();
 		
 		if ($res) 
 		{
-
 $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Projekt selektieren --')));
 					$options = array_merge($options, $res);
 		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Projekte -- ')));    
+        }
 
         return $options;		
 	}
@@ -136,6 +141,10 @@ public function getAssocLeagueSelect($country_id,$associd)
         $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Liga selektieren --')));
 		$options = array_merge($options, $res);
 		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Ligen -- ')));    
+        }
 
 		return $options;
 	}
@@ -201,6 +210,10 @@ $query->order('s.name');
 		$options = array(HTMLHelper::_('select.option', 0, Text::_('-- Landesverbände -- ')));
 			$options = array_merge($options, $res);
 		}
+        else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Landesverbände -- ')));    
+        }
 
 		return $options;
         }
@@ -231,10 +244,10 @@ $query->order('s.name');
 		  $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
 			$options = array_merge($options, $res);
 		}
-//        else
-//        {
-//            $options = array(HTMLHelper::_('select.option', 0, Text::_('-- Regionalverbände -- ')));
-//        }
+else
+        {
+        $options = array(HTMLHelper::_('select.option', 0, Text::_('-- keine Regionalverbände -- ')));    
+        }
 
 		return $options;
 	}
