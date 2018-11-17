@@ -38,6 +38,26 @@ class sportsmanagementControllerAjax extends BaseController {
         parent::__construct();
     }
 
+
+/**
+ * sportsmanagementControllerAjax::getLink()
+ * 
+ * @return void
+ */
+public function getLink()
+	{
+	$app = Factory::getApplication();
+        // JInput object
+        $jinput = $app->input; 
+//        $project_id = $jinput->getInt('project_id');
+        $model = $this->getModel('ajax');
+        $res = $model->getLink($jinput->getInt('view'),$jinput->getInt('project_id'));
+        echo json_encode($res);
+        $app->close();   
+       
+}
+
+       
 /**
  * sportsmanagementControllerAjax::getProjectTeams()
  * 

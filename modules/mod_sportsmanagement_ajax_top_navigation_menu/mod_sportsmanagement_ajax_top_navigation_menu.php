@@ -406,7 +406,12 @@ $script[] = "console.log(navpoint_label);";
 $script[] = "
 //loop from 0 index to max index
 for(var i = 0; i < navpoint.length; i++) {
-  console.log('navpoint -> ', navpoint[i])
+console.log('navpoint -> ', navpoint[i]);
+
+
+
+
+
 }
 ";
 

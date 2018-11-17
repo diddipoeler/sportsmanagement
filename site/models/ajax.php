@@ -31,6 +31,41 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 
 
 /**
+ * sportsmanagementModelAjax::getLink()
+ * 
+ * @param string $view
+ * @param integer $project_id
+ * @param integer $round_id
+ * @param integer $division_id
+ * @return void
+ */
+public function getLink($view='',$project_id=0,$round_id=0,$division_id=0)
+{
+$app = Factory::getApplication();	   
+
+if ( $view )
+{
+switch ($view)
+{
+case "ranking":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $project_id;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = $round_id;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);		  
+          
+}   
+return $link;       
+}
+}
+
+
+/**
  * sportsmanagementModelAjax::getProjectTeams()
  * 
  * @param mixed $project_id
