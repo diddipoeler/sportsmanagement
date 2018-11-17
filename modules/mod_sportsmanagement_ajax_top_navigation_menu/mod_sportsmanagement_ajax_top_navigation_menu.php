@@ -403,6 +403,12 @@ $script[] = "const navpoint = Joomla.getOptions('navpoint');";
 $script[] = "console.log(navpoint);";
 $script[] = "const navpoint_label = Joomla.getOptions('navpoint_label');";
 $script[] = "console.log(navpoint_label);";
+$script[] = "
+//loop from 0 index to max index
+for(var i = 0; i < navpoint.length; i++) {
+  console.log('navpoint -> ', navpoint[i])
+}
+";
 
 $script[] = "$('ul.jsmpage').empty();";
 $script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
