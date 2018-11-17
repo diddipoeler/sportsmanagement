@@ -399,6 +399,11 @@ $script[] = "console.log(data10);";
 $script[] = "});";
 $script[] = "";
 
+$script[] = "const navpoint = Joomla.getOptions('navpoint');";
+$script[] = "console.log(navpoint);";
+$script[] = "const navpoint_label = Joomla.getOptions('navpoint_label');";
+$script[] = "console.log(navpoint_label);";
+
 $script[] = "$('ul.jsmpage').empty();";
 $script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
 
