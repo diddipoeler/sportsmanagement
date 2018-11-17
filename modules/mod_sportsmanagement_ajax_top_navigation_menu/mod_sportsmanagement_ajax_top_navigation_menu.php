@@ -405,6 +405,7 @@ $script[] = "const navpoint_label = Joomla.getOptions('navpoint_label');";
 $script[] = "console.log(navpoint_label);";
 
 $script[] = "$('ul.jsmpage').empty();";
+$script[] = "$('ul.pagination').empty();";
 
 $script[] = "
 //loop from 0 index to max index
