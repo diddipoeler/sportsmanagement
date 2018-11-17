@@ -414,9 +414,7 @@ for(var i = 0; i < navpoint.length; i++) {
 if (navpoint[i] != null)    
 {    
 console.log('navpoint -> ' + navpoint[i]);
-console.log('navpoint_label -> ' + navpoint_label[i]);
-var linktext = navpoint_label[i];
-console.log('linktext -> ' + linktext);
+
 var url11 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getLink&view=' + navpoint[i] + '&project_id=' + value10;
 console.log('navpoint url11 = ' + url11 );
 $.ajax({
@@ -428,6 +426,9 @@ console.log(data11);
 
 if (data11 != null)
 {
+console.log('navpoint_label -> ' + navpoint_label[i]);
+var linktext = navpoint_label[i];
+console.log('linktext -> ' + linktext);    
 $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=' + data11 + '>' + linktext + '</a></li>');    
 }
 
