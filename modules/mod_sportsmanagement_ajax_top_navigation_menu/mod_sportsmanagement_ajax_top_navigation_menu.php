@@ -403,6 +403,9 @@ $script[] = "const navpoint = Joomla.getOptions('navpoint');";
 $script[] = "console.log(navpoint);";
 $script[] = "const navpoint_label = Joomla.getOptions('navpoint_label');";
 $script[] = "console.log(navpoint_label);";
+
+$script[] = "$('ul.jsmpage').empty();";
+
 $script[] = "
 //loop from 0 index to max index
 for(var i = 0; i < navpoint.length; i++) {
@@ -416,13 +419,18 @@ type : 'POST'
 }).done(function(data11) {
 console.log(data11);    
 
+if (data11 != 'null')
+{
+$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + data11 + '</li>');    
+}
+
 });
 
 }
 ";
 
-$script[] = "$('ul.jsmpage').empty();";
-$script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
+
+//$script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
 
 
 $script[] = "						$.each(data10, function (i, val) {";
