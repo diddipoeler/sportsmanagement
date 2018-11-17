@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelAjax
@@ -39,7 +40,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
  * @param integer $division_id
  * @return void
  */
-public function getLink($view='',$project_id=0,$round_id=0,$division_id=0)
+public function getLink($view='',$project_id=0,$round_id=0,$division_id=0,$season_id=0)
 {
 $app = Factory::getApplication();	   
 
@@ -49,8 +50,8 @@ switch ($view)
 {
 case "ranking":
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
 $routeparameter['p'] = $project_id;
 $routeparameter['type'] = 0;
 $routeparameter['r'] = $round_id;

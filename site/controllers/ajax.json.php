@@ -51,7 +51,7 @@ public function getLink()
         $jinput = $app->input; 
 //        $project_id = $jinput->getInt('project_id');
         $model = $this->getModel('ajax');
-        $res = $model->getLink($jinput->getInt('view'),$jinput->getInt('project_id'));
+        $res = $model->getLink($jinput->getVar('view'),$jinput->getInt('project_id'));
         echo json_encode($res);
         $app->close();   
        
