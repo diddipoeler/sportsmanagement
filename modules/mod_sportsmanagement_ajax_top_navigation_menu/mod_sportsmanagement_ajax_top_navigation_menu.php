@@ -7,6 +7,9 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
+ * 
+ * https://stackoverflow.com/questions/1145208/how-to-add-li-in-an-existing-ul
+ * 
  */
 
 // no direct access
@@ -58,8 +61,6 @@ $language_tag = $langtag->getTag();
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-
-
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
@@ -70,11 +71,19 @@ $helper = new modSportsmanagementAjaxTopNavigationMenuHelper($params);
 $points = $helper->getFederations();
 $tab_points = array();
 
+$navpoint = array();
+$navpoint_label = array();
+for ($i = 1; $i < 23; $i++)
+{
+$navpoint[] = $params->get('navpoint'.$i);     
+$navpoint_label[] = $params->get('navpoint_label'.$i);    
+}
+$document->addScriptOptions('navpoint', $navpoint);
+$document->addScriptOptions('navpoint_label', $navpoint_label);
 
 foreach( $points as $row )
 {
 $tab_points[] = $row->name;
-    
 }
 
 
@@ -324,8 +333,8 @@ $script[] = "					});";
 
 $script[] = "var valcountry8 = $('#jlamtopfederation".$row->name.$module->id."').val();";
 $script[] = "var url8 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getAssocLeagueSelect&country=' + valcountry8 + '&assoc_id=' + value7;";
-$script[] = "console.log('subassoc_id value7 = ' + value7 );";
-$script[] = "console.log('subassoc_id url8 = ' + url8 );";
+$script[] = "console.log('assoc_id value7 = ' + value7 );";
+$script[] = "console.log('assoc_id url8 = ' + url8 );";
 $script[] = "$.ajax({";
 $script[] = "url: url8,";
 $script[] = "dataType: 'json',";
@@ -350,8 +359,8 @@ $script[] = "});";
 $script[] = "$('#jlamtopleagues".$row->name.$module->id."').change(function(){";
 $script[] = "var value9 = $('#jlamtopleagues".$row->name.$module->id."').val();";
 $script[] = "var url9 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectSelect&league_id=' + value9;";
-$script[] = "console.log('subassoc_id value9 = ' + value9 );";
-$script[] = "console.log('subassoc_id url9 = ' + url9 );";
+$script[] = "console.log('league_id value9 = ' + value9 );";
+$script[] = "console.log('league_id url9 = ' + url9 );";
 $script[] = "$.ajax({";
 $script[] = "url: url9,";
 $script[] = "dataType: 'json',";
@@ -377,8 +386,8 @@ $script[] = "});";
 $script[] = "$('#jlamtopprojects".$row->name.$module->id."').change(function(){";
 $script[] = "var value10 = $('#jlamtopprojects".$row->name.$module->id."').val();";
 $script[] = "var url10 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getProjectTeams&project_id=' + value10;";
-$script[] = "console.log('subassoc_id value10 = ' + value10 );";
-$script[] = "console.log('subassoc_id url10 = ' + url10 );";
+$script[] = "console.log('project_id value10 = ' + value10 );";
+$script[] = "console.log('project_id url10 = ' + url10 );";
 $script[] = "$.ajax({";
 $script[] = "url: url10,";
 $script[] = "dataType: 'json',";
@@ -389,6 +398,11 @@ $script[] = "jQuery('select#jlamtopteams".$row->name.$module->id." option').remo
 $script[] = "console.log(data10);";
 $script[] = "});";
 $script[] = "";
+
+$script[] = "$('ul.jsmpage').empty();";
+$script[] = "$('ul.jsmpage').append('<li class=\'nav-item\' >An element' + value10 + '</li>');";
+
+
 $script[] = "						$.each(data10, function (i, val) {";
 $script[] = "							var option = $('<option>');";
 $script[] = "							option.text(val.text).val(val.value);";
@@ -442,16 +456,6 @@ $helper->setProject($project_id,$team_id,$division_id);
 $divisionsselect[$country_federation]['divisions'] = $helper->getDivisionSelect($project_id);
 $projectselect[$country_federation]['teams'] = $helper->getTeamSelect($project_id);
 }
-
-
-
-
-
-
-
-  
-
-
 
 
       

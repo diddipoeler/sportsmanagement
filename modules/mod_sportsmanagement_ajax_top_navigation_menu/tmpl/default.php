@@ -211,6 +211,13 @@ echo HTMLHelper::_('select.genericlist', $projectselect[$fed_array]['teams'], 'j
 <table>
 <tr>
 <td>
+
+<ul class="jsmpage pagination">
+
+
+</ul> 
+
+
 <?php if ( $project_id ) { ?>
 <div style="margin: 0 auto;">
 <fieldset class="">
