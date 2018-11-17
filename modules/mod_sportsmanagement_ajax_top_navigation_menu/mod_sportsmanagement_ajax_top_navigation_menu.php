@@ -408,7 +408,7 @@ $script[] = "
 for(var i = 0; i < navpoint.length; i++) {
 console.log('navpoint -> ', navpoint[i]);
 var url11 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getLink&view=' + navpoint[i] + '&project_id=' + value10;
-
+console.log('navpoint url11 = ' + url11 );
 $.ajax({
 url: url11,
 dataType: 'json',
