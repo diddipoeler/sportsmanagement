@@ -409,6 +409,9 @@ $script[] = "$('ul.jsmpage').empty();";
 $script[] = "
 //loop from 0 index to max index
 for(var i = 0; i < navpoint.length; i++) {
+    
+if (navpoint[i] != 'null')    
+{    
 console.log('navpoint -> ', navpoint[i]);
 var url11 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getLink&view=' + navpoint[i] + '&project_id=' + value10;
 console.log('navpoint url11 = ' + url11 );
@@ -425,6 +428,8 @@ $('ul.jsmpage').append('<li class=\'nav-item\' >An element' + data11 + '</li>');
 }
 
 });
+
+}
 
 }
 ";
