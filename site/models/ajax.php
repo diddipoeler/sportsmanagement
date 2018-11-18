@@ -43,7 +43,7 @@ class sportsmanagementModelAjax extends BaseDatabaseModel
 public function getLink($view='',$project_id=0,$round_id=0,$division_id=0,$season_id=0)
 {
 $app = Factory::getApplication();	   
-
+$link = '';
 if ( $view )
 {
 switch ($view)

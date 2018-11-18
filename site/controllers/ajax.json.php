@@ -47,9 +47,13 @@ class sportsmanagementControllerAjax extends BaseController {
 public function getLink()
 	{
 	$app = Factory::getApplication();
+    // Get the document object.
+        $document = Factory::getDocument();
         // JInput object
         $jinput = $app->input; 
 //        $project_id = $jinput->getInt('project_id');
+$linktext = $jinput->getVar('linktext');
+$document->addScriptOptions('linktext', $linktext);
         $model = $this->getModel('ajax');
         $res = $model->getLink($jinput->getVar('view'),$jinput->getInt('project_id'));
         echo json_encode($res);
