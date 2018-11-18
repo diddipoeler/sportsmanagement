@@ -44,6 +44,7 @@ public function getLink($view='',$project_id=0,$round_id=0,$division_id=0,$seaso
 {
 $app = Factory::getApplication();	   
 $link = '';
+
 if ( $view )
 {
 switch ($view)
@@ -59,6 +60,43 @@ $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $division_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);		  
+break;
+
+case "results":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['r'] = $round_id;
+$routeparameter['division'] = $division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
+break;
+
+case "resultsranking":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['r'] = $round_id;
+$routeparameter['division'] = $division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);
+break;
+
+case "teams":
+case "teamstree":
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0);
+$routeparameter['s'] = $season_id;
+$routeparameter['p'] = $project_id;
+$routeparameter['division'] = $division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
+break;  
           
 }   
 return $link;       
