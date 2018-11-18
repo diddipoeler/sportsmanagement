@@ -55,7 +55,8 @@ public function getLink()
 $linktext = $jinput->getVar('linktext');
 $document->addScriptOptions('linktext', $linktext);
         $model = $this->getModel('ajax');
-        $res = $model->getLink($jinput->getVar('view'),$jinput->getInt('project_id'));
+        $res['linktext'] = $linktext;
+        $res['link'] = $model->getLink($jinput->getVar('view'),$jinput->getInt('project_id'));
         echo json_encode($res);
         $app->close();   
        

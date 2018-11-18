@@ -427,17 +427,20 @@ dataType: 'json',
 async: false,
 type : 'POST'
 }).done(function(data11) {
-console.log('data11 -> ' + data11);    
+console.log('data11 link -> ' + data11.link);    
+console.log('data11 linktext -> ' + data11.linktext );    
 
-if (data11 != '')
+if (data11.link != '')
 {
-console.log('navpoint_label -> ' + navpoint_label[j]);
-var linktext = navpoint_label[j];
-console.log('var j -> ' + j);    
-console.log('linktext -> ' + linktext);    
+//console.log('navpoint_label -> ' + navpoint_label[j]);
+//var linktext = navpoint_label[j];
+//console.log('var j -> ' + j);    
+//console.log('linktext -> ' + linktext);    
+//linktext.replace(/\"/g, '');
+
 //const linktext = Joomla.getOptions('linktext');
 //console.log('linktext ajax-> ' + linktext);
-$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=' + data11 + '>' + linktext + '</a></li>');    
+$('ul.jsmpage').append('<li class=\'nav-item\' ><a href=' + data11.link + '>' + data11.linktext + '</a></li>');    
 }
 
 });
