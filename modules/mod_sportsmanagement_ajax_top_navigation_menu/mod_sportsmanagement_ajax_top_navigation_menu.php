@@ -408,30 +408,35 @@ $script[] = "$('ul.jsmpage').empty();";
 $script[] = "$('ul.pagination').empty();";
 
 $script[] = "
+var linktext = '';
 //loop from 0 index to max index
 for(var i = 0; i < navpoint.length; i++) {
     
 if (navpoint[i] != null)    
 {    
 console.log('navpoint -> ' + navpoint[i]);
-var linktext = navpoint_label[i];
+linktext = navpoint_label[i];
 console.log('linktext -> ' + linktext); 
-//var j = i;
+var j = i;
+console.log('var j -> ' + j);
 var url11 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getLink&view=' + navpoint[i] + '&project_id=' + value10 + '&linktext=' + linktext;
 console.log('navpoint url11 = ' + url11 );
 $.ajax({
 url: url11,
 dataType: 'json',
+async: false,
 type : 'POST'
 }).done(function(data11) {
 console.log('data11 -> ' + data11);    
 
-if (data11 != null)
+if (data11 != '')
 {
-//console.log('navpoint_label -> ' + navpoint_label[j]);
-//var linktext = navpoint_label[j];
-//console.log('linktext -> ' + linktext);    
-const linktext = Joomla.getOptions('linktext');
+console.log('navpoint_label -> ' + navpoint_label[j]);
+var linktext = navpoint_label[j];
+console.log('var j -> ' + j);    
+console.log('linktext -> ' + linktext);    
+//const linktext = Joomla.getOptions('linktext');
+//console.log('linktext ajax-> ' + linktext);
 $('ul.jsmpage').append('<li class=\'nav-item\' ><a href=' + data11 + '>' + linktext + '</a></li>');    
 }
 
