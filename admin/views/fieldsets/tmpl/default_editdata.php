@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
 $this->document->addStyleSheet('https://unpkg.com/leaflet@1.3.4/dist/leaflet.css');
+$this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');
 
 /**
  * welche joomla version ?
