@@ -158,16 +158,22 @@ echo HTMLHelper::_('bootstrap.renderModal',
     }
     ?>
     </div>
-             <div class="span6">
-						<div class="control-group">
-							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-							<div id="map_canvas"  class="map_canvas"></div>
-                            
-                            <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
-                            </div>
-						</div>
-					</div>
-            </div>
+<div class="span6">
+<div class="control-group">
+<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+<!-- google map anfang -->
+<div id="map_canvas"  class="map_canvas">
+</div>
+<!-- google map ende -->
+
+<!-- leaflet map anfang -->
+<div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+</div>
+<!-- leaflet map ende -->	
+
+</div>
+</div>
+</div>
     <?PHP
     break;
     default:
@@ -329,12 +335,18 @@ switch ($fieldset->name)
     case 'playground':
     case 'person':
 ?>
-             <div class="span6">
-						<div class="control-group">
-							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-							<div id="map_canvas"  class="map_canvas"></div>
-                            <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
-                            </div>
+<div class="span6">
+<div class="control-group">
+<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+<!-- google map anfang -->
+<div id="map_canvas"  class="map_canvas">
+</div>
+<!-- google map ende -->	
+<!-- leaflet map anfang -->	
+<div id="map" style="height: 400px; margin-top: 50px; position: relative;">
+</div>
+<!-- leaflet map ende -->
+	
 <script>
   
      var planes = [
@@ -426,9 +438,14 @@ else
 	
 <div class="control-group">
 <style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-<div id="map_canvas"  class="map_canvas"></div>
+<!-- google map anfang -->
+<div id="map_canvas"  class="map_canvas">
+</div>
+<!-- google map ende -->	
+<!-- leaflet map anfang -->		
 <div id="map" style="height: 400px; margin-top: 50px; position: relative;">
 </div>
+<!-- leaflet map ende -->			
 </div>
 
 		<?php
