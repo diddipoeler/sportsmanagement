@@ -323,14 +323,11 @@ catch (Exception $e)
 
         $query->where('pt.project_id = ' . $projectid);
         $query->where('pt.id = ' . $projectteamid);
+        $query->where('st.season_id = ' . $season_id);
+        $query->where('stp.season_id = ' . $season_id);
         $query->where('stp.published = 1');
-        //$query->where('ps.published = 1');
 
         $db->setQuery($query);
-
-        if (COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO) {
-            $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' Ausfuehrungszeit query<br><pre>' . print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()), true) . '</pre>'), 'Notice');
-        }
 
         $player = $db->loadResult();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -529,11 +526,14 @@ catch (Exception $e)
         return $leaguesoverview;
     }
 
+    
     /**
-     * Get total number of players assigned to a team
-     * @param int projectid
-     * @param int projectteamid
-     * @return int
+     * sportsmanagementModelTeamInfo::getPlayerMeanAge()
+     * 
+     * @param mixed $projectid
+     * @param mixed $projectteamid
+     * @param mixed $season_id
+     * @return
      */
     public static function getPlayerMeanAge($projectid, $projectteamid, $season_id) {
         // Reference global application object
@@ -556,11 +556,12 @@ catch (Exception $e)
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
 
-        $query->where('pt.project_id =' . $projectid);
-        $query->where('pt.id =' . $projectteamid);
+        $query->where('pt.project_id = ' . $projectid);
+        $query->where('pt.id = ' . $projectteamid);
+        $query->where('tp.season_id = ' . $season_id);
+        $query->where('st.season_id = ' . $season_id);
         $query->where('tp.published = 1');
         $query->where('ps.published = 1');
-
 
         $db->setQuery($query);
         $players = $db->loadObjectList();
@@ -604,12 +605,11 @@ catch (Exception $e)
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
         $query->join('INNER', '#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
 
-        $query->where('pt.project_id =' . $projectid);
-        $query->where('pt.id =' . $projectteamid);
-        $query->where('tp.season_id =' . $season_id);
-        //$query->where('tp.published = 1');
+        $query->where('pt.project_id = ' . $projectid);
+        $query->where('pt.id = ' . $projectteamid);
+        $query->where('tp.season_id = ' . $season_id);
+        $query->where('st.season_id = ' . $season_id);
         $query->where('ps.published = 1');
-
 
         $db->setQuery($query);
         $player = $db->loadResult();
