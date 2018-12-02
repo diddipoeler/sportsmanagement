@@ -111,9 +111,20 @@ dataType: 'json',
 type : 'POST'
 }).done(function(data1) {
 console.log(data1);
+
+dpjQuery.each(data1, function (i, val) {
+console.log(i);
+console.log(val.text);
+
+country = val.text;
+
+});
+
+
+
 });	
 
-
+console.log('getAddresString country alpha2 leaflet ' + country );
 console.log('getAddresString street ' + street);
   
 	return street + city + province + country;
