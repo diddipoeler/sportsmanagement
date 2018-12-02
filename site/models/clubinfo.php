@@ -629,7 +629,7 @@ $query->group('c.name');
         try {
             $db->setQuery($query);
             $result = $db->loadObjectList();
-           
+           /*
             if ( $result )
             {
             $subquery->clear();
@@ -683,7 +683,7 @@ $query->group('c.name');
                 
                 
             }
-            
+            */
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');            
             
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
@@ -697,6 +697,19 @@ $query->group('c.name');
 
         foreach ($result as $row) {
 
+            $subquery->clear();
+            $subquery->select('max(p.id) as maxpid');
+            $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
+            $subquery->from('#__sportsmanagement_project AS p');
+            $subquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.project_id = p.id');
+            $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+            $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
+            $subquery->where('t.club_id = '. $row->id);
+            $subquery->where('p.published = 1');    
+            $db->setQuery($subquery);
+            $result2 = $db->loadObject();
+            $row->pid = $result2->pid;
+            
             $pt = $row->new_club_id;
             $list = isset(self::$tree_fusion[$pt]) ? self::$tree_fusion[$pt] : array();
             array_push($list, $row);
