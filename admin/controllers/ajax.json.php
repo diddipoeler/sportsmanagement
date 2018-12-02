@@ -215,11 +215,13 @@ try
 try
     {
       $result = $this->getModel('ajax')->getCcountryAlpha2($this->jinput->get->getString('country'));
-      echo new JsonResponse($result);
+      //echo new JsonResponse($result);
+      echo json_encode($result);
     }
     catch(Exception $e)
     {
-      echo new JsonResponse($e);
+      //echo new JsonResponse($e);
+      echo json_encode($e);
     }                
         
         } 
