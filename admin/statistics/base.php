@@ -1377,6 +1377,14 @@ try{
         $query_mp = Factory::getDbo()->getQuery(true);
         $query_ms = Factory::getDbo()->getQuery(true);
         $query_me = Factory::getDbo()->getQuery(true);
+        
+        $mp_array = array();
+        $mptpid_array = array();
+        $ms_array = array();
+        $mstpid_array = array();
+        $me_array = array();
+        $metpid_array = array();
+        
 
 /*
 query mp
