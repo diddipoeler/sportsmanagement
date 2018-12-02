@@ -648,16 +648,16 @@ $query->group('c.name');
             }
             else
             {
-            $query->clear();
-            $query->select('c.id, c.name, c.new_club_id,c.logo_big');
-            $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-            $query->from('#__sportsmanagement_club AS c');
-            $query->where('c.id = ' . $clubid);
-            try {
-            $db->setQuery($query);
-            $result = $db->loadObjectList();
-            if ( $result )
-            {
+//            $query->clear();
+//            $query->select('c.id, c.name, c.new_club_id,c.logo_big');
+//            $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+//            $query->from('#__sportsmanagement_club AS c');
+//            $query->where('c.id = ' . $clubid);
+////            try {
+//            $db->setQuery($query);
+//            $result = $db->loadObjectList();
+//            if ( $result )
+//            {
             $subquery->clear();
             $subquery->select('max(p.id) as maxpid');
             $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
@@ -668,18 +668,18 @@ $query->group('c.name');
             $subquery->where('t.club_id = '. $clubid);
             $subquery->where('p.published = 1');    
             $db->setQuery($subquery);
-            $result2 = $db->loadObject();
-            $result->pid = $result2->pid;
+            $result3 = $db->loadObject();
+            $result->pid = $result3->pid;
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result3<br><pre>'.print_r($result3,true).'</pre>'),'');
-            }
+//            }
             
             
-            } catch (Exception $e) {
-            $msg = $e->getMessage(); // Returns "Normally you would have other code...
-            $code = $e->getCode(); // Returns
-            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-            }
+//            } catch (Exception $e) {
+//            $msg = $e->getMessage(); // Returns "Normally you would have other code...
+//            $code = $e->getCode(); // Returns
+//            $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+//            Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+//            }
                 
                 
             }
