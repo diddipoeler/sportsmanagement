@@ -621,6 +621,7 @@ $query->group('c.name');
         $subquery = $db->getQuery(true);
         $query->select('c.id, c.name, c.new_club_id,c.logo_big');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        /*
         $subquery->select('max(pt.project_id)');
         $subquery->from('#__sportsmanagement_project_team AS pt');
         $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
@@ -629,11 +630,37 @@ $query->group('c.name');
         $subquery->where('t.club_id = c.id ');
         $subquery->where('p.published = 1');
         $query->select('(' . $subquery . ') as pid ');
+        */
         $query->from('#__sportsmanagement_club AS c');
         $query->where('c.new_club_id = ' . $clubid);
+        
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
         try {
             $db->setQuery($query);
             $result = $db->loadObjectList();
+           
+            if ( $result )
+            {
+            $subquery->select('max(p.id) as maxpid');
+            $subquery->select('CONCAT_WS( \':\', p.id, p.alias ) AS pid');
+            $subquery->from('#__sportsmanagement_project AS p');
+            $subquery->join('INNER', '#__sportsmanagement_project_team AS pt on pt.project_id = p.id');
+            $subquery->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+            $subquery->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
+            $subquery->where('t.club_id = '. $clubid);
+            $subquery->where('p.published = 1');    
+            $db->setQuery($subquery);
+            $result2 = $db->loadObject();
+            
+            $result->pid = $result2->pid;
+
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result2<br><pre>'.print_r($result2,true).'</pre>'),'');
+                
+            }
+            
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');            
+            
             $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         } catch (Exception $e) {
             $msg = $e->getMessage(); // Returns "Normally you would have other code...
