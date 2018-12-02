@@ -73,6 +73,7 @@ function getAddresString()
 	var zip = '';
 	var province = '';
 	var country = '';
+	var countryleaflet = '';
 	if(dpjQuery("#jform_address").val()){
 		street = dpjQuery("#jform_address").val();
 		
@@ -100,7 +101,9 @@ function getAddresString()
 //		country = dpjQuery("#jform_country :selected").text() + ', ';
 //	}
 
-console.log('street ' + street);
+countryleaflet = dpjQuery("#jform_country").val();
+console.log('getAddresString countryleaflet ' + countryleaflet);
+console.log('getAddresString street ' + street);
   
 	return street + city + province + country;
 }
