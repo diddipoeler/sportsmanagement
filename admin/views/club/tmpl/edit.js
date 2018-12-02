@@ -103,6 +103,17 @@ function getAddresString()
 
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('getAddresString countryleaflet ' + countryleaflet);
+
+var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
+dpjQuery.ajax({
+url: url,
+dataType: 'json',
+type : 'POST'
+}).done(function(data1) {
+console.log(data1);
+});	
+
+
 console.log('getAddresString street ' + street);
   
 	return street + city + province + country;
