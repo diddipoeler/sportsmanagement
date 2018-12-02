@@ -1378,81 +1378,226 @@ try{
         $query_ms = Factory::getDbo()->getQuery(true);
         $query_me = Factory::getDbo()->getQuery(true);
 
+/*
+query mp
+SELECT DISTINCT m.id AS mid, tp.id AS tpid
+FROM j25_sportsmanagement_match_player AS md
+INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
+INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
+INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
+INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
+INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
+WHERE p.id = 81934
+AND st.team_id = 9
+AND (md.came_in = 0 OR md.came_in = 1)
 
+query ms
+SELECT DISTINCT m.id AS mid, tp.id AS tpid
+FROM j25_sportsmanagement_match_statistic AS md
+INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
+INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
+INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
+INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
+INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
+WHERE p.id = 81934
+AND st.team_id = 9
+
+query me
+SELECT DISTINCT m.id AS mid, tp.id AS tpid
+FROM j25_sportsmanagement_match_event AS md
+INNER JOIN j25_sportsmanagement_match AS m ON m.id = md.match_id
+INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
+INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
+INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id 
+INNER JOIN j25_sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id
+WHERE p.id = 81934
+AND st.team_id = 9
+
+
+*/
 		// Get the number of matches played per teamplayer of the projectteam.
 		// This is derived from three tables: match_player, match_statistic and match_event
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
 		// All of them have a match_id and teamplayer_id.
+        $query_mp->clear();
         $query_mp->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_mp->from('#__sportsmanagement_match_player AS md');
         $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query_mp->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_mp->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+
         $query_mp->where('pt.project_id = ' . $project_id);
+        $query_mp->where('p.id = ' . $project_id);
         $query_mp->where('st.team_id = ' . $team_id);
         $query_mp->where('(md.came_in = 0 OR md.came_in = 1)');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
- }
+        $db->setQuery($query_mp);
+		$res_mp = $db->loadObjectList();
+        
+        foreach ($res_mp as $mp) 
+        {
+			$mp_array[] = $mp->mid;
+            $mptpid_array[] = $mp->tpid;
+		}
+        $comma_separated_mp = implode(",", $mp_array);
+        $comma_separated_mptpid = implode(",", $mptpid_array);
+        
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_mp<br><pre>'.print_r($query_mp->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_mp<br><pre>'.print_r($res_mp,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_mp<br><pre>'.print_r($comma_separated_mp,true).'</pre>'),'');
+//}
 
-		$query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
+		$query_ms->clear();
+        $query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_ms->from('#__sportsmanagement_match_statistic AS md');
         $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        $query_ms->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_ms->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+        
+//        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+//        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+//        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
         $query_ms->where('pt.project_id = ' . $project_id);
         $query_ms->where('st.team_id = ' . $team_id);
- 
- if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{       
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
- }
         
+        $db->setQuery($query_ms);
+		$res_ms = $db->loadObjectList();
+        
+        foreach ($res_ms as $ms) 
+        {
+			$ms_array[] = $ms->mid;
+            $mstpid_array[] = $ms->tpid;
+		}
+        $comma_separated_ms = implode(",", $ms_array);
+        $comma_separated_mstpid = implode(",", $mstpid_array);
+ 
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{       
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_ms<br><pre>'.print_r($query_ms->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_ms<br><pre>'.print_r($res_ms,true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_ms<br><pre>'.print_r($comma_separated_ms,true).'</pre>'),'');
+//}
+        $query_me->clear();
 		$query_me->select('DISTINCT m.id AS mid, tp.id AS tpid');
         $query_me->from('#__sportsmanagement_match_event AS md');
         $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        $query_me->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $query_me->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.project_id = p.id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id and st.team_id = tp.team_id');
+        
+//        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+//        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+//        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
         $query_me->where('pt.project_id = ' . $project_id);
         $query_me->where('st.team_id = ' . $team_id);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
- }
+        $db->setQuery($query_me);
+		$res_me = $db->loadObjectList();
+        
+        foreach ($res_me as $me) 
+        {
+			$me_array[] = $me->mid;
+            $metpid_array[] = $me->tpid;
+		}
+        $comma_separated_me = implode(",", $me_array);
+        $comma_separated_metpid = implode(",", $metpid_array);
+        
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query_me<br><pre>'.print_r($query_me->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res_me<br><pre>'.print_r($res_me,true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' comma_separated_me<br><pre>'.print_r($comma_separated_me,true).'</pre>'),'');
+//}
         
 
+//        $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
+//        $subquery->from('#__sportsmanagement_match AS m');
+//        $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
+//        $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
+//        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
+//        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
+//        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
+//        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
+//        $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+//        $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+//        $subquery->where('st.team_id = '.$team_id);
+//        $subquery->where('p.id = ' . $project_id);
+//        $subquery->where('p.published = 1');
+//        $subquery->where('m.published = 1');
+//        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
+        
         $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
         $subquery->from('#__sportsmanagement_match AS m');
         $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
         $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
-        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
-        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
-        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
-        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
+//        $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
+//        $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
+//        $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
+        
+//        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
+        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ');
+        
         $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
         $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        
+        if ( !$comma_separated_mptpid )
+        {
+            $comma_separated_mptpid = 0;
+        }
+        if ( !$comma_separated_mstpid )
+        {
+            $comma_separated_mstpid = 0;
+        }
+        if ( !$comma_separated_metpid )
+        {
+            $comma_separated_metpid = 0;
+        }
+        $subquery->where('( tp.id IN ('.$comma_separated_mptpid.') OR tp.id IN ('.$comma_separated_mstpid.') OR tp.id IN ('.$comma_separated_metpid.') )');
+        
+        if ( $comma_separated_mp )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_mp.')');    
+        }
+        if ( $comma_separated_ms )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_ms.')');    
+        }
+        if ( $comma_separated_me )
+        {
+        $subquery->where('m.id IN ('.$comma_separated_me.')');    
+        }
         $subquery->where('st.team_id = '.$team_id);
         $subquery->where('p.id = ' . $project_id);
         $subquery->where('p.published = 1');
         $subquery->where('m.published = 1');
-        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
-        
+//        $subquery->where('(mp.tpid = tp.id OR ms.tpid = tp.id OR me.tpid = tp.id)');
         
         $query->select('pse.person_id, COUNT(pse.mid) AS value');
         $query->from('( '.$subquery.' ) AS pse');
         $query->group('pse.tpid');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
- }       
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' subquery<br><pre>'.print_r($subquery->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//}       
                 
 		$db->setQuery($query);
 		$res = $db->loadObjectList('person_id');
