@@ -2,7 +2,8 @@
 
 var dpjQuery = jQuery.noConflict();
 var cities;
-			
+var country;			
+
 dpjQuery(document).ready(function(){
 	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state').bind('change', function(e) {
 		dpjQuery("#jform_geocomplete").val(getAddresString());
@@ -72,7 +73,7 @@ function getAddresString()
 	var city = '';
 	var zip = '';
 	var province = '';
-	var country = '';
+	//var country = '';
 	var countryleaflet = '';
 	if(dpjQuery("#jform_address").val()){
 		street = dpjQuery("#jform_address").val();
