@@ -14,9 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-jimport( 'joomla.application.component.model' );
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelAjax
@@ -27,7 +25,7 @@ jimport( 'joomla.application.component.model' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelAjax extends JModelLegacy
+class sportsmanagementModelAjax extends BaseDatabaseModel
 {
         /**
          * sportsmanagementModelAjax::addGlobalSelectElement()
@@ -458,6 +456,35 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             
         return self::addGlobalSelectElement($result, $required); 
             
+        }
+        
+        
+        /**
+         * sportsmanagementModelAjax::getCcountryAlpha2()
+         * 
+         * @param mixed $country
+         * @return void
+         */
+        static function getCcountryAlpha2($country)
+        {
+        // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $option = $app->input->getCmd('option');
+        
+        $result = array();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        $query->select('c.alpha2 AS text');
+        $query->from('#__sportsmanagement_countries as c');
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+                    
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+            
+        return $result; 
+        
         }
         
         /**

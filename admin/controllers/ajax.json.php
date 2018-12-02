@@ -13,9 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Factory\Response\JsonResponse;
-use Joomla\CMS\\MVC\Controller\BaseController;
-
-jimport('joomla.application.component.controller');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerAjax
@@ -202,6 +200,28 @@ try
       echo new JsonResponse($e);
     }        
             
+        } 
+        
+        
+        
+        /**
+         * sportsmanagementControllerAjax::getCcountryAlpha2()
+         * 
+         * @return void
+         */
+        public function getCcountryAlpha2()
+        {
+                    
+try
+    {
+      $result = $this->getModel('ajax')->getCcountryAlpha2($this->jinput->get->getString('country'));
+      echo new JsonResponse($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JsonResponse($e);
+    }                
+        
         } 
         
         
