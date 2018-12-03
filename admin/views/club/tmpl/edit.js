@@ -3,8 +3,31 @@
 var dpjQuery = jQuery.noConflict();
 var cities;
 var country;			
+var countryleafletsearch;
+var countryleaflet;
 
 dpjQuery(document).ready(function(){
+
+countryleaflet = dpjQuery("#jform_country").val();
+console.log('ready countryleaflet ' + countryleaflet);
+var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
+dpjQuery.ajax({
+url: url,
+dataType: 'json',
+async: false,
+type : 'POST'
+}).done(function(data1) {
+console.log(data1);
+dpjQuery.each(data1, function (i, val) {
+console.log(i);
+console.log(val.text);
+countryleafletsearch = val.text;
+});
+});
+console.log('ready url ' + url );
+console.log('ready countryleafletsearch ' + countryleafletsearch );
+
+
 	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state').bind('change', function(e) {
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
@@ -74,7 +97,7 @@ function getAddresString()
 	var zip = '';
 	var province = '';
 	//var country = '';
-	var countryleaflet = '';
+	//var countryleaflet = '';
 	if(dpjQuery("#jform_address").val()){
 		street = dpjQuery("#jform_address").val();
 		
@@ -109,6 +132,7 @@ var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task
 dpjQuery.ajax({
 url: url,
 dataType: 'json',
+async: false,
 type : 'POST'
 }).done(function(data1) {
 console.log(data1);
@@ -117,7 +141,7 @@ dpjQuery.each(data1, function (i, val) {
 console.log(i);
 console.log(val.text);
 
-country = val.text;
+countryleafletsearch = val.text;
 
 });
 
@@ -125,7 +149,7 @@ country = val.text;
 
 });	
 
-console.log('getAddresString country alpha2 leaflet ' + country );
+console.log('getAddresString country alpha2 leaflet ' + countryleafletsearch );
 console.log('getAddresString street ' + street);
   
 	return street + city + province + country;
