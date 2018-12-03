@@ -367,7 +367,7 @@ var myIcon = L.icon({
 });    
 
 var layerGroup = L.layerGroup().addTo(map);
-
+var geocoder = new L.Control.Geocoder.Nominatim();
 for (i = 0; i < planes.length; i++) {
     marker = L.marker([planes[i][1], planes[i][2]]);
     layerGroup.addLayer(marker);
