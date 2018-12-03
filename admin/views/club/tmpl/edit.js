@@ -265,6 +265,7 @@ console.log("Adding layer");
 //map.removeLayer(layerGroup);
 //Add a marker to show where you clicked.
 theMarker = L.marker([lat,lng]).addTo(map);  
+map.setView(new L.LatLng(lat, lng), 15);	
 //L.marker([lat, lng]).addTo(layerGroup);
 //layerGroup.addLayer(marker);
 
