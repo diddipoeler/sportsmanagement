@@ -339,7 +339,7 @@ switch ($fieldset->name)
 <div class="control-group">
 <style type="text/css">.map_canvas{width:100%;height:400px;}</style>
 <!-- google map anfang -->
-<div id="map_canvas"  class="map_canvas">
+<div id="map_canvas" class="map_canvas" style="display: none;">
 </div>
 <!-- google map ende -->	
 <!-- leaflet map anfang -->	
