@@ -6,8 +6,16 @@ var country;
 var countryleafletsearch;
 var countryleaflet;
 
-dpjQuery(document).ready(function(){
+var address;
+var street;
+var city;
+var zip;
+var province;
 
+var yourQuery;	
+	
+dpjQuery(document).ready(function(){
+//geocoder = new L.Control.Geocoder.Nominatim();
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
 var url = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryAlpha2&country=' + countryleaflet;
@@ -19,13 +27,24 @@ type : 'POST'
 }).done(function(data1) {
 console.log(data1);
 dpjQuery.each(data1, function (i, val) {
-console.log(i);
-console.log(val.text);
+console.log('ready i ' + i);
+console.log('ready text ' + val.text);
 countryleafletsearch = val.text;
 });
 });
 console.log('ready url ' + url );
 console.log('ready countryleafletsearch ' + countryleafletsearch );
+
+street = dpjQuery("#jform_address").val();
+zip = dpjQuery("#jform_zipcode").val();
+city = dpjQuery("#jform_location").val();
+yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
+
+console.log('ready yourQuery ' + yourQuery );
+
+//geocoder.geocode(yourQuery, function(results) {
+//console.log(results);
+//});
 
 
 	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state').bind('change', function(e) {
@@ -91,11 +110,11 @@ console.log('jform_geocomplete ' + inp );
 
 function getAddresString()
 {
-	var address = '';
-	var street = '';
-	var city = '';
-	var zip = '';
-	var province = '';
+//	var address = '';
+//	var street = '';
+//	var city = '';
+//	var zip = '';
+//	var province = '';
 	//var country = '';
 	//var countryleaflet = '';
 	if(dpjQuery("#jform_address").val()){
