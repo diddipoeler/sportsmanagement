@@ -129,7 +129,6 @@ class sportsmanagementViewPersons extends sportsmanagementView
 		$team_name = $this->model->getProjectTeamName($project_team_id);
         
         
-		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
         //$items = $this->get('Items');
 		//$total = $this->get('Total');

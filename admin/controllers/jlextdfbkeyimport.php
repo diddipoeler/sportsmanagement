@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport( 'joomla.application.component.controller' );
 
@@ -163,7 +164,7 @@ Factory::getApplication()->setUserState( "$option.first_post", $post );
 		{
 //    $table = 'round';
 //		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
-        $mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("round", "sportsmanagementModel");
         $row = $mdl->getTable();
             
     $row->roundcode = $post[roundcode][$i];
@@ -245,7 +246,7 @@ $post = Factory::getApplication()->input->post->getArray(array());
 		{
 //    $table = 'match';
 //		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
-        $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("match", "sportsmanagementModel");
         $row = $mdl->getTable();
 		
 		$row->round_id = $post[round_id][$i];

@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewTeamPerson
@@ -50,7 +51,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->season_id = $this->app->getUserState( "$this->option.season_id", '0' );
                
         
-		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($this->project_id);
 		$this->project = $project;
         
@@ -60,12 +61,12 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->project_team = $project_team;
 		}
         
-		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+		$mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($this->item->person_id);
         
 	 //build the html options for position
         $position_id = array();        
-$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
 if ($project_ref_positions) {
             $position_id = array_merge($position_id, $project_ref_positions);

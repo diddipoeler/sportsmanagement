@@ -195,7 +195,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	{
     
     // match relation tab
-		//$mdlMatch = JModelLegacy::getInstance ( 'match', 'JoomleagueModel' );
 		$oldmatches [] = HTMLHelper::_ ( 'select.option', '0', Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH' ) );
 		$res = array ();
 		$new_match_id = ($this->item->new_match_id) ? $this->item->new_match_id : 0;

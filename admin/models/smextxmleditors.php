@@ -40,9 +40,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-
-jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
@@ -57,7 +56,7 @@ jimport('joomla.filesystem.file');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelsmextxmleditors extends JModelLegacy
+class sportsmanagementModelsmextxmleditors extends BaseDatabaseModel
 {
 
 /**

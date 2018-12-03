@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelagegroup
@@ -32,7 +33,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
@@ -56,8 +57,8 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
      */
     public function importAgeGroupFile()
     {
-    $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");    
-    $cpaneltool = JModelLegacy::getInstance("cpanel", "sportsmanagementModel");
+    $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");    
+    $cpaneltool = BaseDatabaseModel::getInstance("cpanel", "sportsmanagementModel");
     $params = ComponentHelper::getParams( $this->jsmoption );
     $sporttypes = $params->get( 'cfg_sport_types' );
     $country = $params->get( 'cfg_country_associations' );    

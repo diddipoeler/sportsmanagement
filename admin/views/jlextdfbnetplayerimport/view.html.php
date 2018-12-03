@@ -14,6 +14,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewjlextdfbnetplayerimport
@@ -51,7 +52,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$this->revisionDate	= $revisionDate ;
 		//build the html select list for seasons
 		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
-        $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
+        $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
         
         if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {

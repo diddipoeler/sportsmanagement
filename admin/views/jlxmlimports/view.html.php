@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -43,7 +44,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
-        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript(JUri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
@@ -100,7 +101,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $option = $jinput->getCmd('option');
         //$project_id = (int) $app->getUserState($option.'project', 0);
         //$app->enqueueMessage(Text::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
-        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $data = $model->getData();
         $update_matches = $model->getDataUpdate();
         $this->xml = $data;
@@ -141,7 +142,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
-        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $data = $model->getData();
         $uploadArray = $app->getUserState($option . 'uploadArray', array());
         // TODO: import timezone
@@ -167,43 +168,43 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         //$this->request_url = $uri->toString();
         $this->xml = $data;
         // diddi
-        $mdl = JModelLegacy::getInstance('leagues', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('leagues', 'sportsmanagementModel');
         $this->leagues = $mdl->getLeagues();
         // diddi
-        $mdl = JModelLegacy::getInstance('seasons', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('seasons', 'sportsmanagementModel');
         $this->seasons = $mdl->getSeasons();
         // diddi
-        $mdl = JModelLegacy::getInstance('sportstypes', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('sportstypes', 'sportsmanagementModel');
         $this->sportstypes = $mdl->getSportsTypes();
 
         $this->admins = $model->getUserList(false);
         $this->editors = $model->getUserList(false);
         $this->templates = $model->getTemplateList();
         // diddi
-        $mdl = JModelLegacy::getInstance('teams', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('teams', 'sportsmanagementModel');
         $this->teams = $mdl->getTeamListSelect();
         // diddi
-        $mdl = JModelLegacy::getInstance('clubs', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
         $this->clubs = $mdl->getClubListSelect();
         // diddi
-        $mdl = JModelLegacy::getInstance('eventtypes', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('eventtypes', 'sportsmanagementModel');
         $this->events = $mdl->getEventList();
         // diddi
-        //$mdl = JModelLegacy::getInstance("positions", "sportsmanagementModel",$config);
-        $mdl = JModelLegacy::getInstance('positions', 'sportsmanagementModel');
+        //$mdl = BaseDatabaseModel::getInstance("positions", "sportsmanagementModel",$config);
+        $mdl = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
         $this->positions = $mdl->getPositionListSelect();
         $this->parentpositions = $mdl->getParentsPositions();
         // diddi
-        $mdl = JModelLegacy::getInstance('playgrounds', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('playgrounds', 'sportsmanagementModel');
         $this->playgrounds = $mdl->getPlaygroundListSelect();
 
-        $mdl = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
+        $mdl = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
         //$this->jlxmlimport ?
         // diddi
-        $mdl = JModelLegacy::getInstance('persons', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
         $this->persons = $mdl->getPersonListSelect();
         // diddi
-        $mdl = JModelLegacy::getInstance('statistics', 'sportsmanagementModel');
+        $mdl = BaseDatabaseModel::getInstance('statistics', 'sportsmanagementModel');
         $this->statistics = $mdl->getStatisticListSelect();
 
         $this->OldCountries = $model->getCountryByOldid();
@@ -213,7 +214,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info', 0);
 
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
         if ($res = $mdlagegroup->getAgeGroups('', 0)) {
             $myoptions = array_merge($myoptions, $res);
             $this->search_agegroup = $res;
@@ -262,7 +263,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $mtime = $mtime[1] + $mtime[0];
         $starttime = $mtime;
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
-        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel', $config);
+        $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel', $config);
 
         $data2 = $jinput->post->getArray(array());
         // Set toolbar items for the page
@@ -302,7 +303,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $document = Factory::getDocument();
         $db = sportsmanagementHelper::getDBConnection();
         $uri = Factory::getURI();
-        $model = JModelLegacy::getInstance('JLXMLImport', 'sportsmanagementmodel');
+        $model = BaseDatabaseModel::getInstance('JLXMLImport', 'sportsmanagementmodel');
         $lists = array();
 
         $this->request_url = $uri->toString();
@@ -330,7 +331,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 }
                 break;
             case '8': { // Select Statistics
-                    $mdl = JModelLegacy::getInstance('statistics', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('statistics', 'sportsmanagementModel');
                     $this->statistics = $mdl->getStatisticListSelect();
                     $statisticlist = array();
                     $statisticlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_STATISTIC'));
@@ -341,7 +342,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '7': { // Select ParentPosition
-                    $mdl = JModelLegacy::getInstance('positions', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
                     $this->parentpositions = $mdl->getParentsPositions();
                     $parentpositionlist = array();
                     $parentpositionlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PARENT_POSITION'));
@@ -352,7 +353,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '6': { // Select Position
-                    $mdl = JModelLegacy::getInstance('positions', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('positions', 'sportsmanagementModel');
                     $this->positions = $mdl->getPositionListSelect();
                     $positionlist = array();
                     $positionlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
@@ -363,7 +364,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '5': { // Select Event
-                    $mdl = JModelLegacy::getInstance('eventtypes', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('eventtypes', 'sportsmanagementModel');
                     $this->events = $mdl->getEventList();
                     $eventlist = array();
                     $eventlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
@@ -374,7 +375,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '4': { // Select Playground
-                    $mdl = JModelLegacy::getInstance('playgrounds', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('playgrounds', 'sportsmanagementModel');
                     $this->playgrounds = $mdl->getPlaygroundListSelect();
                     $playgroundlist = array();
                     $playgroundlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PLAYGROUND'));
@@ -385,7 +386,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '3': { // Select Person
-                    $mdl = JModelLegacy::getInstance('persons', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('persons', 'sportsmanagementModel');
                     $this->persons = $mdl->getPersonListSelect();
                     $personlist = array();
                     $personlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON'));
@@ -396,7 +397,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
                 break;
 
             case '2': { // Select Club
-                    $mdl = JModelLegacy::getInstance('clubs', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
                     $this->clubs = $mdl->getClubListSelect();
                     $clublist = array();
                     $clublist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB'));
@@ -408,9 +409,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
             case '1':
             default: { // Select Team
-                    $mdl = JModelLegacy::getInstance('teams', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('teams', 'sportsmanagementModel');
                     $this->teams = $mdl->getTeamListSelect();
-                    $mdl = JModelLegacy::getInstance('clubs', 'sportsmanagementModel');
+                    $mdl = BaseDatabaseModel::getInstance('clubs', 'sportsmanagementModel');
                     $this->clubs = $mdl->getClubListSelect();
                     $teamlist = array();
                     $teamlist[] = HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_TEAM'));

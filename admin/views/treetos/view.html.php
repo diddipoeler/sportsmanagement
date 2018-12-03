@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 
 /**
@@ -64,14 +64,14 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	{
         
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 	    $projectws = $mdlProject->getProject($this->project_id);
         
 		$division = $this->app->getUserStateFromRequest($this->option.'tt_division', 'division', '', 'string');
 
 		//build the html options for divisions
 		$divisions[] = JHtmlSelect::option('0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+		$mdlDivisions = BaseDatabaseModel::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
         {
 			$divisions = array_merge($divisions,$res);

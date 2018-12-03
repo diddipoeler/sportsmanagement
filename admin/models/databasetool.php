@@ -15,7 +15,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 
-
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
@@ -877,7 +876,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
         //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
 
-        $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("sportstype", "sportsmanagementModel");
         $p_sportstype = $mdl->getTable();
         $p_sportstype->load((int) $filter_sports_type);
         $temp = explode("_", $p_sportstype->name);

@@ -19,7 +19,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Layout\FileLayout;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewcpanel
@@ -43,7 +43,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         $model = $this->getModel();
         $my_text = '';
 
-        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
+        $databasetool = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
         DEFINE('COM_SPORTSMANAGEMENT_MODEL_ERRORLOG', $databasetool);
 
         // für den import die jl tabellen lesen

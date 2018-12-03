@@ -1,11 +1,12 @@
 <?php
-$classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
-JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-
 // no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
+$classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 
 jimport('joomla.form.formfield');
 

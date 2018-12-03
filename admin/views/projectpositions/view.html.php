@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -70,7 +71,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
         $this->model->updateprojectpositions($items,$this->project_id);
         
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
 //		// table ordering
@@ -128,7 +129,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
         $this->project_id = $this->jinput->get('pid');
 
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
 
         if ($ress1 = $model->getSubPositions($project->sports_type_id)) {

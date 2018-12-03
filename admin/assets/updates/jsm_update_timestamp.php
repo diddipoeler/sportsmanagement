@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filter.output');
 
@@ -21,7 +22,7 @@ if ( !class_exists('sportsmanagementHelper') )
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
-JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
 $uri	= Factory::getUri();

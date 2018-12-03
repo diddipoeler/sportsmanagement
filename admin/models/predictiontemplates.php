@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\Registry\Registry;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelPredictionTemplates
@@ -299,7 +300,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$record_tpl = $db->loadResult();
         if( !$record_tpl )
         {
-                            $mdl = JModelLegacy::getInstance("predictiontemplate", "sportsmanagementModel");
+                            $mdl = BaseDatabaseModel::getInstance("predictiontemplate", "sportsmanagementModel");
                             $tblTemplate_Config = $mdl->getTable();
 							
                             $tblTemplate_Config->template = $template;

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelRounds
@@ -424,7 +425,7 @@ function populate($project_id, $scheduling, $time, $interval, $start, $roundname
 			$time = '20:00';
 		}
 		
-		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$teams = $mdlProject->getProjectTeamsOptions($project_id);
 		
 		if ($teamsorder)

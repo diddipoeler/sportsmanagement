@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.folder');
 
@@ -76,10 +77,10 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         if (!$this->rid) {
             $this->rid = $app->getUserState("$option.rid", '0');
         }
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $projectws = $mdlProject->getProject($this->project_id);
 
-        $mdlRound = JModelLegacy::getInstance('Round', 'sportsmanagementModel');
+        $mdlRound = BaseDatabaseModel::getInstance('Round', 'sportsmanagementModel');
         $roundws = $mdlRound->getRound($this->rid);
 
         //build the html selectlist for rounds
@@ -165,7 +166,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
 
         //build the html options for divisions
         $divisions[] = JHtmlSelect::option('0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-        $mdlDivisions = JModelLegacy::getInstance('divisions', 'sportsmanagementModel');
+        $mdlDivisions = BaseDatabaseModel::getInstance('divisions', 'sportsmanagementModel');
         if ($res = $mdlDivisions->getDivisions($this->project_id)) {
             $divisions = array_merge($divisions, $res);
         }

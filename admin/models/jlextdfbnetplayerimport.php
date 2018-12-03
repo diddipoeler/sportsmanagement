@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
@@ -32,7 +33,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
 
-jimport( 'joomla.application.component.model' );
+
 jimport('joomla.html.pane');
 
 //require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'csvhelper.php' );
@@ -58,7 +59,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextdfbnetplayerimport extends JModelLegacy
+class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 {
 
 var $_datas=array();
@@ -263,7 +264,7 @@ function getUpdateData()
   
   foreach ( $updatedata as $row)
   {
-  $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
+  $mdl = BaseDatabaseModel::getInstance("match", "sportsmanagementModel");
   $p_match = $mdl->getTable();
   
   

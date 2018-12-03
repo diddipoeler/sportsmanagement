@@ -42,6 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewjlextindividualsportes
@@ -88,9 +89,9 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		$projectteam1_id		= $input->getInt('team1', 0);
 		$projectteam2_id		= J$input->getInt('team2', 0);
         
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($project_id);
-        $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
+        $mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($rid);
         
         //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');

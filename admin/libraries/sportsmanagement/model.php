@@ -245,7 +245,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
        case 'projectteam':
        if ( $post['delete'] )
         {
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->DeleteTrainigData($post['delete'][0]);
         }
         
@@ -253,13 +253,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
         {
             $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
             $row->load( (int)$post['jform']['team_id'] );
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->addNewTrainigData($row->team_id);
         }
         
         if ( $post['tdids'] )
         {
-        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
         $mdlTeam->UpdateTrainigData($post);
         }
         
@@ -709,7 +709,7 @@ $result = $this->jsmdb->execute();
         {  
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_eventslist <br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
         }
-		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
+		$mdl = BaseDatabaseModel::getInstance("positioneventtype", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
@@ -725,7 +725,7 @@ $result = $this->jsmdb->execute();
         {  
 		$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' position_statistic <br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
         }
-		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
+		$mdl = BaseDatabaseModel::getInstance("positionstatistic", "sportsmanagementModel");
 		$mdl->store($post,$data['id']);
 		}
 		}
@@ -783,7 +783,7 @@ $result = $this->jsmdb->execute();
 		}
           
         }
-		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
+		//$mdl = BaseDatabaseModel::getInstance("seasonteam", "sportsmanagementModel");
 		}
 // delete all custom keys
 $this->jsmquery->clear();    

@@ -89,9 +89,7 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
             $this->step = 0;
         }
         
-//        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
-        //$this->assign('totals',$model->gettotals() );
-        
+       
         if ( $this->step <= $this->totals )
             {
             $successTable = $model->newstructur(0, $count);    

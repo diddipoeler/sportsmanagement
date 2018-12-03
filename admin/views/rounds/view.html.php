@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
 
+
 /**
  * sportsmanagementViewRounds
  * 
@@ -118,7 +119,7 @@ class sportsmanagementViewRounds extends sportsmanagementView {
 
         //TODO-add error message - what if there are no teams assigned to the project
         $this->project_id = $this->app->getUserState("$this->option.pid", '0');
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $teams = $mdlProject->getProjectTeamsOptions($this->project_id);
         $projectws = $mdlProject->getProject($this->project_id);
 

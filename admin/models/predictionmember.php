@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -138,8 +139,8 @@ $sender = array(
     $config->getValue( 'config.fromname' ) );
 }
 
-$mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
-$mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
+$mdlPredictionGame = BaseDatabaseModel::getInstance('PredictionGame', 'sportsmanagementModel');
+$mdlPredictionGames = BaseDatabaseModel::getInstance('PredictionGames', 'sportsmanagementModel');
 
 $predictiongame = $mdlPredictionGame->getPredictionGame($prediction_id);
 $predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);

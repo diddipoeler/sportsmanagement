@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewTreeto
@@ -81,7 +82,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 		$projectws = $this->get('Data','project');
 		//$this->assignRef('form' 	,$this->get('form'));
         $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $this->projectws = $mdlProject->getProject($this->project_id);
 		//$this->assignRef('projectws',$projectws);
 		$this->lists = $lists;

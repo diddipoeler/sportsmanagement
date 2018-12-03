@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewTreetonode
@@ -61,11 +61,11 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
         //$total = $this->get('Total');
 		//$pagination = $this->get('Pagination');
 		//$projectws = $this->get( 'Data', 'project' );
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($pid);
 		
 		$model = $this->getModel('project');
-		$mdlTreetonodes = JModelLegacy::getInstance("Treetonodes", "sportsmanagementModel");
+		$mdlTreetonodes = BaseDatabaseModel::getInstance("Treetonodes", "sportsmanagementModel");
 		$team_id[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
 		if( $projectteams = $mdlTreetonodes->getProjectTeamsOptions($pid) )
 		{

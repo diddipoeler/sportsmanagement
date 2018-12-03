@@ -14,8 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
-
-jimport('joomla.application.component.model');
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -42,7 +41,7 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmimageimport extends JModelLegacy {
+class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
 
     /**
      * Method override to check if you can edit an existing record.

@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelJLXMLImports
@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelJLXMLImports extends JModelLegacy
+class sportsmanagementModelJLXMLImports extends BaseDatabaseModel
 {
     
         /**

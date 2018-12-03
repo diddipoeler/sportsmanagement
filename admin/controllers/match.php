@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\FormController; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementControllermatch
@@ -61,7 +62,7 @@ class sportsmanagementControllermatch extends FormController
 		$round_id = Factory::getApplication()->input->getInt('rid');
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
 		$post['round_id'] = $round_id;
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($post['project_id']);
         
         

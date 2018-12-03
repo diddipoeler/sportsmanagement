@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelprojectteam
@@ -323,7 +324,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
 
         if ( $delete_team )
         {
-        $mdlProjectTeams = JModelLegacy::getInstance("projectteams", "sportsmanagementModel");
+        $mdlProjectTeams = BaseDatabaseModel::getInstance("projectteams", "sportsmanagementModel");
         $project_teams = $mdlProjectTeams->getAllProjectTeams($project_id,0,$delete_team);
         foreach( $project_teams as $row )
           {

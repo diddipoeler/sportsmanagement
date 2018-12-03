@@ -12,8 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.application.component.model');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
@@ -27,7 +27,7 @@ jimport('joomla.filesystem.file');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelImagehandler extends JModelLegacy
+class sportsmanagementModelImagehandler extends BaseDatabaseModel
 {
 	/**
 	 * Pagination object

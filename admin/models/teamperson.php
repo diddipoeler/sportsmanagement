@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelteamperson
@@ -174,7 +175,7 @@ $resultupdate = $this->jsmdb->execute();
 // update der positionen bei den spielen, wenn keine vorhanden sind
 //build the html options for position
 $position_ids = array();        
-$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, 1);
 if ($project_ref_positions) {
             $position_ids = array_merge($position_ids, $project_ref_positions);

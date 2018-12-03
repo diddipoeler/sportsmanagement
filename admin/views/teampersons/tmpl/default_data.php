@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -283,14 +285,14 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 									$append=' style="background-color:#FFCCCC"';
 								
 // einen vorschlag generieren
-$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+$mdlPerson = BaseDatabaseModel::getInstance("Person", "sportsmanagementModel");
 $project_person = $mdlPerson->getPerson($row->person_id);
 $position_id = $project_person->position_id;
 //echo '<pre>'.print_r($position_id,true).'</pre>';
 
 //build the html options for position
 $position_ids = array();        
-$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
+$mdlPositions = BaseDatabaseModel::getInstance('Positions', 'sportsmanagementModel');
 $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
 if ($project_ref_positions) {
             $position_ids = array_merge($position_ids, $project_ref_positions);

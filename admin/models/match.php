@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
@@ -68,7 +69,7 @@ var $projectteamid = 0;
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
@@ -2838,7 +2839,7 @@ return false;
         // get settings from com_issuetracker parameters
         $params = ComponentHelper::getParams($option);
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
-        $mdl = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdl->getProject($this->project_id);
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
@@ -2846,7 +2847,7 @@ return false;
         
         if ( $project->fav_team )
         {
-        $mdl = JModelLegacy::getInstance("TeamPersons", "sportsmanagementModel");
+        $mdl = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
 	    $teamplayer = $mdl->getProjectTeamplayers($project->fav_team,$project->season_id);
         }
         

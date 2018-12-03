@@ -41,9 +41,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+
 JLoader::import('components.com_sportsmanagement.libraries.dbutil', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
@@ -83,7 +84,7 @@ static $_project_id = 0;
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())

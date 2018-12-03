@@ -20,16 +20,17 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 JLoader::import('joomla.application.component.model');
-JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models', 'sportsmanagementModel');
+BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models', 'sportsmanagementModel');
 
 class jsmGCalendarDBUtil
 {
 
 	public static function getCalendar($calendarID) 
     {
-		$model = JModelLegacy::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
+		$model = BaseDatabaseModel::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
 		$model->setState('ids',$calendarID);
 		$items = $model->getItems();
 		if(empty($items)){
@@ -40,14 +41,14 @@ class jsmGCalendarDBUtil
 
 	public static function getCalendars($calendarIDs) 
     {
-		$model = JModelLegacy::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
+		$model = BaseDatabaseModel::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
 		$model->setState('ids', $calendarIDs);
 		return $model->getItems();
 	}
 
 	public static function getAllCalendars() 
     {
-		$model = JModelLegacy::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
+		$model = BaseDatabaseModel::getInstance('jsmGCalendars', 'sportsmanagementModel', array('ignore_request' => true));
 		return $model->getItems();
 	}
 }

@@ -20,6 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  
 // import Joomla  library
 //jimport('joomla.github.issues');
@@ -49,7 +50,7 @@ JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelgithub extends JModelLegacy
+class sportsmanagementModelgithub extends BaseDatabaseModel
 {
     var $client = '';
     

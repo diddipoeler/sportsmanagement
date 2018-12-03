@@ -16,6 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
@@ -2829,7 +2830,7 @@ $new_id = $db->insertid();
 }
 }
 
-// $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
+// $mdl = BaseDatabaseModel::getInstance("joomleagueimport", "sportsmanagementModel");
 $new_id = 0;    
 $query->clear();
 $query->select('id');
@@ -3099,7 +3100,7 @@ $result = $db->loadObjectList();
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
 
-$mdl = JModelLegacy::getInstance("TeamPersons", "sportsmanagementModel");
+$mdl = BaseDatabaseModel::getInstance("TeamPersons", "sportsmanagementModel");
 $zaehler = 1;
 foreach( $result as $row )
 {
@@ -3130,7 +3131,7 @@ $my_text = '';
 /**
  * zum schluss werden noch die bilderpfade umgesetzt
  */
-$mdl = JModelLegacy::getInstance("databasetool", "sportsmanagementModel"); 
+$mdl = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel"); 
 
 $mdl->setNewPicturePath();
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Bilderpfade angepasst !</strong>'.'</span>';

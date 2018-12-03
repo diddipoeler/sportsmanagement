@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelspecialextensions
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelspecialextensions extends JModelLegacy
+class sportsmanagementModelspecialextensions extends BaseDatabaseModel
 {
     
     /**

@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -36,7 +37,7 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'SofeeXmlPars
 //require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'xml_parser.php' );
 //require_once( JPATH_COMPONENT_ADMINISTRATOR . DS. 'helpers' . DS . 'parser_php5.php' );
 
-jimport('joomla.application.component.model');
+
 jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -55,7 +56,7 @@ jimport( 'joomla.utilities.utility' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextprofleagimport extends JModelLegacy
+class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 {
   var $_datas =array();
 	var $_league_id = 0;

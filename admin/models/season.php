@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelseason
@@ -32,7 +33,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())

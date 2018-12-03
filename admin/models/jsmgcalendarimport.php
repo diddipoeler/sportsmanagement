@@ -13,8 +13,8 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-JLoader::import('joomla.application.component.model');
 
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Client', JPATH_ADMINISTRATOR);
@@ -30,7 +30,7 @@ JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Ser
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsmgcalendarImport extends JModelLegacy 
+class sportsmanagementModeljsmgcalendarImport extends BaseDatabaseModel 
 {
     
     var $_name = 'sportsmanagement';

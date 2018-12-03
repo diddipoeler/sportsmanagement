@@ -5,7 +5,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
 {
@@ -44,10 +44,10 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		//$model = $this->getModel();
 
 		//$projectws = $this->get('Data','project');
-        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+        $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($project_id);
         
-        $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
+        $mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($node_id);
         
 
@@ -169,12 +169,12 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 		//$model = $this->getModel();
 		//$projectws = $this->get('Data','project');
         $this->project_id = $this->jinput->get('pid');
-		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
 		$projectws = $mdlProject->getProject($this->project_id);
         
        
 
-        $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
+        $mdlTreetoNode = BaseDatabaseModel::getInstance('treetonode', 'sportsmanagementModel');
         $nodews = $mdlTreetoNode->getNode($this->jinput->get('nid'));
         
 		$this->match = $this->items;

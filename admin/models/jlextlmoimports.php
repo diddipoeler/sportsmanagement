@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Utility\Utility;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -34,7 +35,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
 
-jimport('joomla.application.component.model');
+
 jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
@@ -52,7 +53,7 @@ jimport('joomla.filesystem.file');
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextlmoimports extends JModelLegacy
+class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 {
     var $_datas = array();
     var $_league_id = 0;

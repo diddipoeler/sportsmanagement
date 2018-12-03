@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementModelperson
@@ -31,7 +32,7 @@ class sportsmanagementModelperson extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
@@ -178,7 +179,7 @@ $this->jsmquery->clear();
     $this->_season_id = $app->getUserState( "$option.season_id", '0' );
     $cid = $post['cid'];
           
-    $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
+    $mdlPerson = BaseDatabaseModel::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
@@ -191,7 +192,7 @@ $this->jsmquery->clear();
                  * spieler
                  */
                 case 1:
-                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
+                $mdl = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -269,7 +270,7 @@ $this->jsmquery->clear();
                  * trainer
                  */
                 case 2:
-                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
+                $mdl = BaseDatabaseModel::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
@@ -349,7 +350,7 @@ $this->jsmquery->clear();
                  * schiedsrichter
                  */                
                 case 3:
-                $mdl = JModelLegacy::getInstance("seasonperson", "sportsmanagementModel");
+                $mdl = BaseDatabaseModel::getInstance("seasonperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {

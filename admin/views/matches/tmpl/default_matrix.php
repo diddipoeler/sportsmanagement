@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 ?>
 
 <!--[if IE]>
@@ -79,7 +80,7 @@ use Joomla\CMS\Language\Text;
 <!--</fieldset>-->
 <?php
 
-$mdlProject = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+$mdlProject = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
 $teams= $mdlProject->getProjectTeams($this->project_id);
 $matrix ='';
 

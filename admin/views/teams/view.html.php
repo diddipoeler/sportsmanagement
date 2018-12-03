@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport('joomla.filesystem.file');
 
@@ -45,7 +46,7 @@ $this->assign = false;
 
         //build the html select list for sportstypes
         $sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
-        $mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
+        $mdlSportsTypes = BaseDatabaseModel::getInstance('SportsTypes', 'sportsmanagementModel');
         $allSportstypes = $mdlSportsTypes->getSportsTypes();
         $sportstypes = array_merge($sportstypes, $allSportstypes);
 
@@ -67,7 +68,7 @@ $this->assign = false;
 
         $myoptions = array();
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');
 
         if ($res = $mdlagegroup->getAgeGroups()) {
             $myoptions = array_merge($myoptions, $res);

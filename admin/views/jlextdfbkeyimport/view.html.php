@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 /**
  * sportsmanagementViewjlextdfbkeyimport
@@ -86,7 +87,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView {
   */
  function _displayDefaultGetDivision($tpl) {
 
-$mdl_divisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");  
+$mdl_divisions = BaseDatabaseModel::getInstance("Divisions", "sportsmanagementModel");  
 $projectdivisions = $mdl_divisions->getDivisions($this->project_id);  
 $this->division = 0;
 $divisionsList[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -36,7 +37,7 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JModelLegacy
+	 * @see     BaseDatabaseModel
 	 * @since   3.2
 	 */
 	public function __construct($config = array())
