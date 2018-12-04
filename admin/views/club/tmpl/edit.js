@@ -176,6 +176,7 @@ console.log('longitude ' + val.lon);
 console.log('county ' + val.address.county);
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
+console.log('city_district ' + val.address.city_district);
 	
 dpjQuery("#jform_latitude").val(val.lat);
 dpjQuery("#jform_longitude").val(val.lon);
