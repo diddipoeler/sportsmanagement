@@ -190,7 +190,7 @@ console.log('getAddresString country alpha2 leaflet ' + countryleafletsearch );
 console.log('getAddresString country  ' + country );	
 console.log('getAddresString street ' + street);
   
-	return street + city + province + country;
+	return street + city + country;
 }
 
 function setGeoResult(result)
