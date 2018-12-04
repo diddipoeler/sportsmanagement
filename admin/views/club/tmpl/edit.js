@@ -168,7 +168,7 @@ countryleafletsearch = val.text;
 
 var url2 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryName&country=' + countryleaflet;
 dpjQuery.ajax({
-url: url,
+url: url2,
 dataType: 'json',
 async: false,
 type : 'POST'
@@ -187,6 +187,7 @@ country = val.text;
 	
 	
 console.log('getAddresString country alpha2 leaflet ' + countryleafletsearch );
+console.log('getAddresString country  ' + country );	
 console.log('getAddresString street ' + street);
   
 	return street + city + province + country;
