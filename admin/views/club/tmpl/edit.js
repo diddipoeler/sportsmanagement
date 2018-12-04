@@ -58,7 +58,7 @@ console.log('ready yourQuery ' + yourQuery );
 //});
 
 
-	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state').bind('change', function(e) {
+	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state, #jform_country').bind('change', function(e) {
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
 		
