@@ -16,6 +16,7 @@ var yourQuery;
 	
 dpjQuery(document).ready(function(){
 dpjQuery("#jform_geocomplete").val(getAddresString());
+addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());	
 //geocoder = new L.Control.Geocoder.Nominatim();
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
