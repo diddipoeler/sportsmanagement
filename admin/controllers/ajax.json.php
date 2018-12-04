@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      ajax.json.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage controllers
@@ -203,6 +203,22 @@ try
         } 
         
         
+         public function getCcountryName()
+        {
+                    
+try
+    {
+      $result = $this->getModel('ajax')->getCcountryName($this->jinput->get->getString('country'));
+      //echo new JsonResponse($result);
+      echo json_encode($result);
+    }
+    catch(Exception $e)
+    {
+      //echo new JsonResponse($e);
+      echo json_encode($e);
+    }                
+        
+        } 
         
         /**
          * sportsmanagementControllerAjax::getCcountryAlpha2()
@@ -318,11 +334,11 @@ $this->app->enqueueMessage('Altersgruppen gefunden','Message');
      
  if ( count($result) == 1 )
  {
- $this->app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ $this->app->enqueueMessage('Keine LandesverbÃ¤nde gefunden','Error');
  }
  else
  {
-$this->app->enqueueMessage('Landesverbände gefunden','Message');    
+$this->app->enqueueMessage('LandesverbÃ¤nde gefunden','Message');    
  }
  
       echo new JsonResponse($result);
