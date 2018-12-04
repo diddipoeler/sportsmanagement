@@ -20,8 +20,12 @@ dpjQuery("#jform_geocomplete").val(getAddresString());
 if ( dpjQuery("#jform_latitude").val() )
 {
 addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
+}
+else
+{
+//getlatlonopenstreet();
 }	
-	
+
 //geocoder = new L.Control.Geocoder.Nominatim();
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
@@ -58,37 +62,38 @@ console.log('ready yourQuery ' + yourQuery );
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
 		
+getlatlonopenstreet();
 		
-var inp = dpjQuery("#jform_geocomplete").val();
-console.log('jform_geocomplete ' + inp );
- var xmlhttp = new XMLHttpRequest();
- var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
+//var inp = dpjQuery("#jform_geocomplete").val();
+//console.log('jform_geocomplete ' + inp );
+//var xmlhttp = new XMLHttpRequest();
+//var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
  
-console.log('openstreetmap url ' + url );
+//console.log('openstreetmap url ' + url );
 
-dpjQuery.ajax({
-			  url:url,
-			  dataType: 'json',
-async: false,
-			  type: "POST",
-			  success:function(res){
-			  console.log('openstreetmap ' + res );
+//dpjQuery.ajax({
+//url:url,
+//dataType: 'json',
+//async: false,
+//type: "POST",
+//success:function(res){
+//console.log('openstreetmap ' + res );
 
-dpjQuery.each(res , function (i, val) {
-console.log(i);
-console.log(val);
+//dpjQuery.each(res , function (i, val) {
+//console.log(i);
+//console.log(val);
 
-console.log('latitude ' + val.lat);
-console.log('longitude ' + val.lon);
-dpjQuery("#jform_latitude").val(val.lat);
-dpjQuery("#jform_longitude").val(val.lon);
-addLayer(val.lat,val.lon);
-});			  
-			  
-			  
-			  
-			  }
-			});
+//console.log('latitude ' + val.lat);
+//console.log('longitude ' + val.lon);
+//dpjQuery("#jform_latitude").val(val.lat);
+//dpjQuery("#jform_longitude").val(val.lon);
+//addLayer(val.lat,val.lon);
+//});			  
+//}
+//});
+
+
+
 			 
 // xmlhttp.onreadystatechange = function()
 // {
@@ -143,6 +148,38 @@ addLayer(val.lat,val.lon);
 //    });
     
 });
+
+
+function getlatlonopenstreet()
+{
+var inp = dpjQuery("#jform_geocomplete").val();
+console.log('jform_geocomplete ' + inp );
+//var xmlhttp = new XMLHttpRequest();
+var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
+console.log('openstreetmap url ' + url );
+
+dpjQuery.ajax({
+url:url,
+dataType: 'json',
+async: false,
+type: "POST",
+success:function(res){
+console.log('openstreetmap ' + res );
+
+dpjQuery.each(res , function (i, val) {
+console.log(i);
+console.log(val);
+
+console.log('latitude ' + val.lat);
+console.log('longitude ' + val.lon);
+dpjQuery("#jform_latitude").val(val.lat);
+dpjQuery("#jform_longitude").val(val.lon);
+addLayer(val.lat,val.lon);
+}); 
+}
+});
+
+}
 
 function getAddresString()
 {
@@ -356,5 +393,5 @@ map.setView(new L.LatLng(lat, lng), 15);
 				//map.removeControl(baseControl);
 				// add one with the cities
 				//citiesControl = L.control.layers(baseLayers, overlays).addTo(map);
-			}
+}
 			
