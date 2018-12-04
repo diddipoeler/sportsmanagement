@@ -55,18 +55,43 @@ console.log('ready yourQuery ' + yourQuery );
 var inp = dpjQuery("#jform_geocomplete").val();
 console.log('jform_geocomplete ' + inp );
  var xmlhttp = new XMLHttpRequest();
- var url = "https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + inp ;
- xmlhttp.onreadystatechange = function()
- {
-   if (this.readyState == 4 && this.status == 200)
-   {
-    var myArr = JSON.parse(this.responseText);
-    //console.log(myArr);
-    //myFunction(myArr);
-   }
- };
- xmlhttp.open("GET", url, true);
- xmlhttp.send();
+ var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
+ 
+console.log('openstreetmap url ' + url );
+
+dpjQuery.ajax({
+			  url:url,
+			  dataType: 'json',
+async: false,
+			  type: "POST",
+			  success:function(res){
+			  console.log('openstreetmap ' + res );
+
+dpjQuery.each(res , function (i, val) {
+console.log(i);
+console.log(val);
+
+console.log('latitude ' + val.lat);
+console.log('longitude ' + val.lon);
+
+});			  
+			  
+			  
+			  
+			  }
+			});
+			 
+// xmlhttp.onreadystatechange = function()
+// {
+//   if (this.readyState == 4 && this.status == 200)
+//   {
+//    var myArr = JSON.parse(this.responseText);
+//    console.log('openstreetmap ' + myArr.lat );
+//    //myFunction(myArr);
+//   }
+// };
+// xmlhttp.open("GET", url, true);
+// xmlhttp.send();
  
  		
 	});
@@ -95,17 +120,19 @@ console.log('jform_geocomplete ' + inp );
 		//}
 		dpjQuery("#jform_geocomplete").data('initialized', true);
 	});
-	dpjQuery("#jform_geocomplete").bind("geocode:dragged", function(event, latLng){
-		dpjQuery.ajax({
-			  url:"//maps.googleapis.com/maps/api/geocode/json?latlng="+latLng.lat()+","+latLng.lng()+"&sensor=true",
-			  type: "POST",
-			  success:function(res){
-				 if(res.results[0].address_components.length){
-					 setGeoResult(res.results[0]);
-				 }
-			  }
-			});
-    });
+	
+//	dpjQuery("#jform_geocomplete").bind("geocode:dragged", function(event, latLng){
+//		dpjQuery.ajax({
+//			  url:"//maps.googleapis.com/maps/api/geocode/json?latlng="+latLng.lat()+","+latLng.lng()+"&sensor=true",
+//			  type: "POST",
+//			  success:function(res){
+//				 if(res.results[0].address_components.length){
+//					 setGeoResult(res.results[0]);
+//				 }
+//			  }
+//			});
+//    });
+    
 });
 
 function getAddresString()
