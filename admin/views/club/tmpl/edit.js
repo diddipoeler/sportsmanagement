@@ -23,7 +23,7 @@ addLayer(dpjQuery("#jform_latitude").val(),dpjQuery("#jform_longitude").val());
 }
 else
 {
-//getlatlonopenstreet();
+getlatlonopenstreet(0);
 }	
 
 //geocoder = new L.Control.Geocoder.Nominatim();
@@ -62,7 +62,7 @@ console.log('ready yourQuery ' + yourQuery );
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
 		
-getlatlonopenstreet();
+getlatlonopenstreet(1);
 		
 //var inp = dpjQuery("#jform_geocomplete").val();
 //console.log('jform_geocomplete ' + inp );
@@ -150,7 +150,7 @@ getlatlonopenstreet();
 });
 
 
-function getlatlonopenstreet()
+function getlatlonopenstreet(result)
 {
 var inp = dpjQuery("#jform_geocomplete").val();
 console.log('jform_geocomplete ' + inp );
@@ -174,7 +174,10 @@ console.log('latitude ' + val.lat);
 console.log('longitude ' + val.lon);
 dpjQuery("#jform_latitude").val(val.lat);
 dpjQuery("#jform_longitude").val(val.lon);
+if ( result )
+{
 addLayer(val.lat,val.lon);
+}
 }); 
 }
 });
