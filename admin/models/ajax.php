@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      ajax.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage models
@@ -458,7 +458,33 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             
         }
         
+        static function getCcountryName($country)
+        {
+        // Reference global application object
+        $app = Factory::getApplication();
+        // JInput object
+        $option = $app->input->getCmd('option');
         
+        $result = array();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        $query->select('c.name AS text');
+        $query->from('#__sportsmanagement_countries as c');
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+                    
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        
+	foreach ($result as $row)
+        {
+            $row->text = Text::_($row->text);
+        }	
+		
+        return $result; 
+        
+        }
+	
         /**
          * sportsmanagementModelAjax::getCcountryAlpha2()
          * 
