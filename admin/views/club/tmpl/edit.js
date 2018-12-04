@@ -15,6 +15,7 @@ var province;
 var yourQuery;	
 	
 dpjQuery(document).ready(function(){
+dpjQuery("#jform_geocomplete").val(getAddresString());
 //geocoder = new L.Control.Geocoder.Nominatim();
 countryleaflet = dpjQuery("#jform_country").val();
 console.log('ready countryleaflet ' + countryleaflet);
@@ -73,7 +74,9 @@ console.log(val);
 
 console.log('latitude ' + val.lat);
 console.log('longitude ' + val.lon);
-
+dpjQuery("#jform_latitude").val(val.lat);
+dpjQuery("#jform_longitude").val(val.lon);
+addLayer(val.lat,val.lon);
 });			  
 			  
 			  
@@ -144,19 +147,19 @@ function getAddresString()
 //	var province = '';
 	//var country = '';
 	//var countryleaflet = '';
+	street = '';
+	city = '';
+	country = '';
 	if(dpjQuery("#jform_address").val()){
 		street = dpjQuery("#jform_address").val();
-		
-	
-		
 		street += ', ';
 	}
+	
 	if(dpjQuery("#jform_location").val()){
 		city = dpjQuery("#jform_location").val();
 		if(dpjQuery("#jform_zipcode").val()){
 			city += ' ' + dpjQuery("#jform_zipcode").val();
 		}
-		
 		city += ', ';
 	}
 	if (dpjQuery("#jform_state").val()) {
