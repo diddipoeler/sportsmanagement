@@ -155,7 +155,7 @@ function getlatlonopenstreet(result)
 var inp = dpjQuery("#jform_geocomplete").val();
 console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
-var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + inp ;
+var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
 console.log('openstreetmap url ' + url );
 
 dpjQuery.ajax({
@@ -172,6 +172,11 @@ console.log(val);
 
 console.log('latitude ' + val.lat);
 console.log('longitude ' + val.lon);
+
+console.log('county ' + val.address.county);
+console.log('state_district ' + val.address.state_district);
+console.log('state ' + val.address.state);
+	
 dpjQuery("#jform_latitude").val(val.lat);
 dpjQuery("#jform_longitude").val(val.lon);
 if ( result )
