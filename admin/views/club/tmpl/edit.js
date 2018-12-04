@@ -164,10 +164,28 @@ countryleafletsearch = val.text;
 
 });
 
-
-
 });	
 
+var url2 = 'index.php?option=com_sportsmanagement&format=json&tmpl=component&task=ajax.getCcountryName&country=' + countryleaflet;
+dpjQuery.ajax({
+url: url,
+dataType: 'json',
+async: false,
+type : 'POST'
+}).done(function(data2) {
+console.log(data2);
+
+dpjQuery.each(data2, function (i, val) {
+console.log(i);
+console.log(val.text);
+
+country = val.text;
+
+});
+
+});	
+	
+	
 console.log('getAddresString country alpha2 leaflet ' + countryleafletsearch );
 console.log('getAddresString street ' + street);
   
