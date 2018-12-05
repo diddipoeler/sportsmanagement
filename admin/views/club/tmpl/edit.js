@@ -186,7 +186,8 @@ console.log('city_district ' + val.address.city_district);
 
 if ( val.address.state )
 {
-dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(val.address.state);	
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(val.address.state);
+dpjQuery("#jform_state").val(val.address.state);	
 }	
 if ( val.address.county )
 {
