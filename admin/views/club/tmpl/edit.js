@@ -8,6 +8,7 @@ var countryleaflet;
 
 var address;
 var street;
+var state;
 var city;
 var zip;
 var province;
@@ -110,30 +111,8 @@ getlatlonopenstreet(1);
  		
 	});
 	
-	dpjQuery("#jform_geocomplete").geocomplete({
-        map: ".map_canvas",
-        location: getAddresString(),
-        mapOptions: {
-              scrollwheel: true,
-              mapTypeId: "hybrid"
-        },
-        markerOptions: {
-          draggable: true,
-          mapTypeId: google.maps.MapTypeId.SATELLITE,
-          icon: new google.maps.MarkerImage(
-       "http://maps.google.com/mapfiles/kml/pal4/icon62.png",
-       new google.maps.Size(32, 37, "px", "px") )
-          
-        }
-     });
-	dpjQuery("#jform_geocomplete").bind("geocode:result", function(event, result){
-		//if (dpjQuery("#jform_geocomplete").data('initialized')) {
-			setGeoResult(result);
-			
-
-		//}
-		dpjQuery("#jform_geocomplete").data('initialized', true);
-	});
+	
+	
 	
 //	dpjQuery("#jform_geocomplete").bind("geocode:dragged", function(event, latLng){
 //		dpjQuery.ajax({
@@ -183,12 +162,12 @@ console.log('county ' + val.address.county);
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
 console.log('city_district ' + val.address.city_district);
-
-if ( val.address.state )
-{
-dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(val.address.state);
-dpjQuery("#jform_state").val(val.address.state);	
-}	
+state = val.address.state;
+//if ( val.address.state != 'undefined' )
+//{
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(state);
+dpjQuery("#jform_state").val(state);	
+//}	
 if ( val.address.county )
 {
 dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(val.address.county);	
