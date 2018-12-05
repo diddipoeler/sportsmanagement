@@ -157,7 +157,13 @@ console.log('jform_geocomplete ' + inp );
 //var xmlhttp = new XMLHttpRequest();
 var url = "https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=" + inp ;
 console.log('openstreetmap url ' + url );
-
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val('');
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_SHORT_NAME").val('');
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val('');
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_SHORT_NAME").val('');
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val('');
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_SHORT_NAME").val('');
+	
 dpjQuery.ajax({
 url:url,
 dataType: 'json',
@@ -177,6 +183,19 @@ console.log('county ' + val.address.county);
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
 console.log('city_district ' + val.address.city_district);
+
+if ( val.address.state )
+{
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(val.address.state);	
+}	
+if ( val.address.county )
+{
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME").val(val.address.county);	
+}	
+if ( val.address.state_district )
+{
+dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_3_LONG_NAME").val(val.address.state_district);	
+}	
 	
 dpjQuery("#jform_latitude").val(val.lat);
 dpjQuery("#jform_longitude").val(val.lon);
