@@ -17,9 +17,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\MVC\Model\ListModel;
 jimport('joomla.filesystem.file');
-jimport('joomla.application.component.modellist');
+
 
 $maxImportTime = 1920;
 if ((int)ini_get('max_execution_time') < $maxImportTime)
@@ -42,7 +42,7 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory)
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljoomleagueimports extends JModelList
+class sportsmanagementModeljoomleagueimports extends ListModel
 {
 
 static $db_num_rows = 0;

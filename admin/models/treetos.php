@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
 
 
 
@@ -26,7 +26,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelTreetos extends JModelList
+class sportsmanagementModelTreetos extends ListModel
 {
 	var $_identifier = "treetos";
 	static $_project_id = 0;

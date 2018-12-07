@@ -1,12 +1,12 @@
 <?php
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-// import the Joomla modellist library
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
+
 /**
  * SportsManagementList Model
  */
-class sportsmanagementModelsportsmanagements extends JModelList
+class sportsmanagementModelsportsmanagements extends ListModel
 {
 	/**
 	 * Method to build an SQL query to load the list data.

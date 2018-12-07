@@ -3,6 +3,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
 
 if (! defined('JSM_PATH'))
 {
@@ -14,10 +15,10 @@ if (!class_exists('sportsmanagementHelper'))
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
 }
 
-JLoader::import('joomla.application.component.modellist');
+
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'tables');
-class sportsmanagementModeljsmGCalendars extends JModelList 
+class sportsmanagementModeljsmGCalendars extends ListModel 
 {
 
 	protected function _getList($query, $limitstart = 0, $limit = 0) 

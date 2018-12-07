@@ -20,7 +20,7 @@ if (!defined('DS')) {
 }
 
 jimport('joomla.filesystem.file');
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * sportsmanagementModelsmimageimports
@@ -31,7 +31,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmimageimports extends JModelList {
+class sportsmanagementModelsmimageimports extends ListModel {
 
     var $_identifier = "pictures";
 

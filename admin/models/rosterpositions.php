@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
 
 
 /**
@@ -53,7 +53,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelrosterpositions extends JModelList
+class sportsmanagementModelrosterpositions extends ListModel
 {
 	var $_identifier = "rosterpositions";
 	

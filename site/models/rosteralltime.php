@@ -41,8 +41,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-//jimport('joomla.application.component.model');
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
+
 
 
 /**
@@ -54,7 +54,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelRosteralltime extends JModelList
+class sportsmanagementModelRosteralltime extends ListModel
 {
 	static $projectid = 0;
 	static $projectteamid = 0;

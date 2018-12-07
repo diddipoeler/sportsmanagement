@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-jimport('joomla.application.component.modellist');
+use Joomla\CMS\MVC\Model\ListModel;
 
 
 
@@ -27,7 +27,7 @@ jimport('joomla.application.component.modellist');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelProjectReferees extends JModelList
+class sportsmanagementModelProjectReferees extends ListModel
 {
 	var $_identifier = "preferees";
     var $_project_id = 0;

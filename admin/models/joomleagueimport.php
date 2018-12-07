@@ -13,9 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\MVC\Model\ListModel;
 jimport('joomla.filesystem.file');
-jimport('joomla.application.component.modellist');
+
 
 $maxImportTime = 1920;
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
@@ -29,7 +29,7 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljoomleagueimport extends JModelList
+class sportsmanagementModeljoomleagueimport extends ListModel
 {
 
 

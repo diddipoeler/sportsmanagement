@@ -41,12 +41,9 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\MVC\Model\ListModel;
 jimport('joomla.application.component.model');
 jimport('joomla.filesystem.file');
-jimport('joomla.application.component.modellist');
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
 
 
 /**
@@ -58,7 +55,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextindividualsportes extends JModelList
+class sportsmanagementModeljlextindividualsportes extends ListModel
 {
 	var $_identifier = "jlextindividualsportes";
     

@@ -11,8 +11,8 @@
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
 
-jimport('joomla.application.component.modellist');
 
 /**
  * sportsmanagementModelallclubs
@@ -23,7 +23,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallclubs extends JModelList
+class sportsmanagementModelallclubs extends ListModel
 {
 
 var $_identifier = "allclubs";
