@@ -91,6 +91,7 @@ case 'ranking':
 case 'curve':
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' );	
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'ranking.php' );
+require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'clubnames.php');
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'rounds.php');	
 require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'projectteams.php');	  
 break;    
