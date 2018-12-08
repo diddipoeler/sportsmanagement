@@ -162,6 +162,13 @@ console.log('county ' + val.address.county);
 console.log('state_district ' + val.address.state_district);
 console.log('state ' + val.address.state);
 console.log('city_district ' + val.address.city_district);
+
+console.log('postcode ' + val.address.postcode);
+console.log('road ' + val.address.road);
+console.log('suburb ' + val.address.suburb);
+console.log('neighbourhood ' + val.address.neighbourhood);
+
+
 state = val.address.state;
 //if ( val.address.state != 'undefined' )
 //{
