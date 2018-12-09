@@ -48,6 +48,10 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
         <field name="team_picture_width" type="text" default="150"
                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
         </field>
+		
+		<field name="team_logo_width" type="text" default="150"
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_LOGO_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_LOGO_WIDTH">
+        </field>
 
 
 

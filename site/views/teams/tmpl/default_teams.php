@@ -61,7 +61,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
                 case 'logo_small':
                 case 'logo_middle':
                 case 'logo_big':
-                $this->config['team_picture_width'] = 20;
+                $this->config['team_picture_width'] = $this->config['team_logo_width'];
                 break;
                 default:
                 break;
