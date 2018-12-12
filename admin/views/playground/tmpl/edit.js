@@ -49,7 +49,7 @@ console.log('ready countryleafletsearch ' + countryleafletsearch );
 
 street = dpjQuery("#jform_address").val();
 zip = dpjQuery("#jform_zipcode").val();
-city = dpjQuery("#jform_location").val();
+city = dpjQuery("#jform_city").val();
 yourQuery = ( street + ',' + zip + ' ' + city + ',' + countryleafletsearch );
 
 console.log('ready yourQuery ' + yourQuery );
@@ -59,7 +59,7 @@ console.log('ready yourQuery ' + yourQuery );
 //});
 
 
-	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state, #jform_country').bind('change', function(e) {
+	dpjQuery('#jform_address,  #jform_zipcode, #jform_city,  #jform_state, #jform_country').bind('change', function(e) {
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
 		
@@ -213,8 +213,8 @@ function getAddresString()
 		street += ', ';
 	}
 	
-	if(dpjQuery("#jform_location").val()){
-		city = dpjQuery("#jform_location").val();
+	if(dpjQuery("#jform_city").val()){
+		city = dpjQuery("#jform_city").val();
 		if(dpjQuery("#jform_zipcode").val()){
 			city += ' ' + dpjQuery("#jform_zipcode").val();
 		}
@@ -296,7 +296,7 @@ var route = '';
 				route = result.address_components[i].long_name;
 			break;
 			case 'locality':
-				dpjQuery("#jform_location").val(result.address_components[i].long_name);
+				dpjQuery("#jform_city").val(result.address_components[i].long_name);
 			break;
 			case 'street_number':
 			street_number = result.address_components[i].long_name;
