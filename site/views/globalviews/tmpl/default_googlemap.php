@@ -30,6 +30,11 @@ use Joomla\CMS\Factory;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
 
+echo 'use_which_map -> '.$this->config['use_which_map'].'<br>';
+echo 'default_map_type -> '.$this->config['default_map_type'];
+
+$map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'; 
+
 if ( $this->config['use_which_map'] )
 {
 $this->document->addScript('https://unpkg.com/leaflet@1.3.4/dist/leaflet.js');
@@ -74,6 +79,68 @@ break;
 <?php
 switch ($this->view)
 {
+case 'playground':	
+?>
+<script>
+  
+     var planes = [
+         ["<?php echo $this->playground->name; ?>",<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>]
+         ];
+  
+         var map = L.map('map').setView([<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>], 16);
+         mapLink =
+             '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+         L.tileLayer(
+             '<?php echo $map_type; ?>', {
+             attribution: '&copy; ' + mapLink + ' Contributors',
+             maxZoom: <?php echo $this->mapconfig['map_zoom']; ?>,
+             subdomains:['mt0','mt1','mt2','mt3'],
+             }).addTo(map);
+var myIcon = L.icon({
+	iconUrl: '<?php echo $this->mapconfig['map_icon']; ?>'
+});    
+         for (var i = 0; i < planes.length; i++) {
+             marker = new L.marker([planes[i][1],planes[i][2]], {icon: myIcon} )
+                 .bindPopup(planes[i][0])
+                 .addTo(map);
+         }
+//L.Control.geocoder().addTo(map); 
+              L.control.locate().addTo(map);
+              
+jQuery.getJSON('https://ipinfo.io/geo', function(response) { 
+    var loc = response.loc.split(',');
+    console.log(response.loc);
+    marker = new L.marker([loc[0],loc[1]]).addTo(map);
+    
+L.Routing.control({
+    waypoints: [
+        L.latLng(loc[0],loc[1]),
+        L.latLng(<?php echo $this->playground->latitude; ?>,<?php echo $this->playground->longitude; ?>)
+    ]
+}).addTo(map);    
+    
+    
+    
+    console.log(loc);
+    var coords = {
+        latitude: loc[0],
+        longitude: loc[1]
+    };
+    console.log(coords);
+});
+
+jQuery.get("https://ipinfo.io", function(response) {
+  console.log(response.ip, response.country);
+}, "jsonp");              
+
+
+              
+</script>
+<?php
+
+
+break;
+
 case 'clubinfo':	
 ?>
 <script>
@@ -129,36 +196,8 @@ jQuery.get("https://ipinfo.io", function(response) {
 }, "jsonp");              
 
 
-//var routing = new L.Routing({
-//  position: 'topright'
-//  ,routing: {
-//    router: myRouterFunction
-//  }
-//  ,tooltips: {
-//    waypoint: 'Waypoint. Drag to move; Click to remove.',
-//    segment: 'Drag to create a new waypoint'
-//  }
-//  ,styles: {     // see http://leafletjs.com/reference.html#polyline-options
-//    trailer: {}  // drawing line
-//    ,track: {}   // calculated route result
-//    ,nodata: {}  // line when no result (error)
-//  }
-//  ,snapping: {
-//    layers: [mySnappingLayer]
-//    ,sensitivity: 15
-//    ,vertexonly: false
-//  }
-//  ,shortcut: {
-//    draw: {
-//      enable: 68    // 'd'
-//      ,disable: 81  // 'q'
-//    }
-//  }
-//});
-//map.addControl(routing);
-
               
-     </script>
+</script>
 <?php
 break;
 case 'ranking':
