@@ -30,8 +30,8 @@ use Joomla\CMS\Factory;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
 
-echo 'use_which_map -> '.$this->config['use_which_map'].'<br>';
-echo 'default_map_type -> '.$this->config['default_map_type'];
+//echo 'use_which_map -> '.$this->config['use_which_map'].'<br>';
+//echo 'default_map_type -> '.$this->config['default_map_type'];
 
 $map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'; 
 
