@@ -48,13 +48,22 @@ class sportsmanagementViewPlayground extends sportsmanagementView
     $this->playedgames = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ),1,$this->config['show_all_projects']);	
 	$this->playedgamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->playedgames );
 	}
-        
+
+if ( $this->config['show_maps'] )
+	  {
+/**
+ * leaflet benutzen
+ */            
+if ( $this->config['use_which_map'] )
+{
+$this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0));    
+}	  		
 /**
  * diddipoeler
  */
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
-
+	}
 		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
 /**
  * Set page title
