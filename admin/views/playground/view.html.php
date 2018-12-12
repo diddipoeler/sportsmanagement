@@ -34,7 +34,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        
+        $this->document->addScript('https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js');	
         if ( $this->item->latitude == 255 )
         {
             $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
