@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 ?>
-<div class="row" id="projectinfo">
+<div class="<?php echo $this->divclassrow;?>" id="projectinfo">
 <h4>
     <?php echo Text::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
 </h4>
