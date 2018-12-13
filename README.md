@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   31-12-2018: **1.0.68** Leaflet Route bei der Ansicht Sportplätze
 *   01-11-2018: **1.0.67** Leaflet Implementierung (GoogleMap alternative)
 *   15-09-2018: **1.0.66** Korrektur Modul Teamstatistik Counter
 *   31-08-2018: **1.0.65** Neues Modul Eventsranking, Teamstatistik Counter, Installation f. Joomla 4
