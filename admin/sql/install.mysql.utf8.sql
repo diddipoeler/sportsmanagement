@@ -117,7 +117,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `dissolved_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
-  KEY `country` (`country`)
+  KEY `country` (`country`),
+  KEY `unique_id` (`unique_id`),
+  KEY `new_club_id` (`new_club_id`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
