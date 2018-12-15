@@ -51,7 +51,6 @@ if ($this->config['show_comments_count'] > 0){
 
 	// get joomleague comments plugin params
 	JPluginHelper::importPlugin( 'joomleague' );
-
 	$plugin	= & JPluginHelper::getPlugin('joomleague', 'comments');
 
 	if (is_object($plugin)) {

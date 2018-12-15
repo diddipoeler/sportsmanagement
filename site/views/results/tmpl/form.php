@@ -61,7 +61,7 @@ else
 <script>
 
 </script>
-<div class="row-fluid" style="overflow:auto;">
+<div class="<?php echo $this->divclassrow; ?> table-responsive" id="defaultresultsform" style="overflow:auto;">
 	<!-- edit results start -->
 	<table class="table table-responsive">
 		<tr>
@@ -235,16 +235,21 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 </div>
 <!-- matchdays pageNav -->
 <br />
-<div class='pagenav'>
-<table width='96%' align='center' cellpadding='0' cellspacing='0'>
-	<tr>
-		<?php 
-        //echo sportsmanagementPagination::pagenav($this->project); 
-        ?>
-	</tr>
-</table>
-<!-- matchdays pageNav END -->
+<div class="display-limit">
+<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+<?php echo $this->pagination->getLimitBox(); ?>
 </div>
+<div class="pagination">
+<p class="counter">
+<?php echo $this->pagination->getPagesCounter(); ?>
+</p>
+<p class="counter">
+<?php echo $this->pagination->getResultsCounter(); ?>
+</p>
+<?php echo $this->pagination->getPagesLinks(); ?>
+</div>
+<!-- matchdays pageNav END -->
+
 
 <table class="not-playing" width='96%' align='center' cellpadding='0' cellspacing='0'>
 	<tr>
