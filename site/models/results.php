@@ -347,13 +347,13 @@ function getTotal() {
 						$this->_data[$k]->allowed = true;
 					}
 				}
-                $query->clear();
-                $query->select('c.id');
-                $query->from('#__content as c');
-                $query->where('xreference = '. $match->id );
-                $query->where('catid = '. $cat_id );
-                $db->setQuery($query); 
-                $this->_data[$k]->content_id = $db->loadResult();
+                $this->jsmquery->clear();
+                $this->jsmquery->select('c.id');
+                $this->jsmquery->from('#__content as c');
+                $this->jsmquery->where('xreference = '. $match->id );
+                $this->jsmquery->where('catid = '. $cat_id );
+                $this->jsmdb->setQuery($this->jsmquery); 
+                $this->_data[$k]->content_id = $this->jsmdb->loadResult();
                 
 			}
 		}
