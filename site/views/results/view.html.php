@@ -50,8 +50,6 @@ class sportsmanagementViewResults extends sportsmanagementView
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
-        //$matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup,$project->category_id);
-        //$this->total = count($matches);
         $this->limit = $this->model->getLimit();
 $this->limitstart = $this->model->getLimitStart();
 $this->ausgabestart = $this->limitstart + 1;
@@ -110,16 +108,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $this->rssfeeditems = $rssfeeditems;
     }
-    //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
-    
   
        }
-      
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' showediticon'.'<pre>'.print_r($this->showediticon,true).'</pre>' ),'');
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' state'.'<pre>'.print_r($this->state,true).'</pre>' ),'');       
-			
+		
             $lists['rounds'] = HTMLHelper::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->lists = $lists;
 		
@@ -182,8 +173,6 @@ $this->setLayout('form_bootstrap');
             break;
         }
         
-        
-        //parent::display($tpl);
 	}
 
 	/**

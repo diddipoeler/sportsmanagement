@@ -192,7 +192,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				foreach( $this->matches as $match )
 				{
 
-					if ((isset($match->allowed)) && ($match->allowed))
+					if ( isset($match->allowed) && $match->allowed )
 					{
 						$this->game = $match;
 						$this->i = $i;

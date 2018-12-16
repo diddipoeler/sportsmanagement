@@ -307,7 +307,6 @@ function getTotal() {
             catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-    //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
     return false;
 }
         }
@@ -320,6 +319,7 @@ function getTotal() {
      * @return
      */
     function getData() {
+        $cat_id = 0;
         // if data hasn't already been obtained, load it
         if (empty($this->_data)) {
             $query = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,self::$cfg_which_database,0,true);
@@ -329,10 +329,36 @@ function getTotal() {
             catch (Exception $e)
 {
     $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-    //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
     return false;
 }
         }
+        
+        $allowed = self::isAllowed(self::$cfg_which_database,0);
+		$user = Factory::getUser();
+
+		if ( count($this->_data) > 0 )
+		{
+			foreach ( $this->_data as $k => $match )
+			{
+				if ( ( $match->checked_out == 0 ) || ( $match->checked_out == $user->id ) )
+				{
+					if ( $allowed || self::isMatchAdmin($match->id,$user->id) )
+					{
+						$this->_data[$k]->allowed = true;
+					}
+				}
+                $query->clear();
+                $query->select('c.id');
+                $query->from('#__content as c');
+                $query->where('xreference = '. $match->id );
+                $query->where('catid = '. $cat_id );
+                $db->setQuery($query); 
+                $this->_data[$k]->content_id = $db->loadResult();
+                
+			}
+		}
+        
+        
         return $this->_data;
     }
 
