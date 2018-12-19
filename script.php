@@ -271,7 +271,7 @@ else
 		
 		<img
 			src="../administrator/components/com_sportsmanagement/assets/icons/logo_transparent.png"
-			alt="JoomLeague" title="JoomLeague" width="180"/>
+			alt="SportsManagement" title="SportsManagement" width="180"/>
 		<?php
         $j = new JVersion();
         echo '<h1>' . sprintf(Text::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->getShortVersion() ) .'</h1>';
@@ -559,7 +559,6 @@ echo self::getFxInitJSCode('steps');
     $excludeExtension[] = 'sisdata';
     $folderAdmin  = JFolder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folderAdmin<br><pre>'.print_r($folderAdmin,true).'</pre>'),'');                                                    
     
     foreach ($folderAdmin as $key => $value )
     {
@@ -570,8 +569,7 @@ echo self::getFxInitJSCode('steps');
     }
     $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
-    //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' folderSite<br><pre>'.print_r($folderSite,true).'</pre>'),'');
-    
+   
     foreach ($folderSite as $key => $value )
     {
         if( JFolder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
@@ -747,8 +745,6 @@ echo self::getFxInitJSCode('steps');
         $mainframe = Factory::getApplication();
         $db = Factory::getDbo();
         
-        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-        
                 if ( count($param_array) > 0 ) 
                 {
                         try{
@@ -756,17 +752,12 @@ echo self::getFxInitJSCode('steps');
                         $db = Factory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
                         $params = json_decode( $db->loadResult(), true );
-                        
-                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params_array<br><pre>'.print_r($param_array,true).'</pre>'   ),'');
-                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params aus db<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        
+                       
                         // add the new variable(s) to the existing one(s)
                         foreach ( $param_array as $name => $value ) {
                                 $params[ (string) $name ] = (string) $value;
                         }
-                        
-                        //$mainframe->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' params neu<br><pre>'.print_r($params,true).'</pre>'   ),'');
-                        
+                       
                         // store the combined new and existing values back as a JSON string
                         $paramsString = json_encode( $params );
                         $db->setQuery('UPDATE #__extensions SET params = ' .
@@ -824,12 +815,7 @@ else
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
   $db = Factory::getDBO();
-  //$j = new JVersion();
-//  $joomla_version = $j->RELEASE;
-  
-  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
-  
+
   $plugins = $manifest->xpath('plugins/plugin');
   $plugins3 = $manifest->xpath('plugins3/plugin');
   
@@ -841,10 +827,7 @@ else
         $group = (string)$plugin->attributes()->group;
         
         echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
-        
-        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
-        
+       
         // Select some fields
         $query = $db->getQuery(true);
         $query->clear();
@@ -905,10 +888,7 @@ else
         $group = (string)$plugin->attributes()->group;
         
         echo '<p>' . Text::_('Plugin : ' ) . $name . ' installiert!</p>';
-        
-        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($group,true).'</pre>'),'');
-        
+       
         // Select some fields
         $query = $db->getQuery(true);
         $query->clear();
@@ -984,11 +964,7 @@ else
   $src = $adapter->getParent()->getPath('source');
   $manifest = $adapter->getParent()->manifest;
   $db = Factory::getDBO();
-  
-  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
-  //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($src,true).'</pre>'),'');
-  
-  
+
   $modules = $manifest->xpath('modules/module');
         foreach ($modules as $module)
         {
@@ -999,9 +975,6 @@ else
             $published = (string)$module->attributes()->published;
             
             echo '<p>' . Text::_('Modul : ' ) . $name . ' installiert!</p>';
-            
-            //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($client,true).'</pre>'),'');
             
             if (is_null($client))
             {
