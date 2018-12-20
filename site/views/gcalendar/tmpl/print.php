@@ -258,7 +258,6 @@ echo "<div id='gcalendar_component'></div><div id='gcalendar_component_popup' st
 echo HTMLHelper::_('content.prepare', $params->get('textafter'));
 
 $dispatcher = JDispatcher::getInstance();
-//JPluginHelper::importPlugin('gcalendar');
 $dispatcher->trigger('onGCCalendarLoad', array('gcalendar_component'));
 
 //if(!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_gcalendarap'.DS.'gcalendarap.php'))

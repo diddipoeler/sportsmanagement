@@ -33,7 +33,6 @@ if (Factory::getApplication()->input->getCmd('tmpl', '') == 'component') {
 }
 
 $dispatcher = JDispatcher::getInstance();
-//JPluginHelper::importPlugin('gcalendar');
 
 $content = '{{#events}}
 <div id="gcal-event-container" class="dp-container">

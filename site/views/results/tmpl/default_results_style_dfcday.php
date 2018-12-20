@@ -9,10 +9,12 @@
  */
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\Registry\Registry;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 ?>
 
 <script>
@@ -49,15 +51,21 @@ if ($this->config['show_comments_count'] > 0){
     require_once (JPATH_ROOT . '/components/com_jcomments/jcomments.config.php');
 	require_once (JPATH_ROOT . '/components/com_jcomments/models/jcomments.php');
 
-	// get joomleague comments plugin params
-	JPluginHelper::importPlugin( 'joomleague' );
-	$plugin	= & JPluginHelper::getPlugin('joomleague', 'comments');
+/**
+ * load sportsmanagement comments plugin files
+ */
+		PluginHelper::importPlugin('content','sportsmanagement_comments');
+        
+	/**
+ * get sportsmanagement comments plugin params
+ */
+		$plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
 	if (is_object($plugin)) {
-		$pluginParams = new JParameter($plugin->params);
+		$pluginParams = new Registry($plugin->params);
 	}
 	else {
-		$pluginParams = new JParameter('');
+		$pluginParams = new Registry('');
 	}
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }

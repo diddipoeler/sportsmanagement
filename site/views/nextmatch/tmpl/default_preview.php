@@ -16,6 +16,7 @@ use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 ?>
 <!-- START of match preview -->
@@ -68,12 +69,12 @@ if (file_exists(JPATH_ROOT . '/components/com_jcomments/classes/config.php')) {
 /**
  * load sportsmanagement comments plugin files
  */
-JPluginHelper::importPlugin('content', 'sportsmanagement_comments');
+PluginHelper::importPlugin('content', 'sportsmanagement_comments');
 
 /**
  * get sportsmanagement comments plugin params
  */
-$plugin = JPluginHelper::getPlugin('content', 'sportsmanagement_comments');
+$plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
 
 if (is_object($plugin)) {
     $pluginParams = new Registry($plugin->params);

@@ -27,6 +27,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
 
@@ -333,13 +334,8 @@ else
 {
 $sef = Factory::getConfig()->getValue('config.sef', false);
 }
-
-
-//echo 'sef -> '.$sef .'<br>';
-//echo 'plugin_googlemap3 -> '.JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ).'<br>';
-        
-if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
-//if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) )
+       
+if ( ( !PluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( PluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
 {
 
 
@@ -533,7 +529,7 @@ height: 570px;
 }
 else
 {
-$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
+$plugin = PluginHelper::getPlugin('system', 'plugin_googlemap3');
 $paramsPlugin = new JRegistry($plugin->params);
 
 //echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';

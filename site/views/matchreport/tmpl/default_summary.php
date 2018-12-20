@@ -14,6 +14,8 @@ use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 ?>
 <!-- START of match summary -->
 <?php
@@ -67,11 +69,11 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
             $dispatcher = JDispatcher::getInstance();
         }
 
-JPluginHelper::importPlugin( 'content', 'joomleague_comments' );
+PluginHelper::importPlugin( 'content', 'joomleague_comments' );
 $comments = '';
 
 	// get joomleague comments plugin params
-	$plugin= JPluginHelper::getPlugin('content', 'joomleague_comments');
+	$plugin= PluginHelper::getPlugin('content', 'joomleague_comments');
 	if (is_object($plugin)) 
     {
         if(version_compare(JVERSION,'3.0.0','ge')) 

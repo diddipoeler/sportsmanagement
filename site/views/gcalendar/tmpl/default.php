@@ -325,7 +325,6 @@ if($params->get('show_selection', 1) == 3) $image = Uri::base().'components/com_
 echo HTMLHelper::_('content.prepare', $params->get('textafter'));
 
 $dispatcher = JDispatcher::getInstance();
-//JPluginHelper::importPlugin('gcalendar');
 $dispatcher->trigger('onGCCalendarLoad', array('gcalendar_component'));
 
 //echo 'dispatcher<br><pre>'.print_r($dispatcher,true).'</pre>';

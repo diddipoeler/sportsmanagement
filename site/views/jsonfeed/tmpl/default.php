@@ -22,11 +22,13 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\PluginHelper;
+
 $document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
 $dispatcher = JDispatcher::getInstance();
-JPluginHelper::importPlugin('gcalendar');
+PluginHelper::importPlugin('gcalendar');
 
 $data = array();
 $SECSINDAY=86400;
