@@ -207,6 +207,7 @@
 </modules>
 
 <plugins>
+<plugin plugin="jsm_jcomments" group="content" />
 <plugin plugin="jqueryeasy" group="system" />	
 <plugin plugin="jw_ts" group="content" />
 <plugin plugin="jcemediabox" group="system" />
@@ -218,6 +219,7 @@
 </plugins>
 
 <plugins3>
+<plugin plugin="jsm_jcomments" group="content" />
 <plugin plugin="jqueryeasy" group="system" />	
 <plugin plugin="jsm_search" group="search" />
 <plugin plugin="jsm_userprofile" group="user" />
