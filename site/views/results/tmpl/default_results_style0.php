@@ -188,6 +188,7 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+$history_link = '';
 			}
 
 			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0));
