@@ -42,7 +42,7 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclasscontainer;?>" id="allplaygrounds">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
 <fieldset class="filters">
 <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>

@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive">              
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allplaygrounds">              
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>

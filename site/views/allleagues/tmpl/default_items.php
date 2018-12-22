@@ -14,7 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 ?>
 
-<div class="row-fluid table-responsive">        
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allleagues">        
 <table class="<?php echo $this->tableclass; ?>">
 
 <thead>

@@ -21,7 +21,7 @@ if ( !isset( $this->config['show_referees'] ) )
 $this->config['show_referees'] = 1;
 }
 ?>
-<div  class="<?php echo $this->divclasscontainer;?>" id="referees">
+<div class="<?php echo $this->divclasscontainer;?>" id="referees">
 <?php
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {

@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row-fluid table-responsive">        
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allprojects">       
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>

@@ -34,7 +34,7 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 </script>
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="allprojects">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString());?>" method="post">
 <fieldset class="filters">
 <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>

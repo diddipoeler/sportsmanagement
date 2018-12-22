@@ -41,7 +41,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     }
 </script>
 
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="allleagues">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars($this->uri->toString()); ?>" method="post">
 <fieldset class="filters">
 <legend class="hidelabeltxt">

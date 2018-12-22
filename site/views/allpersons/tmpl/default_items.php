@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row-fluid table-responsive">        
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="allpersons">         
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>

@@ -71,8 +71,6 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
                label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_LOGO_WIDTH" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_LOGO_WIDTH">
         </field>
 
-
-
         <field type="spacer">
         </field>
 
