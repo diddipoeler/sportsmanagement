@@ -20,7 +20,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 <style>
 #sbox-window {
 background-color: transparent;
-
 }
 
 </style>
@@ -30,8 +29,6 @@ function example_alertBox( boxText )
 	var options = {size: {x: 300, y: 250}};
 	SqueezeBox.initialize(options);
 	SqueezeBox.setContent('string','Spielnummer: ' + boxText);
-			
-	
 }
 </script>
 
@@ -166,6 +163,7 @@ if(file_exists(JPATH_ROOT.'/components/com_jcomments/classes/config.php'))
 	<!-- GAMES -->
 	<?php
 	$k = 0;
+    $history_link = '';
 
 	foreach( $games as $game )
 	{
@@ -180,7 +178,7 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
-				
+$history_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);				
 			}
 			else
 			{
@@ -190,7 +188,6 @@ $routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $game->slug;
 $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
-				
 			}
 
 			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,Factory::getApplication()->input->getInt('cfg_which_database',0));
@@ -339,7 +336,7 @@ $this->overallconfig['use_jquery_modal']);
 		<?php
 		}
 //--------------------------------------------------------------------------------------------------------------
-		if ($this->config['result_style']==0)
+		if ( $this->config['result_style'] == 0 )
 		{
 	
     switch ($this->config['show_logo_small'])
@@ -395,6 +392,18 @@ $this->overallconfig['use_jquery_modal']);
 			<td width='' class='score'>
 				<?php 
         echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
+        if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='30'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
+        
         ?>
 			</td>
 				<?php
@@ -427,6 +436,17 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
+                    if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='30'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
 				?>
 			</td>
 			<td width=''>
@@ -447,7 +467,7 @@ $this->overallconfig['use_jquery_modal']); ?>
 	?>
 	<?php
 //--------------------------------------------------------------------------------------------------------------
-		if ($this->config['result_style']==2)
+		if ( $this->config['result_style'] == 2 )
 		{
 			?>
 			<!-- show team-icons and/or -names -->
@@ -484,6 +504,17 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
+                    if ( $history_link )
+        {
+        ?>    
+        <a href='<?php echo $history_link; ?>'>
+		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='30'
+		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
+		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
+		</a>
+        <?php    
+        }
 				?>
 			</td>
 			<?php
