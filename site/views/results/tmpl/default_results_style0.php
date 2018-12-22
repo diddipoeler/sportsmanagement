@@ -396,8 +396,8 @@ $this->overallconfig['use_jquery_modal']);
         {
         ?>    
         <a href='<?php echo $history_link; ?>'>
-		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
-		width='30'
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
 		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
 		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
 		</a>
@@ -436,12 +436,12 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
-                    if ( $history_link )
+        if ( $history_link )
         {
         ?>    
         <a href='<?php echo $history_link; ?>'>
-		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
-		width='30'
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
 		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
 		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
 		</a>
@@ -504,12 +504,12 @@ $this->overallconfig['use_jquery_modal']); ?>
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
-                    if ( $history_link )
+        if ( $history_link )
         {
         ?>    
         <a href='<?php echo $history_link; ?>'>
-		<img	src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
-		width='30'
+		<img src='<?php echo Uri::root(); ?>components/com_sportsmanagement/assets/images/history-icon-png--21.png'
+		width='20'
 		alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'
 		title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_HISTORY' ); ?>'>
 		</a>
