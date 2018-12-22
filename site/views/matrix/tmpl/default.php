@@ -59,7 +59,7 @@ echo $this->loadTemplate('matrix');
 	
 }
 
-if ($this->config['show_help']==1)
+if ( $this->config['show_help'] )
 {
 echo $this->loadTemplate('hint');
 }

@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row" id="defaultmatrixrussia">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultmatrixrussia">
  <?php
 	$division_id = $this->divisionid;
     $matrix = '<table class="'.$this->config['table_class'].'" border="2px">';

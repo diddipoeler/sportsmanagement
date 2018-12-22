@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row" id="defaultmatrixdivision">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultmatrixdivision">
  <?php
 
 	#$this->config['highlight_fav_team'] = 1;
@@ -22,23 +22,12 @@ use Joomla\CMS\Factory;
   
   if ( $this->project->project_type == 'DIVISIONS_LEAGUE'  && !$this->divisionid  )
   {
-  /*
-  echo 'project<br><pre>';
-  print_r($this->project);
-  echo '</pre>';
-  echo 'divisionen<br><pre>';
-  print_r($this->divisions);
-  echo '</pre>';
-  echo 'teams<br><pre>';
-  print_r($this->teams);
-  echo '</pre>';
-  */
   
   foreach ( $this->divisions as $divisions ) 
       {
     
       ?>
-  <table width="100%" class="contentpaneopen" border="0">
+  <table class="<?php echo $this->config['table_class'];?>">
 		<tr>
 			<td class="contentheading">
 				<?php
