@@ -5,6 +5,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\CMS\Factory;
 
 class plgContentSportsmanagement_Comments extends JPlugin {
 
@@ -12,7 +13,7 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	
 	public function __construct(&$subject, $config = array())
 	{
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$jcomments_exists = file_exists(JPATH_SITE.'/components/com_jcomments/jcomments.php');
 		
 		if (!$jcomments_exists && $app->isSite()) {
@@ -48,14 +49,14 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	public function onMatchReportComments(&$match, $title, &$html)
 	{
 		// load plugin params info
-		$separate_comments 	= $this->params->get('separate_comments', 0);
+		$separate_comments = $this->params->get('separate_comments', 0);
 
 		if ($separate_comments) {
 			$comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';
 			if (file_exists($comments))
 			{
 				require_once($comments);
-				$html = '<div class="jlgcomments">'.JComments::show($match->id, 'com_sportsmanagement_matchreport', $title).'</div>';
+				$html = '<div>'.JComments::show($match->id, 'com_sportsmanagement_matchreport', $title).'</div>';
 				return true;
 			}
 			return false;
@@ -71,14 +72,14 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	public function onNextMatchComments(&$match, $title, &$html)
 	{
 		// load plugin params info
-		$separate_comments 	= $this->params->get('separate_comments', 0);
+		$separate_comments = $this->params->get('separate_comments', 0);
 
 		if ($separate_comments) {
 			$comments = JPATH_SITE.'/components/com_jcomments/jcomments.php';
 			if (file_exists($comments))
 			{
 				require_once($comments);
-				$html = '<div class="jlgcomments">'.JComments::show($match->id, 'com_sportsmanagement_nextmatch', $title).'</div>';
+				$html = '<div>'.JComments::show($match->id, 'com_sportsmanagement_nextmatch', $title).'</div>';
 				return true;
 			}
 			return false;
@@ -94,7 +95,7 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 	public function onMatchComments(&$match, $title, &$html)
 	{
 		// load plugin params info
-		$separate_comments 	= $this->params->get('separate_comments',0);
+		$separate_comments = $this->params->get('separate_comments',0);
 		
 		if ($separate_comments == 0) {
 
@@ -102,7 +103,7 @@ class plgContentSportsmanagement_Comments extends JPlugin {
 			if (file_exists($comments))
 			{
 				require_once($comments);
-				$html = '<div class="jlgcomments">'.JComments::show($match->id, 'com_sportsmanagement', $title).'</div>';
+				$html = '<div>'.JComments::show($match->id, 'com_sportsmanagement', $title).'</div>';
 				return true;
 			}
 			return false;
