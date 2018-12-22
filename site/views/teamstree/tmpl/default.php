@@ -12,6 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
+?>
+<div class="<?php echo $this->divclasscontainer;?>" id="teamstree">
+<?php
 if ($this->familyteamstree) {
                     $class_collapse = 'collapse in';
                 } else {
@@ -52,3 +55,4 @@ foreach( $this->familyteamstree as $rowclub => $rowvalue )
 <?php
 }
 ?>
+</div>
