@@ -15,8 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-
 <!-- START of match details -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h4>
 <table class="table">
     <!-- Prev Match-->
@@ -170,6 +170,6 @@ use Joomla\CMS\Factory;
 </table>
 
 <br/>
-
+</div>
 
 

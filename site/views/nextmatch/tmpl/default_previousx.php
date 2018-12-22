@@ -10,12 +10,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
+<?php
 foreach ($this->teams as $currentteam) {
     ?>
 
@@ -129,3 +130,4 @@ foreach ($this->teams as $currentteam) {
 
 }
 ?>
+</div>

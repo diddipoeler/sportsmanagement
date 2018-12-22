@@ -33,7 +33,6 @@ if ( $this->config['show_nextmatch'] ) {
 echo $this->loadTemplate('nextmatch');
 }
 
-
 $this->output = array();
 if ( $this->config['show_details'] ) {
 $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'] = 'details';

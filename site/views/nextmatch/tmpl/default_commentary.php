@@ -10,11 +10,11 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 
 ?>
-    <!-- START of match commentary -->
+<!-- START of match commentary -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
 <?php
 
 if (!empty($this->matchcommentary)) {
@@ -54,4 +54,4 @@ if (!empty($this->matchcommentary)) {
 }
 
 ?>
-
+</div>

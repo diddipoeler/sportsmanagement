@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\Registry\Registry;
 use Joomla\CMS\Dispatcher\Dispatcher;
 use Joomla\CMS\Language\Text;
@@ -20,8 +19,8 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 ?>
 <!-- START of match preview -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
 <?php
-
 /**
  * workaround to support {jcomments (off|lock)} in match preview
  * no comments are shown if {jcomments (off|lock)} is found in the match preview
@@ -99,3 +98,4 @@ if ($separate_comments) {
     }
 }
 ?>
+</div>

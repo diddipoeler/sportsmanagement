@@ -10,14 +10,13 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-
 <!-- Main START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
 <table class="table">
     <?php
     if ($this->config['show_logo']) {
@@ -142,3 +141,4 @@ if (isset($this->match->team1_result) && isset($this->match->team2_result)) { ?>
 } ?>
 
 <br/>
+</div>

@@ -10,13 +10,12 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
 <table class="table">
     <thead>
@@ -352,8 +351,6 @@ use Joomla\CMS\Factory;
     <?php endif; ?>
 
 </table>
-
+</div>
 <!-- Main END -->
-<br>
-<br>
-
+<br/>
