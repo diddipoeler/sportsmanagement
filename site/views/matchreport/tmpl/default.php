@@ -64,7 +64,7 @@ if (!empty($this->matchplayerpositions ))
 
 ?>
 
-<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclasscontainer;?>" id="matchreport">
 
 <?php
 

@@ -11,10 +11,10 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
-//echo '<pre>'.print_r($this->config,true).'</pre>';
-?>
 
+?>
 <!-- START: game result -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <table class="table" >
 
     <?php
@@ -158,7 +158,7 @@ $this->overallconfig['use_jquery_modal']);
 if ($this->match->cancel > 0)
 {
 	?>
-	<table class="matchreport" border="0">
+	<table class="table" >
 		<tr>
 			<td class="result">
 					<?php echo $this->match->cancel_reason; ?>
@@ -170,7 +170,7 @@ if ($this->match->cancel > 0)
 else
 {
 	?>
-	<table class="matchreport" border="0">
+	<table class="table" >
 		
         
 		<?php
@@ -221,7 +221,7 @@ echo $this->loadTemplate('timeline');
 if ( $this->match->decision_info != '' )
 {
 	?>
-	<table class="matchreport">
+	<table class="table">
 		<tr>
 			<td>
 				<i><?php echo $this->match->decision_info; ?></i>
@@ -233,4 +233,5 @@ if ( $this->match->decision_info != '' )
 }
 ?>
 <!-- END of decision info -->
+</div>
 <!-- END: game result -->

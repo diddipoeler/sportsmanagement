@@ -23,8 +23,8 @@ if ($setItems > $actualItems) {
 		}
     
 ?>
-
-<table class="table table-responsive">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+<table class="table ">
 <?php
 $j = 0;
 foreach ( $this->matchimages as $images )
@@ -58,4 +58,5 @@ $this->overallconfig['use_jquery_modal']);
 $j++;
 }
 ?>
-</table>		
+</table>
+</div>		

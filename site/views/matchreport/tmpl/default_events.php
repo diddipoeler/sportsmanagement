@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- START of match events -->
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <h2>
 <?php 
 echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); 
@@ -27,7 +27,7 @@ if ( $this->config['show_timeline'] && !$this->config['show_timeline_under_resul
 echo $this->loadTemplate('timeline');
 }
 ?>
-<table class="table table-responsive" >
+<table class="table " >
 			<?php
 			foreach ( $this->eventtypes as $event )
 			{
@@ -54,4 +54,5 @@ echo $this->loadTemplate('timeline');
 			?>
 </table>
 <!-- END of match events -->
+</div>
 <br />

@@ -15,19 +15,15 @@ use Joomla\CMS\Factory;
 
 ?>
 <!-- START of match timeline -->
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <script type="text/javascript">
-//	window.addEvent('domready', function(){
-//		var Tips1 = new Tips($$('.imgzev'));
-//	});
-    
 	function gotoevent(row) {
         var t=document.getElementById('event-' + row)
         t.scrollIntoView()
     }
 </script>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'); ?></h2>
-<table id="timeline" class="table table-responsive" >
+<table id="timeline" class="table " >
 	<tr>
   <?php
 		if ($this->team1->logo_small == '')
@@ -113,5 +109,5 @@ use Joomla\CMS\Factory;
 	</tr>
 
 </table>
-
+</div>
 <!-- END of match timeline -->

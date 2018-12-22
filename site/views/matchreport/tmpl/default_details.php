@@ -14,14 +14,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-
 <!-- Details-->
 <h2>
 <?php 
 echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); 
 ?>
 </h2>
-<div class="<?php echo $this->divclassrow;?>">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <div class="col-md-12">
 
 	<!-- Prev Match-->

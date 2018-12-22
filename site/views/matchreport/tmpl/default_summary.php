@@ -18,6 +18,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 
 ?>
 <!-- START of match summary -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 
 // workaround to support {jcomments (off|lock)} in match summary
@@ -32,7 +33,7 @@ if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', 
 if (!empty($this->match->summary))
 {
 	?>
-	<table class="table table-responsive">
+	<table class="table ">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -41,7 +42,7 @@ if (!empty($this->match->summary))
 			</td>
 		</tr>
 	</table>
-	<table class="table table-responsive">
+	<table class="table ">
 		<tr>
 			<td>
 			<?php
@@ -68,12 +69,16 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
         } else {
             $dispatcher = JDispatcher::getInstance();
         }
-
-PluginHelper::importPlugin( 'content', 'joomleague_comments' );
+/**
+ * load sportsmanagement comments plugin files
+ */
+PluginHelper::importPlugin( 'content', 'sportsmanagement_comments' );
 $comments = '';
 
-	// get joomleague comments plugin params
-	$plugin= PluginHelper::getPlugin('content', 'joomleague_comments');
+/**
+ * get sportsmanagement comments plugin params
+ */
+	$plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
 	if (is_object($plugin)) 
     {
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -114,5 +119,6 @@ $comments = '';
 }
 
 ?>
+</div>
 <!-- END of match summary -->
 

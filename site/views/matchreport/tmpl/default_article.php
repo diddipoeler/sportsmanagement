@@ -12,15 +12,16 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-?>
 
+?>
 <!-- START of match summary -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 if (!empty($this->match_article->introtext))
 {
     
 	?>
-	<table class="table table-responsive" >
+	<table class="table " >
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -29,7 +30,7 @@ if (!empty($this->match_article->introtext))
 			</td>
 		</tr>
 	</table>
-	<table class="table table-responsive" >
+	<table class="table " >
 		<tr>
 			<td>
 			<?php
@@ -47,4 +48,4 @@ if (!empty($this->match_article->introtext))
 
 ?>
 <!-- END of match summary -->
-
+</div>

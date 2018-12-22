@@ -14,7 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-	<table class="table table-responsive" >
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
+	<table class="table " >
 		<?php
 		foreach ( $this->matchplayerpositions as $pos )
 		{
@@ -184,3 +185,4 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 		}
 		?>
 	</table>					
+</div>

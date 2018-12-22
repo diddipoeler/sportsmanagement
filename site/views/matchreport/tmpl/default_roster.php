@@ -20,6 +20,7 @@ HTMLHelper::_('behavior.modal');
 
 ?>
 <!-- START: game roster -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <!-- Show Match players -->
 <?php
 if (!empty($this->matchplayerpositions))
@@ -27,7 +28,7 @@ if (!empty($this->matchplayerpositions))
 ?>
 
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>		
-<table class="table table-responsive">
+<table class="table ">
 <?php
 		foreach ($this->matchplayerpositions as $pos)
 		{
@@ -259,5 +260,5 @@ echo ' '.'&copy;';
 ?>
 <!-- END of Match players -->
 <br />
-
+</div>
 <!-- END: game roster -->

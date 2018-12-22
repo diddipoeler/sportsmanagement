@@ -13,7 +13,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-
 <!-- START: game stats -->
 <?php
 if (!empty($this->matchplayerpositions ))

@@ -15,11 +15,12 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
 <!-- Show Match staff -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="matchreport">
 <?php
 if (!empty($this->matchstaffpositions))
 {
 	?>
-	<table class="table table-responsive">
+	<table class="table ">
 		<?php
 		foreach ($this->matchstaffpositions as $pos)
 		{
@@ -115,4 +116,5 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 	<?php
 }
 ?>
+</div>
 <!-- END of Match staff -->
