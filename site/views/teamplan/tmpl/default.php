@@ -15,8 +15,9 @@ use Joomla\CMS\Language\Text;
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
 ?>
-<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclasscontainer;?>" id="teamplan">
 <?php
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -41,15 +42,11 @@ else if( $this->config['show_plan_layout'] == 'plan_sorted_by_date')
 echo $this->loadTemplate('plan_sorted_by_date');
 }
 		
-echo "<div>";
 }
 else
 {
-echo "<div>";
 echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ERROR_PROJECTMODEL_PROJECT_IS_REQUIRED').'</p>';
 }
-
 echo $this->loadTemplate('jsminfo');
-echo '</div>';
 ?>
 </div>

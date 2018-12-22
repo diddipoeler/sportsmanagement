@@ -14,8 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-?>
 
+?>
 <div class="<?php echo $this->divclasscontainer;?>" id="teaminfo">
 <?php
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
