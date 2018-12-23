@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <form>
+<!-- register 1 -->
 	<fieldset name="details"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
     label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS">
@@ -191,7 +192,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 		</field>
 		
 	</fieldset>
-  
+<!-- register 2 -->  
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
@@ -234,13 +235,6 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ASSOC_LOGO_PICTURE_WIDTH">
 		</field>
 
-<!--     
-		<field name="team_picture_height" type="text" default="150"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
-		</field>
--->   
- 
 		<field name="show_route" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_ROUTE"

@@ -18,8 +18,14 @@ use Joomla\CMS\Uri\Uri;
   // that they are loaded i.s.o. of the template of this view
   $templatesToLoad = array('globalviews');
   sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+/**
+ * kml file laden
+ */            
+if ( $this->mapconfig['map_kmlfile'] )
+{    
   $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
   $this->kmlfile = $this->project->id.'-ranking.kml';
+}
 
   if( version_compare(JSM_JVERSION,'4','eq') )
   {

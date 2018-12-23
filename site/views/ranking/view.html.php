@@ -205,10 +205,15 @@ if ( $this->config['use_which_map'] )
 {
 $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0));    
 }
-    
+
+/**
+ * kml file generieren
+ */            
+if ( $this->mapconfig['map_kmlfile'] )
+{    
             $this->geo = new JSMsimpleGMapGeocoder();
             $this->geo->genkml3($this->project->id, $this->allteams);
-
+}
             foreach ($this->allteams as $row) {
                 $address_parts = array();
                 if (!empty($row->club_address)) {
