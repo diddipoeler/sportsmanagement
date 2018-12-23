@@ -257,7 +257,13 @@ catch (Exception $e)
         $seasons = $db->loadObjectList();
 
         foreach ($seasons as $k => $season) {
+            $seasons[$k]->division_slug = NULL;
+            $seasons[$k]->division_name = NULL;
+            $seasons[$k]->division_short_name = NULL;
+            $seasons[$k]->round_slug = NULL;
             $query->clear();
+            if ( $season->division_id )
+            {
             $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
             $query->select('d.name AS division_name');
             $query->select('d.shortname AS division_short_name');
@@ -269,8 +275,10 @@ catch (Exception $e)
             $seasons[$k]->division_slug = $result->division_slug;
             $seasons[$k]->division_name = $result->division_name;
             $seasons[$k]->division_short_name = $result->division_short_name;
-            
+            }
             $query->clear();
+            if ( $season->current_round )
+            {
             $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
             $query->from('#__sportsmanagement_round AS r');
             $query->where('r.id = ' . $season->current_round);
@@ -278,7 +286,7 @@ catch (Exception $e)
             $db->setQuery($query);
             $result = $db->loadObject();
             $seasons[$k]->round_slug = $result->round_slug;
-            
+            }
             $ranking = self::getTeamRanking($season->projectid, $season->division_id);
             if (!empty($ranking)) {
                 $seasons[$k]->rank = $ranking['rank'];
