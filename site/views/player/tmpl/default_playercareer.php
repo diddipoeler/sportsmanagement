@@ -13,7 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
+<?php
 if (count($this->historyPlayer) > 0)
 {
 	?>
@@ -194,3 +196,4 @@ $this->overallconfig['use_jquery_modal']);
 	<?php
 }
 ?>
+</div>

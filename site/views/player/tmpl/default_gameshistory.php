@@ -18,6 +18,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
 ?>
 <!-- Player stats History START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <?php
 if (count($this->games))
 {
@@ -361,3 +362,4 @@ $this->overallconfig['use_jquery_modal']);
 <?php
 }
 ?>
+</div>

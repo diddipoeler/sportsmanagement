@@ -19,6 +19,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
             
 ?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <!-- Player stats History START -->
 <h2><?php	echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
 
@@ -441,5 +442,5 @@ $this->overallconfig['use_jquery_modal']);
 			</tbody>
 		</table>
 		
-
+</div>
 <!-- Player stats History END -->

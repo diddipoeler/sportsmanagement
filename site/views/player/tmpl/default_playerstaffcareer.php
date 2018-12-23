@@ -13,7 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
+<?php
 // player staff start
 if (count($this->historyPlayerStaff) > 0)
 {
@@ -78,3 +80,4 @@ if (count($this->historyPlayerStaff) > 0)
 	<?php
 }
 ?>
+</div>

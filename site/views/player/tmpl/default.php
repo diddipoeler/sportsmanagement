@@ -20,7 +20,7 @@ if (isset($this->person))
 ?>
 
 <!-- player anfang -->
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="player">
 <?php
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {

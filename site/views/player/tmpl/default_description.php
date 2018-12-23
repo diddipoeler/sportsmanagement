@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <!-- Team Player Description START -->
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <?php
 	$description = "";
 	if ( isset($this->teamPlayer) && !empty($this->teamPlayer->notes) )
@@ -41,4 +42,5 @@ use Joomla\CMS\HTML\HTMLHelper;
 		<?php
 	}
 	?>
+</div>    
 <!-- Team Player Description END -->

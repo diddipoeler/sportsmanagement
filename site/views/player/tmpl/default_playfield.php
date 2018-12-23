@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
 <table class="table table-responsive">
 <tr>
 <td width="50%">
@@ -69,3 +69,4 @@ else
 </td>
 </tr>
 </table>
+</div>

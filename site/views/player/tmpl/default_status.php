@@ -12,7 +12,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+?>
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
+<?php
 if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 		( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension > 0 ) ||
 		( isset($this->teamPlayer->away) && $this->teamPlayer->away > 0 ) )
@@ -302,3 +304,4 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 	<?php
 }
 ?>
+</div>
