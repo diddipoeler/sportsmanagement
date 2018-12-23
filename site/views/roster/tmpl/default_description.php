@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster"> 
 	<?php
 	// Show team-description if defined.
 	if ( !isset ( $this->projectteam->notes ) )
@@ -29,7 +29,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 	{
 		?>
 		<br />
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<table class="table">
 			<tr class="sectiontableheader">
 				<th>
 					<?php
@@ -39,7 +39,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 			</tr>
 		</table>
 
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<table class="table">
 			<tr>
 				<td>
 					<?php
@@ -53,3 +53,4 @@ use Joomla\CMS\HTML\HTMLHelper;
 	}
 	?>
 	<br />
+</div>    

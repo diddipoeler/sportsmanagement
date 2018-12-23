@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
 ?>
-
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="roster"> 
 <?php
 	// Show team-picture if defined.
 	if ( $this->config['show_team_logo'] )
@@ -48,3 +48,4 @@ $this->overallconfig['use_jquery_modal']);
 	<?php
 	}
 	?>
+</div>

@@ -92,7 +92,7 @@ if (!empty($this->rows))
 		}
 	}
 	?>
-<div class="row table-responsive" id="defaultplayers">    
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="defaultplayers">    
 <table class="<?php echo $this->config['table_class'];?>">
 	<?php
     // jetzt kommt die schleife über die positionen

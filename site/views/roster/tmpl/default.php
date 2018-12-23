@@ -17,8 +17,6 @@ use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.modal');
 
-//echo ' rows<br><pre>'.print_r($this->rows,true).'</pre>';
-//echo ' positioneventtypes<br><pre>'.print_r($this->positioneventtypes,true).'</pre>';
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -105,7 +103,7 @@ if ($this->config['show_staff_layout'] == 'staff_johncage' ||
 // johncage css ends    
 }
 ?>
-<div class="container-fluid">
+<div class="<?php echo $this->divclasscontainer;?>" id="roster">
 <?php
 if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
     echo $this->loadTemplate('debug');
