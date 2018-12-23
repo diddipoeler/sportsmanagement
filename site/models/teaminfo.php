@@ -218,8 +218,6 @@ catch (Exception $e)
         $query = $db->getQuery(true);
         $starttime = microtime();
 
-
-
         $seasons = array();
         if ($config['ordering_teams_seasons'] == "1") {
             $season_ordering = "DESC";
@@ -227,6 +225,7 @@ catch (Exception $e)
             $season_ordering = "ASC";
         }
 
+        $query->clear();
         $query->select('pt.id as ptid, pt.team_id as season_team_id, pt.picture, pt.info, pt.project_id AS projectid');
         $query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
         $query->select('s.name as season');
@@ -235,18 +234,12 @@ catch (Exception $e)
         $query->select('l.name as league, t.extended as teamextended');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
-        $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
-        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-        $query->select('d.name AS division_name');
-        $query->select('d.shortname AS division_short_name');
         $query->from('#__sportsmanagement_project_team AS pt ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
         $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id ');
-        $query->join('LEFT', '#__sportsmanagement_division AS d ON d.id = pt.division_id ');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id ');
         $query->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id ');
         $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id ');
-        $query->join('LEFT', '#__sportsmanagement_round AS r ON r.id = p.current_round ');
 
         if ($history) {
             $query->where('t.id = ' . self::$teamid);
@@ -261,10 +254,31 @@ catch (Exception $e)
         $query->order('s.name ' . $season_ordering);
 
         $db->setQuery($query);
-
         $seasons = $db->loadObjectList();
 
         foreach ($seasons as $k => $season) {
+            $query->clear();
+            $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
+            $query->select('d.name AS division_name');
+            $query->select('d.shortname AS division_short_name');
+            $query->from('#__sportsmanagement_division AS d');
+            $query->where('d.id = ' . $season->division_id);
+            $query->where('d.project_id = ' . $season->projectid);
+            $db->setQuery($query);
+            $result = $db->loadObject();
+            $seasons[$k]->division_slug = $result->division_slug;
+            $seasons[$k]->division_name = $result->division_name;
+            $seasons[$k]->division_short_name = $result->division_short_name;
+            
+            $query->clear();
+            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+            $query->from('#__sportsmanagement_round AS r');
+            $query->where('r.id = ' . $season->current_round);
+            $query->where('r.project_id = ' . $season->projectid);
+            $db->setQuery($query);
+            $result = $db->loadObject();
+            $seasons[$k]->round_slug = $result->round_slug;
+            
             $ranking = self::getTeamRanking($season->projectid, $season->division_id);
             if (!empty($ranking)) {
                 $seasons[$k]->rank = $ranking['rank'];
