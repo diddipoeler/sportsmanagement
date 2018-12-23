@@ -17,7 +17,7 @@ if ( $this->playground->notes )
 {
 ?>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NOTES'); ?></h2>
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
 <?php 
 $description = $this->playground->notes;
 $description = HTMLHelper::_('content.prepare', $description);

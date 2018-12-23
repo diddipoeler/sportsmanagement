@@ -59,10 +59,13 @@ if ( $this->config['use_which_map'] )
 $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0));    
 }	  		
 /**
- * diddipoeler
- */
+ * kml file generieren
+ */            
+if ( $this->mapconfig['map_kmlfile'] )
+{ 
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
+}
 	}
 		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
 /**

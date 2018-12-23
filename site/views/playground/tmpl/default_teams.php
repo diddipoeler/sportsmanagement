@@ -17,7 +17,7 @@ use Joomla\CMS\Factory;
 
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_TEAMS'); ?></h2>
 <!-- Now show teams of this club -->
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
 	<?php foreach ((array)$this->teams AS $key => $value): ?>	
 	  <?php $projectname = $value->project; ?> 
 	  <?php foreach ($value->project_team AS $team): 

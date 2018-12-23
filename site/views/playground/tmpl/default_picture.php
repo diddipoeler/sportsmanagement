@@ -18,7 +18,7 @@ if ( ( $this->playground->picture ) )
     ?>
 
  <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_CLUB_PICTURE'); ?></h2>  
-		<div class="row-fluid">
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
                 <?php
                 if (($this->playground->picture)) 
                 {

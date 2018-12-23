@@ -20,7 +20,7 @@ if ( $this->games )
 	?>
 	<!-- Playground next games -->
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEXT_GAMES'); ?></h2>
-		<div class="row-fluid">
+		<div class="<?php echo $this->divclassrow;?> table-responsive" id="playground">
 					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
 						//sort games by dates
