@@ -22,13 +22,16 @@ $jinput = $app->input;
 $view = $jinput->getVar( "view") ;        
 $modalheight = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = ComponentHelper::getParams($jinput->getCmd('option'))->get('modal_popup_width', 900);
-
-
+?>
+<!-- START: Contentheading -->
+<div class="<?php echo $this->divclassrow;?>" id="sectionheader">
+<?php
 switch ( $view )
 {
     
 	case 'matchreport':
 	?>
+    
 	<table class="table">
 	<tr>
 		<td class="contentheading"><?php
@@ -372,8 +375,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ical',$routeparam
     break;
     case 'teaminfo':
     ?>
-<!-- START: Contentheading -->
-<div class="container">
 	<h4>
 		<?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
@@ -403,8 +404,8 @@ $this->overallconfig['use_jquery_modal']);
 		}
 		?>
 	</h4>
-</div>
-<!-- END: Contentheading -->
+
+
 <?PHP
     break;
     case 'clubinfo':
@@ -433,12 +434,11 @@ $this->overallconfig['use_jquery_modal']);
                 }
 			?>
 		</h4>
-<!--	</div> -->
     <?PHP    
     break;
     default:
     ?>
-    <div class="<?php echo $this->divclassrow;?>" id="sectionheader">
+
     <table class="table" id="sectionheader">
     <tr>
     <td class="contentheading">
@@ -450,9 +450,11 @@ $this->overallconfig['use_jquery_modal']);
     </td>
     </tr>
     </table>
-    </div>
+
     <br />
     <?PHP
     break;
 }
 ?>
+</div>
+<!-- END: Contentheading -->
