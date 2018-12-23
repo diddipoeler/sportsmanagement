@@ -17,6 +17,8 @@
 	</files>
 
 	<languages>
+        <language tag="de-DE">language/de-DE/de-DE.plg_content_sportsmanagement_comments.ini</language>
+		<language tag="en-GB">language/de-DE/de-DE.plg_content_sportsmanagement_comments.sys.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_content_sportsmanagement_comments.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_content_sportsmanagement_comments.sys.ini</language>
 	</languages>
