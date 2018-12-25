@@ -1450,11 +1450,6 @@ catch (Exception $e) {
                 {
                 case 'season':
                 $row->ordering = substr($row->name, 0, 4);
-                break;
-                default:
-                $row->ordering = $order[$i];
-                break;
-                }
                 $row->modified = $this->jsmdate->toSql();
                 $row->modified_by = $this->jsmuser->get('id');
 				if (!$row->store())
@@ -1462,6 +1457,9 @@ catch (Exception $e) {
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					return Text::_('JGLOBAL_SAVE_SORT_NO');
 				}
+                break;
+                }
+                
             }
 		}
 		return Text::_('JGLOBAL_SAVE_SORT_YES');
