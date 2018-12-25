@@ -1427,7 +1427,15 @@ catch (Exception $e) {
 			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
-				$row->ordering = $order[$i];
+				switch ($this->getName())
+                {
+                case 'season':
+                $row->ordering = substr($row->name, 0, 4);
+                break;
+                default:
+                $row->ordering = $order[$i];
+                break;
+                }
                 $row->modified = $this->jsmdate->toSql();
                 $row->modified_by = $this->jsmuser->get('id');
 				if (!$row->store())
