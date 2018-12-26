@@ -7,12 +7,21 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage libraries
+ * 
+ * fehlerbehandlung
+ * https://docs.joomla.org/Using_JLog
+ * https://hotexamples.com/examples/-/JLog/addLogger/php-jlog-addlogger-method-examples.html
+ * http://eddify.me/posts/logging-in-joomla-with-jlog.html
+ * https://github.com/joomla-framework/log/blob/master/src/Logger/Database.php
+ * 
  */
+ 
 defined('_JEXEC') or die();
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 
 $document = Factory::getDocument();
 
@@ -80,6 +89,21 @@ class sportsmanagementView extends HtmlView {
      * @return
      */
     public function display($tpl = null) {
+        
+/**
+ * alle fehlermeldungen online ausgeben
+ * mit der kategorie: jsmerror       
+ */ 
+Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+/**
+ * fehlermeldungen datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
+/**
+ * laufzeit datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+        
         // Reference global application object
         $this->app = Factory::getApplication();
         // JInput object
@@ -102,14 +126,15 @@ class sportsmanagementView extends HtmlView {
         $this->user = Factory::getUser();
         $this->view = $this->jinput->getVar("view");
         $this->cfg_which_database = $this->jinput->getVar('cfg_which_database','0');
-	    if(isset($_SERVER['HTTP_REFERER'])) {
-
+	    
+        if(isset($_SERVER['HTTP_REFERER'])) {
         $this->backbuttonreferer = $_SERVER['HTTP_REFERER'];
 	    }
 	    else
 	    {
 		$this->backbuttonreferer = getenv('HTTP_REFERER');    
 	    }
+        
         $this->model = $this->getModel();
         $headData = $this->document->getHeadData();
         $scripts = $headData['scripts'];

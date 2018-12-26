@@ -15,6 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 /**
  * sportsmanagementModelClubInfo
@@ -293,6 +294,12 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel {
         return $result;
     }
 
+/**
+ * sportsmanagementModelClubInfo::getFirstClub()
+ * 
+ * @param integer $club_id
+ * @return
+ */
 static function getFirstClub($club_id = 0) {
         // Reference global application object
         $app = Factory::getApplication();
@@ -349,10 +356,12 @@ $query->group('c.name');
      
     }
 
+    
     /**
      * sportsmanagementModelClubInfo::getClub()
      * 
      * @param integer $inserthits
+     * @param integer $club_id
      * @return
      */
     static function getClub($inserthits = 0,$club_id = 0) {
@@ -411,6 +420,7 @@ $query->group('c.name');
         $query = $db->getQuery(true);
         $subquery1 = $db->getQuery(true);
         $subquery2 = $db->getQuery(true);
+        $start_time = microtime(true);
 
         $teams = array(0);
         if ( self::$clubid && self::$projectid ) {
@@ -459,6 +469,15 @@ $query->group('c.name');
             }
         }
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        $diff = microtime(true) - $start_time;
+        $logarray['method'] = __METHOD__;
+$logarray['line'] = __LINE__;
+$logarray['zeit'] = $diff;
+/**
+ * Add the message.
+ */
+JLog::add(json_encode($logarray), JLog::INFO, 'dbperformance');
+
         return $teams;
     }
 

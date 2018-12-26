@@ -31,6 +31,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
      * @return void
      */
     function init() {
+  
 /*
 // Add the logger.
 JLog::addLogger(
