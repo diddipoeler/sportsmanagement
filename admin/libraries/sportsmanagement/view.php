@@ -18,6 +18,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\Log;
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -76,6 +77,20 @@ class sportsmanagementView extends HtmlView
 	 */
 	public function display ($tpl = null)
 	{
+/**
+ * alle fehlermeldungen online ausgeben
+ * mit der kategorie: jsmerror       
+ */ 
+Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
+/**
+ * fehlermeldungen datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dblog'));
+/**
+ * laufzeit datenbankabfragen
+ */
+Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_log_entries'), Log::ALL, array('dbperformance'));
+	   
         $this->app = Factory::getApplication();
         $this->starttime = microtime(); 
         /**
