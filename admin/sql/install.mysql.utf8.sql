@@ -1997,3 +1997,11 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_person_project_position` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   UNIQUE KEY `combi` (`person_id`,`project_id`,`project_position_id`,`persontype`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_log_entries` (
+  `priority` int(11) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  KEY `idx_category_date_priority` (`category`,`date`,`priority`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
