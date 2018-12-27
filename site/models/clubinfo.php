@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelClubInfo
@@ -473,11 +474,13 @@ $query->group('c.name');
         $logarray['method'] = __METHOD__;
 $logarray['line'] = __LINE__;
 $logarray['zeit'] = $diff;
+if ( ComponentHelper::getParams($option)->get('show_query_debug_info') )
+{
 /**
  * Add the message.
  */
-JLog::add(json_encode($logarray), JLog::INFO, 'dbperformance');
-
+Log::add(json_encode($logarray), Log::INFO, 'dbperformance');
+}
         return $teams;
     }
 

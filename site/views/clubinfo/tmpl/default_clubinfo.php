@@ -12,10 +12,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 //$this->columns = 2;
 $this->divclass = '';
 
-$paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
+$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
 if (version_compare(JSM_JVERSION, '4', 'eq') || $paramscomponent->get('use_jsmgrid')) {
     $this->divclass = 'p-2 col';
@@ -33,7 +35,7 @@ if (!isset($this->club)) {
     JError::raiseWarning('ERROR_CODE', Text::_('Error: ClubID was not submitted in URL or Club was not found in database'));
 } else {
     ?>
-    <div class="<?php echo $paramscomponent->get('boostrap_div_class'); ?>">
+    <div class="<?php echo $this->divclassrow;?>">
         <div class="<?php echo $this->divclass; ?>3 center">
             <?PHP ?>
             <!-- SHOW LOGO - START -->
