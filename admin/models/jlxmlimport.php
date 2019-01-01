@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Log\Log;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -827,13 +828,14 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+       $query->select('id, username');
+       $query->from('#__sportsmanagement_users');
        
-		$query='SELECT id,username FROM #__users';
 		if ($is_admin==true)
 		{
-			$query .= " WHERE usertype='Super Administrator' OR usertype='Administrator'";
+		  $query->where("( usertype LIKE 'Super Administrator' OR usertype LIKE 'Administrator') ");
 		}
-		$query .= ' ORDER BY username ASC';
+        $query->order('username ASC');
 		Factory::getDbo()->setQuery($query);
 		return Factory::getDbo()->loadObjectList();
 	}
@@ -847,6 +849,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+       $query->select('id, name');
+       $query->from('#__sportsmanagement_project');
+       $query->where('master_template = 0');  
+       $query->order('name ASC');
        
 		$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE master_template=0 ORDER BY name ASC';
 		Factory::getDbo()->setQuery($query);
@@ -863,8 +869,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+       $query->select('id, name, country');
+       $query->from('#__sportsmanagement_club');
+       $query->order('name ASC');
        
-		$query='SELECT id,name,country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name ASC';
 		Factory::getDbo()->setQuery($query);
 		return Factory::getDbo()->loadObjectList();
 	}
@@ -878,8 +886,10 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-       
-		$query='SELECT id AS value, name AS text, country FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club ORDER BY name';
+       $query->select('id AS value, name AS text, country');
+       $query->from('#__sportsmanagement_club');
+       $query->order('name');
+
 		Factory::getDbo()->setQuery($query);
 		if ($results=Factory::getDbo()->loadObjectList())
 		{
@@ -888,28 +898,38 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		return false;
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getClubAndTeamList()
+	 * 
+	 * @return
+	 */
 	public function getClubAndTeamList()
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+       $query->select('c.id, c.name AS club_name, t.name AS team_name, c.country');
+       $query->from('#__sportsmanagement_club AS c');
+       $query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id=c.id');
+       $query->order('c.name, t.name ASC');
        
-		$query  = ' SELECT id, c.name AS club_name, t.name AS team_name, c.country'
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id=c.id'
-				. ' ORDER BY c.name, t.name ASC';
 		Factory::getDbo()->setQuery($query);
 		return Factory::getDbo()->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getClubAndTeamListSelect()
+	 * 
+	 * @return
+	 */
 	public function getClubAndTeamListSelect()
 	{
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
+       $query->select('t.id AS value, CONCAT(c.name, " - ", t.name , " (", t.info , ")" ) AS text, t.club_id, c.name AS club_name, t.name AS team_name, c.country');
+       $query->from('#__sportsmanagement_club AS c');
+       $query->join('INNER', '#__sportsmanagement_team AS t ON t.club_id=c.id');
+       $query->order('c.name, t.name');
        
-		$query  = ' SELECT t.id AS value, CONCAT(c.name, " - ", t.name , " (", t.info , ")" ) AS text, t.club_id, c.name AS club_name, t.name AS team_name, c.country'
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id=c.id'
-				. ' ORDER BY c.name, t.name';
 		Factory::getDbo()->setQuery($query);
 		if ($results=Factory::getDbo()->loadObjectList())
 		{
@@ -978,7 +998,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 		if (Factory::getDbo()->getAffectedRows())
 		{
-			$result=Factory::getDbo()->loadObject();
+			$result = Factory::getDbo()->loadObject();
 			return $result;
 		}
 		return (object)array("firstname" => "", "lastname" => "");
@@ -1522,7 +1542,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           // Select some fields
         $query->select('id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+		$query->from('#__sportsmanagement_project');
         $query->where('name LIKE '.$db->Quote(''.addslashes(stripslashes($this->_name)).''));
 			$db->setQuery($query);
        
@@ -1553,7 +1573,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
           // Select some fields
         $query->select($fieldName);
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_'.$tableName);
+		$query->from('#__sportsmanagement_'.$tableName);
         $query->where('id = '.$id);
 		Factory::getDbo()->setQuery($query);
 		if ($result=Factory::getDbo()->loadResult())
@@ -1583,7 +1603,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
           // Select some fields
         $query->select('id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+		$query->from('#__sportsmanagement_sports_type');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($this->_sportstype_new)).''));
 			Factory::getDbo()->setQuery($query);
 
@@ -2027,7 +2047,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
           // Select some fields
         $query->select('id,name');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
+		$query->from('#__sportsmanagement_position');
         $query->where('name LIKE '.Factory::getDbo()->Quote(''.addslashes(stripslashes($p_position->name)).''));
         $query->where('parent_id = 0');
         
@@ -2442,7 +2462,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
           // Select some fields
         $query->select('id,name,standard_playground,country');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+		$query->from('#__sportsmanagement_club');
         $query->group('id');
         
 			Factory::getDbo()->setQuery($query);
@@ -3270,7 +3290,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 		if (!$project_id){return;}
 
 		// get info from project
-		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
+		$query='SELECT master_template,extension FROM #__sportsmanagement_project WHERE id='.(int)$project_id;
 
 		Factory::getDbo()->setQuery($query);
 		$params = Factory::getDbo()->loadObject();
@@ -3283,7 +3303,7 @@ $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__)
 
 		// otherwise,compare the records with the files
 		// get records
-		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$project_id;
+		$query='SELECT template FROM #__sportsmanagement_template_config WHERE project_id='.(int)$project_id;
 
 		Factory::getDbo()->setQuery($query);
     
