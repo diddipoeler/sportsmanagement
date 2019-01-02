@@ -19,7 +19,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-
 /**
  * FormFieldpersonagegroup
  * 

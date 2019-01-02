@@ -18,7 +18,6 @@ use Joomla\CMS\Form\FormHelper;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-
 /**
  * FormFieldprojectpositionreferee
  * 
@@ -65,8 +64,8 @@ class JFormFieldprojectpositionreferee extends \JFormFieldList
 		
                 
 			$query->select('ppos.id AS value,pos.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-			$query->join('inner', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id');
+			$query->from('#__sportsmanagement_position AS pos');
+			$query->join('inner', '#__sportsmanagement_project_position AS ppos ON pos.id=ppos.position_id');
 			$query->where('ppos.project_id='. $project_id.' AND pos.persontype=3');
 			//$query->order('t.name');
 			$db->setQuery($query);

@@ -18,7 +18,6 @@ use Joomla\CMS\Form\FormHelper;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-
 /**
  * FormFieldplaygroundlist
  * 

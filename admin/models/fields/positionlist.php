@@ -18,7 +18,6 @@ use Joomla\CMS\Language\Text;
 jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
-
 /**
  * FormFieldpositionlist
  * 

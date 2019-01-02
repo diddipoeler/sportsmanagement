@@ -16,7 +16,6 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 FormHelper::loadFieldClass('list');
 
-
 /**
  * FormFieldprojectrounds
  * 
@@ -53,7 +52,7 @@ class JFormFieldprojectrounds extends \JFormFieldList
 			->from('#__sportsmanagement_round AS a')
 			;
 
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
 
 		if ($menuType = $this->form->getValue('project'))
 		{

@@ -15,6 +15,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.form.helper');
 FormHelper::loadFieldClass('list');
@@ -46,7 +47,7 @@ class JFormFieldProjects extends \JFormFieldList
 		//$db = sportsmanagementHelper::getDBConnection();
 		$lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
-        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = ComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
