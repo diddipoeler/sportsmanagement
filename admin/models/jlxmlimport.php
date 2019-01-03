@@ -829,7 +829,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	   $app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
        $query->select('id, username');
-       $query->from('#__sportsmanagement_users');
+       $query->from('#__users');
        
 		if ($is_admin==true)
 		{
@@ -854,7 +854,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
        $query->where('master_template = 0');  
        $query->order('name ASC');
        
-		$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE master_template=0 ORDER BY name ASC';
+		//$query='SELECT id,name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE master_template=0 ORDER BY name ASC';
 		Factory::getDbo()->setQuery($query);
 		return Factory::getDbo()->loadObjectList();
 	}
