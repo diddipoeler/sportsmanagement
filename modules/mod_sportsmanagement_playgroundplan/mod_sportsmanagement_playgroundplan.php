@@ -76,7 +76,7 @@ switch ($mode)
 }
 
 ?>
-<div class="<?php echo $params->get('divclasscontainer'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="<?php echo $params->get('divclasscontainer'); ?> table-responsive" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(ModuleHelper::getLayoutPath($module->module));
 ?>
