@@ -22,7 +22,7 @@ $textdiv = "";
 $n = 1;
 ?>
 <div class="<?php echo $params->get('divclassrow'); ?>" id="modjlplaygroundplan<?php echo $mode; ?>">
-
+<table class="<?php echo $params->get('table_class'); ?>">
 <?php
 foreach ($list as $match)
  	{
@@ -32,7 +32,7 @@ $playground_id = 0;
 $picture = ""; 	  
 	if ($mode == 0)
 		{
-		$textdiv .= '<div class="qslidejl">';
+		$textdiv .= '<tr><td><div class="qslidejl">';
 		}
 if ($mode == 1)
 {
@@ -169,10 +169,11 @@ $textdiv .= '<p>'.modSportsmanagementPlaygroundplanHelper::getTeams($match->team
 $textdiv.= '</div>';
 $textdiv.= '</div>';
 $textdiv.= '<div style="clear:both"></div>';
-$textdiv.= '</div>';
+$textdiv.= '</div></td></tr>';
 
 }
 
 echo $textdiv;
 ?>
+</table>	
 </div>
