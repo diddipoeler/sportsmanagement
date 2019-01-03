@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage projectteam
@@ -35,15 +35,15 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	$this->change_training_date	= $this->app->getUserState( "$this->option.change_training_date", '0' );
+	$this->change_training_date = $this->app->getUserState( "$this->option.change_training_date", '0' );
 	$this->season_id = $this->app->getUserState( "$this->option.season_id", '0' ); ;
         
  
-		$lists = '';
+		$lists = array();
         
 		$this->item->name = '';
         
-		$project_id	= $this->item->project_id;
+		$project_id = $this->item->project_id;
 		$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($project_id);
 		$this->project = $project;
@@ -61,7 +61,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$this->form->setValue('standard_playground', null, $project_team->standard_playground);
 	}
        
-	$daysOfWeek=array(	0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
+	$daysOfWeek=array(0 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
 			1 => Text::_('MONDAY'), 
 			2 => Text::_('TUESDAY'), 
 			3 => Text::_('WEDNESDAY'), 
