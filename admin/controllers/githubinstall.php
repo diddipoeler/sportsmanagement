@@ -13,8 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Session\Session;
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\MVC\Controller\FormController;
  
 /**
  * SportsManagement Controller
@@ -28,7 +27,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllergithubinstall extends JControllerForm
+class sportsmanagementControllergithubinstall extends FormController
 {
 
 /**

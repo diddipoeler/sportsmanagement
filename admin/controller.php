@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 if (! defined('DS'))
 {
@@ -65,7 +66,7 @@ if ( !class_exists('sportsmanagementHelper') )
  * @version $Id$
  * @access public
  */
-class SportsManagementController extends JControllerLegacy
+class SportsManagementController extends BaseController
 {
 	
 	/**

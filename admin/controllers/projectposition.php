@@ -39,9 +39,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\MVC\Controller\FormController;
  
 
 /**
@@ -53,7 +51,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerprojectposition extends JControllerForm
+class sportsmanagementControllerprojectposition extends FormController
 {
 
 

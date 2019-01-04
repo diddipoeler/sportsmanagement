@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\MVC\Controller\BaseController;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
@@ -29,7 +29,7 @@ jimport('joomla.filesystem.archive');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextprofleagimport extends JControllerLegacy
+class sportsmanagementControllerjlextprofleagimport extends BaseController
 {
 	
 	/**

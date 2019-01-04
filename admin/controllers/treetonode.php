@@ -10,10 +10,7 @@
  */
  
 defined('_JEXEC') or die;
-
-//jimport('joomla.application.component.controller');
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -27,7 +24,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerTreetonode extends JControllerForm
+class sportsmanagementControllerTreetonode extends FormController
 {
 
 

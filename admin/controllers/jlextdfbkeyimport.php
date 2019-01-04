@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport( 'joomla.application.component.controller' );
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjlextdfbkeyimport
@@ -26,7 +26,7 @@ jimport( 'joomla.application.component.controller' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjlextdfbkeyimport extends JControllerLegacy
+class sportsmanagementControllerjlextdfbkeyimport extends BaseController
 {
 
 /**

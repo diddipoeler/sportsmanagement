@@ -1580,7 +1580,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
         {
             return $result;
         }
-		return Text::sprintf('Item with ID [%1$s] not found inside [#__'.COM_SPORTSMANAGEMENT_TABLE.'_%2$s]',$id,$tableName);
+		return Text::sprintf('Item with ID [%1$s] not found inside [#__sportsmanagement_%2$s]',$id,$tableName);
 	}
 
 	/**

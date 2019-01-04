@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerajaxcalls
@@ -23,7 +24,7 @@ use Joomla\CMS\Factory;
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerajaxcalls extends JControllerLegacy
+class sportsmanagementControllerajaxcalls extends BaseController
 {
 
 /**

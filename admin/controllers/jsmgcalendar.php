@@ -22,7 +22,7 @@ JLoader::import('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmGCalendar extends JControllerForm
+class sportsmanagementControllerjsmGCalendar extends FormController
 {
     
     /**

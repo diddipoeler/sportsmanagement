@@ -12,6 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 if (! defined('DS'))
 {
@@ -236,13 +237,13 @@ jimport('joomla.application.component.controller');
 	try
 	{
 	   //$controller = JController::getInstance(ucfirst($extension), $params);
-	   $controller = JControllerLegacy::getInstance(ucfirst($extension), $params);
+	   $controller = BaseController::getInstance(ucfirst($extension), $params);
 	}
 	catch (Exception $exc)
 	{
 		//fallback if no extensions controller has been initialized
 		//$controller	= JController::getInstance('sportsmanagement');
-        $controller	= JControllerLegacy::getInstance('sportsmanagement');
+        $controller	= BaseController::getInstance('sportsmanagement');
 	}
      
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
@@ -261,15 +262,15 @@ jimport('joomla.application.component.controller');
 
 // import joomla controller library
 jimport('joomla.application.component.controller');
-$controller	= JControllerLegacy::getInstance('sportsmanagement');
+$controller	= BaseController::getInstance('sportsmanagement');
 
 //if(is_null($controller) && !($controller instanceof JController)) {
 //	//fallback if no extensions controller has been initialized
 //	$controller	= JController::getInstance('sportsmanagement');
 //}
-if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
+if(is_null($controller) && !($controller instanceof BaseController)) {
 	//fallback if no extensions controller has been initialized
-	$controller	= JControllerLegacy::getInstance('sportsmanagement');
+	$controller	= BaseController::getInstance('sportsmanagement');
 }
 
 foreach ($model_pathes as $path)

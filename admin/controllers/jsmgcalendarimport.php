@@ -12,6 +12,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementControllerjsmgcalendarImport
@@ -22,7 +23,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy 
+class sportsmanagementControllerjsmgcalendarImport extends BaseController 
 {
 
 /**

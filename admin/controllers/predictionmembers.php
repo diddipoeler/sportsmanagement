@@ -33,7 +33,7 @@ class sportsmanagementControllerpredictionmembers extends JSMControllerAdmin
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see     JControllerLegacy
+	 * @see     BaseController
 	 * @since   1.6
 	 */
 	public function __construct($config = array())

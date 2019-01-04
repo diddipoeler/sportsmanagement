@@ -12,6 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * sportsmanagementControllerTreetomatch
@@ -22,7 +23,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerTreetomatch extends JControllerForm
+class sportsmanagementControllerTreetomatch extends FormController
 {
 
 	/**
