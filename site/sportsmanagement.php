@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\MVC\Controller\BaseController;
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -290,9 +290,9 @@ require_once( JPATH_SITE . DS . JSM_PATH . DS . 'controller.php' );
 // Component Helper
 jimport('joomla.application.component.helper');
 $controller = null;
-if (is_null($controller) && !($controller instanceof JControllerLegacy)) {
+if (is_null($controller) && !($controller instanceof BaseController)) {
     //fallback if no extensions controller has been initialized
-    $controller = JControllerLegacy::getInstance('sportsmanagement');
+    $controller = BaseController::getInstance('sportsmanagement');
 }
 
 $task = $input->getCmd('task');

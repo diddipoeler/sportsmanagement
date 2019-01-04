@@ -3,12 +3,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controlleradmin');
-
+use Joomla\CMS\MVC\Controller\AdminController;
 
 
-class sportsmanagementController extends JControllerAdmin
+
+class sportsmanagementController extends AdminController
 {
 
 	public function display($cachable = false, $urlparams = false)

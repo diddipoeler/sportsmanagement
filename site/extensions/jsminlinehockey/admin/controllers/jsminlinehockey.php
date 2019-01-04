@@ -3,13 +3,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-//jimport( 'joomla.application.component.controller' );
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
+use Joomla\CMS\MVC\Controller\AdminController;
 
 
-class sportsmanagementControllerjsminlinehockey extends JControllerAdmin
+class sportsmanagementControllerjsminlinehockey extends AdminController
 {
 
 

@@ -12,10 +12,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
-
-// import Joomla controller library
-jimport('joomla.application.component.controller');
-//jimport('joomla.application.component.controllerlegacy');
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * sportsmanagementController
@@ -26,8 +23,7 @@ jimport('joomla.application.component.controller');
  * @version 2014
  * @access public
  */
-//class sportsmanagementController extends JController
-class sportsmanagementController extends JControllerLegacy {
+class sportsmanagementController extends BaseController {
 
     function __construct($config = array()) {
         parent::__construct($config);
