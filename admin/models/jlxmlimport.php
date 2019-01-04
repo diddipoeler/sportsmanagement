@@ -201,12 +201,12 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	 * 
 	 * @return
 	 */
-	public function getData()
+	public function getData($post = array() )
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
        $query = Factory::getDbo()->getQuery(true);
-        $post = Factory::getApplication()->input->post->getArray(array());
+        //$post = Factory::getApplication()->input->post->getArray(array());
         $this->_season_id = $post['filter_season'];
         $result = NULL;
         
