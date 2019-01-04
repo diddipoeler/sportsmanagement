@@ -1277,7 +1277,7 @@ if ( $whichfile == 'playerfile' )
 	//$csv->parse($file,$startrow);
 	$startline = $startline - 1;
 	$csv->parse($file,$startline);
-	//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+	$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 
 	// anfang schleife csv file
 	for($a=0; $a < sizeof($csv->data); $a++  )
@@ -1310,12 +1310,47 @@ if ( $whichfile == 'playerfile' )
 }
 elseif ( $whichfile == 'matchfile' )
 {
+	
+$row = 0;
+$header = array();
+$csv = new JSMparseCSV();
+//$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
+if (($handle = fopen($file, "r")) !== FALSE) {
+    while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
+        $num = count($data);
+        //echo "<p> $num Felder in Zeile $row: <br /></p>\n";
+        //$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
+        //$app->enqueueMessage(Text::_('num <br><pre>'.print_r($num ,true).'</pre>'   ),'');
+        
+        //$row++;
+        for ($c=0; $c < $num; $c++) {
+            //echo $data[$c] . "<br />\n";
+            //$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data[$c],true).'</pre>'   ),'');
+            
+            if ( empty($row) )
+  {
+$header[$c] = $data[$c];    
+   }
+   else
+   {
+     $csv->data[$row][$header[$c]] = $data[$c]; 
+    
+   }         
+            
+        }
+        $row++;
+    }
+    fclose($handle);
+}	
+	
+	
+	
 	// Spielplan anfang
 	# tab delimited, and encoding conversion
-	$csv = new JSMparseCSV();
-	$csv->encoding('UTF-16', 'UTF-8');
+//	$csv = new JSMparseCSV();
+	//$csv->encoding('UTF-16', 'UTF-8');
 	// Spielplan des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
-	$csv->delimiter = "\t";
+	//$csv->delimiter = "\t";
 	// switch ($delimiter)
 	// {
 	// 	case ";":
@@ -1329,8 +1364,8 @@ elseif ( $whichfile == 'matchfile' )
 	// 		break;
 	// }
 
-	$csv->parse($file);
-
+	//$csv->parse($file);
+//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 	if ( sizeof($csv->data) == 0 )
 	{
 		$app->enqueueMessage(Text::_('Falsches Dateiformat'),'Error');
@@ -2545,24 +2580,6 @@ echo $this->pane->endPane();
 return $this->_datas;
     
 }
-
-
-    
-
-    
-    
-
-
-    
-
-
-
-
-
-    
-
-    
-
 
 }
 
