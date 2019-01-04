@@ -138,10 +138,10 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		} else {
 			
 			if ($whichfile == 'matchfile') {
-				$xml_file = $model->getData ();
+				$xml_file = $model->getData ($post);
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
 			} else {
-				$xml_file = $model->getData ();
+				$xml_file = $model->getData ($post);
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit&filter_season='.$post['filter_season'];
 			}
 		}
