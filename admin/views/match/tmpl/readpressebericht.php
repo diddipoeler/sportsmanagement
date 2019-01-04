@@ -91,7 +91,7 @@ $lfdnummer = 0;
         </td>
 	<td>
         <?php 	
-	echo HTMLHelper::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', 0 );
+	echo HTMLHelper::_( 'select.genericlist', $this->lists['startaufstellung'], 'startaufstellung[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $value->startaufstellung );
 	?>
 	</td>	
         </tr>
