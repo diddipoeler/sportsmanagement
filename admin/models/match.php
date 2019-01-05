@@ -3102,6 +3102,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->position_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->startaufstellung = 1;
         // gibt es den spieler
         // Select some fields
         if ( $teile[0] )
@@ -3148,6 +3149,7 @@ $person_id = $this->getPersonId($teile[1], $teile[0]);
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = 0;
         $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->position_id = 0;
+        $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->startaufstellung = 0;
         // gibt es den spieler ?
         // Select some fields
         if ( $teile[0] )
