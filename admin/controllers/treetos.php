@@ -11,7 +11,7 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
+use Joomla\CMS\Session\Session; 
 use Joomla\Utilities\ArrayHelper; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -68,7 +68,7 @@ public function genNode()
 public function save()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		
 		//$app = Factory::getApplication();
 		//$jinput = $app->input;

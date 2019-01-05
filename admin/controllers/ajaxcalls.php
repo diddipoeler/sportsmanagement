@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerajaxcalls
@@ -39,12 +40,12 @@ function removeCommentary()
         //$result = $response;
         
         // Check for request forgeries
-        JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
         
         // Check for request forgeries
-        //JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+        //Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
         
- //       if (!JSession::checkToken('post')) 
+ //       if (!Session::checkToken('post')) 
 //        {
 			//$result='0'.'&'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY').': '.Text::_('JINVALID_TOKEN');
 		//echo json_encode($result);

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
  
 /**
  * sportsmanagementControllerrounds
@@ -60,7 +61,7 @@ $msg = '';
 	{
 		
         // Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->massadd();

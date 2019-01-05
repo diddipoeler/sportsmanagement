@@ -15,6 +15,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Filesystem\File;
 
 $option = Factory::getApplication()->input->getCmd('option');
 
@@ -25,7 +27,7 @@ if (empty($maxImportTime))
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=ComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory = '150M';
@@ -36,17 +38,9 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit
 
 jimport('joomla.html.pane');
 
-//require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'csvhelper.php' );
 require_once( JPATH_ADMINISTRATOR . DS. 'components'.DS.$option. DS. 'helpers' . DS . 'ical.php' );
 require_once(JPATH_ROOT.DS.'components'.DS.$option.DS. 'helpers' . DS . 'countries.php');
 
-use Joomla\Utilities\ArrayHelper;
-//// import ArrayHelper
-//jimport( 'joomla.utilities.array' );
-//jimport( 'joomla.utilities.arrayhelper' ) ;
-
-// import JFile
-use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
 
 

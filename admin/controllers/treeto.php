@@ -14,12 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-//jimport('joomla.application.component.controller');
-// import Joomla controllerform library
-//jimport('joomla.application.component.controllerform');
-
-
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerTreeto
@@ -134,7 +129,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	 */
 	public function generatenode()
 	{
-		JSession::checkToken() or die(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		Session::checkToken() or die(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		//$option = Factory::getApplication()->input->getCmd('option');
 //		$app = Factory::getApplication();
 		$post = $this->jsmjinput->post->getArray(array());

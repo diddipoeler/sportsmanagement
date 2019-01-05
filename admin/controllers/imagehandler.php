@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Session\Session;
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'imageselect.php');
 
 /**
@@ -57,7 +58,7 @@ class sportsmanagementControllerImagehandler extends JSMControllerAdmin
 $type = ''; 
 $msg = ''; 		
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
 		//$file	= $this->jsmjinput->getVar( 'userfile', '', 'files', 'array' );
         $file = $this->jsmjinput->files->get('userfile');

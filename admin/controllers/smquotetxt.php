@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
  
 
@@ -60,7 +60,7 @@ class sportsmanagementControllersmquotetxt extends FormController
 	public function save()
 	{
 		// Check for request forgeries.
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app		= Factory::getApplication();

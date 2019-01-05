@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Filesystem\File;
-
+use Joomla\CMS\Session\Session;
 jimport ( 'joomla.filesystem.archive' );
 
 /**
@@ -41,14 +41,11 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 		$app = Factory::getApplication ();
 		$document = Factory::getDocument ();
 		// Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
-		//JToolbarHelper::back ( Text::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $app = Factory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
 		$post = Factory::getApplication()->input->post->getArray(array());
 		
-		//$delimiter = Factory::getApplication()->input->getVar ( 'delimiter', null );
 		$whichfile = Factory::getApplication()->input->getVar ( 'whichfile', null );
 		
 		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
@@ -68,9 +65,10 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 			}
 		}
 		
-		// first step - upload
+/**
+ * first step - upload
+ */
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			//$upload = Factory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			$upload = $app->input->files->get('import_package');
 			$lmoimportuseteams = Factory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
@@ -145,8 +143,6 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends BaseController
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit&filter_season='.$post['filter_season'];
 			}
 		}
-		
-		
 		
 		$this->setRedirect ( $link, $msg );
 	}

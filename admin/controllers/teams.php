@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerteams
@@ -32,7 +33,7 @@ class sportsmanagementControllerteams extends JSMControllerAdmin {
      * @since	1.6
      */
     public function saveorder() {
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
         // Get the arrays from the Request
         $order = Factory::getApplication()->input->getVar('order', null, 'post', 'array');

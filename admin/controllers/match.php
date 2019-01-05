@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllermatch
@@ -336,7 +337,7 @@ return false;
     function save($key = NULL, $urlVar = NULL)
 	{
 	// Check for request forgeries.
-		JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app = Factory::getApplication();
@@ -432,7 +433,7 @@ return false;
     function savepressebericht()
     {
     	// Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
 		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = Factory::getApplication();

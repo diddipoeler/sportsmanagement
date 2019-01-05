@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
  
 /**
  * sportsmanagementControllerpersons
@@ -65,7 +66,7 @@ class sportsmanagementControllerpersons extends JSMControllerAdmin
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->storeAssign($post);
@@ -81,7 +82,7 @@ class sportsmanagementControllerpersons extends JSMControllerAdmin
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
 //        $model = $this->getModel();
 //       $msg = $model->storeAssign($post);

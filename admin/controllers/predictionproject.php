@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Controller\FormController;
  
 
@@ -41,7 +41,7 @@ class sportsmanagementControllerpredictionproject extends FormController
 	{
 		$post = Factory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
-		JSession::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
+		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 
         $model = $this->getModel();
        $msg = $model->save($post['jform']);

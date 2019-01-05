@@ -14,6 +14,7 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
 
 /**
  * sportsmanagementControllerTreetonode
@@ -180,7 +181,7 @@ function save($key = NULL, $urlVar = NULL)
 	public function saveshortleaf()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
 		//$app = Factory::getApplication();
 //		$jinput = $app->input;
@@ -214,7 +215,7 @@ function save($key = NULL, $urlVar = NULL)
 	public function savefinishleaf()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
 		$cid = $this->jsmjinput->get('cid',array(),'array');
 		ArrayHelper::toInteger($cid);
@@ -244,7 +245,7 @@ function save($key = NULL, $urlVar = NULL)
 	public function saveshort()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
+		Session::checkToken() or jexit(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 
 	//	$app = Factory::getApplication();
 //		$jinput = $app->input;
