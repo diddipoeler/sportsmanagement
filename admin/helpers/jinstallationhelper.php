@@ -17,6 +17,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * @package		Joomla
@@ -686,7 +688,7 @@ class JInstallationHelper
 		// Set permissions for tmp dir
 		JInstallationHelper::_chmod(JPATH_SITE.DS.'tmp', 0777);
 		jimport('joomla.filesystem.file');
-		$uploaded = JFile::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
+		$uploaded = File::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
 		if(!$uploaded) {
 			return JText::_('WARNUPLOADFAILURE');
 		}
@@ -780,12 +782,12 @@ class JInstallationHelper
 		 */
 		if ($archive)
 		{
-			JFile::delete( $archive );
-			JFolder::delete( $package['folder'] );
+			File::delete( $archive );
+			Folder::delete( $package['folder'] );
 		}
 		else
 		{
-			JFile::delete( $script );
+			File::delete( $script );
 		}
 
 		return $txt;
@@ -916,13 +918,13 @@ class JInstallationHelper
 			$parts = ceil($tfilesize / $maxread);
 			file_put_contents( $newFile, '' ); // cleanse the file first
 			for($i = 0; $i < $parts; $i++) {
-				$buffer = JFile::read($scriptName, false, $maxread, $maxread,($i * $maxread));
+				$buffer = File::read($scriptName, false, $maxread, $maxread,($i * $maxread));
 				// Lets try and read a portion of the file
 				JInstallationHelper::replaceBuffer($buffer, $oldPrefix, $newPrefix, $srcEncoding);
 				JInstallationHelper::appendFile($buffer, $newFile);
 				unset($buffer);
 			}
-			JFile::delete( $scriptName );
+			File::delete( $scriptName );
 		} else {
 			/*
 			 * read script file into buffer
@@ -941,7 +943,7 @@ class JInstallationHelper
 			$ret = file_put_contents( $newFile, $buffer );
 			unset($buffer); // Release the memory used by the buffer
 			jimport('joomla.filesystem.file');
-			JFile::delete( $scriptName );
+			File::delete( $scriptName );
 		}
 
 		/*
@@ -1311,7 +1313,7 @@ class JInstallationHelper
 			$db->setQuery( $qry );
 			if ( $row = $db->loadObject() ) {
 				if($row->module == '') { $row->module = 'mod_custom'; }
-				if(JFolder::exists(JPATH_SITE.DS.'modules'.DS.$row->module)) {
+				if(Folder::exists(JPATH_SITE.DS.'modules'.DS.$row->module)) {
 					$nextId++;
 					$oldid = $row->id;
 					$row->id = $nextId;

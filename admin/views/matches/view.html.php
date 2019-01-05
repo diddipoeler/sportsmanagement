@@ -15,8 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementViewMatches
@@ -143,9 +142,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
             // sind die verzeichnisse vorhanden ?
             //$dest = JPATH_ROOT.'/media/com_sportsmanagement/database/matchreport/'.$row->id;
             $dest = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $row->id;
-            if (JFolder::exists($dest)) {
+            if (Folder::exists($dest)) {
             } else {
-                $result = JFolder::create($dest);
+                $result = Folder::create($dest);
             }
         }
 

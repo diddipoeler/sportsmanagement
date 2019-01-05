@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 't.ordering');
 
@@ -204,7 +206,7 @@ $this->readonly = '';
                             </a>
                             <?PHP
                         } else {
-                            if (JFile::exists(JPATH_SITE . DS . $row->picture)) {
+                            if (File::exists(JPATH_SITE . DS . $row->picture)) {
                                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
                                 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                                 ?>

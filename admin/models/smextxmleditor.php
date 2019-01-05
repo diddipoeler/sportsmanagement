@@ -18,7 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
  
 
 /**
@@ -103,8 +103,8 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         //$app->enqueueMessage(Text::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
-        //$return = JFile::write($filePath, $data['source']);
-        if ( !JFile::write($filePath, $data['source']) )
+        //$return = File::write($filePath, $data['source']);
+        if ( !File::write($filePath, $data['source']) )
         {
         JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
@@ -131,7 +131,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
         
         $config = new stdClass;
         $configPath = JPATH_SITE.DS.'configuration.php';
-        $config->source	= JFile::read($configPath);
+        $config->source	= File::read($configPath);
         
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
         
@@ -150,7 +150,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 
 				//$item->extension_id	= $this->getState('extension.id');
 				$item->filename		= Factory::getApplication()->input->getVar('file_name');
-				$item->source		= JFile::read($filePath);
+				$item->source		= File::read($filePath);
 			} else {
 				$this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}

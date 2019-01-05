@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 
 
@@ -73,8 +73,7 @@ function getXMLFiles()
         $option = $jinput->getCmd('option');
         $path = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended';
         // Get a list of files in the search path with the given filter.
-       //$files = JFolder::files($path, $filter);
-       $files = JFolder::files($path, '.xml$|.php$');
+       $files = Folder::files($path, '.xml$|.php$');
        
         return $files;
         

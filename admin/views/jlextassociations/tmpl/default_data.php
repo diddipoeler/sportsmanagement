@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
 //Ordering allowed ?
 $ordering=($this->sortColumn == 'objassoc.ordering');
@@ -139,7 +140,7 @@ if ($row->website != '') {
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
-if (empty($row->assocflag) || !JFile::exists(JPATH_SITE.DS.$row->assocflag))
+if (empty($row->assocflag) || !File::exists(JPATH_SITE.DS.$row->assocflag))
 								{
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->assocflag;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -161,7 +162,7 @@ else
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
-if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',

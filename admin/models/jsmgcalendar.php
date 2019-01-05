@@ -28,7 +28,7 @@ JLoader::import('joomla.application.component.modeladmin');
 
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
 
 
@@ -146,7 +146,7 @@ $output .= "<gd:where rel='' label='' valueString='Oakland'></gd:where>". "\n";
 $output .= "</entry>". "\n";
         // mal als test
         $xmlfile = $xmlfile.$output;
-        JFile::write($file, $xmlfile);
+        File::write($file, $xmlfile);
 
         $username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
         $password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');

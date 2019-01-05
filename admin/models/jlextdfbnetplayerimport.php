@@ -46,7 +46,7 @@ use Joomla\Utilities\ArrayHelper;
 //jimport( 'joomla.utilities.arrayhelper' ) ;
 
 // import JFile
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
 
 
@@ -1110,7 +1110,7 @@ $output .= '</project>';
 // mal als test
 $xmlfile = $output;
 $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 
 
@@ -1202,7 +1202,7 @@ Array
   
   $teamid = 1;
   
-$this->fileName = JFile::read($file);
+$this->fileName = File::read($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {
@@ -2442,7 +2442,7 @@ if ( $whichfile == 'playerfile' )
 // mal als test
 	$xmlfile = $output;
 	$file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-	JFile::write($file, $xmlfile);
+	File::write($file, $xmlfile);
 	$this->import_version='NEW';
 }
 else
@@ -2566,7 +2566,7 @@ $output .= '</project>';
 // mal als test
 $xmlfile = $output;
 $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 }
 
 $this->import_version='NEW';

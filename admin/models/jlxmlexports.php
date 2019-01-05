@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
@@ -342,12 +342,12 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
     $file = JPATH_SITE.DS.'tmp'.DS.$this->user->username.DS.JFilterOutput::stringURLSafe($filename[0]).'.jlg';   
     
     $userpath = JPATH_SITE.DS.'tmp'.DS.$this->user->username;
-    if ( JFolder::exists($userpath) )
+    if ( Folder::exists($userpath) )
     {
     }
     else
     {
-    JFolder::create($userpath);
+    Folder::create($userpath);
     }  
       
       $output = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
@@ -469,7 +469,6 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 
 // mal als test
 $xmlfile = $xmlfile.$output;
-//JFile::write($file, $xmlfile);
     
 			// download the generated xml
 			$this->downloadXml($output,"");

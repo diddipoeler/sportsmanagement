@@ -7,7 +7,7 @@ use Joomla\CMS\Factory;
 
 
 jimport('joomla.application.component.model');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\Folder;
 jimport('joomla.filesystem.file');
 
 
@@ -30,8 +30,7 @@ function getTXTFiles()
         $option = Factory::getApplication()->input->getCmd('option');
         $path = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes';
         // Get a list of files in the search path with the given filter.
-       //$files = JFolder::files($path, $filter);
-       $files = JFolder::files($path, '.txt$|.php$');
+       $files = Folder::files($path, '.txt$|.php$');
         
         return $files;
         

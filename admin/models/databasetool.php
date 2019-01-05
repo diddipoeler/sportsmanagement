@@ -18,7 +18,7 @@ use Joomla\Registry\Registry;
 // import Joomla modelform library
 //jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementModeldatabasetool
@@ -885,7 +885,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
         $filename = JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/' . 'agegroup_' . strtolower($search_nation) . '_' . $sport_type_name . '.xml';
 
-        if (!JFile::exists($filename)) {
+        if (!File::exists($filename)) {
             //$this->jsmapp->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
             $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>';
             $this->my_text .= Text::_('Fehlende Altersgruppen') . '</strong></span><br />';
@@ -1013,7 +1013,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         }
 
 
-        if (!JFile::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml')) {
+        if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/xml_files/associations.xml')) {
             return false;
         }
 
@@ -1169,7 +1169,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $app = Factory::getApplication();
         //$this->option = Factory::getApplication()->input->getCmd('option');    
         //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
-        //$fileContent = JFile::read($db_table);    
+        //$fileContent = File::read($db_table);    
         //$this->jsmapp->enqueueMessage(Text::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
 //    $xml = Factory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
@@ -1182,7 +1182,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
             $xml = Factory::getXML(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml');
         }
 
-        if (!JFile::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml')) {
+        if (!File::exists(JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/helpers/sp_structur/' . $type . '.xml')) {
             return false;
         }
         //$xml = Factory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
@@ -1290,7 +1290,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy {
         $db = sportsmanagementHelper::getDBConnection();
         $db_table = JPATH_ADMINISTRATOR . '/components/' . $this->jsmoption . '/sql/countries.sql';
 // echo '<br>'.$db_table.'<br>';
-// $fileContent = JFile::read($db_table);
+// $fileContent = File::read($db_table);
 // $sql_teil = explode(";",$fileContent);
 
         $cols = $this->jsmdb->getTableColumns('#__' . COM_SPORTSMANAGEMENT_TABLE . '_countries');

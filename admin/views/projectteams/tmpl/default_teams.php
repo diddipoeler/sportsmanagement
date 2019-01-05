@@ -16,7 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $app = Factory::getApplication();
@@ -283,7 +283,7 @@ $this->modalheight);
                                                 
 							} else {
                                 
-                                if ( JFile::exists(JPATH_SITE.DS.$row->club_logo) ) {
+                                if ( File::exists(JPATH_SITE.DS.$row->club_logo) ) {
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
@@ -418,7 +418,7 @@ $this->modalheight);
 							?>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+								if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
@@ -439,7 +439,7 @@ $this->modalheight);
                                 }
 								else
 								{
-								    if (JFile::exists(JPATH_SITE.DS.$row->picture)) {
+								    if (File::exists(JPATH_SITE.DS.$row->picture)) {
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');

@@ -24,8 +24,9 @@ http://www.basketball-bund.net/public/spielplan_list.jsp?print=1&viewDescKey=spo
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementControllerjlextdbbimport
@@ -84,31 +85,31 @@ class sportsmanagementControllerjlextdbbimport extends BaseController
 			$dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];
 			$extractdir = JPATH_SITE . DS . 'tmp';
 			$importFile = JPATH_SITE . DS . 'tmp' . DS . 'joomleague_import.csv';
-			if (JFile::exists ( $importFile )) {
-				JFile::delete ( $importFile );
+			if (File::exists ( $importFile )) {
+				File::delete ( $importFile );
 			}
-			if (JFile::exists ( $tempFilePath )) {
-				if (JFile::exists ( $dest )) {
-					JFile::delete ( $dest );
+			if (File::exists ( $tempFilePath )) {
+				if (File::exists ( $dest )) {
+					File::delete ( $dest );
 				}
-				if (! JFile::upload ( $tempFilePath, $dest )) {
+				if (! File::upload ( $tempFilePath, $dest )) {
 					JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_CANT_UPLOAD' ) );
 					return;
 				} else {
-					if (strtolower ( JFile::getExt ( $dest ) ) == 'zip') {
+					if (strtolower ( File::getExt ( $dest ) ) == 'zip') {
 						$result = JArchive::extract ( $dest, $extractdir );
 						if ($result === false) {
 							JError::raiseWarning ( 500, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_ERROR' ) );
 							return false;
 						}
-						JFile::delete ( $dest );
-						$src = JFolder::files ( $extractdir, 'l98', false, true );
+						File::delete ( $dest );
+						$src = Folder::files ( $extractdir, 'l98', false, true );
 						if (! count ( $src )) {
 							JError::raiseWarning ( 500, 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_EXTRACT_NOJLG' );
 							// todo: delete every extracted file / directory
 							return false;
 						}
-						if (strtolower ( JFile::getExt ( $src [0] ) ) == 'csv') {
+						if (strtolower ( File::getExt ( $src [0] ) ) == 'csv') {
 							if (! @ rename ( $src [0], $importFile )) {
 								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_ERROR_RENAME' ) );
 								return false;
@@ -118,7 +119,7 @@ class sportsmanagementControllerjlextdbbimport extends BaseController
 							return;
 						}
 					} else {
-						if (strtolower ( JFile::getExt ( $dest ) ) == 'csv' || strtolower ( JFile::getExt ( $dest ) ) == 'ics') {
+						if (strtolower ( File::getExt ( $dest ) ) == 'csv' || strtolower ( File::getExt ( $dest ) ) == 'ics') {
 							if (! @ rename ( $dest, $importFile )) {
 								JError::raiseWarning ( 21, Text::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_CTRL_RENAME_FAILED' ) );
 								return false;

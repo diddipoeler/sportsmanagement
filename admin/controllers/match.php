@@ -15,6 +15,8 @@ use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementControllermatch
@@ -395,11 +397,11 @@ return false;
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   //$this->setState('folder', $folder);
-  if(JFolder::exists($dest)) {
+  if(Folder::exists($dest)) {
   }
   else
   {
-  JFolder::create($dest);
+  Folder::create($dest);
   }
 
   $msg=Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE');
@@ -451,31 +453,31 @@ return false;
 			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
 			$extractdir = JPATH_SITE.DS.'tmp';
 			//$importFile = JPATH_SITE.DS.'tmp'. DS.'pressebericht.jlg';
-if(!JFolder::exists(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'))
+if(!Folder::exists(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'))
 {
-JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht');
+Folder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht');
 }			
             $importFile = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';
             
-			if (JFile::exists($importFile))
+			if (File::exists($importFile))
 			{
-				JFile::delete($importFile);
+				File::delete($importFile);
 			}
             
-			if (JFile::exists($tempFilePath))
+			if (File::exists($tempFilePath))
 			{
-					if (JFile::exists($dest))
+					if (File::exists($dest))
 					{
-						JFile::delete($dest);
+						File::delete($dest);
 					}
-					if (!JFile::upload($tempFilePath,$dest))
+					if (!File::upload($tempFilePath,$dest))
 					{
 						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD'));
 						return;
 					}
 					else
 					{
-						if (strtolower(JFile::getExt($dest))=='zip')
+						if (strtolower(File::getExt($dest))=='zip')
 						{
 							$result=JArchive::extract($dest,$extractdir);
 							if ($result === false)
@@ -483,15 +485,15 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR'));
 								return false;
 							}
-							JFile::delete($dest);
-							$src=JFolder::files($extractdir,'jlg',false,true);
+							File::delete($dest);
+							$src=Folder::files($extractdir,'jlg',false,true);
 							if(!count($src))
 							{
 								JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG');
 								//todo: delete every extracted file / directory
 								return false;
 							}
-							if (strtolower(JFile::getExt($src[0]))=='jlg')
+							if (strtolower(File::getExt($src[0]))=='jlg')
 							{
 								if (!@ rename($src[0],$importFile))
 								{
@@ -507,7 +509,7 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
 						}
 						else
 						{
-							if (strtolower(JFile::getExt($dest))=='csv')
+							if (strtolower(File::getExt($dest))=='csv')
 							{
 								if (!@ rename($dest,$importFile))
 								{

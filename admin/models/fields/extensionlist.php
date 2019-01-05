@@ -15,8 +15,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\Folder;
 
-jimport('joomla.filesystem.folder');
 FormHelper::loadFieldClass('list');
 
 
@@ -63,7 +63,7 @@ class JFormFieldExtensionlist extends \JFormFieldList
 		}
 
 		// Get a list of folders in the search path with the given filter.
-		$folders = JFolder::folders($path, $filter);
+		$folders = Folder::folders($path, $filter);
 
 		// Build the options list from the list of folders.
 		if (is_array($folders))

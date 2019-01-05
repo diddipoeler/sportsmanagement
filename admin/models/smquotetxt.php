@@ -7,7 +7,7 @@ use Joomla\CMS\Factory;
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
  
 
 class sportsmanagementModelsmquotetxt extends JModelAdmin
@@ -78,9 +78,9 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         $filePath = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes'.DS.$data['filename'];
-        //$return = JFile::write($filePath, $data['source']);
+        //$return = File::write($filePath, $data['source']);
         
-        if ( !JFile::write($filePath, $data['source']) )
+        if ( !File::write($filePath, $data['source']) )
         {
         JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE');
         }
@@ -116,7 +116,7 @@ class sportsmanagementModelsmquotetxt extends JModelAdmin
 
 				//$item->extension_id	= $this->getState('extension.id');
 				$item->filename		= Factory::getApplication()->input->getVar('file_name');
-				$item->source		= JFile::read($filePath);
+				$item->source		= File::read($filePath);
 			} else {
 				$this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
 			}

@@ -42,8 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
 
 
 
@@ -210,16 +210,16 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 	{
 		$option = Factory::getApplication()->input->getCmd('option');
 		$app = Factory::getApplication();
-		//$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
-		$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');
+		//$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
+		$updateFileList=Folder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');
 		// installer for extensions
-		$extensions=JFolder::folders(JPATH_COMPONENT_SITE.DS.'extensions');
+		$extensions=Folder::folders(JPATH_COMPONENT_SITE.DS.'extensions');
 		foreach ($extensions as $ext)
 		{
 			$path=JPATH_COMPONENT_SITE.DS.'extensions'.DS.$ext.DS.'admin'.DS.'install';
-			if (JFolder::exists($path))
+			if (Folder::exists($path))
 			{
-				foreach (JFolder::files($path,'.php$') as $file)
+				foreach (Folder::files($path,'.php$') as $file)
 				{
 					$updateFileList[]=$ext.'/'.$file;
 				}
@@ -238,7 +238,7 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 			{
 				$filepath=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
 			}
-			if ($fileContent=JFile::read($filepath))
+			if ($fileContent=File::read($filepath))
 			{
 				$version='';
 				$updateDescription='';

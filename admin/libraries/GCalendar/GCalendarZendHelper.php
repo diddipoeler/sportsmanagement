@@ -22,7 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 
-JLoader::import('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 class jsmGCalendarZendHelper {
 
@@ -266,7 +266,7 @@ class jsmGCalendarZendHelper {
         
 		static $zendLoaded;
 		if($zendLoaded == null){
-			if (JFile::exists(JPATH_PLUGINS.DS.'system'.DS.'zend'.DS.'zend.php')) {
+			if (File::exists(JPATH_PLUGINS.DS.'system'.DS.'zend'.DS.'zend.php')) {
 				require_once(JPATH_PLUGINS.DS.'system'.DS.'zend'.DS.'zend.php');
 				$paths	= explode( PATH_SEPARATOR , get_include_path() );
 

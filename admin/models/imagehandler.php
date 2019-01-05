@@ -13,8 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\String\StringHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\Folder;
 
-jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
 
@@ -155,7 +155,7 @@ class sportsmanagementModelImagehandler extends BaseDatabaseModel
 		$images 	= array ();
         
 	// Get the list of files and folders from the given folder
-		$fileList 	= JFolder::files($basePath);
+		$fileList 	= Folder::files($basePath);
 
 		// Iterate over the files if they exist
 		if ($fileList !== false) {

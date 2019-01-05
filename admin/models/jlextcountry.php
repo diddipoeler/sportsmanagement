@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
  
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
 
@@ -79,7 +79,7 @@ $file = $base_Dir.$alpha2.'.txt';
 
 
 
-$source	= JFile::read($file);
+$source	= File::read($file);
 
 
 

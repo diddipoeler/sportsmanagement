@@ -19,7 +19,7 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\MVC\Model\ListModel;
 
 /**
@@ -211,7 +211,7 @@ class sportsmanagementModelsmimageimports extends ListModel {
 
         if ($content) {
             //--Löschen einer einzelnen Datei
-            if (JFile::delete(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml')) {
+            if (File::delete(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'xml_files' . DS . 'pictures.xml')) {
                 //echo 'Die Datei wurde gelöscht.';
             }
 

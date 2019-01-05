@@ -13,10 +13,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+use Joomla\CMS\Filesystem\File;
+
 jimport('joomla.filesystem.archive');
 
 /**
@@ -64,24 +64,24 @@ $upload = $app->input->files->get('import_package');
 			$dest=JPATH_SITE.DS.'tmp'.DS.$upload['name'];
 			$extractdir=JPATH_SITE.DS.'tmp';
 			$importFile=JPATH_SITE.DS.'tmp'. DS.'joomleague_import.l98';
-			if (JFile::exists($importFile))
+			if (File::exists($importFile))
 			{
-				JFile::delete($importFile);
+				File::delete($importFile);
 			}
-			if (JFile::exists($tempFilePath))
+			if (File::exists($tempFilePath))
 			{
-					if (JFile::exists($dest))
+					if (File::exists($dest))
 					{
-						JFile::delete($dest);
+						File::delete($dest);
 					}
-					if (!JFile::upload($tempFilePath,$dest))
+					if (!File::upload($tempFilePath,$dest))
 					{
 						JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'));
 						return;
 					}
 					else
 					{
-						if (strtolower(JFile::getExt($dest))=='zip')
+						if (strtolower(File::getExt($dest))=='zip')
 						{
 							$result=JArchive::extract($dest,$extractdir);
 							if ($result === false)
@@ -89,15 +89,15 @@ $upload = $app->input->files->get('import_package');
 								JError::raiseWarning(500,Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'));
 								return false;
 							}
-							JFile::delete($dest);
-							$src=JFolder::files($extractdir,'l98',false,true);
+							File::delete($dest);
+							$src=Folder::files($extractdir,'l98',false,true);
 							if(!count($src))
 							{
 								JError::raiseWarning(500,'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_NOJLG');
 								//todo: delete every extracted file / directory
 								return false;
 							}
-							if (strtolower(JFile::getExt($src[0]))=='l98')
+							if (strtolower(File::getExt($src[0]))=='l98')
 							{
 								if (!@ rename($src[0],$importFile))
 								{
@@ -113,7 +113,7 @@ $upload = $app->input->files->get('import_package');
 						}
 						else
 						{
-							if (strtolower(JFile::getExt($dest))=='l98')
+							if (strtolower(File::getExt($dest))=='l98')
 							{
 								if (!@ rename($dest,$importFile))
 								{

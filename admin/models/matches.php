@@ -13,8 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 
-jimport('joomla.application.component.modellist');
 
 /**
  * sportsmanagementModelMatches
@@ -257,11 +257,11 @@ class sportsmanagementModelMatches extends JSMModelList
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   $this->setState('folder', $folder);
-  if(JFolder::exists($dest)) {
+  if(Folder::exists($dest)) {
   }
   else
   {
-  JFolder::create($dest);
+  Folder::create($dest);
   }
   
   }

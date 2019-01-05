@@ -42,7 +42,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
 use Joomla\CMS\MVC\Controller\BaseController;
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 
 /**
@@ -110,7 +110,7 @@ class sportsmanagementControllerUpdate extends BaseController
 		}
 		$model = $this->getModel('updates');
 		echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.$filepath.'</b>');
-		if (JFile::exists($filepath))
+		if (File::exists($filepath))
 		{
 			$model->loadUpdateFile($filepath,$file_name);
 		}

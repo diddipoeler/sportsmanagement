@@ -42,7 +42,7 @@ jimport('joomla.html.pane');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 // import JFile
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport( 'joomla.utilities.utility' );
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'item.php');
 
@@ -124,7 +124,7 @@ private function dump_header($text)
   */
  function _getXml()
 	{
-		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml'))
+		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.xml'))
 		{
 			if (function_exists('simplexml_load_file'))
 			{
@@ -1555,7 +1555,7 @@ $output .= '</project>';
 // mal als test
 $xmlfile = $output;
 $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 
 if ( $this->debug_info )

@@ -42,7 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-jimport('joomla.application.component.model');
+use Joomla\CMS\Filesystem\Folder;
+
 jimport('joomla.filesystem.file');
 
 
@@ -364,7 +365,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$match_number = $this->_db->loadResult();
 	
 	$dir = JPATH_SITE.DS.'tmp'.DS.'ringerdateien';
-  $files = JFolder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
+  $files = Folder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
   
   $app->enqueueMessage(Text::_('_getSinglefile: '.print_r($files,true) ),'');
   

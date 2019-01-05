@@ -25,6 +25,8 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -229,7 +231,7 @@ abstract class sportsmanagementHelper {
         $app = Factory::getApplication();
         $imageArray = '';
 
-        if (!JFile::exists($picture)) {
+        if (!File::exists($picture)) {
             //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture nicht vorhanden <pre>'.print_r($picture, true).'</pre><br>','Error');    
             return false;
         } else {
@@ -1040,7 +1042,7 @@ abstract class sportsmanagementHelper {
         /**
          * extended data
          */
-        if (JFile::exists($xmlfile)) {
+        if (File::exists($xmlfile)) {
             try {
                 $jRegistry = new Registry;
                 //$jRegistry->loadString($data, $format);
@@ -1084,7 +1086,7 @@ abstract class sportsmanagementHelper {
          * extended data
          */
 
-        if (JFile::exists($xmlfile)) {
+        if (File::exists($xmlfile)) {
             try {
                 $jRegistry = new Registry;
 
@@ -1276,8 +1278,8 @@ abstract class sportsmanagementHelper {
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
-        if (JFolder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions')) {
-            $folderExtensions = JFolder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions')) {
+            $folderExtensions = Folder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
                     //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
@@ -1307,8 +1309,8 @@ abstract class sportsmanagementHelper {
 //				$excludeExtension = explode(",", $res->extension);
 //			}
 //		}
-//		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
-//			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
+//		if(Folder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
+//			$folderExtensions  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
 //													'.', false, false, $excludeExtension);
 //			if($folderExtensions !== false) {
 //				foreach ($folderExtensions as $ext)
@@ -1341,8 +1343,8 @@ abstract class sportsmanagementHelper {
                 $excludeExtension = explode(",", $res->extension);
             }
         }
-        if (JFolder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay')) {
-            $folderExtensions = JFolder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay', '.', false, false, $excludeExtension);
+        if (Folder::exists(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay')) {
+            $folderExtensions = Folder::folders(JPATH_SITE . DS . 'components' . DS . 'com_sportsmanagement' . DS . 'extensions-overlay', '.', false, false, $excludeExtension);
             if ($folderExtensions !== false) {
                 foreach ($folderExtensions as $ext) {
                     $arrExtensions[] = $ext;
@@ -1613,7 +1615,7 @@ abstract class sportsmanagementHelper {
                 foreach ($extensions as $e => $extension) {
                     $extension_views = JPATH_COMPONENT_SITE . DS . 'extensions' . DS . $extension . DS . 'views';
                     $tmpl_path = $extension_views . DS . $template . DS . 'tmpl';
-                    if (JFolder::exists($tmpl_path)) {
+                    if (Folder::exists($tmpl_path)) {
                         $view->addTemplatePath($tmpl_path);
                     }
                 }
@@ -3000,7 +3002,7 @@ $bar->popupButton('preview')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (JFile::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE . DS . $picture)) {
             // alles ok
         } else {
             $picture = ComponentHelper::getParams($option)->get('ph_logo_big', '');
@@ -3026,7 +3028,7 @@ $bar->popupButton('preview')
                 ->where('id = ' . $id);
         $db->setQuery($query);
         $picture = $db->loadResult();
-        if (JFile::exists(JPATH_SITE . DS . $picture)) {
+        if (File::exists(JPATH_SITE . DS . $picture)) {
             // alles ok
         } else {
             $picture = ComponentHelper::getParams($option)->get('ph_team', '');

@@ -16,7 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
 
@@ -148,7 +148,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
 
                 //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.'dest<br>'.$dest.''),'Notice');
 
-                if (strtolower(JFile::getExt($dest)) == 'zip') {
+                if (strtolower(File::getExt($dest)) == 'zip') {
                     if (version_compare(JSM_JVERSION, '4', 'eq')) {
                         $archive = new Archive;
                         $result = $archive->extract($dest, $extractdir);

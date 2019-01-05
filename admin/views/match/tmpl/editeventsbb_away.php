@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 ?>
 		<fieldset class="adminform">
 			<legend>
@@ -30,7 +31,7 @@ use Joomla\CMS\Language\Text;
 					?>
 					<th style="text-align: center;">
 					<?php
-					if ( JFile::exists(JPATH_SITE.DS.$ev->icon ) )
+					if ( File::exists(JPATH_SITE.DS.$ev->icon ) )
 					{
 						$imageTitle = Text::sprintf( '%1$s', Text::_( $ev->text ) );
 						$iconFileName = $ev->icon;

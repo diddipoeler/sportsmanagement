@@ -33,7 +33,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
 jimport('joomla.application.component.model');
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'models'.DS.'databasetool.php');
 
@@ -73,7 +73,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
     
-		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg'))
+		if (File::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg'))
 		{
 			
             if(version_compare(JVERSION,'3.0.0','ge'))
@@ -946,9 +946,9 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
 	private function _deleteImportFile()
 	{
 		$importFileName = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg';
-		if (JFile::exists($importFileName))
+		if (File::exists($importFileName))
         {
-            JFile::delete($importFileName);
+            File::delete($importFileName);
         }
 		return true;
 	}

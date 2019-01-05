@@ -112,7 +112,6 @@ HTMLHelper::_('behavior.modal');
                         
                         <td >
 								<?php
-								//if (empty($row->picture) || !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture))
                                 if (empty($row->picture) )
 								{
 									$imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;

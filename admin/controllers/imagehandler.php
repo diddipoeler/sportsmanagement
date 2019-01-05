@@ -13,11 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-//use Joomla\CMS\Filter\InputFilter;
-//jimport('joomla.application.component.controller');
-jimport('joomla.filesystem.file');
-//require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
+use Joomla\CMS\Filesystem\File;
 require_once (JPATH_COMPONENT_SITE.DS.'helpers'.DS.'imageselect.php');
 
 /**
@@ -130,7 +126,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		$filepath = $base_Dir . $filename;
 
 		//upload the image
-		if ( !JFile::upload( $file['tmp_name'], $filepath ) )
+		if ( !File::upload( $file['tmp_name'], $filepath ) )
 		{
 			echo "<script> alert('".Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
 			//$app->close();
@@ -188,10 +184,10 @@ $type = 'error';
 				$fullPaththumb = JPath::clean( JPATH_SITE . DS . 'images' . DS . $this->jsmoption . DS .'database'.DS. $folder . DS . 'small' . DS . $image );
 				if ( is_file( $fullPath ) )
 				{
-					JFile::delete( $fullPath );
-					if ( JFile::exists( $fullPaththumb ) )
+					File::delete( $fullPath );
+					if ( File::exists( $fullPaththumb ) )
 					{
-						JFile::delete( $fullPaththumb );
+						File::delete( $fullPaththumb );
 					}
 				}
 			}

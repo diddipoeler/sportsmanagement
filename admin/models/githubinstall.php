@@ -14,14 +14,14 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
-
+use Joomla\CMS\Filesystem\Folder;
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 jimport('joomla.filesystem.archive');	
 }	
 	
 jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
+
 
 
 /**
@@ -139,7 +139,7 @@ else
 
 $this->_success_text['Komponente:'] = $my_text;
 
-$install_modules = JFolder::folders($p_dir_modules , $filter = '.');
+$install_modules = Folder::folders($p_dir_modules , $filter = '.');
 
 $my_text = '';
 

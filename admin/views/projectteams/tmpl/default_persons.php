@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-jimport('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $app = Factory::getApplication();
@@ -199,7 +199,7 @@ $app = Factory::getApplication();
 							?>
 							<td class="center">
 								<?php
-								if (empty($row->picture) || !JFile::exists(JPATH_SITE.DS.$row->picture))
+								if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
 								{
 									$imageTitle=Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_IMAGE').$row->picture;
 									echo HTMLHelper::image(	'administrator/components/com_sportsmanagement/assets/images/delete.png',
