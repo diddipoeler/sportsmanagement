@@ -3578,6 +3578,8 @@ function savePressebericht($post = NULL)
 {
 // Reference global application object
 $app = Factory::getApplication();
+$user = JFactory::getUser();
+$date = Factory::getDate();
 // JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
@@ -3804,6 +3806,48 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error'
 }      
 }
 
+	// Events für den aktuellen Spieler verarbeiten
+    foreach ($this->csv_cards as $cardIndex => $cardValue) {
+        // Überprüfen ob das Event zum aktuellen Spieler passt (Nachname + Nummer muss stimmen)
+        $jerseynumber = $playernumber[$key];
+        if ($cardValue->spieler == $value && $cardValue->spielernummer == $jerseynumber) {
+            // Hat der User ein ProjectEvent ausgewählt? Wenn nicht können wir den Datensatz nicht verarbeiten
+            $projectEventTypeId = $project_events_id[$cardIndex - 1];
+            if ($projectEventTypeId) {
+                // Überprüfen, ob bereits das Event vorhanden ist. Falls ja, müssen wir es nicht nochmals einarbeiten
+                $query->clear();
+                $query->select('*');
+                $query->from('#__sportsmanagement_match_event');
+                $query->where('match_id = ' . $match_id);
+                $query->where('projectteam_id = ' . $projectteamid);
+                $query->where('teamplayer_id = ' . $projectpersonid);
+                $query->where('event_time = ' . $cardValue->event_time);
+                $query->where('event_type_id = ' . $projectEventTypeId);
+                $db->setQuery($query);
+                $result = $db->loadResult();
+                if (!$result) {
+                    // Das Event ist noch nicht vorhanden, deswegen speichern wir es in der Datenbank
+                    $temp = new stdClass();
+                    $temp->match_id = $match_id;
+                    $temp->projectteam_id = $projectteamid;
+                    $temp->teamplayer_id = $projectpersonid;
+                    $temp->event_time = $cardValue->event_time;
+                    $temp->event_type_id = $projectEventTypeId;
+                    $temp->event_sum = 1;
+                    $temp->notice = $cardValue->notice;
+                    $temp->modified = $date->toSql();
+                    $temp->modified_by = $user->id;
+                    $temp->published = 1;
+                    try {
+                        $result = $db->insertObject('#__sportsmanagement_match_event', $temp);
+                    } catch (Exception $e) {
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+                    }
+                } // End if existing entry in db exists
+            } // End if event type was selected
+        } // End if is actual player
+    } // End event foreach
 
 }
 
