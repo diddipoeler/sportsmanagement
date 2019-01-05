@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * ImageSelectSM
@@ -230,7 +231,7 @@ $app = Factory::getApplication();
 		}
 */
 		//check if the imagefiletype is valid
-		$fileext = JFile::getExt($file['name']);
+		$fileext = File::getExt($file['name']);
 
 
 
@@ -249,7 +250,7 @@ $app = Factory::getApplication();
 		}
 
 		//XSS check
-		$xss_check = JFile::read( $file['tmp_name'], false, 256 );
+		$xss_check = File::read( $file['tmp_name'], false, 256 );
 		$html_tags = array( 'abbr', 'acronym', 'address', 'applet', 'area', 'audioscope', 'base', 'basefont', 'bdo', 'bgsound', 'big',
 							'blackface', 'blink', 'blockquote', 'body', 'bq', 'br', 'button', 'caption', 'center', 'cite', 'code', 'col',
 							'colgroup', 'comment', 'custom', 'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'fn',
@@ -308,7 +309,7 @@ $app = Factory::getApplication();
 		//if it is already taken keep trying till success
 		$now = time();
 
-		while( JFile::exists( $base_Dir . $beforedot . '_' . $now . '.' . $afterdot ) )
+		while( File::exists( $base_Dir . $beforedot . '_' . $now . '.' . $afterdot ) )
 		{
 			$now++;
 		}

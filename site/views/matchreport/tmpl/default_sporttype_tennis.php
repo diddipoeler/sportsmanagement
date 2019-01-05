@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\Filesystem\File;
 HTMLHelper::_('behavior.tooltip');
 
 //echo '<pre>',print_r($this->project,true),'</pre><br>';
@@ -110,7 +110,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo as $player)
                 {
                 $picture = $player->picture;
-                if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                if ( !File::exists(JPATH_SITE.DS.$picture) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }    
@@ -144,7 +144,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo as $player)
                 {  
                 $picture = $player->picture; 
-                if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                if ( !File::exists(JPATH_SITE.DS.$picture) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                 } 
@@ -287,7 +287,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo1 as $player)
                 {
                 $picture1 = $player->picture;  
-                if ( !JFile::exists(JPATH_SITE.DS.$picture1) )
+                if ( !File::exists(JPATH_SITE.DS.$picture1) )
 				{
                     $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }   
@@ -297,7 +297,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo2 as $player)
                 {  
                 $picture2 = $player->picture;     
-                if ( !JFile::exists(JPATH_SITE.DS.$picture2) )
+                if ( !File::exists(JPATH_SITE.DS.$picture2) )
 				{
                     $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
@@ -342,7 +342,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo1 as $player)
                 {  
                 $picture1 = $player->picture; 
-                if ( !JFile::exists(JPATH_SITE.DS.$picture1) )
+                if ( !File::exists(JPATH_SITE.DS.$picture1) )
 				{
                     $picture1 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }
@@ -352,7 +352,7 @@ if ( $this->project->use_tie_break )
                 foreach( $playerinfo2 as $player)
                 {  
                 $picture2 = $player->picture;
-                if ( !JFile::exists(JPATH_SITE.DS.$picture2) )
+                if ( !File::exists(JPATH_SITE.DS.$picture2) )
 				{
                     $picture2 = sportsmanagementHelper::getDefaultPlaceholder("player");
                 }     

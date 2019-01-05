@@ -23,6 +23,8 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 jsmGCalendarUtil::loadLibrary();
 
 $component = JComponentHelper::getComponent('com_gcalendar');
@@ -138,5 +140,5 @@ echo $params->get( 'textbefore' );
 
 <?php
 echo $params->get( 'textafter' );
-if (!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_gcalendarap'.DS.'gcalendarap.php'))
+if (!File::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_gcalendarap'.DS.'gcalendarap.php'))
 	echo "<div style=\"text-align:center;margin-top:10px\" ><a href=\"http://g4j.digital-peak.com\">GCalendar</a></div>\n";

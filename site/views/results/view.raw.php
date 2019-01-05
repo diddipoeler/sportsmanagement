@@ -7,7 +7,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 jimport('joomla.application.component.view');
-jimport( 'joomla.filesystem.file' );
+use Joomla\CMS\Filesystem\File;
 
 require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
 
@@ -155,7 +155,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		$attribs=array_merge(array('title' => $title,$attribs));
 		if ($type==1)
 		{
-			if (!empty($team->logo_small) && JFile::exists($team->logo_small))
+			if (!empty($team->logo_small) && File::exists($team->logo_small))
 			{
 				$image=HTMLHelper::image($team->logo_small,$title,$attribs);
 			}

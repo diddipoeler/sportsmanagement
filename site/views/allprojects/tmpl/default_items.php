@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 ?>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="allprojects">       
 <table class="<?php echo $this->tableclass;?>">
@@ -62,7 +63,7 @@ else
 echo $item->name;    
 }
 
-if ( !JFile::exists(JPATH_SITE.DS.$item->picture) )
+if ( !File::exists(JPATH_SITE.DS.$item->picture) )
 {
 $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }

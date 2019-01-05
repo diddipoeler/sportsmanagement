@@ -15,8 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
-
-jimport( 'joomla.filesystem.folder' );
+use Joomla\CMS\Filesystem\Folder;
 
 /**
  * sportsmanagementModelMatchReport
@@ -199,10 +198,10 @@ catch (Exception $e)
   $images 	= array ();
   
   
-  if( JFolder::exists($basePath) )
+  if( Folder::exists($basePath) )
 {
   // Get the list of files and folders from the given folder
-	$fileList 	= JFolder::files($basePath);
+	$fileList 	= Folder::files($basePath);
   
   // Iterate over the files if they exist
 		if ($fileList !== false) {

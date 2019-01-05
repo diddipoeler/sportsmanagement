@@ -10,6 +10,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
 
 ?>
 <div class="row-fluid table-responsive">        
@@ -78,7 +79,7 @@ use Joomla\CMS\HTML\HTMLHelper;
                         echo $item->name;
                     }
 
-                    if (!JFile::exists(JPATH_SITE . DS . $item->logo_big)) {
+                    if (!File::exists(JPATH_SITE . DS . $item->logo_big)) {
                         $item->logo_big = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
                     }
                     ?>

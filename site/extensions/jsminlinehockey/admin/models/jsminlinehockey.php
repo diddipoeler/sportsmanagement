@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Filesystem\File;
 
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 jimport( 'joomla.application.component.model' );
@@ -1340,7 +1341,7 @@ function getdata()
 		$msg = '';
         $post = $jinput->post->getArray(array());
         
-        	if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls'))
+        	if (File::exists(JPATH_SITE.DS.'tmp'.DS.'ish_bw_import.xls'))
 		{
 		  echo date('H:i:s') , " Load workbook from Excel5 file" , EOL;
 $callStartTime = microtime(true);

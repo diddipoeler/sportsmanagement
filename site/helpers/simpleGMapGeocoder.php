@@ -2,6 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Filesystem\File;
 
 /**
 * simpleGMapGeocoder | simpleGMapGeocoder is part of simpleGMapAPI
@@ -175,7 +176,7 @@ $kmlOutput = join("\n", $kml);
 // mal als test
 $xmlfile = $kmlOutput;
 $file = JPATH_SITE.DS.'tmp'.DS.$id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 
 
@@ -568,7 +569,7 @@ $kmlOutput = join("\n", $kml);
 // mal als test
 $xmlfile = $kmlOutput;
 $file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 }
 
@@ -644,7 +645,7 @@ $kmlOutput = join("\n", $kml);
 // mal als test
 $xmlfile = $kmlOutput;
 $file = JPATH_SITE.DS.'tmp'.DS.$project_id.'-'.$type.'.kml';
-JFile::write($file, $xmlfile);
+File::write($file, $xmlfile);
 
 }
 

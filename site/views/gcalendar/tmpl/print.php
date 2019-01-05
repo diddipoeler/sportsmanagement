@@ -260,7 +260,6 @@ echo HTMLHelper::_('content.prepare', $params->get('textafter'));
 $dispatcher = JDispatcher::getInstance();
 $dispatcher->trigger('onGCCalendarLoad', array('gcalendar_component'));
 
-//if(!JFile::exists(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_gcalendarap'.DS.'gcalendarap.php'))
 //	echo "<div style=\"text-align:center;margin-top:10px\" ><a href=\"http://g4j.digital-peak.com\">GCalendar</a></div>\n";
 ?>
 </body>

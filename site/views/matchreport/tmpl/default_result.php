@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
 ?>
 <!-- START: game result -->
@@ -27,7 +28,7 @@ use Joomla\CMS\Language\Text;
                 //dynamic object property string
                 $pic = $this->config['show_picture'];
                 
-                if ( !JFile::exists(JPATH_SITE.DS.$this->team1->$pic) )
+                if ( !File::exists(JPATH_SITE.DS.$this->team1->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
@@ -59,7 +60,7 @@ $this->overallconfig['use_jquery_modal']);
 		</td>
 		<td class="teamlogo">
 			<?php 
-            if ( !JFile::exists(JPATH_SITE.DS.$this->team2->$pic) )
+            if ( !File::exists(JPATH_SITE.DS.$this->team2->$pic) )
 				{
                     $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
                 }

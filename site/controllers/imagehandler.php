@@ -13,9 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.filesystem.file');
-//require_once (JPATH_COMPONENT.DS.'helpers'.DS.'imageselect.php');
 require_once (JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imageselect.php');
 
 class sportsmanagementControllerImagehandler extends BaseController {
@@ -102,7 +101,7 @@ class sportsmanagementControllerImagehandler extends BaseController {
         $filepath = $base_Dir . $filename;
 
         //upload the image
-        if (!JFile::upload($file['tmp_name'], $filepath)) {
+        if (!File::upload($file['tmp_name'], $filepath)) {
             echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED') . "'); window.history.go(-1); </script>\n";
 //          $app->close();
         } else {
@@ -144,9 +143,9 @@ class sportsmanagementControllerImagehandler extends BaseController {
                 $fullPath = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . $image);
                 $fullPaththumb = JPath::clean(JPATH_SITE . DS . 'images' . DS . $option . DS . 'database' . DS . $folder . DS . 'small' . DS . $image);
                 if (is_file($fullPath)) {
-                    JFile::delete($fullPath);
-                    if (JFile::exists($fullPaththumb)) {
-                        JFile::delete($fullPaththumb);
+                    File::delete($fullPath);
+                    if (File::exists($fullPaththumb)) {
+                        File::delete($fullPaththumb);
                     }
                 }
             }

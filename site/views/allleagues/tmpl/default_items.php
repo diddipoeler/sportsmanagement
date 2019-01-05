@@ -11,6 +11,7 @@
  
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
 
 ?>
 
@@ -50,7 +51,7 @@ echo HTMLHelper::link($link, $item->name);
 echo $item->name;
 }
 
-if (!JFile::exists(JPATH_SITE . DS . $item->picture)) {
+if (!File::exists(JPATH_SITE . DS . $item->picture)) {
 $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 ?>

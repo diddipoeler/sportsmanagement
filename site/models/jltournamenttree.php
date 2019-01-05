@@ -43,7 +43,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-Factory::('joomla.filesystem.file');
+use Joomla\CMS\Filesystem\File;
 Factory::('joomla.utilities.array');
 Factory::('joomla.utilities.arrayhelper') ;
 Factory::( 'joomla.utilities.utility' );
@@ -610,7 +610,7 @@ if ( $this->debug_info )
 echo 'bild heim -> '.Uri::base().$row->firstlogo. '<br />';
 }
 
-if( !JFile::exists(Uri::base().$row->firstlogo) )
+if( !File::exists(Uri::base().$row->firstlogo) )
 {
 $row->firstlogo = Uri::base().$this->club_logo;
 }
@@ -619,7 +619,7 @@ else
 $row->firstlogo = Uri::base().$row->firstlogo;
 }
 
-if( !JFile::exists(Uri::base().$row->secondlogo) )
+if( !File::exists(Uri::base().$row->secondlogo) )
 {
 $row->secondlogo = Uri::base().$this->club_logo;
 }
@@ -864,17 +864,17 @@ foreach ( $result as $rowresult )
 {
 
 /*
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = $this->club_logo;
 }
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
+if( !File::exists(Uri::base().$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = Uri::base().$this->club_logo;
 }
@@ -883,7 +883,7 @@ else
 $rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
+if( !File::exists(Uri::base().$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = Uri::base().$this->club_logo;
 }
@@ -938,17 +938,17 @@ foreach ( $result as $rowresult )
 {
 
 /*
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = $this->club_logo;
 }
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
+if( !File::exists(Uri::base().$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = Uri::base().$this->club_logo;
 }
@@ -957,7 +957,7 @@ else
 $rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
+if( !File::exists(Uri::base().$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = Uri::base().$this->club_logo;
 }
@@ -1054,17 +1054,17 @@ foreach ( $result as $rowresult )
 {
 
 /*
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = $this->club_logo;
 }
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
+if( !File::exists(Uri::base().$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = Uri::base().$this->club_logo;
 }
@@ -1073,7 +1073,7 @@ else
 $rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
+if( !File::exists(Uri::base().$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = Uri::base().$this->club_logo;
 }
@@ -1127,17 +1127,17 @@ foreach ( $result as $rowresult )
 {
 
 /*    
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = $this->club_logo;
 }
-if( !JFile::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
+if( !File::exists(JPATH_ROOT.'/'.$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = $this->club_logo;
 }
 */
 
-if( !JFile::exists(Uri::base().$rowresult->firstlogo) )
+if( !File::exists(Uri::base().$rowresult->firstlogo) )
 {
 $rowresult->firstlogo = Uri::base().$this->club_logo;
 }
@@ -1146,7 +1146,7 @@ else
 $rowresult->firstlogo = Uri::base().$rowresult->firstlogo;
 }
 
-if( !JFile::exists(Uri::base().$rowresult->secondlogo) )
+if( !File::exists(Uri::base().$rowresult->secondlogo) )
 {
 $rowresult->secondlogo = Uri::base().$this->club_logo;
 }

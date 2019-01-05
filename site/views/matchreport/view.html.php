@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Filesystem\File;
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
 /**
@@ -575,7 +575,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
-                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DS.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -590,7 +590,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					)
 					{
 						$picture = $me->picture1;
-                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DS.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -637,7 +637,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					if ( ($me->tppicture1 != $placeholder) && (!empty($me->tppicture1)) )
 					{
 						$picture = $me->tppicture1;
-                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DS.$picture) )
 				        {
                         $picture = $placeholder;
                         }
@@ -652,7 +652,7 @@ $match_player = HTMLHelper::link($player_link,$match_player);
 					)
 					{
 						$picture = $me->picture1;
-                        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+                        if ( !File::exists(JPATH_SITE.DS.$picture) )
 				        {
                         $picture = $placeholder;
                         }

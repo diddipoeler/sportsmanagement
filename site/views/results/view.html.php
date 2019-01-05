@@ -16,8 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-jimport( 'joomla.filesystem.file' );
+use Joomla\CMS\Filesystem\File;
 
 /**
  * sportsmanagementViewResults
@@ -254,15 +253,15 @@ $this->setLayout('form_bootstrap');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
         
-    if ( !JFile::exists($team->logo_small) )
+    if ( !File::exists($team->logo_small) )
     {
     $team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');    
     }
-    if ( !JFile::exists($team->logo_middle) )
+    if ( !File::exists($team->logo_middle) )
     {
     $team->logo_middle = sportsmanagementHelper::getDefaultPlaceholder('logo_middle');    
     }
-    if ( !JFile::exists($team->logo_big) )
+    if ( !File::exists($team->logo_big) )
     {
     $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');   
     }
