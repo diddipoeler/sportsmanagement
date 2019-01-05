@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Filesystem\Folder; 
 jimport('joomla.form.formfield');
  
 defined('JPATH_BASE') or die();
@@ -38,13 +38,11 @@ class JFormFieldTemplatelist extends JFormField
 	 */
 	function getInput()
 	{
-		jimport( 'joomla.filesystem.folder' );
-		
 		// path to images directory
 		$path		= JPATH_ROOT.DS.$this->element['directory'];
 		$filter		= $this->element['filter'];
 		$exclude	= $this->element['exclude'];
-		$folders	= JFolder::folders($path, $filter);
+		$folders	= Folder::folders($path, $filter);
 		
 		$options = array ();
 		foreach ($folders as $folder)

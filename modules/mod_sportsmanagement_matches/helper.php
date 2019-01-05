@@ -14,6 +14,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * modMatchesHelper
@@ -338,7 +339,7 @@ class modMatchesSportsmanagementHelper {
           
 
             
-			if ( JFile::exists(JPATH_ROOT.$matchpart_pic) )
+			if ( File::exists(JPATH_ROOT.$matchpart_pic) )
             {
 				$size = getimagesize($matchpart_pic);
 				$pic_width = $size[0];

@@ -1,38 +1,49 @@
 <?php
-/**
-* @version		$Id: templatelist.php 470 2010-01-31 19:38:29Z And_One $
-* @copyright	Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version   1.0.00
+ * @file      templatelist.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @subpackage mod_sportsmanagement_matches
+ */ 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
  
 jimport('joomla.form.formfield');
  
 defined('JPATH_BASE') or die();
 
+/**
+ * JFormFieldTemplatelist
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2019
+ * @version $Id$
+ * @access public
+ */
 class JFormFieldTemplatelist extends JFormField
 {
 	protected $type = 'Templatelist';
 	
+	/**
+	 * JFormFieldTemplatelist::getInput()
+	 * 
+	 * @return
+	 */
 	function getInput()
 	{
-		jimport( 'joomla.filesystem.folder' );
-		
 		// path to images directory
 		$path		= JPATH_ROOT.DS.$this->element['directory'];
 		$filter		= $this->element['filter'];
 		$exclude	= $this->element['exclude'];
-		$folders	= JFolder::folders($path, $filter);
+		$folders	= Folder::folders($path, $filter);
 		
 		$options = array ();
 		foreach ($folders as $folder)

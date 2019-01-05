@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * modRquotesHelper
@@ -337,7 +338,7 @@ jimport('joomla.filesystem.file');
 
 		$path= JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
 		$cleanpath = JPATH::clean($path);
-		$contents = JFile::read($cleanpath);
+		$contents = File::read($cleanpath);
 		$lines = explode("\n", $contents);
 		$count = count($lines);
 		$rows = explode("\n", $contents);
@@ -364,7 +365,7 @@ function getTextFile2(&$params,$filename,$module)
 	$num=($today-1);
 	$path = JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
 	$cleanpath = JPATH::clean($path);
-	$contents = JFile::read($cleanpath);
+	$contents = File::read($cleanpath);
 	$lines = explode("\n", $contents);
 	$count = count($lines);
 	$rows = explode("\n", $contents);
