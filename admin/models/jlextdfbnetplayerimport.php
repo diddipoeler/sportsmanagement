@@ -1190,65 +1190,19 @@ Array
         )
 	
 */
-
-
   
-  
-  $teamid = 1;
-  
+$teamid = 1;
 $this->fileName = File::read($file);
 $this->lines = file( $file );  
 if( $this->lines ) 
 {
 $row = 0;
-/*
-foreach($this->lines as $line )
-{
 
-if ( $startline <= $row && $row <= count($this->lines)  )
-{
-// spielerliste
+/**
+ * Spielerdatei
+ */
 if ( $whichfile == 'playerfile' )
 {
-	$fields = array();
-  if ($delimiter == "\\t") {
-    $fields = explode("\t", $line);
-  } else {
-    $fields = explode($delimiter, $line);
-  }
-	$temp = new stdClass();
-	$temp->id = 0;
-	$temp->knvbnr = $fields[0];
-	$temp->lastname = $fields[1];
-	$temp->firstname = $fields[2];
-	$temp->country = $country;
-	$temp->nickname = '';
-	$temp->position_id = '';
-	//$temp->lastname = utf8_encode ($temp->lastname);
-	//$temp->firstname = utf8_encode ($temp->firstname);
-
-	$temp->info = $fields[3];
-	$datetime = strtotime($fields[4]);
-	$temp->birthday = date('Y-m-d', $datetime);
-	$exportplayer[] = $temp;
-
-	$fields = "";
-}
-elseif ( $whichfile == 'matchfile' )
-{
-// spielplan anfang
-
-// spielplan ende
-}
-
-}
-$row++;
-}
-*/
-
-if ( $whichfile == 'playerfile' )
-{
-	// Spielerdatei
 	# tab delimited, and encoding conversion
 	$csv = new JSMparseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
@@ -1304,39 +1258,46 @@ if ( $whichfile == 'playerfile' )
 }
 elseif ( $whichfile == 'matchfile' )
 {
-	
+/**
+ * Spielplan
+ */	
 $row = 0;
 $header = array();
+$dfbnetspiele = array();
 $csv = new JSMparseCSV();
 //$app->enqueueMessage(Text::_('file<br><pre>'.print_r($file,true).'</pre>'   ),'');
 if (($handle = fopen($file, "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
-        $num = count($data);
+while (($data = fgetcsv($handle, 1000, "\t")) !== FALSE) {
+$num = count($data);
         //echo "<p> $num Felder in Zeile $row: <br /></p>\n";
         //$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
         //$app->enqueueMessage(Text::_('num <br><pre>'.print_r($num ,true).'</pre>'   ),'');
         
         //$row++;
-        for ($c=0; $c < $num; $c++) {
+for ($c=0; $c < $num; $c++) {
             //echo $data[$c] . "<br />\n";
             //$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data[$c],true).'</pre>'   ),'');
-            
-            if ( empty($row) )
-  {
+if ( empty($row) )
+{
 $header[$c] = $data[$c];    
-   }
-   else
-   {
-     $csv->data[$row][$header[$c]] = $data[$c]; 
+}
+else
+{
+
+if ( $header[$c] == 'Spielkennung' )
+{
+$dfbnetspiele[$data[$c]] = '';    
+}
     
-   }         
-            
-        }
-        $row++;
-    }
-    fclose($handle);
+$csv->data[$row][$header[$c]] = $data[$c]; 
+}         
+}
+$row++;
+}
+fclose($handle);
 }	
-	
+
+$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
 	
 	
 	// Spielplan anfang
@@ -1377,7 +1338,9 @@ $header[$c] = $data[$c];
 	$lfdnumberperson = 1;
 	$lfdnumbermatchreferee = 1;
 
-	// anfang schleife csv file
+/**
+ * anfang schleife csv file
+ */
   for($a=0; $a < sizeof($csv->data); $a++  )
   {
   
