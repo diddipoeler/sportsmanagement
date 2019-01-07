@@ -1301,7 +1301,8 @@ for($a=0; $a < sizeof($csv->data); $a++  )
 {
 $temp = array();
 $spielkennung = '';
-$anhaengen = FALSE;	
+$anhaengengast = FALSE;	
+$anhaengenheim = FALSE;		
 foreach ($csv->data[$a] as $pos =>  $val)
 {
 //$app->enqueueMessage(Text::_('pos <br><pre>'.print_r($pos ,true).'</pre>'   ),'');	
@@ -1309,10 +1310,16 @@ $temp[$pos] = $val;
 
 switch ($pos)
 {
+case 'Heimmannschaft':
+if ( $val )
+{
+$anhaengenheim = TRUE;
+}
+break;		
 case 'Gastmannschaft':
 if ( $val )
 {
-$anhaengen = TRUE;
+$anhaengengast = TRUE;
 }
 break;		
 case 'Spielkennung':
@@ -1333,10 +1340,15 @@ break;
 }
 
 }
-if ( $spielkennung && $anhaengen )
+if ( $spielkennung && $anhaengenheim && $anhaengengast )
 {
 $dfbnetspiele[$spielkennung] = $temp;
 }
+else
+{
+unset($dfbnetspiele[$spielkennung]);
+}
+	
 }
 
 unset($csv->data);
