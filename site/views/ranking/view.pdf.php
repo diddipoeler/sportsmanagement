@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\HTML\HTMLHelper;
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -39,8 +40,8 @@ class sportsmanagementViewRanking extends JViewLegacy
 	function display($tpl = null) 
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory :: getDocument();
-		$uri = JFactory :: getURI();
+		$document = Factory::getDocument();
+		$uri = Factory::getURI();
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         
@@ -72,44 +73,44 @@ class sportsmanagementViewRanking extends JViewLegacy
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
-	  $mod_name               = "mod_jw_srfr";
-	  $rssfeeditems = '';
-    $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
+          $mod_name = "mod_jw_srfr";
+          $rssfeeditems = '';
+          $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
     if ( $rssfeedlink )
     {
-    $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
+        $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->rssfeeditems = $rssfeeditems;
+        $this->rssfeeditems = $rssfeeditems;
     }
     
         
        }
        
-       if ($this->config['show_half_of_season']==1)
-	{
-	   if ($this->config['show_table_4']==1)
-	{
-       $model->part = 1;
-       $model->from = 0;
-       $model->to = 0;
-       unset ($model->currentRanking);
-	   unset ($model->previousRanking);
-       $model->computeRanking($model::$cfg_which_database);
-       $this->firstRank = $model->currentRanking;
-     }
+        if ($this->config['show_half_of_season'] == 1)
+        {
+            if ($this->config['show_table_4'] == 1)
+            {
+                $model->part = 1;
+                $model->from = 0;
+                $model->to = 0;
+                unset ($model->currentRanking);
+                unset ($model->previousRanking);
+                $model->computeRanking($model::$cfg_which_database);
+                $this->firstRank = $model->currentRanking;
+            }
      
-     if ($this->config['show_table_5']==1)
-	{  
-       $model->part = 2;
-       $model->from = 0;
-       $model->to = 0;
-       unset ($model->currentRanking);
-	   unset ($model->previousRanking);
-       $model->computeRanking($model::$cfg_which_database);
-       $this->secondRank = $model->currentRanking;
-     }  
+    if ($this->config['show_table_5']==1)
+    {
+        $model->part = 2;
+        $model->from = 0;
+        $model->to = 0;
+        unset ($model->currentRanking);
+        unset ($model->previousRanking);
+        $model->computeRanking($model::$cfg_which_database);
+        $this->secondRank = $model->currentRanking;
+    }  
        
        $model->part = 0;
        unset ($model->currentRanking);
@@ -127,19 +128,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->to = $model->to;
 		$this->divLevel = $model->divLevel;
         
-        if ($this->config['show_table_1']==1)
+        if ($this->config['show_table_1'] == 1)
 	{
 		$this->currentRanking = $model->currentRanking;
         }
         
 		$this->previousRanking = $model->previousRanking;
         
-        if ($this->config['show_table_2']==1)
+        if ($this->config['show_table_2'] == 1)
 	{
 		$this->homeRank = $model->homeRank;
         }
         
-        if ($this->config['show_table_3']==1)
+        if ($this->config['show_table_3'] == 1)
 	{
 		$this->awayRank = $model->awayRank;
         }
@@ -197,17 +198,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->previousgames = $model->getPreviousGames();
 		$this->action = $uri->toString();
 
-		$frommatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
+		$frommatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
 		$lists['frommatchday'] = $frommatchday;
-		$tomatchday[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
+		$tomatchday[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
 		$tomatchday = array_merge($tomatchday, $rounds);
 		$lists['tomatchday'] = $tomatchday;
 
 		$opp_arr = array ();
-		$opp_arr[] = JHTML :: _('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
-		$opp_arr[] = JHTML :: _('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_RANKING_FULL_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_RANKING_HOME_RANKING'));
+		$opp_arr[] = HTMLHelper::_('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
 		$lists['type'] = $opp_arr;
 		$this->lists = $lists;
@@ -264,7 +265,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
   
   Uri:: ( $this->allteams as $row )
     {
-    $address_parts = array();
+        $address_parts = array();
 		if (!empty($row->club_address))
 		{
 			$address_parts[] = $row->club_address;
