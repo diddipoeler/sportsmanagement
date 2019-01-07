@@ -1297,7 +1297,48 @@ $row++;
 fclose($handle);
 }	
 
-$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
+for($a=0; $a < sizeof($csv->data); $a++  )
+{
+$temp = array();
+$spielkennung = '';
+foreach ($csv->data[$a] as $pos =>  $val)
+{
+//$app->enqueueMessage(Text::_('pos <br><pre>'.print_r($pos ,true).'</pre>'   ),'');	
+$temp[$pos] = $val;  
+
+switch ($pos)
+{
+case 'Spielkennung':
+$spielkennung = $val;
+break;
+case 'verlegtSpieldatum':
+if ( $val )
+{
+$temp['Spieldatum'] = $val; 
+}
+break;
+case 'verlegtUhrzeit':
+if ( $val )
+{
+$temp['Uhrzeit'] = $val; 
+}
+break;
+}
+
+}
+if ( $spielkennung )
+{
+$dfbnetspiele[$spielkennung] = $temp;
+}
+}
+
+unset($csv->data);
+foreach ($dfbnetspiele as $pos => $val)
+{
+$csv->data[] = $val;
+}	
+	
+//$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
 	
 	
 	// Spielplan anfang
