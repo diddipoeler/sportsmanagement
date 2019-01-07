@@ -1356,7 +1356,8 @@ foreach ($dfbnetspiele as $pos => $val)
 {
 $csv->data[] = $val;
 }	
-	
+
+//$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r(sizeof($dfbnetspiele) ,true).'</pre>'   ),'');			
 //$app->enqueueMessage(Text::_('dfbnetspiele <br><pre>'.print_r($dfbnetspiele ,true).'</pre>'   ),'');	
 	
 	
