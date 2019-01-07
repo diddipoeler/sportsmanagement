@@ -3798,7 +3798,9 @@ if ( $start && $position_id && $projectpersonid && !$result )
 $temp = new stdClass();
 $temp->match_id = $match_id;
 $temp->teamplayer_id = $projectpersonid;
-$temp->project_position_id = $position_id; 
+$temp->project_position_id = $position_id;
+$temp->modified = $date->toSql();
+$temp->modified_by = $user->id;
 // Insert the object into the table.
 try {
 $result = $db->insertObject('#__sportsmanagement_match_player', $temp);
@@ -3809,6 +3811,62 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getMessage()),'Err
 $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error');
 }      
 }
+
+	// Auswechslungen verarbeiten (aber nur wenn der Spieler nicht in der Startaufstellung stand)
+    if (!$start) {
+        foreach ($this->csv_in_out as $auswechslungKey => $auswechslungObject) {
+            // Überprüfen ob der eingewechselte Spieler zum aktuellen Spieler passt (Nachname + Nummer muss stimmen)
+            $jerseynumber = $playernumber[$key];
+            if ($auswechslungObject->spieler == $value && $auswechslungObject->in == $jerseynumber) {
+
+                // Hat der Benutzer eine Position beim Import ausgewählt? Wenn nicht wird die selbe Position verwendet, wie der ausgewechselte Spieler
+                $inOutPositionId = $inout_position_id[$auswechslungObject->in];
+                if (!$inOutPositionId) {
+                    $inOutPositionId = $position_id;
+                }
+
+                // Gibt es diesen Spieler schon?
+                $query->clear();
+                $query->select('*');
+                $query->from('#__sportsmanagement_match_player');
+                $query->where('match_id = ' . $match_id);
+                $query->where('teamplayer_id = ' . $projectpersonid);
+                $query->where('project_position_id = ' . $inOutPositionId);
+                $db->setQuery($query);
+                $result = $db->loadResult();
+
+                if (!$result) {
+
+                    // Die ID des ausgewechselten Spielers suchen (Nachname + Nummer muss stimmen)
+                    foreach ($playerlastname as $outPlayerKey => $outPlayerValue) {
+                        if ($playernumber[$outPlayerKey] == $auswechslungObject->out && $outPlayerValue == $auswechslungObject->spielerout) {
+                            $outTeamplayerId = $playerprojectpersonid[$outPlayerKey];
+                        }
+                    }
+
+                    // Haben wir den auszuwechselden Spieler gefunden können wir ihn einarbeiten
+                    if ($outTeamplayerId) {
+                        $temp = new stdClass();
+                        $temp->match_id = $match_id;
+                        $temp->teamplayer_id = $projectpersonid;
+                        $temp->project_position_id = $inOutPositionId;
+                        $temp->came_in = $auswechslungObject->came_in;
+                        $temp->in_for = $outTeamplayerId;
+                        $temp->in_out_time = $auswechslungObject->in_out_time;
+                        $temp->modified = $date->toSql();
+                        $temp->modified_by = $user->id;
+
+                        try {
+                            $result = $db->insertObject('#__sportsmanagement_match_player', $temp);
+                        } catch (Exception $e) {
+                            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	// Events für den aktuellen Spieler verarbeiten
     foreach ($this->csv_cards as $cardIndex => $cardValue) {
