@@ -1592,7 +1592,8 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
        
 		$my_text = '';
 if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]) ) {
-    $this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+    //$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
+$this->_success_text = array(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0') => "");	
 }		
 		if (!empty($this->_sportstype_new))
 		{
