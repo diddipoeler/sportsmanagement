@@ -1683,7 +1683,7 @@ if( !isset($this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__
 			{
 				$this->_league_id = $leagueObject->id;
 				$my_text .= '<span style="color:orange">';
-				$my_text .= Text::sprintf('Using existing league data: %1$s',"</span><strong>$this->_league_new</strong>");
+				$my_text .= Text::sprintf(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1'),"</span><strong>$this->_league_new</strong>");
 				$my_text .= '<br />';
 			}
 			else
@@ -1719,8 +1719,8 @@ $my_text .= '<span style="color:'.$this->storeFailedColor.'"><strong>';
 		else
 		{
 			$my_text .= '<span style="color:'.$this->existingInDbColor.'">';
-			$my_text .= Text::sprintf(	'Using existing league data: %1$s',
-										'</span><strong>'.$this->_getObjectName('league',$this->_league_id).'</strong>');
+			$my_text .= Text::sprintf(Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_1'),
+						'</span><strong>'.$this->_getObjectName('league',$this->_league_id).'</strong>');
 			$my_text .= '<br />';
 		}
 		$this->_success_text[Text::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
