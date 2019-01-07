@@ -1297,7 +1297,7 @@ $row++;
 fclose($handle);
 }	
 
-for($a=0; $a < sizeof($csv->data); $a++  )
+for($a=1; $a <= sizeof($csv->data); $a++  )
 {
 $temp = array();
 $spielkennung = '';
