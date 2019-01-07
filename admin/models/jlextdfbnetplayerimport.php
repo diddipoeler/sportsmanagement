@@ -1471,6 +1471,8 @@ $csv->data[] = $val;
   }
   else
   {
+  if ( $valuematchday )
+  {
   $temp = new stdClass();
   $temp->id = $valuematchday;
   $temp->roundcode = $valuematchday;
@@ -1479,6 +1481,7 @@ $csv->data[] = $val;
   $temp->round_date_first = '';
   $temp->round_date_last = '';
   $exportround[$valuematchday] = $temp;
+  }
   }
 
 // dfbnet heimmannschaft  
@@ -2098,19 +2101,16 @@ if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' 
   }
   
   // datum im spieltag setzen
-  if ( !$exportround[$round_id]->round_date_first && !$exportround[$round_id]->round_date_last )
+  if ( !$exportround[$round_id]->round_date_first && !$exportround[$round_id]->round_date_last && $valuematchday )
   {
     $exportround[$round_id]->round_date_first = date('Y-m-d', $datetime);
     $exportround[$round_id]->round_date_last = date('Y-m-d', $datetime);
   }
-  if ( $exportround[$round_id]->round_date_first && $exportround[$round_id]->round_date_last )
+  if ( $exportround[$round_id]->round_date_first && $exportround[$round_id]->round_date_last && $valuematchday )
   {
     $datetime_first = strtotime($exportround[$round_id]->round_date_first);
     $datetime_last = strtotime($exportround[$round_id]->round_date_last);
-    
-//    echo 'round_id -> '.$round_id.' datetime -> '.$datetime.' datetime_first -> '.$datetime_first.' datetime_last -> '.$datetime_last.'<br>';
-//    echo 'round_id -> '.$round_id.' date -> '.date('Y-m-d', $datetime).' date_first -> '.$exportround[$round_id]->round_date_first.' date_last -> '.$exportround[$round_id]->round_date_last.'<br>';
-        
+       
     if ( $datetime_first > $datetime )
     {
         $exportround[$round_id]->round_date_first = date('Y-m-d', $datetime);
