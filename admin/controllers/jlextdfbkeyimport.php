@@ -162,8 +162,6 @@ Factory::getApplication()->setUserState( "$option.first_post", $post );
     	
 		for ($i=0; $i < count($post[roundcode])  ; $i++)
 		{
-//    $table = 'round';
-//		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
         $mdl = BaseDatabaseModel::getInstance("round", "sportsmanagementModel");
         $row = $mdl->getTable();
             
@@ -244,8 +242,6 @@ $post = Factory::getApplication()->input->post->getArray(array());
     
     for ($i=0; $i < count($post[roundcode])  ; $i++)
 		{
-//    $table = 'match';
-//		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
         $mdl = BaseDatabaseModel::getInstance("match", "sportsmanagementModel");
         $row = $mdl->getTable();
 		

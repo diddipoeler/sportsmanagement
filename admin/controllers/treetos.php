@@ -84,8 +84,6 @@ public function save()
         $model = $this->getModel('treeto');
         $row = $model->getTable();
         
-        
-		//$table = JTable::getInstance('Treeto','sportsmanagementTable');
 		if($row->save($data))
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_SAVED');

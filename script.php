@@ -70,6 +70,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
 
 if (! defined('DS'))
 {
@@ -557,22 +559,22 @@ echo self::getFxInitJSCode('steps');
     $excludeExtension = array();
     $excludeExtension[] = 'extensions';    
     $excludeExtension[] = 'sisdata';
-    $folderAdmin  = JFolder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
+    $folderAdmin  = Folder::folders(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
     
     foreach ($folderAdmin as $key => $value )
     {
-        if( JFolder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+        if( Folder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
         {
         //echo 'Der Ordner wurde gelöscht';
         }
     }
-    $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
+    $folderSite  = Folder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
 													'.', false, false, $excludeExtension);
    
     foreach ($folderSite as $key => $value )
     {
-        if( JFolder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
+        if( Folder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
         {
         //echo 'Der Ordner wurde gelöscht';
         }
@@ -640,7 +642,7 @@ echo self::getFxInitJSCode('steps');
   
         //echo Text::_('Creating new Image Folder structure');
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement';
-		$update = JFolder::exists($dest);
+		$update = Folder::exists($dest);
 		$folders = array('agegroups',
 		'clubs',
 		'clubs/large',
@@ -679,14 +681,14 @@ echo self::getFxInitJSCode('steps');
 		'venues',
         'jl_images',
 		'statistics');
-		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement');
+		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/index.html');
-		JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
+		Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database');
 		JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/index.html');
 		
         foreach ($folders as $folder) 
         {
-			JFolder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
+			Folder::create(JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder);
 			JFile::copy(JPATH_ROOT.'/images/index.html', JPATH_ROOT.'/images/com_sportsmanagement/database/'.$folder.'/index.html');
             
             echo '<p>' . Text::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
@@ -718,14 +720,14 @@ echo self::getFxInitJSCode('steps');
 		}
         
 		foreach ($folders as $folder) {
-			$from = JPath::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
-			if(JFolder::exists($from)) {
-				$to = JPath::clean($dest.'/database/'.$folder);
-				if(!JFolder::exists($to)) {
-					$ret = JFolder::move($from, $to);
+			$from = Path::clean(JPATH_ROOT.'/media/com_sportsmanagement/'.$folder);
+			if(Folder::exists($from)) {
+				$to = Path::clean($dest.'/database/'.$folder);
+				if(!Folder::exists($to)) {
+					$ret = Folder::move($from, $to);
 				} else {
-					$ret = JFolder::copy($from, $to, '', true);
-					//$ret = JFolder::delete($from);
+					$ret = Folder::copy($from, $to, '', true);
+					//$ret = Folder::delete($from);
 				}
 			}
 		}
@@ -797,7 +799,7 @@ else
   $manifest = $adapter->getParent()->manifest;
   $db = Factory::getDBO();
   
-  JFolder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
+  Folder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
   
   }
   

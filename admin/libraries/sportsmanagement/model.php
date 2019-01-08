@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Table\Table;
 
 /**
  * JSMModelAdmin
@@ -251,7 +252,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
         
         if ( $post['add_trainingData'] )
         {
-            $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
+            $row = Table::getInstance( 'seasonteam', 'sportsmanagementTable' );
             $row->load( (int)$post['jform']['team_id'] );
             $mdlTeam = BaseDatabaseModel::getInstance("Team", "sportsmanagementModel");
             $mdlTeam->addNewTrainigData($row->team_id);
@@ -307,7 +308,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.p
             $person_1 = $data['person_id1'];
             $person_2 = $data['person_id2'];
             $table = 'person';
-            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
+            $row = Table::getInstance( $table, 'sportsmanagementTable' );
             $row->load((int) $person_1);
             $person_double[] = $row->firstname.' '.$row->lastname;
             $row->load((int) $person_2);
@@ -1406,7 +1407,7 @@ catch (Exception $e) {
        {
        $type = $this->getName();
        } 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
