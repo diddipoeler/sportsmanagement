@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Table\Table;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
@@ -168,7 +169,7 @@ class sportsmanagementModelJLXMLImport extends BaseDatabaseModel
                                     );
 					$my_text .= '<br />';
                     
-     $update_match = JTable::getInstance('Match','sportsmanagementTable');
+     $update_match = Table::getInstance('Match','sportsmanagementTable');
      $match_id = (int) $match_data->id;
      $update_match->load($match_id);
      if ( $value->team1_result )
