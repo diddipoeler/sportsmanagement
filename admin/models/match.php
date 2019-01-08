@@ -3269,201 +3269,41 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r
         $this->csv_cards[$key]->event_type_id = $match_event_id;
     }    
     }
-    // mannschaftsverantwortliche
-    $i = 1;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    $this->csv_staff[$i]->position = 'Trainer';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainer'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    $this->csv_staff[$i]->position_id = 0;
-    
-    // gibt es den staff ?
-    // Select some fields
-    if ( $teile[0] )
-    {
-$person_id = $this->getPersonId($teile[0], $teile[1]);
-    }
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
-    
-    $i++;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    $this->csv_staff[$i]->position = 'Trainerassistent';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Trainerassistent'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    $this->csv_staff[$i]->position_id = 0;
-    // gibt es den staff ?
-    if ( $teile[0] )
-    {
-$person_id = $this->getPersonId($teile[0], $teile[1]);
-    }        
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
-    
-    $i++;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    $this->csv_staff[$i]->position = 'Arzt';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Arzt'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    if ( isset($teile[1]) )
-    {
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    }
-    else
-    {
-    $this->csv_staff[$i]->lastname = '';
-    $this->csv_staff[$i]->firstname = '';    
-    }
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    
-    // gibt es den staff ?
-    if ( $teile[0] )
-    {
-$person_id = $this->getPersonId($teile[0], $teile[1]);
-    }
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
-    
-    $i++;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    $this->csv_staff[$i]->position = 'Masseur';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Masseur'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    if ( isset($teile[1]) )
-    {
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    }
-    else
-    {
-    $this->csv_staff[$i]->lastname = '';
-    $this->csv_staff[$i]->firstname = '';    
-    }
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    
-    // gibt es den staff ?
-    if ( $teile[0] )
-    {
-$person_id = $this->getPersonId($teile[0], $teile[1]);
-    }
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
-    
-    $i++;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    $this->csv_staff[$i]->position = 'Zeugwart';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Zeugwart'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    if ( isset($teile[1]) )
-    {
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    }
-    else
-    {
-    $this->csv_staff[$i]->lastname = '';
-    $this->csv_staff[$i]->firstname = '';    
-    }
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    
-    // gibt es den staff ?
-    if ( $teile[0] )
-    {
-$person_id = $this->getPersonId($teile[0], $teile[1]);
-    }
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
-    
-    $i++;
-    if ( !isset($this->csv_staff[$i]) )
-    {
-        $this->csv_staff[$i] = new stdClass();
-    }
-    
-    $this->csv_staff[$i]->position = 'Mannschaftsverantwortlicher';
-    $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv.'-Mannschaftsverantwortlicher'];
-    $teile = explode(",",$this->csv_staff[$i]->name);
-    $this->csv_staff[$i]->lastname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-    $this->csv_staff[$i]->firstname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-    $this->csv_staff[$i]->person_id = 0;
-    $this->csv_staff[$i]->project_person_id = 0;
-    $this->csv_staff[$i]->project_position_id = 0;
-    $this->csv_staff[$i]->position_id = 0;
-    // gibt es den staff ?
-    if ( $teile[0] )
-    {
-    $person_id = $this->getPersonId($teile[0], $teile[1]);
-    }        
-    if ( $person_id )
-    {
-            $this->csv_staff[$i]->person_id = $person_id;
-            $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id );
-            $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
-            $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
-            $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
-    }
+
+        // Sämtliche Mannschaftsverantwortlichen verarbeiten
+        $i = 1;
+        $mannschaftsverantwortlichePositionen = array('Trainer', 'Trainerassistent', 'Arzt', 'Masseur', 'Zeugwart', 'Mannschaftsverantwortlicher');
+        foreach ($mannschaftsverantwortlichePositionen as $mannschaftsverantwortlichePosition) {
+            if (!isset($this->csv_staff[$i])) {
+                $this->csv_staff[$i] = new stdClass();
+            }
+            $this->csv_staff[$i]->position = $mannschaftsverantwortlichePosition;
+            $this->csv_staff[$i]->name = $csv_file->data[0][$find_csv . '-' . $mannschaftsverantwortlichePosition];
+            $teile = explode(",", $this->csv_staff[$i]->name);
+            $firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
+            $lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
+            $this->csv_staff[$i]->lastname = $lastname;
+            $this->csv_staff[$i]->firstname = $firstname;
+            $this->csv_staff[$i]->person_id = 0;
+            $this->csv_staff[$i]->project_person_id = 0;
+            $this->csv_staff[$i]->project_position_id = 0;
+            $this->csv_staff[$i]->position_id = 0;
+
+            // Falls es den Staff gibt, ein paar Felder selektieren
+            if ($lastname) {
+                $person_id = $this->getPersonId($firstname, $lastname);
+
+                if ($person_id) {
+                    $this->csv_staff[$i]->person_id = $person_id;
+                    $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id);
+                    $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
+                    $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
+                    $this->csv_staff[$i]->position_id = $projectpersonid->position_id;
+                }
+            }
+
+            $i++;
+        }
    
     
     }
