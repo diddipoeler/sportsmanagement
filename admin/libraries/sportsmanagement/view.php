@@ -175,6 +175,7 @@ switch ( $this->view )
             {
             case 'match';
             case 'predictionproject';
+	case 'jsmgcalendar':
             break;
             default:
 $this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
@@ -731,7 +732,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
  * 
  * 
  */        
-$title = JText::_('JTOOLBAR_BATCH');
+$title = Text::_('JTOOLBAR_BATCH');
 $layout = new JLayoutFile('newissue', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
 JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');         
