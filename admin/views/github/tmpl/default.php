@@ -1,9 +1,9 @@
 <?PHP
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      default.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage github
@@ -69,7 +69,7 @@ echo $value->commit->author->name;
 
 <!--
 <a class="btn btn-small btn-warning" href="https://issues.joomla.org/tracker/<?php echo $this->trackerAlias; ?>/<?php echo $item->pull_id; ?>" target="_blank">
-<i class="icon-joomla"></i> <?php echo \Text::_('COM_PATCHTESTER_JISSUE'); ?>
+<i class="icon-joomla"></i> <?php echo Text::_('COM_PATCHTESTER_JISSUE'); ?>
 </a>
 -->
 
