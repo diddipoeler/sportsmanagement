@@ -1,9 +1,18 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsmgcalendars.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
+ */
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Table\Table;
 
 if (! defined('JSM_PATH'))
 {
@@ -17,7 +26,8 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 
 
 
-JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'tables');
+Table::addIncludePath(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'tables');
+
 class sportsmanagementModeljsmGCalendars extends ListModel 
 {
 
