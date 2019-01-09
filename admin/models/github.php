@@ -25,7 +25,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 // import Joomla  library
 //jimport('joomla.github.issues');
 //jimport('joomla.github.github');
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'github.php');
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'package' . DS . 'issues.php');
@@ -202,7 +202,7 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
         $github_repo = ComponentHelper::getParams($option)->get('cfg_github_repository','');
         
         
-        $params = \ComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
 
 
 $gh_options = new Registry();
