@@ -1,36 +1,27 @@
 <?php
-/**
- * GCalendar is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * GCalendar is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with GCalendar.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package		GCalendar
- * @author		Digital Peak http://www.digital-peak.com
- * @copyright	Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
- * @license		http://www.gnu.org/licenses/gpl.html GNU/GPL
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      jsmgcalendar.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage models
  */
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\AdminModel;
 
 JLoader::import('joomla.application.component.modeladmin');
 
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
-use Joomla\CMS\Filesystem\File;
-jimport('joomla.filesystem.folder');
-
 
 /**
  * sportsmanagementModeljsmGCalendar
@@ -41,7 +32,7 @@ jimport('joomla.filesystem.folder');
  * @version $Id$
  * @access public
  */
-class sportsmanagementModeljsmGCalendar extends JModelAdmin
+class sportsmanagementModeljsmGCalendar extends AdminModel
 {
 	/**
 	 * sportsmanagementModeljsmGCalendar::allowEdit()
@@ -67,7 +58,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	public function getTable($type = 'jsmGCalendar', $prefix = 'sportsmanagementTable', $config = array())
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -166,7 +157,7 @@ $output .= "</entry>". "\n";
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
     
-    // die erstellte kalender id �bergeben
+    // die erstellte kalender id übergeben
     $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);
     
         }
