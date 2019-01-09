@@ -27,6 +27,7 @@ use Joomla\CMS\Toolbar\Button\PopupButton;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Table\Table;
 
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
     jimport('joomla.html.toolbar');
@@ -1148,7 +1149,7 @@ abstract class sportsmanagementHelper {
     public static function getProjectFavTeams($project_id) {
 
         if ($project_id) {
-            $row = JTable::getInstance('project', 'sportsmanagementTable');
+            $row = Table::getInstance('project', 'sportsmanagementTable');
             $row->load($project_id);
             return $row;
         } else {
