@@ -40,10 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
-// import Joomla controllerform library
-//jimport('joomla.application.component.controllerform');
- 
 
 /**
  * sportsmanagementControllerprojectreferee
