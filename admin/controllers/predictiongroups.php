@@ -24,8 +24,6 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerpredictiongroups extends JSMControllerAdmin
 {
   
-
-    
     /**
 	 * Proxy for getModel.
 	 * @since	1.6

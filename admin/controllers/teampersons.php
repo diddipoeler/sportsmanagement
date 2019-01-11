@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Router\Route; 
 /**
  * sportsmanagementControllerteampersons
  * 
@@ -62,9 +62,6 @@ $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2)
 $task = $this->getTask();
 $value = ArrayHelper::getValue($values, $task, 0, 'int');    
 
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
 $model = $this->getModel();
 $model->set_state($ids,$tpids,$value,$post['pid']);  
 
@@ -86,7 +83,7 @@ break;
 
 $this->setMessage(Text::plural($ntext, count($ids)));	
 	
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
 }
 	
   /**
@@ -101,7 +98,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	   $post = Factory::getApplication()->input->post->getArray(array());
 	   $model = $this->getModel();
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
     } 
   
 	
@@ -115,24 +112,8 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	$post = Factory::getApplication()->input->post->getArray(array());
 	$model = $this->getModel();	
 	$model->assignplayerscountry(1,$post['project_team_id'],$post['team_id'],$post['pid'],$post['season_id']);	
-	$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
+	$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));	
 	}
-	
-//  /**
-//   * sportsmanagementControllerteampersons::remove()
-//   * 
-//   * @return void
-//   */
-//  function remove()
-//	{
-//	$app = Factory::getApplication();
-//    $pks = Factory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-//    $model = $this->getModel('teampersons');
-//    $model->remove($pks);
-//	
-//    $this->setRedirect('index.php?option=com_sportsmanagement&view=teampersons');    
-//        
-//   }
    
   /**
 	 * Proxy for getModel.

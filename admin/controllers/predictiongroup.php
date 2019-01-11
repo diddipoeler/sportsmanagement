@@ -36,9 +36,5 @@ class sportsmanagementControllerpredictiongroup extends JSMControllerForm
 		parent::__construct($config);
     }    
 
-
-
-
-
 }
 ?>

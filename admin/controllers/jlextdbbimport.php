@@ -145,16 +145,9 @@ class sportsmanagementControllerjlextdbbimport extends BaseController
 				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
 			}
 		}
-		
-		
-		
+
 		$this->setRedirect ( $link, $msg );
 	}
-
-
-
-
-
     
 }  
 
