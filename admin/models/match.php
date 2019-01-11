@@ -3441,6 +3441,8 @@ $playernumber = $post['player'];
 $playerfirstname = $post['playerfirstname'];
 $playerlastname = $post['playerlastname'];
 $playerpersonid = $post['playerpersonid'];
+$staffLastnameList = $post['stafflastname'];
+$staffFirstnameList = $post['stafffirstname'];
 
 $season_id = $post['season_id'];
 $fav_team = $post['fav_team'];
@@ -3754,7 +3756,144 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '. Text::_($e->getCode()),'Error'
 }
 
 
+// Jetzt werden die Staffs eingearbeitet
+    foreach ($staffLastnameList as $staffKey => $staffLastname) {
 
+        // Zu Beginn holen wir uns das Staff-Objekt (Vor- und Nachname muss gleich sein)
+        $staffFirstname = $staffFirstnameList[$staffKey];
+        $staffObject = null;
+        foreach ($this->csv_staff as $csvStaffKey => $csvStaffValue) {
+            if ($csvStaffValue->lastname == $staffLastname && $csvStaffValue->firstname == $staffFirstname) {
+                $staffObject = $csvStaffValue;
+            }
+        }
+
+        // Hat der Benutzer eine Position ausgewählt? Falls nicht, können wir den Datensatz nicht verarbeiten
+        $staffPositionId = $project_staff_position_id[$staffKey];
+        if ($staffObject && $staffPositionId) {
+
+            // Dann schauen wir, ob der Staff als Person schon angelegt ist und legen diese Person ggf. an
+            if ($staffObject->person_id == 0) {
+                $temp = new stdClass();
+                $temp->firstname = $staffObject->firstname;
+                $temp->lastname = $staffObject->lastname;
+                $temp->alias = JFilterOutput::stringURLSafe($temp->firstname . ' ' . $temp->lastname);
+                $temp->position_id = $staffPositionId;
+                $temp->notes = ' ';
+                $temp->email = ' ';
+                $temp->website = ' ';
+                $temp->published = 1;
+
+                $temp->injury_date = -1;
+                $temp->injury_end = -1;
+                $temp->injury_detail = ' ';
+
+                $temp->suspension_date = -1;
+                $temp->suspension_end = -1;
+                $temp->suspension_detail = ' ';
+
+                $temp->away_date = -1;
+                $temp->away_end = -1;
+                $temp->away_detail = ' ';
+
+                try {
+                    $result = $db->insertObject('#__sportsmanagement_person', $temp);
+                    $staffObject->person_id = $db->insertid();
+                } catch (Exception $e) {
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+                }
+            }
+
+            // zuordnung season personid
+            $insertquery = $db->getQuery(true);
+            $columns = array('person_id', 'season_id', 'persontype', 'position_id', 'modified', 'modified_by');
+            $values = array($staffObject->person_id, $season_id, 1, $staffPositionId, $db->Quote($date->toSql()), $user->id);
+            $insertquery
+                ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+            try {
+                $db->setQuery($insertquery);
+                $db->execute();
+            } catch (Exception $e) {
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+            }
+
+            // Suche nach season team person id
+            $query->clear();
+            $query->select('*');
+            $query->from('#__sportsmanagement_season_team_person_id');
+            $query->where('person_id = ' . $staffObject->person_id);
+            $query->where('season_id = ' . $season_id);
+            $query->where('team_id = ' . $fav_team);
+            $db->setQuery($query);
+            $result = $db->loadObject();
+
+            if (!$result) {
+                // Zuordnung season team person id
+                $insertquery = $db->getQuery(true);
+                $columns = array('person_id', 'season_id', 'team_id', 'persontype', 'published', 'project_position_id', 'modified', 'modified_by');
+                $values = array($staffObject->person_id, $season_id, $fav_team, 2, 1, $staffPositionId, $db->Quote($date->toSql()), $user->id);
+                $insertquery
+                    ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
+                    ->columns($db->quoteName($columns))
+                    ->values(implode(',', $values));
+                try {
+                    $db->setQuery($insertquery);
+                    $db->execute();
+                    $team_staff_id = $db->insertid();
+                } catch (Exception $e) {
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+                }
+            } else {
+                $team_staff_id = $result->id;
+            }
+
+            // zuordnung person project position
+            $insertquery = $db->getQuery(true);
+            $columns = array('person_id', 'project_id', 'persontype', 'project_position_id', 'modified', 'modified_by');
+            $values = array($staffObject->person_id, $project_id, 2, $staffPositionId, $db->Quote($date->toSql()), $user->id);
+            $insertquery
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+            try {
+                $db->setQuery($insertquery);
+                $db->execute();
+            } catch (Exception $e) {
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+            }
+
+            // Zuordnung zum Spiel
+            $query->clear();
+            $query->select('*');
+            $query->from('#__sportsmanagement_match_staff');
+            $query->where('match_id = ' . $match_id);
+            $query->where('team_staff_id = ' . $team_staff_id);
+            $query->where('project_position_id = ' . $staffPositionId);
+            $db->setQuery($query);
+            $result = $db->loadResult();
+
+            if (!$result && $team_staff_id) {
+                $temp = new stdClass();
+                $temp->match_id = $match_id;
+                $temp->team_staff_id = $team_staff_id;
+                $temp->project_position_id = $staffPositionId;
+                $temp->modified = $date->toSql();
+                $temp->modified_by = $user->id;
+                try {
+                    $result = $db->insertObject('#__sportsmanagement_match_staff', $temp);
+                } catch (Exception $e) {
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+                }
+            }
+        }
+    }
 
 
 
