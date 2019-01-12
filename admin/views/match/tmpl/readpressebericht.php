@@ -22,6 +22,68 @@ if ( $this->matchnumber )
 $lfdnummer = 0;
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+    <table id="csvplayers" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
+        <tr>
+            <th class="">Schiedsrichter Position</th>
+            <th class="">Vorname</th>
+            <th class="">Nachname</th>
+            <th class="">In der Datenbank ?</th>
+            <th class="">Projekt zugeordnet ?</th>
+            <th class="">Projektposition</th>
+        </tr>
+
+        <?php foreach ($this->csvreferees as $value): ?>
+            <tr>
+                <td>
+                    <?php echo $value->csv_position; ?>
+                    <input type='hidden' name='referee[<?php echo $lfdnummer; ?>]' value='<?php echo $value->csv_position; ?>'/>
+                    <input type='hidden' name='refereepersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->person_id; ?>'/>
+                    <input type='hidden' name='refereeprojectpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_person_id; ?>'/>
+                    <input type='hidden' name='refereeprojectpositionid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_position_id; ?>'/>
+                </td>
+                <td>
+                    <?php echo $value->firstname; ?>
+                    <input type='hidden' name='refereefirstname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->firstname; ?>'/>
+                </td>
+                <td>
+                    <?php echo $value->lastname; ?>
+                    <input type='hidden' name='refereelastname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->lastname; ?>'/>
+                </td>
+                <?PHP
+                if ($value->person_id) {
+                    echo '<td>' . HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', 'title= "' . '' . '"') . '</td>';
+                } else {
+                    echo '<td>' . HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', '', 'title= "' . '' . '"') . '</td>';
+                }
+
+                if ($value->project_person_id) {
+                    echo '<td>' . HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', 'title= "' . '' . '"') . '</td>';
+                } else {
+                    echo '<td>' . HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', '', 'title= "' . '' . '"') . '</td>';
+                }
+                ?>
+                <td>
+                    <?php
+                    $inputappend = '';
+                    $append = '';
+                    if ($value->project_position_id != 0) {
+                        $selectedvalue = $value->project_position_id;
+                        $append = '';
+                    } else {
+                        $selectedvalue = 0;
+                    }
+                    echo HTMLHelper::_('select.genericlist', $this->lists['referee_position_id'], 'referee_position_id[' . $lfdnummer . ']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue);
+                    ?>
+                </td>
+            </tr>
+            <?php
+            $lfdnummer++;
+        endforeach;
+        ?>
+
+    </table>
+
 <table id="csvplayers" class="" width="" border="" cellspacing="" cellpadding="" bgcolor="">
 <tr>	
 <th class="">Spielnummer</th>	

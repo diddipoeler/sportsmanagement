@@ -275,12 +275,26 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $lists = Array();
 		if ( $matchnumber )
 			{
-				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
+				$readplayers = $model->getPresseberichtReadPlayers($csv_file);
+                $this->csvreferees = $model->csv_referee;
 				$this->csvplayers = $model->csv_player;   
 				$this->csvinout	= $model->csv_in_out;
 				$this->csvcards	= $model->csv_cards;
 				$this->csvstaff	= $model->csv_staff;
 			}
+
+        // build the html options for referee positions
+        $position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+        if ($res = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
+            foreach ($res as $pos) {
+                $pos->text = Text::_($pos->text);
+                $pos->value = $pos->posid;
+            }
+
+            $position_id = array_merge($position_id, $res);
+        }
+        $lists['referee_position_id'] = $position_id;
+        unset($position_id);
 
 //build the html options for position
 		$position_id[] = HTMLHelper::_( 'select.option', '0', Text::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
