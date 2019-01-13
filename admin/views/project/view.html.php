@@ -13,6 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\Toolbar;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -159,7 +160,7 @@ class sportsmanagementViewProject extends sportsmanagementView
     $isNew = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
    
-        $bar = JToolBar::getInstance('toolbar');
+        $bar = Toolbar::getInstance('toolbar');
         switch ( ComponentHelper::getParams($this->option)->get('which_article_component') )
     {
         case 'com_content':

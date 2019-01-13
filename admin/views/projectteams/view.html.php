@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
 
 /**
  * sportsmanagementViewprojectteams
@@ -282,7 +283,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 
 $layout = new JLayoutFile('changeteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
-JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    		
+Toolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    		
 $modal_params = array(); 
 $modal_params['url'] = 'index.php?option=com_sportsmanagement&view=projectteams&layout=changeteams&tmpl=component&pid='.$this->project_id ;
 $modal_params['height'] = $this->modalheight;
@@ -291,7 +292,7 @@ echo HTMLHelper::_('bootstrap.renderModal', 'collapseModalchangeTeams', $modal_p
 
 $layout = new JLayoutFile('assignteams', JPATH_ROOT.'/components/com_sportsmanagement/layouts');
 $html = $layout->render();        
-JToolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    
+Toolbar::getInstance('toolbar')->appendButton('Custom', $html , 'batch');    
 $modal_params = array(); 
 $modal_params['url'] = 'index.php?option=com_sportsmanagement&view=projectteams&layout=editlist&tmpl=component&pid='.$this->project_id ;
 $modal_params['height'] = $this->modalheight;

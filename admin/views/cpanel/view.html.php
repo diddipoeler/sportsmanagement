@@ -221,7 +221,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
                 sportsmanagementHelper::ToolbarButton('default', 'upload', Text::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'), 'githubinstall', 1);
             }
 
-            $bar = JToolbar::getInstance('toolbar');
+            $bar = Toolbar::getInstance('toolbar');
             $bar->appendButton('Link', 'upload', Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall');
 
             
