@@ -13,6 +13,9 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
+require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
 
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
@@ -47,6 +50,31 @@ function init( $tpl = null )
 		$model = $this->getModel();
         $starttime = microtime(); 
         
+        
+$client = new Google_Client();
+$client->setAccessType('online'); // default: offline
+$client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
+$client->setClientSecret(ComponentHelper::getParams($option)->get('google_api_clientsecret',''));
+$client->addScope("https://www.googleapis.com/auth/calendar");
+$client->setApprovalPrompt("force");
+//$client->setApplicationName('Webclient6');
+$client->setDeveloperKey(ComponentHelper::getParams($option)->get('google_api_developerkey',''));
+$client->setRedirectUri($_SERVER['HTTP_REFERER']);
+
+try {
+$service = new Google_Service_Calendar($client);
+$calendarList = $service->calendarList->listCalendarList();
+} catch(Exception $e){
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($e->getMessage() ,true).'</pre>'),'');			
+$auth_url = $client->createAuthUrl();
+header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+		}
+	
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($_GET['code'] ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' scriptUri <br><pre>'.print_r($scriptUri ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' googleclient <br><pre>'.print_r($client ,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' service <br><pre>'.print_r($service ,true).'</pre>'),'');
+
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -58,8 +86,8 @@ function init( $tpl = null )
         // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
         if ($this->gcalendar->id < 1) 
         {
-            $this->form->setValue('username', null, JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
-            $this->form->setValue('password', null, JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
+            $this->form->setValue('username', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
+            $this->form->setValue('password', null, ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
         }
             
         //$this->addToolbar();
@@ -89,8 +117,8 @@ function init( $tpl = null )
             {
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
                 
-                $this->gcalendar->username = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
-                $this->gcalendar->password = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
+                $this->gcalendar->username = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+                $this->gcalendar->password = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
             
 				ToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
 				ToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');
@@ -127,9 +155,5 @@ function init( $tpl = null )
 
 		parent::addToolbar();
 	}
-//
-//	protected function init() {
-//		$this->form = $this->get('Form');
-//		$this->gcalendar = $this->get('Item');
-//	}
+
 }
