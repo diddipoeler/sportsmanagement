@@ -2898,7 +2898,7 @@ if (!$calendar->isAuth())
                         if ($person_id) {
                             $this->csv_referee[$csv_file->data[0][$schiedsrichter]]->person_id = $person_id;
 
-                            $season_person_id = $this->getSeasonPersonAssignment($person_id, 0, 3)->id;
+                            $season_person_id = $this->getSeasonPersonAssignment($person_id, $season_id, 3)->id;
                             if ($season_person_id) {
                                 $this->csv_referee[$csv_file->data[0][$schiedsrichter]]->season_person_id = $season_person_id;
 
@@ -2912,9 +2912,6 @@ if (!$calendar->isAuth())
                     }
                 }
             }
-
-            var_dump($this->csv_referee);
-            die();
 
             // spieler aufbereiten startelf
             for ($a = 1; $a <= $csv_player_count; $a++) {
