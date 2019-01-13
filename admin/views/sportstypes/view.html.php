@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewSportsTypes
@@ -59,10 +60,10 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		        
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
-		JToolbarHelper::addNew('sportstype.add');
-		JToolbarHelper::editList('sportstype.edit');
-		JToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('sportstype.add');
+		ToolbarHelper::editList('sportstype.edit');
+		ToolbarHelper::custom('sportstype.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('sportstype.export', Text::_('JTOOLBAR_EXPORT'));
         				
         parent::addToolbar();
 	}

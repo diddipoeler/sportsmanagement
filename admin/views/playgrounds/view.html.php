@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPlaygrounds
@@ -68,10 +69,10 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 		
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
-		JToolbarHelper::editList('playground.edit');
-		JToolbarHelper::addNew('playground.add');
-		JToolbarHelper::custom('playground.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('playground.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::editList('playground.edit');
+		ToolbarHelper::addNew('playground.add');
+		ToolbarHelper::custom('playground.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('playground.export', Text::_('JTOOLBAR_EXPORT'));
 		
 
         parent::addToolbar();

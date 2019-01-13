@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreetonodes
@@ -134,16 +135,16 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
        switch ($this->treetows->leafed)
        {
        case 1:
-       JToolbarHelper::apply('treetonode.saveshort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
-	   JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
+       ToolbarHelper::apply('treetonode.saveshort', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_APPLY' ), false);
+	   ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE_ALL' ), false );
        break;
        case 2:
-       JToolbarHelper::apply('treetonode.saveshortleaf',Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
-       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       ToolbarHelper::apply('treetonode.saveshortleaf',Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_TEST_SHOW' ), false);
+       ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break; 
        case 3:
-       JToolbarHelper::apply('treetonode.savefinishleaf', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
-       JToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
+       ToolbarHelper::apply('treetonode.savefinishleaf', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF' ), false);
+       ToolbarHelper::custom('treetonode.removenode', 'delete.png', 'delete_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_DELETE' ), false );
        break;  
         
        }

@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -117,7 +118,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
         $this->icon = 'xmlimport';
-        JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 
         $this->setLayout('update');
         //parent::addToolbar();
@@ -234,8 +235,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3');
         $this->icon = 'xmlimport';
 
-        JToolbarHelper::custom('jlxmlimport.insert', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
-        JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
+        ToolbarHelper::custom('jlxmlimport.insert', 'upload', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false); // --> bij clicken op import wordt de insert view geactiveerd
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');
 
         //parent::addToolbar();
 
@@ -281,8 +282,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 //		$this->postData	= $post;
         $this->option = $option;
 
-        JToolbarHelper::divider();
-        JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
+        ToolbarHelper::divider();
+        ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=projects');
 
         $this->setLayout('info');
 

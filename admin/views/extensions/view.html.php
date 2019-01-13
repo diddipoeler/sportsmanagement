@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
  
 /**
  *  View
@@ -43,11 +44,10 @@ class sportsmanagementViewextensions extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
 		$canDo = sportsmanagementHelper::getActions();
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'extensions');
 		if ($canDo->get('core.admin')) 
 		{
-			JToolbarHelper::divider();           
-			//JToolbarHelper::preferences($option);
+			ToolbarHelper::divider();           
 		}
         parent::addToolbar();
 	}

@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.filesystem.file');
 
 
@@ -67,13 +67,13 @@ class sportsmanagementViewStatistics extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
 		
-		JToolbarHelper::publishList();
-		JToolbarHelper::unpublishList();
-		JToolbarHelper::divider();
-		JToolbarHelper::editList('statistic.edit');
-		JToolbarHelper::addNew('statistic.add');
-		JToolbarHelper::custom('statistic.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('statistic.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::publishList();
+		ToolbarHelper::unpublishList();
+		ToolbarHelper::divider();
+		ToolbarHelper::editList('statistic.edit');
+		ToolbarHelper::addNew('statistic.add');
+		ToolbarHelper::custom('statistic.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('statistic.export',Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

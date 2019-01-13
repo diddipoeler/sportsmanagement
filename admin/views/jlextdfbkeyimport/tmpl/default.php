@@ -12,11 +12,12 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 HTMLHelper::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-JToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
+ToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
 
 
 echo 'projekt ->'.$this->project_id.'<br>';

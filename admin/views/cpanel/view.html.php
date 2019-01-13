@@ -208,7 +208,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView {
         }
 
         $canDo = sportsmanagementHelper::getActions();
-        JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
 
         if ($canDo->get('core.admin')) {
             if ($this->jquery) {

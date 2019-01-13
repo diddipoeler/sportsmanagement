@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewsmquotes
@@ -47,17 +48,17 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	{
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
-		JToolbarHelper::addNew('smquote.add');
-		JToolbarHelper::editList('smquote.edit');
-		JToolbarHelper::custom('smquote.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::addNew('smquote.add');
+		ToolbarHelper::editList('smquote.edit');
+		ToolbarHelper::custom('smquote.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
         
-        JToolbarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', Text::_('JTOOLBAR_EDIT'), false);
+        ToolbarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', Text::_('JTOOLBAR_EDIT'), false);
         
 		$bar = JToolBar::getInstance('toolbar');
         //$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');
 		$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&extension=com_sportsmanagement');
         
-		JToolbarHelper::archiveList('smquote.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::archiveList('smquote.export', Text::_('JTOOLBAR_EXPORT'));
 		
         
 		parent::addToolbar();

@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPredictionMembers
@@ -148,17 +149,17 @@ $this->prediction_id = $this->app->getUserState( $this->option . '.prediction_id
 
 		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' );
         
-		JToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
-		JToolbarHelper::divider();
+		ToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
+		ToolbarHelper::divider();
         
 		if ( $this->prediction_id )
 			{
 				sportsmanagementHelper::ToolbarButton('editlist', 'new', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN') );
-				JToolbarHelper::publishList('predictionmembers.publish', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
-				JToolbarHelper::unpublishList('predictionmembers.unpublish', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
-				JToolbarHelper::deleteList( '','predictionmembers.remove' );  
+				ToolbarHelper::publishList('predictionmembers.publish', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+				ToolbarHelper::unpublishList('predictionmembers.unpublish', Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
+				ToolbarHelper::deleteList( '','predictionmembers.remove' );  
 			}
-				JToolbarHelper::checkin('predictionmembers.checkin');
+				ToolbarHelper::checkin('predictionmembers.checkin');
 
         
 		parent::addToolbar();

@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.filesystem.file');
 
 /**
@@ -91,15 +91,15 @@ $this->assign = false;
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
         $this->icon = 'teams';
-        JToolbarHelper::apply('teams.saveshort');
-        JToolbarHelper::addNew('team.add');
-        JToolbarHelper::editList('team.edit');
-        JToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), true);
-        JToolbarHelper::custom('team.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        JToolbarHelper::archiveList('team.export', Text::_('JTOOLBAR_EXPORT'));
+        ToolbarHelper::apply('teams.saveshort');
+        ToolbarHelper::addNew('team.add');
+        ToolbarHelper::editList('team.edit');
+        ToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', Text::_('JTOOLBAR_DUPLICATE'), true);
+        ToolbarHelper::custom('team.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+        ToolbarHelper::archiveList('team.export', Text::_('JTOOLBAR_EXPORT'));
 
         if ($this->jinput->get->get('club_id')) {
-            JToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=clubs');
+            ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=clubs');
         }
 
         parent::addToolbar();

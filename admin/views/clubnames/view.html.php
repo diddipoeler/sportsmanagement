@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewClubnames
@@ -60,13 +61,13 @@ class sportsmanagementViewClubnames extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title =  Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE' );
         
-        JToolbarHelper::publish('clubnames.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolbarHelper::checkin('clubnames.checkin');
-        JToolbarHelper::custom('clubnames.import', 'upload', 'upload', Text::_('JTOOLBAR_INSTALL'), false);
-		JToolbarHelper::divider();
-		JToolbarHelper::addNew('clubname.add');
-		JToolbarHelper::editList('clubname.edit');
+        ToolbarHelper::publish('clubnames.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::checkin('clubnames.checkin');
+        ToolbarHelper::custom('clubnames.import', 'upload', 'upload', Text::_('JTOOLBAR_INSTALL'), false);
+		ToolbarHelper::divider();
+		ToolbarHelper::addNew('clubname.add');
+		ToolbarHelper::editList('clubname.edit');
 
         parent::addToolbar();
 	}

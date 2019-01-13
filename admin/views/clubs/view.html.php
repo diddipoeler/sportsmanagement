@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -94,13 +95,13 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	{
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
-        JToolbarHelper::apply('clubs.saveshort');
+        ToolbarHelper::apply('clubs.saveshort');
         
-        JToolbarHelper::divider();
-		JToolbarHelper::addNew('club.add');
-		JToolbarHelper::editList('club.edit');
-		JToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('club.export',Text::_('JTOOLBAR_EXPORT'));
+        ToolbarHelper::divider();
+		ToolbarHelper::addNew('club.add');
+		ToolbarHelper::editList('club.edit');
+		ToolbarHelper::custom('club.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('club.export',Text::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
 		
 	}

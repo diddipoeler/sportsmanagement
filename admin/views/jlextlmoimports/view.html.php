@@ -13,6 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 /**
  * sportsmanagementViewjlextlmoimports
  * 
@@ -56,7 +58,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
      */
     protected function addToolbar() 
     {
-        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         parent::addToolbar();
 	}
     

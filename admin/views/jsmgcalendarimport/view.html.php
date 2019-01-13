@@ -22,8 +22,9 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-jimport('joomla.application.component.view');
+
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
 /**
@@ -76,21 +77,15 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 		if (strpos($this->getLayout(), 'login') === false) {
 			$canDo = jsmGCalendarUtil::getActions();
 			if ($canDo->get('core.create')){
-				JToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
+				ToolbarHelper::custom('jsmgcalendarimport.save', 'new.png', 'new.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_IMPORT_BUTTON_ADD', false);
 			}
-			JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+			ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
 		}
         else
         {
-            JToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
+            ToolbarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
         }
         
-//        JToolbarHelper::divider();
-//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences($option);
-
-//		Factory::getApplication()->input->setVar('hidemainmenu', 0);
-
 		parent::addToolbar();
 	}
 

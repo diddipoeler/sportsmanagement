@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
  
 /**
  * SportsManagement View
@@ -69,38 +70,38 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
+		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
-				JToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CANCEL');
+			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record
-				JToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) 
 				{
-					JToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ($canDo->get('core.create')) 
 			{
-				JToolbarHelper::custom('sportsmanagement.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				ToolbarHelper::custom('sportsmanagement.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 	/**

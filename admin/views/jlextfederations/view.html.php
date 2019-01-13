@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextfederations
@@ -71,10 +72,10 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_TITLE');
         $this->icon = 'federations';
 
-		JToolbarHelper::addNew('jlextfederation.add');
-		JToolbarHelper::editList('jlextfederation.edit');
-		JToolbarHelper::custom('jlextfederation.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('jlextfederation.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('jlextfederation.add');
+		ToolbarHelper::editList('jlextfederation.edit');
+		ToolbarHelper::custom('jlextfederation.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('jlextfederation.export',Text::_('JTOOLBAR_EXPORT'));
         
         parent::addToolbar();
 	}

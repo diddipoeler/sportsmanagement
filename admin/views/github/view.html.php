@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewgithub
@@ -140,7 +141,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	   // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TITLE');
     sportsmanagementHelper::ToolbarButton('addissue','new',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github');
-    JToolbarHelper::back();   
+    ToolbarHelper::back();   
     }   
 
 }

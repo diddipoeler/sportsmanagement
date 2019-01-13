@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPredictionTemplates
@@ -99,8 +100,8 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
 		$this->icon = 'templates';
 
-		JToolbarHelper::deleteList('', 'predictiontemplates.delete');
-		JToolbarHelper::checkin('predictiontemplates.checkin');
+		ToolbarHelper::deleteList('', 'predictiontemplates.delete');
+		ToolbarHelper::checkin('predictiontemplates.checkin');
 		parent::addToolbar();
        
 	}   

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewsmimageimports
@@ -79,10 +80,10 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
 		$this->icon = 'images-import';
-		JToolbarHelper::custom('smimageimports.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::divider();
+		ToolbarHelper::custom('smimageimports.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolbarHelper::preferences($jinput->getCmd('option'));
+		ToolbarHelper::preferences($jinput->getCmd('option'));
         
     }    
     

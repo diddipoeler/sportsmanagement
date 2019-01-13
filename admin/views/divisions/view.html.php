@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewDivisions
@@ -55,13 +56,13 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
         
-        JToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolbarHelper::checkin('divisions.checkin');
-        JToolbarHelper::apply('divisions.saveshort');
-		JToolbarHelper::divider();
-		JToolbarHelper::addNew('division.add');
-		JToolbarHelper::editList('division.edit');
+        ToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        ToolbarHelper::checkin('divisions.checkin');
+        ToolbarHelper::apply('divisions.saveshort');
+		ToolbarHelper::divider();
+		ToolbarHelper::addNew('division.add');
+		ToolbarHelper::editList('division.edit');
 
         parent::addToolbar();
 	}

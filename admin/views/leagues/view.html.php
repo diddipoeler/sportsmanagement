@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewLeagues
@@ -126,11 +127,11 @@ $mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsman
 	{
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
-        JToolbarHelper::apply('leagues.saveshort');
-		JToolbarHelper::addNew('league.add');
-		JToolbarHelper::editList('league.edit');
-		JToolbarHelper::custom('league.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('league.export', Text::_('JTOOLBAR_EXPORT'));
+        ToolbarHelper::apply('leagues.saveshort');
+		ToolbarHelper::addNew('league.add');
+		ToolbarHelper::editList('league.edit');
+		ToolbarHelper::custom('league.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('league.export', Text::_('JTOOLBAR_EXPORT'));
                 
         parent::addToolbar();
 	}

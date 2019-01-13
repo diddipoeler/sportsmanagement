@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewagegroups
@@ -104,11 +105,11 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	{
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
-		JToolbarHelper::addNew('agegroup.add');
-		JToolbarHelper::editList('agegroup.edit');
-        JToolbarHelper::apply('agegroups.saveshort');
-		JToolbarHelper::custom('agegroups.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('agegroup.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('agegroup.add');
+		ToolbarHelper::editList('agegroup.edit');
+        ToolbarHelper::apply('agegroups.saveshort');
+		ToolbarHelper::custom('agegroups.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('agegroup.export',Text::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
 	}
 }

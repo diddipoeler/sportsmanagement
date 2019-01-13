@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -196,8 +197,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
      */
     protected function addToolbar_Editlist() {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
-        JToolbarHelper::save('projectposition.save_positionslist');
-        JToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
+        ToolbarHelper::save('projectposition.save_positionslist');
+        ToolbarHelper::cancel('projectposition.cancel', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
         parent::addToolbar();
     }
 

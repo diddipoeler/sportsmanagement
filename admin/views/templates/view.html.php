@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTemplates
@@ -100,16 +101,16 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
     protected function addToolbar() {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_TITLE');
 
-            JToolbarHelper::editList('template.edit');
+            ToolbarHelper::editList('template.edit');
 
             if ($this->projectws->master_template) {
 
-                JToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
+                ToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
             } else {
-                JToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+                ToolbarHelper::custom('template.reset', 'restore', 'restore', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
             }
 
-        JToolbarHelper::checkin('templates.checkin');
+        ToolbarHelper::checkin('templates.checkin');
         parent::addToolbar();
     }
 

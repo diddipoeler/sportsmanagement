@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextcountries
@@ -68,11 +69,11 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 	protected function addToolbar()
 	{
         // Set toolbar items for the page
-		JToolbarHelper::addNew('jlextcountry.add');
-		JToolbarHelper::editList('jlextcountry.edit');
-		JToolbarHelper::custom('jlextcountry.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-        JToolbarHelper::custom('jlextcountries.importplz','upload','upload',Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),true);
-		JToolbarHelper::archiveList('jlextcountry.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('jlextcountry.add');
+		ToolbarHelper::editList('jlextcountry.edit');
+		ToolbarHelper::custom('jlextcountry.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+        ToolbarHelper::custom('jlextcountries.importplz','upload','upload',Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),true);
+		ToolbarHelper::archiveList('jlextcountry.export',Text::_('JTOOLBAR_EXPORT'));
 
         parent::addToolbar();
 	}

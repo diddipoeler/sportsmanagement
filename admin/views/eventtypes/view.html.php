@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.filesystem.file');
 
@@ -72,14 +73,14 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
 
-		JToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
+		ToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
 		
-		JToolbarHelper::addNew('eventtype.add');
-		JToolbarHelper::editList('eventtype.edit');
-		JToolbarHelper::custom('eventtype.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('eventtype.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('eventtype.add');
+		ToolbarHelper::editList('eventtype.edit');
+		ToolbarHelper::custom('eventtype.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('eventtype.export',Text::_('JTOOLBAR_EXPORT'));
 				
         parent::addToolbar();
 	}

@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextassociations
@@ -78,10 +79,10 @@ $mdlassociation = BaseDatabaseModel::getInstance('jlextassociations', 'sportsman
 	// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
-		JToolbarHelper::addNew('jlextassociation.add');
-		JToolbarHelper::editList('jlextassociation.edit');
-		JToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('jlextassociation.add');
+		ToolbarHelper::editList('jlextassociation.edit');
+		ToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('jlextassociation.export', Text::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

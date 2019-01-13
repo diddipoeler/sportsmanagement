@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewsportsmanagements
@@ -66,23 +67,23 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		$canDo = sportsmanagementHelper::getActions();
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
 		if ($canDo->get('core.create')) 
 		{
-			JToolbarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
+			ToolbarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolbarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
+			ToolbarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.delete')) 
 		{
-			JToolbarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
+			ToolbarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
 		}
 		if ($canDo->get('core.admin')) 
 		{
-			JToolbarHelper::divider();
-			JToolbarHelper::preferences('com_sportsmanagement');
+			ToolbarHelper::divider();
+			ToolbarHelper::preferences('com_sportsmanagement');
 		}
 	}
 	/**

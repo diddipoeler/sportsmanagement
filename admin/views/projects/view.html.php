@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewProjects
@@ -241,17 +242,17 @@ unset($myoptions);
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
         $this->icon = 'projects';
 
-		JToolbarHelper::publishList('projects.publish');
-		JToolbarHelper::unpublishList('projects.unpublish');
-		JToolbarHelper::divider();
+		ToolbarHelper::publishList('projects.publish');
+		ToolbarHelper::unpublishList('projects.unpublish');
+		ToolbarHelper::divider();
 		
-        JToolbarHelper::apply('projects.saveshort');
+        ToolbarHelper::apply('projects.saveshort');
         
-		JToolbarHelper::addNew('project.add');
-		JToolbarHelper::editList('project.edit');
-		JToolbarHelper::custom('project.import','upload','upload',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolbarHelper::archiveList('project.export',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolbarHelper::custom('project.copy','copy.png','copy_f2.png',Text::_('JTOOLBAR_DUPLICATE'),false);
+		ToolbarHelper::addNew('project.add');
+		ToolbarHelper::editList('project.edit');
+		ToolbarHelper::custom('project.import','upload','upload',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
+		ToolbarHelper::archiveList('project.export',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		ToolbarHelper::custom('project.copy','copy.png','copy_f2.png',Text::_('JTOOLBAR_DUPLICATE'),false);
 
         parent::addToolbar();
 	}

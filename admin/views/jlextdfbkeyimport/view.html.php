@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextdfbkeyimport
@@ -99,8 +100,8 @@ $divisionsList[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEME
 		
 		$lists['divisions'] = $projectdivisions;
         $this->lists = $lists;
-JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');  
-JToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
+ToolbarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');  
+ToolbarHelper::save('jlextdfbkeyimport.getdivisionfirst', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_USE_DIVISION');
 
  }
  
@@ -210,10 +211,10 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
-        JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
-        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects'); 
-        JToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
-        JToolbarHelper::divider();
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1'), 'dfbkey');
+        ToolbarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects'); 
+        ToolbarHelper::save('jlextdfbkeyimport.save', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_ROUNDS');
+        ToolbarHelper::divider();
     }
 
     /**
@@ -249,10 +250,10 @@ $this->app->redirect('index.php?option=' . $this->option . '&view=jlextdfbkeyimp
         $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
-        JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
-        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
-        JToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
-        JToolbarHelper::divider();
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1'), 'dfbkey');
+        ToolbarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
+        ToolbarHelper::apply('jlextdfbkeyimport.apply', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_FIRST_DAY');
+        ToolbarHelper::divider();
     }
 
     /**
@@ -275,10 +276,10 @@ $post = $this->app->getUserState( "$this->option.first_post", '' );
         $this->document->addCustomTag($stylelink);
 
         // Set toolbar items for the page
-        JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');
-        JToolBarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
-        JToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
-        JToolbarHelper::divider();
+        ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1'), 'dfbkey');
+        ToolbarHelper::back('JPREV','index.php?option='.$this->option.'&view=projects');
+        ToolbarHelper::save('jlextdfbkeyimport.insert', 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INSERT_MATCHDAYS');
+        ToolbarHelper::divider();
 
     }
 

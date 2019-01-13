@@ -3,27 +3,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 HTMLHelper::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-JToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
+ToolbarHelper::title( Text::_( Text::_( 'DFB-Keys Mass-Add' ) ) );
 
 $edit        = Factory::getApplication()->input->getVar('edit',true);
 $text = !$edit ? Text::_( 'New' ) : Text::_( 'Edit' );
 
-JToolbarHelper::save();
+ToolbarHelper::save();
 
 if (!$edit)
 {
-    JToolbarHelper::cancel();
+    ToolbarHelper::cancel();
 }
 else
 {
     // for existing items the button is renamed `close` and the apply button is showed
-    JToolbarHelper::apply();
-    JToolbarHelper::cancel( 'cancel', 'Close' );
+    ToolbarHelper::apply();
+    ToolbarHelper::cancel( 'cancel', 'Close' );
 }
-JToolbarHelper::help( 'screen.joomleague', true );
+ToolbarHelper::help( 'screen.joomleague', true );
 
 $uri     =& Factory::getURI();
 

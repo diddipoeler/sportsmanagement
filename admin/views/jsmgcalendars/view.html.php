@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjsmgcalendars
@@ -46,22 +47,13 @@ public function init ()
         $option = $jinput->getCmd('option');
         $canDo = jsmGCalendarUtil::getActions();
 		if ($canDo->get('core.create')) {
-			JToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
-			JToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
+			ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
+			ToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
 		}
 
-//		if ($canDo->get('core.edit')) {
-//			JToolbarHelper::editList('jsmgcalendar.edit', 'JTOOLBAR_EDIT');
-//		}
-//		if ($canDo->get('core.delete')) {
-//			JToolbarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
-//		}
-        
+       
         $this->icon = 'google-calendar-48-icon.png';
         
-//        JToolbarHelper::divider();
-//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences($option);
 
 		parent::addToolbar();
 	}

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 /**
  * sportsmanagementViewjlextprofleagimport
  * 
@@ -60,9 +61,9 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
         $this->document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
-        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
-        JToolbarHelper::divider();
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
+        ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        ToolbarHelper::divider();
         parent::addToolbar();
 
 	}

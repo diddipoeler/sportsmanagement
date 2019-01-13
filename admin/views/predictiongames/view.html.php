@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPredictionGames
@@ -93,13 +94,13 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' );
 		$this->icon = 'pred-cpanel';
-		JToolbarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
-		JToolbarHelper::editList('predictiongame.edit');
-		JToolbarHelper::addNew('predictiongame.add');
-		JToolbarHelper::custom('predictiongame.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('predictiongame.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
+		ToolbarHelper::editList('predictiongame.edit');
+		ToolbarHelper::addNew('predictiongame.add');
+		ToolbarHelper::custom('predictiongame.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('predictiongame.export',Text::_('JTOOLBAR_EXPORT'));
 		parent::addToolbar();  
         
 	}

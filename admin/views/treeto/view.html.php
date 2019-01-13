@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreeto
@@ -100,9 +101,8 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	protected function addToolBar_Gennode()
 	{
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
-		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolbarHelper::help('screen.joomleague', true);
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
+		ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
 	}
 
 	/**
@@ -112,11 +112,10 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	protected function addToolBar()
 	{
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
-		JToolbarHelper::save('treeto.save');
-		JToolbarHelper::apply('treeto.apply');
-		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolbarHelper::help('screen.joomleague', true);
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
+		ToolbarHelper::save('treeto.save');
+		ToolbarHelper::apply('treeto.apply');
+		ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
 	}
 
 	/**

@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewteampersons
@@ -147,14 +148,14 @@ class sportsmanagementViewteampersons extends sportsmanagementView {
             $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE');
         }
 
-        JToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
-        JToolbarHelper::divider();
+        ToolbarHelper::apply('teampersons.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY'));
+        ToolbarHelper::divider();
 
         sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
-	    JToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
-        JToolbarHelper::divider();
+	    ToolbarHelper::apply('teampersons.assignplayerscountry', Text::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN_COUNTRY'));
+        ToolbarHelper::divider();
 
-        JToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option='.$this->option.'&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
+        ToolbarHelper::back('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option='.$this->option.'&view=projectteams&pid='.$this->project_id.'&id='.$this->project_id);
 
         parent::addToolbar();
     }

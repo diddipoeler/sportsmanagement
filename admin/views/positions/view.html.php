@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPositions
@@ -79,15 +80,15 @@ class sportsmanagementViewPositions extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE');
 
-		JToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
+		ToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
 
-		JToolbarHelper::apply('positions.saveshort');
-		JToolbarHelper::editList('position.edit');
-		JToolbarHelper::addNew('position.add');
-		JToolbarHelper::custom('position.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('position.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::apply('positions.saveshort');
+		ToolbarHelper::editList('position.edit');
+		ToolbarHelper::addNew('position.add');
+		ToolbarHelper::custom('position.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('position.export', Text::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewSeasons
@@ -92,11 +93,11 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
-			JToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
+			ToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
+			ToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
 		}
 
         parent::addToolbar();

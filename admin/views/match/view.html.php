@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 jimport('joomla.environment.browser');
 jimport('joomla.filesystem.file');
@@ -940,10 +941,10 @@ $this->csvstaff	= $model->csv_staff;
 	protected function addToolbar_Editeventsbb()
 	{	
 		//set toolbar items for the page
-		JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE' ),'events' );
-		JToolbarHelper::apply( 'match.saveeventbb' );
-		JToolbarHelper::divider();
-		JToolbarHelper::back( 'back', 'index.php?option=com_joomleague&view=matches&task=match.display' );
+		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE' ),'events' );
+		ToolbarHelper::apply( 'match.saveeventbb' );
+		ToolbarHelper::divider();
+		ToolbarHelper::back( 'back', 'index.php?option=com_joomleague&view=matches&task=match.display' );
 		//JLToolBarHelper::onlinehelp();	
 	}
 	
@@ -986,38 +987,38 @@ $this->csvstaff	= $model->csv_staff;
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		JToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : Text::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
+		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : Text::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
 		// Built the actions for new and existing records.
 		if ($isNew) 
 		{
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
-				JToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CANCEL');
+			ToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record
-				JToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::apply('match.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save('match.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) 
 				{
-					JToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					ToolbarHelper::custom('match.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ($canDo->get('core.create')) 
 			{
-				JToolbarHelper::custom('match.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				ToolbarHelper::custom('match.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 

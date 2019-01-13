@@ -14,6 +14,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 /**
  * sportsmanagementViewDatabaseTool
  * 
@@ -157,11 +159,11 @@ $document->addScriptDeclaration( $javascript );
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page
-		JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
-		JToolbarHelper::back();
-		JToolbarHelper::divider();
+		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
+		ToolbarHelper::back();
+		ToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
+        ToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
 	}	
 	
 }

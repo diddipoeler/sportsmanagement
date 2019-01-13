@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewrosterpositions
@@ -47,12 +48,12 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	
 // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
-        JToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
-		JToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
-		JToolbarHelper::editList('rosterposition.edit');
-		JToolbarHelper::trash('rosterpositions.trash');
-		JToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
-		JToolbarHelper::checkin('rosterpositions.checkin');
+        ToolbarHelper::custom('rosterpositions.addhome', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
+		ToolbarHelper::custom('rosterpositions.addaway', 'new', 'new', Text::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
+		ToolbarHelper::editList('rosterposition.edit');
+		ToolbarHelper::trash('rosterpositions.trash');
+		ToolbarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
+		ToolbarHelper::checkin('rosterpositions.checkin');
 		parent::addToolbar();  
        
        

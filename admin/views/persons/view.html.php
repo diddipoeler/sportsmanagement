@@ -17,6 +17,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewPersons
@@ -138,27 +139,27 @@ class sportsmanagementViewPersons extends sportsmanagementView
 //		$this->table	= $table;
 
 		//save icon should be replaced by the apply
-		JToolbarHelper::apply('person.saveassigned',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
+		ToolbarHelper::apply('person.saveassigned',Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
 		
 		// Set toolbar items for the page
 		$type = $jinput->getInt('type');
 		if ($type == 0)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
-                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
+                    ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
+                    ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
 		}
 		elseif ($type == 1)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
-                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
+                    ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
+                    ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
 		}
 		elseif ($type == 2)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
-                    JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
+                    ToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
+                    ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
 		}
         
         //build the html options for nation
@@ -249,15 +250,15 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	{
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
-		JToolbarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolbarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolbarHelper::divider();
+		ToolbarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
+		ToolbarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		ToolbarHelper::divider();
 		
-		JToolbarHelper::apply('persons.saveshort');
-		JToolbarHelper::editList('person.edit');
-		JToolbarHelper::addNew('person.add');
-		JToolbarHelper::custom('person.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-		JToolbarHelper::archiveList('person.export', Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::apply('persons.saveshort');
+		ToolbarHelper::editList('person.edit');
+		ToolbarHelper::addNew('person.add');
+		ToolbarHelper::custom('person.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
+		ToolbarHelper::archiveList('person.export', Text::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

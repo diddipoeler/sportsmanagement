@@ -6,6 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewTreetomatchs extends sportsmanagementView
 {
@@ -193,12 +194,12 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 protected function addToolBarEditlist()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
-	JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
+	ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
 
-JToolbarHelper::save( 'treetomatch.save_matcheslist' );
+ToolbarHelper::save( 'treetomatch.save_matcheslist' );
 
 // for existing items the button is renamed `close` and the apply button is showed
-JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
+ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
      
        
        }
@@ -206,11 +207,11 @@ JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetono
 protected function addToolBarDefault()
 	{
 	   $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
-	JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
+	ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
 
 //JLToolBarHelper::save();
-JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
-JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
+ToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
+ToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
        
        
        }

@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjoomleagueimports
@@ -108,29 +109,24 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
 		$this->icon = 'joomleague-import';
-        
-		if ( $this->cfg_jl_import )
-		{
-		//JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
-		}
-        
+       
         switch ( $this->getLayout() )
         {
         case 'default';
         case 'default_3';
         case 'default_4';
-        JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);    
+        ToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);    
         break;    
         case 'infofield';
         case 'infofield_3';
         case 'infofield_4';
-        JToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);    
+        ToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);    
         break;
         }
 
-        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
+        ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 
-		JToolbarHelper::divider();
+		ToolbarHelper::divider();
 		parent::addToolbar();
 	}
 

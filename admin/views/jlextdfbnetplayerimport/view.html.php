@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewjlextdfbnetplayerimport
@@ -167,11 +168,11 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
-        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
-        JToolbarHelper::divider();
+		ToolbarHelper::title( Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
+        ToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        ToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolbarHelper::preferences($option);
+		ToolbarHelper::preferences($option);
 
 	}
 }

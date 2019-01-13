@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewTreetos
@@ -72,16 +73,16 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		JToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
+		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
 
-		JToolbarHelper::apply('treeto.saveshort');
-		JToolbarHelper::publishList('treetos.publish');
-		JToolbarHelper::unpublishList('treetos.unpublish');
-		JToolbarHelper::divider();
+		ToolbarHelper::apply('treeto.saveshort');
+		ToolbarHelper::publishList('treetos.publish');
+		ToolbarHelper::unpublishList('treetos.unpublish');
+		ToolbarHelper::divider();
 
-		JToolbarHelper::addNew('treetos.save');
-		JToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
-		JToolbarHelper::divider();
+		ToolbarHelper::addNew('treetos.save');
+		ToolbarHelper::deleteList(Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
+		ToolbarHelper::divider();
         
         parent::addToolbar();
 

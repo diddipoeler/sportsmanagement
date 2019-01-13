@@ -12,9 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
-jimport('joomla.application.component.view');
-
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewsmextxmleditor
@@ -60,9 +58,9 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 		$jinput = Factory::getApplication()->input;
 				$jinput->set('hidemainmenu', true);
 				parent::addToolbar();
-	JToolbarHelper::apply('smextxmleditor.apply');
-	JToolbarHelper::save('smextxmleditor.save');
-	JToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+	ToolbarHelper::apply('smextxmleditor.apply');
+	ToolbarHelper::save('smextxmleditor.save');
+	ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 
 //        // Get a refrence of the page instance in joomla
 //		$document	= Factory::getDocument();
@@ -74,17 +72,6 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	$this->title = $this->file_name;
 	$this->icon = 'xml-edit';
 
-//        
-//        JToolbarHelper::apply('smextxmleditor.apply');
-//        JToolbarHelper::save('smextxmleditor.save');
-//        JToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
-//        
-//        
-//        
-//        
-//        JToolbarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(Factory::getApplication()->input->getCmd('option'));
         
     }    
     

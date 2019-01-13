@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewpredictiongroups
@@ -54,12 +55,12 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
 		$this->icon = 'predgroups';
 
-		JToolbarHelper::addNew('predictiongroup.add');
-		JToolbarHelper::editList('predictiongroup.edit');
-		JToolbarHelper::custom('predictiongroup.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('predictiongroup.export',Text::_('JTOOLBAR_EXPORT'));
-		JToolbarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
-		JToolbarHelper::checkin('predictiongroups.checkin');
+		ToolbarHelper::addNew('predictiongroup.add');
+		ToolbarHelper::editList('predictiongroup.edit');
+		ToolbarHelper::custom('predictiongroup.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('predictiongroup.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
+		ToolbarHelper::checkin('predictiongroups.checkin');
 	parent::addToolbar();
 	
 	}

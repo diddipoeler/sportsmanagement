@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
  * sportsmanagementViewextrafields
@@ -47,10 +48,10 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	{
         // Set toolbar items for the page
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
-		JToolbarHelper::addNew('extrafield.add');
-		JToolbarHelper::editList('extrafield.edit');
-		JToolbarHelper::custom('extrafield.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
-		JToolbarHelper::archiveList('extrafield.export',Text::_('JTOOLBAR_EXPORT'));
+		ToolbarHelper::addNew('extrafield.add');
+		ToolbarHelper::editList('extrafield.edit');
+		ToolbarHelper::custom('extrafield.import','upload','upload',Text::_('JTOOLBAR_UPLOAD'),false);
+		ToolbarHelper::archiveList('extrafield.export',Text::_('JTOOLBAR_EXPORT'));
 	
         parent::addToolbar();
 	}
