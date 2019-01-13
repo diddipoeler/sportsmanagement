@@ -107,12 +107,10 @@ Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_l
     if(version_compare(JVERSION,'3.0.0','ge')) 
     {
     $this->uri = Uri::getInstance();
-    $this->toolbarhelper = 'JToolbarHelper';
     }
     else
     {
     $this->uri = Factory::getURI();
-    $this->toolbarhelper = 'JToolbarHelper';    
     }
 /**
  * alles aufrufen was für die views benötigt wird
@@ -535,11 +533,11 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			{
 			if( version_compare(JSM_JVERSION,'3','eq') ) 
 			{
-				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
                 if ( !array_key_exists($this->view, $search_tmpl_array) )
 			{
-				JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
                 }
 			}
 			elseif( version_compare(JSM_JVERSION,'4','eq') ) 
@@ -553,7 +551,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			}
 				
 			}
-			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
+			ToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
@@ -562,8 +560,8 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 				if( version_compare(JSM_JVERSION,'3','eq') ) 
 				{
 				// We can save the new record
-				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				ToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				ToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
 				}
 				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 				{
@@ -575,7 +573,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 				{
 					if( version_compare(JSM_JVERSION,'3','eq') ) 
 					{
-					JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					ToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 					}
 					elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 					{
@@ -587,7 +585,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 			{
 				if( version_compare(JSM_JVERSION,'3','eq') ) 
 				{
-				JToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				ToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 				}
 				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 				{
@@ -596,12 +594,12 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 				
 				
 			}
-			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
+			ToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
 		}
 		
 		if( version_compare(JSM_JVERSION,'4','eq') ) 
 		{
-		JToolbarHelper::saveGroup(
+		ToolbarHelper::saveGroup(
 			$toolbarButtons,
 			'btn-success'
 		);
@@ -628,7 +626,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 		
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
-        //JToolbarHelper::title(Text::_($this->title), $this->icon);
+        //ToolbarHelper::title(Text::_($this->title), $this->icon);
 		$document = Factory::getDocument();
         $document->addScript(Uri::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         if(version_compare(JVERSION,'4.0.0-dev','ge')) 
@@ -659,22 +657,22 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
         {
         if ($isNew) 
 		{
-        JToolbarHelper::title(Text::_($this->title), $this->icon);
+        ToolbarHelper::title(Text::_($this->title), $this->icon);
         }
         else
         {
-        JToolbarHelper::title( sprintf(Text::_($this->title),$this->item->name), $this->icon);    
+        ToolbarHelper::title( sprintf(Text::_($this->title),$this->item->name), $this->icon);    
         }
         }
         else
         {
             if(version_compare(JVERSION,'3.0.0','ge')) 
             {
-            JToolbarHelper::title(Text::_($this->title) );    
+            ToolbarHelper::title(Text::_($this->title) );    
             }
             else
             {
-            JToolbarHelper::title(Text::_($this->title), $this->icon);
+            ToolbarHelper::title(Text::_($this->title), $this->icon);
             }
 
 /**
@@ -702,17 +700,17 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
  */
         if ($canDo->get('core.delete')) 
 		{
-        JToolbarHelper::deleteList('', $this->view.'.delete');
-        JToolbarHelper::trash($this->view.'.trash');
+        ToolbarHelper::deleteList('', $this->view.'.delete');
+        ToolbarHelper::trash($this->view.'.trash');
         }
-        JToolbarHelper::checkin($this->view.'.checkin');  
+        ToolbarHelper::checkin($this->view.'.checkin');  
         break;
         }
         
         }
         
         //sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',Text::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
-        //JToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout='.$this->layout.'&tmpl=component'.'&issueview='.$this->view,'github',false);
+        //ToolbarHelper::preview('index.php?option=com_sportsmanagement&view=github&layout='.$this->layout.'&tmpl=component'.'&issueview='.$this->view,'github',false);
         //sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		
 		$cfg_help_server = ComponentHelper::getParams($this->option)->get('cfg_help_server', '');
@@ -722,10 +720,10 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
 		
         if ($canDo->get('core.admin'))
 		{
-			JToolbarHelper::preferences('com_sportsmanagement');
-            //JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
-			JToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view);
-			JToolbarHelper::divider();
+			ToolbarHelper::preferences('com_sportsmanagement');
+            //ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view . '-' . $layout);
+			ToolbarHelper::help('JHELP_COMPONENTS_SPORTSMANAGEMENT_CPANEL',false,$cfg_help_server . 'SM-Backend:'. $view);
+			ToolbarHelper::divider();
 		}
 /**
  * test

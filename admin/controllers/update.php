@@ -66,7 +66,6 @@ class sportsmanagementControllerUpdate extends BaseController
 	 */
 	function save()
 	{
-		//JToolbarHelper::back(Text::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
 		$post = Factory::getApplication()->input->post->getArray(array());
 		$file_name = Factory::getApplication()->input->getVar('file_name');
 		$path = explode('/',$file_name);

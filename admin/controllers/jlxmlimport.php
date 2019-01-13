@@ -17,6 +17,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.filesystem.archive');
 
 
@@ -117,7 +118,7 @@ class sportsmanagementControllerJLXMLImport extends BaseController
 		// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
-		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		ToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = Factory::getApplication();
 		$post = Factory::getApplication()->input->post->getArray(array());
         
@@ -253,7 +254,7 @@ $app->enqueueMessage(Text::_('daten -> '.$europalink.' sind kopiert worden!'),'N
 	 */
 	function insert()
 	{
-		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
+		ToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
 		$post=Factory::getApplication()->input->post->getArray(array());
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';

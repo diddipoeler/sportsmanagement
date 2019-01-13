@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
@@ -415,7 +416,7 @@ $slide_id = 1;
 	$mtime = $mtime[1] + $mtime[0];
 	$starttime = $mtime;
 
-	JToolbarHelper::title(Text::_('JSM Sportsmanagement - Database update process'));
+	ToolbarHelper::title(Text::_('JSM Sportsmanagement - Database update process'));
 	echo '<h2>'.Text::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 								$version,$updateDescription,$updateFileDate,$updateFileTime).'</h2>';
 	$totalUpdateParts = 2;

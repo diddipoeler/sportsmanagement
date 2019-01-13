@@ -17,6 +17,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 jimport('joomla.filesystem.archive');
 
 /**
@@ -43,7 +44,7 @@ class sportsmanagementControllerjlextlmoimports extends BaseController
         // Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg = '';
-		JToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
+		ToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
 		$app = Factory::getApplication();
 		$post = Factory::getApplication()->input->post->getArray(array());
     $model = $this->getModel('jlextlmoimports');
