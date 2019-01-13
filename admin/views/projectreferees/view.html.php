@@ -32,16 +32,6 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $app = Factory::getApplication();
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        //if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//            $uri = JUri::getInstance();
-//        } else {
-//            $uri = Factory::getURI();
-//        }
-        $model = $this->getModel();
-
         $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
@@ -53,11 +43,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
         $table = Table::getInstance('projectreferee', 'sportsmanagementTable');
         $this->table = $table;
 
-        $this->_persontype = $jinput->get('persontype');
+        $this->_persontype = $this->jinput->get('persontype');
         if (empty($this->_persontype)) {
-            $this->_persontype = $app->getUserState("$option.persontype", '0');
+            $this->_persontype = $this->app->getUserState("$this->option.persontype", '0');
         }
-        $this->project_id = $app->getUserState("$option.pid", '0');
+        $this->project_id = $this->app->getUserState("$this->option.pid", '0');
         $mdlProject = BaseDatabaseModel::getInstance('Project', 'sportsmanagementModel');
         $project = $mdlProject->getProject($this->project_id);
 
@@ -89,18 +79,12 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView {
      * @since	1.7
      */
     protected function addToolbar() {
-
-        //$app = Factory::getApplication();
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
         $this->app->setUserState("$this->option.persontype", $this->_persontype);
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 
         JToolbarHelper::apply('projectreferees.saveshort', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
         sportsmanagementHelper::ToolbarButton('assignpersons', 'upload', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'), 'persons', 3);
-        JToolbarHelper::deleteList('', 'projectreferees.delete');
-        JToolbarHelper::checkin('projectreferees.checkin');
         parent::addToolbar();
     }
 
