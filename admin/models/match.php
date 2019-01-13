@@ -2898,7 +2898,7 @@ if (!$calendar->isAuth())
                         if ($person_id) {
                             $this->csv_referee[$csv_file->data[0][$schiedsrichter]]->person_id = $person_id;
 
-                            $season_person_id = $this->getSeasonPersonAssignment($person_id, 0, 3)->id;
+                            $season_person_id = $this->getSeasonPersonAssignment($person_id, $season_id, 3)->id;
                             if ($season_person_id) {
                                 $this->csv_referee[$csv_file->data[0][$schiedsrichter]]->season_person_id = $season_person_id;
 
@@ -3239,10 +3239,9 @@ if (!$calendar->isAuth())
         $csv_referee_person_id = $post['refereepersonid'];
         $csv_referee_firstname = $post['refereefirstname'];
         $csv_referee_lastname = $post['refereelastname'];
-        $csv_referee_position_id = $post['referee_position_id'];
+        $csv_referee_project_position_id = $post['referee_project_position_id'];
         $csv_referee_season_person_id = $post['season_person_id'];
         $csv_referee_project_referee_id = $post['refereeprojectrefereeid'];
-        $csv_referee_project_project_id = $post['refereeprojectpositionid'];
 
         $project_events_id = $post['project_events_id'];
         $project_position_id = $post['project_position_id'];
@@ -3282,28 +3281,31 @@ if (!$calendar->isAuth())
             $ref_firstname = $csv_referee_firstname[$referee_key];
             $ref_lastname = $referee_lastname;
             $ref_person_id = $csv_referee_person_id[$referee_key];
-            $ref_position_id = $csv_referee_position_id[$referee_key];
+            $ref_project_position_id = $csv_referee_project_position_id[$referee_key];
 
-            // Hat der Schiedsrichter noch keine Person-ID, muss diese Person angelegt werden
-            if (!$ref_person_id) {
-                $ref_person_id = $this->createPerson($ref_firstname, $ref_lastname, $ref_position_id);
-            }
-
-            // Die nachfolgenden Schritte nur ausführen, wenn eine Position für den Schiedsrichter ausgewählt wurde
-            if ($ref_person_id && $ref_position_id) {
-
-                // Zuordnung zur Saison
-                $this->createSeasonPersonAssignment($ref_person_id, $season_id, 0, $ref_position_id);
-                $ref_season_person_id = $this->createSeasonPersonAssignment($ref_person_id, 0, 3, $ref_position_id);
-
-                // Zuordnung zum Projekt
-                $ref_project_id = $csv_referee_project_referee_id[$referee_key];
-                if(!$ref_project_id) {
-                    $ref_project_id = $this->createProjectReferee($project_id, $ref_season_person_id, $ref_position_id);
+            // Wir verarbeiten den Schiedsrichter nur, wenn der Benutzer eine Position ausgewählt hat
+            if ($ref_project_position_id) {
+                // Hat der Schiedsrichter noch keine Person-ID, muss diese Person angelegt werden
+                if (!$ref_person_id) {
+                    $ref_position_id = $this->getProjectPosition($ref_project_position_id)->position_id;
+                    $ref_person_id = $this->createPerson($ref_firstname, $ref_lastname, $ref_position_id);
                 }
 
-                // Zuordnung zum Spiel
-                $ref_match_id = $this->createMatchReferee($match_id, $ref_project_id, $ref_position_id);
+                // Die nachfolgenden Schritte nur ausführen, wenn eine Person existiert
+                if ($ref_person_id) {
+
+                    // Zuordnung zur Saison
+                    $ref_season_person_id = $this->createSeasonPersonAssignment($ref_person_id, $season_id, 3, $ref_project_position_id);
+
+                    // Zuordnung zum Projekt
+                    $ref_project_id = $csv_referee_project_referee_id[$referee_key];
+                    if (!$ref_project_id) {
+                        $ref_project_id = $this->createProjectReferee($project_id, $ref_season_person_id, $ref_project_position_id);
+                    }
+
+                    // Zuordnung zum Spiel
+                    $ref_match_id = $this->createMatchReferee($match_id, $ref_project_id, $ref_project_position_id);
+                }
             }
         }
 
@@ -3886,6 +3888,17 @@ if (!$calendar->isAuth())
         }
 
         return null;
+    }
+
+    function getProjectPosition($project_position_id = 0)
+    {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__sportsmanagement_project_position');
+        $query->where('id = ' . $project_position_id);
+        $db->setQuery($query);
+        return $db->loadObject();
     }
 }
 

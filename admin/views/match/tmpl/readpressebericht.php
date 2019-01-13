@@ -41,7 +41,6 @@ $lfdnummer = 0;
                     <input type='hidden' name='referee[<?php echo $lfdnummer; ?>]' value='<?php echo $value->csv_position; ?>'/>
                     <input type='hidden' name='refereepersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->person_id; ?>'/>
                     <input type='hidden' name='refereeprojectrefereeid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_referee_id; ?>'/>
-                    <input type='hidden' name='refereeprojectpositionid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_position_id; ?>'/>
                 </td>
                 <td>
                     <?php echo $value->firstname; ?>
@@ -74,7 +73,7 @@ $lfdnummer = 0;
                     } else {
                         $selectedvalue = 0;
                     }
-                    echo HTMLHelper::_('select.genericlist', $this->lists['referee_position_id'], 'referee_position_id[' . $lfdnummer . ']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue);
+                    echo HTMLHelper::_('select.genericlist', $this->lists['referee_project_position_id'], 'referee_project_position_id[' . $lfdnummer . ']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue);
                     ?>
                 </td>
             </tr>

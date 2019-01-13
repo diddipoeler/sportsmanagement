@@ -289,12 +289,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
         if ($res = $model->getProjectPositionsOptions(0, 3, $this->project_id)) {
             foreach ($res as $pos) {
                 $pos->text = Text::_($pos->text);
-                $pos->value = $pos->posid;
             }
 
             $position_id = array_merge($position_id, $res);
         }
-        $lists['referee_position_id'] = $position_id;
+        $lists['referee_project_position_id'] = $position_id;
         unset($position_id);
 
 //build the html options for position
