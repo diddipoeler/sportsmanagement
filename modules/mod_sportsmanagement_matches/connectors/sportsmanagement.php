@@ -349,6 +349,10 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         try {
         $db->setQuery($query,0,$limit);
         $matches = $db->loadObjectList();
+		
+//echo '<pre>'.print_r($matches ,true).'</pre>';
+		
+		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->formatMatches($matches);
 }
