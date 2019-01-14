@@ -530,18 +530,18 @@ class modMatchesSportsmanagementHelper {
 			//$matches[$key]->live = false;
 			$rows[$match->match_id]['type'] = 'undefined';
 			if ( $this->params->get('show_status_notice') ) {
-				if ($match->live != 'z') {
+				if ($match->live == 1) {
 					$rows[$match->match_id]['type'] = 'live';
 				}
 				else {
 					$matches[$key]->live = false;
-					if ($match->actplaying != 'z') {
+					if ($match->actplaying == 1) {
 						$rows[$match->match_id]['type'] = 'actplaying';
 					}
-					elseif ($match->alreadyplayed != 'z') {
+					elseif ($match->alreadyplayed == 1) {
 						$rows[$match->match_id]['type'] = 'alreadyplayed';
 					}
-					elseif ($match->upcoming != 'z') {
+					elseif ($match->upcoming == 1) {
 						$rows[$match->match_id]['type'] = 'upcoming';
 					}
 				}
