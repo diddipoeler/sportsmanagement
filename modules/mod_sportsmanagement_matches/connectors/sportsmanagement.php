@@ -363,7 +363,7 @@ if ( $match->match_timestamp <= $match->currenttimestamp )
 {
 $match->alreadyplayed = true;	
 }	
-elseif ( $match->currenttimestamp >= $match->match_enddate )
+elseif ( $match->currenttimestamp <= $match->match_enddate )
 {
 $match->upcoming = true;	
 }	
