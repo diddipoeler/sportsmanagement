@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage jsmgcalendar
+ * http://blog.mateuszzbylut.com/2018/01/19/fetching-data-google-calendar-without-user-authorization/
  */
 
 defined('_JEXEC') or die();
