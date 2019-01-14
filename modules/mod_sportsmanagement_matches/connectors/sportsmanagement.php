@@ -352,8 +352,28 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 
 foreach ( $matches AS $key => $match )
 {	
+$match->live = 'z';
+$match->actplaying = 'z';
+$match->alreadyplayed = 'z';
+$match->upcoming = 'z';	
 $match->match_enddate = strtotime($match->match_date.' + '.$match->totaltime.' minute');
 $match->currenttimestamp = sportsmanagementHelper::getTimestamp();	
+	
+if ( $match->match_timestamp <= $match->currenttimestamp )
+{
+$match->alreadyplayed = true;	
+}	
+elseif ( $match->currenttimestamp >= $match->match_enddate )
+{
+$match->upcoming = true;	
+}	
+elseif ( ($match->currenttimestamp >= $match->match_timestamp) && ( $match->match_enddate <= $match->currenttimestamp)  )
+{
+$match->live = true;	
+$match->actplaying = true;	
+}
+	
+	
 }
 //echo '<pre>'.print_r($matches ,true).'</pre>';
 		
