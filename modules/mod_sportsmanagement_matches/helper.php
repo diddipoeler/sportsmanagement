@@ -538,7 +538,7 @@ class modMatchesSportsmanagementHelper {
 					if ($match->actplaying != 'z') {
 						$rows[$match->match_id]['type'] = 'actplaying';
 					}
-					elseif ($match->alreadyplayed != 0) {
+					elseif ($match->alreadyplayed != 'z') {
 						$rows[$match->match_id]['type'] = 'alreadyplayed';
 					}
 					elseif ($match->upcoming != 'z') {
