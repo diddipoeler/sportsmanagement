@@ -352,7 +352,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
 
 foreach ( $matches AS $key => $match )
 {	
-$match->match_enddate = sportsmanagementHelper::getMatchEndTimestamp($match->match_date,$match->totaltime);
+$match->match_enddate = strtotime($match->match_date.' + '.$match->totaltime.' minute');
 $match->currenttimestamp = sportsmanagementHelper::getTimestamp();	
 }
 //echo '<pre>'.print_r($matches ,true).'</pre>';
