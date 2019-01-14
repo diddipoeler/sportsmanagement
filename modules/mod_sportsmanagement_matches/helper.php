@@ -271,7 +271,7 @@ class modMatchesSportsmanagementHelper {
 	public function addteamicon($which) {
 		$path = ($this->iconpath) ? $this->iconpath . 'teamlinks/' : false;
 		if ($path) {
-			return JHtml :: _('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
+			return HTMLHelper::_('image', $path . $which . '.png', $this->params->get($which . '_text'), 'title="' . $this->params->get($which . '_text') . '"');
 		} else {
 			return $this->params->get($which . '_text') . '<br />';
 		}
@@ -471,7 +471,7 @@ class modMatchesSportsmanagementHelper {
 		$row['notice'] = ($match->match_result_detail != '' AND $this->params->get('show_match_notice') == 1) ? $match->match_result_detail : '';
 		if ($this->params->get('show_referee', 1) == 1 AND $match->refname != '') {
 			$row['referee'] = '<span style="float:right;">';
-			$row['referee'] .= ($this->iconpath) ? JHtml :: _('image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array (
+			$row['referee'] .= ($this->iconpath) ? HTMLHelper::_('image', $this->iconpath . 'referee.png', Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'), array (
 				'title' => Text::_('MOD_SPORTSMANAGEMENT_MATCHES_REFEREE'),
 				'height' => '16',
 				'width' => '16'
@@ -527,7 +527,6 @@ class modMatchesSportsmanagementHelper {
 			if ($match->projectteam2_id) {
 				$ateam = $teams[$match->projectteam2_id];
 			}
-			//$matches[$key]->live = false;
 			$rows[$match->match_id]['type'] = 'undefined';
 			if ( $this->params->get('show_status_notice') ) {
 				if ($match->live == 1) {
@@ -606,7 +605,6 @@ class modMatchesSportsmanagementHelper {
 	public function getTimeLimit() {
 		$livematchestime = "IF((p.allow_add_time > 0), ((p.game_regular_time+(p.game_parts * p.halftime)) + p.add_time), (p.game_regular_time+(p.game_parts * p.halftime)))";
 		$timeforfirstmatch = "DATE_SUB(" . $this->getDateString() . ", INTERVAL $livematchestime MINUTE) > NOW()";
-		//$timeforfirstmatch = $this->getDateString() . " > NOW()";
 		if ($this->params->get('show_played', 0) == 1 AND ($this->params->get('result_add_time', 0)) > 0) {
 			$timeforfirstmatch = $this->getDateString() . " > DATE_SUB(NOW(), INTERVAL " . intval($this->params->get('result_add_time', 0)) . " " . $this->params->get('result_add_unit') . ")";
 		}
@@ -639,7 +637,6 @@ class modMatchesSportsmanagementHelper {
 		$this->next_last($row);
 		}
         $origin = $app->input->post->get('origin', $row->match_id);
-		//$origin = JRequest :: getVar('origin', $row->match_id, 'default', 'POST');
 		$jsfunc = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
 		$options = array (
 			'height' => '16',
@@ -650,9 +647,6 @@ class modMatchesSportsmanagementHelper {
 			// start ajaxifying
 			$showhome = (($this->params->get('next_last') + $this->usedteamscheck($row->team1_id, $row->project_id)) >= 2);
 			$showaway = (($this->params->get('next_last') + $this->usedteamscheck($row->team2_id, $row->project_id)) >= 2);
-			
-//echo __METHOD__.' '.__LINE__.' showhome <pre>'.print_r($showhome,true).'</pre>';			
-//echo __METHOD__.' '.__LINE__.' showaway <pre>'.print_r($showaway,true).'</pre>';			
 		
 		$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';
 			if ($showhome AND ($row->lasthome OR $row->nexthome)) {
