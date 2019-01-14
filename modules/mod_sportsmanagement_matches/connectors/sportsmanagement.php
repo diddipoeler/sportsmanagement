@@ -349,7 +349,12 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         try {
         $db->setQuery($query,0,$limit);
         $matches = $db->loadObjectList();
-		
+
+foreach ( $matches AS $key => $match )
+{	
+$match->match_enddate = sportsmanagementHelper::getMatchEndTimestamp($match->match_date,$match->totaltime);
+	
+}
 //echo '<pre>'.print_r($matches ,true).'</pre>';
 		
 		
