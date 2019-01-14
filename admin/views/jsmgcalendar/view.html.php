@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage jsmgcalendar
@@ -50,7 +50,25 @@ function init( $tpl = null )
 		$model = $this->getModel();
         $starttime = microtime(); 
         
-        
+$client = new Google_Client(); 
+$client->setApprovalPrompt('force');
+$client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
+$client->setClientSecret(ComponentHelper::getParams($option)->get('google_api_clientsecret',''));
+$client->setAccessType("offline");
+$client->addScope("https://www.googleapis.com/auth/calendar");
+$url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']; 
+$url = $url . '?' . http_build_query ($_GET); 
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' url <br><pre>'.print_r($url ,true).'</pre>'),'');
+$client->setRedirectUri($url );
+$uri = $client->createAuthUrl();
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' uri<br><pre>'.print_r($uri,true).'</pre>'),'Notice');
+if (! $app->input->get('code'))
+{
+$app->redirect($client->createAuthUrl());
+$app->close();
+}
+
+/*	
 $client = new Google_Client();
 $client->setAccessType('online'); // default: offline
 $client->setClientId(ComponentHelper::getParams($option)->get('google_api_clientid',''));
@@ -69,7 +87,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.prin
 $auth_url = $client->createAuthUrl();
 header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
 		}
-	
+*/	
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($_GET['code'] ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' scriptUri <br><pre>'.print_r($scriptUri ,true).'</pre>'),'');
 $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' googleclient <br><pre>'.print_r($client ,true).'</pre>'),'');
