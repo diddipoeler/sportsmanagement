@@ -504,8 +504,6 @@ class modMatchesSportsmanagementHelper {
     {
         // Reference global application object
         $app = Factory::getApplication();
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' iconpath<br><pre>'.print_r($this->iconpath,true).'</pre>'),'Notice');
-        
         
 		if ($this->params->get('lastsortorder') == 'desc') {
 			$matches = $this->sortObject($matches, 'desc', 'alreadyplayed');
@@ -520,7 +518,6 @@ class modMatchesSportsmanagementHelper {
 		$rows = array ();
 		$useicons = $this->iconpath;
         $cnt = $app->input->post->get('nr', 0);
-//		$cnt = JRequest :: getVar('nr', 0, 'default', 'POST');
 		$hteam = false;
 		$ateam = false;
 		foreach ((array) $matches AS $key => $match) {
@@ -532,7 +529,7 @@ class modMatchesSportsmanagementHelper {
 			}
 			//$matches[$key]->live = false;
 			$rows[$match->match_id]['type'] = 'undefined';
-			if ($this->params->get('show_status_notice') == 1) {
+			if ( $this->params->get('show_status_notice') ) {
 				if ($match->live != 'z') {
 					$rows[$match->match_id]['type'] = 'live';
 				}
