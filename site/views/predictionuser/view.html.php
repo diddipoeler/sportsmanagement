@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
 
@@ -85,7 +86,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
 			$this->_setRankingChartdata(array_merge($flashconfig, $config));
             
-             if ( JComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
+             if ( ComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
         {
             $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' predictionMember<br><pre>'.print_r($this->predictionMember,true).'</pre>'),'Notice'); 
 }

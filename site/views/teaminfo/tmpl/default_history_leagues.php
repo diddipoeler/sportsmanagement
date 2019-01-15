@@ -10,6 +10,8 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 $this->columns = 4;
 $this->divclass = '';
 ?>
@@ -78,7 +80,7 @@ if ($this->overallconfig['use_table_or_bootstrap']) {
     /**
      * welche bootstrap version
      */
-    $params = JComponentHelper::getParams('com_sportsmanagement');
+    $params = ComponentHelper::getParams('com_sportsmanagement');
 
     if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
         $this->divclass = 'col p-2';

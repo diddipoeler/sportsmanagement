@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.utilities.arrayhelper');
 
@@ -192,7 +193,7 @@ class JSMCountries {
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $cssflags = $params->get('cfg_flags_css');
         
         // Get a db connection.
@@ -212,7 +213,7 @@ class JSMCountries {
         }
 
         if (!$src) {
-            $src = JComponentHelper::getParams($option)->get('ph_flags', '');
+            $src = ComponentHelper::getParams($option)->get('ph_flags', '');
         } else {
             $src = $src;
         }

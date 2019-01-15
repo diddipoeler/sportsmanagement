@@ -23,6 +23,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 $document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
@@ -39,7 +40,7 @@ if (!empty($this->calendars)) {
 			$itemID = jsmGCalendarUtil::getItemId($calendar->id);
 		}
 		$params = Factory::getApplication()->getMenu()->getParams($itemID);
-		$tmp = clone JComponentHelper::getParams('com_sportsmanagement');
+		$tmp = clone ComponentHelper::getParams('com_sportsmanagement');
 		if (empty($params)) {
 			$params = $tmp;
 		} else {

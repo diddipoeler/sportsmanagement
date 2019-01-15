@@ -11,6 +11,7 @@
  
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport( 'joomla.application.component.view');
 
@@ -43,7 +44,7 @@ class sportsmanagementViewsishandball extends JViewLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 		$params = $app->getParams();
-        $paramscomponent = JComponentHelper::getParams( $option );
+        $paramscomponent = ComponentHelper::getParams( $option );
 		$model = $this->getModel();
 		//$model = &$this->getModelitem();
 		

@@ -24,10 +24,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 jsmGCalendarUtil::loadLibrary();
 
-$component = JComponentHelper::getComponent('com_gcalendar');
+$component = ComponentHelper::getComponent('com_gcalendar');
 $menu = Factory::getApplication()->getMenu();
 $items = $menu->getItems('component_id', $component->id);
 

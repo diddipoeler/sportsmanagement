@@ -17,6 +17,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementHelperHtml
@@ -575,7 +576,7 @@ catch (Exception $e)
      * @return string image html code
      */
     public static function getThumbUpDownImg($game, $projectteam_id, $attributes = null) {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         $res = sportsmanagementHelper::getTeamMatchResult($game, $projectteam_id);
         if ($res === false) {
@@ -668,7 +669,7 @@ catch (Exception $e)
      * @return string image html code
      */
     public static function getLastRankImg($team, $previous, $ptid, $attributes = null) {
-        $params = JComponentHelper::getParams('com_sportsmanagement');
+        $params = ComponentHelper::getParams('com_sportsmanagement');
         $usefontawesome = $params->get('use_fontawesome');
         if (isset($previous[$ptid]->rank)) {
             $imgsrc = Uri::root() . 'media/com_sportsmanagement/jl_images/';

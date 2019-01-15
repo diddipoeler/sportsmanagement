@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // welche joomla version ?
 if (version_compare(JVERSION, '3.0.0', 'ge')) {
@@ -279,7 +280,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $option = Factory::getApplication()->input->getCmd('option');
         $document = Factory::getDocument();
         //$model = $this->getModel();
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
     

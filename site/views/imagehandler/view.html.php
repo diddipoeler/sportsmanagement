@@ -15,6 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.view');
 
@@ -105,7 +106,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy {
         //initialise variables
         $document = Factory::getDocument();
         $uri = Factory::getURI();
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $type = Factory::getApplication()->input->getVar('type');
         $folder = ImageSelectSM::getfolder($type);
         $field = Factory::getApplication()->input->getVar('field');

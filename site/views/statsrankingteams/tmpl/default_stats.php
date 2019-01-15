@@ -12,6 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 ?>
 <table class="<?php echo $this->config['table_class'];?>">
 <thead>
@@ -44,7 +46,7 @@ foreach ( $this->teamstotal as $key => $value )
 //echo '<pre>'.print_r($value,true).'</pre>';
 $team = $this->teams[$value[team_id]];
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0), ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));
 $routeparameter['s'] = Factory::getApplication()->input->get('s', '');
 $routeparameter['p'] = $this->project->id;
 $routeparameter['tid'] = $value[team_id];

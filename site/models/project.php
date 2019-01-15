@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -48,7 +49,7 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
     
 // welche tabelle soll genutzt werden
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 

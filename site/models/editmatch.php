@@ -242,7 +242,7 @@ return $result;
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
+		$cfg_which_media_tool = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
         $app = Factory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );

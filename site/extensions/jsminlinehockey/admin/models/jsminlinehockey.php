@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 jimport( 'joomla.application.component.model' );
@@ -847,10 +848,10 @@ ini_set('max_execution_time', 300);
 $app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.print_r(ini_get('memory_limit'), true).'</pre><br>','Notice');
 $app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.print_r(ini_get('max_execution_time'), true).'</pre><br>','Notice');
 
-$username = JComponentHelper::getParams($option)->get('ishd_benutzername');
-$password = JComponentHelper::getParams($option)->get('ishd_kennwort');
-$stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');
-$current_season = JComponentHelper::getParams($option)->get('current_season');
+$username = ComponentHelper::getParams($option)->get('ishd_benutzername');
+$password = ComponentHelper::getParams($option)->get('ishd_kennwort');
+$stammverein = ComponentHelper::getParams($option)->get('ishd_stammverein');
+$current_season = ComponentHelper::getParams($option)->get('current_season');
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 

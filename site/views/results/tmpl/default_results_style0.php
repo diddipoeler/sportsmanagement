@@ -16,6 +16,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 ?>
 <style>
 #sbox-window {
@@ -50,7 +52,7 @@ if($this->config['show_attendance_column']){$nbcols++; $nbcols_header++;}
 if ( $this->config['show_comments_count'] )
 {
 
-if(!JComponentHelper::isEnabled('com_jcomments', true))
+if(!ComponentHelper::isEnabled('com_jcomments', true))
 {
     $comJcomments = false;
     JError::raiseWarning('Komponentenfehler', Text::_('Die Komponente JComments ist nicht installiert'));

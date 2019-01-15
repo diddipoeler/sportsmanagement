@@ -11,10 +11,12 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 HTMLHelper::_('behavior.modal'); 
 require_once('components'.DS.'com_sportsmanagement'.DS.'lib'.DS.'xshv2.lib.core.php');
-$modal_popup_width = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
+$modal_popup_width = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width',0) ;
+$modal_popup_height = ComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height',0) ;
 
 $document =  Factory::getDocument();
 $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel="stylesheet" type="text/css" />' . "\n";

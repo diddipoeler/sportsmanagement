@@ -288,16 +288,6 @@ $data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_data
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {		
-//	// Get a reference to the global cache object.
-//		$cache = Factory::getCache('sportsmanagement.project'.$this->_projectid);
-//		 
-//		// Enable caching regardless of global setting
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		if ($params->get('force_ranking_cache', 1)) {
-//			$cache->setCaching( 1 );
-//		}
-//
-//		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division,$cfg_which_database );
 $data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_database );
 
 }			

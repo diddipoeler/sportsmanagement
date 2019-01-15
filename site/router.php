@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
@@ -24,7 +25,7 @@ if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-$paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
+$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
     DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $paramscomponent->get('show_debug_info'));
 }

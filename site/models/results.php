@@ -781,11 +781,6 @@ else
         
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        // Get the input
-        //$pks = $jinput->getVar('cid','');
-        
-        //$post2 = $jinput->post->getArray(array());
         
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());

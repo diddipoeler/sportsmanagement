@@ -16,6 +16,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelMatchReport
@@ -357,7 +358,7 @@ catch (Exception $e)
               
        
        
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
+        if ( ComponentHelper::getParams($option)->get('show_debug_info_frontend') )
         {        
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -477,7 +478,7 @@ catch (Exception $e)
         $query->select('c.id,c.title');
        $query->select('c.introtext');
        
-    switch ( JComponentHelper::getParams($option)->get('which_article_component') )
+    switch ( ComponentHelper::getParams($option)->get('which_article_component') )
     {
         case 'com_content':
         $query->from('#__content as c');

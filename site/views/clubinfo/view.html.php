@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewClubInfo
@@ -88,7 +89,7 @@ if ( $this->mapconfig['map_kmlfile'] )
 }
 }
 
-    $this->show_debug_info = JComponentHelper::getParams($this->option)->get('show_debug_info',0);
+    $this->show_debug_info = ComponentHelper::getParams($this->option)->get('show_debug_info',0);
     
 		$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE' );
 		if ( isset( $this->club ) )

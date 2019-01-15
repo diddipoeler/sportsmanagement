@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementControllerResults
@@ -46,7 +47,7 @@ class sportsmanagementControllerResults extends BaseController
     $this->pks = $this->jinput->getVar('cid', null, 'post', 'array');
     $this->post = $this->jinput->post->getArray();
     
-    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
         {
     $this->app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post, true).'</pre><br>','Notice');
 }
@@ -98,7 +99,7 @@ class sportsmanagementControllerResults extends BaseController
     $post = $jinput->post->getArray();
     $layout = $jinput->getCmd('layout', 'form');
     
-    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+    if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
         {
     $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
     $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');

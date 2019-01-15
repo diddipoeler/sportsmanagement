@@ -3,6 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
 * simpleGMapGeocoder | simpleGMapGeocoder is part of simpleGMapAPI
@@ -125,7 +126,7 @@ $result = json_decode($file_content, true);
  */
 function genkml3file($id, $address_string, $type, $picture, $name,$latitude = 255,$longitude = 255)
 {
-$params	= JComponentHelper::getParams('com_sportsmanagement');
+$params	= ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big = $params->get('ph_logo_big',0);
     
 $lat = $latitude;
@@ -474,7 +475,7 @@ $result = json_decode($file_content, true);
  */
 function writekml3prediction($allmembers,$project_id,$type)
 {
-$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
+$params		 	=	ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big	=	$params->get('ph_player',0);
     
 // Creates an array of strings to hold the lines of the KML file.
@@ -584,7 +585,7 @@ File::write($file, $xmlfile);
  */
 function writekml3($allteams,$project_id,$type)
 {
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$params = ComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big = $params->get('ph_logo_big',0);
     
 // Creates an array of strings to hold the lines of the KML file.

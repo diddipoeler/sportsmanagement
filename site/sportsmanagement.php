@@ -15,6 +15,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Component\ComponentHelper;
+
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_SITE);
@@ -181,7 +183,7 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'prediction.php')
 break;
 }
 
-$paramscomponent = JComponentHelper::getParams('com_sportsmanagement');
+$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
 if (!defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS')) {
     DEFINE('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS', $paramscomponent->get('boostrap_div_class'));
@@ -278,12 +280,12 @@ $option = $input->getCmd('option');
 $view = $input->getVar("view");
 $view = ucfirst(strtolower($view));
 
-$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width', 0);
-$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height', 0);
+$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
 
 
-DEFINE('COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER', JComponentHelper::getParams($option)->get('cfg_help_server', ''));
-DEFINE('COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER', JComponentHelper::getParams($option)->get('cfg_bugtracker_server', ''));
+DEFINE('COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER', ComponentHelper::getParams($option)->get('cfg_help_server', ''));
+DEFINE('COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER', ComponentHelper::getParams($option)->get('cfg_bugtracker_server', ''));
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_VIEW', $view);
 
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'controller.php' );

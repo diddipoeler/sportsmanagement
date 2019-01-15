@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallleagues
@@ -169,7 +170,7 @@ public function getStart()
         
         if ( $this->use_current_season )
         {
-        $filter_season = JComponentHelper::getParams($this->jsmoption)->get('current_season',0);    
+        $filter_season = ComponentHelper::getParams($this->jsmoption)->get('current_season',0);    
         $this->jsmquery->join('INNER','#__sportsmanagement_project AS p ON v.id = p.league_id');
 /**
  * sicherheitshalber noch eine abfrage, wenn der user die nutzung der saison eingeschaltet,

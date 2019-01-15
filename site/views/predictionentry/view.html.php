@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewPredictionEntry
@@ -91,7 +92,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 				$this->lists = $lists;
 			}
 
-      $this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
+      $this->show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
 			$pageTitle = Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_TITLE');
 

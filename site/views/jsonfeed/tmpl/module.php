@@ -23,6 +23,8 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+
 $document = Factory::getDocument();
 $document->setMimeEncoding('application/json');
 
@@ -48,7 +50,7 @@ if(!empty($this->calendars)){
 	}
 }
 
-$params = clone JComponentHelper::getParams('com_sportsmanagement');
+$params = clone ComponentHelper::getParams('com_sportsmanagement');
 $params->set('show_event_title', 1);
 $data = array();
 foreach ($tmp as $date => $events){

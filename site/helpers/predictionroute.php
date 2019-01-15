@@ -14,10 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
-
-// Component Helper
-jimport('joomla.application.component.helper');
-
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JSMPredictionHelperRoute
@@ -244,7 +241,7 @@ public static function buildQuery($parts)
 			$parts['Itemid'] = $item->id;
 		}
 		else {
-			$params = JComponentHelper::getParams('com_sportsmanagement');
+			$params = ComponentHelper::getParams('com_sportsmanagement');
 			if ($params->get('default_itemid')) {
 				$parts['Itemid'] = intval($params->get('default_itemid'));				
 			}

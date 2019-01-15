@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallprojects
@@ -222,7 +222,7 @@ public function getStart()
         
         if ( $this->use_current_season )
         {
-        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $filter_season = ComponentHelper::getParams($option)->get('current_season',0);    
         $query->where('v.season_id IN ('.implode(',',$filter_season).')');
         }
         

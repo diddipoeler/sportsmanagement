@@ -14,15 +14,16 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $option = Factory::getApplication()->input->getCmd('option');
 $view = Factory::getApplication()->input->getVar( "view") ;
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
-$logo_width = JComponentHelper::getParams($option)->get('logo_picture_width',100) ;
+$cfg_help_server = ComponentHelper::getParams($option)->get('cfg_help_server','') ;
+$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = ComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
+$logo_width = ComponentHelper::getParams($option)->get('logo_picture_width',100) ;
 ?>
 
 <style>

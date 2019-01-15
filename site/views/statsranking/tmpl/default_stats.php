@@ -126,7 +126,6 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 
 		<td class="td_l playername">
 		<?php
-// JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0));			
 		if ( $this->config['link_to_player'] == 1 ) {
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = Factory::getApplication()->input->get('cfg_which_database', 0);

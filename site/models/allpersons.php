@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelallpersons
@@ -154,9 +154,6 @@ public function getStart()
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
   
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('v.lastname', 'ASC');
@@ -236,7 +233,7 @@ public function getStart()
         }
         if ( $this->use_current_season )
         {
-        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $filter_season = ComponentHelper::getParams($option)->get('current_season',0);    
         $query->where('p.season_id IN ('.implode(',',$filter_season).')');
         }
         

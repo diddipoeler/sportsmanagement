@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport( 'joomla.utilities.utility' );
 
@@ -126,7 +127,6 @@ function __construct( )
         }
         
         
-	//$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
   $this->debug_info = true;
@@ -302,7 +302,7 @@ $user = Factory::getUser();
 $db = Factory::getDBO();
 $query = $db->getQuery(true);
 
-if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo '0.) projekt -> <br /><pre>~'.print_r($this->projectid,true).'~</pre><br />';
 echo '0.) request -> <br /><pre>~'.print_r($this->request,true).'~</pre><br />';
@@ -334,7 +334,7 @@ $query->where('ro.id = '. (int)$this->round);
 $db->setQuery($query);
 $result_roundcode = $db->loadResult();
 
-if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo 'Roundcode -> <br /><pre>~'.print_r($db->loadResult(),true).'~</pre><br />';
 echo 'Roundcode query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
@@ -400,7 +400,7 @@ $query->order("ro.roundcode DESC");
 
 $db->setQuery($query);
 
-if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo 'Runden -> <br /><pre>~'.print_r($db->loadObjectList(),true).'~</pre><br />';
 echo 'Runden query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';

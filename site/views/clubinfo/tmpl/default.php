@@ -8,6 +8,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
@@ -22,7 +23,7 @@ $this->kmlpath = Uri::root() . 'tmp' . DS . $this->club->id . '-club.kml';
 $this->kmlfile = $this->club->id . '-club.kml';
 }
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$params = ComponentHelper::getParams('com_sportsmanagement');
 
 if (version_compare(JSM_JVERSION, '4', 'eq') || $params->get('use_jsmgrid')) {
     $container = 'container';
