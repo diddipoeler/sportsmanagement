@@ -11,6 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 /**
  * MatchesSportsmanagementConnector
@@ -626,18 +628,21 @@ return false;
 					$linkstructure = array (
 						'venue' => array (
 							'view' => 'playground',
-							'pgid' => $venue['id'],
-							'p' => $match->project_id
+                            'cfg_which_database' => $this->params->get('cfg_which_database'),
+                            's' => $this->params->get('s'),
+                            'p' => $match->project_id,
+							'pgid' => $venue['id']
+							
 						)
 					);
-					$venuelink = JRoute :: _('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
+					$venuelink = Route::_('index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['venue']) . $this->itemid);
 					$venuetext = '<a href="' . $venuelink . '" title="%s">%s</a>';					
 					$thisvenue = sprintf($venuetext, $venuetip, $venuename);
 				} else {
 					$thisvenue = sprintf($venuetext, $venuename);
 				}
 				if ($this->iconpath) {
-					$thisvenue = JHTML :: _('image', $this->iconpath . 'house.png', $venuetip, array (
+					$thisvenue = HTMLHelper::_('image', $this->iconpath . 'house.png', $venuetip, array (
 						'title' => $venuetip,
 						'height' => '16',
 						'width' => '16'
