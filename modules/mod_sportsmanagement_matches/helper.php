@@ -259,7 +259,24 @@ class modMatchesSportsmanagementHelper {
 	 * @return
 	 */
 	public function usedteamscheck($team_id, $project_id) {
-		return ((isset ($this->usedteams[0]) AND is_array($this->usedteams[0]) AND in_array($team_id, $this->usedteams[0])) OR (isset ($this->usedteams[$project_id]) AND is_array($this->usedteams[$project_id]) AND in_array($team_id, $this->usedteams[$project_id]))) ? 1 : 0;
+	$return = 0;
+	if ( !is_array($this->usedteams[$project_id]) )
+	{
+	$return = 1;	
+	}
+	else
+	{
+	foreach ( $this->usedteams[$project_id] AS $key => $value) 
+	{	
+	if ( $value == $team_id )
+	{
+	$return = 1;	
+	}
+	}
+	}
+		
+	//return ((isset ($this->usedteams[0]) AND is_array($this->usedteams[0]) AND in_array($team_id, $this->usedteams[0])) OR (isset ($this->usedteams[$project_id]) AND is_array($this->usedteams[$project_id]) AND in_array($team_id, $this->usedteams[$project_id]))) ? 1 : 0;
+	return $return;	
 	}
 	
 	/**
