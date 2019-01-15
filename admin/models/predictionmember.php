@@ -16,9 +16,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\Table\Table;
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
@@ -76,7 +74,7 @@ if ( !$result )
   //$app->enqueueMessage(Text::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
   //$table = 'predictionmember';
   $table = 'predictionentry';
-  $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
+  $rowproject = Table::getInstance( $table, 'sportsmanagementTable' );
   //$rowproject->load( $value );
   $rowproject->prediction_id = $prediction_id;
   $rowproject->user_id = $value;

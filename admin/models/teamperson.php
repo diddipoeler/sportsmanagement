@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelteamperson
@@ -258,7 +259,7 @@ $db->setQuery($query);
 			}
             else
             {
-                $tblprojectposition = JTable::getInstance("projectposition", "sportsmanagementTable");
+                $tblprojectposition = Table::getInstance("projectposition", "sportsmanagementTable");
                 $tblprojectposition->load((int) $post['project_position_id'.$pks[$x]]);
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -266,7 +267,7 @@ $db->setQuery($query);
                 $app->enqueueMessage(__FILE__.' '.__METHOD__.' '.__LINE__.' position_id<br><pre>'.print_r($tblprojectposition->position_id, true).'</pre><br>','Notice');
                 }
                 
-                $tblperson = JTable::getInstance("person", "sportsmanagementTable");
+                $tblperson = Table::getInstance("person", "sportsmanagementTable");
                 $tblperson->load((int) $pks[$x]);
                 $tblperson->position_id = $tblprojectposition->position_id;
                 $tblperson->country = $post['country'.$pks[$x]];

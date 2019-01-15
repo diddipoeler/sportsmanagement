@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewprojectteams
@@ -67,7 +68,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('projectteam', 'sportsmanagementTable');
+        $table = Table::getInstance('projectteam', 'sportsmanagementTable');
 		$this->table = $table;
         
 		if ( $this->project_art_id == 3 )

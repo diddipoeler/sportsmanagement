@@ -12,7 +12,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Table\Table; 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 use Joomla\Utilities\ArrayHelper; 
@@ -55,7 +55,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**

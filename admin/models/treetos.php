@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
 
 
@@ -90,7 +90,7 @@ class sportsmanagementModelTreetos extends ListModel
 		for ( $x = 0; $x < count( $cid ); $x++ )
 		{
 			
-			$tblTreeto = JTable::getInstance('Treeto','sportsmanagementTable');
+			$tblTreeto = Table::getInstance('Treeto','sportsmanagementTable');
 			$tblTreeto->id = $cid[$x];
 			$tblTreeto->division_id =	$data['division_id' . $cid[$x]];
 			

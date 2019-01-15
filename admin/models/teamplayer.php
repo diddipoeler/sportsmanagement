@@ -5,6 +5,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
 
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
@@ -46,7 +47,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
 	public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
     
 	/**

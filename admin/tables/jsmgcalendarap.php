@@ -7,10 +7,10 @@
  */
 
 defined('_JEXEC') or die();
+use Joomla\CMS\Table\Table;
+//JLoader::import('joomla.database.table');
 
-JLoader::import('joomla.database.table');
-
-class  sportsmanagementTablejsmGCalendarAP extends JTable {
+class  sportsmanagementTablejsmGCalendarAP extends JSMTable {
 
 	public function __construct(&$db) {
 		parent::__construct('#__sportsmanagement_gcalendarap', 'id', $db);
@@ -31,7 +31,7 @@ class  sportsmanagementTablejsmGCalendarAP extends JTable {
 	}
 
 	protected function _getAssetParentId($table = null, $id = null) {
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_gcalendarap');
 		return $asset->id;
 	}

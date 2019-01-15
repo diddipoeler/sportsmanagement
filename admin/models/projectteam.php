@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelprojectteam
@@ -95,7 +96,7 @@ $associations = $this->jsmdb->loadResult();
  * hier werden noch die vereine aktualisiert 
  * wenn schon ein verband/kreis vorhanden ist, kein update
  */
-$clubrow = JTable::getInstance('club', 'sportsmanagementTable', array()); 
+$clubrow = Table::getInstance('club', 'sportsmanagementTable', array()); 
 $clubrow->load($post['club_id'.$pks[$x]]);
 if ( $clubrow->associations )
 {
@@ -148,7 +149,7 @@ $result = Factory::getDbo()->updateObject('#__sportsmanagement_club', $object, '
 		{
 		$projectteam_id	= $pks[$x];
         
-        $proTeam = JTable::getInstance( 'Projectteam', 'sportsmanagementTable' );
+        $proTeam = Table::getInstance( 'Projectteam', 'sportsmanagementTable' );
 		$proTeam->load( $projectteam_id );
         
         // Create and populate an object.

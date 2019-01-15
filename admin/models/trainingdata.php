@@ -13,10 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
-
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModeltrainingdata
@@ -42,7 +39,7 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
 	public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array()) 
 	{
 	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	

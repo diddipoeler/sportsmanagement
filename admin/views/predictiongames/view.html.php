@@ -14,6 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewPredictionGames
@@ -46,7 +47,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 				$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
 			} 
        
-        $table = JTable::getInstance('predictiongame', 'sportsmanagementTable');
+        $table = Table::getInstance('predictiongame', 'sportsmanagementTable');
 		$this->table	= $table;
         
 		if ( !$this->items )

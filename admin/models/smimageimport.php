@@ -15,10 +15,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Archive\Archive;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.archive');
+//jimport('joomla.filesystem.archive');
 
 
 
@@ -68,7 +69,7 @@ class sportsmanagementModelsmimageimport extends BaseDatabaseModel {
      */
     public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = array()) {
         $config['dbo'] = sportsmanagementHelper::getDBConnection();
-        return JTable::getInstance($type, $prefix, $config);
+        return Table::getInstance($type, $prefix, $config);
     }
 
     /**

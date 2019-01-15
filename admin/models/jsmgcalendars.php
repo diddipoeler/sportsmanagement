@@ -39,7 +39,7 @@ class sportsmanagementModeljsmGCalendars extends ListModel
 		}
 		$tmp = array();
 		foreach ($items as $item) {
-			$table = JTable::getInstance('jsmGCalendar', 'sportsmanagementTable');
+			$table = Table::getInstance('jsmGCalendar', 'sportsmanagementTable');
 			$table->load($item->id);
 			$tmp[] = $table;
 		}

@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewMatches
@@ -62,7 +63,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
      
      $this->projectteamsel = Factory::getApplication()->input->getvar('projectteam', 0);
 
-        $table = JTable::getInstance('match', 'sportsmanagementTable');
+        $table = Table::getInstance('match', 'sportsmanagementTable');
         $this->table = $table;
 
         $this->project_id = $app->getUserState("$option.pid", '0');

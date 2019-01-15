@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -64,7 +65,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $total = $this->get('Total');
         $pagination = $this->get('Pagination');
 
-        $table = JTable::getInstance('projectposition', 'sportsmanagementTable');
+        $table = Table::getInstance('projectposition', 'sportsmanagementTable');
         $this->table = $table;
 
         $this->project_id = $this->jinput->get('pid');

@@ -39,9 +39,7 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla table library
-jimport('joomla.database.table');
+use Joomla\CMS\Table\Table; 
  
 
 /**
@@ -53,7 +51,7 @@ jimport('joomla.database.table');
  * @version 2014
  * @access public
  */
-class sportsmanagementTablesportsmanagement extends JTable
+class sportsmanagementTablesportsmanagement extends JSMTable
 {
 	/**
 	 * Constructor
@@ -140,7 +138,7 @@ class sportsmanagementTablesportsmanagement extends JTable
 	 */
 	protected function _getAssetParentId()
 	{
-		$asset = JTable::getInstance('Asset');
+		$asset = Table::getInstance('Asset');
 		$asset->loadByName('com_sportsmanagement');
 		return $asset->id;
 	}

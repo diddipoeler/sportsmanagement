@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\MVC\Model\ListModel;
 
 
@@ -219,7 +219,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		{
 			if ((!isset($current)) || (!in_array($pid,$current)))
 			{
-				$new = JTable::getInstance('ProjectReferee','Table');
+				$new = Table::getInstance('ProjectReferee','Table');
 				$new->person_id=$pid;
 				$new->project_id=$this->_project_id;
 				if (!$new->check())

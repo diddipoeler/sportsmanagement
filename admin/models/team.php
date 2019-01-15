@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Table\Table;
 
 /**
  * sportsmanagementModelteam
@@ -195,7 +196,7 @@ catch (Exception $e)
 $this->jsmquery->clear();    
     for($a=0; $a < count($post['tdids']); $a++ )    
     {
-        $rowtraining = JTable::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
+        $rowtraining = Table::getInstance( 'TeamTrainingData', 'sportsmanagementTable' );
         $rowtraining->load( (int)$post['tdids'][$a] );
   
         // Create an object for the record we are going to update.

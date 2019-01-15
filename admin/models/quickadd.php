@@ -12,6 +12,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 
 jimport('joomla.application.component.model');
 
@@ -258,11 +259,11 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
 		$res = $this->_db->loadResult();
 		if (!$res)
 		{
-			$tblTeamplayer = JTable::getInstance( 'Teamplayer', 'Table' );
+			$tblTeamplayer = Table::getInstance( 'Teamplayer', 'Table' );
 			$tblTeamplayer->person_id		= $personid;
 			$tblTeamplayer->projectteam_id	= $projectteam_id;
 				
-			$tblProjectTeam = JTable::getInstance( 'Projectteam', 'Table' );
+			$tblProjectTeam = Table::getInstance( 'Projectteam', 'Table' );
 			$tblProjectTeam->load($projectteam_id);
 	
 			if ( !$tblTeamplayer->check() )

@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Table\Table;
 jimport('joomla.filesystem.file');
 
 
@@ -245,7 +246,7 @@ $my_text .= '<br />';
                 else
                 {
                     // eintrag schon vorhanden, ein update
-                    $tblProjectteam = JTable::getInstance('Projectteam', 'sportsmanagementtable');
+                    $tblProjectteam = Table::getInstance('Projectteam', 'sportsmanagementtable');
                     $tblProjectteam->load($row->id);
                     
                     if ( empty($tblProjectteam->team_id) )

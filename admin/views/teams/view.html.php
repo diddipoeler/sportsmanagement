@@ -14,6 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Table\Table;
+
 jimport('joomla.filesystem.file');
 
 /**
@@ -42,7 +44,7 @@ $this->assign = false;
 			$this->assign = true;
 		}
 
-        $this->table = JTable::getInstance('team', 'sportsmanagementTable');
+        $this->table = Table::getInstance('team', 'sportsmanagementTable');
 
         //build the html select list for sportstypes
         $sportstypes[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
