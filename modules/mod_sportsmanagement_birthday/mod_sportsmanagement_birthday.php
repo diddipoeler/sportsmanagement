@@ -16,6 +16,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -57,12 +58,12 @@ require_once(dirname(__FILE__) . DS . 'helper.php');
 // Reference global application object
 $app = Factory::getApplication();
 $document = Factory::getDocument();
-$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
+$show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info', 0);
 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
-    DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
+    DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database'));
 }
 
 $mode = $params->def("mode");

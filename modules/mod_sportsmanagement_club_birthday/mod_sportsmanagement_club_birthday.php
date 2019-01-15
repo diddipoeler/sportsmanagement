@@ -16,6 +16,7 @@ use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // Get the base version
 $baseVersion = substr(JVERSION, 0, 3);
@@ -70,22 +71,22 @@ require_once(dirname(__FILE__).DS.'helper.php');
 // Reference global application object
 $app = Factory::getApplication();
 $document = Factory::getDocument();
-$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
+$show_debug_info = ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+if (ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
 }
 else
 {

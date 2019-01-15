@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -47,11 +48,11 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 
 if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get( 'show_debug_info' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',ComponentHelper::getParams('com_sportsmanagement')->get( 'show_debug_info' ) );
 }
 if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get( 'show_query_debug_info' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',ComponentHelper::getParams('com_sportsmanagement')->get( 'show_query_debug_info' ) );
 }
 
 /**

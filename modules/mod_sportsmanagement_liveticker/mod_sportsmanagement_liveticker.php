@@ -55,11 +55,6 @@ $document = Factory::getDocument();
 $document->addScript(Uri::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
-//$jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
-//$jquery_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jquerysubversionfrontend',0);
-//$jquery_ui_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuiversionfrontend',0);
-//$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
-
 $document = Factory::getDocument();
 $document->addScript(Uri::base().'modules/'.$module->module.'/js/turtushout.js');
 

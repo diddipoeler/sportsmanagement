@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $app = Factory::getApplication();
 
@@ -28,7 +29,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 }
 
 if (!class_exists('sportsmanagementHelper')) 
@@ -42,7 +43,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
 

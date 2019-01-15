@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * modJSMClubiconsHelper
@@ -144,7 +145,7 @@ $cfg_which_database = $this->params->get('cfg_which_database');
 		
 if ( $cfg_which_database )
 {
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );	
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );	
 $logourl = $paramscomponent->get( 'cfg_which_database_server' ).$logourl;
 }
 

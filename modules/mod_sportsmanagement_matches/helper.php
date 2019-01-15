@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * modMatchesHelper
@@ -243,7 +244,7 @@ class modMatchesSportsmanagementHelper {
             }
 		}
         
-        if ( JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+        if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
         {
         //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>'),'Notice');    
         echo __METHOD__.' '.__LINE__.' projekte<br><pre>'.print_r($this->params->get('p'),true).'</pre>'; 

@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 ?>
 
@@ -69,7 +70,7 @@ foreach ($persons AS $person) {
 $flag = $params->get('show_player_flag') ? JSMCountries::getCountryFlag($person['country']) . "&nbsp;" : "";
 $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], $person['nickname'], $person['lastname'], $params->get("name_format")), ENT_QUOTES, 'UTF-8');
 $usedname = $flag . $text;
-$params_com = JComponentHelper::getParams('com_sportsmanagement');
+$params_com = ComponentHelper::getParams('com_sportsmanagement');
 $usefontawesome = $params_com->get('use_fontawesome');
     
     $showname = HTMLHelper::link($person_link, $usedname);

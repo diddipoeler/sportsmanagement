@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $css = Uri::base().'modules/'.$module->module.'/assets/rquote.css';
 $document = Factory::getDocument();
@@ -52,7 +53,7 @@ $cfg_which_database = $params->get('cfg_which_database');
 
 if ( $cfg_which_database )
 {	
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );	
 }
 else

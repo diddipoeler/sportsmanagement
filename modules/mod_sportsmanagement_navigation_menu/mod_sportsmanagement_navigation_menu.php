@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -31,14 +32,8 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',JComponentHelper::getParams( 'com_sportsmanagement' )->get( 'cfg_which_database_table' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',ComponentHelper::getParams( 'com_sportsmanagement' )->get( 'cfg_which_database_table' ) );
 }
-
-//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-//DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
 HTMLHelper::_('behavior.framework');
 $document = Factory::getDocument();

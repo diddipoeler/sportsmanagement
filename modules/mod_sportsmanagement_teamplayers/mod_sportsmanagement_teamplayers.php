@@ -17,6 +17,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -54,7 +55,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php');
 
 // welche tabelle soll genutzt werden
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$paramscomponent = ComponentHelper::getParams( 'com_sportsmanagement' );
  
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {

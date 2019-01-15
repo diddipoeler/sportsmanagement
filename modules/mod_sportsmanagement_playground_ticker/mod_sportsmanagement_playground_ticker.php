@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -51,9 +52,9 @@ require_once (dirname(__FILE__).DS.'helper.php');
 /**
  * soll die externe datenbank genutzt werden ?
  */
-if ( JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
+if ( ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) )
 {
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+$module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 }
 else
 {

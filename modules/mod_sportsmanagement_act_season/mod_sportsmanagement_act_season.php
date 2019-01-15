@@ -15,6 +15,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -49,7 +50,7 @@ BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel"
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
 /**
@@ -65,7 +66,7 @@ $document = Factory::getDocument();
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-$season_ids = JComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );
+$season_ids = ComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );
 
 $list = modJSMActSeasonHelper::getData($season_ids);
 
