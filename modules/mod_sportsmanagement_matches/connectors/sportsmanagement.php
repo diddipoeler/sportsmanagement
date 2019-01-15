@@ -359,20 +359,19 @@ $match->upcoming = 'z';
 $match->match_enddate = strtotime($match->match_date.' + '.$match->totaltime.' minute');
 $match->currenttimestamp = sportsmanagementHelper::getTimestamp();	
 	
-if ( $match->match_timestamp <= $match->currenttimestamp )
-{
-$match->alreadyplayed = true;	
-}	
-elseif ( $match->currenttimestamp <= $match->match_enddate )
-{
-$match->upcoming = true;	
-}	
-elseif (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate)))
+if (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate)))
 {
 $match->live = true;	
 $match->actplaying = true;	
 }
-	
+elseif ( $match->currenttimestamp <= $match->match_enddate )
+{
+$match->upcoming = true;	
+}	
+elseif ( $match->match_timestamp <= $match->currenttimestamp )
+{
+$match->alreadyplayed = true;	
+}	
 	
 }
 //echo '<pre>'.print_r($matches ,true).'</pre>';
