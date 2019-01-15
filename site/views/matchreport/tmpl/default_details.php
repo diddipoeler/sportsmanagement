@@ -32,7 +32,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         
         <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></strong>
-			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->old_match_id ),$this->oldmatchtext); ?>
+			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->old_match_id ),$this->oldmatchtext); ?>
             </address>
             
 		<?php
@@ -47,7 +47,7 @@ echo Text::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS');
         
         <address>
 			<strong><?php echo Text::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></strong>
-			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->new_match_id ),$this->newmatchtext); ?>
+			<?php echo HTMLHelper::link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->new_match_id ),$this->newmatchtext); ?>
             </address>
             
 		<?php

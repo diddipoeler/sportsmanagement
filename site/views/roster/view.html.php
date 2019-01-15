@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\HTML\HTMLHelper;
 /**
  * sportsmanagementViewRoster
  * 
@@ -88,16 +88,16 @@ class sportsmanagementViewRoster extends sportsmanagementView
 
     // select roster view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "player_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "player_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
+    $opp_arr[] = HTMLHelper::_('select.option', "player_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "player_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_PLAYER_CARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "player_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_PLAYER_CARD'));
 
 	$lists['type'] = $opp_arr;
   // select staff view
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "staff_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
-	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
+    $opp_arr[] = HTMLHelper::_('select.option', "staff_standard", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_STAFF_STANDARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "staff_card", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION2_STAFF_CARD'));
+	$opp_arr[] = HTMLHelper::_('select.option', "staff_johncage", Text :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
 
 	$lists['typestaff'] = $opp_arr;
 	$this->lists = $lists;

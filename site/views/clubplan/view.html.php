@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-
+use Joomla\CMS\HTML\HTMLHelper;
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
 
 /**
@@ -104,15 +104,15 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $this->teamprojects = $this->model->getTeamsProjects();
         $this->teamseasons = $this->model->getTeamsSeasons();
         
-        $fromteamart[] = JHTML :: _('select.option', '', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
+        $fromteamart[] = HTMLHelper::_('select.option', '', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);
 		$lists['fromteamart'] = $fromteamart;
         
-        $fromteamprojects[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
+        $fromteamprojects[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'));
 		$fromteamprojects = array_merge($fromteamprojects, $this->teamprojects);
 		$lists['fromteamprojects'] = $fromteamprojects;
         
-        $fromteamseasons[] = JHTML :: _('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
+        $fromteamseasons[] = HTMLHelper::_('select.option', '0', Text :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
 		$lists['fromteamseasons'] = $fromteamseasons;
 
@@ -120,9 +120,9 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
  * auswahl welche spiele
  */        
     $opp_arr = array ();
-    $opp_arr[] = JHTML :: _('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
-	$opp_arr[] = JHTML :: _('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
-	$opp_arr[] = JHTML :: _('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
+    $opp_arr[] = HTMLHelper::_('select.option', "0", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
+	$opp_arr[] = HTMLHelper::_('select.option', "1", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
+	$opp_arr[] = HTMLHelper::_('select.option', "2", Text :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
 
 	$lists['type'] = $opp_arr;
     $this->lists = $lists;

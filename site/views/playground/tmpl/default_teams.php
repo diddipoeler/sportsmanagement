@@ -31,7 +31,7 @@ $routeparameter['ptid'] = 0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			//$link = sportsmanagementHelperRoute :: getTeamInfoRoute($team->project_id, $team->team_id);	
 			?>
-			<h4><?php echo $projectname . " - " . JHtml :: link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
+			<h4><?php echo $projectname . " - " . HTMLHelper::link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
 			<div class="clubteaminfo">
         	<?php
         	$description = $teaminfo->notes;

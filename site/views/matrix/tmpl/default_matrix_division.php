@@ -103,7 +103,7 @@ use Joomla\CMS\Factory;
 				}
 				if ($this->config['link_teams'] == 1) {
 					$header = '<th class="teamsheader">';
-					$header .= JHTML :: link($link, $desc);
+					$header .= HTMLHelper::link($link, $desc);
 					$header .= '</th>';
 					$matrix .= $header;
 				} else {
@@ -145,7 +145,7 @@ use Joomla\CMS\Factory;
 				}
 				if ($this->config['link_teams'] == 1) {
 					$tValue = '<th class="teamsleft">';
-					$tValue .= JHTML :: link($link, $desc);
+					$tValue .= HTMLHelper::link($link, $desc);
 					$tValue .= '</th>';
 					$matrix .= $tValue;
 				} else {
@@ -235,7 +235,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									"style" => $colorStr . $bgColorStr
 								);
 							}
-							$match_result = JHtml :: link($link, $resultStr, $arrayString);
+							$match_result = HTMLHelper::link($link, $resultStr, $arrayString);
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
@@ -272,7 +272,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							} else {
 								$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHtml :: link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 							}
 						}
 					}
@@ -308,7 +308,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							$resultStr .= "</span>";
 							$resultStr .= "</span>";
 						}
-						$match_result = $spanStartStr . JHtml :: link($link, $desc) . $spanEndStr;
+						$match_result = $spanStartStr . HTMLHelper::link($link, $desc) . $spanEndStr;
 					}
 					//Don’t break, allow for multiple results
 					if ($Allresults == ''){
@@ -404,7 +404,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				if ($this->config['link_teams'] == 1) {
 					$header = '<th class="teamsheader">';
-					$header .= JHtml :: link($link, $desc);
+					$header .= HTMLHelper::link($link, $desc);
 					$header .= '</th>';
 					$matrix .= $header;
 				} else {
@@ -443,7 +443,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 				}
 				if ($this->config['link_teams'] == 1) {
 					$tValue = '<th class="teamsleft">';
-					$tValue .= JHtml :: link($link, $desc);
+					$tValue .= HTMLHelper::link($link, $desc);
 					$tValue .= '</th>';
 					$matrix .= $tValue;
 				} else {
@@ -533,7 +533,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 									"style" => $colorStr . $bgColorStr
 								);
 							}
-							$match_result = JHtml :: link($link, $resultStr, $arrayString);
+							$match_result = HTMLHelper::link($link, $resultStr, $arrayString);
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
@@ -570,7 +570,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							} else {
 								$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 								$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
-								$match_result = JHtml :: link($link, $desc);
+								$match_result = HTMLHelper::link($link, $desc);
 							}
 						}
 					}
@@ -606,7 +606,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 							$resultStr .= "</span>";
 							$resultStr .= "</span>";
 						}
-						$match_result = $spanStartStr . JHtml :: link($link, $desc) . $spanEndStr;
+						$match_result = $spanStartStr . HTMLHelper::link($link, $desc) . $spanEndStr;
 					}
 					//Don’t break, allow for multiple results
 					if ($Allresults == ''){

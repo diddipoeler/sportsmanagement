@@ -14,8 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-// pagination
-//require_once (JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * sportsmanagementViewPredictionRanking
@@ -70,15 +69,15 @@ $this->ausgabeende = $this->limitstart + $this->limit;
 			
             
             $ranking_array = array();
-			$ranking_array[] = JHTML ::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
-			$ranking_array[] = JHTML ::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
+			$ranking_array[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
+			$ranking_array[] = HTMLHelper::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_GROUP_RANK'));
 			$lists['ranking_array'] = $ranking_array;
 			unset($ranking_array);
 
 			$type_array = array();
-			$type_array[] = JHTML ::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
-			$type_array[] = JHTML ::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
-			$type_array[] = JHTML ::_('select.option','2',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
+			$type_array[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FULL_RANKING'));
+			$type_array[] = HTMLHelper::_('select.option','1',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_FIRST_HALF'));
+			$type_array[] = HTMLHelper::_('select.option','2',Text::_('COM_SPORTSMANAGEMENT_PRED_RANK_SECOND_HALF'));
 			$lists['type'] = $type_array;
 			unset($type_array);
 
