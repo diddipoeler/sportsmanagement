@@ -681,8 +681,8 @@ return false;
         $result_add_time = $this->params->get('result_add_time');
         $period_int = $this->params->get('period_int');
         $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
-        $datebis = strtotime($currentdate.' + '.$period_int.' day');
-        $datevon = strtotime($currentdate.' - '.$result_add_time .' day');
+        $datebis = strtotime($currentdate.' + '.$period_int.' '.$this->params->get('period_string') );
+        $datevon = strtotime($currentdate.' - '.$result_add_time .' '.$this->params->get('result_add_unit') );
 /*        
         echo 'datebis <pre>'.print_r($datebis ,true).'</pre>';
         echo 'datumbis <pre>'.print_r(date('Y-m-d H:i:s',$datebis ) ,true).'</pre>';
@@ -773,8 +773,8 @@ return false;
         $result_add_time = $this->params->get('result_add_time');
         $period_int = $this->params->get('period_int');
         $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
-        $datebis = strtotime($currentdate.' + '.$period_int.' day');
-        $datevon = strtotime($currentdate.' - '.$result_add_time .' day');
+        $datebis = strtotime($currentdate.' + '.$period_int.' '.$this->params->get('period_string') );
+        $datevon = strtotime($currentdate.' - '.$result_add_time .' '.$this->params->get('result_add_unit') );
 		
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
 		$p = $this->params->get('p');
