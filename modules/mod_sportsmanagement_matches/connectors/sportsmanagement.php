@@ -554,7 +554,7 @@ return false;
 		if ($this->params->get('show_act_report_link', 0) == 1 AND $match->show_report == 1) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['report']) . $this->itemid;
 			$row['reportlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('show_act_report_text') . '">';
-			$row['reportlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array (
+			$row['reportlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'report.png', $this->params->get('show_act_report_text'), array (
 				'title' => $this->params->get('show_act_report_text'),
 				'height' => '16',
 				'width' => '16'
@@ -564,7 +564,7 @@ return false;
 		if ($this->params->get('show_statistic_link', 0) == 1 && ($match->team1_result || $match->team2_result)) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['statistic']) . $this->itemid;
 			$row['statisticlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['statisticlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array (
+			$row['statisticlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('statistic_link_text'), array (
 				'title' => $this->params->get('statistic_link_text'),
 				'height' => '16',
 				'width' => '16'
@@ -574,7 +574,7 @@ return false;
 		if ($this->params->get('show_nextmatch_link', 0) == 1 && !($match->team1_result || $match->team2_result)) {
 			$uri = 'index.php?option=com_sportsmanagement' . $this->arrayToUri($linkstructure['nextmatch']) . $this->itemid;
 			$row['nextmatchlink'] = '<a href="' . JRoute :: _($uri) . '" title="' . $this->params->get('statistic_link_text') . '">';
-			$row['nextmatchlink'] .= ($useicons) ? JHTML :: _('image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array (
+			$row['nextmatchlink'] .= ($useicons) ? HTMLHelper::_('image', $this->iconpath . 'history.png', $this->params->get('nextmatch_link_text'), array (
 				'title' => $this->params->get('nextmatch_link_text'),
 				'height' => '16',
 				'width' => '16'

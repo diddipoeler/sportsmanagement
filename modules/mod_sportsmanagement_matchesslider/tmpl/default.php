@@ -47,7 +47,7 @@ foreach( $slidermatches as $match )
 //echo $match->match_date;
 echo HTMLHelper::_('date', $match->match_date, $params->get('dateformat'), null);
 echo ' ';
-echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
+echo HTMLHelper::_('date', $match->match_date, $params->get('timeformat'), null);
 ?>
 </a>
 </h1>
