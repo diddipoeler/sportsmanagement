@@ -367,7 +367,7 @@ elseif ( $match->currenttimestamp <= $match->match_enddate )
 {
 $match->upcoming = true;	
 }	
-elseif ( ($match->currenttimestamp >= $match->match_timestamp) && ( $match->match_enddate <= $match->currenttimestamp)  )
+elseif (in_array($match->currenttimestamp, range($match->match_timestamp, $match->match_enddate)))
 {
 $match->live = true;	
 $match->actplaying = true;	
