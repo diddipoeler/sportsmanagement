@@ -677,6 +677,22 @@ return false;
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
+        $currenttimestamp = sportsmanagementHelper::getTimestamp();	
+        $result_add_time = $this->params->get('result_add_time');
+        $period_int = $this->params->get('period_int');
+        $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
+        $datebis = strtotime($currentdate.' + '.$period_int.' day');
+        $datevon = strtotime($currentdate.' - '.$result_add_time .' day');
+/*        
+        echo 'datebis <pre>'.print_r($datebis ,true).'</pre>';
+        echo 'datumbis <pre>'.print_r(date('Y-m-d H:i:s',$datebis ) ,true).'</pre>';
+        echo 'datevon <pre>'.print_r($datevon ,true).'</pre>';
+        echo 'datumvon <pre>'.print_r(date('Y-m-d H:i:s',$datevon ) ,true).'</pre>';
+        echo 'currenttimestamp <pre>'.print_r($currenttimestamp ,true).'</pre>';
+        echo 'currentdate <pre>'.print_r($currentdate ,true).'</pre>';
+        echo 'result_add_time <pre>'.print_r($result_add_time ,true).'</pre>';
+        echo 'period_int <pre>'.print_r($period_int ,true).'</pre>';
+*/        
         // select some fields
         $query->select('m.id');
         // from
@@ -686,7 +702,7 @@ return false;
         $query->join('LEFT','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id ');
         $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
-        $query->where("m.match_timestamp < " . $match->match_timestamp  );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
@@ -700,7 +716,7 @@ return false;
         $query->clear('where');
         $query->clear('order');
         
-        $query->where("m.match_timestamp > " . $match->match_timestamp  );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
@@ -714,7 +730,7 @@ return false;
         $query->clear('where');
         $query->clear('order');
         
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
@@ -728,7 +744,7 @@ return false;
         $query->clear('where');
         $query->clear('order');
         
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
@@ -753,6 +769,13 @@ return false;
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
+	$currenttimestamp = sportsmanagementHelper::getTimestamp();	
+        $result_add_time = $this->params->get('result_add_time');
+        $period_int = $this->params->get('period_int');
+        $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
+        $datebis = strtotime($currentdate.' + '.$period_int.' day');
+        $datevon = strtotime($currentdate.' - '.$result_add_time .' day');
+		
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
 		$p = $this->params->get('p');
 //		if (!empty ($p)) {
@@ -776,7 +799,7 @@ return false;
         
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
@@ -788,7 +811,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
@@ -800,7 +823,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp < " . $match->match_timestamp );
+        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
         $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
@@ -812,7 +835,7 @@ return false;
         
         $query->clear('where');
         $query->clear('order');
-        $query->where("m.match_timestamp > " . $match->match_timestamp );
+        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
         $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
