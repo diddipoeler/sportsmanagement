@@ -15,9 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  
-// import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
-
 /**
  * sportsmanagementModelProject
  * 
