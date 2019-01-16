@@ -649,10 +649,10 @@ class modMatchesSportsmanagementHelper {
 			return false;
 		}
 		if ( $this->params->get('nextlast_from_same_project')== 0) {
-			$this->next_last2($row);
+		$this->next_last($row,TRUE);
 		}
 		else {
-		$this->next_last($row);
+		$this->next_last($row,FALSE);
 		}
         $origin = $app->input->post->get('origin', $row->match_id);
 		$jsfunc = "jlml_loadMatch('%s', '%s', '" . $this->module_id . "', '" . $cnt . "', '%s')";
