@@ -662,114 +662,22 @@ return false;
 	 */
 	public function getDefaultLogos() {
 		return array (
-			"club_big" 		=> sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
-			"club_middle" 	=> sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'), 
-			"club_small" 	=> sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'), 
-			"team_picture" 	=> sportsmanagementHelper::getDefaultPlaceholder('team'), 
-			"country" 		=> sportsmanagementHelper::getDefaultPlaceholder('icon'), 
+			"club_big" => sportsmanagementHelper::getDefaultPlaceholder('clublogobig'),
+			"club_middle" => sportsmanagementHelper::getDefaultPlaceholder('clublogomedium'), 
+			"club_small" => sportsmanagementHelper::getDefaultPlaceholder('clublogosmall'), 
+			"team_picture" => sportsmanagementHelper::getDefaultPlaceholder('team'), 
+			"country" => sportsmanagementHelper::getDefaultPlaceholder('icon'), 
 		);
 	}
 
-	/**
-	 * MatchesSportsmanagementConnector::next_last()
-	 * 
-	 * @param mixed $match
-	 * @return void
-	 */
-	public function next_last(& $match) 
-    {
-		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$db = sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
-        
-        $currenttimestamp = sportsmanagementHelper::getTimestamp();	
-        $result_add_time = $this->params->get('result_add_time');
-        $period_int = $this->params->get('period_int');
-        $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
-        $datebis = strtotime($currentdate.' + '.$period_int.' '.$this->params->get('period_string') );
-        $datevon = strtotime($currentdate.' - '.$result_add_time .' '.$this->params->get('result_add_unit') );
-/*        
-        echo 'datebis <pre>'.print_r($datebis ,true).'</pre>';
-        echo 'datumbis <pre>'.print_r(date('Y-m-d H:i:s',$datebis ) ,true).'</pre>';
-        echo 'datevon <pre>'.print_r($datevon ,true).'</pre>';
-        echo 'datumvon <pre>'.print_r(date('Y-m-d H:i:s',$datevon ) ,true).'</pre>';
-        echo 'currenttimestamp <pre>'.print_r($currenttimestamp ,true).'</pre>';
-        echo 'currentdate <pre>'.print_r($currentdate ,true).'</pre>';
-        echo 'result_add_time <pre>'.print_r($result_add_time ,true).'</pre>';
-        echo 'period_int <pre>'.print_r($period_int ,true).'</pre>';
-*/        
-        // select some fields
-        $query->select('m.id');
-        // from
-        $query->from('#__sportsmanagement_match AS m ');
-        // join
-        $query->join('LEFT','#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('LEFT','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id ');
-        $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
-        
-        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date DESC');
-         
-		$db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->lasthome = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date ASC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->nexthome = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("(m.match_timestamp < " . $match->match_timestamp.' AND m.match_timestamp > '.$datevon. ' )'  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date DESC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->lastaway = $temp[0]->id;
-		}
-        
-        $query->clear('where');
-        $query->clear('order');
-        
-        $query->where("(m.match_timestamp > " . $match->match_timestamp.' AND m.match_timestamp < '.$datebis. ' )'  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
-        $query->where('p.id = ' . $match->project_id);
-        $query->order('m.match_date ASC');
-		
-        $db->setQuery($query,0,1);
-        if ( $temp = $db->loadObjectList() ) 
-        {
-			$match->nextaway = $temp[0]->id;
-		}
-        
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-	}
-
+	
 	/**
 	 * MatchesSportsmanagementConnector::next_last2()
 	 * 
 	 * @param mixed $match
 	 * @return void
 	 */
-	public function next_last2(& $match) 
+	public function next_last(& $match,$allprojects = FALSE) 
     {
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -780,14 +688,17 @@ return false;
         $currentdate = date('Y-m-d H:i:s',$currenttimestamp);
         $datebis = strtotime($currentdate.' + '.$period_int.' '.$this->params->get('period_string') );
         $datevon = strtotime($currentdate.' - '.$result_add_time .' '.$this->params->get('result_add_unit') );
-		
-		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$p = $this->params->get('p');
-//		if (!empty ($p)) {
-//			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
-//		}
+	
+		if ( $allprojects )
+		{
+	$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
+	$p = $this->params->get('p');
         $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
-//echo __METHOD__.' '.__LINE__.' projectstring <pre>'.print_r($projectstring,true).'</pre>';
+		}
+		else
+		{
+		$projectstring = $match->project_id;	
+		}
 		
         // select some fields
         $query->select('m.id');
