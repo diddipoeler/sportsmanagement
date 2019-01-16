@@ -108,6 +108,7 @@ $lfdnummer = 0;
                         <input type='hidden' name='playerpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->person_id; ?>'/>
                         <input type='hidden' name='playerprojectpersonid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_person_id; ?>'/>
                         <input type='hidden' name='playerprojectpositionid[<?php echo $lfdnummer; ?>]' value='<?php echo $value->project_position_id; ?>'/>
+                        <input type='hidden' name='playerhinweis[<?php echo $lfdnummer; ?>]' value='<?php echo $value->hinweis; ?>'/>
                     </td>
                     <td><?php echo $value->firstname; ?>
                         <input type='hidden' name='playerfirstname[<?php echo $lfdnummer; ?>]' value='<?php echo $value->firstname; ?>'/>

@@ -3248,6 +3248,7 @@ if (!$calendar->isAuth())
         $csv_player_startaufstellung = $post['startaufstellung'];
         $csv_player_inout_project_position_id = $post['player_inout_project_position_id'];
         $csv_player_project_events_id = $post['project_events_id'];
+        $csv_player_hinweis = $post['playerhinweis'];
 
         $csv_staff_lastnames = $post['stafflastname'];
         $csv_staff_firstnames = $post['stafffirstname'];
@@ -3300,6 +3301,10 @@ if (!$calendar->isAuth())
             $player_project_position_id = $csv_player_project_position_id[$player_key];
             $player_startaufstellung = $csv_player_startaufstellung[$player_key];
             $player_jerseynumber = $csv_player_number[$player_key];
+            $player_hinweis = $csv_player_hinweis[$player_key];
+            var_dump($player_hinweis);
+            $player_captain = ($player_hinweis == 'C') ? 1 : 0;
+            var_dump($player_captain);
 
             // Wir verarbeiten den Spieler nur, wenn der Benutzer eine Position ausgewählt hat
             if ($player_project_position_id) {
@@ -3325,7 +3330,7 @@ if (!$calendar->isAuth())
                     // Zuordnung zum Spiel
                     if ($player_startaufstellung) {
                         // Der Spieler war in der Startelf
-                        $player_match_id = $this->createMatchPlayer($match_id, $player_season_team_person_id, $player_position_id, $player_jerseynumber);
+                        $player_match_id = $this->createMatchPlayer($match_id, $player_season_team_person_id, $player_position_id, $player_jerseynumber, $player_captain);
                     } else {
                         // Der Spieler wurde eingewechselt, hier brauchen wir mehr Informationen
                         $player_came_in = 0;
@@ -3356,7 +3361,7 @@ if (!$calendar->isAuth())
                         }
 
                         if ($player_came_in && $player_in_for) {
-                            $player_match_id = $this->createMatchPlayer($match_id, $player_season_team_person_id, $player_position_id, $player_jerseynumber, $player_came_in, $player_in_for, $player_in_out_time);
+                            $player_match_id = $this->createMatchPlayer($match_id, $player_season_team_person_id, $player_position_id, $player_jerseynumber, $player_captain, $player_came_in, $player_in_for, $player_in_out_time);
                         }
                     }
 
@@ -3755,7 +3760,7 @@ if (!$calendar->isAuth())
         return $db->loadObject();
     }
 
-    function createMatchPlayer($match_id = 0, $season_team_person_id = 0, $project_position_id = 0, $jerseynumber = 0, $came_in = 0, $in_for = 0, $in_out_time = 0)
+    function createMatchPlayer($match_id = 0, $season_team_person_id = 0, $project_position_id = 0, $jerseynumber = 0, $captain = 0, $came_in = 0, $in_for = 0, $in_out_time = 0)
     {
         $existing = $this->getMatchPlayer($match_id, $season_team_person_id, $project_position_id);
         if ($existing) {
@@ -3768,8 +3773,8 @@ if (!$calendar->isAuth())
         $user = Factory::getUser();
 
         $insertquery = $db->getQuery(true);
-        $columns = array('match_id', 'teamplayer_id', 'project_position_id', 'trikot_number', 'came_in', 'in_for', 'in_out_time', 'modified', 'modified_by');
-        $values = array($match_id, $season_team_person_id, $project_position_id, $jerseynumber, $came_in, $in_for, $in_out_time, $db->Quote($date->toSql()), $user->id);
+        $columns = array('match_id', 'teamplayer_id', 'project_position_id', 'trikot_number', 'came_in', 'in_for', 'in_out_time', 'captain', 'modified', 'modified_by');
+        $values = array($match_id, $season_team_person_id, $project_position_id, $jerseynumber, $came_in, $in_for, $in_out_time, $captain, $db->Quote($date->toSql()), $user->id);
         $insertquery
             ->insert($db->quoteName('#__sportsmanagement_match_player'))
             ->columns($db->quoteName($columns))
