@@ -263,13 +263,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $document = Factory::getDocument();
         $model = $this->getModel();
 
-        //$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'Notice');
-
         $csv_file = $model->getPressebericht();
         $this->csv = $csv_file;
         $matchnumber = $model->getPresseberichtMatchnumber($csv_file);
         $this->matchnumber = $matchnumber;
         $lists = Array();
+
         if ($matchnumber) {
             $readplayers = $model->getPresseberichtReadPlayers($csv_file);
             $this->csvreferees = $model->csv_referee;
@@ -296,14 +295,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
         if ($res = $model->getProjectPositionsOptions(0, 1, $this->project_id)) {
             foreach ($res as $pos) {
                 $pos->text = Text::_($pos->text);
-                $pos->value = $pos->posid;
             }
 
             $position_id = array_merge($position_id, $res);
         }
 
-        $lists['project_position_id'] = $position_id;
-        $lists['inout_position_id'] = $position_id;
+        $lists['player_project_position_id'] = $position_id;
+        $lists['player_inout_project_position_id'] = $position_id;
         unset($position_id);
 
         //build the html options for staff position
@@ -322,7 +320,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $events = $model->getEventsOptions($this->project_id);
         if (!$events) {
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), 'Error');
-            //return;
         }
         $eventlist = array();
         $eventlist[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
@@ -330,18 +327,16 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
         $lists['events'] = $eventlist;
         unset($eventlist);
+
         // build the html select booleanlist
         $myoptions = array();
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('JNO'));
         $myoptions[] = HTMLHelper::_('select.option', '1', Text::_('JYES'));
         $lists['startaufstellung'] = $myoptions;
 
-//$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' lists<br><pre>'.print_r($lists,true).'</pre>'),'Notice');
-
         $this->projectteamid = $model->projectteamid;
         $this->lists = $lists;
         $this->setLayout('readpressebericht');
-
     }
 
     /**
