@@ -226,7 +226,7 @@ $lfdnummer = 0;
                     {
                         //$append=' style="background-color:#FFFFFF"';
                     }
-                    echo HTMLHelper::_( 'select.genericlist', $this->lists['project_staff_position_id'], 'project_staff_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
+                    echo HTMLHelper::_( 'select.genericlist', $this->lists['staff_project_position_id'], 'staff_project_position_id[' . $lfdnummer.']', $inputappend . 'class="inputbox" size="1" ' . $append, 'value', 'text', $selectedvalue );
                     ?>
                 </td>
             </tr>

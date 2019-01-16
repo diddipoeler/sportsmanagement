@@ -3253,9 +3253,9 @@ if (!$calendar->isAuth())
         $playerlastname = $post['playerlastname'];
         $playerpersonid = $post['playerpersonid'];
 
-        $staffLastnameList = $post['stafflastname'];
-        $staffFirstnameList = $post['stafffirstname'];
-        $project_staff_position_id = $post['project_staff_position_id'];
+        $csv_staff_lastnames = $post['stafflastname'];
+        $csv_staff_firstnames = $post['stafffirstname'];
+        $csv_staff_project_position_id = $post['staff_project_position_id'];
 
         $this->csv_referee = $app->getUserState($option . 'csv_referee');
         $this->csv_staff = $app->getUserState($option . 'csv_staff');
@@ -3287,8 +3287,8 @@ if (!$calendar->isAuth())
             if ($ref_project_position_id) {
                 // Hat der Schiedsrichter noch keine Person-ID, muss diese Person angelegt werden
                 if (!$ref_person_id) {
-                    $ref_position_id = $this->getProjectPosition($ref_project_position_id)->position_id;
-                    $ref_person_id = $this->createPerson($ref_firstname, $ref_lastname, $ref_position_id);
+                    $staff_position_id = $this->getProjectPosition($ref_project_position_id)->position_id;
+                    $ref_person_id = $this->createPerson($ref_firstname, $ref_lastname, $staff_position_id);
                 }
 
                 // Die nachfolgenden Schritte nur ausführen, wenn eine Person existiert
@@ -3569,150 +3569,49 @@ if (!$calendar->isAuth())
 
         }
 
-
-// Jetzt werden die Staffs eingearbeitet
-        foreach ($staffLastnameList as $staffKey => $staffLastname) {
+        // Jetzt werden die Staffs eingearbeitet
+        foreach ($csv_staff_lastnames as $staff_key => $staff_lastname) {
 
             // Zu Beginn holen wir uns das Staff-Objekt (Vor- und Nachname muss gleich sein)
-            $staffFirstname = $staffFirstnameList[$staffKey];
-            $staffObject = null;
-            foreach ($this->csv_staff as $csvStaffKey => $csvStaffValue) {
-                if ($csvStaffValue->lastname == $staffLastname && $csvStaffValue->firstname == $staffFirstname) {
-                    $staffObject = $csvStaffValue;
+            $staff_firstname = $csv_staff_firstnames[$staff_key];
+            $staff_person_id = 0;
+            $staff_position_id = 0;
+            $staff_project_position_id = $csv_staff_project_position_id[$staff_key];
+
+            foreach ($this->csv_staff as $csv_staff_key => $csv_staff_value) {
+                if ($csv_staff_value->lastname == $staff_lastname && $csv_staff_value->firstname == $staff_firstname) {
+                    $staff_person_id = $csv_staff_value->person_id;
                 }
             }
 
-            // Hat der Benutzer eine Position ausgewählt? Falls nicht, können wir den Datensatz nicht verarbeiten
-            $staffPositionId = $project_staff_position_id[$staffKey];
-            if ($staffObject && $staffPositionId) {
+            // Wir verarbeiten den Staff nur, wenn der Benutzer eine Position ausgewählt hat
+            if ($staff_project_position_id) {
 
                 // Dann schauen wir, ob der Staff als Person schon angelegt ist und legen diese Person ggf. an
-                if ($staffObject->person_id == 0) {
-                    $temp = new stdClass();
-                    $temp->firstname = $staffObject->firstname;
-                    $temp->lastname = $staffObject->lastname;
-                    $temp->alias = JFilterOutput::stringURLSafe($temp->firstname . ' ' . $temp->lastname);
-                    $temp->position_id = $staffPositionId;
-                    $temp->notes = ' ';
-                    $temp->email = ' ';
-                    $temp->website = ' ';
-                    $temp->published = 1;
-
-                    $temp->injury_date = -1;
-                    $temp->injury_end = -1;
-                    $temp->injury_detail = ' ';
-
-                    $temp->suspension_date = -1;
-                    $temp->suspension_end = -1;
-                    $temp->suspension_detail = ' ';
-
-                    $temp->away_date = -1;
-                    $temp->away_end = -1;
-                    $temp->away_detail = ' ';
-
-                    try {
-                        $result = $db->insertObject('#__sportsmanagement_person', $temp);
-                        $staffObject->person_id = $db->insertid();
-                    } catch (Exception $e) {
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
-                    }
+                if ($staff_person_id == 0) {
+                    $staff_position_id = $this->getProjectPosition($staff_project_position_id)->position_id;
+                    $staff_person_id = $this->createPerson($staff_firstname, $staff_lastname, $staff_position_id);
                 }
 
-                // zuordnung season personid
-                $insertquery = $db->getQuery(true);
-                $columns = array('person_id', 'season_id', 'persontype', 'position_id', 'modified', 'modified_by');
-                $values = array($staffObject->person_id, $season_id, 1, $staffPositionId, $db->Quote($date->toSql()), $user->id);
-                $insertquery
-                    ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
-                    ->columns($db->quoteName($columns))
-                    ->values(implode(',', $values));
-                try {
-                    $db->setQuery($insertquery);
-                    $db->execute();
-                } catch (Exception $e) {
-                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
-                }
+                // Die nachfolgenden Schritte nur ausführen, wenn eine Person existiert
+                if ($staff_person_id) {
 
-                // Suche nach season team person id
-                $query->clear();
-                $query->select('*');
-                $query->from('#__sportsmanagement_season_team_person_id');
-                $query->where('person_id = ' . $staffObject->person_id);
-                $query->where('season_id = ' . $season_id);
-                $query->where('team_id = ' . $fav_team);
-                $db->setQuery($query);
-                $result = $db->loadObject();
+                    // Zuordnung zur Saison
+                    $staff_season_person_id = $this->createSeasonPersonAssignment($staff_person_id, $season_id, 1, $staff_project_position_id);
 
-                if (!$result) {
-                    // Zuordnung season team person id
-                    $insertquery = $db->getQuery(true);
-                    $columns = array('person_id', 'season_id', 'team_id', 'persontype', 'published', 'project_position_id', 'modified', 'modified_by');
-                    $values = array($staffObject->person_id, $season_id, $fav_team, 2, 1, $staffPositionId, $db->Quote($date->toSql()), $user->id);
-                    $insertquery
-                        ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
-                        ->columns($db->quoteName($columns))
-                        ->values(implode(',', $values));
-                    try {
-                        $db->setQuery($insertquery);
-                        $db->execute();
-                        $team_staff_id = $db->insertid();
-                    } catch (Exception $e) {
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
-                    }
-                } else {
-                    $team_staff_id = $result->id;
-                }
+                    // Zuordnung Person -> Projekt Position
+                    $staff_person_project_position_id = $this->createPersonProjektPositionAssignment($staff_person_id, $project_id, 2, $staff_project_position_id);
 
-                // zuordnung person project position
-                $insertquery = $db->getQuery(true);
-                $columns = array('person_id', 'project_id', 'persontype', 'project_position_id', 'modified', 'modified_by');
-                $values = array($staffObject->person_id, $project_id, 2, $staffPositionId, $db->Quote($date->toSql()), $user->id);
-                $insertquery
-                    ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
-                    ->columns($db->quoteName($columns))
-                    ->values(implode(',', $values));
-                try {
-                    $db->setQuery($insertquery);
-                    $db->execute();
-                } catch (Exception $e) {
-                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-                    $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
-                }
+                    // Zuordnung zur Season Team Person
+                    $staff_season_team_person_id = $this->createSeasonTeamPersonAssignment($staff_person_id, $season_id, $fav_team, 2, $staff_project_position_id);
 
-                // Zuordnung zum Spiel
-                $query->clear();
-                $query->select('*');
-                $query->from('#__sportsmanagement_match_staff');
-                $query->where('match_id = ' . $match_id);
-                $query->where('team_staff_id = ' . $team_staff_id);
-                $query->where('project_position_id = ' . $staffPositionId);
-                $db->setQuery($query);
-                $result = $db->loadResult();
-
-                if (!$result && $team_staff_id) {
-                    $temp = new stdClass();
-                    $temp->match_id = $match_id;
-                    $temp->team_staff_id = $team_staff_id;
-                    $temp->project_position_id = $staffPositionId;
-                    $temp->modified = $date->toSql();
-                    $temp->modified_by = $user->id;
-                    try {
-                        $result = $db->insertObject('#__sportsmanagement_match_staff', $temp);
-                    } catch (Exception $e) {
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
-                    }
+                    // Zuordnung zum Spiel
+                    $staff_match_id = $this->createMatchStaff($match_id, $staff_season_team_person_id, $staff_project_position_id);
                 }
             }
         }
 
-
         $this->_success_text['Importing general Person data:'] = $my_text;
-
-
     }
 
     function createPerson($firstname = '', $lastname = '', $position_id = 0)
@@ -3888,6 +3787,143 @@ if (!$calendar->isAuth())
         }
 
         return null;
+    }
+
+    function getPersonProjektPositionAssignment($person_id = 0, $project_id = 0, $person_type = 0, $project_position_id = 0)
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__sportsmanagement_person_project_position');
+        $query->where('person_id = ' . $person_id);
+        $query->where('project_id = ' . $project_id);
+        $query->where('persontype = ' . $person_type);
+        $query->where('project_position_id = ' . $project_position_id);
+
+        $db->setQuery($query);
+        return $db->loadObject();
+    }
+
+    function createPersonProjektPositionAssignment($person_id = 0, $project_id = 0, $person_type = 0, $project_position_id = 0)
+    {
+        $existing = $this->getPersonProjektPositionAssignment($person_id, $project_id, $person_type, $project_position_id);
+        if ($existing) {
+            return $existing->id;
+        }
+
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
+
+        $insertquery = $db->getQuery(true);
+        $columns = array('person_id', 'project_id', 'persontype', 'project_position_id', 'modified', 'modified_by');
+        $values = array($person_id, $project_id, $person_type, $project_position_id, $db->Quote($date->toSql()), $user->id);
+        $insertquery
+            ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+
+        try {
+            $db->setQuery($insertquery);
+            $db->execute();
+            return $db->insertid();
+        } catch (Exception $e) {
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+        }
+    }
+
+    function getSeasonTeamPersonAssignment($person_id = 0, $season_id = 0, $team_id = 0, $person_type = 0, $project_position_id = 0)
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__sportsmanagement_season_team_person_id');
+        $query->where('person_id = ' . $person_id);
+        $query->where('season_id = ' . $season_id);
+        $query->where('team_id = ' . $team_id);
+        $query->where('persontype = ' . $person_type);
+        $query->where('project_position_id = ' . $project_position_id);
+
+        $db->setQuery($query);
+        return $db->loadObject();
+    }
+
+    function createSeasonTeamPersonAssignment($person_id = 0, $season_id = 0, $team_id = 0, $person_type = 0, $project_position_id = 0)
+    {
+        $existing = $this->getSeasonTeamPersonAssignment($person_id, $season_id, $team_id, $person_type, $project_position_id);
+        if ($existing) {
+            return $existing->id;
+        }
+
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
+
+        $insertquery = $db->getQuery(true);
+        $columns = array('person_id', 'season_id', 'team_id', 'persontype', 'project_position_id', 'published', 'modified', 'modified_by');
+        $values = array($person_id, $season_id, $team_id, $person_type, $project_position_id, 1, $db->Quote($date->toSql()), $user->id);
+        $insertquery
+            ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+        try {
+            $db->setQuery($insertquery);
+            $db->execute();
+            return $db->insertid();
+        } catch (Exception $e) {
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+        }
+    }
+
+    function getMatchStaff($match_id = 0, $team_staff_id = 0, $project_position_id = 0)
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__sportsmanagement_match_staff');
+        $query->where('match_id = ' . $match_id);
+        $query->where('team_staff_id = ' . $team_staff_id);
+        $query->where('project_position_id = ' . $project_position_id);
+
+        $db->setQuery($query);
+        return $db->loadObject();
+    }
+
+    function createMatchStaff($match_id = 0, $team_staff_id = 0, $project_position_id = 0)
+    {
+        $existing = $this->getMatchStaff($match_id, $team_staff_id, $project_position_id);
+        if ($existing) {
+            return $existing->id;
+        }
+
+        $app = Factory::getApplication();
+        $db = Factory::getDbo();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
+
+        $insertquery = $db->getQuery(true);
+        $columns = array('match_id', 'team_staff_id', 'project_position_id', 'modified', 'modified_by');
+        $values = array($match_id, $team_staff_id, $project_position_id, $db->Quote($date->toSql()), $user->id);
+        $insertquery
+            ->insert($db->quoteName('#__sportsmanagement_match_staff'))
+            ->columns($db->quoteName($columns))
+            ->values(implode(',', $values));
+
+        try {
+            $db->setQuery($insertquery);
+            $db->execute();
+            return $db->insertid();
+        } catch (Exception $e) {
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getMessage()), 'Error');
+            $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . Text::_($e->getCode()), 'Error');
+        }
     }
 
     function getProjectPosition($project_position_id = 0)
