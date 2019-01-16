@@ -117,10 +117,12 @@ $doc = Factory::getDocument();
 
 if ($params->get('mootools'))
 {
+$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
+}
+
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$doc->addScript( Uri::root().'/media/system/js/mootools-core.js');
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_3.js' );
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
@@ -128,7 +130,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 // Joomla! 2.5 code here
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_2.js' );
 } 
-}
+
 
 $doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DS.$module->module.'.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
