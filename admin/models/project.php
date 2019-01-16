@@ -392,7 +392,10 @@ $result = $db->loadObjectList();
 //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br>result <pre>'.print_r($result , true).'</pre><br>','Notice');		
 for ($x=0; $x < count($pks); $x++)
 {
+foreach ($result as $id => $value)
+{
 	
+}
 }
 		
 		
