@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      mod_sportsmanagement_matches.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_matches
@@ -30,7 +30,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 /**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ * prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
  */
 if (!class_exists('JSMModelLegacy')) 
 {
@@ -68,7 +68,7 @@ require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
 
 /**
- * besonderheit für das inlinehockey update, wenn sich das 
+ * besonderheit fÃ¼r das inlinehockey update, wenn sich das 
  * modul in einem artikel befindet
  * 
  */
@@ -115,6 +115,8 @@ HTMLHelper::_('behavior.mootools');
 
 $doc = Factory::getDocument();
 
+if ($params->get('mootools'))
+{
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
@@ -126,7 +128,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 // Joomla! 2.5 code here
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'_joomla_2.js' );
 } 
-
+}
 
 $doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DS.$module->module.'.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
