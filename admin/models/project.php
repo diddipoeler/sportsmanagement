@@ -394,7 +394,19 @@ for ($x=0; $x < count($pks); $x++)
 {
 foreach ($result as $id => $value)
 {
-	
+$temp = new stdClass();
+$temp->field_id = $value->id;
+$temp->jl_id = $pks[$x];
+/**
+ * Insert the object into the table.
+ */
+try{
+$resultinsert = $db->insertObject('#__sportsmanagement_user_extra_fields_values', $temp);
+}
+catch (Exception $e)
+{
+
+}		
 }
 }
 		
