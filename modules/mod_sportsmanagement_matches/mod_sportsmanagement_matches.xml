@@ -53,7 +53,17 @@
 <field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
 <field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
 <field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	 
-						 
+
+<field name="mootools" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+	label="MOD_SPORTSMANAGEMENT_MOOTOOLS_TITLE" 
+      description="MOD_SPORTSMANAGEMENT_MOOTOOLS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				
       <field name="cfg_which_database" 
     type="extensionradiobutton" 
     default="0"
@@ -113,16 +123,6 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
             				
-<!--
-				<field	name="project" type="projects" default="" required="false"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
-
-				<field 	name="project_not_used" type="projects" default="" required="false"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
-
--->
 
 				<field 	name="order_by_project" type="extensionradiobutton" default="0" 
 				class="radio btn-group btn-group-yesno"
@@ -149,11 +149,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-<!--
-				<field 	name="teams" type="teams" default="" 
-						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
--->
+
 <field name="teams" 
 		type="dependsql" 
 		default="0" 
@@ -171,11 +167,7 @@
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_DESCR" />
-<!--
-				<field 	name="Itemid" type="jlmlitemid" default=""
-						label="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_DESCR" />
--->
+
 				<field 	name="show_no_matches_notice" type="extensionradiobutton" default="0"
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_TITLE"
@@ -217,10 +209,7 @@
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
-					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
-					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
--->          
+          
 				</field>
 
 				<field 	name="upcoming_first" type="extensionradiobutton" default="1"
@@ -283,10 +272,7 @@
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
-					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
-					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
--->          
+          
 				</field>
 
 				<field 	name="team_separator" type="text" default=":"
