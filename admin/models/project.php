@@ -368,7 +368,8 @@ class sportsmanagementModelProject extends JSMModelAdmin
 	{
 		$app = Factory::getApplication();
         $date = Factory::getDate();
-              
+        $db = sportsmanagementHelper::getDBConnection(); 
+        $query = $db->getQuery(true);        
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -382,7 +383,19 @@ class sportsmanagementModelProject extends JSMModelAdmin
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
         $post = Factory::getApplication()->input->post->getArray(array());
-        
+
+$query->select('id');
+$query->from('#__sportsmanagement_user_extra_fields');
+$query->where('template_backend  LIKE '.$this->jsmdb->Quote(''.'project'.'').' ' );
+$db->setQuery($query);
+$result = $db->loadObjectList();        
+//$app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br>result <pre>'.print_r($result , true).'</pre><br>','Notice');		
+for ($x=0; $x < count($pks); $x++)
+{
+	
+}
+		
+		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
 //        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
