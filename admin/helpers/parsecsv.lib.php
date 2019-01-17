@@ -503,7 +503,7 @@ class parseCSV {
               //$head[$key] = 'Spalte'. ( $key + 1 );
               $head[$key] = $letters[$key];
               }
-//$app->enqueueMessage(JText::_('head2<br><pre>'.print_r($head,true).'</pre>'   ),'');							
+
 						} elseif ( empty($this->fields) || (!empty($this->fields) && (($this->heading && $row_count > 0) || !$this->heading)) ) {
 							if ( !empty($this->sort_by) && !empty($row[$this->sort_by]) ) {
 								if ( isset($rows[$row[$this->sort_by]]) ) {

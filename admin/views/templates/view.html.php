@@ -68,7 +68,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
             $this->model->set('_getALL', 0);
             $masterTemplates = $this->model->getMasterTemplatesList();
 
-            // Build in JText of template title here
+            // Build in Text of template title here
             foreach ($masterTemplates as $temptext) {
                 $temptext->text = Text::_($temptext->text);
             }

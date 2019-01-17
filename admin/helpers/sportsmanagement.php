@@ -2445,7 +2445,7 @@ $bar->popupButton('preview')
 
 //// Render the popup button
 //$layout2 = new JLayoutFile('joomla.toolbar.popup');
-//$dhtml = $layout2->render(array('name' => 'test', 'text' => JText::_('Custom button'), 'class' => 'icon-archive', 'doTask' => ''));
+
 //$bar->appendButton('Custom', $dhtml);
 
 //    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');

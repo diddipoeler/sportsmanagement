@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
 
 class GCalendarView extends JViewLegacy {
 
@@ -55,7 +56,7 @@ class GCalendarView extends JViewLegacy {
 		if (empty($this->icon)) {
 			$this->icon = strtolower($this->getName());
 		}
-		ToolbarHelper::title(JText::_($this->title), $this->icon);
+		ToolbarHelper::title(Text::_($this->title), $this->icon);
 		$document = Factory::getDocument();
 		$document->addStyleDeclaration('.icon-48-'.$this->icon.' {background-image: url(../media/com_gcalendar/images/admin/48-'.$this->icon.'.png);background-repeat: no-repeat;}');
 

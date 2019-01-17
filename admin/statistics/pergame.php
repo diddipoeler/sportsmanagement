@@ -132,8 +132,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 }
 		
         $query_core->clear('select');
@@ -146,8 +146,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 }
 		if ($res->ranking)
 		{
@@ -214,8 +214,8 @@ try {
 }
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
+    $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');
 }		
 		if (!empty($res))
 		{

@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
 
 if (! defined('DS'))
 {
@@ -22,7 +23,7 @@ if (! defined('DS'))
 // Access check.
 if (!Factory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return JError::raiseWarning(404, Text::_('JERROR_ALERTNOAUTHOR'));
 }
  
 // require helper file
@@ -110,7 +111,7 @@ $params = JComponentHelper::getParams( 'com_sportsmanagement' );
 
 if ( $params->get( 'cfg_dbprefix' ) )
 {
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'),'');   
+$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'),'');   
              
 }
 
@@ -213,7 +214,7 @@ if($app->isAdmin())
 		$params = array();
 	}
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+
  
  
 // own controllers 
@@ -245,9 +246,7 @@ jimport('joomla.application.component.controller');
 		//$controller	= JController::getInstance('sportsmanagement');
         $controller	= BaseController::getInstance('sportsmanagement');
 	}
-     
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
-    
+   
 	if (is_dir($base_path.DS.'models')) {
 		$model_pathes[] = $base_path.DS.'models';
 	}
@@ -278,7 +277,7 @@ foreach ($model_pathes as $path)
 	if(!empty($path))
 	{
 		$controller->addModelPath($path, 'sportsmanagementModel');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addModelPath<br><pre>'.print_r($path,true).'</pre>'),'');
+//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' addModelPath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
 
@@ -287,7 +286,6 @@ foreach ($view_pathes as $path)
 	if(!empty($path))
 	{
 		$controller->addViewPath($path, 'sportsmanagementView');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addViewPath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
 
@@ -305,14 +303,11 @@ foreach ($template_pathes as $path)
         
 //	   $view = new JView;
 //		$view->addTemplatePath($path);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
+        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
 	}
 }
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
-
- 
 // Perform the Request task
 $controller->execute($task);
  

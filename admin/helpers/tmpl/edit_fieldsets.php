@@ -1,6 +1,7 @@
 <?php 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 switch($this->fieldset)
 {
@@ -90,7 +91,7 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 	$fields = $this->extended->getFieldset($fieldset->name);
 	
 	if(!count($fields)) {
-		echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+		echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
 	}
 	
 	foreach ($fields as $field)

@@ -21,7 +21,7 @@
 
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 
 class jsmGCalendarZendHelper {
@@ -70,8 +70,6 @@ class jsmGCalendarZendHelper {
     {
         $app = Factory::getApplication();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendar<br><pre>'.print_r($calendar,true).'</pre>'),'Notice');
-        
 		// Implement View Level Access
 		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access, $user->getAuthorisedViewLevels())) {
@@ -103,15 +101,13 @@ class jsmGCalendarZendHelper {
 		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access_content, $user->getAuthorisedViewLevels())) {
 			foreach ($events as $event) {
-				$event->setTitle(JText::_('COM_GCALENDAR_EVENT_BUSY_LABEL'));
+				$event->setTitle(Text::_('COM_GCALENDAR_EVENT_BUSY_LABEL'));
 				$event->setContent(null);
 				$event->setWhere(null);
 				$event->setWho(array());
 			}
 		}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
-        
+       
 		return $events;
 	}
 
@@ -155,14 +151,12 @@ class jsmGCalendarZendHelper {
 		// Implement View Level Access
 		$user = Factory::getUser();
 		if (!$user->authorise('core.admin') && !in_array($calendar->access_content, $user->getAuthorisedViewLevels())) {
-			$event->setTitle(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EVENT_BUSY_LABEL'));
+			$event->setTitle(Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_EVENT_BUSY_LABEL'));
 			$event->setContent(null);
 			$event->setWhere(null);
 			$event->setWho(array());
 		}
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' event<br><pre>'.print_r($event,true).'</pre>'),'Notice');
-        
+       
 		return $event;
 	}
 

@@ -19,6 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Language\Text;
 
 /**
  * @package		Joomla
@@ -299,8 +300,8 @@ class JInstallationHelper
 			// is there already and existing admin in migrated data
 			if ( $db->getErrorNum() == 1062 )
 			{
-				$vars['adminLogin'] = JText::_('Admin login in migrated content was kept');
-				$vars['adminPassword'] = JText::_('Admin password in migrated content was kept');
+				$vars['adminLogin'] = Text::_('Admin login in migrated content was kept');
+				$vars['adminPassword'] = Text::_('Admin password in migrated content was kept');
 				return;
 			}
 			else
@@ -642,7 +643,7 @@ class JInstallationHelper
 		 * Check for iconv
 		 */
 		if ($migration && !$preconverted && !function_exists( 'iconv' ) ) {
-			return JText::_( 'WARNICONV' );
+			return Text::_( 'WARNICONV' );
 		}
 
 
@@ -663,7 +664,7 @@ class JInstallationHelper
 		 */
 		if (!(bool) ini_get('file_uploads'))
 		{
-			return JText::_('WARNINSTALLFILE');
+			return Text::_('WARNINSTALLFILE');
 		}
 
 		/*
@@ -671,7 +672,7 @@ class JInstallationHelper
 		 */
 		if (!extension_loaded('zlib'))
 		{
-			return JText::_('WARNINSTALLZLIB');
+			return Text::_('WARNINSTALLZLIB');
 		}
 
 		/*
@@ -679,7 +680,7 @@ class JInstallationHelper
 		 */
 		if (!is_array($sqlFile) || $sqlFile['size'] < 1)
 		{
-			return JText::_('WARNNOFILE');
+			return Text::_('WARNNOFILE');
 		}
 
 		/*
@@ -690,7 +691,7 @@ class JInstallationHelper
 		jimport('joomla.filesystem.file');
 		$uploaded = File::upload($sqlFile['tmp_name'], JPATH_SITE.DS.'tmp'.DS.$sqlFile['name']);
 		if(!$uploaded) {
-			return JText::_('WARNUPLOADFAILURE');
+			return Text::_('WARNUPLOADFAILURE');
 		}
 
 		if( !preg_match('#\.sql$#i', $sqlFile['name']) )
@@ -708,7 +709,7 @@ class JInstallationHelper
 			$package = JInstallationHelper::unpack( $archive, $args );
 			if ( $package === false )
 			{
-				return JText::_('WARNUNPACK');
+				return Text::_('WARNUNPACK');
 			}
 			$script = $package['folder'].DS.$package['script'];
 		}
@@ -723,7 +724,7 @@ class JInstallationHelper
 			$script = JInstallationHelper::preMigrate($script, $args, $db);
 			if ( $script == false )
 			{
-				return JText::_( 'Script operations failed' );
+				return Text::_( 'Script operations failed' );
 			}
 		}
 
@@ -767,13 +768,13 @@ class JInstallationHelper
 			{
 				$msg .= stripslashes( $error['msg'] );
 				$msg .= chr(13)."-------------".chr(13);
-				$txt = '<textarea cols="40" rows="4" name="instDefault" readonly="readonly" >'.JText::_("Database Errors Reported").chr(13).$msg.'</textarea>';
+				$txt = '<textarea cols="40" rows="4" name="instDefault" readonly="readonly" >'.Text::_("Database Errors Reported").chr(13).$msg.'</textarea>';
 			}
 		}
 		else
 		{
 			// consider other possible errors from populate
-			$msg = $result == 0 ? JText::_('SQL script installed successfully') : JText::_('Error installing SQL script') ;
+			$msg = $result == 0 ? Text::_('SQL script installed successfully') : Text::_('Error installing SQL script') ;
 			$txt = '<input size="50" value="'.$msg.'" readonly="readonly" />';
 		}
 
