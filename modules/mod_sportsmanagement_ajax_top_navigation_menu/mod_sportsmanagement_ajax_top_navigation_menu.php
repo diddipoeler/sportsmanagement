@@ -159,6 +159,9 @@ console.log('assoc_id = ' + '<?php echo $assoc_id ;?>' );
 console.log('subassoc_id = ' + '<?php echo $subassoc_id ;?>' );
 console.log('subsubassoc_id = ' + '<?php echo $subsubassoc_id ;?>' );
 
+console.log("jquery version : "+jQuery().jquery);
+console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
+	
 </script>
 <?php
 // Build the script.
