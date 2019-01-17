@@ -42,6 +42,9 @@ $joomlaicon = $params->get('show_joomla_icons');
                     <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUBS_WEBSITE', 'a.website', $this->sortDirection, $this->sortColumn); ?>
                 </th>
                 <th width="1%">
+            <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EMAIL'); ?>
+        </th>
+                <th width="1%">
                     <?php echo HTMLHelper::_('grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID', 'a.unique_id', $this->sortDirection, $this->sortColumn); ?>
                     <br />
                     <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
@@ -153,6 +156,9 @@ $joomlaicon = $params->get('show_joomla_icons');
                             echo '<span class="label">' . Text::_('JNO') . '</span>';
                         }
                         ?>
+                    </td>
+                    <td class="center">
+                    <?php echo $row->email; ?>    
                     </td>
                     <td>
                         <input<?php echo $inputappend; ?>	
