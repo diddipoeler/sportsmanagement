@@ -9,7 +9,7 @@
  * @subpackage results
  */
 
-defined('_JEXEC') or die(JText('Restricted access'));
+defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\User\UserHelper;
