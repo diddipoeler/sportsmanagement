@@ -13,9 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
-$modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
 <style>
 fieldset input, 
@@ -53,7 +52,7 @@ fieldset button {
 						</th>
 					<!--	<th width="20" > </th> -->
             <?php
-            if ( JComponentHelper::getParams($this->option)->get('cfg_be_extension_single_match',0) )
+            if ( ComponentHelper::getParams($this->option)->get('cfg_be_extension_single_match',0) )
             {
             ?>
             <th width="20" ><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SINGLE_MATCH'); ?></th>
@@ -188,8 +187,6 @@ $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_
               <?php
 echo sportsmanagementHelper::getBootstrapModalImage('matchpicture'.$row->id,JURI::root().'administrator/components/com_sportsmanagement/assets/images/link.png',Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'),'20',JURI::base().$pcture_link,$modalwidth,$modalheight);              
 							// diddipoeler einzelsportart
-            
-            //if ( JComponentHelper::getParams('com_sportsmanagement')->get('cfg_be_extension_single_match',0) )
             if ( $this->projectws->project_art_id == 2 )
             {
             

@@ -15,6 +15,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
  * sportsmanagementViewjlextprofleagimport
  * 
@@ -35,7 +37,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 	{
 		$lang = Factory::getLanguage();
    
-		$config = JComponentHelper::getParams('com_media');
+		$config = ComponentHelper::getParams('com_media');
 		$post = $this->jinput->post->getArray(array());
 		$files = $this->jinput->get('files');
 

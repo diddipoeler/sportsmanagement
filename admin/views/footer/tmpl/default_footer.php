@@ -12,14 +12,15 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('behavior.modal');
 $view = $this->jinput->getVar("view");
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');
-$modal_popup_width = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 0);
-$modal_popup_height = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 0);
-$cfg_bugtracker_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server', '');
+$cfg_help_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server', '');
+$modal_popup_width = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 0);
+$modal_popup_height = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 0);
+$cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_bugtracker_server', '');
 ?>
 
 <script>

@@ -14,6 +14,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjlextdbbimport
@@ -43,7 +44,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$input = Factory::getApplication()->input;
 		
 		$uri = Factory::getURI ();
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		$files = $input->get('files');
 		$post = $input->post;
 		$this->request_url	= $uri->toString ();
@@ -79,7 +80,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$this->request_url	= $uri->toString ();
 		$this->config	= $config;
@@ -110,7 +111,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );

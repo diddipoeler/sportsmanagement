@@ -145,7 +145,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $option = $jinput->getCmd('option');
         $project_id = $app->getUserState("$option.pid", '0');
         $document = Factory::getDocument();
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $default_name_format = $params->get("name_format");
 
         $model = $this->getModel();
@@ -416,7 +416,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $option = $jinput->getCmd('option');
         $document = Factory::getDocument();
         $model = $this->getModel();
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
 
@@ -816,7 +816,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $option = $jinput->getCmd('option');
         $document = Factory::getDocument();
         $project_id = $app->getUserState("$option.pid", '0');;
-        $config = JComponentHelper::getParams('com_media');
+        $config = ComponentHelper::getParams('com_media');
         $this->config = $config;
 
         $model = $this->getModel();

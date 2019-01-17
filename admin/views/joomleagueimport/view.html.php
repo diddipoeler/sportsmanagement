@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjoomleagueimport
@@ -52,7 +53,7 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
         
         
         //$count = 5;
-        $count = JComponentHelper::getParams($option)->get('max_import_jl_import_steps',0);
+        $count = ComponentHelper::getParams($option)->get('max_import_jl_import_steps',0);
         
         $this->step = $app->getUserState( "$option.step", '0' );
         $this->totals = $app->getUserState( "$option.totals", '0' );

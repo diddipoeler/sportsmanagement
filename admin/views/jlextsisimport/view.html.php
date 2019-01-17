@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Component\ComponentHelper;
 
 
 
@@ -50,7 +50,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$uri = Factory::getURI ();
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		$post = $jinput->post->getArray(array());
 		$files = $jinput->get('files');
 		
@@ -86,8 +86,8 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
-        $params = JComponentHelper::getParams( $option );
+		$config = ComponentHelper::getParams ( 'com_media' );
+        $params = ComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
@@ -121,7 +121,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );

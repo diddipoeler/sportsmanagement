@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $massadd=Factory::getApplication()->input->getInt('massadd',0);
@@ -35,7 +37,7 @@ echo $this->loadTemplate('massadd');
 echo $this->loadTemplate('matches'); 
 ?>	
 <?php 
-if ( JComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
+if ( ComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
 {
 echo $this->loadTemplate('matrix'); 
 }

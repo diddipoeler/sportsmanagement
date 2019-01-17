@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewMatches
@@ -39,13 +40,9 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $app = Factory::getApplication();
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//            $uri = JUri::getInstance();
-//        } else {
-//            $uri = Factory::getURI();
-//        }
+
         $model = $this->getModel();
-        $params = JComponentHelper::getParams($option);
+        $params = ComponentHelper::getParams($option);
         $document = Factory::getDocument();
         $view = $jinput->get('view');
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO

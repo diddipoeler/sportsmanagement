@@ -15,6 +15,7 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Application\WebApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewImagehandler
@@ -124,7 +125,7 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_I
 		//initialise variables
 		$document	= Factory::getDocument();
 		//$uri 		= Factory::getURI();
-		$params 	= JComponentHelper::getParams($option);
+		$params 	= ComponentHelper::getParams($option);
 		$type     	= $jinput->get( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
 		$field  	= $jinput->get( 'field' );

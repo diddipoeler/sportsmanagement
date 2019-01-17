@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory; 
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewextrafield
@@ -48,7 +49,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		
 //		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
 //		$this->assignRef( 'extended', $extended );
-		$this->cfg_which_media_tool	= JComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
+		$this->cfg_which_media_tool	= ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
  
 
 	}

@@ -1,6 +1,8 @@
 <?php
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 ?>
 <div id='editcell'>
 	<a name='page_top'></a>
@@ -21,7 +23,7 @@ use Joomla\CMS\Language\Text;
 			<?php
 		}
 	}
-	if (JComponentHelper::getParams($this->option)->get('show_debug_info',0))
+	if (ComponentHelper::getParams($this->option)->get('show_debug_info',0))
 	{
 		?><fieldset>
 			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
@@ -32,7 +34,7 @@ use Joomla\CMS\Language\Text;
 </div>
 <p style='text-align:right;'><a href='#page_top'><?php echo Text::_('top'); ?></a></p>
 <?php
-if (JComponentHelper::getParams($this->option)->get('show_debug_info',0))
+if (ComponentHelper::getParams($this->option)->get('show_debug_info',0))
 {
 	echo '<center><hr>';
 		echo Text::sprintf('Memory Limit is %1$s',ini_get('memory_limit')) . '<br />';

@@ -1,6 +1,8 @@
 <?php
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
+
 ?>
 <div id='editcell'>
 	<a name='page_top'></a>
@@ -25,7 +27,7 @@ use Joomla\CMS\Language\Text;
 	}
     
     
-	if (JComponentHelper::getParams($this->option)->get('show_debug_info',0))
+	if (ComponentHelper::getParams($this->option)->get('show_debug_info',0))
 	{
 		?><fieldset>
 			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>

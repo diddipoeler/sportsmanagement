@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewTeamPerson
@@ -126,7 +127,7 @@ $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_TEAMPERSON_PROJECT_POSI
 		$this->extended = $extended;
 		$this->lists = $lists;
         
-		if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+		if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 		{
 		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
 		$this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');

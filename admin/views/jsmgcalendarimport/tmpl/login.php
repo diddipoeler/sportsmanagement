@@ -22,6 +22,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('behavior.tooltip');
 ?>
 <fieldset>
@@ -38,7 +39,7 @@ HTMLHelper::_('behavior.tooltip');
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="user" id="user" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_mail_account',''); ?>"
+						<input type="text" name="user" id="user" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_account',''); ?>"
 							class="inputbox required invalid" size="100" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
@@ -50,7 +51,7 @@ HTMLHelper::_('behavior.tooltip');
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="password" name="pass" id="pass" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_mail_password',''); ?>"
+						<input type="password" name="pass" id="pass" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_mail_password',''); ?>"
 							class="inputbox required invalid" size="100" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
@@ -63,7 +64,7 @@ HTMLHelper::_('behavior.tooltip');
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="google_api_clientid" id="google_api_clientid" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientid',''); ?>"
+						<input type="text" name="google_api_clientid" id="google_api_clientid" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientid',''); ?>"
 							class="inputbox required invalid" size="200" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>
@@ -76,7 +77,7 @@ HTMLHelper::_('behavior.tooltip');
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="google_api_clientsecret" id="google_api_clientsecret" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientsecret',''); ?>"
+						<input type="text" name="google_api_clientsecret" id="google_api_clientsecret" value="<?PHP  echo ComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientsecret',''); ?>"
 							class="inputbox required invalid" size="200" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>

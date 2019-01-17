@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewprojectteams
@@ -204,7 +205,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				'text',
 				$this->state->get('filter.search_nation'));
         
-        if ( JComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd',0) )
+        if ( ComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd',0) )
         {
         $lists['country_teams'] = $this->model->getCountryTeams();
         $lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();

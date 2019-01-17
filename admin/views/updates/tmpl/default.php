@@ -14,8 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
-$modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

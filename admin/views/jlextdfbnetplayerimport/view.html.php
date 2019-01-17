@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementViewjlextdfbnetplayerimport
@@ -43,7 +44,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		}
 		
 
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		$post = $this->jinput->post;
 		$files = $this->jinput->get('files');
 		
@@ -55,7 +56,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$seasons[]	= HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = BaseDatabaseModel::getInstance('Seasons', 'sportsmanagementModel');
         
-        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+        if ( ComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
         $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
         }
@@ -101,7 +102,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$this->request_url	= $uri->toString ();
 		$this->config	= $config;
@@ -135,7 +136,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
 		$this->project	= $project;
-		$config = JComponentHelper::getParams ( 'com_media' );
+		$config = ComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
 		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );

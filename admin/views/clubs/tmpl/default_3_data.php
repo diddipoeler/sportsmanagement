@@ -11,6 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     //HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -22,7 +23,7 @@ if (version_compare(JSM_JVERSION, '4', 'eq')) {
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-$params = JComponentHelper::getParams('com_sportsmanagement');
+$params = ComponentHelper::getParams('com_sportsmanagement');
 $joomlaicon = $params->get('show_joomla_icons');
 ?>
 <div class="table-responsive" id="editcell">

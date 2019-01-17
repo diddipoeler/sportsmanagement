@@ -15,6 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
  
 /**
  *  View
@@ -27,7 +28,7 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-        $params = JComponentHelper::getParams( $this->option );
+        $params = ComponentHelper::getParams( $this->option );
         $this->sporttypes = $params->get( 'cfg_sport_types' );
 	}
  

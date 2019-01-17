@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 $app = Factory::getApplication();
 $jinput = $app->input;
@@ -68,8 +69,8 @@ default:
 			           
             </div>
             	<?php
-                $startRange = JComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
+                $startRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = ComponentHelper::getParams($jinput->getCmd('option'))->get('character_filter_end_hex', '0');
    
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{

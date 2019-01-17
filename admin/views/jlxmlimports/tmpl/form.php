@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Component\ComponentHelper;
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -2013,7 +2013,7 @@ if (isset($this->xml) && is_array($this->xml))
 		</form>
 	</div>
 	<?php
-	if (JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
+	if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0))
 	{
 		echo '<center><hr>';
 			echo Text::sprintf('Memory Limit is %1$s',ini_get('memory_limit')).'<br />';

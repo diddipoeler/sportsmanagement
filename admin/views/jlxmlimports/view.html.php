@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -57,8 +58,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         } else {
             $uri = Factory::getURI();
         }
-        $config = JComponentHelper::getParams('com_media');
-        $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize', '200');
+        $config = ComponentHelper::getParams('com_media');
+        $upload_maxsize = ComponentHelper::getParams('com_media')->get('upload_maxsize', '200');
         $post = $jinput->post->getArray(array());
         $files = $jinput->getString('files');
         $this->request_url = $uri->toString();
@@ -212,7 +213,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         $this->import_version = $model->import_version;
         $this->lists = $lists;
 
-        $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info', 0);
+        $this->show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
 
         $myoptions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = BaseDatabaseModel::getInstance('agegroups', 'sportsmanagementModel');

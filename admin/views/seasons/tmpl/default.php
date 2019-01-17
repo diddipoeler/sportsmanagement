@@ -19,8 +19,6 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
 } else {
     HTMLHelper::_('behavior.mootools');
 }
-$modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
