@@ -612,6 +612,10 @@ class modMatchesSportsmanagementHelper {
 			$rows[$match->match_id]['ajax'] = $match->ajax;
 			$cnt++;
 		}
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{		
+echo 'rows <pre>'.print_r($rows ,true).'</pre>';
+}			
 		return $rows;
 	}
 	
