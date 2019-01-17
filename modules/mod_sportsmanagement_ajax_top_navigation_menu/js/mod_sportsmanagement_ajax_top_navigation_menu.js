@@ -1,9 +1,6 @@
 var jlcinjectcontainer = new Array();
 var jlcmodal = new Array();
 
-console.log("jquery version : "+jQuery().jquery);
-console.log("bootstrap version : "+jQuery.fn.tooltip.Constructor.VERSION);
-
 function jlcnewtopAjax() {
 	/* THIS CREATES THE AJAX OBJECT */
 	var xmlhttp = false;
