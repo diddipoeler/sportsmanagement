@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * MatchesSportsmanagementConnector
@@ -376,8 +377,11 @@ $match->alreadyplayed = true;
 }	
 	
 }
-//echo '<pre>'.print_r($matches ,true).'</pre>';
 		
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{		
+echo 'matches <pre>'.print_r($matches ,true).'</pre>';
+}		
 		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->formatMatches($matches);
