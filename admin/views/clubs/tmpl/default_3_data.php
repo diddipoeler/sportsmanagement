@@ -158,7 +158,12 @@ $joomlaicon = $params->get('show_joomla_icons');
                         ?>
                     </td>
                     <td class="center">
-                    <?php echo $row->email; ?>    
+                    <?php 
+                if ( $row->email )
+                {
+echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/mail.png', '', '');
+            }
+                        ?>    
                     </td>
                     <td>
                         <input<?php echo $inputappend; ?>	
