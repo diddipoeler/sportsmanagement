@@ -258,7 +258,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to 
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
-        
+        $query->select('playground.name as pg_name, playground.short_name as pg_shortname');
         // from
         $query->from('#__sportsmanagement_match AS m ');
         // join
