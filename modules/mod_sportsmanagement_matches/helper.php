@@ -680,7 +680,7 @@ echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->lasthome, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
 					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
@@ -690,7 +690,7 @@ echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->nexthome, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
 					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
@@ -704,7 +704,7 @@ echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->lastaway, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
 					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_prev.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('last_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
@@ -714,7 +714,7 @@ echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 					$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->nextaway, $origin);
 					$alt = $tmp['title'];
-					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
+					if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
 					$temp .= HTMLHelper::_('image', $this->iconpath . 'page_next.png', $alt, $tmp);
 					else
 					$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('next_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
@@ -727,7 +727,7 @@ echo 'rows <pre>'.print_r($rows ,true).'</pre>';
 				$tmp['title'] = Text::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, '0', $origin, $origin);
 				$alt = $tmp['title'];
-				if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
+				if ( $this->iconpath AND $this->params->get('icons_for_ajax') )
 				$temp .= HTMLHelper::_('image', $this->iconpath . 'page_reset.png', $alt, $tmp);
 				else
 				$temp .= '<input type="button" class="' . $this->params->get('reset_class') . '" value="' . $this->params->get('reset_text') . '" style="cursor:pointer;" onclick="' . $tmp['onclick'] . '" />';
