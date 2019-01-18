@@ -681,11 +681,11 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_RESET_LINK_STYLE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_RESET_LINK_STYLE_DESCR" />
 
-				<field 	name="next_text" type="text" default="&gt;&gt;"
+				<field 	name="next_text" type="text" default="&gt;&gt;" filter="raw"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_MATCH_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_MATCH_LINK_TEXT_DESCR" />
 
-				<field 	name="last_text" type="text" default="&lt;&lt;"
+				<field 	name="last_text" type="text" default="&lt;&lt;" filter="raw"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" />
 
