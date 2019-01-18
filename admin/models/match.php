@@ -3302,9 +3302,7 @@ if (!$calendar->isAuth())
             $player_startaufstellung = $csv_player_startaufstellung[$player_key];
             $player_jerseynumber = $csv_player_number[$player_key];
             $player_hinweis = $csv_player_hinweis[$player_key];
-            var_dump($player_hinweis);
             $player_captain = ($player_hinweis == 'C') ? 1 : 0;
-            var_dump($player_captain);
 
             // Wir verarbeiten den Spieler nur, wenn der Benutzer eine Position ausgewählt hat
             if ($player_project_position_id) {
@@ -3351,6 +3349,16 @@ if (!$calendar->isAuth())
                                 foreach ($csv_player_lastname as $player_out_key => $player_out_object) {
                                     if ($csv_player_number[$player_out_key] == $player_inout_object->out && $player_out_object == $player_inout_object->spielerout) {
                                         $player_in_for = $csv_player_project_person_id[$player_out_key];
+
+                                        // Finden wir keinen Spieler kann es sein, dass dieser erst mit diesem Pressebericht angelegt wurde.
+                                        // Deswegen müssen wir ihn hier nun von der DB laden, falls es ihn gibt
+                                        if (!$player_in_for) {
+                                            $player_out_lastname = $player_out_object;
+                                            $player_out_firstname = $csv_player_firstname[$player_out_key];
+                                            $player_out_person_id = $this->getPersonId($player_out_firstname, $player_out_lastname);
+                                            $player_out_season_team_person = $this->getSeasonTeamPersonAssignment($player_out_person_id, $season_id, $fav_team, 1);
+                                            $player_in_for = $player_out_season_team_person->id;
+                                        }
                                     }
                                 }
 
@@ -3665,7 +3673,9 @@ if (!$calendar->isAuth())
         $query->where('season_id = ' . $season_id);
         $query->where('team_id = ' . $team_id);
         $query->where('persontype = ' . $person_type);
-        $query->where('project_position_id = ' . $project_position_id);
+        if ($project_position_id > 0) {
+            $query->where('project_position_id = ' . $project_position_id);
+        }
 
         $db->setQuery($query);
         return $db->loadObject();
