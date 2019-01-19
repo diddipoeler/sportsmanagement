@@ -45,9 +45,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+       
         //// Get the input
 //        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
 //        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
@@ -114,9 +112,7 @@ class sportsmanagementModelround extends JSMModelAdmin
 	{
 	$option = Factory::getApplication()->input->getCmd('option');
 	$app = Factory::getApplication();
-    
-    //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
-    
+   
     $post = Factory::getApplication()->input->post->getArray(array());
     $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];

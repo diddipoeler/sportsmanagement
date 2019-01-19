@@ -100,10 +100,6 @@ public function __construct($config = array())
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
 		// List state information.
 		parent::populateState('p.lastname', 'asc');
 	}

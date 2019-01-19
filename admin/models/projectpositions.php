@@ -83,10 +83,6 @@ class sportsmanagementModelProjectpositions extends JSMModelList
         //$app->enqueueMessage(Text::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
 		// List state information.
 		parent::populateState('po.name', 'asc');
 	}    

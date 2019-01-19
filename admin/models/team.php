@@ -344,7 +344,6 @@ catch (Exception $e)
 		$app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 $this->jsmquery->clear();        
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');

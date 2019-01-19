@@ -116,9 +116,7 @@ return count($division_teams);
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
+       
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
