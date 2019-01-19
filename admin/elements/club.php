@@ -41,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JFormFieldClub
@@ -65,7 +66,7 @@ class JFormFieldClub extends JFormField
 		$db = sportsmanagementHelper::getDBConnection();
 		$lang = Factory::getLanguage();
         // welche tabelle soll genutzt werden
-        $params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params =& ComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "com_sportsmanagement";

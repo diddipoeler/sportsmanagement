@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
- 
+use Joomla\CMS\Component\ComponentHelper; 
 use Joomla\CMS\Filesystem\File;
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.archive');
@@ -45,7 +45,7 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
         // Get the input
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $base_Dir = JPATH_SITE . DS . 'tmp' . DS ;
-        $cfg_plz_server = JComponentHelper::getParams($option)->get('cfg_plz_server','');
+        $cfg_plz_server = ComponentHelper::getParams($option)->get('cfg_plz_server','');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         

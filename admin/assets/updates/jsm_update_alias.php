@@ -12,6 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.filter.output');
 
@@ -38,14 +39,14 @@ $updateFileTime		= '00:05';
 $updateDescription	='<span style="color:orange">Update Alias Fields.</span>';
 $excludeFile		='false';
 
-$maxImportTime=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
+$maxImportTime=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=880;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
+$maxImportMemory=ComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';

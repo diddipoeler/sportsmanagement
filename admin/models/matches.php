@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
-
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * sportsmanagementModelMatches
@@ -67,7 +67,7 @@ class sportsmanagementModelMatches extends JSMModelList
         // Initialise variables.
 		//$app = Factory::getApplication('administrator');
         
-        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        if ( ComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
         {
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');

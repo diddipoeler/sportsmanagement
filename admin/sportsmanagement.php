@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 
 if (! defined('DS'))
 {
@@ -106,7 +107,7 @@ $app = Factory::getApplication();
 
 
 // welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
+$params = ComponentHelper::getParams( 'com_sportsmanagement' );
 
 
 if ( $params->get( 'cfg_dbprefix' ) )

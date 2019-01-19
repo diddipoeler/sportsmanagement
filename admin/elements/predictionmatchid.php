@@ -41,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JFormFieldpredictionmatchid
@@ -70,7 +71,7 @@ class JFormFieldpredictionmatchid extends JFormField
         $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         
         // welche tabelle soll genutzt werden
-        $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+        $params = ComponentHelper::getParams( 'com_sportsmanagement' );
         //$database_table	= $params->get( 'cfg_which_database_table' );
 
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		

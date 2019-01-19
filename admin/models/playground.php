@@ -187,12 +187,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
-        /*
-        if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
-        {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');    
-        }
-        */
+
         self::updateHits($pgid,$inserthits); 
         
         if ( is_null( self::$playground ) )

@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('bootstrap.framework');
 jimport('joomla.html.html.bootstrap');
@@ -26,14 +27,14 @@ $updateDescription	='<span style="color:orange">Update all tables using the curr
 $excludeFile		='false';
 $option = Factory::getApplication()->input->getCmd('option');
 
-$maxImportTime = JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = ComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=880;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory = JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = ComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';

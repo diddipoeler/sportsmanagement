@@ -41,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 /**
  * JFormFieldagegroups
@@ -69,7 +70,7 @@ class JFormFieldagegroups extends JFormField
 		$lang = Factory::getLanguage();
         $option = Factory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
-        $params = JComponentHelper::getParams( $option );
+        $params = ComponentHelper::getParams( $option );
         $database_table	= $params->get( 'cfg_which_database_table' );
         $select_id = Factory::getApplication()->input->getVar('id');
         

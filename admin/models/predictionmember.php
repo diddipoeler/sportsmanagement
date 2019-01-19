@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
@@ -117,7 +118,7 @@ $configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig
 $overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 $configprediction = array_merge($overallConfig,$configprediction);
  
-  $pred_reminder_mail_text = JComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
+  $pred_reminder_mail_text = ComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
 
 /**
  * add the sender Information.
