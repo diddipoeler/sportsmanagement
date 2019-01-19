@@ -94,10 +94,10 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         <?php
                         $image = 'teams.png';
                         $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignteams, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('assignteams' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignteams, $this->modalwidth, $this->modalheight);
                         $image = 'players.png';
                         $title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
-                        echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignpersons, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('assignperson' . $row->id, JURI::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, $title, '20', JURI::root() . $assignpersons, $this->modalwidth, $this->modalheight);
                         ?>							
                         </td>
                             <?php

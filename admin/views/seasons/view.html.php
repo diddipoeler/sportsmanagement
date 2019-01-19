@@ -39,8 +39,11 @@ class sportsmanagementViewSeasons extends sportsmanagementView
         $season_id = $this->jinput->getVar('id');
 
 		$this->table = Table::getInstance('season', 'sportsmanagementTable');
+        $lists = array();
         
-        //build the html options for nation
+/**
+ * build the html options for nation
+ */
 		$nation[] = HTMLHelper::_('select.option','0',Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
 		{
@@ -89,7 +92,9 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	{ 
               
         $canDo = sportsmanagementHelper::getActions();
-    // Set toolbar items for the page
+/**
+ * Set toolbar items for the page
+ */
 		$this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
