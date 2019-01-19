@@ -2913,28 +2913,28 @@ if (!$calendar->isAuth())
                 }
             }
 
-            // spieler aufbereiten startelf
-            for ($a = 1; $a <= $csv_player_count; $a++) {
-                if (isset($csv_file->data[0][$find_csv . '-S' . $a . '-Nr']) && !empty($csv_file->data[0][$find_csv . '-S' . $a . '-Nr'])) {
+            // Stammspieler
+            for ($i = 1; $i <= $csv_player_count; $i++) {
+                if (isset($csv_file->data[0][$find_csv . '-S' . $i . '-Nr']) && !empty($csv_file->data[0][$find_csv . '-S' . $i . '-Nr'])) {
 
-                    if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']])) {
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']] = new stdClass();
+                    if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']])) {
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']] = new stdClass();
                     }
 
 
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->nummer = $csv_file->data[0][$find_csv . '-S' . $a . '-Nr'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->name = $csv_file->data[0][$find_csv . '-S' . $a . '-Spieler'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->hinweis = $csv_file->data[0][$find_csv . '-S' . $a . '-Hinweis'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->status = $csv_file->data[0][$find_csv . '-S' . $a . '-Status'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->nummer = $csv_file->data[0][$find_csv . '-S' . $i . '-Nr'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->name = $csv_file->data[0][$find_csv . '-S' . $i . '-Spieler'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->hinweis = $csv_file->data[0][$find_csv . '-S' . $i . '-Hinweis'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->status = $csv_file->data[0][$find_csv . '-S' . $i . '-Status'];
 
-                    $teile = explode(",", $csv_file->data[0][$find_csv . '-S' . $a . '-Spieler']);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->person_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->project_person_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->project_position_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->position_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->startaufstellung = 1;
+                    $teile = explode(",", $csv_file->data[0][$find_csv . '-S' . $i . '-Spieler']);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->person_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->project_person_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->project_position_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->position_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->startaufstellung = 1;
                     // gibt es den spieler
                     // Select some fields
                     if ($teile[0]) {
@@ -2942,109 +2942,106 @@ if (!$calendar->isAuth())
                     }
 
                     if ($person_id) {
-                        if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']])) {
-                            $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']] = new stdClass();
+                        if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']])) {
+                            $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']] = new stdClass();
                         }
 
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->person_id = $person_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->person_id = $person_id;
                         $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id);
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->project_person_id = $projectpersonid->id;
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->project_position_id = $projectpersonid->project_position_id;
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $a . '-Nr']]->position_id = $projectpersonid->position_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->project_person_id = $projectpersonid->id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->project_position_id = $projectpersonid->project_position_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-S' . $i . '-Nr']]->position_id = $projectpersonid->position_id;
                     }
 
                 }
             }
-            // spieler aufbereiten ersatzbank
-            for ($a = 1; $a <= $csv_player_count; $a++) {
-                if (isset($csv_file->data[0][$find_csv . '-A' . $a . '-Nr']) && !empty($csv_file->data[0][$find_csv . '-A' . $a . '-Nr'])) {
+            // Auswechselspieler
+            for ($i = 1; $i <= $csv_player_count; $i++) {
+                if (isset($csv_file->data[0][$find_csv . '-A' . $i . '-Nr']) && !empty($csv_file->data[0][$find_csv . '-A' . $i . '-Nr'])) {
 
-                    if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']])) {
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']] = new stdClass();
+                    if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']])) {
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']] = new stdClass();
                     }
 
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->nummer = $csv_file->data[0][$find_csv . '-A' . $a . '-Nr'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->name = $csv_file->data[0][$find_csv . '-A' . $a . '-Spieler'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->hinweis = $csv_file->data[0][$find_csv . '-A' . $a . '-Hinweis'];
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->status = $csv_file->data[0][$find_csv . '-A' . $a . '-Status'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->nummer = $csv_file->data[0][$find_csv . '-A' . $i . '-Nr'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->name = $csv_file->data[0][$find_csv . '-A' . $i . '-Spieler'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->hinweis = $csv_file->data[0][$find_csv . '-A' . $i . '-Hinweis'];
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->status = $csv_file->data[0][$find_csv . '-A' . $i . '-Status'];
 
-                    $teile = explode(",", $csv_file->data[0][$find_csv . '-A' . $a . '-Spieler']);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->person_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->project_person_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->project_position_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->position_id = 0;
-                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->startaufstellung = 0;
+                    $teile = explode(",", $csv_file->data[0][$find_csv . '-A' . $i . '-Spieler']);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->lastname = htmlspecialchars(trim($teile[0]), ENT_QUOTES);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->firstname = htmlspecialchars(trim($teile[1]), ENT_QUOTES);
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->person_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->project_person_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->project_position_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->position_id = 0;
+                    $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->startaufstellung = 0;
                     // gibt es den spieler ?
                     // Select some fields
                     if ($teile[0]) {
                         $person_id = $this->getPersonId($teile[1], $teile[0]);
                     }
                     if ($person_id) {
-                        if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']])) {
-                            $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']] = new stdClass();
+                        if (!isset($this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']])) {
+                            $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']] = new stdClass();
                         }
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->person_id = $person_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->person_id = $person_id;
                         $projectpersonid = $this->getSeasonTeamPersonId($person_id, $favteam, $season_id);
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->project_person_id = $projectpersonid->id;
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->project_position_id = $projectpersonid->project_position_id;
-                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $a . '-Nr']]->position_id = $projectpersonid->position_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->project_person_id = $projectpersonid->id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->project_position_id = $projectpersonid->project_position_id;
+                        $this->csv_player[$csv_file->data[0][$find_csv . '-A' . $i . '-Nr']]->position_id = $projectpersonid->position_id;
                     }
 
                 }
             }
 
-            // jetzt kommen die wechsel
-            for ($a = 1; $a <= $csv_player_count; $a++) {
-                if (isset($csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Zeit']) && !empty($csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Zeit'])) {
-                    if (!isset($this->csv_in_out[$a])) {
-                        $this->csv_in_out[$a] = new stdClass();
+            // Auswechslungen
+            for ($i = 1; $i <= $csv_player_count; $i++) {
+                if (isset($csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Zeit']) && !empty($csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Zeit'])) {
+                    if (!isset($this->csv_in_out[$i])) {
+                        $this->csv_in_out[$i] = new stdClass();
                     }
-                    $this->csv_in_out[$a]->in_out_time = $csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Zeit'];
-                    $this->csv_in_out[$a]->came_in = 1;
-                    $this->csv_in_out[$a]->in = $csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Nr'];
-                    $this->csv_in_out[$a]->out = $csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Für Nr'];
-                    $this->csv_in_out[$a]->spieler = $csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-Spieler'];
-                    $this->csv_in_out[$a]->spielerout = $csv_file->data[0][$find_csv . '-S' . $a . '-Ausw-für-Spieler'];
+                    $this->csv_in_out[$i]->in_out_time = $csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Zeit'];
+                    $this->csv_in_out[$i]->came_in = 1;
+                    $this->csv_in_out[$i]->in = $csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Nr'];
+                    $this->csv_in_out[$i]->out = $csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Für Nr'];
+                    $this->csv_in_out[$i]->spieler = $csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-Spieler'];
+                    $this->csv_in_out[$i]->spielerout = $csv_file->data[0][$find_csv . '-S' . $i . '-Ausw-für-Spieler'];
                 }
             }
 
-            // jetzt kommen die gelben karten
-            for ($a = 1; $a <= $csv_player_count; $a++) {
+            // Karten
+            $karten_index = 0;
+            $karten_typen = array(
+                'Gelb' => 'Gelbe Karte',
+                'Gelbrot' => 'Gelb-Rote Karte',
+                'Rot' => 'Rote Karte'
+            );
 
-                if (isset($csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Zeit']) && !empty($csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Zeit'])) {
-                    if (!isset($this->csv_cards[$a])) {
-                        $this->csv_cards[$a] = new stdClass();
+            foreach ($karten_typen as $csv_karte => $event_type_name) {
+                // Event Type ID aus der DB holen, wenn es ein Event gibt, das den gleichen Namen hat
+                $karten_event_type_id = 0;
+                $karten_event_type = $this->getEventType($event_type_name);
+                if ($karten_event_type) {
+                    $karten_event_type_id = $karten_event_type->id;
+                }
+
+                for ($i = 1; $i <= $csv_player_count; $i++) {
+
+                    if (isset($csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Zeit']) && !empty($csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Zeit'])) {
+                        if (!isset($this->csv_cards[$karten_index])) {
+                            $this->csv_cards[$karten_index] = new stdClass();
+                        }
+                        $this->csv_cards[$karten_index]->event_time = $csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Zeit'];
+                        $this->csv_cards[$karten_index]->event_name = $event_type_name;
+                        $this->csv_cards[$karten_index]->event_sum = 1;
+                        $this->csv_cards[$karten_index]->spielernummer = $csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Nr'];
+                        $this->csv_cards[$karten_index]->spieler = $csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Spieler'];
+                        $this->csv_cards[$karten_index]->notice = $csv_file->data[0][$find_csv . '-S' . $i . '-' . $csv_karte . '-Grund'];
+                        $this->csv_cards[$karten_index]->event_type_id = $karten_event_type_id;
+                        $karten_index++;
                     }
-                    $this->csv_cards[$a]->event_time = $csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Zeit'];
-                    $this->csv_cards[$a]->event_name = 'Gelbe-Karte';
-                    $this->csv_cards[$a]->event_sum = 1;
-                    $this->csv_cards[$a]->spielernummer = $csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Nr'];
-                    $this->csv_cards[$a]->spieler = $csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Spieler'];
-                    $this->csv_cards[$a]->notice = $csv_file->data[0][$find_csv . '-S' . $a . '-Gelb-Grund'];
-                    $this->csv_cards[$a]->event_type_id = 0;
                 }
-
-            }
-
-            // jetzt kommen die gelb-roten karten
-            $start = sizeof($this->csv_cards) + 1;
-            //$app->enqueueMessage(Text::_('getPresseberichtReadPlayers start gelb rote karten<br><pre>'.print_r($start,true).'</pre>'   ),'');
-
-            for ($b = 1; $b <= $csv_player_count; $b++) {
-
-                if (isset($csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Zeit']) && !empty($csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Zeit'])) {
-                    $this->csv_cards[$start]->event_time = $csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Zeit'];
-                    $this->csv_cards[$start]->event_name = 'Gelbrot-Karte';
-                    $this->csv_cards[$start]->event_sum = 1;
-                    $this->csv_cards[$start]->spielernummer = $csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Nr'];
-                    $this->csv_cards[$start]->spieler = $csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Spieler'];
-                    $this->csv_cards[$start]->notice = $csv_file->data[0][$find_csv . '-S' . $b . '-Gelbrot-Grund'];
-                    $this->csv_cards[$start]->event_type_id = 0;
-                    $start++;
-                }
-
             }
 
             // gibt es die karten schon ?
@@ -3120,8 +3117,6 @@ if (!$calendar->isAuth())
         $app->setUserState($option . 'csv_in_out', $this->csv_in_out);
         $app->setUserState($option . 'csv_player', $this->csv_player);
         $app->setUserState($option . 'projectteamid', $projectteamid);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' csv_staff<br><pre>'.print_r($this->csv_staff,true).'</pre>'   ),'');
 
     }
 
@@ -3855,6 +3850,19 @@ if (!$calendar->isAuth())
         $query->select('*');
         $query->from('#__sportsmanagement_project_position');
         $query->where('id = ' . $project_position_id);
+
+        $db->setQuery($query);
+        return $db->loadObject();
+    }
+
+    function getEventType($event_type_name = '')
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true);
+        $query->select('*');
+        $query->from('#__sportsmanagement_eventtype');
+        $query->where('name = ' . $db->Quote($event_type_name));
 
         $db->setQuery($query);
         return $db->loadObject();

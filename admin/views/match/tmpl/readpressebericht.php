@@ -254,7 +254,6 @@ $lfdnummer = 0;
                 <th class="">Karte</th>
                 <th class="">Rückennummer</th>
                 <th class="">Grund</th>
-                <th class="">In der Datenbank ?</th>
                 <th class="">Event</th>
             </tr>
             </thead>
@@ -266,15 +265,6 @@ $lfdnummer = 0;
                 <td><?php echo $value->event_name; ?></td>
                 <td><?php echo $value->spielernummer; ?></td>
                 <td><?php echo $value->notice; ?></td>
-                <td>
-                    <?PHP
-                    if ($value->event_type_id) {
-                        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', '', 'title= "' . '' . '"');
-                    } else {
-                        echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/error.png', '', 'title= "' . '' . '"');
-                    }
-                    ?>
-                </td>
                 <td>
                     <?php
                     $selectedvalue = 0;
