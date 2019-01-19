@@ -3064,13 +3064,13 @@ if (!$calendar->isAuth())
                     $db->setQuery($query);
                     try {
                         $match_event_id = $db->loadResult();
+                        if ($match_event_id) {
+                            $this->csv_cards[$key]->event_type_id = $match_event_id;
+                        }
                     } catch (Exception $e) {
-                        $msg = $e->getMessage(); // Returns "Normally you would have other code...
-                        $code = $e->getCode(); // Returns '500';
-                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
-                        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . ' <br><pre>' . print_r($query->dump(), true) . '</pre>'), 'error');
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(), 'error'); // commonly to still display that error
+                        $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode(), 'error'); // commonly to still display that error
                     }
-                    $this->csv_cards[$key]->event_type_id = $match_event_id;
                 }
             }
 
@@ -3374,7 +3374,7 @@ if (!$calendar->isAuth())
                         if ($event_object->spieler == $player_lastname && $event_object->spielernummer == $player_jerseynumber) {
 
                             $player_event_time = $event_object->event_time;
-                            $player_event_type = $csv_player_project_events_id[$event_key - 1];
+                            $player_event_type = $csv_player_project_events_id[$event_key];
                             $player_event_notice = $event_object->notice;
 
                             // Hat der User ein ProjectEvent ausgewählt? Wenn nicht können wir den Datensatz nicht verarbeiten
