@@ -3409,8 +3409,8 @@ if (!$calendar->isAuth())
             if ($staff_project_position_id) {
 
                 // Dann schauen wir, ob der Staff als Person schon angelegt ist und legen diese Person ggf. an
+                $staff_position_id = $this->getProjectPosition($staff_project_position_id)->position_id;
                 if ($staff_person_id == 0) {
-                    $staff_position_id = $this->getProjectPosition($staff_project_position_id)->position_id;
                     $staff_person_id = $this->createPerson($staff_firstname, $staff_lastname, $staff_position_id);
                 }
 
@@ -3427,7 +3427,7 @@ if (!$calendar->isAuth())
                     $staff_season_team_person_id = $this->createSeasonTeamPersonAssignment($staff_person_id, $season_id, $fav_team, 2, $staff_project_position_id);
 
                     // Zuordnung zum Spiel
-                    $staff_match_id = $this->createMatchStaff($match_id, $staff_season_team_person_id, $staff_project_position_id);
+                    $staff_match_id = $this->createMatchStaff($match_id, $staff_season_team_person_id, $staff_position_id);
                 }
             }
         }
