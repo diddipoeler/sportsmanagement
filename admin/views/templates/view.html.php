@@ -53,7 +53,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
         //$this->project_id = $this->app->getUserState("$this->option.pid", '0');
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
-        $lists = '';
+        $lists = array();
         //$allTemplates = $model->checklist($this->project_id);
 
         // das sind die eigenen templates
