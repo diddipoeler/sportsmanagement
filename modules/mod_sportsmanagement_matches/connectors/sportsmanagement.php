@@ -712,6 +712,11 @@ echo __METHOD__.' '.__LINE__.' team <pre>'.print_r($team ,true).'</pre>';
 		$projectstring = $match->project_id;	
 		}
 		
+        $match->lasthome = 0;
+        $match->nexthome = 0;
+        $match->lastaway = 0;
+        $match->nextaway = 0;
+        
         // select some fields
         $query->select('m.id');
         // from
