@@ -85,12 +85,13 @@ $mitems[] = HTMLHelper::_('select.option', 'LASTGAMES', Text::_('COM_SPORTSMANAG
     }
     else
     {
-        
+    if ( $this->value )
+    {    
     foreach( $this->value as $key => $value )
     {
         $mitems[] = HTMLHelper::_('select.option', $value, Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_'.$value));
     }    
-        
+    }    
     }
   
 return HTMLHelper::_('select.genericlist',  $mitems, $this->name, 
