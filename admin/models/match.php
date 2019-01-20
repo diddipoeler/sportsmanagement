@@ -3013,9 +3013,9 @@ if (!$calendar->isAuth())
             // Karten
             $karten_index = 0;
             $karten_typen = array(
-                'Gelb' => 'Gelbe Karte',
-                'Gelbrot' => 'Gelb-Rote Karte',
-                'Rot' => 'Rote Karte'
+                'Gelb' => 'COM_SPORTSMANAGEMENT_SOCCER_E_YELLOW_CARD',
+                'Gelbrot' => 'COM_SPORTSMANAGEMENT_SOCCER_E_YELLOW-RED_CARD',
+                'Rot' => 'COM_SPORTSMANAGEMENT_SOCCER_E_RED_CARD'
             );
 
             foreach ($karten_typen as $csv_karte => $event_type_name) {
