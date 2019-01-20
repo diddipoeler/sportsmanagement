@@ -184,7 +184,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS" 
 				rows="4" cols="70">
 		</field>
-
+<!-- wird nicht benutzt daher erst einmal ausblenden
 <field
 			name="ordered_columns_new_select"
 			type="rankingcolumns"
@@ -209,12 +209,8 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_DISPLAY_COLUMNS_NEW"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_DISPLAY_COLUMNS_NEW"
 			>
-			
-
-				
-				
 		</field>
-
+-->
 		
 		<field 	name="ordered_columns_names" type="textarea" default="Pl, W, D, L, Pts, SF, SA, +/-" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_COLUMNS_NAMES" 
