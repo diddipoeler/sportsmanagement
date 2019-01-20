@@ -13,6 +13,8 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 Factory::getDocument()->addStyleSheet('components/com_sportsmanagement/views/jsmgooglecalendar/tmpl/default.css');   
 HTMLHelper::_('behavior.tooltip');
 
@@ -43,19 +45,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     <div style="float:left;margin-right: 20px">
             <div class="icon">
                 <a href="index.php?option=com_sportsmanagement&view=jsmgcalendars" >
-                <img src="<?php echo JURI::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/48-calendar.png" height="50px" width="50px">
+                <img src="<?php echo Uri::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/48-calendar.png" height="50px" width="50px">
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS'); ?></span>
                 </a>
             </div>
             <div class="icon">
                 <a href="index.php?option=com_sportsmanagement&view=jsmgcalendarimport&layout=login" >
-                <img src="<?php echo JURI::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/admin/import.png" height="50px" width="50px">
+                <img src="<?php echo Uri::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/admin/import.png" height="50px" width="50px">
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT'); ?></span>
                 </a>
             </div>
             <div class="icon">
                 <a href="index.php?option=com_sportsmanagement&view=jsmgcalendar&layout=edit" >
-                <img src="<?php echo JURI::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/admin/add.png" height="50px" width="50px">
+                <img src="<?php echo Uri::base(true);?>/../administrator/components/com_sportsmanagement/assets/images/admin/add.png" height="50px" width="50px">
                 <span><?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD'); ?></span>
                 </a>
             </div>

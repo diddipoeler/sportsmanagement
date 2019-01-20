@@ -34,16 +34,6 @@ class sportsmanagementViewTemplates extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        //$app = Factory::getApplication();
-        //$jinput = $app->input;
-        //$option = $jinput->getCmd('option');
-        //$document = Factory::getDocument();
-//        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-//            $uri = JUri::getInstance();
-//        } else {
-//            $uri = Factory::getURI();
-//        }
-        //$model = $this->getModel();
         $starttime = microtime();
 
         $this->state = $this->get('State');

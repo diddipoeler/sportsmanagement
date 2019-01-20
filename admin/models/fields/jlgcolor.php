@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * FormFieldJLGColor
@@ -43,7 +44,7 @@ class JFormFieldJLGColor extends FormField
 	{
 		$app = Factory::getApplication();
         $document = Factory::getDocument();
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/301a.js');
+		$document->addScript(Uri::base().'components/com_sportsmanagement/assets/js/301a.js');
 		
 		// Initialize some field attributes.
 		$size = $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';

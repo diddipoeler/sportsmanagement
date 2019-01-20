@@ -17,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewjlextdfbnetplayerimport
@@ -165,7 +166,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		// Get a refrence of the page instance in joomla
 		$document	= Factory::getDocument();
         // Set toolbar items for the page
-		$stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+		$stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 		$document->addCustomTag($stylelink);
         
         // Set toolbar items for the page

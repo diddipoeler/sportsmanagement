@@ -11,8 +11,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport( 'joomla.application.component.view' );
-
 /**
  * sportsmanagementViewFieldsets
  * 
@@ -24,6 +22,7 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewFieldsets extends sportsmanagementView
 {
+
 	/**
 	 * sportsmanagementViewFieldsets::init()
 	 * 
@@ -31,7 +30,6 @@ class sportsmanagementViewFieldsets extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	
 
 	}
 

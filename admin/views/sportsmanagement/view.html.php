@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text; 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Uri\Uri;
  
 /**
  * SportsManagement View
@@ -62,7 +63,7 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 	// Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		$jinput = Factory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
@@ -114,8 +115,8 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
 		$isNew = $this->item->id == 0;
 		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(Uri::root() . $this->script);
+		$document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 }

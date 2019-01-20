@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
@@ -173,7 +175,7 @@ HTMLHelper::_( 'behavior.mootools' );
 								else
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									$picture = JURI::root().$row->picture;
+									$picture = Uri::root().$row->picture;
 									//echo sportsmanagementHelper::getPictureThumb($picture, $playerName, 0, 21, 4);
 echo sportsmanagementHelper::getBootstrapModalImage('collapseModalplayerpicture'.$row->id,$picture,$playerName,'20',$picture);                                                   									
 								}

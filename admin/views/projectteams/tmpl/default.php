@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.tooltip');
@@ -78,7 +79,7 @@ $opt = ' allowClear: true,
    return state.text; 
 
 
-   return "<img class=\'item car\' src=\''. JURI::root() .'" + picture + "\' />" + state.text; 
+   return "<img class=\'item car\' src=\''. Uri::root() .'" + picture + "\' />" + state.text; 
 
    },
    

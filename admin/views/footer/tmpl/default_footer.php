@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.modal');
 $view = $this->jinput->getVar("view");
@@ -40,7 +41,7 @@ $cfg_bugtracker_server = ComponentHelper::getParams($this->jinput->getCmd('optio
 <div id="j-main-container" class="j-toggle-main span12 center" >      
 
     <a title= "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK') ?>" target= "_blank" href="http://www.fussballineuropa.de">
-        <img src= "<?php echo JURI::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>            
+        <img src= "<?php echo Uri::base(true) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png"               width="180" height="auto" </a>            
     <br />
 <?php echo Text::_("COM_SPORTSMANAGEMENT_DESC"); ?>
     <br />      

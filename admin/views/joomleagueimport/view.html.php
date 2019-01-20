@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewjoomleagueimport
@@ -118,7 +119,7 @@ $document->addScriptDeclaration( $javascript );
             $app->setUserState( "$option.step", $this->step);    
         
         // Load our Javascript
-        $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
+        $document->addStylesheet(Uri::base().'components/'.$option.'/assets/css/progressbar.css');
         ToolbarHelper::title(Text::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
 		//parent::display($tpl);

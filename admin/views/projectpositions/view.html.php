@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewprojectpositions
@@ -39,7 +40,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = Factory::getURI();
         }
@@ -100,7 +101,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = Factory::getURI();
         }
@@ -161,7 +162,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView {
 
 
 
-        $document->addScript(JURI::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
+        $document->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/sm_functions.js');
         $this->request_url = $uri->toString();
         $this->user = Factory::getUser();
         $this->project = $project;

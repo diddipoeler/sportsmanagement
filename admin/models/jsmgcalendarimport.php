@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Uri\Uri;
 
 require_once('administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'libraries'.DS.'google-php'.DS.'google-api-php-client'.DS.'vendor'.DS.'autoload.php');
 //JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
@@ -86,7 +87,7 @@ $client->setAccessType("offline");
 $client->setScopes(array(
 				'https://www.googleapis.com/auth/calendar'
 		));
-$client->setRedirectUri(JURI::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
+$client->setRedirectUri(Uri::current().'?option='.$option.'&task=jsmgcalendarimport.import' );            
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
 
 $uri = $client->createAuthUrl();

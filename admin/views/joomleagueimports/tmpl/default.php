@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -120,13 +122,13 @@ function delayRedirect(){
 <table class="<?php echo $this->table_data_class; ?>">
 <tr>
 <td class="nowrap" align="center">
-<img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
 </td>
 <td class="nowrap" align="center">
 <div id="delayMsg"></div>
 </td>
 <td class="nowrap" align="center">
-<img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
+<img src= "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
 </td>
 </tr>
 </table>

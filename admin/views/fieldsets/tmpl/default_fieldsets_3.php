@@ -11,14 +11,16 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 switch ($this->fieldset) {
     /**
      * für die spielfeldpositionen
      */
     case 'playground_jquery':
-        $backgroundimage = JURI::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
+        $backgroundimage = Uri::root() . 'media/com_sportsmanagement/rosterground/' . $this->item->picture;
         list($width, $height, $type, $attr) = getimagesize($backgroundimage);
-        $picture = JURI::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
+        $picture = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
         ?>
 
         <style type="text/css">

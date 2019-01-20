@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
-
+use Joomla\CMS\Uri\Uri;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 't.ordering');
 
@@ -201,8 +201,8 @@ $this->readonly = '';
                             $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_DEFAULT_IMAGE');
                             echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/information.png', $imageTitle, 'title= "' . $imageTitle . '"');
                             ?>
-                            <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
-                                <img src="<?php echo JURI::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />
+                            <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
+                                <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />
                             </a>
                             <?PHP
                         } else {
@@ -210,8 +210,8 @@ $this->readonly = '';
                                 $imageTitle = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_CUSTOM_IMAGE');
                                 echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/ok.png', $imageTitle, 'title= "' . $imageTitle . '"');
                                 ?>
-                                <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
-                                    <img src="<?php echo JURI::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />
+                                <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $imageTitle; ?>" class="modal">
+                                    <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $imageTitle; ?>" width="20" />
                                 </a>
                                 <?PHP
                             } else {

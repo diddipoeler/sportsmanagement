@@ -11,7 +11,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -353,8 +353,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $model = $this->getModel();
         $lists = array();
 
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
@@ -420,13 +420,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
 
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editevents.js');
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-        $document->addStyleSheet(JURI::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        //$document->addScript(Uri::base().'components/'.$option.'/assets/js/editevents.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+        $document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '" . JUri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
+        $javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
         $javascript .= "var matchid = " . $this->item->id . ";" . "\n";
         $javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
         $javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
@@ -507,10 +507,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $default_name_format = '';
         $lists = array();
 
-        $document->addStyleSheet(JURI::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-        //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editlineup.js');
+        $document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+        //$document->addScript(Uri::base().'components/'.$option.'/assets/js/editlineup.js');
         $tid = Factory::getApplication()->input->getVar('team', '0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
@@ -680,7 +680,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 
         $javascript = "\n";
-        $javascript .= "var baseajaxurl = '" . JUri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
+        $javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
         $javascript .= "var matchid = " . $this->item->id . ";" . "\n";
         $javascript .= "var teamid = " . $this->tid . ";" . "\n";
         $javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
@@ -704,8 +704,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $model = $this->getModel();
         $default_name_format = '';
 
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/startinglineup.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
         // projekt schiedsrichter
         $allreferees = array();
         //$allreferees = $model->getRefereeRoster(0,$this->item->id);
@@ -899,8 +899,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $isNew = $this->item->id == 0;
         $document = Factory::getDocument();
         $document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-        $document->addScript(JURI::root() . $this->script);
-        $document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+        $document->addScript(Uri::root() . $this->script);
+        $document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
     }
 
@@ -912,7 +912,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
 
         //Factory::getApplication()->input->setVar('hidemainmenu', true);

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 //Ordering allowed ?
 //$ordering=($this->sortColumn == 's.ordering');
 
@@ -120,8 +121,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     $desc = Text::_($row->name);
                     //echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
                     ?>                                    
-                        <a href="<?php echo JURI::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">
-                            <img src="<?php echo JURI::root() . $row->icon; ?>" alt="<?php echo $desc; ?>" width="20" />
+                        <a href="<?php echo Uri::root() . $row->icon; ?>" title="<?php echo $desc; ?>" class="modal">
+                            <img src="<?php echo Uri::root() . $row->icon; ?>" alt="<?php echo $desc; ?>" width="20" />
                         </a>
                         <?PHP
                         ?>

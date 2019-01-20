@@ -13,9 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'objassoc.ordering');
+//$ordering=($this->sortColumn == 'objassoc.ordering');
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -136,7 +137,7 @@ if ($row->website != '') {
 						<td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td style="text-align:center; ">
             <?php
-//            $path = JURI::root().$row->assocflag;
+//            $path = Uri::root().$row->assocflag;
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
@@ -149,8 +150,8 @@ if (empty($row->assocflag) || !File::exists(JPATH_SITE.DS.$row->assocflag))
 else
 {
 ?>                                    
-<a href="<?php echo JURI::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo Uri::root().$row->assocflag;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo Uri::root().$row->assocflag;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP
 }					
@@ -158,7 +159,7 @@ else
             </td>
 			<td style="text-align:center; ">
             <?php
-//            $path = JURI::root().$row->assocflag;
+//            $path = Uri::root().$row->assocflag;
 //          $attributes='';
 //		      $html .= 'title="'.$row->name.'" '.$attributes.' />';
 //					echo $html;
@@ -171,8 +172,8 @@ if (empty($row->picture) || !File::exists(JPATH_SITE.DS.$row->picture))
 else
 {
 ?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP					
 }

@@ -31,14 +31,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView {
      * @return void
      */
     public function init() {
-        $db = sportsmanagementHelper::getDBConnection();
-        if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
-        } else {
-            $uri = Factory::getURI();
-        }
-
-        $this->assign('request_url', $uri->toString());
+        
     }
 
     /**

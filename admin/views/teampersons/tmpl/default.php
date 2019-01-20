@@ -11,6 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 if ( $this->restartpage )
 {
@@ -64,7 +65,7 @@ HTMLHelper::_('behavior.modal');
 </style>
 
 <script>
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
+	var quickaddsearchurl = '<?php echo Uri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchplayer&projectteam_id=<?php echo $this->teamws->id; ?>';
 	function searchPlayer(val)
 	{
         var s= document.getElementById("filter_search");

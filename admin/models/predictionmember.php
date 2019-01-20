@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
@@ -216,7 +217,7 @@ if	(($result->home_logo_big == '') || (!file_exists($result->home_logo_big)))
 {
 $result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  HTMLHelper::image(JURI::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(Uri::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .=  ' ' ;   
 $body .= "</td>";	
 $body .= "<td nowrap='nowrap' class='td_c'>";	
@@ -233,7 +234,7 @@ if	(($result->away_logo_big == '') || (!file_exists($result->away_logo_big)))
 {
 $result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 }
-$body .=  HTMLHelper::image(JURI::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  HTMLHelper::image(Uri::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
 $body .= "</td>";				
 $body .= "<td nowrap='nowrap' class='td_l'>";
 $body .= $result->away_name;

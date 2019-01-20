@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewpredictionproject
@@ -75,8 +76,8 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
         //$this->name = $this->item->name;
 		$document = Factory::getDocument();
 		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$document->addScript(Uri::root() . $this->script);
+		$document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     

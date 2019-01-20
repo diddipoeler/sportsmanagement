@@ -11,6 +11,8 @@
 // Disallow direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer', 'listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
@@ -33,7 +35,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 foreach ($this->Extensions as $key => $value) {
                                     $logo = "components/com_sportsmanagement/assets/icons/" . Text::_($value) . '.png';
                                     if (!file_exists($logo)) {
-                                        $logo = JURI::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+                                        $logo = Uri::root() . 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
                                     }
                                     ?>
                                     <a class="btn" href="index.php?option=com_sportsmanagement&view=<?php echo Text::_($value) ?>">

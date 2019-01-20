@@ -9,7 +9,9 @@
  * @subpackage fieldsets
  */
 
-// No direct access
+/**
+ * No direct access
+ */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -18,30 +20,31 @@ use Joomla\CMS\Factory;
 
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-// Include the component HTML helpers.
+/**
+ * Include the component HTML helpers.
+ */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
-// Get the form fieldsets.
+/**
+ * Get the form fieldsets.
+ */
 $fieldsets = $this->form->getFieldsets();
 
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP
 if ( !$this->item->id && $this->view == 'club' )
-                {
-                    
-                ?>
-                <fieldset class="adminform">
-			<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
-                <input type="checkbox" name="createTeam" />
-                </fieldset>
-                <?PHP
-                }   
-	
-	
+{
+?>
+<fieldset class="adminform">
+<legend><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
+<input type="checkbox" name="createTeam" />
+</fieldset>
+<?PHP
+}   
 if ( $this->tmpl && $this->view == 'club' )
 {
 ?>

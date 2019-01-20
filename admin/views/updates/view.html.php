@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Uri\Uri;
 jimport('joomla.html.html.bootstrap');
 
 /**
@@ -39,7 +39,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView {
 
         $db = sportsmanagementHelper::getDBConnection();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = Factory::getURI();
         }

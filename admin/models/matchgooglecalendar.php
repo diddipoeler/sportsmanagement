@@ -14,6 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Uri\Uri;
 
 // import Joomla modelform library
 
@@ -123,7 +124,7 @@ $this->oauth->setToken($token);
 $object->setOption('clientid', $google_client_id.'.apps.googleusercontent.com' );
 //$object->setOption('clientid', '329080032937.apps.googleusercontent.com');
 $object->setOption('clientsecret', $google_client_secret );
-$object->setOption('redirecturi', JURI::root() );
+$object->setOption('redirecturi', Uri::root() );
 
 // 329080032937-f4b8095v2jb8ecbmpe33tvej2koh3m4b
 // wzbJSgn4-w-6pg_qNLhcw4jT

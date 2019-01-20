@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.modal');
@@ -159,7 +160,7 @@ $this->readonly = '';
 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
 $playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id,JURI::root().$row->picture,$playerName,'20',JURI::root().$row->picture); 
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_person'.$row->id,Uri::root().$row->picture,$playerName,'20',Uri::root().$row->picture); 
 								?>
 							</td>
 							<td class="nowrap" class="center">

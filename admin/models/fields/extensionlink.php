@@ -14,6 +14,7 @@ defined('_JEXEC') or die ;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * FormFieldExtensionLink
@@ -79,7 +80,7 @@ class JFormFieldExtensionLink extends FormField {
 		}
 					
 		if (!empty($image)) {
-			$html .= '<img src="'.JURI::root().'administrator/components/'.$extension.'/assets/images/'.$image.'" style="margin-right: 5px;">';
+			$html .= '<img src="'.Uri::root().'administrator/components/'.$extension.'/assets/images/'.$image.'" style="margin-right: 5px;">';
 			$html .= '<span style="vertical-align: middle">'.Text::_($title).'</span>';
 		} else {
 			$html .= Text::_($title);

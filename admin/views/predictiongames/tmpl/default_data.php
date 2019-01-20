@@ -13,8 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 //Ordering allowed ?
-$ordering = ($this->sortColumn=='pre.ordering');
+//$ordering = ($this->sortColumn=='pre.ordering');
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -127,7 +128,7 @@ HTMLHelper::_('behavior.modal');
 										<?php echo HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongames.', $canCheckin); ?>
 									<?php endif; ?>
 							<a href='<?php echo $link; ?>'>
-									<img	src='<?php echo JURI::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
+									<img	src='<?php echo Uri::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
 											border='0'
 											alt='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'
 											title='<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'>

@@ -15,8 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Filesystem\File;
+
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
 $app = Factory::getApplication();
@@ -262,8 +263,8 @@ $this->modalheight);
 								echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<a href="<?php echo Uri::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP
 
@@ -288,8 +289,8 @@ $this->modalheight);
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
+<a href="<?php echo Uri::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP 
 echo sportsmanagementHelper::getBootstrapModalImage('projectteam'.$row->club_id,
@@ -431,8 +432,8 @@ $this->modalheight);
 														$imageTitle,'title= "'.$imageTitle.'"');
 								
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
+<a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
 </a>
 <?PHP                                 
                                 
@@ -444,8 +445,8 @@ $this->modalheight);
 									echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100" />
+<a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100" />
 </a>
 <?PHP                                                     
 								} else {

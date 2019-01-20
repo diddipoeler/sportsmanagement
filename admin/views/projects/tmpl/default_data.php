@@ -13,6 +13,8 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_('behavior.tooltip');
@@ -264,8 +266,8 @@ echo $row->league.'<br>';
 									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP
 								}
@@ -276,7 +278,7 @@ echo $row->league.'<br>';
                         <td class="center">
 							<?php if ($row->current_round): ?>
 								<?php echo HTMLHelper::link('index.php?option=com_sportsmanagement&view=matches&pid='.$row->id.'&rid='. $row->current_round,
-								                       HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
+								                       HTMLHelper::image(Uri::root().'administrator/components/com_sportsmanagement/assets/images/icon-16-Matchdays.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES_DETAILS'))); ?>
 							<?php endif; ?>
 						</td>
 						<td class="center">
@@ -301,7 +303,7 @@ echo $row->league.'<br>';
                         for ($a=0; $a < sizeof($teile); $a++ )
                         {
                         echo HTMLHelper::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,
-			HTMLHelper::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))).'<br>';
+			HTMLHelper::image(Uri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', Text::_($teile[$a]))).'<br>';
 			}
                         if ( $this->state->get('filter.userfields') )
                         {

@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewjlextprofleagimport
@@ -59,7 +60,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
     protected function addToolbar() 
     {
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$this->option.'/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/'.$this->option.'/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
         // Set toolbar items for the page

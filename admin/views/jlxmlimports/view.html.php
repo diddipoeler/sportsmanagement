@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 jimport('joomla.html.parameter.element.timezones');
 
@@ -47,14 +48,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         $model = BaseDatabaseModel::getInstance('jlxmlimport', 'sportsmanagementmodel');
-        $document->addScript(JUri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
+        $document->addScript(Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js');
 
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = JUri::getInstance();
+            $uri = Uri::getInstance();
         } else {
             $uri = Factory::getURI();
         }
@@ -114,7 +115,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         // Get a refrence of the page instance in joomla
         $document = Factory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="' . JURI::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
+        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
         $document->addCustomTag($stylelink);
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_4');
@@ -230,7 +231,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
         //	// Get a refrence of the page instance in joomla
 //		$document	= Factory::getDocument();
 //        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_2_3');
@@ -241,8 +242,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView {
 
         //parent::addToolbar();
 
-        $document->addScript(JURI::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-        $js = "registerproject('" . JURI::base() . "','" . $projectid . "','" . $app->getCfg('sitename') . "','1');" . "\n";
+        $document->addScript(Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $js = "registerproject('" . Uri::base() . "','" . $projectid . "','" . $app->getCfg('sitename') . "','1');" . "\n";
         $document->addScriptDeclaration($js);
 
         $this->setLayout('form');

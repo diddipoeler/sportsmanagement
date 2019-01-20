@@ -13,9 +13,9 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
-
+use Joomla\CMS\Uri\Uri;
 //Ordering allowed ?
-$ordering = ($this->sortColumn == 'objassoc.ordering');
+//$ordering = ($this->sortColumn == 'objassoc.ordering');
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -124,7 +124,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <td style="text-align:center; "><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                     <td style="text-align:center; ">
                         <?php
-                    //$path = JURI::root().$row->assocflag;
+                    //$path = Uri::root().$row->assocflag;
                     //$attributes='';
                     //$html .= 'title="'.$row->name.'" '.$attributes.' />';
                     //echo $html;
@@ -132,8 +132,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             echo '<i class="fa fa-flag text-danger"></i>';
                         } else {
                             ?>                                    
-                            <a href="<?php echo JURI::root() . $row->assocflag; ?>" title="<?php echo $row->name; ?>" class="modal">
-                                <img src="<?php echo JURI::root() . $row->assocflag; ?>" alt="<?php echo $row->name; ?>" width="20" />
+                            <a href="<?php echo Uri::root() . $row->assocflag; ?>" title="<?php echo $row->name; ?>" class="modal">
+                                <img src="<?php echo Uri::root() . $row->assocflag; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>
                             <?PHP
                         }
@@ -141,7 +141,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     </td>
                     <td style="text-align:center; ">
                         <?php
-                    //$path = JURI::root().$row->assocflag;
+                    //$path = Uri::root().$row->assocflag;
                     //$attributes='';
                     //$html .= 'title="'.$row->name.'" '.$attributes.' />';
                     //echo $html;
@@ -149,8 +149,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             echo '<i class="fa fa-picture-o text-danger"></i>';
                         } else {
                             ?>                                    
-                            <a href="<?php echo JURI::root() . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
-                                <img src="<?php echo JURI::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
+                            <a href="<?php echo Uri::root() . $row->picture; ?>" title="<?php echo $row->name; ?>" class="modal">
+                                <img src="<?php echo Uri::root() . $row->picture; ?>" alt="<?php echo $row->name; ?>" width="20" />
                             </a>
                             <?PHP
                         }

@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -182,8 +183,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>                                    
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+<a href="<?php echo Uri::root().$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo Uri::root().$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
 </a>
 <?PHP
 								}

@@ -125,9 +125,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 	 */
 	protected function setDocument()
 	{
-		//$document = Factory::getDocument();
-//		$version = urlencode(JoomleagueHelper::getVersion());
-//		$document->addScript(JUri::root() . $this->script);
+
 	}
 }
 ?>

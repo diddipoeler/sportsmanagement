@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 //HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -199,7 +201,7 @@ $picture = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("cl
 $imageTitle = ( $row->logo_big == sportsmanagementHelper::getDefaultPlaceholder("clublogobig") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,JURI::root().$row->logo_big,$imageTitle,'20',JURI::root().$row->logo_big);                            
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_big'.$row->id,Uri::root().$row->logo_big,$imageTitle,'20',Uri::root().$row->logo_big);                            
 							?>
 						</td>
 						<td class="center">
@@ -208,7 +210,7 @@ $picture = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder(
 $imageTitle = ( $row->logo_middle == sportsmanagementHelper::getDefaultPlaceholder("clublogomedium") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                            
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,Uri::root().$row->logo_middle,$imageTitle,'20',Uri::root().$row->logo_middle);                            
 							?>
 						</td>
 						<td class="center">
@@ -217,7 +219,7 @@ $picture = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("
 $imageTitle = ( $row->logo_small == sportsmanagementHelper::getDefaultPlaceholder("clublogosmall") ) ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_DEFAULT_IMAGE') : Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE');
 echo HTMLHelper::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$picture,
 $imageTitle,'title= "'.$imageTitle.'"');
-echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,JURI::root().$row->logo_small,$imageTitle,'20',JURI::root().$row->logo_small);
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_small'.$row->id,Uri::root().$row->logo_small,$imageTitle,'20',Uri::root().$row->logo_small);
 /*
 <td class=""><?php echo $row->zipcode; ?></td>
 <td class=""><?php echo $row->location; ?></td>

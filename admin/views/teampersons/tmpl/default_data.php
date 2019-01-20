@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Uri\Uri;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -225,8 +226,8 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 										$imageTitle,
 										'title= "' . $imageTitle . '"' );
 ?>
-<a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+<a href="<?php echo Uri::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo Uri::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
 </a>
 <?PHP   								
                                 }
@@ -234,8 +235,8 @@ echo JHtmlSelect::genericlist($this->lists['nation'],
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
 ?>
-<a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
+<a href="<?php echo Uri::root().$row->season_picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo Uri::root().$row->season_picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
 </a>
 <?PHP 								
                                 

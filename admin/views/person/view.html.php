@@ -15,6 +15,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Environment\Browser;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewPerson
@@ -125,7 +126,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$this->form->setValue('agegroup_id', null, $person_range);
 	}
     
- 	$this->document->addScript(JURI::base().'components/'.$this->option.'/assets/js/sm_functions.js');
+ 	$this->document->addScript(Uri::base().'components/'.$this->option.'/assets/js/sm_functions.js');
     
  	$javascript = "\n";
  	$javascript .= "window.addEvent('domready', function() {";   

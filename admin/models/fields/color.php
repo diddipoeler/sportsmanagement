@@ -12,6 +12,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * FormFieldColor
@@ -34,7 +35,7 @@ class JFormFieldColor extends \JFormFieldText
 	public function getInput()
 	{
 		$document = Factory::getDocument();
-		$document->addScript(JURI::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
+		$document->addScript(Uri::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
 		return parent::getInput();
 	}
 

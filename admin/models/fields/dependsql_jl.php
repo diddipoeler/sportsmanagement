@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-
+use Joomla\CMS\Uri\Uri;
 FormHelper::loadFieldClass('list');
 
 HTMLHelper::_( 'behavior.framework' );
@@ -102,7 +102,7 @@ class JFormFieldDependSQL extends FormField
 		if ($depends)
 		{
 			$doc = Factory::getDocument();
-			$doc->addScript(JUri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
+			$doc->addScript(Uri::base() . 'components/com_sportsmanagement/assets/js/depend.js' );
 		}
 
 		return HTMLHelper::_('select.genericlist',  $options, $this->name, trim($attribs), $key, $val, $this->value, $this->id);

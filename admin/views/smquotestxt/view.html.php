@@ -49,15 +49,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-//		// Get a refrence of the page instance in joomla
-//		$document	= Factory::getDocument();
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//        // Set toolbar items for the page
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-       
         parent::addToolbar();
     }    
     

@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // welche joomla version
@@ -51,7 +53,7 @@ HTMLHelper::_( 'behavior.mootools' );
 </style>
 <script>
 
-	var quickaddsearchurl = '<?php echo JURI::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
+	var quickaddsearchurl = '<?php echo Uri::root();?>administrator/index.php?option=com_sportsmanagement&task=quickadd.searchreferee';
 
 	function searchPlayer(val)
 	{
@@ -61,7 +63,7 @@ HTMLHelper::_( 'behavior.mootools' );
 	}
 </script>
 <?php
-$uri=JURI::root();
+$uri=Uri::root();
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
@@ -81,7 +83,7 @@ echo $this->loadTemplate('joomla2');
 	echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
 	?>
 	</legend>
-	<form id="quickaddForm" action="<?php echo JURI::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
+	<form id="quickaddForm" action="<?php echo Uri::root(); ?>administrator/index.php?option=com_sportsmanagement&task=quickadd.addreferee" method="post">
 	<input type="hidden" id="cpersonid" name="cpersonid" value="">
 	<table>
 		<tr>

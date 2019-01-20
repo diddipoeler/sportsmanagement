@@ -1,7 +1,8 @@
 <?php 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Uri\Uri;
 
-$backgroundimage = JURI::root().'media/com_sportsmanagement/rosterground/spielfeld_578x1050.png';
+$backgroundimage = Uri::root().'media/com_sportsmanagement/rosterground/spielfeld_578x1050.png';
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
 
 // bildpositionen für die spielsysteme
@@ -37,7 +38,7 @@ echo "<div style=\"background-image:url('".$backgroundimage."');background-posit
 
 
 $testlauf = 0;
-$picture = JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
+$picture = Uri::root().'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 $schemahome = $bildpositionen[4231];
 foreach ( $schemahome as $key => $value )
 {

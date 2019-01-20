@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal', 'a.modal');
@@ -203,21 +204,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
           <div style="width:48px; float:right">            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo Text::_('COM_SPORTSMANAGEMENT_FACEBOOK_FOLLOW')?>"               target="_blank" href=               "https://www.facebook.com/joomlasportsmanagement">
-                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/facebook.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/facebook.png"               width="48px" height="48px"></a>            
             </div>            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_FOLLOW')?>"               target="_blank" href=               "https://www.github.com/diddipoeler/sportsmanagement">
-                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/github.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/github.png"               width="48px" height="48px"></a>            
             </div>            
             <div style="margin-bottom:5px">              
               <a title=               "<?php echo Text::_('COM_SPORTSMANAGEMENT_HELP_LINK')?>" target=               "_blank" href=               "http://smwiki.diddipoeler.de/index.php/Hauptseite">               
-                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"               width="48px" height="48px"></a>            
+                <img src=               "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/hilfe.png"               width="48px" height="48px"></a>            
             </div>          
           </div>          
           <div style="width:80%">            
             <div>              
               <a title=               "<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target=               "_blank" href="http://www.fussballineuropa.de">
-                <img src=               "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/boxklein.png"               width="100%" height="auto" max-width="100%"></a>            
+                <img src=               "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/boxklein.png"               width="100%" height="auto" max-width="100%"></a>            
             </div>          
           </div>        
         </div>        
@@ -257,24 +258,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
         <div style="text-align: center">          
           <div style=           "text-align: center; width: 142px;height: 190px;float:left;">            
             <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://www.fussballineuropa.de">
-              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg"></a>          
+              <img src=             "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/ploeger_dieter.jpg"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://www.esv-knittelfeld.at">
-              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/galun-siegfried02.png"></a>          
+              <img src=             "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/galun-siegfried02.png"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="http://svdoerpum.de/">
-              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg"></a>          
+              <img src=             "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/prochnow_hauke.jpg"></a>          
           </div>          
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="">
-              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/appu-konrad.jpg"></a>          
+              <img src=             "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/appu-konrad.jpg"></a>          
           </div>        
           
           <div style=           "text-align: center; width:142px;height: 190px;float:left;">            
             <a title="<?php echo Text::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>"             target="_blank" href="">
-              <img src=             "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/keller-jens.jpg"></a>          
+              <img src=             "<?php echo Uri::base( true ) ?>/components/com_sportsmanagement/assets/icons/keller-jens.jpg"></a>          
           </div>        
         </div>
         <br />

@@ -19,6 +19,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * sportsmanagementViewMatches
@@ -87,7 +88,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         /**
          * dadurch werden die spaltenbreiten optimiert
          */
-        $this->document->addStyleSheet(JUri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+        $this->document->addStyleSheet(Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 
         foreach ($ress as $res) {
             $datum = sportsmanagementHelper::convertDate($res->round_date_first, 1) . ' - ' . sportsmanagementHelper::convertDate($res->round_date_last, 1);
@@ -171,7 +172,7 @@ class sportsmanagementViewMatches extends sportsmanagementView {
         $lists['divisions'] = $divisions;
         unset($divisions);
 
-        $document->addScript(JURI::base() . 'components/' . $option . '/assets/js/matches.js');
+        $document->addScript(Uri::base() . 'components/' . $option . '/assets/js/matches.js');
 
         $selectlist = array();
         if (isset($table_info['#__sportsmanagement_match'])) {
@@ -245,7 +246,7 @@ switch ( $this->getLayout() )
         //// Get a refrence of the page instance in joomla
 //		$document	= Factory::getDocument();
 //        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $stylelink = '<link rel="stylesheet" href="'.Uri::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 
         $app = Factory::getApplication();
