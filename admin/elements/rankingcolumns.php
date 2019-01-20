@@ -1,46 +1,19 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      rankingcolumns.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage elements
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 
 /**
  * JFormFieldrankingcolumns
@@ -51,7 +24,7 @@ use Joomla\CMS\Factory;
  * @version $Id$
  * @access public
  */
-class JFormFieldrankingcolumns extends JFormField
+class JFormFieldrankingcolumns extends FormField
 {
 
 	protected $type = 'rankingcolumns';
@@ -69,6 +42,7 @@ class JFormFieldrankingcolumns extends JFormField
         $app = Factory::getApplication();
 		$lang = Factory::getLanguage();
         $option = Factory::getApplication()->input->getCmd('option');
+        $mitems = array();
         
         $selrankingcol = (int) ($this->element['selrankingcol']);
 
@@ -117,11 +91,8 @@ $mitems[] = HTMLHelper::_('select.option', 'LASTGAMES', Text::_('COM_SPORTSMANAG
         $mitems[] = HTMLHelper::_('select.option', $value, Text::_('COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_ORDERED_COLUMN_'.$value));
     }    
         
-        
     }
-    
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
-    
+  
 return HTMLHelper::_('select.genericlist',  $mitems, $this->name, 
 				'class="inputbox" size="10" multiple="true" ', 'value', 'text', $this->value, $this->id);   
                                 
