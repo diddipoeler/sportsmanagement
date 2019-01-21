@@ -1207,7 +1207,42 @@ if ( $whichfile == 'playerfile' )
 	$csv = new JSMparseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
-	$csv->delimiter = "\t";
+$csv->delimiter = ";";
+$row = 0;
+$start = 0;  
+$header = array();
+if (($handle = fopen($file, "r")) !== FALSE) {
+while (($data = fgetcsv($handle, 1000, $csv->delimiter)) !== FALSE) {
+ 
+//echo "<p> $num Felder in Zeile $row: <br /></p>\n";
+//$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('num <br><pre>'.print_r($num ,true).'</pre>'   ),'');
+  
+if ( $row == 8 )
+{
+$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
+$num = count($data);  
+for ($c=0; $c < $num; $c++) {  
+$header[$c] = $data[$c];    
+}
+}
+elseif ( $row > 8 )
+{
+$num = count($data); 
+for ($c=0; $c < $num; $c++) {   
+$csv->data[$start][$header[$c]] = $data[$c]; 
+}  
+$start++;   
+}  
+ 
+$row++;  
+}
+
+  
+fclose($handle);  
+}
+
+//$app->enqueueMessage(Text::_('header <br><pre>'.print_r($header ,true).'</pre>'   ),'');  	
 	// switch ($delimiter)
 	// {
 	// 	case ";":
@@ -1223,8 +1258,8 @@ if ( $whichfile == 'playerfile' )
 
 	//$startrow = $jRegistry->get('cfg_dfbnet_player_startrow') - 2;
 	//$csv->parse($file,$startrow);
-	$startline = $startline - 1;
-	$csv->parse($file,$startline);
+	//$startline = $startline - 1;
+	//$csv->parse($file,$startline);
 	$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 
 	// anfang schleife csv file
