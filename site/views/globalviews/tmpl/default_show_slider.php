@@ -13,7 +13,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row-fluid" id="show_slider">
+<div class="<?php echo $this->divclassrow; ?>" id="show_slider">
     <?php
     if (version_compare(JSM_JVERSION, '4', 'eq')) {
 // Joomla! 4.0 code here
