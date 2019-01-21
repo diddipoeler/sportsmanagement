@@ -13,11 +13,17 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Component\ComponentHelper;
+if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+{
+echo __METHOD__.' '.__LINE__.' divclasscontainer<br><pre>'.print_r($this->divclasscontainer,true).'</pre>'; 
+echo __METHOD__.' '.__LINE__.' divclassrow<br><pre>'.print_r($this->divclassrow,true).'</pre>'; 	
+}
 
-  // Make sure that in case extensions are written for mentioned (common) views,
-  // that they are loaded i.s.o. of the template of this view
-  $templatesToLoad = array('globalviews');
-  sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+// Make sure that in case extensions are written for mentioned (common) views,
+// that they are loaded i.s.o. of the template of this view
+$templatesToLoad = array('globalviews');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
  */            
