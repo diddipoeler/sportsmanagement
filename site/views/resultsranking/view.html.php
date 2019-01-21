@@ -49,6 +49,8 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0),__METHOD__,1);
 		// add the ranking config file
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$this->jinput->getInt('cfg_which_database',0));
+		$rankingmodel::$from = 0;
+                $rankingmodel::$to = 0;
 		$rankingmodel->computeRanking($this->jinput->getInt('cfg_which_database',0));
         
         $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
@@ -112,31 +114,26 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		
 if ( $this->params->get('show_allranking', 0) ) 
 {
-	$this->previousRanking = $rankingmodel::$previousRanking;
-        if ($this->config['show_table_1']) {
-            $this->currentRanking = $rankingmodel::$currentRanking;
-        }	
-        if ($this->config['show_table_2']) {
-            $this->homeRank = $rankingmodel::$homeRank;
-        }	
+$this->previousRanking = $rankingmodel::$previousRanking;
+if ($this->config['show_table_1']) {
+$this->currentRanking = $rankingmodel::$currentRanking;
+}	
+if ($this->config['show_table_2']) {
+$this->homeRank = $rankingmodel::$homeRank;
+}	
 if ($this->config['show_table_3']) {
-            $this->awayRank = $rankingmodel::$awayRank;
-        }
-	
+$this->awayRank = $rankingmodel::$awayRank;
+}
 if ($this->config['show_table_4']) {
-                $rankingmodel::$part = 1;
-                $rankingmodel::$from = 0;
-                $rankingmodel::$to = 0;
-                $rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
-                $this->firstRank = $rankingmodel::$currentRanking;
-            }
+$rankingmodel::$part = 1;
+$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+$this->firstRank = $rankingmodel::$currentRanking;
+}
 if ($this->config['show_table_5']) {
-                $rankingmodel::$part = 2;
-                $rankingmodel::$from = 0;
-                $rankingmodel::$to = 0;
-                $rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
-                $this->secondRank = $rankingmodel::$currentRanking;
-            }	
+$rankingmodel::$part = 2;
+$rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+$this->secondRank = $rankingmodel::$currentRanking;
+}	
 }
 else
 {
