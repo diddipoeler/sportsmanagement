@@ -15,10 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Component\ComponentHelper;
 
 require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php' );
 require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php' );
 
 jimport('joomla.filesystem.file');
@@ -72,6 +71,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$config = array_merge($rankingconfig, $resultsconfig);
 
 		$this->config = array_merge($this->overallconfig, $config);
+	if ( ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+        {
+        echo __METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'; 
+        }
 		$this->tableconfig = $rankingconfig;
 		$this->showediticon = $resultsmodel->getShowEditIcon();
 		$this->division = $resultsmodel->getDivision();
