@@ -109,10 +109,39 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		$this->type = $rankingmodel::$type;
 		$this->from = $rankingmodel::$from;
 		$this->to = $rankingmodel::$to;
-		$this->currentRanking = $rankingmodel::$currentRanking;
-		$this->previousRanking = $rankingmodel::$previousRanking;
-		$this->homeRank = $rankingmodel::$homeRank;
-		$this->awayRank = $rankingmodel::$awayRank;
+		
+if ( $this->params->get('show_allranking', 0) ) 
+{
+	$this->previousRanking = $rankingmodel::$previousRanking;
+        if ($this->config['show_table_1']) {
+            $this->currentRanking = $rankingmodel::$currentRanking;
+        }	
+        if ($this->config['show_table_2']) {
+            $this->homeRank = $rankingmodel::$homeRank;
+        }	
+if ($this->config['show_table_3']) {
+            $this->awayRank = $rankingmodel::$awayRank;
+        }
+	
+if ($this->config['show_table_4']) {
+                $rankingmodel::$part = 1;
+                $rankingmodel::$from = 0;
+                $rankingmodel::$to = 0;
+                $rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+                $this->firstRank = $rankingmodel::$currentRanking;
+            }
+if ($this->config['show_table_5']) {
+                $rankingmodel::$part = 2;
+                $rankingmodel::$from = 0;
+                $rankingmodel::$to = 0;
+                $rankingmodel::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+                $this->secondRank = $rankingmodel::$currentRanking;
+            }	
+}
+		//$this->currentRanking = $rankingmodel::$currentRanking;
+		//$this->previousRanking = $rankingmodel::$previousRanking;
+		//$this->homeRank = $rankingmodel::$homeRank;
+		//$this->awayRank = $rankingmodel::$awayRank;
 		$this->current_round = $rankingmodel::$current_round;
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$this->jinput->getInt('cfg_which_database',0));
 		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database',0));
