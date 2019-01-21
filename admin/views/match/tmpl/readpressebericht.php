@@ -262,7 +262,7 @@ $lfdnummer = 0;
             <tr>
                 <td><?php echo $value->spieler; ?></td>
                 <td><?php echo $value->event_time; ?></td>
-                <td><?php echo $value->event_name; ?></td>
+                <td><?php echo ($value->event_name == Text::_($value->event_name)) ? $value->event_name : Text::_($value->event_name); ?></td>
                 <td><?php echo $value->spielernummer; ?></td>
                 <td><?php echo $value->notice; ?></td>
                 <td>
