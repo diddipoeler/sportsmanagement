@@ -81,6 +81,13 @@
 			    <option value="1">Ranking</option>
 			</field>
 
+<field	name="show_allranking" type="extensionradiobutton" default="0"
+			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_LABEL"
+			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_ALLRANKING_DESCR">
+			    <option value="0">Results</option>
+			    <option value="1">Ranking</option>
+			</field>
+		
         </fieldset>
     </fields>
 </metadata>
