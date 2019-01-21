@@ -138,6 +138,11 @@ if ($this->config['show_table_5']) {
                 $this->secondRank = $rankingmodel::$currentRanking;
             }	
 }
+else
+{
+$this->previousRanking = $rankingmodel::$previousRanking;
+$this->currentRanking = $rankingmodel::$currentRanking;	
+}
 		//$this->currentRanking = $rankingmodel::$currentRanking;
 		//$this->previousRanking = $rankingmodel::$previousRanking;
 		//$this->homeRank = $rankingmodel::$homeRank;
