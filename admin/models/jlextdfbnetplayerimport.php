@@ -1212,7 +1212,7 @@ $row = 0;
 $start = 0;  
 $header = array();
 if (($handle = fopen($file, "r")) !== FALSE) {
-while (($data = fgetcsv($handle, 1000, $csv->delimiter)) !== FALSE) {
+while (($data = fgetcsv($handle, 4000, $csv->delimiter)) !== FALSE) {
  
 //echo "<p> $num Felder in Zeile $row: <br /></p>\n";
 //$app->enqueueMessage(Text::_('row<br><pre>'.print_r($row,true).'</pre>'   ),'');
