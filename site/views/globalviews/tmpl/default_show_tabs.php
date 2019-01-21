@@ -70,7 +70,7 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 <div class="<?php echo $this->divclasscontainer;?>">
 <div class="<?php echo $this->divclassrow; ?>">
 <?PHP
-if ( $this->config['show_allranking'] && $this->view == 'resultsranking' ) 
+if ( $this->params->get('show_allranking', 0) && $this->view == 'resultsranking' ) 
 {
    
 }   
