@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="row-fluid" id="show_tabs">
+<div class="<?php echo $this->divclassrow; ?>" id="show_tabs">
 <?php
    
 switch ($this->view)
@@ -41,8 +41,8 @@ $active = ($idxTab==0) ? HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array(
 
 echo HTMLHelper::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
-<div class="container">
-<div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclassrow; ?>">
 <?PHP
 echo $this->loadTemplate($template);
 ?>
@@ -67,8 +67,8 @@ $active = ($idxTab==0) ? HTMLHelper::_('bootstrap.startTabSet', 'myTab4', array(
 
 echo HTMLHelper::_('bootstrap.addTab', 'myTab4', $text, Text::_($text));
 ?>
-<div class="container">
-<div class="row">
+<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclassrow; ?>">
 <?PHP
 echo $this->loadTemplate($template);
 ?>
@@ -79,10 +79,6 @@ echo HTMLHelper::_('bootstrap.endTab');
 $idxTab++;
 }    
 echo HTMLHelper::_('bootstrap.endTabSet');  
-
-
-
-   
         
 }
 elseif(version_compare(JSM_JVERSION,'2','eq'))
