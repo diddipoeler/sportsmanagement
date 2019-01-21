@@ -21,7 +21,7 @@ echo __METHOD__.' '.__LINE__.' divclassrow<br><pre>'.print_r($this->divclassrow,
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>" id="results">
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultresults">
 <?php
     
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
