@@ -1220,7 +1220,7 @@ while (($data = fgetcsv($handle, 1000, $csv->delimiter)) !== FALSE) {
   
 if ( $row == 8 )
 {
-$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
+//$app->enqueueMessage(Text::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
 $num = count($data);  
 for ($c=0; $c < $num; $c++) {  
 $header[$c] = $data[$c];    
@@ -1237,7 +1237,6 @@ $start++;
  
 $row++;  
 }
-
   
 fclose($handle);  
 }
@@ -1260,7 +1259,7 @@ fclose($handle);
 	//$csv->parse($file,$startrow);
 	//$startline = $startline - 1;
 	//$csv->parse($file,$startline);
-	$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
+	//$app->enqueueMessage(Text::_('DEBUG Ausgabe der verarbeiteten Spielerdatei:<br><pre>'.print_r($csv->data,true).'</pre>'   ),'');
 
 	// anfang schleife csv file
 	for($a=0; $a < sizeof($csv->data); $a++  )
