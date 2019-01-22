@@ -78,7 +78,7 @@
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"
 			    	description="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_DESCR">
 			    <option value="0">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RANKING</option>
-			    <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_TABLE</option>
+			    <option value="1">COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_BUTTON_RESULTS</option>
 			</field>
 
 <field	name="show_allranking" type="extensionradiobutton" default="0"
