@@ -13,8 +13,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 ?>
 
-    <!-- START: Contentheading -->
-<table class="contentpaneopen" width="100%">
+<!-- START: Contentheading -->
+<table class="table">
     <tr>
         <td class="contentheading">
             <?php
@@ -24,4 +24,4 @@ use Joomla\CMS\Language\Text;
     </tr>
 </table>
 <br />
-    <!-- END: Contentheading -->
+<!-- END: Contentheading -->

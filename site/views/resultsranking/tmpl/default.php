@@ -67,7 +67,7 @@ if ( $this->config['show_explanation'] )
 echo $this->loadTemplate('explanation');
 }
 
-if ( $this->config['show_ranking_maps'] )
+if ( $this->params->get('show_map', 0) )
 { 
 echo $this->loadTemplate('googlemap');
 }   

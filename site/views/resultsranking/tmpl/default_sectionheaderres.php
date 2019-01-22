@@ -13,10 +13,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
-if ( $this->config['show_sectionheader'] == 1 )
+if ( $this->config['show_sectionheader'] )
 {
 	?>
-	<table width="" class="table" id="">
+	<table class="table" id="resultsranking_sectionheaderresults">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -38,7 +38,6 @@ if ( $this->config['show_sectionheader'] == 1 )
 							echo ' ';
 							echo HTMLHelper::link( $link, $desc );
 						}
-
 				}
 				else
 				{

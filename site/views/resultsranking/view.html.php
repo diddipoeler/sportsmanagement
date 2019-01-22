@@ -44,10 +44,14 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         
         $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
-		// add the ranking model
+/**
+ * add the ranking model
+ */
 		$rankingmodel = new sportsmanagementModelRanking();
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0),__METHOD__,1);
-		// add the ranking config file
+/**
+ * add the ranking config file
+ */
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$this->jinput->getInt('cfg_which_database',0));
 		$rankingmodel::$from = 0;
                 $rankingmodel::$to = 0;
@@ -55,10 +59,13 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         
         $mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
         
-		// add the results model		
+/**
+ * add the results model
+ */		
 		$resultsmodel	= new sportsmanagementModelResults();
-		// add the results config file
-
+/**
+ * add the results config file
+ */
 		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$this->jinput->getInt('cfg_which_database',0));
         $this->paramconfig = $rankingmodel::$paramconfig;
@@ -69,7 +76,9 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		if (!isset($resultsconfig['show_dnp_teams_icons'])){$resultsconfig['show_dnp_teams_icons']=0;}
 		if (!isset($resultsconfig['show_results_ranking'])){$resultsconfig['show_results_ranking']=0;}
 
-		// merge the 2 config files
+/**
+ * merge the 2 config files
+ */
 		$config = array_merge($rankingconfig, $resultsconfig);
 
 		$this->config = array_merge($this->overallconfig, $config);
@@ -140,21 +149,22 @@ else
 $this->previousRanking = $rankingmodel::$previousRanking;
 $this->currentRanking = $rankingmodel::$currentRanking;	
 }
-		//$this->currentRanking = $rankingmodel::$currentRanking;
-		//$this->previousRanking = $rankingmodel::$previousRanking;
-		//$this->homeRank = $rankingmodel::$homeRank;
-		//$this->awayRank = $rankingmodel::$awayRank;
+
 		$this->current_round = $rankingmodel::$current_round;
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$this->jinput->getInt('cfg_which_database',0));
 		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database',0));
         
-		//rankingcolors
+/**
+ * rankingcolors
+ */
 		if (!isset ($this->config['colors'])) {
 			$this->config['colors'] = "";
 		}
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],$this->jinput->getInt('cfg_which_database',0));
         
-        // Set page title
+/**
+ * Set page title
+ */
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
 			? Text::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE')
 			: Text::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE').' & ' . Text :: _('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
@@ -168,10 +178,12 @@ $this->currentRanking = $rankingmodel::$currentRanking;
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
-        // diddipoeler
+/**
+ * diddipoeler
+ */
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));
         
-        if ( $this->config['show_ranking_maps'] )
+      if ( $this->params->get('show_map', 0) )
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
