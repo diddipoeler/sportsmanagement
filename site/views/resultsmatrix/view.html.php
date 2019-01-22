@@ -147,7 +147,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 /**
  * diddipoeler
  */
-		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));	   
+	$mdlProjectteams = BaseDatabaseModel::getInstance("Projectteams", "sportsmanagementModel");
+    $this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));	   
 	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
 //	  $this->geo = new JSMsimpleGMapGeocoder();
 //	  $this->geo->genkml3($project->id,$this->allteams);
