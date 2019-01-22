@@ -793,7 +793,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $option = $jinput->getCmd('option');
         $document = Factory::getDocument();
         $post = $app->input->post->getArray(array());
-        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' post<br><pre>' . print_r($post, true) . '</pre>'), '');
         $project_id = $app->getUserState("$option.pid", '0');;
         $model = $this->getModel();
         $csv_file_save = $model->savePressebericht($post);
