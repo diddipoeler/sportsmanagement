@@ -185,6 +185,7 @@ $this->currentRanking = $rankingmodel::$currentRanking;
         
       if ( $this->params->get('show_map', 0) )
 	  {
+	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
   
