@@ -42,6 +42,12 @@ $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
 }
 
 echo $this->loadTemplate('show_tabs');
+
+if ( $this->params->get('show_map', 0) )
+{ 
+echo $this->loadTemplate('googlemap');
+}
+
 echo $this->loadTemplate('jsminfo');
 ?>
 </div>

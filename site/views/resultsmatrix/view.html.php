@@ -35,7 +35,6 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewResultsmatrix extends sportsmanagementView  
 {
-
 	
 	/**
 	 * sportsmanagementViewResultsmatrix::init()
@@ -140,8 +139,46 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
         $stylelink = '<link rel="stylesheet" href="'.Uri::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
-         sportsmanagementHelperHtml::$project = $project;
-         sportsmanagementHelperHtml::$teams = $this->teams;
+        sportsmanagementHelperHtml::$project = $project;
+        sportsmanagementHelperHtml::$teams = $this->teams;
+        
+        if ( $this->params->get('show_map', 0) )
+	  {
+	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
+	  $this->geo = new JSMsimpleGMapGeocoder();
+	  $this->geo->genkml3($project->id,$this->allteams);
+  
+  foreach ( $this->allteams as $row )
+    {
+    $address_parts = array();
+		if (!empty($row->club_address))
+		{
+			$address_parts[] = $row->club_address;
+		}
+		if (!empty($row->club_state))
+		{
+			$address_parts[] = $row->club_state;
+		}
+		if (!empty($row->club_location))
+		{
+			if (!empty($row->club_zipcode))
+			{
+				$address_parts[] = $row->club_zipcode. ' ' .$row->club_location;
+			}
+			else
+			{
+				$address_parts[] = $row->club_location;
+			}
+		}
+		if (!empty($row->club_country))
+		{
+			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
+		}
+		$row->address_string = implode(', ', $address_parts);
+
+    }
+
+	}
          
 	}
 
