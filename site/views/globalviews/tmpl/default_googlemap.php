@@ -202,6 +202,8 @@ jQuery.get("https://ipinfo.io", function(response) {
 <?php
 break;
 case 'ranking':
+case 'resultsranking':
+case 'resultsmatrix':
 $zaehler = 1;
 $find[] = "'";
 $replace[] = " ";
