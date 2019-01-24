@@ -45,12 +45,15 @@ echo $this->loadTemplate('pagnav');
 	
 echo $this->loadTemplate('pagination');
 echo $this->loadTemplate('results');
-
+	
+if ( $this->config['show_pagenav'] )
+{
 if ( $this->config['show_matchday_pagenav'] == 1 || $this->config['show_matchday_pagenav'] == 3 )
 {
 echo $this->loadTemplate('pagnav');
 }
-    
+}
+	
 if ( $this->overallconfig['show_project_rss_feed'] )
 {
 if ( $this->rssfeeditems )
