@@ -34,11 +34,15 @@ if ( $this->config['show_sectionheader'] )
 {
 echo $this->loadTemplate('sectionheader');
 }
-	
+
+if ( $this->config['show_pagenav'] )
+{
 if ( $this->config['show_matchday_pagenav'] == 2 || $this->config['show_matchday_pagenav'] == 3 )
 {
 echo $this->loadTemplate('pagnav');
 }
+}
+	
 echo $this->loadTemplate('pagination');
 echo $this->loadTemplate('results');
 
