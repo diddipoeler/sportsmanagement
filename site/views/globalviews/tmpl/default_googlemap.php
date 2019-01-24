@@ -220,6 +220,8 @@ $row->team_name= str_replace($find, $replace, $row->team_name);
 $map_markes[] = "['".$row->team_name.'<br>'.HTMLHelper::_('image',$row->logo_big,$row->team_name,array('width' => '50') )."',".$latitude.",".$longitude.",'".$row->team_name."','".Uri::root().$row->logo_big."']";
 $map_bounds[] = "[".$latitude.",".$longitude."]";
 $zaehler++;
+$setlatitude = $row->latitude;
+$setlongitude = $row->longitude;	
 }
 
 }
@@ -233,7 +235,7 @@ $comma_bounds = implode(",", $map_bounds);
          <?php echo $comma_separated; ?>
          ];
   
-         var map = L.map('map').setView([<?php echo $latitude; ?>,<?php echo $longitude; ?>], 8);
+         var map = L.map('map').setView([<?php echo $setlatitude; ?>,<?php echo $setlongitude; ?>], 8);
          mapLink =
              '<a href="http://openstreetmap.org">OpenStreetMap</a>';
          L.tileLayer(
