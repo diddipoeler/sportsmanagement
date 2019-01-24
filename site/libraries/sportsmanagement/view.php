@@ -151,9 +151,9 @@ Log::addLogger(array('logger' => 'database','db_table' => '#__sportsmanagement_l
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
 		break;
             case 'resultsranking':
+	    case 'resultsmatrix':
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
                 $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-
                 break;
             default:
                 $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
