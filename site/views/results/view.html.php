@@ -54,6 +54,12 @@ $this->limitstart = $this->model->getLimitStart();
 $this->ausgabestart = $this->limitstart + 1;
 $this->ausgabeende = $this->limitstart + $this->limit;
 	$this->state = $this->get('State');
+		
+if ( !$config['show_pagenav'] )		
+{		
+sportsmanagementModelResults::$limit = 0; 
+}		
+		
 	$matches = $this->get('Data');
 	$this->pagination = $this->get('Pagination');
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
