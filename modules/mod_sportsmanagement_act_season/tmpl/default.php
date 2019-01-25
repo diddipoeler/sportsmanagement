@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 $start = 1;
 foreach ( $list as $row )
@@ -35,7 +36,7 @@ $createroute = array("option" => "com_sportsmanagement",
         "division" => 0, );
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
-$link = JRoute::_( 'index.php?' . $query, false );
+$link = Route::_( 'index.php?' . $query, false );
 ?>
 <div class="col-sm-2">
 <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
