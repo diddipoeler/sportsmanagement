@@ -29,6 +29,7 @@ $ausland[$row->country] = JSMCountries::getCountryName($row->country);
 $zaehler++;  
 }  
 $zaehler = 0;  
+asort($ausland); 
 ?>  
 <div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id.'-'.$module->id; ?>">
 <?php        
