@@ -34,15 +34,20 @@ if ( empty($zaehler) )
 }
 $zaehler++;  
 }  
-echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+$zaehler = 0;  
+?>  
+<div class="panel-group" id="accordion">
+<?php        
 foreach ( $ausland as $key => $value )
-{
-// This renders the beginning of the slides code.  
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($key).' '.$value, 'slide'.$key.'_id');
-?>    
-<div class="container">
-<?PHP  
-$start = 1;  
+{     
+?>  
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#<?php echo $value; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
+                </h4>
+            </div>
+<?php
 foreach ( $list as $row ) if ($row->country == $key)
 {
     
@@ -58,8 +63,13 @@ $createroute = array("option" => "com_sportsmanagement",
         "division" => 0, );
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
-$link = Route::_( 'index.php?' . $query, false );
-?>
+$link = Route::_( 'index.php?' . $query, false );  
+if ( empty($zaehler) )  
+{
+//$collapse = 'in';  
+}  
+?>                      
+            <div id="<?php echo $value; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
 <div class="col-sm-2">
 <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
@@ -72,21 +82,19 @@ echo Text::_( $row->name  );
 ?>
 </a>
 <!-- </button> -->
-</div>
-<?PHP
-$start++;
+</div>                
+            </div>
+<?php
+}                      
+?>                      
+        </div>
+<?php  
+$zaehler++;   
+}     
+?>                      
+    </div>  
   
-} 
-if ( $start != 7 )
-{  
-?>
-</div>
-<?PHP 
-  }  
-// This is the closing tag of the first slide
-echo HTMLHelper::_('bootstrap.endSlide');  
-}  
-echo HTMLHelper::_('bootstrap.endAccordion');  
+<?php  
 //echo '<pre>'.print_r($ausland,true).'</pre>';  
 }
 else
