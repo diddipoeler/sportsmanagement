@@ -14,6 +14,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
+if ( $params->get("show_slider") )
+{	
+
+}
+else
+{
 $start = 1;
 foreach ( $list as $row )
 {
@@ -61,5 +67,6 @@ $start = 1;
 <?PHP
 }
     
+}
 }
 ?>
