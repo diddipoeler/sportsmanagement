@@ -30,7 +30,7 @@ $zaehler++;
 }  
 $zaehler = 0;  
 ?>  
-<div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div class="panel-group" id="<?php echo $module->module; ?>-<?php echo $module->id.'-'.$module->id; ?>">
 <?php        
 foreach ( $ausland as $key => $value )
 {     
@@ -38,7 +38,7 @@ foreach ( $ausland as $key => $value )
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id; ?>" href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
+                    <a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id.'-'.$module->id; ?>" href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
                 </h4>
             </div>
 <?php
