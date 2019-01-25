@@ -34,6 +34,16 @@ $zaehler = 0;
 <?php        
 foreach ( $ausland as $key => $value )
 {     
+if ( empty($zaehler) )  
+{
+$collapse = 'in'; 
+$zaehler++;  	
+}  
+else
+{
+$collapse = ''; 	
+}    
+    
 ?>  
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -41,6 +51,8 @@ foreach ( $ausland as $key => $value )
                     <a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id.'-'.$module->id; ?>" href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
                 </h4>
             </div>
+<div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">            
+<div class="panel-body">            
 <?php
 foreach ( $list as $row ) if ($row->country == $key)
 {
@@ -58,17 +70,7 @@ $createroute = array("option" => "com_sportsmanagement",
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = Route::_( 'index.php?' . $query, false );  
-if ( empty($zaehler) )  
-{
-$collapse = 'in'; 
-$zaehler++;  	
-}  
-	else
-	{
-	$collapse = ''; 	
-	}
 ?>                      
-            <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
 <div class="col-sm-2">
 <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
@@ -82,16 +84,17 @@ echo Text::_( $row->name  );
 </a>
 <!-- </button> -->
 </div>                
-            </div>
 <?php
 }                      
-?>                      
-        </div>
+?>          
+</div>
+</div>            
+</div>
 <?php  
 $zaehler++;   
 }     
 ?>                      
-    </div>  
+</div>  
   
 <?php  
 //echo '<pre>'.print_r($ausland,true).'</pre>';  
