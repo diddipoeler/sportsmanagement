@@ -69,8 +69,13 @@ $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = Route::_( 'index.php?' . $query, false );  
 if ( empty($zaehler) )  
 {
-//$collapse = 'in';  
+$collapse = 'in'; 
+$zaehler++;  	
 }  
+	else
+	{
+	$collapse = ''; 	
+	}
 ?>                      
             <div id="<?php echo $value; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
 <div class="col-sm-2">
