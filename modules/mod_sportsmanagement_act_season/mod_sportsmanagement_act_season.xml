@@ -62,23 +62,19 @@
 			<option value="btn btn-link">MOD_SPORTSMANAGEMENTLABEL_BUTTON_STYLE_LINK</option>
 		</field>
        
-        <!--
-     <field name="new_project_article" 
+        
+     <field name="show_slider" 
     type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE" 
-      description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE_DESC">
+			label="MOD_SPORTSMANAGEMENT_SHOW_SLIDER" 
+      description="MOD_SPORTSMANAGEMENT_SHOW_SLIDER_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="mycategory"
-		type="category"
-		extension="com_content"
-		label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY"
-		description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY_DESC" />
-		 -->
+    
+	
 
     </fieldset>
 
