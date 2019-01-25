@@ -26,15 +26,6 @@ $zaehler = 0;
 foreach ( $list as $row )
 {
 $ausland[$row->country] = JSMCountries::getCountryName($row->country);  
-	/*
-if ( empty($zaehler) )  
-{
-// Define slides options
-        $slidesOptions = array(
-            "active" => "slide".$row->country."_id" // It is the ID of the active tab.
-        );   
-}
-*/	
 $zaehler++;  
 }  
 $zaehler = 0;  
@@ -47,7 +38,7 @@ foreach ( $ausland as $key => $value )
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id; ?>" href="#<?php echo $value; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
+                    <a data-toggle="collapse" data-parent="#<?php echo $module->module; ?>-<?php echo $module->id; ?>" href="#<?php echo $key; ?>"><?php echo JSMCountries::getCountryFlag($key).' '.$value; ?></a>
                 </h4>
             </div>
 <?php
@@ -77,7 +68,7 @@ $zaehler++;
 	$collapse = ''; 	
 	}
 ?>                      
-            <div id="<?php echo $value; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
+            <div id="<?php echo $key; ?>" class="panel-collapse collapse <?php echo $collapse; ?>">
 <div class="col-sm-2">
 <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
