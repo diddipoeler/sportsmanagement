@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage mod_sportsmanagement_act_season
+ * https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=accordion
  */
 
 // no direct access
