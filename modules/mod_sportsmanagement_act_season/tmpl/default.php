@@ -38,16 +38,14 @@ echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions)
 foreach ( $ausland as $key => $value )
 {
 // This renders the beginning of the slides code.  
-echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($key).' '.$value, 'slide'.$key.'_id'); 
+echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', JSMCountries::getCountryFlag($key).' '.$value, 'slide'.$key.'_id');
+?>    
+<div class="container">
+<?PHP  
 $start = 1;  
 foreach ( $list as $row ) if ($row->country == $key)
 {
-if ( $start == 1 )
-{
-?>    
-<div class="row-fluid">
-<?PHP    
-}    
+    
 $createroute = array("option" => "com_sportsmanagement",
 	"view" => "ranking",
         "cfg_which_database" => 0,
@@ -77,13 +75,7 @@ echo Text::_( $row->name  );
 </div>
 <?PHP
 $start++;
-if ( $start == 7 )
-{
-$start = 1;  
-?>
-</div>
-<?PHP
-}  
+  
 } 
 if ( $start != 7 )
 {  
