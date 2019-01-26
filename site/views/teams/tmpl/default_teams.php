@@ -14,8 +14,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 ?>
-<div class="<?php echo $this->divclassrow;?>" id="teams">
-<table class="<?php echo $this->config['table_class']; ?> table-responsive">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="teams">
+<table class="<?php echo $this->config['table_class']; ?> ">
 	<thead>
 	<tr >
 		<?php if ($this->config['show_small_logo']) { ?>

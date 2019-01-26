@@ -11,12 +11,14 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// Make sure that in case extensions are written for mentioned (common) views,
-// that they are loaded i.s.o. of the template of this view
+/**
+ * Make sure that in case extensions are written for mentioned (common) views,
+ * that they are loaded i.s.o. of the template of this view
+ */
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="<?php echo $this->divclasscontainer;?>">
+<div class="<?php echo $this->divclasscontainer;?>" id="defaultteams">
 	<?php 
 	echo $this->loadTemplate('projectheading');
 
