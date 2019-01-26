@@ -72,7 +72,7 @@ $createroute = array("option" => "com_sportsmanagement",
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = Route::_( 'index.php?' . $query, false );  
 ?>                      
-<div class="col-sm-2">
+<div class="col-xl-2 col-lg-3 col-md-4 col-sm-4">
 <a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
 <?PHP
