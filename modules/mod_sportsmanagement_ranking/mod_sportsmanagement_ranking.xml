@@ -223,7 +223,7 @@
 			
 		</field>
 		
-				<field 	name="moduleclass_sfx" type="text" default=""
+				<field 	name="moduleclass_sfx" type="text" default="container-fluid"
 						label="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_DESCR">
 				</field>

@@ -612,6 +612,7 @@
 
 					<field name="moduleclass_sfx"
 						type="text"
+						default="container-fluid"
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 

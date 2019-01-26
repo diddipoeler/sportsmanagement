@@ -318,7 +318,7 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-			 <field name="moduleclass_sfx" type="text" default=""
+			 <field name="moduleclass_sfx" type="text" default="container-fluid"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXDESC">
 				</field>
 				<field name="cache" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGLBL"
