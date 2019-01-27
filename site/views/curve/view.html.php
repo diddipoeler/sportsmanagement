@@ -7,6 +7,9 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage curve
+ * 
+ * https://github.com/chartjs/Chart.js
+ * https://cdnjs.com/libraries/Chart.js
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
