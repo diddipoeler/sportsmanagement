@@ -75,7 +75,7 @@ var chart = new Chart(ctx, {
 
     // The data for our dataset
     data: {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        labels: [<?php echo implode(',', $this->round_labels); ?>],
         datasets: [{
             label: "My First dataset",
             backgroundColor: 'rgb(255, 99, 132)',

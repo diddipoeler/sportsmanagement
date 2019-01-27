@@ -149,7 +149,19 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			$this->allteams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division,'name',sportsmanagementModelCurve::$cfg_which_database);
 			$this->team1select = $team1select;
 			$this->team2select = $team2select;
+            if ( $this->config['which_curve'] )
+{
+            $rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+		$this->round_labels = array();
+		foreach ($rounds as $r) 
+        {
+			$this->round_labels[] = $r->name;
+		}
+        }
+        else
+        {
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
+            }
 			// Set page title
 			$pageTitle = Text::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
 			if (( isset( $this->team1 ) ) AND (isset( $this->team1 )))
@@ -191,6 +203,9 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 		foreach ($divisions as $division)
 		{
 			$data = $model->getDataByDivision($division->id);
+            
+//$app->enqueueMessage(Text::_('data -> '.'<pre>'.print_r($data ,true).'</pre>' ),'');			
+            
 			$allteams = sportsmanagementModelProject::getTeams($division->id,'name',$model::$cfg_which_database);
            
 			if(empty($allteams) || count($allteams)==0) continue;
