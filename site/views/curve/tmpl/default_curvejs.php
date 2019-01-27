@@ -23,8 +23,8 @@ use Joomla\CMS\Router\Route;
 <?php
 foreach ($this->divisions as $division)
 {
-	$chart = 'chartdata_'.$division->id;
-	if(empty($this->$chart)) continue;
+//	$chart = 'chartdata_'.$division->id;
+//	if(empty($this->$chart)) continue;
 	if(empty($this->allteams) || count($this->allteams)==0) continue;
 		?>
 <form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">        
