@@ -151,7 +151,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			$this->team2select = $team2select;
             if ( $this->config['which_curve'] )
 {
-            $rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+            $rounds	= sportsmanagementModelProject::getRounds('ASC',sportsmanagementModelCurve::$cfg_which_database);
 		$this->round_labels = array();
 		foreach ($rounds as $r) 
         {
