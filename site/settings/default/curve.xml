@@ -41,6 +41,16 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+<field 	name="which_curve" 
+    type="extensionradiobutton" 
+    default="0" 
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_WHICH_CURVE" 
+				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_WHICH_CURVE">
+			<option value="0">Flash</option>
+			<option value="1">Javascript</option>
+		</field>
 		
 		<field 	name="show_colorlegend" 
     type="extensionradiobutton" 
