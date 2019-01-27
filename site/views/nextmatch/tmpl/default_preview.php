@@ -20,6 +20,15 @@ use Joomla\CMS\Plugin\PluginHelper;
 ?>
 <!-- START of match preview -->
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="nextmatch">
+<div class="panel-group" id="accordionnextmatch">
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordionnextmatch" href="#nextpreview"><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></a>
+                </h4>
+            </div>
+            <div id="nextpreview" class="panel-collapse collapse">
+                <div class="panel-body">
 <?php
 /**
  * workaround to support {jcomments (off|lock)} in match preview
@@ -98,4 +107,8 @@ if ($separate_comments) {
     }
 }
 ?>
+</div>
+</div>
+</div>
+</div>
 </div>
