@@ -27,6 +27,7 @@ foreach ($this->divisions as $division)
 	if(empty($this->$chart)) continue;
 	if(empty($this->allteams) || count($this->allteams)==0) continue;
 		?>
+<form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">        
 	<table class="table">
 	<tr>
 		<td class="contentheading"><?php echo $division->name; ?></td>
@@ -42,7 +43,6 @@ foreach ($this->divisions as $division)
         <?php echo $this->team2select[$division->id]; ?>
 	</td>
     <td style="text-align: right">	
-		<form name="curveform<?php echo $division->id; ?>" method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" id="curveform<?php echo $division->id; ?>">
 			<input type="hidden" name="option" value="com_sportsmanagement" />
 			<input type="hidden" name="view" value="curve" />
 			<input type="hidden" name="cfg_which_database" value="<?php echo $this->cfg_which_database; ?>" />  
@@ -54,10 +54,11 @@ foreach ($this->divisions as $division)
 			<input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
 				value="<?php echo Text::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
 			<?php echo HTMLHelper::_( 'form.token' ); ?>
-		</form>
+		
 	</td>
 	</tr>
 	</table>
+    </form>
 <?php
 }
 ?>
