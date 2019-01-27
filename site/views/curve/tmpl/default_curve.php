@@ -24,7 +24,7 @@ function findSWF(movieName) {
 	}
 }
 </script>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="curve">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="curveflash">
 <?php
 foreach ($this->divisions as $division)
 {

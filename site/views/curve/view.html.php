@@ -8,8 +8,12 @@
  * @package   sportsmanagement
  * @subpackage curve
  * 
+ * https://www.chartjs.org/
  * https://github.com/chartjs/Chart.js
  * https://cdnjs.com/libraries/Chart.js
+ * 
+ * https://www.chartjs.org/samples/latest/charts/line/basic.html
+ * 
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
