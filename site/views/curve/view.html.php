@@ -83,8 +83,16 @@ else
 						}
 						$i++;
 					}
+                    if ( $this->config['which_curve'] )
+{
+$team1select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$d->id, 'onchange="" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
+$team2select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);    
+    }
+    else
+    {
 					$team1select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
 					$team2select[$d->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$d->id, 'onchange="reload_curve_chart_'.$d->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);
+                    }
 				}
 			}
 			else
@@ -115,8 +123,16 @@ else
 					}
 					$i++;
 				}
+                if ( $this->config['which_curve'] )
+{
+$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
+$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);    
+    }
+    else
+    {
 				$team1select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid1_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid1);
-				$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
+				$team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);
+                }		
 			}
 
 			if ( !isset( $this->overallconfig['seperator'] ) )

@@ -72,6 +72,11 @@ class sportsmanagementModelCurve extends BaseDatabaseModel
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
 	self::$season_id = $jinput->get('s', 0, 'INT');	
+$post = $jinput->post->getArray(array());
+
+$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid1<br><pre>'.print_r(self::$teamid1,true).'</pre>'),'Notice');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid2<br><pre>'.print_r(self::$teamid2,true).'</pre>'),'Notice');
         
 		$this->determineTeam1And2();
 	}
