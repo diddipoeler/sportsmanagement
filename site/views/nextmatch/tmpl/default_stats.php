@@ -354,6 +354,10 @@ use Joomla\CMS\Factory;
     <?php endif; ?>
 
 </table>
+    
+<h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
+    
+    
 </div>
 <!-- Main END -->
 <br/>
