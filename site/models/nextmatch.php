@@ -533,7 +533,6 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
 		}
         
         // Select some fields
-		//$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
@@ -541,28 +540,26 @@ class sportsmanagementModelNextMatch extends BaseDatabaseModel
         $query->select('p.name AS project_name,p.id AS prid');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS mname');
         
+	$query->select('t1.id as team1_id');
+	$query->select('t2.id as team2_id');
+		
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-        
-        //$query->select('c1.logo_big AS home_logo_big');
-        //$query->select('c2.logo_big AS away_logo_big');
-        
+       
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
-        //$query->join('INNER','#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
         
         $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
-        //$query->join('INNER','#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
         
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
         $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
         $query->join('INNER','#__sportsmanagement_round r ON m.round_id = r.id  ');
-        //$query->where('(pt1.team_id = '. $teams[0]->team_id .' AND pt2.team_id = '.$teams[1]->team_id .') OR (pt1.team_id = '.$teams[1]->team_id .' AND pt2.team_id = '.$teams[0]->team_id .')');
+
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .') OR (st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
         $query->where('m.published = 1');
