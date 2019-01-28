@@ -42,6 +42,8 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	function init()
 	{
 
+$this->teamranking = array();
+		
 if ( $this->config['which_curve'] )
 {
 $js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
@@ -294,6 +296,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 					$chart->add_element($line);
 					break;
 				}
+				$this->teamranking[$t->team_id] = $team->rankings;
 			}
 				
 			$x = new x_axis();
