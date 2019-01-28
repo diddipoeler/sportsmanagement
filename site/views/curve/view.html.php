@@ -297,7 +297,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 					$chart->add_element($line);
 					break;
 				}
-				$this->teamranking[$t->team_id] = $team->rankings;
+				//$this->teamranking[$t->team_id] = $team->rankings;
 			}
 				
 			$x = new x_axis();
@@ -331,6 +331,7 @@ $team2select[$div->id] = HTMLHelper::_('select.genericlist', $options, 'tid2_'.$
 			$this->chartdata_0 = $chart;
 			}
 			unset($chart);
+			$this->teamranking[$division->id] = $data;
 		}
 	}
 }
