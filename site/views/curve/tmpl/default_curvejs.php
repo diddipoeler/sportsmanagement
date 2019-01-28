@@ -15,6 +15,8 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
+echo 'teamranking<pre>'.print_r($this->teamranking,true).'</pre>';
+
 ?>
 <script>
 
