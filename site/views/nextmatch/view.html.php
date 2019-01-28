@@ -104,7 +104,7 @@ if ( $game->projectteam1_id == $match->projectteam1_id )
 {
     $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
 }
-    else
+    elseif ( $game->projectteam2_id == $match->projectteam1_id )
     {
     $this->statgames['away'][$game->team2_result.'-'.$game->team1_result] += 1;
     }
