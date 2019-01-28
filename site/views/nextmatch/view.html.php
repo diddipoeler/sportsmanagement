@@ -98,6 +98,18 @@ $this->statgames = array();
 
         }
 
+foreach( $this->games as $game )
+{
+if ( $game->projectteam1_id == $match->projectteam1_id )
+{
+    $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
+}
+    else
+    {
+    $this->statgames['away'][$game->team2_result.'-'.$game->team1_result] += 1;
+    }
+}
+        
         // Set page title
         $pageTitle = Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE');
         if (isset($this->teams)) {
