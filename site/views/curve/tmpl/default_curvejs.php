@@ -15,7 +15,9 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 
-echo 'teamranking<pre>'.print_r($this->teamranking,true).'</pre>';
+//echo 'teamid1<pre>'.print_r(sportsmanagementModelCurve::$teamid1 ,true).'</pre>';
+//echo 'teamid2<pre>'.print_r(sportsmanagementModelCurve::$teamid2 ,true).'</pre>';
+//echo 'teamranking<pre>'.print_r($this->teamranking,true).'</pre>';
 
 ?>
 <script>
@@ -25,6 +27,9 @@ echo 'teamranking<pre>'.print_r($this->teamranking,true).'</pre>';
 <?php
 foreach ($this->divisions as $division)
 {
+
+//echo 'division<pre>'.print_r($division,true).'</pre>';
+
 //	$chart = 'chartdata_'.$division->id;
 //	if(empty($this->$chart)) continue;
 	if(empty($this->allteams) || count($this->allteams)==0) continue;
@@ -78,12 +83,36 @@ var chart = new Chart(ctx, {
     // The data for our dataset
     data: {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
+<?php        
+foreach ( $this->teamranking[$division->id] as $key => $value )
+{    
+//echo 'value <pre>'.print_r($value ,true).'</pre>'; 
+if ( $value->team_id == sportsmanagementModelCurve::$teamid1 )
+{
+?>        
         datasets: [{
-            label: "My First dataset",
+            label: "<?php echo $value->name; ?>",
             fill: false,
-            data: [0, 10, 5, 2, 20, 30, 45],
-        }]
-    },
+            data: [<?php echo implode(",",$value->rankings); ?>],
+        },
+<?php        
+}    
+} 
+foreach ( $this->teamranking[$division->id] as $key => $value )
+{ 
+if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
+{
+?>
+{
+            label: "<?php echo $value->name; ?>",
+            fill: false,
+            data: [<?php echo implode(",",$value->rankings); ?>],
+        }
+<?php
+}
+}
+?>        
+    ]},
 
     // Configuration options go here
     options: {}
