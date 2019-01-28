@@ -83,11 +83,8 @@ $this->statgames = array();
             $this->home_highest_away_def = $model->getHomeHighestAwayDef();
             $this->away_highest_away_def = $model->getAwayHighestAwayDef();
 
-            //$games = $model->getGames();
-            //$gamesteams = $model->getTeamsFromMatches($games, $config);
             $this->games = $model->getGames();
-            $this->gamesteams = $model->getTeamsFromMatches($games, $config);
-
+            $this->gamesteams = $model->getTeamsFromMatches($this->games, $config);
 
             $previousx = $model->getpreviousx($config);
             $teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $model::$cfg_which_database);
