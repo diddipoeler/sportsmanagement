@@ -97,11 +97,11 @@ $this->statgames = array();
 
 foreach( $this->games as $game )
 {
-if ( $game->projectteam1_id == $match->projectteam1_id )
+if ( $game->team1_id == $this->teams[0]->id )
 {
     $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
 }
-    elseif ( $game->projectteam2_id == $match->projectteam1_id )
+    elseif ( $game->team2_id == $this->teams[0]->id )
     {
     $this->statgames['away'][$game->team2_result.'-'.$game->team1_result] += 1;
     }
