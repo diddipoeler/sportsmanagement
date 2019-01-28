@@ -100,10 +100,12 @@ foreach( $this->games as $game )
 if ( $game->team1_id == $this->teams[0]->id )
 {
     $this->statgames['home'][$game->team1_result.'-'.$game->team2_result] += 1;
+    $this->statgames['gesamt'][$game->team1_result.'-'.$game->team2_result] += 1;
 }
     elseif ( $game->team2_id == $this->teams[0]->id )
     {
     $this->statgames['away'][$game->team2_result.'-'.$game->team1_result] += 1;
+    $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
     }
 }
         
