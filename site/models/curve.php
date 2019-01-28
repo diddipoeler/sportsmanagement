@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      curve.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage curve
@@ -78,9 +78,9 @@ if ( $post )
 self::$teamid1 = $post['tid1_'.$post['division']];
 self::$teamid2 = $post['tid2_'.$post['division']];    
 }
-$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid1<br><pre>'.print_r(self::$teamid1,true).'</pre>'),'Notice');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid2<br><pre>'.print_r(self::$teamid2,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid1<br><pre>'.print_r(self::$teamid1,true).'</pre>'),'Notice');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' teamid2<br><pre>'.print_r(self::$teamid2,true).'</pre>'),'Notice');
         
 		$this->determineTeam1And2();
 	}
