@@ -117,7 +117,18 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
     ]},
 
     // Configuration options go here
-    options: {}
+    options: {
+    responsive: true,
+    legend: {
+      display: true,
+      labels: {
+        padding: 20
+      },
+    },
+    tooltips: {
+      enabled: true,
+    }
+    }
 });
 </script>
 </div>
