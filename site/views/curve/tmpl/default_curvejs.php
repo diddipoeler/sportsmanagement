@@ -21,7 +21,15 @@ use Joomla\CMS\Router\Route;
 
 ?>
 <script>
-
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
 </script>
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="curvejs">
 <?php
@@ -93,7 +101,7 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid1 )
         datasets: [{
             label: "<?php echo $value->name; ?>",
             fill: false,
-		
+		borderColor: window.chartColors.blue,
             data: [<?php echo implode(",",$value->rankings); ?>],
         },
 <?php        
@@ -107,7 +115,7 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
 {
             label: "<?php echo $value->name; ?>",
             fill: false,
-	
+	borderColor: window.chartColors.green,
             data: [<?php echo implode(",",$value->rankings); ?>],
         }
 <?php
