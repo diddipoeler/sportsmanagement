@@ -356,8 +356,27 @@ use Joomla\CMS\Factory;
 </table>
     
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
-    
-    
+<table class="table">
+<?php    
+foreach ( $this->statgames['gesamt'] as $key => $value )
+{
+?>
+<tr>    
+<td>
+<?php
+echo $key;    
+?>    
+</td>
+<td> 
+<?php
+echo $value;    
+?>     
+</td>    
+</tr>    
+<?php    
+}
+?>    
+</table>    
 </div>
 <!-- Main END -->
 <br/>
