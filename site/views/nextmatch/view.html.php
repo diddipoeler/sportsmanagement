@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      view.html.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage nextmatch
@@ -34,7 +34,7 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
      */
     function init()
     {
-
+$this->statgames = array();
         $model = $this->getModel();
         $match = $model->getMatch();
 
@@ -83,10 +83,10 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
             $this->home_highest_away_def = $model->getHomeHighestAwayDef();
             $this->away_highest_away_def = $model->getAwayHighestAwayDef();
 
-            $games = $model->getGames();
-            $gamesteams = $model->getTeamsFromMatches($games, $config);
-            $this->games = $games;
-            $this->gamesteams = $gamesteams;
+            //$games = $model->getGames();
+            //$gamesteams = $model->getTeamsFromMatches($games, $config);
+            $this->games = $model->getGames();
+            $this->gamesteams = $model->getTeamsFromMatches($games, $config);
 
 
             $previousx = $model->getpreviousx($config);
