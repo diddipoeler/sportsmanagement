@@ -48,7 +48,7 @@ use Joomla\CMS\Factory;
     </tr>
     </thead>
     <?php
-    if ($this->config['show_chances'] == 1) {
+    if ( $this->config['show_chances'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -70,7 +70,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ($this->config['show_current_rank'] == 1) {
+    if ( $this->config['show_current_rank'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -92,7 +92,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ($this->config['show_match_count'] == 1) {
+    if ( $this->config['show_match_count'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -114,7 +114,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ($this->config['show_match_total'] == 1) {
+    if ( $this->config['show_match_total'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -136,7 +136,7 @@ use Joomla\CMS\Factory;
         <?php
     }
 
-    if ($this->config['show_match_total_home'] == 1) {
+    if ( $this->config['show_match_total_home'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -161,7 +161,7 @@ use Joomla\CMS\Factory;
     }
     ?>
     <?php
-    if ($this->config['show_match_total_away'] == 1) {
+    if ( $this->config['show_match_total_away'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -186,7 +186,7 @@ use Joomla\CMS\Factory;
     }
     ?>
     <?php
-    if ($this->config['show_match_points'] == 1) {
+    if ( $this->config['show_match_points'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -202,7 +202,7 @@ use Joomla\CMS\Factory;
     }
     ?>
     <?php
-    if ($this->config['show_match_goals'] == 1) {
+    if ( $this->config['show_match_goals'] ) {
         ?>
         <tr class="sectiontableentry2">
             <td class="valueleft">
@@ -223,7 +223,7 @@ use Joomla\CMS\Factory;
     }
     ?>
     <?php
-    if ($this->config['show_match_diff'] == 1) {
+    if ( $this->config['show_match_diff'] ) {
         ?>
         <tr class="sectiontableentry1">
             <td class="valueleft">
@@ -241,9 +241,9 @@ use Joomla\CMS\Factory;
     $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
     $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
 
-    if ($this->config['show_match_highest_stats'] == 1): ?>
+    if ( $this->config['show_match_highest_stats'] ): ?>
 
-        <?php if ($this->config['show_match_highest_won'] == 1): ?>
+        <?php if ( $this->config['show_match_highest_won'] ): ?>
             <tr class="sectiontableentry2">
                 <td class="valueleft">
                     <?php if ($stat = $this->home_highest_home_win): ?>
@@ -270,7 +270,7 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ($this->config['show_match_highest_loss'] == 1): ?>
+        <?php if ( $this->config['show_match_highest_loss'] ): ?>
             <tr class="sectiontableentry1">
                 <td class="valueleft">
                     <?php if ($stat = $this->home_highest_home_def): ?>
@@ -297,7 +297,7 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ($this->config['show_match_highest_won_away'] == 1): ?>
+        <?php if ( $this->config['show_match_highest_won_away'] ): ?>
             <tr class="sectiontableentry2">
                 <td class="valueleft">
                     <?php if ($stat = $this->home_highest_away_win): ?>
@@ -323,7 +323,7 @@ use Joomla\CMS\Factory;
             </tr>
         <?php endif; ?>
 
-        <?php if ($this->config['show_match_highest_loss_away'] == 1): ?>
+        <?php if ( $this->config['show_match_highest_loss_away'] ): ?>
             <tr class="sectiontableentry1">
                 <td class="valueleft">
                     <?php if ($stat = $this->home_highest_away_def): ?>
