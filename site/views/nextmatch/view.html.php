@@ -10,7 +10,6 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -104,7 +103,7 @@ if ( $game->team1_id == $this->teams[0]->id )
 }
     elseif ( $game->team2_id == $this->teams[0]->id )
     {
-    $this->statgames['away'][$game->team2_result.'-'.$game->team1_result] += 1;
+    $this->statgames['away'][$game->team1_result.'-'.$game->team2_result] += 1;
     $this->statgames['gesamt'][$game->team2_result.'-'.$game->team1_result] += 1;    
     }
 }
