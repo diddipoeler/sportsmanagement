@@ -359,15 +359,15 @@ use Joomla\CMS\Factory;
 <div class="panel-group" id="countresult">    
 
 <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult" href="#countall"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></a>
-                </h4>
-            </div>  
-    <div id="countall" class="panel-collapse collapse">
-                <div class="panel-body">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#countresult" href="#countall"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></a>
+</h4>
+</div>  
+<div id="countall" class="panel-collapse collapse">
+<div class="panel-body">
 <table class="table <?php echo $this->config['table_class'] ?>">
-                    <?php    
+<?php    
 foreach ( $this->statgames['gesamt'] as $key => $value )
 {
 ?>
@@ -387,35 +387,75 @@ echo $value;
 }
 ?>    
 </table>  
-        </div>
-            </div>
+</div>
+</div>
 </div>
 
     
 <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult" href="#counthome"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></a>
-                </h4>
-            </div>  
-    <div id="countall" class="panel-collapse collapse">
-                <div class="panel-body">    
-    
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#countresult" href="#counthome"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></a>
+</h4>
+</div>  
+<div id="countall" class="panel-collapse collapse">
+<div class="panel-body">    
+<table class="table <?php echo $this->config['table_class'] ?>">
+<?php    
+foreach ( $this->statgames['home'] as $key => $value )
+{
+?>
+<tr>    
+<td>
+<?php
+echo $key;    
+?>    
+</td>
+<td> 
+<?php
+echo $value;    
+?>     
+</td>    
+</tr>    
+<?php    
+}
+?>    
+</table>      
 </div>
-            </div>
+</div>
 </div>    
     
 <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#countresult" href="#countaway"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></a>
-                </h4>
-            </div>  
-    <div id="countall" class="panel-collapse collapse">
-                <div class="panel-body">    
-    
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#countresult" href="#countaway"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></a>
+</h4>
+</div>  
+<div id="countall" class="panel-collapse collapse">
+<div class="panel-body">    
+<table class="table <?php echo $this->config['table_class'] ?>">
+<?php    
+foreach ( $this->statgames['away'] as $key => $value )
+{
+?>
+<tr>    
+<td>
+<?php
+echo $key;    
+?>    
+</td>
+<td> 
+<?php
+echo $value;    
+?>     
+</td>    
+</tr>    
+<?php    
+}
+?>    
+</table>      
 </div>
-            </div>
+</div>
 </div>      
     
 </div>    
