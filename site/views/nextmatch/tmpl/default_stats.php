@@ -356,7 +356,16 @@ use Joomla\CMS\Factory;
 </table>
     
 <h4><?php echo Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY_COUNT_RESULT'); ?></h4>
+<div class="panel-group" id="countresult">    
 <table class="table <?php echo $this->config['table_class'] ?>">
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#countresult" href="#countall"><?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_MATCHES_OVERALL'); ?></a>
+                </h4>
+            </div>  
+    <div id="countall" class="panel-collapse collapse">
+                <div class="panel-body">
 <?php    
 foreach ( $this->statgames['gesamt'] as $key => $value )
 {
@@ -376,7 +385,14 @@ echo $value;
 <?php    
 }
 ?>    
-</table>    
+</table>  
+        </div>
+            </div>
+</div>
+    
+    
+    
+</div>    
 </div>
 <!-- Main END -->
 <br/>
