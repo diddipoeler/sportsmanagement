@@ -390,8 +390,33 @@ echo $value;
         </div>
             </div>
 </div>
+
     
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#countresult" href="#counthome"><?php echo $this->teams[0]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[1]->name; ?></a>
+                </h4>
+            </div>  
+    <div id="countall" class="panel-collapse collapse">
+                <div class="panel-body">    
     
+</div>
+            </div>
+</div>    
+    
+<div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#countresult" href="#countaway"><?php echo $this->teams[1]->name . " " . Text::_("COM_SPORTSMANAGEMENT_NEXTMATCH_VS") . " " . $this->teams[0]->name; ?></a>
+                </h4>
+            </div>  
+    <div id="countall" class="panel-collapse collapse">
+                <div class="panel-body">    
+    
+</div>
+            </div>
+</div>      
     
 </div>    
 </div>
