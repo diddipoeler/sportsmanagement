@@ -24,7 +24,19 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_DIVCLASS_ROW">
 <option value="row">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROW_ROW</option>
 <option value="row-fluid">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_DIVCLASS_ROWFLUID</option>
 </field>
-   
+
+<field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+</field> 
+		
 		<field name="show_sectionheader" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_SECTIONHEADER">
