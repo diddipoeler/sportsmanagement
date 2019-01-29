@@ -368,6 +368,7 @@ use Joomla\CMS\Factory;
 <div class="panel-body">
 <table class="table <?php echo $this->config['table_class'] ?>">
 <?php    
+ksort($this->statgames['gesamt']);    
 foreach ( $this->statgames['gesamt'] as $key => $value )
 {
 ?>
@@ -402,6 +403,7 @@ echo $value;
 <div class="panel-body">    
 <table class="table <?php echo $this->config['table_class'] ?>">
 <?php    
+ksort($this->statgames['home']);    
 foreach ( $this->statgames['home'] as $key => $value )
 {
 ?>
@@ -435,6 +437,7 @@ echo $value;
 <div class="panel-body">    
 <table class="table <?php echo $this->config['table_class'] ?>">
 <?php    
+ksort($this->statgames['away']);    
 foreach ( $this->statgames['away'] as $key => $value )
 {
 ?>
