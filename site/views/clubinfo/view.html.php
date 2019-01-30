@@ -48,8 +48,11 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
 		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
 		$this->teams = sportsmanagementModelClubInfo::getTeamsByClubId();
+		if ( sportsmanagementModelClubInfo::$projectid )
+		{
 		$this->stadiums = sportsmanagementModelClubInfo::getStadiums();
 		$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds();
+	}
 		$this->showediticon = sportsmanagementModelProject::hasEditPermission('club.edit');
 		$this->address_string = sportsmanagementModelClubInfo::getAddressString();
 
