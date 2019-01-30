@@ -64,6 +64,10 @@ class sportsmanagementModelClubInfo extends BaseDatabaseModel {
         self::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
 
+	 if ( empty(self::$projectid) )
+	 {
+	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::ERROR, 'jsmerror');	 
+	 }
         parent::__construct();
     }
 
