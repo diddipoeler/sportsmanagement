@@ -10,7 +10,9 @@
  * @subpackage
  */
 
-// No direct access to this file
+/**
+ * No direct access to this file
+ */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -25,10 +27,23 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 class sportsmanagementController extends BaseController {
 
+    /**
+     * sportsmanagementController::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     function __construct($config = array()) {
         parent::__construct($config);
     }
 
+    /**
+     * sportsmanagementController::display()
+     * 
+     * @param bool $cachable
+     * @param bool $urlparams
+     * @return void
+     */
     public function display($cachable = false, $urlparams = false) {
         parent::display($cachable, $urlparams);
     }

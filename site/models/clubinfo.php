@@ -438,7 +438,6 @@ $query->group('c.name');
                 RIGHT JOIN #__sportsmanagement_season_team_id AS st on pt.team_id = st.id
 				WHERE st.team_id = t.id and p.published = 1), 0) as pid');
             $query->from('#__sportsmanagement_team as t ');
-            
             $query->where('t.club_id = ' . (int) self::$clubid);
 
             try {

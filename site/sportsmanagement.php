@@ -250,7 +250,7 @@ if (version_compare(JVERSION, '3.0.0', 'ge')) {
 
 $project_id = $input->getInt("p");
 
-if ($project_id) {
+if ( !empty($project_id) ) {
     sportsmanagementModelProject::$projectid = $project_id;
     $teams = sportsmanagementModelProject::getTeams();
 
@@ -283,8 +283,8 @@ $option = $input->getCmd('option');
 $view = $input->getVar("view");
 $view = ucfirst(strtolower($view));
 
-$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
-$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
+//$modal_popup_width = ComponentHelper::getParams($option)->get('modal_popup_width', 0);
+//$modal_popup_height = ComponentHelper::getParams($option)->get('modal_popup_height', 0);
 
 
 DEFINE('COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER', ComponentHelper::getParams($option)->get('cfg_help_server', ''));
