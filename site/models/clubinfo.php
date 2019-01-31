@@ -380,6 +380,11 @@ $query->group('c.name');
         $query = $db->getQuery(true);
 
         self::$projectid = $jinput->getInt("p", 0);
+
+if ( empty(self::$projectid) )
+	 {
+	JLog::add(Text::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO'), JLog::ERROR, 'jsmerror');	 
+	 }
 	    
 	    if ( $club_id )
 	    {
