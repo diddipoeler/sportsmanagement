@@ -62,7 +62,8 @@ if ($this->config['show_training']) {
 $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'] = 'training';
 }
 
-echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
+$template = isset($this->config['show_teaminfo_tabs']) ? $this->config['show_teaminfo_tabs'] : 'no_tabs';    
+echo $this->loadTemplate($template);
 echo $this->loadTemplate('jsminfo');
 ?>
     
