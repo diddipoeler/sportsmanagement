@@ -145,7 +145,9 @@ if (!empty($this->rows))
 		}
 		elseif ( $this->config['show_birthday_staff'] )
 		{
-			// Put empty column to keep vertical alignment with the staff table
+/**
+ * 			Put empty column to keep vertical alignment with the staff table
+ */
 			?>
 		<th class="td_c">&nbsp;</th><?php
 		}
@@ -250,7 +252,9 @@ if (!empty($this->rows))
 				}
 			}
 		}
-        // diddipoeler marktwert
+/**
+ *         diddipoeler marktwert
+ */
         if ($this->config['show_player_market_value'])
 	{
 	?>
@@ -318,7 +322,9 @@ $this->overallconfig['use_jquery_modal']
 		}
 		elseif ($this->config['show_staff_icon'])
 		{ 
-			// Put empty column to keep vertical alignment with the staff table
+/**
+ * 			Put empty column to keep vertical alignment with the staff table
+ */
 			?>
 		<td width="40" class="td_c" nowrap="nowrap">&nbsp;</td><?php
 		}
@@ -330,7 +336,9 @@ $this->overallconfig['use_jquery_modal']
 		}
 		elseif ($this->config['show_country_flag_staff'])
 		{
-			// Put empty column to keep vertical alignment with the staff table
+/**
+ * 			Put empty column to keep vertical alignment with the staff table
+ */
 			?>
 		<td width="16" nowrap="nowrap" style="text-align:center; ">&nbsp;</td><?php
 		}
@@ -401,9 +409,10 @@ $this->overallconfig['use_jquery_modal']
 						$birthdateStr = "";
 						break;
 				}
-        // das alter berechnen zur weiterberechnung des durchschnittsalters
-        // nicht das alter normal berechnen, sonder das alter des spielers in der saison
-        //$age += sportsmanagementHelper::getAge( $row->birthday,$row->deathday );
+/**
+ * das alter berechnen zur weiterberechnung des durchschnittsalters
+ * nicht das alter normal berechnen, sonder das alter des spielers in der saison
+ */
         $age += sportsmanagementHelper::getAge( $row->birthday,$this->lastseasondate );
         $countplayer++;
         
@@ -412,7 +421,9 @@ $this->overallconfig['use_jquery_modal']
 			{
 				$birthdateStr="-";
 			}
-			// deathday
+/**
+ * deathday
+ */
 			if ( $row->deathday !="0000-00-00" )
 			{
 				$birthdateStr .= ' [&dagger; '.HTMLHelper::date($row->deathday, Text::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
@@ -432,21 +443,9 @@ $this->overallconfig['use_jquery_modal']
 			$model = $this->getModel();
 			
             $this->InOutStat = sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,Factory::getApplication()->input->get('cfg_which_database', 0));
-            
-//echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' projectteam_id->id<br><pre>'.print_r($row->projectteam_id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($row->season_team_person_id,true).'</pre><br>';
-//echo __FILE__.' '.__LINE__.' person_id<br><pre>'.print_r($row->pid,true).'</pre><br>';
-            
 
-            
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{
-				//$played  = $this->InOutStat->played;
-				//$started = $this->InOutStat->started;
-				//$subIn   = $this->InOutStat->sub_in;
-				//$subOut  = $this->InOutStat->sub_out;
                 $played = ($this->InOutStat->played > 0 ? $this->InOutStat->played : $this->overallconfig['zero_events_value']);
                 $started = ($this->InOutStat->started > 0 ? $this->InOutStat->started : $this->overallconfig['zero_events_value']);
 				$subIn   = ($this->InOutStat->sub_in > 0 ? $this->InOutStat->sub_in : $this->overallconfig['zero_events_value']);
@@ -454,10 +453,6 @@ $this->overallconfig['use_jquery_modal']
 			}
 			else
 			{
-				//$played  = 0;
-				//$started = 0;
-				//$subIn   = 0;
-				//$subOut  = 0;
                 $played  = $this->overallconfig['zero_events_value'];
 				$started = $this->overallconfig['zero_events_value'];
 				$subIn   = $this->overallconfig['zero_events_value'];
@@ -470,14 +465,16 @@ $this->overallconfig['use_jquery_modal']
 				<?php
 			}
             
-            // spielzeit des spielers
+/**
+ *             spielzeit des spielers
+ */
             $timePlayed = 0;
             if ( !isset($this->overallconfig['person_events']) )
             {
                 $this->overallconfig['person_events'] = NULL;
             }
             $this->timePlayed = sportsmanagementModelPlayer::getTimePlayed($row->season_team_person_id,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']);
-            $timePlayed  = $this->timePlayed;
+            $timePlayed = $this->timePlayed;
 			if ($this->config['show_substitution_stats'])
 			{
 				?>
@@ -490,7 +487,9 @@ $this->overallconfig['use_jquery_modal']
 		}
 		if ($this->config['show_events_stats'] && count($this->playereventstats) > 0)
 		{
-			// user_defined events in the database are shown
+/**
+ * user_defined events in the database are shown
+ */
 			foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
 			{
 				?>
@@ -503,7 +502,6 @@ $this->overallconfig['use_jquery_modal']
 					}
 					$totalEvents[$row->pposid][$eventId] = (int) $totalEvents[$row->pposid][$eventId] + (int) $stat;
 				}
-				//echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : 0;
                 echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
 				?>
 		</td>
@@ -525,8 +523,10 @@ $this->overallconfig['use_jquery_modal']
 					{
 						if ($stat->_name == 'percentage')
 						{
-							// Check if one of the denominator statistics is greater than 0.
-							// If so, show percentage, otherwise show "-"
+/**
+ * 							Check if one of the denominator statistics is greater than 0.
+ * 							If so, show percentage, otherwise show "-"
+ */
 							$nonZeroDen = false;
 							$dens = $stat->getSids();
 							if (isset($dens['den']) && count($dens['den']) > 0)
@@ -546,7 +546,6 @@ $this->overallconfig['use_jquery_modal']
 						}
 						else
 						{
-							//$value = 0;
                             $value = $this->overallconfig['zero_events_value'];
 						}
 					}
@@ -568,14 +567,15 @@ $this->overallconfig['use_jquery_modal']
 			}
 		}
         
-        // diddipoeler marktwert
+/**
+ *         diddipoeler marktwert
+ */
         if ($this->config['show_player_market_value'])
 	   {
 	       $total_market_value += $row->market_value;
 	?>
 		<td class="td_r" class="hasTip" title="">
 			<?php 
-            //echo number_format($row->market_value,0, ",", ".");
             echo ($row->market_value > 0 ? number_format($row->market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']); 
             ?>
 		</td>
@@ -655,7 +655,6 @@ $this->overallconfig['use_jquery_modal']
 					?>
 		<td class="td_c">
         <?php 
-        //echo $value;
         echo ($value > 0 ? $value : $this->overallconfig['zero_events_value']); 
         ?>
         </td>
@@ -663,15 +662,15 @@ $this->overallconfig['use_jquery_modal']
 				}
 			}
 		}
-        // diddipoeler marktwert
+/**
+ *         diddipoeler marktwert
+ */
         if ($this->config['show_player_market_value'])
 	   {
 	   ?>
 		<td class="td_r">
         <?php 
-        //echo number_format($total_market_value,0, ",", ".");
         echo ($total_market_value > 0 ? number_format($total_market_value, 0, ',', '.') : $this->overallconfig['zero_events_value']); 
-
         ?>
         </td>
 					<?php    
