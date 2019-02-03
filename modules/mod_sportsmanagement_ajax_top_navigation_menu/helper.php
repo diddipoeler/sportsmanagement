@@ -78,17 +78,9 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	{
 		$this->_app = Factory::getApplication();
         $this->_params = $params;
-		//$this->_db = sportsmanagementHelper::getDBConnection();
-        //$this->_query = $this->_db->getQuery(true);
         
     if ( self::$_project_id )
 		{
-//    JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
-//    JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
-//    JRequest::setVar( 'jlamtopproject', self::$_project_id );
-//    JRequest::setVar( 'jlamtopteam', $this->_team_id );
-//    JRequest::setVar( 'jlamtopdivisionid', $this->_division_id );
-
     $this->_app->input->setVar( 'jlamtopseason', $this->getSeasonId() );
     $this->_app->input->setVar( 'jlamtopleague', $this->getLeagueId() );
     $this->_app->input->setVar( 'jlamtopproject', self::$_project_id );
@@ -350,10 +342,6 @@ if ($res)
 	$this->_team_id 		= $team_id;
 	$this->_project 		= $this->getProject();
 	$this->_round_id   		= $this->getCurrentRoundId();
-//    JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
-//    JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
-//    JRequest::setVar( 'jlamtopproject', self::$_project_id );
-//    JRequest::setVar( 'jlamtopteam', $this->_team_id );
     $this->_app->input->setVar( 'jlamtopseason', $this->getSeasonId() );
     $this->_app->input->setVar( 'jlamtopleague', $this->getLeagueId() );
     $this->_app->input->setVar( 'jlamtopproject', self::$_project_id );
@@ -998,8 +986,8 @@ $options = array(HTMLHelper::_('select.option', 0, Text::_($this->getParam('text
         	
 			case "teamstats":
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['tid'] = $this->_team_id;
 $routeparameter['ptid'] = 0;
@@ -1039,8 +1027,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$route
 				
 			case "eventsranking":	
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['tid'] = $this->_team_id;
@@ -1051,8 +1039,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $
 
 			case "matrix":
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['r'] = 0;
@@ -1061,8 +1049,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				
 			case "referees":
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['r'] = 0;
@@ -1071,8 +1059,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 				
 			case "results":
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['r'] = $this->_round_slug;
 $routeparameter['division'] = $this->_division_id;
@@ -1088,8 +1076,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 
 			case "resultsranking":
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['r'] = $this->_round_slug;
 $routeparameter['division'] = $this->_division_id;
@@ -1128,8 +1116,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 			case "statsranking":
             case 'statsrankingteams':
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $routeparameter['tid'] = $this->_team_id;
@@ -1173,8 +1161,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 					return false;
 				}
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['tid'] = $this->_team_id;
 $routeparameter['ptid'] = 0;
@@ -1185,8 +1173,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
             case "teams":
             case "teamstree":
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['division'] = $this->_division_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparameter);            
@@ -1210,8 +1198,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute($view,$routeparame
 			default:
 			case "ranking":
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = $this->_app->input->getInt('cfg_which_database',ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database',0));
+$routeparameter['s'] = $this->_app->input->getInt('s',0);
 $routeparameter['p'] = $this->_project_slug;
 $routeparameter['type'] = 0;
 $routeparameter['r'] = $this->_round_slug;

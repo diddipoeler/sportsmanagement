@@ -66,8 +66,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                             {
                                 echo '&nbsp;&nbsp;';
                                 $routeparameter                       = array();
-                                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
-                                $routeparameter['s']                  = JRequest::getInt('s', 0);
+                                $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+                                $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
                                 $routeparameter['p']                  = $predictionProject->project_id;
                                 $routeparameter['r']                  = $roundID;
                                 $routeparameter['division']           = 0;

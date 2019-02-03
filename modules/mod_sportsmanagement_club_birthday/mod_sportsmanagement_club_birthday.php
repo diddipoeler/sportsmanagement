@@ -84,7 +84,7 @@ $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->ge
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || Factory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
 {
 $module->picture_server = ComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
 }

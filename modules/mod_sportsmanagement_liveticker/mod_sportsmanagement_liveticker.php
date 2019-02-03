@@ -52,7 +52,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 $document = Factory::getDocument();
 $document->addScript(Uri::base().'modules/'.$module->module.'/js/turtushout.js');
 
-$action = JRequest::getCmd('action');
+$action = Factory::getApplication()->input->getCmd('action');
 
 $use_local_jquery   = $params->get( 'use_local_jquery', true );
 $allow_unregistered = $params->get( 'allow_unregistered', false );
@@ -108,12 +108,12 @@ switch ($action) {
 			break;
 		}
 		if ($use_secret_salt && !(
-			JRequest::getInt('ts') && isset($_COOKIE['tstoken']) && $_COOKIE['tstoken'] == md5($secret_salt . JRequest::getInt('ts'))
+			Factory::getApplication()->input->getInt('ts') && isset($_COOKIE['tstoken']) && $_COOKIE['tstoken'] == md5($secret_salt . Factory::getApplication()->input->getInt('ts'))
 		)) {
 			$ajax_return = "Access Error!";
 			break;
 		}
-		if($use_secret_salt && ((JRequest::getInt('ts') + 120) < mktime())) {
+		if($use_secret_salt && ((Factory::getApplication()->input->getInt('ts') + 120) < mktime())) {
 			$ajax_return = "Access Error!";
 			break;
 		}

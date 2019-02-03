@@ -96,13 +96,6 @@ $match_id = $app->input->post->get('match_id', 0);
 $nr = $app->input->post->get('nr', -1);
 $ajaxmod = $app->input->post->get('ajaxmodid', 0);
 
-/*
-$ajax= JRequest::getVar('ajaxMListMod',0,'default','POST');
-$match_id = JRequest::getVar('match_id',0,'default','POST');
-$nr = JRequest::getVar('nr',-1,'default','POST');
-$ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
-*/
-
 $template = $params->get('template','default');
 
 if(version_compare(JVERSION,'3.0.0','ge')) 

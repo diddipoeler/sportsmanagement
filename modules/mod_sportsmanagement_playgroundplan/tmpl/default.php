@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 $teamformat = $params->get('teamformat', 'name');
 $dateformat = $params->get('dateformat');
@@ -63,8 +64,8 @@ $playground_id = $match->playground_club_slug;
 if( $params->get('show_playground_link'))
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = Factory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $match->project_slug;
 $routeparameter['pgid'] = $playground_id ;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    

@@ -68,9 +68,9 @@ class modSportsmanagementTeamPlayersHelper
 		$team_name     = $result[1];
 		$season_id     = $result[2];
 
-		JRequest::setVar( 'p', $p );
-		JRequest::setVar( 'tid', $t);
-		JRequest::setVar( 'ttid', $projectteamid);
+		Factory::getApplication()->input->setVar( 'p', $p );
+		Factory::getApplication()->input->setVar( 'tid', $t);
+		Factory::getApplication()->input->setVar( 'ttid', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelRoster')) 
         {

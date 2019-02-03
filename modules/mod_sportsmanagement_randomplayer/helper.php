@@ -115,9 +115,9 @@ if ( $params['debug_modus'] )
         $mainframe->enqueueMessage(Text::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	}
 		
-		JRequest::setVar( 'p', $res[1] );
-		JRequest::setVar( 'pid', $res[0]);
-		JRequest::setVar( 'pt', $projectteamid);
+		Factory::getApplication()->input->setVar( 'p', $res[1] );
+		Factory::getApplication()->input->setVar( 'pid', $res[0]);
+		Factory::getApplication()->input->setVar( 'pt', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelPlayer')) {
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');

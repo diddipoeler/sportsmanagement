@@ -430,7 +430,7 @@ class JSMCalendar extends PHPCalendar
 	 */
 	function getCalendarLink($month, $year)
 	{
-		$getquery = JRequest::get('GET'); //get the GET query
+		$getquery = Factory::getApplication()->input->get('GET'); //get the GET query
 		$calendarLink= Uri::current().'?'; //get the current url, without the GET query; and add "?", to set the GET vars
 
 		foreach($getquery as $key => $value){  /*this bucle goes through every GET variable that was in the url*/

@@ -9,8 +9,8 @@
  * @subpackage mod_sportsmanagement_teamstatistics_counter
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Factory;
 
 /**
  * modJSMTeamStatisticsCounter
@@ -33,12 +33,16 @@ class modJSMTeamStatisticsCounter
 	 */
 	public static function getData($params)
 	{
-		// Get params from module
+/**
+ * 		Get params from module
+ */
 		$seasonId  = (int) $params->get('s', '0');
 		$projectId = (int) $params->get('p', '0');
 		$teamId    = (int) $params->get('teams', '0');
 
-		// Load project team id
+/**
+ * 		Load project team id
+ */
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
@@ -53,13 +57,17 @@ class modJSMTeamStatisticsCounter
 		$projectTeamId = $db->loadResult();
 		$db->disconnect();
 
-		// Set data in model
+/**
+ * 		Set data in model
+ */
 		sportsmanagementModelTeamStats::$projectid     = $projectId;
 		sportsmanagementModelTeamStats::$teamid        = $teamId;
 		sportsmanagementModelTeamStats::$projectteamid = $projectTeamId;
-		JRequest::setVar('p', $projectId);
+		Factory::getApplication()->input->setVar('p', $projectId);
 
-		// Get data
+/**
+ * 		Get data
+ */
 		$team    = sportsmanagementModelTeamStats::getTeam();
 		$project = sportsmanagementModelProject::getProject();
 		$stats   = array(

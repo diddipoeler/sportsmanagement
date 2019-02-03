@@ -64,10 +64,10 @@ class JElementJLMLItemid extends JElement
 					$item = &$olist[$type->menutype][$x];
 					
 					//If menutype is changed but item is not saved yet, use the new type in the list
-					if ( JRequest::getString('option', '', 'get') == 'com_menus' ) {
-						$currentItemArray = JRequest::getVar('cid', array(0), '', 'array');
+					if ( Factory::getApplication()->input->getString('option', '', 'get') == 'com_menus' ) {
+						$currentItemArray = Factory::getApplication()->input->getVar('cid', array(0), '', 'array');
 						$currentItemId = (int) $currentItemArray[0];
-						$currentItemType = JRequest::getString('type', $item->type, 'get');
+						$currentItemType = Factory::getApplication()->input->getString('type', $item->type, 'get');
 						if ( $currentItemId == $item->id && $currentItemType != $item->type) {
 							$item->type = $currentItemType;
 						}
