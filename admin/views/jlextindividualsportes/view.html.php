@@ -34,15 +34,17 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = Factory::getApplication();
+$tpl = null;
+switch ($this->getLayout()) {
+            case 'default';
+            case 'default_3';
+            case 'default_4';
+            $this->_displayDefault($tpl);
+            break;
+            
+            }
+		
 
-		if ($this->getLayout() == 'default')
-		{
-			$this->_displayDefault($tpl);
-			return;
-		}
-
-		parent::display($tpl);
 	}
 
 	/**
@@ -64,13 +66,12 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         $this->sortColumn = $this->state->get('list.ordering');
         
 		$cid = $jinput->request->get('cid', null, array() );
-
 		
         $project_id	= $app->getUserState( "$option.pid", '0' );
-		$match_id	= $input->getInt('id', 0);
-        $rid		= $input->getInt('rid', 0);
-		$projectteam1_id		= $jinput->getInt('team1', 0);
-		$projectteam2_id		= $jinput->getInt('team2', 0);
+		$match_id = $input->getInt('id', 0);
+        $rid = $input->getInt('rid', 0);
+		$projectteam1_id = $jinput->getInt('team1', 0);
+		$projectteam2_id = $jinput->getInt('team2', 0);
         
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($project_id);
@@ -86,8 +87,6 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         $matches = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
-        
-        
         
         $teams[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
         if ($projectteams = $model->getPlayer($projectteam1_id, $project_id))
@@ -138,7 +137,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
             $tempplayer->value = 0;
             $tempplayer->text = 'TempPlayer';
             $exportplayer[] = $tempplayer;
-            $this->getHomePlayer	= $exportplayer;
+            $this->getHomePlayer = $exportplayer;
         }
         
         if ( $result = $model->getPlayer($projectteam2_id, $project_id) )
@@ -151,15 +150,12 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
             $tempplayer->value = 0;
             $tempplayer->text = 'TempPlayer';
             $exportplayer[] = $tempplayer;
-            $this->getAwayPlayer	= $exportplayer;
+            $this->getAwayPlayer = $exportplayer;
         }
-        
 
-        $this->lists	= $lists;
+        $this->lists = $lists;
 
-
-
-		parent::display($tpl);
+		$this->setLayout('default');
 	}
 
 }
