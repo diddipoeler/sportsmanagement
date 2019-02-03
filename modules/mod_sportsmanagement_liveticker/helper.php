@@ -75,9 +75,9 @@ class modTurtushoutHelper
     public static function getList(&$params, $limit)
     {
 
-//$date = new DateTime();
-//$config = Factory::getConfig();
-//$date->setTimezone(new DateTimeZone($config->get('offset')));
+$date = new DateTime();
+$config = Factory::getConfig();
+$date->setTimezone(new DateTimeZone($config->get('offset')));
 //$timestamp = strtotime($this->match->match_date);
         
         // aktuelles datum
