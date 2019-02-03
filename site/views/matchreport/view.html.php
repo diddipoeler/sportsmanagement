@@ -16,6 +16,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Form\Form;
+
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
 /**
@@ -37,15 +39,6 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
      */
     public function init ()
 	{
-/*	    
-        // diddipoeler
-        $css = 'components/com_sportsmanagement/assets/css/tooltipstyle.css';
-        $this->document->addStyleSheet($css);
-        $css = 'components/com_sportsmanagement/assets/css/jquery-easy-tooltip.css';
-        $this->document->addStyleSheet($css);
-        $this->document->addScript( Uri::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
-*/
-        //$this->model->checkMatchPlayerProjectPositionID();
         $this->model->matchid = $this->jinput->getInt('mid',0);
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0));
         $project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
@@ -65,6 +58,9 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->oldmatchtext = $ret->text;
         }
         
+/**
+ * hole den artikel zum spiel
+ */
         $this->match_article = $this->model->getMatchArticle($this->match->content_id,$this->model->matchid,$project->category_id);
 
 		$this->round = $this->model->getRound();
@@ -88,10 +84,10 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->playerstats = $this->model->getMatchStats();
 		$this->staffstats = $this->model->getMatchStaffStats();
         
-$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
+        $xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
 		$jRegistry = new Registry;
 		$jRegistry->loadString($match->extended, 'ini');
-		$extended = JForm::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
+		$extended = Form::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
 		$extended->bind($jRegistry);
 		
 		$this->extended = $extended;

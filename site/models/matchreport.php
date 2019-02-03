@@ -482,14 +482,19 @@ catch (Exception $e)
     {
         case 'com_content':
         $query->from('#__content as c');
-        if ( $article_id )
+        if ( $article_id && !$match_id )
         {
         $query->where('id = '. $article_id );
         }
-        if ( $match_id )
+        elseif ( !$article_id && $match_id )
         {
         $query->where('xreference = '. $match_id );
         }
+        elseif ( $article_id && $match_id )
+        {
+        $query->where('(xreference = '. $match_id .' OR id = '. $article_id .' )' );
+        }
+        
         if ( $cat_id )
         {
         $query->where('catid = '. $cat_id );
