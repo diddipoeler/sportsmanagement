@@ -82,7 +82,11 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         
         // aktuelles datum
         $akt_datum = date("Y-m-d",time());
-        $timestamp = strtotime($akt_datum);
+        //$timestamp = strtotime($akt_datum);
+        //echo 'timestamp '.$timestamp.'<br>';
+        
+        //$date->format('Y-m-d H:i:s');
+        $timestamp = strtotime($date->format('Y-m-d H:i:s'));
         echo 'timestamp '.$timestamp.'<br>';
         //$von = $akt_datum.' 00:00:00';
         //$bis = $akt_datum.' 23:59:59';
