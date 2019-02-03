@@ -76,6 +76,7 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
 			</field>
+<field name="playtime" type="text" default="105" label="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME" description="MOD_SPORTSMANAGEMENT_LIVETICKER_PLAYTIME_DESC" />			
 		<field name="use_local_jquery"  class="radio btn-group btn-group-yesno"
 			type="extensionradiobutton" default="1" label="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY" description="MOD_SPORTSMANAGEMENT_LIVETICKER_USE_LOCAL_JQUERY_DESC" >
 			<option value="0">JNO</option>
