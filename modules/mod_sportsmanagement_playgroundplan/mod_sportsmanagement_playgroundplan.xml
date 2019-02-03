@@ -78,14 +78,9 @@
 			value_field="s"
 			required=""
 			size="10"
-			
+			multiple="multiple"
 						label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
-<!--			
-				<field name="projects" type="projects" default="" required="true"
-					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL"
-					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
--->
 					
 				<field name="playground" type="playgrounds" default=""
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
