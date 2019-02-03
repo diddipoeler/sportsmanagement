@@ -170,40 +170,22 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
                             echo sportsmanagementHelper::getBootstrapModalImage('matchdetails' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=' . $row->id, $modalwidth, $modalheight);
                         endif;
 
-                        //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
                         if (version_compare(JSM_JVERSION, '4', 'eq')) {
                             $pcture_link = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/matchreport/' . $row->id;
                         } else {
                             $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/' . $row->id;
                         }
 
-
-                        //$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';
-                        ?>
+                       ?>
 
 
                         <?php
                         echo sportsmanagementHelper::getBootstrapModalImage('matchpicture' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
                         // diddipoeler einzelsportart
                         if ($this->projectws->project_art_id == 2) {
-
+$pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=".$row->id."&team1=".$row->projectteam1_id."&team2=".$row->projectteam2_id."&rid=".$row->round_id;                            
+echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
                             ?>
-
-                            <a rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
-                               href="index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=<?php echo $row->id; ?>&team1=<?php echo $row->projectteam1_id; ?>&team2=<?php echo $row->projectteam2_id; ?>&rid=<?php echo $row->round_id; ?>  "
-                               class="modal"
-                               title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'); ?>">
-                                <?php
-
-                                $image = 'players_add.png';
-                                $title = '';
-                                echo HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/' . $image,
-                                    Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'),
-                                    'title= "' . $title . '"');
-
-
-                                ?>
-                            </a>
 
                             <?php
                         }
