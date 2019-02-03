@@ -75,9 +75,9 @@ class modTurtushoutHelper
     public static function getList(&$params, $limit)
     {
 
-$date = new DateTime();
-$config = Factory::getConfig();
-$date->setTimezone(new DateTimeZone($config->get('offset')));
+//$date = new DateTime();
+//$config = Factory::getConfig();
+//$date->setTimezone(new DateTimeZone($config->get('offset')));
 //$timestamp = strtotime($this->match->match_date);
         
         // aktuelles datum
@@ -87,7 +87,11 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         
         //$date->format('Y-m-d H:i:s');
         $timestamp = strtotime($date->format('Y-m-d H:i:s'));
+        $timestampvon = $timestamp - ( $params->get( 'playtime' ) * 60 );
+        $timestampbis = $timestamp + ( $params->get( 'playtime' ) * 60 );
         echo 'timestamp '.$timestamp.'<br>';
+        echo 'timestampvon '.$timestampvon.'<br>';
+        echo 'timestampbis '.$timestampbis.'<br>';
         //$von = $akt_datum.' 00:00:00';
         //$bis = $akt_datum.' 23:59:59';
         $rows = array();
