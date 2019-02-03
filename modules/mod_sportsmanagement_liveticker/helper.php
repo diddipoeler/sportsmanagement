@@ -122,7 +122,7 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         {
         $round_ids = implode(',',$rounds);
         } 
-        
+        echo '<pre>'.print_r($round_ids,true).'</pre>';
         if ( $round_ids )
         {
         $query->clear();
