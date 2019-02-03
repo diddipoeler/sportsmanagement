@@ -9,7 +9,6 @@
  * @subpackage jlextindividualsportes
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -27,6 +26,12 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 {
+	
+    /**
+	 * sportsmanagementViewjlextindividualsportes::init()
+	 * 
+	 * @return
+	 */
 	public function init ()
 	{
 		$app = Factory::getApplication();
@@ -40,6 +45,12 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 		parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewjlextindividualsportes::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefault($tpl)
 	{
 		$app = Factory::getApplication();
@@ -52,14 +63,14 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-		$cid = $jinput->request->get('cid', null, ARRAY)
+		$cid = $jinput->request->get('cid', null, array() );
 
 		
         $project_id	= $app->getUserState( "$option.pid", '0' );
 		$match_id	= $input->getInt('id', 0);
         $rid		= $input->getInt('rid', 0);
-		$projectteam1_id		= $input->getInt('team1', 0);
-		$projectteam2_id		= J$input->getInt('team2', 0);
+		$projectteam1_id		= $jinput->getInt('team1', 0);
+		$projectteam2_id		= $jinput->getInt('team2', 0);
         
         $mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($project_id);
@@ -119,7 +130,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         
         if ( $result = $model->getPlayer($projectteam1_id, $project_id) )
         {
-        $this->getHomePlayer	= $model->getPlayer($projectteam1_id, $project_id));    
+        $this->getHomePlayer = $model->getPlayer($projectteam1_id, $project_id);    
         }
         else
         {
