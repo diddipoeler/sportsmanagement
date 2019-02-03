@@ -89,9 +89,9 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         $timestamp = strtotime($date->format('Y-m-d H:i:s'));
         $timestampvon = $timestamp - ( $params->get( 'playtime' ) * 60 );
         $timestampbis = $timestamp + ( $params->get( 'playtime' ) * 60 );
-        echo 'timestamp '.$timestamp.'<br>';
-        echo 'timestampvon '.$timestampvon.'<br>';
-        echo 'timestampbis '.$timestampbis.'<br>';
+//        echo 'timestamp '.$timestamp.'<br>';
+//        echo 'timestampvon '.$timestampvon.'<br>';
+//        echo 'timestampbis '.$timestampbis.'<br>';
         //$von = $akt_datum.' 00:00:00';
         //$bis = $akt_datum.' 23:59:59';
         $rows = array();
@@ -148,7 +148,9 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         $query->join('INNER', '#__sportsmanagement_club as jc2 ON jc2.id = jt2.club_id');
         $query->join('INNER', '#__sportsmanagement_league as jle ON jle.id = jl.league_id');
         $query->join('LEFT', '#__sportsmanagement_countries as jco ON jco.alpha3 = jle.country');
-        $query->where('jm.round_id IN ('.$round_ids.')');   
+        $query->where('jm.round_id IN ('.$round_ids.')');
+        
+        $query->where('( jm.match_timestamp >= '.$timestampvon.' AND jm.match_timestamp <= '.$timestampbis.' )');   
    
         
 		$db->setQuery($query, 0, $limit);
