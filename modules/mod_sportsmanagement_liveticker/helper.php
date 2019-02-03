@@ -122,7 +122,7 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         {
         $round_ids = implode(',',$rounds);
         } 
-        echo '<pre>'.print_r($round_ids,true).'</pre>';
+        //echo '<pre>'.print_r($round_ids,true).'</pre>';
         if ( $round_ids )
         {
         $query->clear();
@@ -155,6 +155,7 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
+        echo '<pre>'.print_r($query->dump(),true).'</pre>';
         }
 		
 		if ($db->getErrorMsg())
