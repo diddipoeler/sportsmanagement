@@ -148,6 +148,8 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
        
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
 
+$this->config['table_class'] = !isset($this->config['table_class']) ? $this->config['table_class'] : 'table';
+        
 	}
 
 }
