@@ -70,7 +70,7 @@ $cols	            = $params->get( 'cols' );
 $rows	            = $params->get( 'rows' );
 $use_css            = $params->get( 'use_css', 'simple' );
 $class	            = $params->get( 'moduleclass_sfx', '' );
-
+$playtime	            = $params->get( 'playtime' );
 $user		     = Factory::getUser();
 $userId		     = (int) $user->get('id');
 $name		     = $user->get('name');
@@ -148,22 +148,22 @@ switch ($action) {
 
 if (!$is_ajaxed || ($action == "turtushout_shouts"))
    {
-	$list      = modTurtushoutHelper::getList($params, $display_num);
-    $listcomment      = modTurtushoutHelper::getListCommentary($list);
+	$list = modTurtushoutHelper::getList($params, $display_num);
+    $listcomment = modTurtushoutHelper::getListCommentary($list);
 	$list_html = "";
 	
 $list_html .= "<div class='turtushout-entry'>";
-$list_html .=  "<div class='turtushout-name'>";
-$list_html .=  "<table class=\"".$table_class."\">";
-$list_html .=  "<thead>" ;
-$list_html .=  "<tr>" ;
+$list_html .= "<div class='turtushout-name'>";
+$list_html .= "<table class=\"".$table_class."\">";
+$list_html .= "<thead>" ;
+$list_html .= "<tr>" ;
 $list_html .= "<td colspan=\"\" align=\"middle\" >" . "aktuelle Zeit" . "</td>";
 $date = new DateTime();
 $config = Factory::getConfig();
 $date->setTimezone(new DateTimeZone($config->get('offset')));	
 $list_html .= "<td colspan=\"8\" align=\"left\" >" . $date->format('H:i:s'). "</td>";	
 $list_html .= "</tr>" ;
-$list_html .=  "<tr>" ;
+$list_html .= "<tr>" ;
 
 if ( $display_liganame && $display_ligaflagge )
 {

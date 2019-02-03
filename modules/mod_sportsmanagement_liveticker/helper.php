@@ -1,41 +1,13 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für Sportarten
+ * @version   1.0.05
+ * @file      helper.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage mod_sportsmanagement_liveticker
+ */
 
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
@@ -102,8 +74,16 @@ class modTurtushoutHelper
      */
     public static function getList(&$params, $limit)
     {
+
+$date = new DateTime();
+$config = Factory::getConfig();
+$date->setTimezone(new DateTimeZone($config->get('offset')));
+//$timestamp = strtotime($this->match->match_date);
+        
         // aktuelles datum
         $akt_datum = date("Y-m-d",time());
+        $timestamp = strtotime($akt_datum);
+        echo 'timestamp '.$timestamp.'<br>';
         //$von = $akt_datum.' 00:00:00';
         //$bis = $akt_datum.' 23:59:59';
         $rows = array();
@@ -137,7 +117,6 @@ class modTurtushoutHelper
         
         if ( $round_ids )
         {
-    
         $query->clear();
         $query->select('jl.id,jl.name,jl.game_regular_time,jl.halftime,jl.fav_team');
         $query->select('jco.alpha2');
@@ -151,22 +130,16 @@ class modTurtushoutHelper
         $query->from('#__sportsmanagement_project as jl');
         $query->join('INNER', '#__sportsmanagement_round as jr ON jr.project_id = jl.id');
         $query->join('INNER', '#__sportsmanagement_match as jm ON jm.round_id = jr.id');
-        
         $query->join('INNER', '#__sportsmanagement_project_team as jpt1 ON jpt1.id = jm.projectteam1_id ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = jpt1.team_id');
         $query->join('INNER', '#__sportsmanagement_team as jt1 ON jt1.id = st1.team_id');
         $query->join('INNER', '#__sportsmanagement_club as jc1 ON jc1.id = jt1.club_id');
-        
         $query->join('INNER', '#__sportsmanagement_project_team as jpt2 ON jpt2.id = jm.projectteam2_id ');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = jpt2.team_id');
         $query->join('INNER', '#__sportsmanagement_team as jt2 ON jt2.id = st2.team_id');
         $query->join('INNER', '#__sportsmanagement_club as jc2 ON jc2.id = jt2.club_id');
-        
         $query->join('INNER', '#__sportsmanagement_league as jle ON jle.id = jl.league_id');
-        
         $query->join('LEFT', '#__sportsmanagement_countries as jco ON jco.alpha3 = jle.country');
-        
-        //$query->where("( jm.match_date >= '".$von."' AND jm.match_date <= '".$bis."' )");
         $query->where('jm.round_id IN ('.$round_ids.')');   
    
         
