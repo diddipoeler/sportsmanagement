@@ -17,9 +17,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 
-$modalheight = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('modal_popup_width', 900);
-
 ?>
 <style>
     fieldset input,
@@ -33,7 +30,6 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
     }
 </style>
 <div id="editcell">
-    <!--	<fieldset class="adminform"> -->
     <legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2', '<i>' . $this->roundws->name . '</i>', '<i>' . $this->projectws->name . '</i>'); ?></legend>
 
     <?php echo $this->loadTemplate('teamselect'); ?>
@@ -167,7 +163,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
                             ?>
 
                             <?PHP
-                            echo sportsmanagementHelper::getBootstrapModalImage('matchdetails' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=' . $row->id, $modalwidth, $modalheight);
+                            echo sportsmanagementHelper::getBootstrapModalImage('matchdetails' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/edit.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_DETAILS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=' . $row->id, $this->modalwidth, $this->modalheight);
                         endif;
 
                         if (version_compare(JSM_JVERSION, '4', 'eq')) {
@@ -180,11 +176,11 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 
 
                         <?php
-                        echo sportsmanagementHelper::getBootstrapModalImage('matchpicture' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('matchpicture' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_MATCHPICTURE'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
                         // diddipoeler einzelsportart
                         if ($this->projectws->project_art_id == 2) {
 $pcture_link = "index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=".$row->id."&team1=".$row->projectteam1_id."&team2=".$row->projectteam2_id."&rid=".$row->round_id;                            
-echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
+echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/players_add.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SINGLE_SPORT'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
                             ?>
 
                             <?php
@@ -300,7 +296,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                         <br>
                         <?php
                         $pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=' . $date . '&id=' . $row->id . '&team=' . $row->projectteam1_id;
-                        echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('matchlineuphome' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_HOME'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
                         $title = ' ' . Text::_('COM_SPORTSMANAGEMENT_F_PLAYERS') . ': ' . $row->homeplayers_count . ', ' .
                             ' ' . Text::_('COM_SPORTSMANAGEMENT_F_TEAM_STAFF') . ': ' . $row->homestaff_count . ' ';
 
@@ -346,7 +342,7 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                         <!--	</a> -->
                         <?php
                         $pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=' . $date . '&id=' . $row->id . '&team=' . $row->projectteam2_id;
-                        echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'), '20', Uri::base() . $pcture_link, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('matchlineupaway' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image, Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_LINEUP_AWAY'), '20', Uri::base() . $pcture_link, $this->modalwidth, $this->modalheight);
                         ?>
                     </td>
                     <td class="left" nowrap="nowrap">
@@ -527,9 +523,9 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     <td class="center">
 
                         <?php
-                        echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $modalwidth, $modalheight);
-                        echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id, $modalwidth, $modalheight);
-                        echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('pressebericht' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/link.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_PRESSEBERICHT'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=' . $row->id, $this->modalwidth, $this->modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('editevents' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/events.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_EVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editevents&id=' . $row->id, $this->modalwidth, $this->modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('editeventsbb' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/teams.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_SBBEVENTS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editeventsbb&id=' . $row->id, $this->modalwidth, $this->modalheight);
 
                         ?>
 
@@ -540,13 +536,13 @@ echo sportsmanagementHelper::getBootstrapModalImage('einzelsportart' . $row->id,
                     </td>
                     <td class="center">
                         <?php
-                        echo sportsmanagementHelper::getBootstrapModalImage('editstats' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=' . $row->id, $modalwidth, $modalheight);
+                        echo sportsmanagementHelper::getBootstrapModalImage('editstats' . $row->id, Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/calc16.png', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_STATS'), '20', Uri::base() . 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editstats&id=' . $row->id, $this->modalwidth, $this->modalheight);
                         //start statistics:
                         ?>
 
                     </td>
                     <td class="center">
-                        <a rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+                        <a rel="{handler: 'iframe',size: {x: <?php echo $this->modalwidth; ?>,y: <?php echo $this->modalheight; ?>}}"
                            href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
                            class="modal open-editreferees"
                            title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EDIT_REFEREES'); ?>">

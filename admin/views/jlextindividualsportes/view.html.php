@@ -53,12 +53,6 @@ switch ($this->getLayout()) {
 	 */
 	function _displayDefault($tpl)
 	{
-		//$app = Factory::getApplication();
-		//$jinput = $app->input;
-		//$option = $jinput->getCmd('option');
-        //$model = $this->getModel();
-		//$uri = Factory::getURI();
-
 		$this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
