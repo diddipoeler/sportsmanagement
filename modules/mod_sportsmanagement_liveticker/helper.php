@@ -155,7 +155,7 @@ $date->setTimezone(new DateTimeZone($config->get('offset')));
         
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
-        echo '<pre>'.print_r($query->dump(),true).'</pre>';
+        //echo '<pre>'.print_r($query->dump(),true).'</pre>';
         }
 		
 		if ($db->getErrorMsg())
