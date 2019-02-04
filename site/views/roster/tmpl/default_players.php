@@ -604,16 +604,22 @@ if ( $this->config['show_dart_event'] )
 
 
 <?php
-echo '<pre>'.print_r($this->playereventstatsdart,true).'</pre>';
+//echo '<pre>'.print_r($this->playereventstatsdart,true).'</pre>';
 foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
 {
-?>
 
-<?php
+foreach ($this->playereventstatsdart[$eventId] AS $key => $value)
+{
+if ( $value->person_id == $row->pid )
+{
+echo 'total '.$value->total.'<br>';
+}
+}
 
 
-echo $eventId.'<br>';
-echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
+
+//echo $eventId.'<br>';
+//echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
 ?>
 
 <?php
