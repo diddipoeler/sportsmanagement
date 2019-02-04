@@ -368,7 +368,14 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
+							if ( $dart )
+							{
+							$playerstats[$eventtype->eventtype_id]=$teamstats;
+							}
+							else
+							{
 							$playerstats[$player->pid][$eventtype->eventtype_id]=(isset($teamstats[$player->pid]) ? $teamstats[$player->pid]->total : 0);
+							}
 						}
 					}
 				}
