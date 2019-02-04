@@ -413,11 +413,23 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
     $query->where('pt.id = '.$projectteam->id);
     $query->where('pt.project_id = '.self::$projectid);
     $query->where('pro.id = '.self::$projectid);
+		if ( $dart )
+		{
+		}
+		else
+		{
     $query->group('tp.person_id');
-       
+		}
+		
         $db->setQuery($query);
+		if ( $dart )
+		{
+		$result = $db->loadObjectList();	
+		}
+		else
+		{
 		$result = $db->loadObjectList('person_id');
-
+		}
 		return $result;
 	}
 
