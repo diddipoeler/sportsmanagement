@@ -504,25 +504,9 @@ $this->overallconfig['use_jquery_modal']
 				?>
 		</td>
 				<?php
-// dartanzeige
-if ( $this->config['show_dart_event'] )
-{			
-?>  
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#<?php echo $row->pid; ?>" href="#<?php echo $row->pid; ?>"><?php echo 'Dart Ereignisse'; ?></a>
-                </h4>
-</div>			
-<div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">            
-<div class="panel-body"> 		
-
-	</div>
-	</div>
-</div>			
-<?php			
-}			
-			}
+				}
+		
+			
 		}
 		if ($this->config['show_stats'] && isset($this->stats[$row->position_id]))
 		{
@@ -602,6 +586,36 @@ if ( $this->config['show_dart_event'] )
 		?>
 	</tr>
 	<?php
+// dartanzeige
+if ( $this->config['show_dart_event'] )
+{			
+?>  
+<tr>
+<td colspan="4">
+<div class="panel panel-default">        
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#dartereignisse" href="#<?php echo $row->pid; ?>"><?php echo 'Dart Ereignisse'; ?></a>
+                </h4>
+</div>			
+<div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">            
+<div class="panel-body"> 		
+hallo
+	</div>
+	</div>
+</div>
+</td>
+</tr>		
+<?php			
+}		
+	
+	
+	
+	
+	
+	
+	
+	
 	$k=(1-$k);
 	}
 	?>
