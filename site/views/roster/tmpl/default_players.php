@@ -592,6 +592,7 @@ if ( $this->config['show_dart_event'] )
 ?>  
 <tr>
 <td colspan="4">
+<div class="panel-group" id="dartereignisse">
 <div class="panel panel-default">        
             <div class="panel-heading">
                 <h4 class="panel-title">
@@ -599,10 +600,31 @@ if ( $this->config['show_dart_event'] )
                 </h4>
 </div>			
 <div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">            
-<div class="panel-body"> 		
-hallo
-	</div>
-	</div>
+<div class="panel-body"> 	
+
+
+<?php
+echo '<pre>'.print_r($this->playereventstatsdart,true).'</pre>';
+foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
+{
+?>
+
+<?php
+
+
+echo $eventId.'<br>';
+echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
+?>
+
+<?php
+}
+//$this->playereventstatsdart
+
+?>
+
+</div>
+</div>
+</div>
 </div>
 </td>
 </tr>		
