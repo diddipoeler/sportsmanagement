@@ -197,6 +197,9 @@ if (!empty($this->rows))
 			<?php
 			}
 		}
+		
+//echo '<pre>'.print_r($this->positioneventtypes,true).'</pre>';
+		
 		if ($this->config['show_events_stats'])
 		{
 			if ($this->positioneventtypes)
@@ -602,32 +605,47 @@ if ( $this->config['show_dart_event'] )
 <div id="<?php echo $row->pid; ?>" class="panel-collapse collapse ">            
 <div class="panel-body"> 	
 
-
+<table>
+<tr>
 <?php
-//echo '<pre>'.print_r($this->playereventstatsdart,true).'</pre>';
+//echo '<pre>'.print_r($this->playereventstats,true).'</pre>';
+//echo $row->position_id.'<br>';
 foreach ($this->playereventstats[$row->pid] AS $eventId=> $stat)
 {
 
 foreach ($this->playereventstatsdart[$eventId] AS $key => $value)
 {
+?>
+<tr>
+<td>
+<?php
 if ( $value->person_id == $row->pid )
 {
-echo 'total '.$value->total.'<br>';
+
+echo HTMLHelper::image(	$this->positioneventtypes[$row->position_id][$eventId]->icon,Text::_($this->positioneventtypes[$row->position_id][$eventId]->name),
+		array(	'title'=> Text::_($this->positioneventtypes[$row->position_id][$eventId]->name),
+		'align'=> 'top',
+		'hspace'=> '2'));
+echo $value->total;
 }
+else
+{
+//echo '-';
 }
-
-
-
+?>
+</td>
+</tr>
+<?php
+}
 //echo $eventId.'<br>';
 //echo ($stat !='' && $stat > 0) ? number_format($stat, 0, '', '.') : $this->overallconfig['zero_events_value'];
-?>
 
-<?php
 }
 //$this->playereventstatsdart
 
 ?>
-
+</tr>
+</table>
 </div>
 </div>
 </div>
