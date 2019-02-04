@@ -38,7 +38,7 @@ echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($this->startdate,1
 </td>
 <td>
 <?PHP
-echo ' - '.HTMLHelper::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
+echo HTMLHelper::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
 ?>
 </td>
 <td>
