@@ -344,7 +344,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 	 * 
 	 * @return
 	 */
-	public static function getPlayerEventStats()
+	public static function getPlayerEventStats($dart=FALSE)
 	{
 		$app = Factory::getApplication();		
 		$playerstats=array();
@@ -364,7 +364,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 			{
 				foreach ($eventtypes as $eventtype)
 				{
-					$teamstats = self::getTeamEventStat($eventtype->eventtype_id);
+					$teamstats = self::getTeamEventStat($eventtype->eventtype_id,$dart);
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
@@ -385,7 +385,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 	 * @param mixed $eventtype_id
 	 * @return
 	 */
-	public static function getTeamEventStat($eventtype_id)
+	public static function getTeamEventStat($eventtype_id=0,$dart=FALSE)
 	{
 		$app = Factory::getApplication();
     $option = $app->input->getCmd('option');
@@ -395,7 +395,14 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
        $starttime = microtime(); 
        
         $projectteam = self::getprojectteam();
+		if ( $dart )
+		{
+		$query->select('me.event_sum as total,me.event_type_id as event_type_id');	
+		}
+		else
+		{
         $query->select('SUM(me.event_sum) as total');
+		}
         $query->select('tp.person_id');
 	$query->from('#__sportsmanagement_match_event AS me'); 
     $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
