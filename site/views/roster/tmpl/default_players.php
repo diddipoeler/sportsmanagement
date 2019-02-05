@@ -223,11 +223,12 @@ if (!empty($this->rows))
 							{
 								$iconPath = 'images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-                            				$eventtype_header = HTMLHelper::image(	$iconPath,
-																Text::_($eventtype->name),
-																array(	'title'=> Text::_($eventtype->name),
-																		  'align'=> 'top',
-																		  'hspace'=> '2'));
+                            				$eventtype_header = HTMLHelper::image($iconPath,
+									Text::_($eventtype->name),
+									array(	'title'=> Text::_($eventtype->name),
+									'align'=> 'top',
+									'height'=> 20,
+									'hspace'=> '2'));
 						}
 						?>
 		<th class="td_c">
