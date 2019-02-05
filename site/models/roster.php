@@ -413,7 +413,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 		{
 			if ( $sumeventid )
 			{
-			$query->select('SUM(me.event_type_id) as total');	
+			$query->select('COUNT(me.event_type_id) as total');	
 			}
 			else
 			{
