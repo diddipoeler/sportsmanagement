@@ -328,7 +328,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param mixed $order
 	 * @return
 	 */
-	function getEventRankings($limit=0, $limitstart=0, $order=null)
+	function getEventRankings($limit=0, $limitstart=0, $order=null, $dart=FALSE)
 	{
 		$order = ($order ? $order : $this->order);
 		$eventtypes = self::getEventTypes();
