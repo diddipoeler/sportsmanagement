@@ -590,7 +590,7 @@ $this->overallconfig['use_jquery_modal']
 	</tr>
 	<?php
 // dartanzeige
-if ( $this->config['show_dart_event'] )
+if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 {			
 ?>  
 <tr>
