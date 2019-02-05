@@ -413,7 +413,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 		{
 			if ( $sumeventid )
 			{
-			$query->select('SUM(me.event_sum) as total');	
+			$query->select('SUM(me.event_type_id) as total');	
 			}
 			else
 			{
@@ -449,7 +449,16 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
         $db->setQuery($query);
 		if ( $dart )
 		{
-		$result = $db->loadObjectList();	
+		if ( $sumeventid )
+			{
+			$result = $db->loadObjectList('person_id');
+		}
+			else
+			{
+			$result = $db->loadObjectList();	
+			}
+		
+		
 		}
 		else
 		{
