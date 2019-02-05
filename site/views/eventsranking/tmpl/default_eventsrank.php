@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      default_eventsrank.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage eventsranking
@@ -21,7 +21,7 @@ if ($this->config['show_nation'] == 1) $colspan++;
 if ($this->config['show_icons'] == 1) $show_icons = 1;
 ?>
 
-<div class="row-fluid">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="default_eventsrank" >
 
 
 <?php foreach ($this->eventtypes AS $rows): ?>
@@ -51,7 +51,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			<?php
 				$iconPath=$rows->icon;
 				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
-				echo HTMLHelper::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','hspace'=> '2'));
+				echo HTMLHelper::image($iconPath,Text::_($rows->name),array('title'=> Text::_($rows->name),'align'=> 'top','height'=> 20,'hspace'=> '2'));
 			?>
 			</th>
 		<?php else: ?>
