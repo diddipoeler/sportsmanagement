@@ -63,7 +63,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			{
 				$this->positioneventtypes = $this->model->getPositionEventTypes();
 				$this->playereventstats = $this->model->getPlayerEventStats();
-				if ( $this->config['show_dart_event'] )
+				if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 				{
 				$this->playereventstatsdart = $this->model->getPlayerEventStats(true);	
 				}
