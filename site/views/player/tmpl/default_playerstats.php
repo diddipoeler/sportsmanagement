@@ -122,11 +122,12 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
                     
-				echo HTMLHelper::image($iconPath,
-					Text::_($eventtype->name),
-					array(	"title" => Text::_($eventtype->name),
-						"align" => "top",
-						"hspace" => "2"));
+echo HTMLHelper::image($iconPath,
+Text::_($eventtype->name),
+array(	"title" => Text::_($eventtype->name),
+"align" => "top",
+'height'=> 20,      
+"hspace" => "2"));
 				?></th>
 				<?php
 						}
