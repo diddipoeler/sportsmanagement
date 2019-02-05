@@ -14,11 +14,17 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 
-$colspan	= 4;
-$show_icons	= 0;
+$colspanevent = 1;
+$colspan = 4;
+$show_icons = 0;
 if ($this->config['show_picture_thumb'] == 1) $colspan++;
 if ($this->config['show_nation'] == 1) $colspan++;
 if ($this->config['show_icons'] == 1) $show_icons = 1;
+
+if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+{
+$colspanevent = 2;	
+}	
 ?>
 
 <div class="<?php echo $this->divclassrow;?> table-responsive" id="default_eventsrank" >
@@ -46,8 +52,8 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		<th class="td_l"><?php echo Text::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_TEAM'); ?></th>
 
 
-		<?php if ($show_icons == 1): ?>
-		<th class="td_c" nowrap="nowrap">
+		<?php if ( $show_icons ): ?>
+		<th class="td_c" nowrap="nowrap" colspan="<?php echo $colspanevent; ?>">
 			<?php
 				$iconPath=$rows->icon;
 				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
@@ -55,7 +61,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			?>
 			</th>
 		<?php else: ?>
-		<th class="td_c" nowrap="nowrap"><?php	echo Text::_($rows->name); ?></th>
+		<th class="td_c" nowrap="nowrap" colspan="<?php echo $colspanevent; ?>"><?php echo Text::_($rows->name); ?></th>
 		<?php endif; ?>
 	</tr>
 	</thead>
