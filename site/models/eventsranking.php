@@ -303,6 +303,7 @@ $query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler,pl.firstname A
 			}
 if ( $dart )
 {
+$query->group('me.event_sum');	
 }
 else
 {
