@@ -301,8 +301,14 @@ $query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler,pl.firstname A
 			{
                 $query->where('me.match_id = ' . self::$matchid );
 			}
-            
-		$query->group('me.teamplayer_id');
+if ( $dart )
+{
+}
+else
+{
+$query->group('me.teamplayer_id');
+}
+		
         $query->order('p '.$order);
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
