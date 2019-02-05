@@ -168,6 +168,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 		$value=($row->p > 9) ? $row->p : '&nbsp;'.$row->p;
 		?>
 		<td class="td_c playertotal"><?php echo $value; ?></td>
+		
+<?php
+if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+{
+?>
+<td class="td_c playertotal"><?php echo $row->zaehler; ?></td>		
+<?php		
+}
+?>
 	</tr>
 	<?php
 		$k=(1-$k);
