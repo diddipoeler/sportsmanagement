@@ -261,9 +261,15 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
-
+if ( $dart )
+{
+$query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler,pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');	
+}
+		else
+		{
         $query->select('SUM(me.event_sum) as p,pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');
-        $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS person_slug');
+		}
+	$query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS person_slug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
         $query->select('CONCAT_WS( \':\', pt.id, t.alias ) AS projectteam_slug');
         $query->from('#__sportsmanagement_match_event AS me ');
