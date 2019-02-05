@@ -254,7 +254,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param integer $limitstart
 	 * @return
 	 */
-	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0)
+	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0, $dart=FALSE)
 	{
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -336,7 +336,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart);
+				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart);
 			}
 		}
 
