@@ -344,7 +344,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 	 * 
 	 * @return
 	 */
-	public static function getPlayerEventStats($dart=FALSE)
+	public static function getPlayerEventStats($dart=FALSE,$sumeventid=FALSE)
 	{
 		$app = Factory::getApplication();		
 		$playerstats=array();
@@ -364,13 +364,20 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 			{
 				foreach ($eventtypes as $eventtype)
 				{
-					$teamstats = self::getTeamEventStat($eventtype->eventtype_id,$dart);
+					$teamstats = self::getTeamEventStat($eventtype->eventtype_id,$dart,$sumeventid);
 					if(isset($rows[$position])) {
 						foreach ($rows[$position] as $player)
 						{
 							if ( $dart )
 							{
+								if ( $sumeventid )
+								{
+								$playerstats[$player->pid][$eventtype->eventtype_id]=(isset($teamstats[$player->pid]) ? $teamstats[$player->pid]->total : 0);	
+								}
+								else
+								{
 							$playerstats[$eventtype->eventtype_id]=$teamstats;
+								}
 							}
 							else
 							{
@@ -392,7 +399,7 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
 	 * @param mixed $eventtype_id
 	 * @return
 	 */
-	public static function getTeamEventStat($eventtype_id=0,$dart=FALSE)
+	public static function getTeamEventStat($eventtype_id=0,$dart=FALSE,$sumeventid=FALSE)
 	{
 		$app = Factory::getApplication();
     $option = $app->input->getCmd('option');
@@ -404,7 +411,14 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
         $projectteam = self::getprojectteam();
 		if ( $dart )
 		{
+			if ( $sumeventid )
+			{
+			$query->select('SUM(me.event_sum) as total');	
+			}
+			else
+			{
 		$query->select('me.event_sum as total,me.event_type_id as event_type_id');	
+			}
 		}
 		else
 		{
@@ -422,6 +436,10 @@ $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($
     $query->where('pro.id = '.self::$projectid);
 		if ( $dart )
 		{
+			if ( $sumeventid )
+			{
+			$query->group('tp.person_id');	
+			}
 		}
 		else
 		{
