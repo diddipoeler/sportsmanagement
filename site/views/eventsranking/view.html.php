@@ -48,11 +48,11 @@ $this->document->addScript ( Uri::root(true).'/components/'.$this->option.'/asse
 		$this->pagination = $this->get('Pagination');
 		if ( $this->project->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
 		{
-		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,true);					
+		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,NULL,true);					
 		}
 		else
 		{
-		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,false);
+		$this->eventranking = $this->model->getEventRankings($this->limit,$this->limitstart,NULL,false);
 		}
 		$this->multiple_events = count($this->eventtypes) > 1 ;
         
