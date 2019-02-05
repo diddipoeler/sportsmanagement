@@ -626,6 +626,7 @@ if ( $value->person_id == $row->pid )
 echo HTMLHelper::image(	$this->positioneventtypes[$row->position_id][$eventId]->icon,Text::_($this->positioneventtypes[$row->position_id][$eventId]->name),
 		array(	'title'=> Text::_($this->positioneventtypes[$row->position_id][$eventId]->name),
 		'align'=> 'top',
+		'height'=> 20,
 		'hspace'=> '2'));
 echo $value->total;
 }
