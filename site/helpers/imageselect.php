@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage helpers
+ * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
 
 // no direct access
@@ -184,7 +185,7 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
-
+/*
 $imageselect .=	 '	
 <script type="text/javascript">
 jQuery(document).ready(function($){
@@ -213,7 +214,7 @@ dd { display:none; }
 
 
 ';	
-		
+*/		
 		
 /*		
 $imageselect .=	HTMLHelper::_('bootstrap.startAccordion', 'drag'.$funcname);
