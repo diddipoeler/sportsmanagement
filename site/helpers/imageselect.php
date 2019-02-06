@@ -186,7 +186,7 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcna
 		$imageselect .=	 "</div></div>\n";
 
 $imageselect .=	 '		
-<div id="drag'.$funcname.'">		
+<div id="accordion">		
 <div class="card">
 <div class="card-header" id="heading'.$funcname.'">
 <h5 class="mb-0">
