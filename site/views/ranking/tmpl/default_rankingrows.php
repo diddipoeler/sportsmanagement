@@ -26,14 +26,6 @@ if (!isset($config['show_unique_id'])) {
     $config['show_unique_id'] = 1;
 }
 
-
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
-//echo 'default_rankingrows ranking current<pre>',print_r($current,true),'</pre><br>';
-//}
-//echo 'default_rankingrows ranking teams<pre>',print_r($this->teams,true),'</pre><br>';
-
 $counter = 1;
 $k = 0;
 $j = 0;
@@ -124,11 +116,9 @@ foreach ($current as $ptid => $team) {
     echo "\n";
 
     //**************logo - jersey
-    if (!sportsmanagementHelper::existPicture($team->team->logo_small)) {
-        $team->team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
-    }
-
-
+$team->team->logo_small = empty($team->team->logo_small) ? sportsmanagementHelper::getDefaultPlaceholder('clublogosmall') : $team->team->logo_small;    
+$team->team->logo_big = empty($team->team->logo_big) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $team->team->logo_big;    
+    
     if ($config['show_logo_small_table'] != "no_logo") {
         echo '<td class="rankingrow_logo"';
         if ($color != '' && $config['use_background_row_color']) {
