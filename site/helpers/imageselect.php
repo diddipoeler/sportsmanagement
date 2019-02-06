@@ -182,6 +182,25 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
+		
+$imageselect .=	 '		
+<div class="panel-group" id="'.$funcname.'">		
+		
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#'.$funcname.'" href="#'.$funcname.'">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a>
+</h4>
+
+</div>
+<div id="'.$funcname.'" class="panel-collapse collapse">            
+<div class="panel-body"> 
+
+</div>	
+</div>	
+</div>
+</div>';
+		
 		/*
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
 		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
