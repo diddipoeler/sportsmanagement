@@ -45,10 +45,8 @@ if (!isset($this->club)) {
                 $picture = $this->club->logo_big;
             }
 
-            if (!sportsmanagementHelper::existPicture($picture)) {
-                $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
-            }
-
+$picture = empty($picture) ? sportsmanagementHelper::getDefaultPlaceholder('logo_big') : $picture;
+    
             echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo' . $this->club->id,
             $picture,
             $club_emblem_title,
