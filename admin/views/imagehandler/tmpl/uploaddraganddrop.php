@@ -13,6 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Uri\Uri;
 
 $this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/fileupload/vendor/jquery.ui.widget.js');
 $this->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/fileupload/jquery.iframe-transport.js');
