@@ -51,6 +51,8 @@ $this->_displayupload($tpl);
 return;		
 break;
 case 'uploaddraganddrop':
+case 'uploaddraganddrop_3':
+case 'uploaddraganddrop_4':		
 $this->setLayout('uploaddraganddrop');		
 return;		
 break;		
