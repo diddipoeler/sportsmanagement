@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.html.html.bootstrap');
+//jimport('joomla.html.html.bootstrap');
 
 /**
  * ImageSelectSM
@@ -185,25 +185,34 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
 
-$imageselect .=	 '		
-<div id="accordion">		
-<div class="card">
-<div class="card-header" id="heading'.$funcname.'">
-<h5 class="mb-0">
-<button class="btn btn-link" data-toggle="collapse" data-target="#collapse'.$funcname.'" aria-expanded="true" aria-controls="collapse'.$funcname.'">
-'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'
-</button>
-</h5>
-</div>
+$imageselect .=	 '	
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$("dt").click(function(){ 
+		$("dd").slideUp("fast");
+		$("dt > a").removeClass("open").addClass("closed");
+		$(this).next("dd").slideDown("fast"); 
+		$(this).children("a").removeClass("closed").addClass("open");
+	});
+});
+</script>
 
-<div id="collapse'.$funcname.'" class="collapse " aria-labelledby="heading'.$funcname.'" data-parent="#drag'.$funcname.'">
-<div class="card-body">
+<style type="text/css">
+body {background:#ffffff;}
+dd { display:none; }
+.closed { background:red; }
+.open { background:green; }
+</style>	
+<dl>
+  <dt><a href="#" class="closed">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a></dt>
+  <dd>
+  upload
+  </dd>
+  
+</dl>
 
-</div>
-</div>
-</div>
-		
-</div>	';	
+
+';	
 		
 		
 /*		
