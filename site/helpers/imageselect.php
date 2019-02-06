@@ -164,7 +164,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 		});
 		";
 
-if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop'); )
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
 $layoutdrag = 'uploaddraganddrop';
 }
