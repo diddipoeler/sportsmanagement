@@ -105,6 +105,16 @@
 			<option value="media">COM_SPORTSMANAGEMENT_JOOMLA_MEDIA_KOMPONENT</option>
 			<option value="imageselect">COM_SPORTSMANAGEMENT_JOOMLEAGUE_IMAGEHANDLER</option>
 		</field>
+
+<field name="cfg_draganddrop" 
+    type="extensionradiobutton" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_DRAG_AND_DROP_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		
 		<field name="cfg_load_bootstrap" 
     type="extensionradiobutton" 
