@@ -46,7 +46,7 @@ echo 'uploadhandler  '.$uploadhandler ;
 jQuery(function ($) {
     'use strict';
     // Change this to the location of your server-side upload handler:
-    var url = window.location.hostname === '<?php echo $uploadhandler;?>',
+    var url = window.location.hostname === 'administrator/components/com_sportsmanagement/views/imagehandler/tmpl/',
         uploadButton = $('<button/>')
             .addClass('btn btn-primary')
             .prop('disabled', true)
