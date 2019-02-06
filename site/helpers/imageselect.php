@@ -164,6 +164,15 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 		});
 		";
 
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop'); )
+{	
+$layoutdrag = 'uploaddraganddrop';
+}
+else
+{
+$layoutdrag = 'upload';
+}
+		
 		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout=upload&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
 		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
