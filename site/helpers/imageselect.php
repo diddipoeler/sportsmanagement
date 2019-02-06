@@ -18,6 +18,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 
+jimport('joomla.html.html.bootstrap');
+
 /**
  * ImageSelectSM
  * 
