@@ -184,18 +184,18 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcna
 		$imageselect .=	 "</div></div>\n";
 		
 $imageselect .=	 '		
-<div class="panel-group" id="'.$funcname.'">		
+<div class="panel-group" id="drag'.$funcname.'">		
 		
 <div class="panel panel-default">
 <div class="panel-heading">
 <h4 class="panel-title">
-<a data-toggle="collapse" data-parent="#'.$funcname.'" href="#'.$funcname.'">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a>
+<a data-toggle="collapse" data-parent="#drag'.$funcname.'" href="#drag'.$funcname.'">'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'</a>
 </h4>
 
 </div>
-<div id="'.$funcname.'" class="panel-collapse collapse">            
+<div id="drag'.$funcname.'" class="panel-collapse collapse">            
 <div class="panel-body"> 
-
+hochladen
 </div>	
 </div>	
 </div>
