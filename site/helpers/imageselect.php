@@ -183,6 +183,12 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
 		
+$imageselect .=	HTMLHelper::_('bootstrap.startAccordion', 'drag'.$funcname);
+$imageselect .=	HTMLHelper::_('bootstrap.addSlide', 'drag'.$funcname, Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ), 'drag'.$funcname);		
+$imageselect .=	HTMLHelper::_('bootstrap.endSlide');		
+$imageselect .=	HTMLHelper::_('bootstrap.endAccordion');
+	
+/*		
 $imageselect .=	 '		
 <div class="panel-group" id="drag'.$funcname.'">		
 		
@@ -200,7 +206,7 @@ hochladen
 </div>	
 </div>
 </div>';
-		
+*/		
 		/*
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\"><a class=\"modal\" title=\"" .
 		Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ) . "\" href=\"$link\" rel=\"{handler: 'iframe', size: {x: 800, y: 500}}\">" .
