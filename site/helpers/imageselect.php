@@ -184,12 +184,35 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
+
+$imageselect .=	 '		
+<div id="drag'.$funcname.'">		
+<div class="card">
+<div class="card-header" id="heading'.$funcname.'">
+<h5 class="mb-0">
+<button class="btn btn-link" data-toggle="collapse" data-target="#collapse'.$funcname.'" aria-expanded="true" aria-controls="collapse'.$funcname.'">
+'.Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ).'
+</button>
+</h5>
+</div>
+
+<div id="collapse'.$funcname.'" class="collapse " aria-labelledby="heading'.$funcname.'" data-parent="#drag'.$funcname.'">
+<div class="card-body">
+
+</div>
+</div>
+</div>
 		
+</div>	';	
+		
+		
+/*		
 $imageselect .=	HTMLHelper::_('bootstrap.startAccordion', 'drag'.$funcname);
 $imageselect .=	HTMLHelper::_('bootstrap.addSlide', 'drag'.$funcname, Text::_( 'JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE' ), 'drag'.$funcname);		
 $imageselect .=	HTMLHelper::_('bootstrap.endSlide');		
 $imageselect .=	HTMLHelper::_('bootstrap.endAccordion');
-	
+*/
+
 /*		
 $imageselect .=	 '		
 <div class="panel-group" id="drag'.$funcname.'">		
