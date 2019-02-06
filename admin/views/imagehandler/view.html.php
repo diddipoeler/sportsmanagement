@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage imagehandler
+ * https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Dialog-with-jQuery-Bootstrap.html
  */
 
 // Check to ensure this file is included in Joomla!
