@@ -52,7 +52,8 @@ return;
 break;
 case 'uploaddraganddrop':
 case 'uploaddraganddrop_3':
-case 'uploaddraganddrop_4':		
+case 'uploaddraganddrop_4':	
+$this->folder = ImageSelectSM::getfolder($this->jinput->get( 'type' ));
 $this->setLayout('uploaddraganddrop');		
 return;		
 break;		
