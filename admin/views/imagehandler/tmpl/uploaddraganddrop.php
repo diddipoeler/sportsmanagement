@@ -7,6 +7,7 @@
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage imagehandler
+ * https://github.com/blueimp/jQuery-File-Upload/wiki
  */
  
 // no direct access
@@ -67,7 +68,7 @@ jQuery(function ($) {
     $('#fileupload').fileupload({
         url: url,
         dataType: 'json',
-        autoUpload: false,
+        autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
         maxFileSize: 999000,
         // Enable image resizing, except for Android and Opera,
