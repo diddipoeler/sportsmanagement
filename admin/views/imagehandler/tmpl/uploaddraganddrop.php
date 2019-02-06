@@ -16,6 +16,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 
 $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/fileupload/vendor/jquery.ui.widget.js');
+
+$this->document->addScript('https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js');
+$this->document->addScript('https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js');
+
 $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/fileupload/jquery.iframe-transport.js');
 $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/fileupload/jquery.fileupload.js');
 $this->document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/fileupload/jquery.fileupload-process.js');
@@ -28,11 +32,11 @@ $this->document->addStyleSheet(Uri::root() .'administrator/components/com_sports
 $this->document->addStyleSheet(Uri::root() .'administrator/components/com_sportsmanagement/assets/css/fileupload/jquery.fileupload.css', 'text/css');
 
 echo 'folder '.$this->folder;
+
+$uploadhandler = Uri::root() .'images/com_sportsmanagement/database/'.$this->folder;
+echo 'uploadhandler  '.$uploadhandler ;
 ?>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="https://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script> 
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="https://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+
 
 
 <script>
@@ -41,8 +45,7 @@ echo 'folder '.$this->folder;
 jQuery(function ($) {
     'use strict';
     // Change this to the location of your server-side upload handler:
-    var url = window.location.hostname === 'blueimp.github.io' ?
-                '//jquery-file-upload.appspot.com/' : 'server/php/',
+    var url = window.location.hostname === '<?php echo $uploadhandler;?>',
         uploadButton = $('<button/>')
             .addClass('btn btn-primary')
             .prop('disabled', true)
@@ -143,11 +146,9 @@ jQuery(function ($) {
     <h1>jQuery File Upload Demo</h1>
     <h2 class="lead">Basic Plus version</h2>
     <ul class="nav nav-tabs">
-        <li><a href="basic.html">Basic</a></li>
+        
         <li class="active"><a href="basic-plus.html">Basic Plus</a></li>
-        <li><a href="index.html">Basic Plus UI</a></li>
-        <li><a href="angularjs.html">AngularJS</a></li>
-        <li><a href="jquery-ui.html">jQuery UI</a></li>
+        
     </ul>
     <br>
     <blockquote>
@@ -172,21 +173,7 @@ jQuery(function ($) {
     <!-- The container for the uploaded files -->
     <div id="files" class="files"></div>
     <br>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Demo Notes</h3>
-        </div>
-        <div class="panel-body">
-            <ul>
-                <li>The maximum file size for uploads in this demo is <strong>999 KB</strong> (default file size is unlimited).</li>
-                <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo (by default there is no file type restriction).</li>
-                <li>Uploaded files will be deleted automatically after <strong>5 minutes or less</strong> (demo files are stored in memory).</li>
-                <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
-                <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information.</li>
-                <li>Built with the <a href="http://getbootstrap.com/">Bootstrap</a> CSS framework and Icons from <a href="http://glyphicons.com/">Glyphicons</a>.</li>
-            </ul>
-        </div>
-    </div>
+    
 </div>
 
 
