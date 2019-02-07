@@ -9,9 +9,6 @@
  * @subpackage mod_sportsmanagement_eventsranking
  */
 
-/**
- * No direct access
- */
 defined('_JEXEC') or die; 
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Language\Text;

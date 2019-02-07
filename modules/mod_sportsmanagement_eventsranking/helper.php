@@ -213,9 +213,9 @@ $routeparameter['p'] = $project->slug;
 		}
 		else
 		{
-			$imgTitle=Text::_($event->name);
-			$imgTitle2=array(' title' => $imgTitle, ' alt' => $imgTitle);
-			$txt=HTMLHelper::image($event->icon, $imgTitle, $imgTitle2);
+			$imgTitle = Text::_($event->name);
+			$imgTitle2 = array(' title' => $imgTitle, ' alt' => $imgTitle, ' width' => 20);
+			$txt = HTMLHelper::image($event->icon, $imgTitle, $imgTitle2);
 		}
 		return $txt;
 	}
