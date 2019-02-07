@@ -171,20 +171,20 @@ $imageselect = '';
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
 $layoutdrag = 'uploaddraganddrop';
-$imageselect .= '<button id="'.$fieldname.'" class="btn btn-primary">Open dialog</button>';	
-$imageselect .= '<div id="output'.$fieldname.'"></div>';	
+$imageselect .= '<button id="'.$fieldid.'" class="btn btn-primary">Open dialog</button>';	
+$imageselect .= '<div id="output'.$fieldid.'"></div>';	
 $imageselect .= '
  <script type="text/javascript">
-        jQuery("#'.$fieldname.'").click(function($) {
-            $.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
+        jQuery("#'.$fieldid.'").click(function() {
+            jQuery.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
                 var files = ev.files;
                 var text = "";
                 files.forEach(function(f) {
                     text += f.name + "<br/>";
                 });
-                $("#output'.$fieldname.'").html(text);
+                jQuery("#output'.$fieldid.'").html(text);
             }).on("cancel.bs.filedialog", function(ev) {
-                $("#output'.$fieldname.'").html("Cancelled!");
+                jQuery("#output'.$fieldid.'").html("Cancelled!");
             });
         });
         </script>';	
