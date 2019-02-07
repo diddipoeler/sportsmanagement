@@ -76,8 +76,17 @@ if (count($list['eventtypes']) > 0)
 							<th class="personname"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_NAME')?></th>
 							<?php if ($showTeam == 1) : ?>
 							<th class="team"><?php echo Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_TEAM');?></th>
-							<?php endif; ?>
-							<th class="td_c">
+							<?php endif; 
+                            if ( $list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+		{
+        $colspan = 2; 
+         }
+         else
+         {
+        $colspan = 1;    
+         }                   
+                            ?>
+							<th class="td_c" colspan="<?php echo $colspan;?>">
 							<?php if ($params->get('show_event_icon', 1)) : ?>
 								<?php echo modSMEventsrankingHelper::getEventIcon($eventtype);?>
 							<?php else: ?>
@@ -151,6 +160,14 @@ if (count($list['eventtypes']) > 0)
 					}
 					?>
 							<td class="td_c"><?php echo $item->p; ?></td>
+                            <?php
+                            if ( $list['project']->sport_type_name == 'COM_SPORTSMANAGEMENT_ST_DART' )
+                            {
+                            ?>    
+                              <td class="td_c"><?php echo $item->zaehler; ?></td>
+                              <?php  
+                            }
+                            ?>
 						</tr>
 					<?php
 					$k=(1-$k);
