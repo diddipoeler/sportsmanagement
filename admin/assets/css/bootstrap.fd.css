@@ -1,0 +1,31 @@
+.bfd-dropfield {
+    display: inline;
+    padding: 5px;
+}
+
+.bfd-dropfield-inner {
+    border: 5px dashed #888;
+    color: #888;
+    cursor: pointer;
+    font-size: 32px;
+    text-align: center;
+
+    &:hover,
+    &.bfd-dragover {
+        border-color: #bbb;
+        color: #bbb;
+    }
+}
+
+.bfd-info {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.bfd-error-message {
+    text-align: center;
+}
+
+.bfd-remove {
+    cursor: pointer;
+}
