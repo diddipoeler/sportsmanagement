@@ -13,6 +13,14 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\LanguageHelper;
+$lang = Factory::getLanguage();
+$languages = LanguageHelper::getLanguages('lang_code');
+$languageCode = $languages[ $lang->getTag() ]->sef;
+//echo 'language is: ' . $languageCode;
+
+
 ?>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
@@ -23,7 +31,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="components/com_sportsmanagement/views/imagehandler/tmpl/js/plugins/sortable.js" type="text/javascript"></script>
     <script src="components/com_sportsmanagement/views/imagehandler/tmpl/js/fileinput.js" type="text/javascript"></script>
-    <script src="components/com_sportsmanagement/views/imagehandler/tmpl/js/locales/de.js" type="text/javascript"></script>
+    <script src="components/com_sportsmanagement/views/imagehandler/tmpl/js/locales/<?php echo $languageCode; ?>.js" type="text/javascript"></script>
     
     <script src="components/com_sportsmanagement/views/imagehandler/tmpl/themes/fas/theme.js" type="text/javascript"></script>
     <script src="components/com_sportsmanagement/views/imagehandler/tmpl/themes/explorer-fas/theme.js" type="text/javascript"></script>
