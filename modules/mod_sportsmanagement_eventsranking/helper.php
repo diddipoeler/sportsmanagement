@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper; 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
  
 /**
  * modSMEventsrankingHelper
