@@ -167,10 +167,29 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 //			jQuery('#a_" . $fieldname . "_name').change();
 		});
 		";
-
+$imageselect = '';
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
 $layoutdrag = 'uploaddraganddrop';
+$imageselect .= '<button id="'.$fieldname.'" class="btn btn-primary">Open dialog</button>';	
+$imageselect .= '<div id="output'.$fieldname.'"></div>';	
+$imageselect .= '
+ <script type="text/javascript">
+        jQuery("#'.$fieldname.'").click(function($) {
+            $.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
+                var files = ev.files;
+                var text = "";
+                files.forEach(function(f) {
+                    text += f.name + "<br/>";
+                });
+                $("#output'.$fieldname.'").html(text);
+            }).on("cancel.bs.filedialog", function(ev) {
+                $("#output'.$fieldname.'").html("Cancelled!");
+            });
+        });
+        </script>';	
+	
+	
 }
 else
 {
@@ -193,7 +212,7 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 
 		HTMLHelper::_( 'behavior.modal', 'a.modal' );
 
-		$imageselect =	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
+		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
