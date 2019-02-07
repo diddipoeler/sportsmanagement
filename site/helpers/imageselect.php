@@ -21,8 +21,8 @@ use Joomla\CMS\Filesystem\File;
 
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
-Factory::getDocument()->addStyleSheet(Uri::root() .'components/com_sportsmanagement/assets/css/bootstrap.fd.css', 'text/css');
-Factory::getDocument()->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/bootstrap.fd.js');	
+Factory::getDocument()->addStyleSheet(Uri::root() .'administrator/components/com_sportsmanagement/assets/css/bootstrap.fd.css', 'text/css');
+Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/bootstrap.fd.js');	
 }	
 
 /**
