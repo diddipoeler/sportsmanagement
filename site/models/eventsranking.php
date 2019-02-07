@@ -245,6 +245,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		return $this->_total;
 	}
 
+	
 	/**
 	 * sportsmanagementModelEventsRanking::_getEventsRanking()
 	 * 
@@ -252,6 +253,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param string $order
 	 * @param integer $limit
 	 * @param integer $limitstart
+	 * @param bool $dart
 	 * @return
 	 */
 	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0, $dart=FALSE)
@@ -313,15 +315,12 @@ $query->group('me.teamplayer_id');
         $query->order('p '.$order);
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
-		
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       
         $rows = $db->loadObjectList();
 
-		// get ranks
+/**
+ * 		get ranks
+ */
 		$previousval = 0;
 		$currentrank = 1 + $limitstart;
 		foreach ($rows as $k => $row) 
@@ -333,12 +332,14 @@ $query->group('me.teamplayer_id');
 		return $rows;
 	}
 
+	
 	/**
 	 * sportsmanagementModelEventsRanking::getEventRankings()
 	 * 
-	 * @param mixed $limit
+	 * @param integer $limit
 	 * @param integer $limitstart
 	 * @param mixed $order
+	 * @param bool $dart
 	 * @return
 	 */
 	function getEventRankings($limit=0, $limitstart=0, $order=null, $dart=FALSE)
