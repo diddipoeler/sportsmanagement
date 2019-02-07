@@ -10,7 +10,6 @@
  * https://css-tricks.com/examples/DragAndDropFileUploading/
  */
 
-// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -18,12 +17,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
-
-if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
-{	
-//Factory::getDocument()->addStyleSheet(Uri::root() .'administrator/components/com_sportsmanagement/assets/css/bootstrap.fd.css', 'text/css');
-//Factory::getDocument()->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/bootstrap.fd.js');	
-}	
 
 /**
  * ImageSelectSM
@@ -171,23 +164,24 @@ $imageselect = '';
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
 $layoutdrag = 'uploaddraganddrop';
-$imageselect .= '<button id="drag'.$fieldid.'" class="btn btn-primary">Open dialog</button>';	
-$imageselect .= '<div id="outputdrag'.$fieldid.'"></div>';	
-$imageselect .= '
- <script type="text/javascript">
-        jQuery("#drag'.$fieldid.'").click(function() {
-            jQuery.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
-                var files = ev.files;
-                var text = "";
-                files.forEach(function(f) {
-                    text += f.name + "<br/>";
-                });
-                jQuery("#outputdrag'.$fieldid.'").html(text);
-            }).on("cancel.bs.filedialog", function(ev) {
-                jQuery("#outputdrag'.$fieldid.'").html("Cancelled!");
-            });
-        });
-        </script>';	
+
+//$imageselect .= '<button id="drag'.$fieldid.'" class="btn btn-primary">Open dialog</button>';	
+//$imageselect .= '<div id="outputdrag'.$fieldid.'"></div>';	
+//$imageselect .= '
+// <script type="text/javascript">
+//        jQuery("#drag'.$fieldid.'").click(function() {
+//            jQuery.FileDialog({multiple: true}).on("files.bs.filedialog", function(ev) {
+//                var files = ev.files;
+//                var text = "";
+//                files.forEach(function(f) {
+//                    text += f.name + "<br/>";
+//                });
+//                jQuery("#outputdrag'.$fieldid.'").html(text);
+//            }).on("cancel.bs.filedialog", function(ev) {
+//                jQuery("#outputdrag'.$fieldid.'").html("Cancelled!");
+//            });
+//        });
+//        </script>';	
 	
 	
 }
@@ -214,7 +208,7 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 
 		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
-		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
+		$imageselect .=	"<tr><td><div class=\"button2-left\">".Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE')."<div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
 /*
