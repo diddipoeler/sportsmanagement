@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_act_season
  */
 
-// no direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -70,8 +69,14 @@ $season_ids = ComponentHelper::getParams('com_sportsmanagement')->get( 'current_
 
 $list = modJSMActSeasonHelper::getData($season_ids);
 
-//add css file
+/**
+ * add css file
+ */
 //$document->addStyleSheet(Uri::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
+
+/**
+ * Layout
+ */
 ?>
 <div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

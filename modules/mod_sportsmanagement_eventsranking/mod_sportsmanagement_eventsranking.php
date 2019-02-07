@@ -9,7 +9,6 @@
  * @subpackage mod_sportsmanagement_eventsranking
  */
 
-// No direct access
 defined('_JEXEC') or die;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -40,7 +39,9 @@ require_once(JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'countries.php')
 }
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-//add the classes for handling
+/**
+ * add the classes for handling
+ */
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
 BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -61,18 +62,31 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',ComponentHelper::getParams(
 $language = Factory::getLanguage();
 $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-// Reference global application object
+/**
+ * Reference global application object
+ */
 $app = Factory::getApplication();
 
-// Include the syndicate functions only once
+/**
+ * Include the syndicate functions only once
+ */
 require_once dirname(__FILE__) . '/helper.php';
 
 $list = modSMEventsrankingHelper::getData($params);
 
 $document = Factory::getDocument();
-//add css file
+/**
+ * add css file
+ */
 $document->addStyleSheet(Uri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
-//Layout
-require ModuleHelper::getLayoutPath('mod_sportsmanagement_eventsranking');
+/**
+ * Layout
+ */
+?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(ModuleHelper::getLayoutPath($module->module));
+?>
+</div>
 
