@@ -19,7 +19,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
 
-//jimport('joomla.html.html.bootstrap');
+if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
+{	
+Factory::getDocument()->addStyleSheet(Uri::root() .'components/com_sportsmanagement/assets/css/bootstrap.fd.css', 'text/css');
+Factory::getDocument()->document->addScript(Uri::root() . '/components/com_sportsmanagement/assets/js/bootstrap.fd.js');	
+}	
 
 /**
  * ImageSelectSM
