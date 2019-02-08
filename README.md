@@ -32,6 +32,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   26-02-2019: **1.0.69** Drag & Drop Bilderupload
 *   26-12-2018: **1.0.68** Leaflet Route bei der Ansicht Sportplätze
 *   01-11-2018: **1.0.67** Leaflet Implementierung (GoogleMap alternative)
 *   15-09-2018: **1.0.66** Korrektur Modul Teamstatistik Counter
