@@ -135,7 +135,17 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
     },
     tooltips: {
       enabled: true,
-    }
+    },
+    scales: {
+yAxes: [{
+ticks: {
+beginAtZero:false,
+reverse: true,
+stepSize:1,
+callback: function(value) {if (value == 0) {return "";} else {value = value * 1; return value;}}
+}
+}]
+}
     }
 });
 </script>
