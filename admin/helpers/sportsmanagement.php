@@ -83,7 +83,15 @@ abstract class sportsmanagementHelper {
         $jinput = $app->input;
 
         $modaltext = '<a href="#' . $target . '" title="' . $text . '" data-toggle="modal" >';
-        $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+        if ( $picture )
+	{
+	    $modaltext .= '<img src="' . $picture . '" alt="' . $text . '" width="' . $picturewidth . '" />';
+	}
+	    else
+	    {
+	    $modaltext .= '<button type="button" class="btn btn-primary">' . $text . '</button>';
+	    }
+	    
         $modaltext .= '</a>';
 
         if (!$url) {
