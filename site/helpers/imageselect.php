@@ -208,7 +208,7 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 
 		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
-		$imageselect .=	"<tr><td><div class=\"button2-left\">".Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE')."<div class=\"blank\">";
+		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,Uri::root().'administrator/components/com_sportsmanagement/assets/images/up.png',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
 		$imageselect .=	 "</div></div>\n";
 /*
