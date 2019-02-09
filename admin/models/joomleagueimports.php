@@ -1415,6 +1415,7 @@ $query->clear();
 $query->select('name,id,import_id');
 $query->from('#__sportsmanagement_associations');
 $query->where('import_id != 0');
+try{
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1446,7 +1447,10 @@ $zaehler++;
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
-
+}
+catch (Exception $e) {
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 
 
  
