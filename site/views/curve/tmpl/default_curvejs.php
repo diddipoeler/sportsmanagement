@@ -80,8 +80,6 @@ foreach ($this->divisions as $division)
 
 <canvas id="jsmchartcurve"></canvas>
 
-
-
 <script>
 var ctx = document.getElementById('jsmchartcurve').getContext('2d');
 var chart = new Chart(ctx, {
@@ -92,6 +90,7 @@ var chart = new Chart(ctx, {
     data: {
         labels: [<?php echo implode(',', $this->round_labels); ?>],
 <?php        
+$teamcount = sizeof($this->teamranking[$division->id]);
 foreach ( $this->teamranking[$division->id] as $key => $value )
 {    
 //echo 'value <pre>'.print_r($value ,true).'</pre>'; 
@@ -139,6 +138,8 @@ if ( $value->team_id == sportsmanagementModelCurve::$teamid2 )
     scales: {
 yAxes: [{
 ticks: {
+suggestedMin: 1,   
+suggestedMax: <?php echo $teamcount; ?>, 
 beginAtZero:false,
 reverse: true,
 stepSize:1,
