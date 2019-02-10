@@ -11,6 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {

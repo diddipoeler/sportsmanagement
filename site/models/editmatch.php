@@ -13,6 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Component\ComponentHelper;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -32,22 +33,22 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.p
 class sportsmanagementModelEditMatch extends JModelAdmin
 {
 
-const MATCH_ROSTER_STARTER		= 0;
-const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
-const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
-const MATCH_ROSTER_RESERVE		= 3;	
+const MATCH_ROSTER_STARTER = 0;
+const MATCH_ROSTER_SUBSTITUTE_IN = 1;
+const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
+const MATCH_ROSTER_RESERVE = 3;	
   /* interfaces */
-	var $latitude	= null;
-	var $longitude	= null;
+var $latitude = null;
+var $longitude = null;
     
-    static $projectid	= 0;
-	static $divisionid	= 0;
-	static $roundid = 0;
-    	static $mode = 0;
-	static $seasonid = 0;
-    static $order = 0;
-     static $cfg_which_database = 0;
-    static $oldlayout = '';
+static $projectid = 0;
+static $divisionid = 0;
+static $roundid = 0;
+static $mode = 0;
+static $seasonid = 0;
+static $order = 0;
+static $cfg_which_database = 0;
+static $oldlayout = '';
 	
 	
     /**
