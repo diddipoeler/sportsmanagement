@@ -79,7 +79,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 			
 			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
-			document.getElementById('" . $fieldpreview_name . "').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
+			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 var els=document.getElementsByName(field);
 for (var i=0;i<els.length;i++) {
 els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;}
