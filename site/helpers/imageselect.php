@@ -100,13 +100,13 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//jQuery('#a_" . $fieldname . "_name').change();
 			
 			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('reset fieldpreview_name : ' + imgSource );
+			console.log('1.reset fieldpreview_name : ' + imgSource );
 			document.getElementById('" . $fieldid . "').value = '" . $default . "';
 			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
 			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('reset fieldpreview_name : ' + imgSource );
-			console.log('reset default : ' + '" . $default . "' );
+			console.log('2.reset fieldpreview_name : ' + imgSource );
+			console.log('3.reset default : ' + '" . $default . "' );
 		}
 
 		function clear_" . $funcname . "()
@@ -117,8 +117,8 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			console.log('fieldname: ' + '" . $fieldname . "' );
 			console.log('fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
-			document.getElementById('a_" . $fieldname . "_name').value = '';
-			document.getElementById('" . $fieldpreview_name . "').src = '/media/com_sportsmanagement/jl_images/spinner.gif';
+			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
+			document.getElementById('" . $fieldid . "_preview').src = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 			//jQuery('#a_" . $fieldname . "_name').val('');
 			//jQuery('#" . $fieldpreview_name . "').attr('src', '');
 //			jQuery('#a_" . $fieldname . "_name').change();
@@ -310,11 +310,11 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcna
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
 		*/
 		
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='drag' class='btn btn-primary'><a title=\"" .
+		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='reset" . $fieldid . "' class='btn btn-primary'><a title=\"" .
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></button></div></div>\n";
 		
-//        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-//		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
+        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='clear" . $fieldid . "' class='btn btn-primary'><a title=\"" .
+		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></button></div></div>";
         
         $imageselect .=	"</td></tr>\n";
 		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
