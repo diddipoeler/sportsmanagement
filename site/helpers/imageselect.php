@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filesystem\File;
+//Factory::getDocument()->addScript(Uri::root() . '/media/media/js/mediafield.js');
 
 /**
  * ImageSelectSM
@@ -77,7 +78,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 			console.log('field : ' + field);
 			
 			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			document.getElementById('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
 			document.getElementById('" . $fieldpreview_name . "').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 var els=document.getElementsByName(field);
 for (var i=0;i<els.length;i++) {
@@ -99,7 +100,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//jQuery('#a_" . $fieldname . "_name').change();
 			
 			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
-			console.log('fieldpreview_name : ' + imgSource );
+			//console.log('fieldpreview_name : ' + imgSource );
 			document.getElementById('a_" . $fieldname . "_name').value = '" . $default . "';
 			document.getElementById('" . $fieldpreview_name . "').src = '" . Uri::root().$default . "';
 			
@@ -133,9 +134,9 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
         jQuery(document).ready(function()
 		{
 			
-			select = document.getElementById('a_" . $fieldname . "_name').value;
+		select = document.getElementById('" . $fieldid . "').value;
 		console.log('select : ' + select  );
-		document.getElementById('" . $fieldpreview_name . "').src = '" . Uri::root(). "' + select  ;
+		document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + select  ;
 
 		console.log('ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
 		console.log('fieldname: ' + '" . $fieldname . "' );
@@ -160,6 +161,30 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 //			jQuery('#a_" . $fieldname . "_name').change();
 		});
 		";
+      
+$js .= '      
+// Compatibility with mootools modal layout
+function jInsertFieldValue(value, id) {
+console.log("value : " + value);
+console.log("id : " + id);	
+jQuery("#" + id).val(value);
+select = jQuery("#" + id).val();
+
+console.log("select : " + select);
+var $img = jQuery("#" + id + "_preview");
+
+console.log("img : " + $img);	
+
+//if (select) {
+			$img.attr("src", "' . Uri::root(). '" + select);
+//			jQuery("#' . $fieldpreview_name . '").hide();
+//			jQuery("#' . $fieldpreview_name . '").show()
+//		}
+//document.getElementById("' . $fieldpreview_name . '").src = "' . Uri::root(). '" + select  ;
+
+}      
+';
+
 $imageselect = '';
 if ( ComponentHelper::getParams(Factory::getApplication()->input->getCmd('option'))->get('cfg_draganddrop') )
 {	
@@ -192,8 +217,14 @@ $layoutdrag = 'upload';
 		
 		$link =	'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;layout='.$layoutdrag.'&amp;type=' .
 		$type . '&amp;field=' . $fieldname .'&amp;fieldid=' . $fieldid . '&amp;tmpl=component';
-		$link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
-		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+		
+//        $link2 = 'index.php?option=com_sportsmanagement&amp;view=imagehandler&amp;type=' .
+//		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+        
+       $link2 = 'index.php?option=com_media&amp;view=images' .
+		'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder( $type ) . '&author=&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+        
+        
 /*		
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
 $link2 = 'index.php?option=com_media&tmpl=component&path=local-0:/com_sportsmanagement/database/'.$type;
@@ -206,7 +237,7 @@ $link2 = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sports
 
 		HTMLHelper::_( 'behavior.modal', 'a.modal' );
 
-		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"a_" . $fieldname . "_name\" value=\"" .
+		$imageselect .=	"\n&nbsp;<table><tr><td><input style=\"background: #ffffff;\" type=\"text\" id=\"" . $fieldid . "\" name=\"" . $fieldname . "\"  value=\"" .
 		$value . "\" disabled=\"disabled\" size=\"100\" /></td></tr>";
 		$imageselect .=	"<tr><td><div class=\"button2-left\"><div class=\"blank\">";
 $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('upload'.$funcname ,'',Text::_('JLIB_HTML_BEHAVIOR_UPLOADER_CURRENT_TITLE'),'20',Uri::base().$link,$modalwidth,$modalheight);   		
