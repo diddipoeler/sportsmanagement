@@ -102,7 +102,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
 			//console.log('fieldpreview_name : ' + imgSource );
 			document.getElementById('a_" . $fieldname . "_name').value = '" . $default . "';
-			document.getElementById('" . $fieldpreview_name . "').src = '" . Uri::root().$default . "';
+			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
 			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
 			console.log('fieldpreview_name : ' + imgSource );
