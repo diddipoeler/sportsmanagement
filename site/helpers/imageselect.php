@@ -99,9 +99,9 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//jQuery('#a_" . $fieldname . "_name').attr('value', '" . $default . "');
 			//jQuery('#a_" . $fieldname . "_name').change();
 			
-			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
-			//console.log('fieldpreview_name : ' + imgSource );
-			document.getElementById('a_" . $fieldname . "_name').value = '" . $default . "';
+			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
+			console.log('fieldpreview_name : ' + imgSource );
+			document.getElementById('" . $fieldid . "').value = '" . $default . "';
 			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
 			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
