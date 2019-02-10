@@ -1452,14 +1452,17 @@ abstract class sportsmanagementHelper {
 			
             case "clublogobig": //club logo big
             case "logo_big":
+            case "clubs_large":
                 return $ph_logo_big;
                 break;
             case "clublogomedium": //club logo medium
             case "logo_middle":
+            case "clubs_medium":
                 return $ph_logo_medium;
                 break;
             case "clublogosmall": //club logo small
             case "logo_small":
+            case "clubs_small":
                 return $ph_logo_small;
                 break;
             case "icon": //icon
