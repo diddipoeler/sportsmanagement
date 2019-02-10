@@ -310,11 +310,11 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcna
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
 		*/
 		
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='reset" . $fieldid . "' class='btn btn-primary'><a title=\"" .
-		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></button></div></div>\n";
+		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
+		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\"><button id='reset" . $fieldid . "' class='btn btn-primary'>" . Text::_( 'JSEARCH_RESET' ) . "</button></a></div></div>\n";
 		
-        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='clear" . $fieldid . "' class='btn btn-primary'><a title=\"" .
-		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></button></div></div>";
+        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
+		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\"><button id='clear" . $fieldid . "' class='btn btn-primary'>" . Text::_( 'JCLEAR' ) . "</button></a></div></div>";
         
         $imageselect .=	"</td></tr>\n";
 		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
