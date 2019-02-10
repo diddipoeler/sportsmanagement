@@ -104,7 +104,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			document.getElementById('" . $fieldid . "').value = '" . $default . "';
 			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
-			var imgSource = document.getElementById('" . $fieldpreview_name . "').src ;
+			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
 			console.log('fieldpreview_name : ' + imgSource );
 			
 			
@@ -315,8 +315,11 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcna
 		
 		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div></td></tr>\n";
+		
+//        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
+//		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
+        
+        $imageselect .=	"</td></tr>\n";
 		$imageselect .=	"\n<tr><td><input type=\"hidden\" id=\"a_" . $fieldname . "\" name=\"" . $fieldname . "\" value=\"" . $value."\" /></td></tr></table>";
 
 		return $imageselect;
