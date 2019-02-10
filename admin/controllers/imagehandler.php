@@ -9,7 +9,6 @@
  * @subpackage imagehandler
  */
 
-// no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -63,10 +62,11 @@ $msg = '';
 		//$file	= $this->jsmjinput->getVar( 'userfile', '', 'files', 'array' );
         $file = $this->jsmjinput->files->get('userfile');
 		//$task	= $this->jsmjinput->getVar( 'task' );
-		$type	= $this->jsmjinput->getVar( 'type' );
+		$type = $this->jsmjinput->getVar( 'type' );
 		$folder	= ImageSelectSM::getfolder($type);
-		$field	= $this->jsmjinput->getVar( 'field' );
-		$linkaddress	= $this->jsmjinput->getVar( 'linkaddress' );
+		$field = $this->jsmjinput->getVar( 'field' );
+        $fieldid = $this->jsmjinput->getVar( 'fieldid' );
+		$linkaddress = $this->jsmjinput->getVar( 'linkaddress' );
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
@@ -138,7 +138,7 @@ $type = 'error';
 		{
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 //			echo "<script> alert('" . Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
-      echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.close(); </script>\n";
+      echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field','$fieldid');window.parent.jModalClose();window.parent.jQuery('.modal.in').modal('hide'); </script>\n";
 			$msg = Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' );
 			$type = 'notice'; 
 			//$app->close();
