@@ -25,7 +25,7 @@ use Joomla\CMS\Factory;
             <td class="teamlogo"><?php
                 $pic = $this->config['show_picture'];
 
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->$pic;
+$picture = !empty($this->teams[0]->$pic) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->$pic : sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch' . $this->teams[0]->id,
                     $picture,
@@ -42,7 +42,7 @@ use Joomla\CMS\Factory;
             <td class="vs">&nbsp;</td>
             <td class="teamlogo"><?php
 
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->$pic;
+$picture = !empty($this->teams[1]->$pic) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->$pic : sportsmanagementHelper::getDefaultPlaceholder('logo_big');
 
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch' . $this->teams[1]->id,
                     $picture,
@@ -64,8 +64,7 @@ use Joomla\CMS\Factory;
         <tr class="nextmatch">
             <td class="teampicture">
                 <?php
-
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->projectteam_picture;
+$picture = !empty($this->teams[0]->projectteam_picture) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[0]->projectteam_picture : sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
 
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team' . $this->teams[0]->id,
                     $picture,
@@ -81,8 +80,7 @@ use Joomla\CMS\Factory;
             </td>
             <td class="vs">&nbsp;</td>
             <td class="teampicture"><?php
-
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->projectteam_picture;
+$picture = !empty($this->teams[1]->projectteam_picture) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER . $this->teams[1]->projectteam_picture : sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
 
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team' . $this->teams[1]->id,
                     $picture,
