@@ -100,16 +100,13 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//jQuery('#a_" . $fieldname . "_name').change();
 			
 			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('fieldpreview_name : ' + imgSource );
+			console.log('reset fieldpreview_name : ' + imgSource );
 			document.getElementById('" . $fieldid . "').value = '" . $default . "';
 			document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root().$default . "';
 			
 			var imgSource = document.getElementById('" . $fieldid . "_preview').src ;
-			console.log('fieldpreview_name : ' + imgSource );
-			
-			
-			
-			console.log('default : ' + '" . $default . "' );
+			console.log('reset fieldpreview_name : ' + imgSource );
+			console.log('reset default : ' + '" . $default . "' );
 		}
 
 		function clear_" . $funcname . "()
@@ -313,8 +310,8 @@ $imageselect .=	 sportsmanagementHelper::getBootstrapModalImage('select'.$funcna
 		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' )."</a></div></div>\n";
 		*/
 		
-		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
-		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></div></div>\n";
+		$imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><button id='drag' class='btn btn-primary'><a title=\"" .
+		Text::_( 'JLIB_FORM_MEDIA_PREVIEW_SELECTED_IMAGE' ) . "\" href=\"#\" onclick=\"reset_" . $fieldid . "();\">" . Text::_( 'JSEARCH_RESET' ) . "</a></button></div></div>\n";
 		
 //        $imageselect .=	"<div class=\"button2-left\"><div class=\"blank\"><a title=\"" .
 //		Text::_( 'JCLEAR' ) . "\" href=\"#\" onclick=\"clear_" . $fieldid . "();\">" . Text::_( 'JCLEAR' ) . "</a></div></div>";
