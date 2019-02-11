@@ -930,7 +930,13 @@ else
             $object->team1_result_so	= $post['team1_result_so'.$pks[$x]];
             $object->team2_result_so	= $post['team2_result_so'.$pks[$x]];
             }
-                            
+            
+            if ( is_numeric($post['team1_legs'.$pks[$x]]) && is_numeric($post['team2_legs'.$pks[$x]]) )    
+            {    
+            $object->team1_legs	= $post['team1_legs'.$pks[$x]];
+            $object->team2_legs	= $post['team2_legs'.$pks[$x]];
+            }
+		    
             }
             
             
