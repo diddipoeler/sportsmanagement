@@ -147,6 +147,7 @@
 		<field
 			name="jsm_server_user"
 			type="text"
+		       default=""
 			label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_DESC"
 			filter="string"
@@ -156,6 +157,7 @@
 		<field
 			name="jsm_dbtype"
 			type="databaseconnection"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_TYPE_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_TYPE_DESC"
 			supported="mysql,mysqli,postgresql,sqlsrv,sqlazure"
@@ -164,6 +166,7 @@
 		<field
 			name="jsm_host"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_HOST_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_HOST_DESC"
 			filter="string"
@@ -172,6 +175,7 @@
 		<field
 			name="jsm_user"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_USERNAME_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_USERNAME_DESC"
 			filter="string"
@@ -180,6 +184,7 @@
 			<field
 			name="jsm_password"
 			type="password"
+			       default=""
 			label="JGLOBAL_PASSWORD"
 			description="COM_ADMIN_USER_FIELD_PASSWORD_DESC"
 			filter="string"
@@ -188,6 +193,7 @@
 		<field
 			name="jsm_db"
 			type="text"
+		       default=""
 			label="COM_CONFIG_FIELD_DATABASE_NAME_LABEL"
 			description="COM_CONFIG_FIELD_DATABASE_NAME_DESC"
 			filter="string"
