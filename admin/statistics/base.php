@@ -451,7 +451,12 @@ class SMStatistic extends JObject
 			if (!file_exists($file)) {
 				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
+            try {
 			require_once($file);
+            } catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
 		}
 		$stat = new $classname();
 		return $stat;
