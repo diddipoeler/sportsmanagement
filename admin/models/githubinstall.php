@@ -92,7 +92,12 @@ $dest = JPATH_SITE.DS.'tmp'.DS.$file['name'];
 
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
-$result = JArchive::extract($dest,$extractdir);
+try {
+	$result = JArchive::extract($dest,$extractdir);
+	} catch (Exception $e) {
+                $this->jsmapp->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }
 }
 elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 {	
