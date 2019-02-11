@@ -5,7 +5,7 @@
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 		
-		<field	name="use_which_map" type="extensionradiobutton" default="0"
+		<field	name="use_which_map" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_WHICH_MAP"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_WHICH_MAP">
@@ -13,7 +13,7 @@
 			<option value="1">OpenStreetMap</option>
 		</field>
 		
-		<field	name="use_jquery_modal" type="extensionradiobutton" default="0"
+		<field	name="use_jquery_modal" type="extensionradiobutton" default="2"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_JQUERY_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_JQUERY_MODAL">
@@ -22,7 +22,7 @@
 			<option value="2">JCE Modal</option>
 		</field>
 		
-		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="0"
+		<field	name="use_squeezebox_modal" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_USE_SQUEEZEBOX_MODAL"
 				description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_USE_SQUEEZEBOX_MODAL">
