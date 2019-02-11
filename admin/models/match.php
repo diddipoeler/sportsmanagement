@@ -2047,6 +2047,8 @@ if (!$calendar->isAuth())
         $trikotnumbers = $post['trikot_number'];
         $captain = $post['captain'];
 
+	    if ( $mid && $team )
+	    {
         $query->clear();
         $query->select('mp.id');
         $query->from('#__sportsmanagement_match_player AS mp');
@@ -2105,7 +2107,11 @@ if (!$calendar->isAuth())
                 }
             }
         }
-
+    }
+	else
+	{
+	$result = true;	
+	}
         return $result;
     }
 
