@@ -11,30 +11,27 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-if ( !defined('DS') )
-{
+if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-if ( !defined('JSM_PATH') )
-{
+if (!defined('JSM_PATH')) {
     DEFINE('JSM_PATH', 'components/com_sportsmanagement');
 }
-if ( !class_exists('JSMModelList') )
-{
-	// muss momentan eingebunden werden, ansonsten 500er seit update von model sportstypes
+if (!class_exists('JSMModelList')) {
+    // muss momentan eingebunden werden, ansonsten 500er seit update von model sportstypes
     $classpath = JPATH_ADMINISTRATOR . DS . 'components/com_sportsmanagement' . DS . 'libraries' . DS . 'sportsmanagement' . DS . 'model.php';
     JLoader::register('JSMModelList', $classpath);
 }
 // prüft vor Benutzung ob die gewünschte Klasse definiert ist
-if ( !class_exists('sportsmanagementHelper') )
-{
+if (!class_exists('sportsmanagementHelper')) {
 //add the classes for handling
     $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
@@ -42,10 +39,10 @@ if ( !class_exists('sportsmanagementHelper') )
 }
 
 // get helper
-require_once( dirname(__FILE__) . DS . 'helper.php' );
-$parameter   = $params->get('sportstypes');
+require_once(dirname(__FILE__) . DS . 'helper.php');
+$parameter = $params->get('sportstypes');
 $sportstypes = Text::_($params->get('sportstypes'));
-$data        = modJSMSportsHelper::getData($params);
+$data = modJSMSportsHelper::getData($params);
 
 $document = Factory::getDocument();
 
@@ -57,19 +54,19 @@ $document = Factory::getDocument();
  * dann muss die sprachdatei aus dem backend geladen werden.
  * ansonsten wird der übersetzte text der sportart nicht angezeigt.
  */
-if ( !defined($data['sportstype'][0]->name) )
-{
-    $langtag      = Factory::getLanguage();
-    $extension    = 'com_sportsmanagement';
-    $base_dir     = JPATH_ADMINISTRATOR;
+if (!defined($data['sportstype'][$sportstypes]->name)) {
+    $langtag = Factory::getLanguage();
+    $extension = 'com_sportsmanagement';
+    $base_dir = JPATH_ADMINISTRATOR;
     $language_tag = $langtag->getTag();
-    $reload       = true;
+    $reload = true;
     $lang->load($extension, $base_dir, $language_tag, $reload);
 }
 
 ?>
-<div class="<?php echo $params->get('moduleclass_sfx'); ?>" id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
-<?PHP
-require(ModuleHelper::getLayoutPath($module->module));
-?>
+<div class="<?php echo $params->get('moduleclass_sfx'); ?>"
+     id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+    <?PHP
+    require(ModuleHelper::getLayoutPath($module->module));
+    ?>
 </div>
