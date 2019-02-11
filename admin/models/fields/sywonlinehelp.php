@@ -1,24 +1,25 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
-* @version 1.0.58
-* @file 
-* @author diddipoeler, stony, svdoldie (diddipoeler@gmx.de)
-* @copyright Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license This file is part of SportsManagement.
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
+ * @version   1.0.05
+ * @file      sywonlinehelp.php
+ * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license   This file is part of SportsManagement.
+ * @package   sportsmanagement
+ * @subpackage fields
  */
 
 // no direct access
 defined('_JEXEC') or die ;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-
-jimport('joomla.form.formfield');
+use Joomla\CMS\Form\FormField;
 
 /**
  * FormFieldSYWOnlineHelp
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2017
  * @version $Id$
  * @access public
