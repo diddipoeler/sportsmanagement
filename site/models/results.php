@@ -776,33 +776,40 @@ else
     function saveshort($cfg_which_database = 0)
 	{
 		$app = Factory::getApplication();
-        // JInput object
+/**
+ *         JInput object
+ */
         $option = $app->input->getCmd('option');
         
-        // Get a db connection.
+/**
+ *         Get a db connection.
+ */
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         
         $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $post = Factory::getApplication()->input->post->getArray(array());
         
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post2<br><pre>'.print_r($post2, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-        
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			// Ã¤nderungen im datum oder der uhrzeit
+/**
+ * 			Änderungen im datum oder der uhrzeit
+ */
             $tbl = $this->getTable();;
             $tbl->load((int) $pks[$x]);
             
-            // Create an object for the record we are going to update.
+/**
+ *             Create an object for the record we are going to update.
+ */
             $object = new stdClass();
-            // Must be a valid primary key value.
+/**
+ *             Must be a valid primary key value.
+ */
             $object->id = $pks[$x];
             $object->team1_result = NULL;
             $object->team2_result = NULL;
+            $object->team1_legs	= NULL;
+            $object->team2_legs	= NULL;
         if ( $post['match_date'.$pks[$x]] )
 			{
             list($date,$time) = explode(" ",$tbl->match_date);
@@ -943,7 +950,9 @@ else
             $object->team1_result_split	= implode(";",$post['team1_result_split'.$pks[$x]]);
             $object->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 try{
-            // Update their details in the table using id as the primary key.
+/**
+ *             Update their details in the table using id as the primary key.
+ */
             $result_update = $db->updateObject('#__sportsmanagement_match', $object, 'id', true);
             $result = true;
             $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
