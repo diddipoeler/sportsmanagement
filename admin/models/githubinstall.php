@@ -22,13 +22,7 @@ jimport('joomla.filesystem.archive');
 	
 jimport('joomla.filesystem.file');
 
-echo ini_get('allow_url_fopen');
-
-if (!ini_get('allow_url_fopen')) {
-    ini_set('allow_url_fopen', 1);
-}
-
-echo ini_get('allow_url_fopen');
+ini_set("allow_url_fopen", "On");
 
 /**
  * sportsmanagementModelgithubinstall
