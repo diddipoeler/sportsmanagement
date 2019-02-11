@@ -2137,6 +2137,8 @@ if (!$calendar->isAuth())
         $mid = $post['id'];
         $team = $post['team'];
 
+	    if ( $mid && $team )
+	    {
         $query->clear();
         $query->select('mp.id');
         $query->from('#__sportsmanagement_match_staff AS mp');
@@ -2192,7 +2194,11 @@ if (!$calendar->isAuth())
                 }
             }
         }
-
+}
+	else
+	{
+	return true;	
+	}
         return true;
     }
 
