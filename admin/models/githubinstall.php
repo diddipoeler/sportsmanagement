@@ -114,11 +114,20 @@ return false;
 
 if (!$result || ($result->code != 200 && $result->code != 310))
 {
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($result->code,true).'</pre>'),'Notice');	
 return false;
 }
 
+try
+{	
 // Write the file to disk
 File::write($base_Dir, $result->body);
+catch (RuntimeException $e)
+{
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getCode()), 'error');	
+return false;
+}
 	
 $this->_success_text['Komponente:'] = $my_text;
 
