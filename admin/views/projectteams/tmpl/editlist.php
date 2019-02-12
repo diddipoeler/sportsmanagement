@@ -123,9 +123,10 @@ HTMLHelper::_( 'behavior.tooltip' );
 		</fieldset>
 		<div class="clr"></div>
 
-		<input type="hidden" name="teamschanges_check"	value="0"	id="teamschanges_check" />
-		<input type="hidden" name="option"				value="com_sportsmanagement" />
-		<input type="hidden" name="project_id"				value="<?php echo $this->project->id; ?>" />
-		<input type="hidden" name="task"				value="projectteam.save_matcheslist" />
+		<input type="hidden" name="teamschanges_check" value="0" id="teamschanges_check" />
+		<input type="hidden" name="option" value="com_sportsmanagement" />
+		<input type="hidden" name="project_id" value="<?php echo $this->project->id; ?>" />
+		<input type="hidden" name="task" value="projectteam.save_matcheslist" />
+		<?php echo HTMLHelper::_( 'form.token' ); ?>
 	</div>
 </form>
