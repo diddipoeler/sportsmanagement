@@ -104,6 +104,13 @@ class JSMControllerForm extends FormController
         //$this->registerTask('apply', 'save');
     }
 
+	
+	function cancel()
+	{
+	$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
+	
     /**
      * JSMControllerForm::save()
      *
