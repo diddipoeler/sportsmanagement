@@ -9,7 +9,6 @@
  * @subpackage statistics
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -452,7 +451,7 @@ class SMStatistic extends JObject
 				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
             try {
-			require_once($file);
+JLoader::import('components.com_sportsmanagement.statistics.'.$class, JPATH_ADMINISTRATOR);			
             } catch (Exception $e) {
                 Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
                 $result = false;
