@@ -9,7 +9,6 @@
  * @subpackage globalviews
  */
 
-
 /**
  * Leaflet Routing Machine API
  * http://www.liedman.net/leaflet-routing-machine/api/
@@ -21,7 +20,6 @@
  * https://github.com/smeijer/leaflet-geosearch
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -30,9 +28,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 
 $this->view = Factory::getApplication()->input->getCmd('view');
-
-//echo 'use_which_map -> '.$this->config['use_which_map'].'<br>';
-//echo 'default_map_type -> '.$this->config['default_map_type'];
 
 $map_type = 'http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'; 
 
@@ -46,7 +41,6 @@ $this->document->addStyleSheet('https://cdn.jsdelivr.net/npm/leaflet.locatecontr
 
 $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js');
 $this->document->addStyleSheet('https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css');
-
 	
 /**
  * geocoderscript
@@ -69,8 +63,7 @@ case 'G_TERRAIN_MAP':
 $map_type = 'http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}';   
 break;
 }
-	
-//$map_type = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'; 	
+
 ?>	
 <h4>
 <?php echo Text::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
@@ -142,7 +135,9 @@ jQuery.get("https://ipinfo.io", function(response) {
 
 break;
 
-case 'clubinfo':	
+case 'clubinfo':
+if ( $this->club->latitude && $this->club->longitude ) 		
+{		
 ?>
 <script>
   
@@ -200,6 +195,7 @@ jQuery.get("https://ipinfo.io", function(response) {
               
 </script>
 <?php
+}
 break;
 case 'ranking':
 case 'resultsranking':
