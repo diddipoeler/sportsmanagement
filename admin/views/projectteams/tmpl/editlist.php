@@ -51,7 +51,7 @@ HTMLHelper::_( 'behavior.tooltip' );
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select#project_teamslist > option').prop('selected', 'selected');Joomla.submitform('projectteams.assign', this.form)">
 				<?php echo Text::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
+			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancelmodal', this.form)">
 <?php echo Text::_('JCANCEL');?></button>
 		</div>
 	</fieldset>
