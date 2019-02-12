@@ -79,8 +79,8 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_POINT_DESC"
             class="inputbox"			
             default="0">
-            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
-            <option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+            <option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+            <option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
         </field>
 	    
 	<field
@@ -90,8 +90,8 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_COUNT_DESC"
             class="inputbox"			
             default="0">
-            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
-            <option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
+            <option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+            <option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
         </field>    
 
         <field
