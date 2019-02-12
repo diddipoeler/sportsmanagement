@@ -161,11 +161,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 		$query->order('et.ordering');
         
         $db->setQuery($query);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+       
         try{
 		$result = $db->loadObjectList('etid');
 		return $result;
@@ -255,7 +251,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param bool $dart
 	 * @return
 	 */
-	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0, $dart=FALSE)
+	function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC')
 	{
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -305,13 +301,15 @@ $query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler,pl.firstname A
 if ( $dart )
 {
 $query->group('me.event_sum,me.teamplayer_id');	
+$query->order('p '.$directionspoint.' , zaehler '.$directionscounter);	
 }
 else
 {
 $query->group('me.teamplayer_id');
+$query->order('p '.$order);	
 }
 		
-        $query->order('p '.$order);
+//        $query->order('p '.$order);
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
        
@@ -349,7 +347,7 @@ $query->group('me.teamplayer_id');
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart);
+				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventkey->directionspoint,$eventkey->directionscounter);
 			}
 		}
 
