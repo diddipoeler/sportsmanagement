@@ -105,7 +105,7 @@ class JSMControllerForm extends FormController
     }
 
 	
-	function cancel($key = NULL)
+	function cancelmodal($key = NULL)
 	{
 	$msg = '';
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
