@@ -156,6 +156,18 @@ JARCHIVED</option>
 			<option value="1">JYES</option>
 		</field>
 				
+				
+		<field 
+			name="use_nation" 
+			type="extensionradiobutton" 
+			default="1"   
+      class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION" 
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_NATION_DESC">
+			<option value="1">JNO</option>
+			<option value="0">JYES</option>
+		</field>
+		
 		<field
 			name="admin"
 			type="user"
