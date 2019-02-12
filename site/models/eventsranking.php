@@ -347,7 +347,7 @@ $query->order('p '.$order);
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventkey->directionspoint,$eventkey->directionscounter);
+				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter);
 			}
 		}
 
