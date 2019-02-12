@@ -534,7 +534,7 @@ try{
         
         // noch das land der liga
         $this->jsmquery->clear();
-        $this->jsmquery->select('l.country,p.season_id,p.project_type');
+        $this->jsmquery->select('l.country,p.season_id,p.project_type,p.use_nation');
         $this->jsmquery->from('#__sportsmanagement_league as l');
         $this->jsmquery->join('INNER','#__sportsmanagement_project as p on p.league_id = l.id');
         $this->jsmquery->where('p.id = '.self::$_project_id);
@@ -575,7 +575,7 @@ try{
         $this->jsmquery->where('st.season_id = ' . $this->_season_id);
         $this->jsmquery->where('t.sports_type_id = ' . $this->sports_type_id);
         
-        if ( $result->country )
+        if ( $result->country && $result->use_nation )
         {
         $this->jsmquery->where('c.country LIKE '.$this->jsmdb->Quote(''.$result->country.''));
         }
