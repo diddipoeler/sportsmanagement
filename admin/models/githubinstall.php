@@ -9,12 +9,12 @@
  * @subpackage models
  */
 
-
 /* No direct access to this file */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Factory;
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 jimport('joomla.filesystem.archive');	
