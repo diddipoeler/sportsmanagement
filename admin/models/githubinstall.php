@@ -15,14 +15,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+
 if( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 jimport('joomla.filesystem.archive');	
 }	
 	
-jimport('joomla.filesystem.file');
-
-ini_set("allow_url_fopen", "On");
+//jimport('joomla.filesystem.file');
+//ini_set("allow_url_fopen", "On");
 
 /**
  * sportsmanagementModelgithubinstall
@@ -58,11 +59,12 @@ if ( $gitinstall )
 }   
 else
 {     
-        /* set the target directory */
-		$base_Dir = JPATH_SITE . DS . 'tmp'. DS;
-        $file['name'] = basename($link);
-        $filename = $file['name'];
-        $filepath = $base_Dir . $filename;
+/* set the target directory */
+$base_Dir = JPATH_SITE . DS . 'tmp'. DS;
+$file['name'] = basename($link);
+$filename = $file['name'];
+$filepath = $base_Dir . $filename;
+
 if ( !isset($this->_success_text['Komponente:']) )
 {
 $this->_success_text['Komponente:'] = 'text';	
