@@ -767,9 +767,11 @@ $result = $this->jsmdb->execute();
 		{
 		$this->jsmquery->clear();
         // Insert columns.
-		$columns = array('team_id','season_id');
+		$modified = $this->jsmdate->toSql();
+	        $modified_by = $this->jsmuser->get('id');	
+		$columns = array('team_id','season_id','modified','modified_by');
 		// Insert values.
-		$values = array($data['id'],$value);
+		$values = array($data['id'],$value,$this->jsmdb->Quote(''.$modified.''),$modified_by);
 		// Prepare the insert query.
 		$this->jsmquery
 			->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_id'))
