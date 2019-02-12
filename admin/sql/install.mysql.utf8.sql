@@ -115,6 +115,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `import_id` INT(11) NOT NULL DEFAULT '0' ,
   `founded_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `dissolved_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `use_jl` tinyint(1) NOT NULL DEFAULT '0',
+  `use_jsm` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`),
@@ -248,6 +250,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_eventtype` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `directionspoint` CHAR(4) NOT NULL DEFAULT 'DESC' ,
+  `directionscounter` CHAR(4) NOT NULL DEFAULT 'DESC' ,
+  `directionspointpos` tinyint(1) NOT NULL DEFAULT '1',
+  `directionscounterpos` tinyint(1) NOT NULL DEFAULT '2'
   PRIMARY KEY (`id`) ,
   KEY `sports_type_id` (`sports_type_id`),
   UNIQUE KEY `name` (`name`,`parent`,`sports_type_id`)
@@ -823,6 +829,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `modified_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   `editorgroup` INT( 11 ) DEFAULT '0' ,
+  `use_nation` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
