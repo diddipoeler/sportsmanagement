@@ -122,6 +122,7 @@ try
 {	
 // Write the file to disk
 File::write($base_Dir, $result->body);
+}
 catch (RuntimeException $e)
 {
 $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
