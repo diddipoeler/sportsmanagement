@@ -121,7 +121,7 @@ return false;
 try
 {	
 // Write the file to disk
-File::write($base_Dir, $result->body);
+File::write($filepath, $result->body);
 }
 catch (RuntimeException $e)
 {
