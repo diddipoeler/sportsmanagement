@@ -51,7 +51,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 function CopyGithubLink($link)
 {
     
-    $gitinstall = '';
+$gitinstall = '';
 
 if ( $gitinstall )
 {
@@ -71,21 +71,55 @@ $this->_success_text['Komponente:'] = 'text';
 }
 	
 $my_text = '';
+/*	
 if ( !copy($link,$filepath) )
 {
-
-    $my_text = '<span style="color:'.$this->storeFailedColor.'">';
-    $my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
-    $my_text .= '<br />';
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
+$my_text .= '<br />';
 }
 else
 {
-
 $my_text = '<span style="color:'.$this->storeSuccessColor.'">';
 $my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
 $my_text .= '<br />';
-
 }
+*/
+	
+// Get the handler to download the package
+try
+{
+$http = JHttpFactory::getHttp(null, array('curl', 'stream'));
+}
+catch (RuntimeException $e)
+{
+return false;
+}
+
+// Download the package
+try
+{
+$result = $http->get($link);
+$my_text = '<span style="color:'.$this->storeSuccessColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte kopiert werden!',"</span><strong>".$link."</strong>");
+$my_text .= '<br />';	
+}
+catch (RuntimeException $e)
+{
+$my_text = '<span style="color:'.$this->storeFailedColor.'">';
+$my_text .= Text::sprintf('Die ZIP-Datei der Komponente [ %1$s ] konnte nicht kopiert werden!',"</span><strong>".$link."</strong>");
+$my_text .= '<br />';	
+return false;
+}
+
+if (!$result || ($result->code != 200 && $result->code != 310))
+{
+return false;
+}
+
+// Write the file to disk
+File::write($base_Dir, $result->body);
+	
 $this->_success_text['Komponente:'] = $my_text;
 
 
