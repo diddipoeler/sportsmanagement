@@ -241,6 +241,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	}
 
 	
+	
 	/**
 	 * sportsmanagementModelEventsRanking::_getEventsRanking()
 	 * 
@@ -249,9 +250,12 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param integer $limit
 	 * @param integer $limitstart
 	 * @param bool $dart
+	 * @param string $directionspoint
+	 * @param string $directionscounter
+	 * @param integer $directionspointpos
 	 * @return
 	 */
-	function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC')
+	function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC',$directionspointpos=1)
 	{
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -260,7 +264,19 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	   $query = $db->getQuery(true);
 if ( $dart )
 {
-$query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler,pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');	
+
+switch ( $directionspointpos )
+{
+    case 1:
+    $query->select('me.event_sum as p, COUNT(me.event_sum) as zaehler');
+    break;
+    case 2:
+    $query->select('me.event_sum as zaehler, COUNT(me.event_sum) as p');
+    break;
+}
+
+$query->select('pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');	
+
 }
 		else
 		{
@@ -309,10 +325,8 @@ $query->group('me.teamplayer_id');
 $query->order('p '.$order);	
 }
 		
-//        $query->order('p '.$order);
-        
-        $db->setQuery($query, self::getlimitStart(), self::getlimit());
        
+        $db->setQuery($query, self::getlimitStart(), self::getlimit());
         $rows = $db->loadObjectList();
 
 /**
@@ -347,7 +361,7 @@ $query->order('p '.$order);
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter);
+				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter,$eventtypes[$eventkey]->directionspointpos);
 			}
 		}
 
