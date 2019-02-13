@@ -9,7 +9,6 @@
  * @subpackage editmatch
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -47,9 +46,9 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $document = Factory::getDocument();
         $db = Factory::getDBO();
         if (version_compare(JSM_JVERSION, '4', 'eq')) {
-            $uri = Uri::getInstance();
+            $this->uri = Uri::getInstance();
         } else {
-            $uri = Factory::getURI();
+            $this->uri = Factory::getURI();
         }
         $user = Factory::getUser();
         // JInput object
