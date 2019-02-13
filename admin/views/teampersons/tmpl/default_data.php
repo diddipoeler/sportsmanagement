@@ -358,11 +358,13 @@ foreach($position_ids as $items => $item) {
 							</td>
 							<td class="center">
 							<?php	
+						
+/*						
 JFormHelper::loadFieldClass('radio');
 $field = new JFormFieldRadio();
 $field->setup(new SimpleXMLElement('<field " onchange="document.getElementById(\'cb'.$i.'\').checked=true" name="project_published'.$row->id.'" type="radio" size="1" default="'.$row->project_published.'" class="btn-group btn-group-yesno"><option value="0">JNO</option><option value="1">JYES</option></field>'), 1);
 echo $field->renderField(array('hiddenLabel'=>true));
-						
+*/						
 						/*
 HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 1 ? 'un' : '') . 'sichtbar', 'cb' . $i, 'teampersons');
 HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 0 ? 'un' : '') . 'nicht sichtbar', 'cb' . $i, 'teampersons');
