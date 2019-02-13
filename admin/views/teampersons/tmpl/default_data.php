@@ -370,7 +370,9 @@ $html[] = '<fieldset id="project_published' . $row->id . '" class="' . $class. '
 foreach ($options as $in => $option)
         {
 $checked = ( $option->value == $row->project_published) ? ' checked="checked"' : '';
-$btn = ( $option->value == $row->project_published) ? ' active btn-success' : ' ';	
+$btn = ( $option->value == $row->project_published && $row->project_published ) ? ' active btn-success' : ' ';	
+$btn = ( $option->value == $row->project_published && !$row->project_published ) ? ' active btn-danger' : $btn;	  	
+	
   $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
   $html[] = '<input type="radio" style="display:none;" id="project_published' .  $row->id  .$in . '" name="project_published' . $row->id . '" value="'
                 . $option->value . '"' . $onchange . ' />';
