@@ -411,11 +411,6 @@ class SMStatistic extends JObject
 		//$event_ids = explode(',', $params->get($id_field));
         $event_ids = $params->get($id_field);
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' event_ids<br><pre>'.print_r($event_ids,true).'</pre>'),'');
- }
-        
 		if (!count($event_ids)) 
         {
 			JError::raiseWarning(0, Text::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
@@ -430,11 +425,6 @@ class SMStatistic extends JObject
 		}		
 		return $ids;
 	}
-    
-    
-    
-    
-    
 
 	/**
 	 * get an instance of class corresponding to type
@@ -447,7 +437,7 @@ class SMStatistic extends JObject
 
 		if (!class_exists($classname))
 		{
-			$file = 'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
+			$file = JPATH_SITE .'/administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
 			if (!File::exists($file)) {
 				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
