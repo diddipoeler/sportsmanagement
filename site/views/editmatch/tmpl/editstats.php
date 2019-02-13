@@ -77,7 +77,7 @@ else
 		echo HTMLHelper::_('tabs.end');
 }        
 		?>
-		
+<input type='hidden' name='option' value='com_sportsmanagement' />		
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="task" id="" value="" />

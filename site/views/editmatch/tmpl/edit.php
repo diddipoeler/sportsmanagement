@@ -24,11 +24,12 @@ $fieldsets = $this->form->getFieldsets();
 
 //echo ' person<br><pre>'.print_r($this->item,true).'</pre>'
 
-if (version_compare(JSM_JVERSION, '4', 'eq')) {
-    $uri = Uri::getInstance();   
-} else {
-    $uri = Factory::getURI();
-}
+//if (version_compare(JSM_JVERSION, '4', 'eq')) {
+//    $uri = Uri::getInstance();   
+//} else {
+//    $uri = Factory::getURI();
+//}
+
 ?>
 <script type="text/javascript">
 //	Joomla.submitbutton = function(task)
@@ -76,7 +77,7 @@ function toggle_altdecision()
 //-->
 </script>
 
-<form name="editmatch" id="editmatch" method="post" action="<?php echo $uri->toString(); ?>">
+<form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
 <?php
 
 		?>
