@@ -9,7 +9,6 @@
  * @subpackage teampersons
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -174,6 +173,15 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         $this->jsmsubquery1->where('ppp.project_id = '.$this->_project_id );
         $this->jsmsubquery1->where('ppp.persontype = '.$this->getState('filter.persontype') );
 	$this->jsmquery->select('(' . $this->jsmsubquery1 . ') AS project_position_id');
+		
+	$this->jsmsubquery2->clear();
+        $this->jsmsubquery2->select('ppp.published');
+        $this->jsmsubquery2->from('#__sportsmanagement_person_project_position AS ppp');
+        $this->jsmsubquery2->join('LEFT','#__sportsmanagement_project_position AS ppos AS ppp on ppp.project_position_id = ppos.id');
+        $this->jsmsubquery2->where('ppp.person_id = ppl.id');
+        $this->jsmsubquery2->where('ppp.project_id = '.$this->_project_id );
+        $this->jsmsubquery2->where('ppp.persontype = '.$this->getState('filter.persontype') );
+	$this->jsmquery->select('(' . $this->jsmsubquery2 . ') AS project_published');
 		
         if (is_numeric($this->getState('filter.state')) )
 		{
