@@ -23,7 +23,7 @@ $params = $this->form->getFieldsets('params');
 <?php
 
 ?>
-<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='editlineup' method='post' style='display:inline' name='editlineup' >
+<form  action="<?php echo $this->uri->toString(); ?>" id='editlineup' method='post' style='display:inline' name='editlineup' >
 <fieldset>
 <div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('editmatch.save', this.form);">
@@ -37,9 +37,7 @@ $params = $this->form->getFieldsets('params');
 	<div class="clear"></div>
 	<div id="lineup">
 		<?php
-        // welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
+       
 ?>    
 <ul class="nav nav-tabs">
 <li class="active"><a data-toggle="tab" href="#player"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
@@ -72,44 +70,22 @@ echo $this->loadTemplate('players_trikot_numbers');
     
 <?PHP    
 
-    }
-        else
-    {
-		// focus on players tab 
-		$startOffset = 1;
-		echo HTMLHelper::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
-		echo $this->loadTemplate('substitutions');
-		
-		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
-		echo $this->loadTemplate('players');
-		
-		echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
-		echo $this->loadTemplate('staff');
-		
-        echo HTMLHelper::_('tabs.panel',Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
-		echo $this->loadTemplate('players_trikot_numbers');
-        
-		echo HTMLHelper::_('tabs.end');
-        }
-		?>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="view" value="" />
-        <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
-	<input type="hidden" name="p" value="<?php echo sportsmanagementModelEditMatch::$projectid; ?>" />
-	
-	<input type="hidden" name="r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>" />
-	<input type="hidden" name="s" value="<?php echo sportsmanagementModelEditMatch::$seasonid; ?>" />
-	<input type="hidden" name="division" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>" />
-	<input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>" />
-	
-		<input type="hidden" name="close" id="close" value="0" />
-		<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
-		<input type="hidden" name="changes_check" value="0" id="changes_check" />
-		<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
-		<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
+?>
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="view" value="" />
+<input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
+<input type="hidden" name="p" value="<?php echo sportsmanagementModelEditMatch::$projectid; ?>" />
+<input type="hidden" name="r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>" />
+<input type="hidden" name="s" value="<?php echo sportsmanagementModelEditMatch::$seasonid; ?>" />
+<input type="hidden" name="division" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>" />
+<input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>" />
+<input type="hidden" name="close" id="close" value="0" />
+<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
+<input type="hidden" name="changes_check" value="0" id="changes_check" />
+<input type="hidden" name="team" value="<?php echo $this->tid; ?>" id="team" />
+<input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount"	/>
                 
-		<?php //echo HTMLHelper::_('form.token')."\n"; ?>
+<?php //echo HTMLHelper::_('form.token')."\n"; ?>
         
 <input type="hidden" id="token" name="token" value="
 <?php 
