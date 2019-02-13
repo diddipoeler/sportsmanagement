@@ -94,6 +94,11 @@ HTMLHelper::_('behavior.modal');
 							?>
 						</th>
 						<th>
+							<?php
+							echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_STATUS_PROJECT' );
+							?>
+						</th>
+						<th>
 						<?php
 						echo HTMLHelper::_('grid.sort','JSTATUS','ppl.published',$this->sortDirection,$this->sortColumn);
 						?></th>
@@ -351,6 +356,13 @@ foreach($position_ids as $items => $item) {
 								?>
 								&nbsp;
 							</td>
+							<td class="center">
+							<?php	
+HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 1 ? 'un' : '') . 'sichtbar', 'cb' . $i, 'teampersons');
+HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 0 ? 'un' : '') . 'nicht sichtbar', 'cb' . $i, 'teampersons');
+echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));								
+						?>
+							</td>	
 							<td class="center">
 <div class="btn-group">
             <?php echo HTMLHelper::_('jgrid.published', $row->published, $i, 'teampersons.', $canChange, 'cb'); ?>
