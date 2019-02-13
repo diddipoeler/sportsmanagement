@@ -76,7 +76,7 @@ class modSMEventsrankingHelper
         }
 		$teams = sportsmanagementModelProject::getTeamsIndexedById();
 
-		return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams, 'model' => $model); 
+		return array('project' => $project, 'ranking' => $events, 'eventtypes' => $eventtypes, 'teams' => $teams); 
 	}
 
 	/**
