@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-
+jimport('joomla.html.pane');
 $params = $this->form->getFieldsets('params');
 
 ?>
@@ -42,8 +42,7 @@ $params = $this->form->getFieldsets('params');
 	<div class="clear"></div>
 		<?php
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
+
 ?>    
 <ul class="nav nav-tabs">
 <li class="active"><a data-toggle="tab" href="#home"><?php echo Text::_($this->teams->team1);?></a></li>
@@ -61,22 +60,10 @@ echo $this->loadTemplate('home');
 echo $this->loadTemplate('away');
 ?>
 </div>
-
     
 <?PHP    
-}
-else
-{        
-		echo HTMLHelper::_('tabs.start','tabs', array('useCookie'=>1));
-		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team1), 'panel1');
-		echo $this->loadTemplate('home');
-		
-		echo HTMLHelper::_('tabs.panel',Text::_($this->teams->team2), 'panel2');
-		echo $this->loadTemplate('away');
-		
-		echo HTMLHelper::_('tabs.end');
-}        
-		?>
+       
+?>
 <input type='hidden' name='option' value='com_sportsmanagement' />		
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
