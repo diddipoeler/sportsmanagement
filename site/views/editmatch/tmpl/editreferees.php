@@ -23,7 +23,7 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 <div id="lineup">
-	<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='editreferees' method='post' style='display:inline' name='editreferees' >
+	<form action="<?php echo $this->uri->toString(); ?>" id='editreferees' method='post' name='editreferees' >
 	<fieldset>
 		<div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('editmatch.saveReferees', this.form);">
@@ -111,7 +111,6 @@ $params = $this->form->getFieldsets('params');
 <input type="hidden" name="division" value="<?php echo sportsmanagementModelEditMatch::$divisionid; ?>" />
 <input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelEditMatch::$cfg_which_database; ?>" />
 <input type="hidden" name="positionscount" value="<?php echo count($this->positions); ?>" id="positioncount" />
-<input type="hidden" name="component" value="com_sportsmanagement" />
 <?php echo HTMLHelper::_('form.token')."\n"; ?>
 </form>
 </div>
