@@ -205,7 +205,7 @@ $routeparameter['p'] = $project->slug;
 		 * @param mixed $event
 		 * @return
 		 */
-		function getEventIcon($event)
+		public static function getEventIcon($event)
 	{
 		if ($event->icon == 'media/com_sportsmanagement/event_icons/event.gif')
 		{

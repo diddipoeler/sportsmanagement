@@ -23,19 +23,6 @@ if ($params->get('show_project_name', 0))
 {
 	$header .= $list['project']->name;
 }
-/*
-if ($params->get('show_division_name', 0))
-{
-	$division = $list['model']->getDivision();
-	if (property_exists($division->name) && length($division->name) > 0)
-	{
-		if (length($header) > 0)
-		{
-			$header .= " - ";
-		}
-		$header .= $list['model']->getDivision()->name;
-	}
-}*/
 
 $showPicture = $params->get('show_picture', 0);
 $pictureHeight = $params->get('picture_height', 40);
