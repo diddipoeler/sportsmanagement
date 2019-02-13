@@ -361,8 +361,8 @@ foreach($position_ids as $items => $item) {
 
 $class = "btn-group btn-group-yesno";
 $options = array(
-            JHtml::_('select.option', '0', 'nein'),
-            JHtml::_('select.option', '1', 'ja')
+            JHtml::_('select.option', '0', Text::_('JNO')),
+            JHtml::_('select.option', '1', Text::_('JYES'))
         );
 
         $html = array();
@@ -371,15 +371,15 @@ foreach ($options as $in => $option)
         {
 $checked = ( $option->value == $row->project_published) ? ' checked="checked"' : '';
   $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
-  $html[] = '<input type="radio" id="project_published' .  $row->id  . '" name="project_published' . $row->id . '" value="'
+  $html[] = '<input type="radio" id="project_published' .  $row->id  .$in . '" name="project_published' . $row->id . '" value="'
                 . $option->value . '"' . $onchange . ' />';
 
-$html[] = '<label for="' .  $row->id  . '"' . ' class="' . $class. '" '  . $checked . ' >'
+$html[] = '<label for="project_published' .  $row->id .$in  . '"' . $checked . ' class="btn" >'
                 . Text::_( $option->text) . '</label>';
   
 }						
 						
-echo implode($html);						
+echo implode($html);							
 						
 						
 						
