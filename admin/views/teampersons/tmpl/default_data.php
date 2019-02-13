@@ -358,6 +358,30 @@ foreach($position_ids as $items => $item) {
 							</td>
 							<td class="center">
 							<?php	
+
+$class = "btn-group btn-group-yesno";
+$options = array(
+            JHtml::_('select.option', '0', 'nein'),
+            JHtml::_('select.option', '1', 'ja')
+        );
+
+        $html = array();
+$html[] = '<fieldset id="project_published' . $row->id . '" class="' . $class. '" >';
+foreach ($options as $in => $option)
+        {
+$checked = ( $option->value == $row->project_published) ? ' checked="checked"' : '';
+  $onchange = ' onchange="document.getElementById(\'cb' .$i. '\').checked=true"' ;
+  $html[] = '<input type="radio" id="project_published' .  $row->id  . '" name="project_published' . $row->id . '" value="'
+                . $option->value . '"' . $onchange . ' />';
+
+$html[] = '<label for="' .  $row->id  . '"' . ' class="' . $class. '" '  . $checked . ' >'
+                . Text::_( $option->text) . '</label>';
+  
+}						
+						
+						
+						
+						
 						
 /*						
 JFormHelper::loadFieldClass('radio');
