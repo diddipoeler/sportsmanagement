@@ -358,9 +358,11 @@ foreach($position_ids as $items => $item) {
 							</td>
 							<td class="center">
 							<?php	
+						/*
 HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 1 ? 'un' : '') . 'sichtbar', 'cb' . $i, 'teampersons');
 HTMLHelper::_('actionsdropdown.' . ((int) $row->project_published === 0 ? 'un' : '') . 'nicht sichtbar', 'cb' . $i, 'teampersons');
-echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));								
+echo HTMLHelper::_('actionsdropdown.render', $this->escape($row->firstname.' '.$row->lastname));	
+						*/
 						?>
 							</td>	
 							<td class="center">
