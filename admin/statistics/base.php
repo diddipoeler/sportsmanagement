@@ -13,6 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Filesystem\File;
 
 /**
  * SMStatistic
@@ -447,7 +448,7 @@ class SMStatistic extends JObject
 		if (!class_exists($classname))
 		{
 			$file = 'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.'statistics'.DS.$class.'.php';
-			if (!file_exists($file)) {
+			if (!File::exists($file)) {
 				JError::raiseError(0, $classname .': '. Text::_('STATISTIC CLASS NOT DEFINED'));
 			}
             try {
