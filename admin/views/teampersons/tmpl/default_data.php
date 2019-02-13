@@ -379,7 +379,7 @@ $html[] = '<label for="' .  $row->id  . '"' . ' class="' . $class. '" '  . $chec
   
 }						
 						
-						
+echo implode($html);						
 						
 						
 						
