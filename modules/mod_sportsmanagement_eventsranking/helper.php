@@ -104,7 +104,7 @@ class modSMEventsrankingHelper
 	 * @param int type = 1 for club small logo, 2 for country
 	 * @return html string
 	 */
-	function getLogo($item, $type = 1)
+	public static function getLogo($item, $type = 1)
 	{
 		if ($type == 1) // club small logo
 		{
@@ -129,7 +129,7 @@ class modSMEventsrankingHelper
 	 * @param mixed $project
 	 * @return
 	 */
-	function getTeamLink($team, $params, $project)
+	public static function getTeamLink($team, $params, $project)
 	{
 
 $routeparameter = array();
