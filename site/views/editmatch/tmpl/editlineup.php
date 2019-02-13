@@ -23,12 +23,13 @@ $params = $this->form->getFieldsets('params');
 <?php
 
 ?>
-<form  action="<?php echo $this->uri->toString(); ?>" id='editlineup' method='post' style='display:inline' name='editlineup' >
+<form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
 <fieldset>
 <div class="fltrt">
 <button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('editmatch.save', this.form);">
 <?php echo Text::_('JSAVE');?></button>
-
+<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+						<?php echo Text::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >
 			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>

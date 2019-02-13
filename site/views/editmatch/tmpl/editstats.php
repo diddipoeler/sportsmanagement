@@ -18,7 +18,7 @@ $params = $this->form->getFieldsets('params');
 
 ?>
 
-<form  action="<?php echo $this->uri->toString(); ?>" id='adminform' method='post' style='display:inline' name='adminform' >
+<form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
 	<div id="jlstatsform">
 	<fieldset>
 		<div class="fltrt">
