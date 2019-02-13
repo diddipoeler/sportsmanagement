@@ -322,7 +322,7 @@ $query->order('p '.$directionspoint.' , zaehler '.$directionscounter);
 else
 {
 $query->group('me.teamplayer_id');
-$query->order('p '.$order);	
+$query->order('p '.$directionspoint);	
 }
 		
        
