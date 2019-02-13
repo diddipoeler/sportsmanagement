@@ -235,6 +235,7 @@ class sportsmanagementModelRoster extends JSMModelLegacy
         $query->where('pt.id = '.$projectteam->id);
         $query->where('pr.published = 1');
         $query->where('tp.published = 1');
+	$query->where('perpos.published = 1');
         $query->where('tp.persontype = '.$persontype);
         $query->where('tp.season_id = '.self::$seasonid);  
 	$query->where('pt.project_id = '.self::$projectid);
