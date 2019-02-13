@@ -33,7 +33,7 @@ class modSMEventsrankingHelper
 	 * @param mixed $params
 	 * @return
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{ 
 	  
        $app = Factory::getApplication();
