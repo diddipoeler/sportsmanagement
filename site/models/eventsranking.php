@@ -82,7 +82,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * 
 	 * @return
 	 */
-	function getLimit()
+	public static function getLimit()
 	{
 		return self::$limit;
 	}
@@ -92,7 +92,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * 
 	 * @return
 	 */
-	function getLimitStart()
+	public static function getLimitStart()
 	{
 		return self::$limitstart;
 	}
@@ -134,7 +134,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * 
 	 * @return
 	 */
-	function getEventTypes()
+	public static function getEventTypes()
 	{
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -255,7 +255,7 @@ class sportsmanagementModelEventsRanking extends BaseDatabaseModel
 	 * @param integer $directionspointpos
 	 * @return
 	 */
-	function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC',$directionspointpos=1)
+	public static function _getEventsRanking($eventtype_id, $order='DESC', $limit=10, $limitstart=0, $dart=FALSE, $directionspoint='DESC', $directionscounter='DESC',$directionspointpos=1)
 	{
 	   $app = Factory::getApplication();
     $option = Factory::getApplication()->input->getCmd('option');
@@ -361,7 +361,7 @@ $query->order('p '.$directionspoint);
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)
 			{
-				$eventrankings[$eventkey] = $this->_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter,$eventtypes[$eventkey]->directionspointpos);
+				$eventrankings[$eventkey] = self::_getEventsRanking($eventkey, $order, $limit, $limitstart,$dart,$eventtypes[$eventkey]->directionspoint,$eventtypes[$eventkey]->directionscounter,$eventtypes[$eventkey]->directionspointpos);
 			}
 		}
 
