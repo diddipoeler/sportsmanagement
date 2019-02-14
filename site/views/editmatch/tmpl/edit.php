@@ -15,7 +15,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 jimport('joomla.html.pane');
-// Load the tooltip behavior.
 HTMLHelper::_('behavior.tooltip');
 //HTMLHelper::_('behavior.formvalidation');
 
@@ -90,64 +89,36 @@ function toggle_altdecision()
 					<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
 						<?php echo Text::_('JCANCEL');?></button>
 </div>
-	<legend>
-  <?php 
+<legend>
+<?php 
 
-  ?>
-  </legend>
-  </fieldset>
-
-<ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS');?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION');?></a></li>
-<li><a data-toggle="tab" href="#menu2"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW');?></a></li>
-<li><a data-toggle="tab" href="#menu3"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS');?></a></li>
-<li><a data-toggle="tab" href="#menu4"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT');?></a></li>
-<li><a data-toggle="tab" href="#menu5"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION');?></a></li>
-<li><a data-toggle="tab" href="#menu6"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED');?></a></li>
-</ul>
-     
-<div class="tab-content">
-<div id="home" class="tab-pane fade in active"> 
-<?PHP
+?>
+</legend>
+</fieldset>
+<?php
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home')); 	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHDETAILS', true));
 echo $this->loadTemplate('matchdetails');
-?>
-</div>
-<div id="menu1" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');			
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu1', Text::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION', true));
 echo $this->loadTemplate('altdecision');
-?>
-</div>
-<div id="menu2" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu2', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHPREVIEW', true));
 echo $this->loadTemplate('matchpreview');
-?>
-</div>
-<div id="menu3" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu3', Text::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS', true));
 echo $this->loadTemplate('scoredetails');
-?>
-</div>
-<div id="menu4" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu4', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT', true));
 echo $this->loadTemplate('matchreport');
-?>
-</div>
-<div id="menu5" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu5', Text::_('COM_SPORTSMANAGEMENT_TABS_MATCHRELATION', true));
 echo $this->loadTemplate('matchrelation');
-?>
-</div>
-<div id="menu6" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'menu6', Text::_('COM_SPORTSMANAGEMENT_TABS_EXTENDED', true));
 echo $this->loadTemplate('matchextended');
-?>
-</div>
-
-</div>
-<?PHP
-
-
+echo HTMLHelper::_('bootstrap.endTab');		
+echo HTMLHelper::_('bootstrap.endTabSet');		
 ?>
 <div class="clr"></div>
 
