@@ -180,7 +180,7 @@ $return = $model->savestats($post);
         $routeparameter['order'] = $post['order'];
         $routeparameter['layout'] = $post['oldlayout'];
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED');
 
         //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);
         $this->setRedirect($link, $msg);
