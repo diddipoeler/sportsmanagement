@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-//jimport('joomla.html.pane');
+HTMLHelper::_('behavior.framework');
 $params = $this->form->getFieldsets('params');
 
 ?>
