@@ -74,9 +74,9 @@ static $oldlayout = '';
         
     }    
     
-function savestats($post)
+function savestats($data)
 {
-	
+$result = sportsmanagementModelMatch::savestats($data);	
 }
 
 	
