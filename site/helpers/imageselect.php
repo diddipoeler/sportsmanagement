@@ -129,6 +129,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
 			//select = document.getElementById('a_" . $fieldname . "_name').value;
 
 var radios = document.getElementsByName('jform[gender]');
+picture = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 for (var i = 0, length = radios.length; i < length; i++)
 {
  if (radios[i].checked)
@@ -145,9 +146,14 @@ console.log('0.clear gender : ' + gender );
 			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
 			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
-			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
-			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
-			//jQuery('#a_" . $fieldname . "_name').val('');
+//			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
+//			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
+
+document.getElementById('" . $fieldid . "').value = picture';
+document.getElementById('" . $fieldid . "_preview').src = picture';
+
+
+//jQuery('#a_" . $fieldname . "_name').val('');
 			//jQuery('#" . $fieldpreview_name . "').attr('src', '');
 //			jQuery('#a_" . $fieldname . "_name').change();
 		}
