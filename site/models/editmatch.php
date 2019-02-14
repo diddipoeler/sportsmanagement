@@ -9,13 +9,11 @@
  * @subpackage editmatch
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
-
-jimport('joomla.application.component.modeladmin');
+use Joomla\CMS\MVC\Model\AdminModel;
 
 require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
 require_once(JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'project.php' ); 
@@ -30,7 +28,7 @@ require_once(JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'models' . DS . 'match.p
  * @version $Id$
  * @access public
  */
-class sportsmanagementModelEditMatch extends JModelAdmin
+class sportsmanagementModelEditMatch extends AdminModel
 {
 
 const MATCH_ROSTER_STARTER = 0;
