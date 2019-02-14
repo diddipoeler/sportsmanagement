@@ -75,8 +75,19 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 
 switch ( self::$_view )
 {
-	case 'projectteam':
-		break;
+case 'projectteam':
+if ( $type == 'trikot_home' )
+{
+$typefolder = 'projectteams/'.$type;	
+}
+if ( $type == 'trikot_away' )
+{
+$typefolder = 'projectteams/'.$type;	
+}		
+break;
+default:
+$typefolder = $type;		
+break;
 }
 		
 		//Build the image select functionality
@@ -86,18 +97,18 @@ switch ( self::$_view )
 			console.log('selectImage fieldid : ' + fieldid);
 			console.log('selectImage field : ' + field);
 			
-			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
+			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
 			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root()."images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 var els=document.getElementsByName(field);
 for (var i=0;i<els.length;i++) {
-els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;}
+els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;}
 
-			//$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
-//			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+			//$('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+image;
+//			$('a_' + field + '_name').value ='images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
 			//$('a_' + field + '_name').fireEvent('change');
       		//if($(fieldid)) {
-        		//$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
+        		//$(fieldid).value = 'images/com_sportsmanagement/database/" . self::getfolder( $typefolder ) . "/'+imagename;
 //      		}
 	//		$('a_' + field + '_name').fireEvent('change');
 		}
@@ -229,7 +240,7 @@ $layoutdrag = 'upload';
 //		$type . '&amp;field=' . $fieldname . '&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
         
        $link2 = 'index.php?option=com_media&amp;view=images' .
-		'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder( $type ) . '&author=&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
+		'&amp;asset=com_sportsmanagement&amp;folder=com_sportsmanagement/database/' . self::getfolder( $typefolder ) . '&author=&amp;fieldid=' . $fieldid .'&amp;tmpl=component';
         
         
 /*		
