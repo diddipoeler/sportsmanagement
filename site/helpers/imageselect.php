@@ -149,8 +149,8 @@ console.log('0.clear gender : ' + gender );
 //			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 //			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
 
-document.getElementById('" . $fieldid . "').value = picture';
-document.getElementById('" . $fieldid . "_preview').src = picture';
+document.getElementById('" . $fieldid . "').value = picture;
+document.getElementById('" . $fieldid . "_preview').src = picture;
 
 
 //jQuery('#a_" . $fieldname . "_name').val('');
