@@ -47,11 +47,9 @@ echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_('away', true));
 echo $this->loadTemplate('away');
 echo HTMLHelper::_('bootstrap.endTab');		
 echo HTMLHelper::_('bootstrap.endTabSet');		
-
-  
        
 ?>
-<input type='hidden' name='option' value='com_sportsmanagement' />
+<!-- <input type='hidden' name='option' value='com_sportsmanagement' /> -->
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="task" id="" value="" />
