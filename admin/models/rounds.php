@@ -292,12 +292,16 @@ $option = $app->input->getCmd('option');
         $query->order('id ASC');  
         
 
+		try{
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
-		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
+	$result = $db->loadAssocList() ;
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');	
+        return false;
+        } 
 		for ($i=0,$n=count($result); $i < $n; $i++) {
 			if(isset($result[$i-1])) {
 				return $result[$i-1];
@@ -329,12 +333,16 @@ $option = $app->input->getCmd('option');
         $query->order('id ASC');  
         
 	
+		try{
 		$db->setQuery($query);
-		if (!$result=$db->loadAssocList())
-		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
+	$result = $db->loadAssocList() ;
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');	
+        return false;
+        } 
 		for ($i=0,$n=count($result); $i < $n; $i++) {
 			if($result[$i]['id']==$roundid) {
 				if(isset($result[$i+1])) {
