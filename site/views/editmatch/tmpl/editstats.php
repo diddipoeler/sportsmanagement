@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
  * @version   1.0.05
  * @file      editstats.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage editmatch
@@ -13,12 +13,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 $params = $this->form->getFieldsets('params');
 
 ?>
 
-<form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
+<form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
 	<div id="jlstatsform">
 	<fieldset>
 		<div class="fltrt">
@@ -29,42 +29,29 @@ $params = $this->form->getFieldsets('params');
 						<?php echo Text::_('JSAVE');?></button>
                         -->
 
-<!--
-<input type='submit' name='save' value='<?php echo Text::_('JSAVE' );?>' />
--->
+
 
 				</div>
         
-		<div class="configuration" >
-			Stats
-		</div>
-	</fieldset>
-	<div class="clear"></div>
-		<?php
+<div class="configuration" >
 
-
-?>    
-<ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#home"><?php echo Text::_($this->teams->team1);?></a></li>
-<li><a data-toggle="tab" href="#menu1"><?php echo Text::_($this->teams->team2);?></a></li>
-</ul>    
-
-<div class="tab-content">
-<div id="home" class="tab-pane fade in active"> 
-<?PHP
+</div>
+</fieldset>
+<div class="clear"></div>
+<?php
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));  
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_($fieldset->label, true));
 echo $this->loadTemplate('home');
-?>
-</div>
-<div id="menu1" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');		
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_($fieldset->label, true));
 echo $this->loadTemplate('away');
-?>
-</div>
-    
-<?PHP    
+echo HTMLHelper::_('bootstrap.endTab');		
+echo HTMLHelper::_('bootstrap.endTabSet');		
+
+  
        
 ?>
-<!-- <input type='hidden' name='option' value='com_sportsmanagement' /> -->		
+<input type='hidden' name='option' value='com_sportsmanagement' />
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="close" id="close" value="0" />
 <input type="hidden" name="task" id="" value="" />
