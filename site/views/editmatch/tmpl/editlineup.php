@@ -30,48 +30,29 @@ $params = $this->form->getFieldsets('params');
 <?php echo Text::_('JSAVE');?></button>
 <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
 						<?php echo Text::_('JCANCEL');?></button>
-		</div>
-		<div class="configuration" >
-			<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
-		</div>
-	</fieldset>
-	<div class="clear"></div>
-	<div id="lineup">
-		<?php
-       
-?>    
-<ul class="nav nav-tabs">
-<li class="active"><a data-toggle="tab" href="#player"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');?></a></li>
-<li><a data-toggle="tab" href="#subst"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST');?></a></li>
-<li><a data-toggle="tab" href="#staff"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF');?></a></li>
-<li><a data-toggle="tab" href="#trikotnumber"><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');?></a></li>
-</ul>    
-
-<div class="tab-content">
-<div id="player" class="tab-pane fade in active"> 
-<?PHP
+</div>
+<div class="configuration" >
+<?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
+</div>
+</fieldset>
+<div class="clear"></div>
+<div id="lineup">
+<?php
+echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'player')); 
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'player', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS', true));
 echo $this->loadTemplate('players');
-?>
-</div>
-<div id="subst" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');			
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'substitutions', Text::_('COM_SPORTSMANAGEMENT_TABS_SUBST', true));
 echo $this->loadTemplate('substitutions');
-?>
-</div>
-<div id="staff" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');		
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'staff', Text::_('COM_SPORTSMANAGEMENT_TABS_STAFF', true));
 echo $this->loadTemplate('staff');
-?>
-</div>
-<div id="trikotnumber" class="tab-pane fade">
-<?PHP
+echo HTMLHelper::_('bootstrap.endTab');		
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'players_trikot_numbers', Text::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS', true));
 echo $this->loadTemplate('players_trikot_numbers');
-?>
-</div>
-    
-<?PHP    
-
-?>
+echo HTMLHelper::_('bootstrap.endTab');	
+echo HTMLHelper::_('bootstrap.endTabSet');		
+?>    
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="view" value="" />
 <input type="hidden" name="project_id" value="<?php echo $this->project_id; ?>" />
