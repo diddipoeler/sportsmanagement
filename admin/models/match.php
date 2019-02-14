@@ -643,8 +643,8 @@ if (!$calendar->isAuth())
                 $projectteam_id = $data['projectteam_id'][$idx];
                 //clear previous data
                 $query = ' DELETE FROM #__sportsmanagement_match_statistic '
-                    . ' WHERE match_id=' . $db->Quote($match_id)
-                    . '   AND teamplayer_id=' . $db->Quote($teamplayer_id);
+                    . ' WHERE match_id =' . $match_id
+                    . '   AND teamplayer_id =' . $teamplayer_id;
                 $db->setQuery($query);
                 $res = $db->execute();
                 foreach ($data as $key => $value) {
@@ -676,8 +676,8 @@ if (!$calendar->isAuth())
                 $projectteam_id = $data['sprojectteam_id'][$idx];
                 //clear previous data
                 $query = ' DELETE FROM #__sportsmanagement_match_staff_statistic '
-                    . ' WHERE match_id=' . $db->Quote($match_id)
-                    . '   AND team_staff_id=' . $db->Quote($team_staff_id);
+                    . ' WHERE match_id =' . $match_id
+                    . '   AND team_staff_id =' . $team_staff_id;
                 $db->setQuery($query);
                 $res = $db->execute();
                 foreach ($data as $key => $value) {
