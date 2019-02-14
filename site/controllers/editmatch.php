@@ -46,17 +46,7 @@ $post = $app->input->post->getArray(array());
 $model = $this->getModel('editmatch');
 $return = $model->savestats($post);  
 
-$routeparameter = array();
-        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-        $routeparameter['s'] = $post['s'];
-        $routeparameter['p'] = $post['p'];
-        $routeparameter['r'] = $post['r'];
-        $routeparameter['division'] = $post['division'];
-        $routeparameter['mode'] = 0;
-        $routeparameter['order'] = 0;
-        $routeparameter['layout'] = 'form';
-    $routeparameter['tmpl'] = 'component';
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+    $link = $_SERVER['HTTP_REFERER'];
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
         $this->setRedirect($link, $msg);    
