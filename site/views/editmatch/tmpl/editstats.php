@@ -52,8 +52,8 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 <input type="hidden" name="p" value="<?php echo sportsmanagementModelEditMatch::$projectid; ?>" />
 <input type="hidden" name="r" value="<?php echo sportsmanagementModelEditMatch::$roundid; ?>" />
 <input type="hidden" name="s" value="<?php echo sportsmanagementModelEditMatch::$seasonid; ?>" />
-<input type="hidden" name="id"	value="<?php echo $this->item->id; ?>" />
-<input type="hidden" name="match_id"	value="<?php echo $this->item->id; ?>" />
+<input type="hidden" name="id" value="<?php echo $this->match->id; ?>" />
+<input type="hidden" name="match_id" value="<?php echo $this->match->id; ?>" />
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo HTMLHelper::_( 'form.token' ); ?>
 </div>
