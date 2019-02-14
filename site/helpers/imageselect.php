@@ -143,6 +143,21 @@ console.log('0.clear gender : ' + gender );
   break;
  }
 }
+
+switch(gender) {
+  case '1':
+picture = '".sportsmanagementHelper::getDefaultPlaceholder('mensmall')."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('mensmall')."';
+      break;
+  case '2':
+picture = '".sportsmanagementHelper::getDefaultPlaceholder('womansmall')."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder('womansmall')."';
+      break;
+
+  } 
+console.log('picture : ' + picture );
+console.log('pictureprev : ' + pictureprev );
+
 			console.log('1.clear type: ' + '" . $type . "' );
 			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
 			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
