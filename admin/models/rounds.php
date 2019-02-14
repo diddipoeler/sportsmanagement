@@ -397,25 +397,23 @@ $option = $app->input->getCmd('option');
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
         
       // Select some fields
-        //$query->select('id as value,name as text, id, name, round_date_first, round_date_last, roundcode');
         $query->select('CONCAT_WS( \':\', id, alias ) AS value');
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$project_id);  
         $query->order('roundcode '.$ordering); 
-
+try{
 		$db->setQuery($query);
         $result = $db->loadObjectList();
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'   ),'');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $my_text = 'result <pre>'.print_r($result,true).'</pre>';    
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
+        catch (Exception $e)
+        {
+        $this->jsmapp->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return false;
+        }
+        
         
         return $result;
 	}
