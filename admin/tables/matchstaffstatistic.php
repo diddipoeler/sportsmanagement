@@ -9,7 +9,6 @@
  * @subpackage tables
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 
@@ -45,11 +44,13 @@ class sportsmanagementTableMatchStaffStatistic extends JSMTable
 	 */
 	function check()
 	{
+		/*
 		if ( ! ( $this->statistic_id && $this->projectteam_id && $this->match_id) )
 		{
 			$this->setError( Text::_( 'CHECK FAILED' ) );
 			return false;
 		}
+		*/
 		return true;
 	}
 }
