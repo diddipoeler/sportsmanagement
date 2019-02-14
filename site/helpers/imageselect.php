@@ -74,8 +74,8 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
 		{
-			console.log('fieldid : ' + fieldid);
-			console.log('field : ' + field);
+			console.log('selectImage fieldid : ' + fieldid);
+			console.log('selectImage field : ' + field);
 			
 			document.getElementById('a_' + field).value = 'images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+image;
 			document.getElementById(fieldid).value ='images/com_sportsmanagement/database/" . self::getfolder( $type ) . "/'+imagename;
@@ -114,9 +114,9 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//alert('hallo');
 			//jQuery('#a_" . $fieldname . "').attr('value', '');
 			//select = document.getElementById('a_" . $fieldname . "_name').value;
-			console.log('2.clear type: ' + '" . $type . "' );
+			console.log('1.clear type: ' + '" . $type . "' );
 			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
-			console.log('2.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
+			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
 			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
@@ -136,11 +136,11 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 		console.log('select : ' + select  );
 		document.getElementById('" . $fieldid . "_preview').src = '" . Uri::root(). "' + select  ;
 
-		console.log('ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
-		console.log('fieldname: ' + '" . $fieldname . "' );
-		console.log('fieldid: ' + '" . $fieldid . "' );
-		console.log('type: ' + '" . $type . "' );
-		console.log('preview name: ' + '" . $fieldpreview_name . "' );
+		console.log('document.ready ready: ' + jQuery('#a_" . $fieldname . "_name').val() );	
+		console.log('document.ready fieldname: ' + '" . $fieldname . "' );
+		console.log('document.ready fieldid: ' + '" . $fieldid . "' );
+		console.log('document.ready type: ' + '" . $type . "' );
+		console.log('document.ready preview name: ' + '" . $fieldpreview_name . "' );
 		
 //			jQuery('#a_" . $fieldname . "_name').change( function()
 //			{
@@ -163,15 +163,15 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 $js .= '      
 // Compatibility with mootools modal layout
 function jInsertFieldValue(value, id) {
-console.log("value : " + value);
-console.log("id : " + id);	
+console.log("jInsertFieldValue value : " + value);
+console.log("jInsertFieldValue id : " + id);	
 jQuery("#" + id).val(value);
 select = jQuery("#" + id).val();
 
-console.log("select : " + select);
+console.log("jInsertFieldValue select : " + select);
 var $img = jQuery("#" + id + "_preview");
 
-console.log("img : " + $img);	
+console.log("jInsertFieldValue img : " + $img);	
 
 //if (select) {
 			$img.attr("src", "' . Uri::root(). '" + select);
