@@ -74,7 +74,7 @@ static $oldlayout = '';
         
     }    
     
-function savestats()
+function savestats($post)
 {
 	
 }
