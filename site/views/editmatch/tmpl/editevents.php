@@ -15,6 +15,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
+HTMLHelper::_('behavior.framework');
 $savenewcomment = array();
 $savenewcomment[] = $this->match->id;
 $savenewcomment[] = $this->eventsprojecttime;
@@ -76,15 +77,18 @@ jQuery('#team_id').change(updatePlayerSelect);
 
 </script>	
 <?php
-
+/*
 if (version_compare(JSM_JVERSION, '4', 'eq')) {
     $uri = Uri::getInstance();   
 } else {
     $uri = Factory::getURI();
 }
+*/
 ?>
           
-<form  action="<?php echo $uri->toString(); ?>" id='editevents' method='post' style='display:inline' name='editevents' >
+<form  action="<?php echo $this->uri->toString(); ?>" id='editevents' method='post' name='editevents' >
+<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+<?php echo Text::_('JCANCEL');?></button>	
 <div id="gamesevents">
 
 <div id="UserError" ></div>
