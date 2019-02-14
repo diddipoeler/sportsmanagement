@@ -114,6 +114,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//alert('hallo');
 			//jQuery('#a_" . $fieldname . "').attr('value', '');
 			//select = document.getElementById('a_" . $fieldname . "_name').value;
+			console.log('type: ' + '" . $type . "' );
 			console.log('fieldname: ' + '" . $fieldname . "' );
 			console.log('fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
