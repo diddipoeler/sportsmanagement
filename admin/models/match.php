@@ -633,6 +633,7 @@ if (!$calendar->isAuth())
     function savestats($data)
     {
         $app = Factory::getApplication();
+	$db = sportsmanagementHelper::getDBConnection();    
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $match_id = $data['match_id'];
         if (isset($data['cid'])) {
@@ -644,8 +645,8 @@ if (!$calendar->isAuth())
                 $query = ' DELETE FROM #__sportsmanagement_match_statistic '
                     . ' WHERE match_id=' . $this->_db->Quote($match_id)
                     . '   AND teamplayer_id=' . $this->_db->Quote($teamplayer_id);
-                $this->_db->setQuery($query);
-                $res = $this->_db->execute();
+                $db->setQuery($query);
+                $res = $db->execute();
                 foreach ($data as $key => $value) {
                     if (preg_match('/^stat' . $teamplayer_id . '_([0-9]+)/', $key, $reg) && $value != "") {
                         $statistic_id = $reg[1];
@@ -677,8 +678,8 @@ if (!$calendar->isAuth())
                 $query = ' DELETE FROM #__sportsmanagement_match_staff_statistic '
                     . ' WHERE match_id=' . $this->_db->Quote($match_id)
                     . '   AND team_staff_id=' . $this->_db->Quote($team_staff_id);
-                $this->_db->setQuery($query);
-                $res = $this->_db->execute();
+                $db->setQuery($query);
+                $res = $db->execute();
                 foreach ($data as $key => $value) {
                     if (ereg('^staffstat' . $team_staff_id . '_([0-9]+)', $key, $reg) && $value != "") {
                         $statistic_id = $reg[1];
