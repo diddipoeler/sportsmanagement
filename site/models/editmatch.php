@@ -74,8 +74,12 @@ static $oldlayout = '';
         
     }    
     
+function savestats()
+{
+	
+}
 
-
+	
 /**
  * sportsmanagementModelEditMatch::updateReferees()
  * 
