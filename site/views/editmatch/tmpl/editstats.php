@@ -19,19 +19,15 @@ $params = $this->form->getFieldsets('params');
 ?>
 
 <form name="adminForm" id="adminForm" method="post" action="<?php echo $this->uri->toString(); ?>">
-	<div id="jlstatsform">
-	<fieldset>
-		<div class="fltrt">
+<div id="jlstatsform">
+<fieldset>
+<div class="fltrt">
 <button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
-						<?php echo Text::_('JCANCEL');?></button>        
-<!--
-					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
-						<?php echo Text::_('JSAVE');?></button>
-                        -->
+<?php echo Text::_('JCANCEL');?></button>        
 
-
-
-				</div>
+<button type="button" onclick="Joomla.submitform('editmatch.savestats', this.form);">
+<?php echo Text::_('JSAVE');?></button>
+</div>
         
 <div class="configuration" >
 
