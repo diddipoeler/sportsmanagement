@@ -257,15 +257,16 @@ $option = $app->input->getCmd('option');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode DESC, id DESC');  
         		
+		try{
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-		if (!$result=$db->loadAssocList())
-		{
-			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-			return false;
-		}
+	$result = $db->loadAssocList() ;
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');	
+        return false;
+        }   
 		return $result[0];
 	}
     
