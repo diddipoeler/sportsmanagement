@@ -32,7 +32,8 @@ abstract class ImageSelectSM
 {
 
 static $_foldertype = '';
-
+static $_view = '';
+	
 	/**
 	 * ImageSelectSM::__construct()
 	 * 
@@ -42,6 +43,8 @@ static $_foldertype = '';
 	{
   $type	= Factory::getApplication()->input->getVar( 'type' );
   self::$_foldertype = $type;
+self::$_view = Factory::getApplication()->input->getVar( 'view' );
+		
 	}
 
 	/**
@@ -70,6 +73,12 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 		$baseFolder = Uri::root();//.'images/com_sportsmanagement/database/'.ImageSelect::getfolder($type);
 		$funcname = preg_replace( "/^[.]*/", '', $fieldid );
 
+switch ( self::$_view )
+{
+	case 'projectteam':
+		break;
+}
+		
 		//Build the image select functionality
 		$js = "
 		function selectImage_" . $type . "(image, imagename, field, fieldid)
