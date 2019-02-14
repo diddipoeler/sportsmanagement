@@ -633,7 +633,8 @@ if (!$calendar->isAuth())
     function savestats($data)
     {
         $app = Factory::getApplication();
-	$db = sportsmanagementHelper::getDBConnection();    
+	$db = sportsmanagementHelper::getDBConnection();   
+	$query = $db->getQuery(true);    
         //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $match_id = $data['match_id'];
         if (isset($data['cid'])) {
@@ -642,9 +643,14 @@ if (!$calendar->isAuth())
                 $teamplayer_id = $data['teamplayer_id'][$idx];
                 $projectteam_id = $data['projectteam_id'][$idx];
                 //clear previous data
-                $query = ' DELETE FROM #__sportsmanagement_match_statistic '
-                    . ' WHERE match_id =' . $match_id
-                    . '   AND teamplayer_id =' . $teamplayer_id;
+		    $query->clear();
+		$conditions = array(
+    $db->quoteName('match_id') . ' = '.$match_id, 
+    $db->quoteName('teamplayer_id') . ' = ' . $teamplayer_id
+);
+$query->delete($db->quoteName('#__sportsmanagement_match_statistic'));
+$query->where($conditions);
+
 		    try{
                 $db->setQuery($query);
                 $res = $db->execute();
@@ -681,9 +687,14 @@ if (!$calendar->isAuth())
                 $team_staff_id = $data['team_staff_id'][$idx];
                 $projectteam_id = $data['sprojectteam_id'][$idx];
                 //clear previous data
-                $query = ' DELETE FROM #__sportsmanagement_match_staff_statistic '
-                    . ' WHERE match_id =' . $match_id
-                    . '   AND team_staff_id =' . $team_staff_id;
+		$query->clear();
+		$conditions = array(
+    $db->quoteName('match_id') . ' = '.$match_id, 
+    $db->quoteName('team_staff_id') . ' = ' . $team_staff_id
+);
+$query->delete($db->quoteName('#__sportsmanagement_match_staff_statistic'));
+$query->where($conditions);
+		    
 		    try{
                 $db->setQuery($query);
                 $res = $db->execute();
