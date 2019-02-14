@@ -130,6 +130,7 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
 
 var radios = document.getElementsByName('jform[gender]');
 picture = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
+pictureprev = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
 for (var i = 0, length = radios.length; i < length; i++)
 {
  if (radios[i].checked)
@@ -150,7 +151,7 @@ console.log('0.clear gender : ' + gender );
 //			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
 
 document.getElementById('" . $fieldid . "').value = picture;
-document.getElementById('" . $fieldid . "_preview').src = ".Uri::root()."picture;
+document.getElementById('" . $fieldid . "_preview').src = pictureprev;
 
 
 //jQuery('#a_" . $fieldname . "_name').val('');
