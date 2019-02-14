@@ -76,14 +76,7 @@ $modalwidth = ComponentHelper::getParams(Factory::getApplication()->input->getCm
 switch ( self::$_view )
 {
 case 'projectteam':
-if ( $type == 'trikot_home' )
-{
-$typefolder = 'projectteams/'.$type;	
-}
-if ( $type == 'trikot_away' )
-{
-$typefolder = 'projectteams/'.$type;	
-}		
+$typefolder = $type;
 break;
 default:
 $typefolder = $type;		
