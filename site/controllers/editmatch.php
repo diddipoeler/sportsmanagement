@@ -9,7 +9,6 @@
  * @subpackage editmatch
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -47,7 +46,7 @@ $model = $this->getModel('editmatch');
 $return = $model->savestats($post);  
 
     $link = $_SERVER['HTTP_REFERER'];
-        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
 
         $this->setRedirect($link, $msg);    
 }
@@ -85,7 +84,7 @@ $return = $model->savestats($post);
         $return = $model->updateReferees($post);
 
          $link = $_SERVER['HTTP_REFERER'];
-        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
+        $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES');
 
         $this->setRedirect($link, $msg);
     }
