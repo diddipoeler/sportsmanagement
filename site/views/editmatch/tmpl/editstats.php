@@ -36,10 +36,10 @@ $params = $this->form->getFieldsets('params');
 <div class="clear"></div>
 <?php
 echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', array('active' => 'home'));  
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_('home', true));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'home', Text::_($this->teams->team1, true));
 echo $this->loadTemplate('home');
 echo HTMLHelper::_('bootstrap.endTab');		
-echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_('away', true));
+echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'away', Text::_($this->teams->team2, true));
 echo $this->loadTemplate('away');
 echo HTMLHelper::_('bootstrap.endTab');		
 echo HTMLHelper::_('bootstrap.endTabSet');		
