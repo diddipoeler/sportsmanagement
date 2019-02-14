@@ -127,6 +127,8 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $typef
 			//alert('hallo');
 			//jQuery('#a_" . $fieldname . "').attr('value', '');
 			//select = document.getElementById('a_" . $fieldname . "_name').value;
+			gender = document.getElementById('jform_gender').value;
+			console.log('0.clear gender : ' + gender );
 			console.log('1.clear type: ' + '" . $type . "' );
 			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
 			console.log('3.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
