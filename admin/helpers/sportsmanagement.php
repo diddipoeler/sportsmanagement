@@ -1477,6 +1477,7 @@ case "trikot_away": //
                 break;
             case "team": //team picture
             case "team_picture":
+			case "projectteams":
             case "projectteam_picture":
                 return $ph_team;
                 ;
