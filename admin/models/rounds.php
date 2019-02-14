@@ -9,7 +9,6 @@
  * @subpackage models
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -218,20 +217,20 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query->select('id AS round_id');
         $query->select('roundcode');
         // From the table
-		$query->from('#__sportsmanagement_round');
+	$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode ASC, id ASC');  
-
+try{
 		$db->setQuery($query);
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        
-		if ( !$result = $db->loadAssocList() )
-		{
-			$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');
-			//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-			return false;
-		}
+	$result = $db->loadAssocList() ;
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+	$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');	
+        return false;
+        }        
+		
 		return $result[0];
 	}
 	
