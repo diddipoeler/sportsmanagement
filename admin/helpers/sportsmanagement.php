@@ -1431,10 +1431,12 @@ abstract class sportsmanagementHelper {
         //setup the different placeholders
         switch ($type) {
 case "trikot_home": //
+case "projectteams/trikot_home":			
                 return $ph_logo_small;
                 break;
 				
 case "trikot_away": //
+case "projectteams/trikot_away":			
                 return $ph_logo_small;
                 break;				
             case "player": //player
