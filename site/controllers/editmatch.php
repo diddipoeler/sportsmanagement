@@ -55,6 +55,7 @@ $routeparameter = array();
         $routeparameter['mode'] = 0;
         $routeparameter['order'] = 0;
         $routeparameter['layout'] = 'form';
+    $routeparameter['tmpl'] = 'component';
         $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
