@@ -39,6 +39,14 @@ class sportsmanagementControllerEditMatch extends FormController {
         $this->registerTask('apply', 'save');
     }
 
+function savestats()
+{
+$app = Factory::getApplication();
+$post = $app->input->post->getArray(array());	
+$model = $this->getModel('editmatch');
+$return = $model->savestats($post);    
+}
+    
      public function cancel()
         {
             $msg = 'cancel';
