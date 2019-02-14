@@ -178,7 +178,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
 				class="inputbox"
 				preview="show"
-	     targetfolder="trikot_home"
+	     targetfolder="clubs_trikot_home"
 				directory=""/>				
 			<field
 				name="trikot_away"
@@ -188,7 +188,7 @@
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
 				class="inputbox"
 				preview="show"
-			       targetfolder="trikot_away"
+			       targetfolder="clubs_trikot_away"
 				directory=""/>
         
         <!--
