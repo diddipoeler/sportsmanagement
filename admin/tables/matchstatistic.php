@@ -45,11 +45,13 @@ class sportsmanagementTableMatchStatistic extends JSMTable
 	 */
 	function check()
 	{
+		/*
 		if ( ! ( $this->statistic_id && $this->projectteam_id && $this->match_id) )
 		{
 			$this->setError( Text::_( 'CHECK FAILED' ) );
 			return false;
 		}
+		*/
 		return true;
 	}
 }
