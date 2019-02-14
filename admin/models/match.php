@@ -645,6 +645,7 @@ if (!$calendar->isAuth())
                 $query = ' DELETE FROM #__sportsmanagement_match_statistic '
                     . ' WHERE match_id =' . $match_id
                     . '   AND teamplayer_id =' . $teamplayer_id;
+		    try{
                 $db->setQuery($query);
                 $res = $db->execute();
                 foreach ($data as $key => $value) {
@@ -666,6 +667,10 @@ if (!$calendar->isAuth())
                         }
                     }
                 }
+		} catch (Exception $e) {
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }    
             }
         }
         //staff stats
@@ -678,6 +683,7 @@ if (!$calendar->isAuth())
                 $query = ' DELETE FROM #__sportsmanagement_match_staff_statistic '
                     . ' WHERE match_id =' . $match_id
                     . '   AND team_staff_id =' . $team_staff_id;
+		    try{
                 $db->setQuery($query);
                 $res = $db->execute();
                 foreach ($data as $key => $value) {
@@ -699,6 +705,10 @@ if (!$calendar->isAuth())
                         }
                     }
                 }
+		} catch (Exception $e) {
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+                $result = false;
+            }    
             }
         }
         return true;
