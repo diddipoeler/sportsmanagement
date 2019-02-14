@@ -114,9 +114,9 @@ els[i].value = 'images/com_sportsmanagement/database/" . self::getfolder( $type 
 			//alert('hallo');
 			//jQuery('#a_" . $fieldname . "').attr('value', '');
 			//select = document.getElementById('a_" . $fieldname . "_name').value;
-			console.log('type: ' + '" . $type . "' );
-			console.log('fieldname: ' + '" . $fieldname . "' );
-			console.log('fieldpreview_name : ' + '" . $fieldpreview_name . "' );
+			console.log('2.clear type: ' + '" . $type . "' );
+			console.log('2.clear fieldname: ' + '" . $fieldname . "' );
+			console.log('2.clear fieldpreview_name : ' + '" . $fieldpreview_name . "' );
 			//alert(select);
 			document.getElementById('" . $fieldid . "').value = '".sportsmanagementHelper::getDefaultPlaceholder($type)."';
 			document.getElementById('" . $fieldid . "_preview').src = '".Uri::root().sportsmanagementHelper::getDefaultPlaceholder($type)."';
