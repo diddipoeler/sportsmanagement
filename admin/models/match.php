@@ -669,6 +669,7 @@ if (!$calendar->isAuth())
                 }
 		} catch (Exception $e) {
                 $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');	    
                 $result = false;
             }    
             }
@@ -707,6 +708,7 @@ if (!$calendar->isAuth())
                 }
 		} catch (Exception $e) {
                 $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
+	        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');	    
                 $result = false;
             }    
             }
