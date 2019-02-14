@@ -1440,6 +1440,7 @@ case "projectteams/trikot_away":
                 return $ph_logo_small;
                 break;				
             case "player": //player
+			case "persons": 
                 return $ph_player;
                 break;
 	 case "stadium": //
