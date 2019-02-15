@@ -1,15 +1,14 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r Sportarten
  * @version   1.0.05
  * @file      joomleagueimports.php
  * @author    diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license   This file is part of SportsManagement.
  * @package   sportsmanagement
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -36,22 +35,9 @@ class sportsmanagementControllerjoomleagueimports extends JSMControllerAdmin
 	function __construct($config = array())
 	{
 		parent::__construct($config);
-        //$this->jsmdb = sportsmanagementHelper::getDBConnection();
         // Reference global application object
         $this->jsmapp = Factory::getApplication();
-        // JInput object
         $this->jsmjinput = $this->jsmapp->input;
-        //$this->jsmoption = $this->jsmjinput->getCmd('option');
-//        $this->jsmdocument = Factory::getDocument();
-//        $this->jsmuser = Factory::getUser();
-//        $this->jsmdate = Factory::getDate();
-////        $this->option = $this->jsmjinput->getCmd('option');
-//        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
-        
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-        
-		// Map the apply task to the save method.
-		//$this->registerTask('apply', 'save');
 	}
 
 
@@ -77,34 +63,20 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
  */
 function importjoomleaguenew()
 {
-        //$app = Factory::getApplication();
-        //$option = Factory::getApplication()->input->getCmd('option');
-        
-        //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
         $sports_type_id = $this->jsmjinput->get('filter_sports_type', 0);
-        
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//        $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
         
         if ( $jl_table_import_step != 'ENDE' )
         {
         $model = $this->getModel();
         $result = $model->importjoomleaguenew($jl_table_import_step,$sports_type_id);
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
-        //$this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' model result <br><pre>'.print_r($result,true).'</pre>'),'');
-        //$result = $model->importjoomleaguenewtest($jl_table_import_step);
         $this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
-        //sleep(3);
-        //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&task=joomleagueimports.importjoomleaguenew&layout=default&jl_table_import_step='.$jl_table_import_step, false));
-        
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step.'&filter_sports_type='.$sports_type_id, false));
         
         }
         else
         {
-//        $model::$_success = $result;
-        //$this->jsmapp->setUserState( "$this->option.jl_table_import_step", 0 );
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false));
         }
 
