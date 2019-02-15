@@ -17,7 +17,6 @@ use Joomla\CMS\Uri\Uri;
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-
 if ( $this->jl_table_import_step != 'ENDE' )
 {
 
@@ -92,25 +91,10 @@ function delayRedirect(){
 <?PHP    
 }
 
-
-
-
-
-//echo '<br><pre>'.print_r($this->success,true).'</pre>';
-
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP 
-/*
- if(version_compare(JVERSION,'3.0.0','ge'))  
- { 
- echo $this->loadTemplate('joomla3'); 
- } 
- else 
- { 
- echo $this->loadTemplate('joomla2');     
- } 
- */
+
 ?>
 
 <table>
@@ -133,7 +117,6 @@ function delayRedirect(){
 </tr>
 </table>
   
-<!-- <input type="button" onclick="delayRedirect()" value="Click to Redirect"/>  -->
 <div id='editcell'>
 <?PHP
 if ( $this->success )
@@ -153,9 +136,13 @@ foreach ($this->success as $key => $value)
 
 
 <fieldset>
-			<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
-			<table class='adminlist'><tr><td><?php //echo '<pre>'.print_r($this->success,true).'</pre>'; ?></td></tr></table>
-		</fieldset>
+<legend><?php echo Text::_('Post data from importform was:'); ?></legend>
+<table class='adminlist'><tr><td>
+<?php 
+echo '<pre>'.print_r($this->success,true).'</pre>'; 
+?>
+</td></tr></table>
+</fieldset>
         
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
