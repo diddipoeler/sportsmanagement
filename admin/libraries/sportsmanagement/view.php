@@ -680,7 +680,7 @@ $myoptions[] = HTMLHelper::_( 'select.option', '2', Text::_( 'JYES' ) );
  */            
             switch ($this->view)
             { 
-            case '':
+            case 'joomleagueimports':
             case 'githubinstall':
             case 'extensions':
 	case 'projectteams':
