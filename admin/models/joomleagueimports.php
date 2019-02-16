@@ -652,7 +652,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r(self::$_success,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -668,7 +668,6 @@ if ( $jl_table_import_step == 4 )
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('mp.id,mp.position_id,r.project_id');
-//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
 $query->from('#__joomleague_match_player as mp');
 $query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
 $query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
@@ -676,8 +675,6 @@ $query->where('mp.position_id != 0');
 $query->where('mp.project_position_id = 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 foreach( $result as $row )
 {
@@ -691,7 +688,6 @@ $db->setQuery($query);
 $mdlTable = new stdClass();
 $mdlTable->id = $row->id;
 $mdlTable->project_position_id = $db->loadResult();
-//$mdlTable->published = 1;
 try {
     $result_update = $db->updateObject('#__joomleague_match_player', $mdlTable, 'id');
 }
@@ -711,7 +707,8 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r(self::$_success,true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r(self::$_success,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -774,7 +771,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -838,7 +835,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
