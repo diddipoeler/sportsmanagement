@@ -192,8 +192,10 @@ catch (Exception $e)
 
         $query_den->select('COUNT(m.id) AS value, pt.id');
         $query_den->from('#__sportsmanagement_project_team AS pt');
-        $query_den->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id AND m.published = 1 AND m.team1_result IS NOT NULL');
+        $query_den->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ');
         $query_den->where('pt.project_id = ' . $project_id);
+        $query_den->where('m.published = 1');
+        $query_den->where('m.team1_result IS NOT NULL' );
         $query_den->group('pt.id');
         
 		$query->select('(n.num / d.value) AS total, st.team_id');
