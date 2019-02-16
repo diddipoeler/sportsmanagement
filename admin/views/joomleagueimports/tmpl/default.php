@@ -28,11 +28,9 @@ jQuery(document).ready(function () {
     document.getElementById('delayMsg').innerHTML = '';
 
     delayRedirect();
-    // Handler for .ready() called.
-//    window.setTimeout(function () {
-//        location.href = "<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>";
-//    }, 2000);
 
+const stepsuccess = Joomla.getOptions('success');    
+console.log('stepsuccess ' + stepsuccess);
 
 });
 
