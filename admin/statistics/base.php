@@ -134,8 +134,10 @@ class SMStatistic extends JObject
     $query_den->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_den->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     $query_den->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_den->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_den->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id ');
     $query_den->where('pt.project_id = ' . $project_id);
+    $query_num->where('m.published = 1');
+    $query_num->where('m.team1_result IS NOT NULL' );
     $query_den->where('value > 0');
     $query_den->group('pt.id');
     
