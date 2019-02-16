@@ -263,8 +263,9 @@ $this->overallconfig['use_jquery_modal']);
 					}
 					else
 					{
-						// as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-						//echo 0;
+/**
+ * 						as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
+ */
                         echo $this->overallconfig['zero_events_value'];
 					}
 					?></td>
@@ -275,7 +276,9 @@ $this->overallconfig['use_jquery_modal']);
 					{
 						foreach ($this->gamesstats as $stat)
 						{
-							//do not show statheader when there are no stats
+/**
+ * 							do not show statheader when there are no stats
+ */
 							if (!empty($stat)) { 
 							    if ($stat->showInPlayer()) {
 							?>
@@ -286,8 +289,9 @@ $this->overallconfig['use_jquery_modal']);
 								}
 								else
 								{
-									// as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
-									//echo 0;
+/**
+ * 									as only matches are shown here where the player was part of, output a 0 i.s.o. a '-'
+ */
                                     echo $this->overallconfig['zero_events_value'];
 								}
 					?></td>
@@ -336,7 +340,9 @@ $this->overallconfig['use_jquery_modal']);
 					{
 						foreach ($this->gamesstats as $stat)
 						{
-							//do not show statheader when there are no stats
+/**
+ * 							do not show statheader when there are no stats
+ */
 							if (!empty($stat)) { 
 							    if ( $stat->showInPlayer() && isset($stat->gamesstats['totals']) ) {
 							?>
