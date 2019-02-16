@@ -1699,28 +1699,19 @@ AND st.team_id = 9
         $query_ms = Factory::getDbo()->getQuery(true);
         $query_me = Factory::getDbo()->getQuery(true);
 
+/**
+ * 		To be robust against partly filled in information for a match (match player, statistic, event)
+ * 		we determine if a player was contributing to a match, by checking for the following conditions:
+ * 		1. the player is registered as a player for the match
+ * 		2. the player has a statistic registered for the match
+ * 		3. the player has an event registered for the match
+ * 		If any of these conditions are met, we assume the player was part of the match
+ */
 
-		// To be robust against partly filled in information for a match (match player, statistic, event)
-		// we determine if a player was contributing to a match, by checking for the following conditions:
-		// 1. the player is registered as a player for the match
-		// 2. the player has a statistic registered for the match
-		// 3. the player has an event registered for the match
-		// If any of these conditions are met, we assume the player was part of the match
-//		$common_query_part 	= ' INNER JOIN #__joomleague_match AS m ON m.id = md.match_id'
-//							. ' INNER JOIN #__joomleague_team_player AS tp ON tp.id = md.teamplayer_id'
-//							. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//							. ' WHERE pt.project_id=' . $db->Quote($project_id);
-//		if ($division_id)
-//		{
-//			$common_query_part .= ' AND pt.division_id=' . $db->Quote($division_id);
-//		}
-//		if ($team_id)
-//		{
-//			$common_query_part .= ' AND pt.team_id=' . $db->Quote($team_id);
-//		}
-
-		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
-		// All of them have a match_id and teamplayer_id.
+/**
+ * 		Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
+ * 		All of them have a match_id and teamplayer_id.
+ */
 		$query_mp->select('m.id AS mid, tp.id AS tpid');
         $query_mp->from('#__sportsmanagement_match_player AS md');
         $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
@@ -1755,7 +1746,6 @@ AND st.team_id = 9
 		{
             $query_ms->where('st.team_id = ' . $team_id);
 		}
-        //$query_ms->where('(md.came_in = 0 OR md.came_in = 1)');
         $query_ms->group('m.id, tp.id');
 		$query_me->select('m.id AS mid, tp.id AS tpid');
         $query_me->from('#__sportsmanagement_match_event AS md');

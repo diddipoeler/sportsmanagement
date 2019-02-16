@@ -9,7 +9,6 @@
  * @subpackage statistics
  */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 
@@ -187,7 +186,6 @@ catch (Exception $e)
 		
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        //$query_num = $db->getQuery(true);
         $query_den = $db->getQuery(true);
         
         $query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids);
