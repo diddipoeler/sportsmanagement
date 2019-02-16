@@ -126,7 +126,7 @@ echo HTMLHelper::image($iconPath,
 Text::_($eventtype->name),
 array(	"title" => Text::_($eventtype->name),
 "align" => "top",
-'height'=> 20,      
+'width'=> 30,      
 "hspace" => "2"));
 				?></th>
 				<?php
