@@ -174,23 +174,6 @@ $option['prefix']   = $params->get( 'jl_dbprefix' );    //          Database pre
  */
 $jl_access = JDatabase::getInstance( $option );    
 
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
-
-
-/*
-if ( JError::isError($jl_access) ) {
-			header('HTTP/1.1 500 Internal Server Error');
-			jexit('Database Error: ' . $jl_access->toString() );
-		}
-
-		if ($jl_access->getErrorNum() > 0) {
-			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database ' . 'joomla.library:'.$jl_access->getErrorNum().' - '.$jl_access->getErrorMsg() );
-		}
-
-		$jl_access->debug( $debug );
-*/            
-
 /**
  * fehlende jl felder hinzufügen für alte versionen
  */
@@ -404,34 +387,18 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $date = Factory::getDate();
 $user = Factory::getUser();
-
 $modified = $date->toSql();
 $modified_by = $user->get('id');
               
 self::$_success = '';
 $my_text = '';
-//$mtime = microtime();
-//$mtime = explode(" ",$mtime);
-//$mtime = $mtime[1] + $mtime[0];
 $starttime = sportsmanagementModeldatabasetool::getRunTime();
-    
 $jl_table_import_step = $jinput->get('jl_table_import_step',0);
-//$jl_table_import_step = $importstep;
-
-
 $jinput->set('filter_sports_type', $sports_type_id);
-//$sports_type_id = $jinput->post->get('filter_sports_type', 0);
-//$this->setState('filter.sports_type', $sports_type_id);
-//$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
-
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-
 
 $db = Factory::getDbo(); 
 $query = $db->getQuery(true);
 
-//$post = Factory::getApplication()->input->post->getArray(array());
 $exportfields1 = array();
 $exportfields2 = array();           
 $table_copy = array();        
@@ -527,6 +494,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -572,6 +540,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -626,6 +595,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -680,6 +650,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -738,6 +709,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -800,6 +772,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -863,6 +836,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -883,6 +857,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -903,6 +878,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -921,6 +897,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;    
@@ -1254,6 +1231,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenkopie:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
 return self::$_success;
@@ -1309,6 +1287,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Tabellenaktualisierung:'] = $my_text; 
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1460,6 +1439,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Mannschaften/Spielorte:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1515,6 +1495,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Saison:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1572,6 +1553,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Liga:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1692,6 +1674,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1835,6 +1818,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Personen/Projektpositionen:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1893,6 +1877,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Team-Spieler/Team-Staff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -1951,6 +1936,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Projektteam:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -2065,6 +2051,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Teamplayer/Teamstaff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -2170,6 +2157,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Matchplayer/Matchstaff:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -2321,6 +2309,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -2393,6 +2382,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -3019,6 +3009,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -3080,6 +3071,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Match-Statistic:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -3121,6 +3113,7 @@ self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seco
 self::$_success['Update Projektpositionen:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
@@ -3210,24 +3203,18 @@ $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $o
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Timestamp in den spielen gesetzt !</strong>'.'</span>';
 $my_text .= '<br />';
 
-
-
-
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
 self::$_success['Update Bilderpfade:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step','ENDE');
+Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
-
-
                   
 }
-      
-
             
 }    
 ?>
