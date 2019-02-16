@@ -76,13 +76,11 @@ if (count($this->games))
 					{
 						$iconPath = "images/com_sportsmanagement/database/events/".$iconPath;
 					}
-                    
-                    
 
 					echo HTMLHelper::image($iconPath,Text::_($eventtype->name),
 					array(	"title" => Text::_($eventtype->name),
 					"align" => "top",
-					'height'=> 20,
+					'width'=> 30,
 					"hspace" => "2"));
 					?></th>
 					<?php
@@ -93,8 +91,9 @@ if (count($this->games))
 					{
 						foreach ($this->gamesstats as $stat)
 						{
-
-							//do not show statheader when there are no stats
+/**
+ * 							do not show statheader when there are no stats
+ */
 							if (!empty($stat)) {
 								try{  
 							    if ($stat->showInPlayer()) {

@@ -137,7 +137,9 @@ array(	"title" => Text::_($eventtype->name),
 				{
 					foreach ($this->stats as $stat)
 					{
-						//do not show statheader when there are no stats
+/**
+ * 						do not show statheader when there are no stats
+ */
 						if (!empty($stat)) {
 							if ($stat->showInPlayer()) {
 						
@@ -198,10 +200,6 @@ array(	"title" => Text::_($eventtype->name),
                 <?php
                 if ( $this->config['show_project_logo'] ) 
                             { 
-//if ( !curl_init( $player_hist->project_picture ) )
-//				{
-//					$player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-//				}
 $player_hist->project_picture = ($player_hist->project_picture != '') ? $player_hist->project_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");                                                 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,
 $player_hist->project_picture,
@@ -223,10 +221,6 @@ $this->overallconfig['use_jquery_modal']);
 				<?php
                 if ( $this->config['show_team_logo'] ) 
                             { 
-//if ( !curl_init( $player_hist->club_picture ) )
-//				{
-//					$player_hist->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
-//				}               
 $player_hist->club_picture = ($player_hist->club_picture != '') ? $player_hist->club_picture : sportsmanagementHelper::getDefaultPlaceholder("clublogobig");                                 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,
 $player_hist->club_picture,
@@ -328,7 +322,9 @@ $this->overallconfig['use_jquery_modal']);
 				<?php
 				if ($this->config['show_career_events_stats'])
 				{
-					// stats per project
+/**
+ * 					stats per project
+ */
 					if (count($this->AllEvents))
 					{
 						foreach($this->AllEvents as $eventtype)
@@ -345,7 +341,9 @@ $this->overallconfig['use_jquery_modal']);
 				{
 					foreach ($this->stats as $stat)
 					{
-						//do not show when there are no stats
+/**
+ * 						do not show when there are no stats
+ */
 						if (!empty($stat)) {
 						    if ($stat->showInPlayer()) {    
 				?>
@@ -375,7 +373,10 @@ $this->overallconfig['use_jquery_modal']);
 			<tr class="career_stats_total">
 				<td class="td_r" colspan="<?php echo $colspan; ?>  "><b><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
 				<td class="td_c"><?php echo $career['played']; ?></td>
-				<?php //substitution system
+				<?php 
+/**
+ *                 substitution system
+ */
 				if	($this->config['show_substitution_stats'] && isset($this->overallconfig['use_jl_substitution']) &&
 				($this->overallconfig['use_jl_substitution']==1))
 				{
@@ -387,7 +388,10 @@ $this->overallconfig['use_jquery_modal']);
 				<?php
 				}
 				?>
-				<?php // stats per project
+				<?php 
+/**
+ *                 stats per project
+ */
 				if ($this->config['show_career_events_stats'])
 				{
 					if (count($this->AllEvents))
@@ -405,7 +409,6 @@ $this->overallconfig['use_jquery_modal']);
 							?>
 				<td class="td_c">
                 <?php 
-                //echo (($total) ? $total : 0);
                 echo (($total) ? $total : $this->overallconfig['zero_events_value']); 
                 ?>
                 </td>
