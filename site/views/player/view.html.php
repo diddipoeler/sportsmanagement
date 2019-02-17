@@ -32,31 +32,7 @@ class sportsmanagementViewPlayer extends sportsmanagementView {
      */
     function init() {
   
-/*
-// Add the logger.
-JLog::addLogger(
-    array(
-        'logger' => 'database'
-    ),
-    JLog::ALL,
-    $this->option
-);
-
-$logarray['view'] = $this->view;
-$logarray['p'] = $this->jinput->getInt('p', 0);
-$logarray['pid'] = $this->jinput->getInt('pid', 0);
-$logarray['pt'] = $this->jinput->getInt('pt', 0);
-try{  
-// Add the message.
-JLog::add(json_encode($logarray), JLog::INFO, $this->option);
- }
-catch (Exception $e)
-{
-    $this->app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
-}        
-*/        
         $model = $this->model;
-
         $model::$projectid = $this->jinput->getInt('p', 0);
         $model::$personid = $this->jinput->getInt('pid', 0);
         $model::$teamplayerid = $this->jinput->getInt('pt', 0);
@@ -78,7 +54,9 @@ catch (Exception $e)
         }
 
         if (isset($this->overallconfig['person_events'])) {
-            // alles ok    
+/**
+ *              alles ok
+ */    
         } else {
             $person_events = sportsmanagementModelEventtypes::getEvents($this->project->sports_type_id);
             if (is_array($person_events) || is_object($person_events)) {
@@ -179,10 +157,8 @@ catch (Exception $e)
             $hasData = false;
             $fields = $this->extended->getFieldset($fieldset->name);
             foreach ($fields as $field) {
-                // TODO: backendonly was a feature of JLGExtraParams, and is not yet available.
-                //       (this functionality probably has to be added later)
-                $value = $field->value; // Remark: empty($field->value) does not work, using an extra local var does
-                if (!empty($value)) { // && !$field->backendonly
+                $value = $field->value; 
+                if (!empty($value)) { 
                     $hasData = true;
                     break;
                 }
