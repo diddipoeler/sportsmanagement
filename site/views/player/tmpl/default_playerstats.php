@@ -14,16 +14,15 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 $colspan = 1;
             
 ?>
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playerstats">
 <!-- Player stats History START -->
-<h2><?php	echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
+<h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');?></h2>
 
-		<table class="<?PHP echo $this->config['player_table_class']; ?> table-responsive" >
+		<table class="<?PHP echo $this->config['player_table_class']; ?>" id="playerstatstable">
 			<thead>
 			<tr class="sectiontableheader">
 				<th class="td_l" class="nowrap"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>

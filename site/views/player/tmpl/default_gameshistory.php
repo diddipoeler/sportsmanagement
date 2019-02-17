@@ -13,26 +13,25 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
-
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 
 ?>
 <!-- Player stats History START -->
-<div class="<?php echo $this->divclassrow;?> table-responsive" id="player">
+<div class="<?php echo $this->divclassrow;?> table-responsive" id="playergameshistory">
 <?php
 if (count($this->games))
 {
 	?>
 <h2><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
-<table class="<?PHP echo $this->config['history_table_class']; ?> table-responsive" >
+<table class="<?PHP echo $this->config['history_table_class']; ?>" >
 	<tr>
 		<td>
-		<table id="gameshistory" class="<?PHP echo $this->config['history_table_class']; ?> table-responsive">
+		<table id="playergameshistorytable" class="<?PHP echo $this->config['history_table_class']; ?>">
 			<thead>
 				<tr class="">
 					<th class="" colspan="6"><?php echo Text::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>
 					<?php
-					if ($this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] == 1)
+					if ( $this->config['show_substitution_stats'] && $this->overallconfig['use_jl_substitution'] )
 					{
 						?>
 					<th class=""><?php
