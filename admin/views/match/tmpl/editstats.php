@@ -24,8 +24,6 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
-//echo 'sportsmanagementViewMatch _displayEditStats teams<br><pre>'.print_r($this->teams,true).'</pre>';
-
 ?>
 <?php
 //save and close 
@@ -40,19 +38,17 @@ if($close == 1) {
 }
 ?>
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
-<!--	<div id="jlstatsform"> -->
-<!--	<fieldset> -->
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('matches.savestats', this.form);">
 				<?php echo Text::_('JAPPLY');?></button>
 			<button type="button" onclick="$('close').value=1; Joomla.submitform('matches.savestats', this.form);">
 				<?php echo Text::_('JSAVE');?></button>
-			
+			<button id="cancel" type="button" onclick="<?php echo Factory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+				<?php echo Text::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >
-			Stats
+
 		</div>
-<!--	</fieldset> -->
 	<div class="clear"></div>
 		<?php
 // Define tabs options for version of Joomla! 3.1
@@ -80,6 +76,5 @@ echo HTMLHelper::_('bootstrap.endTabSet');
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="component" value="com_sportsmanagement" />
 		<?php echo HTMLHelper::_( 'form.token' ); ?>
-<!--	</div> -->
 </form>
 <div style="clear: both"></div>
