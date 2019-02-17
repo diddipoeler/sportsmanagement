@@ -72,7 +72,7 @@ function importjoomleaguenew()
         $result = $model->importjoomleaguenew($jl_table_import_step,$sports_type_id);
         Factory::getDocument()->addScriptOptions('success', $result );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
-        //$this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
+        $this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step.'&filter_sports_type='.$sports_type_id, false));
         
         }

@@ -73,8 +73,8 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		unset($sportstypes);
 		
 		$this->lists = $lists;
-		//$this->success = $this->app->getUserStateFromRequest( $this->option.".jl_table_import_success", 0 );
-        $this->success = sportsmanagementModeljoomleagueimports::$_success;
+		$this->success = $this->app->getUserStateFromRequest( $this->option.".jl_table_import_success", 0 );
+        //$this->success = sportsmanagementModeljoomleagueimports::$_success;
         switch ( $this->getLayout() )
         {
         case 'infofield';
