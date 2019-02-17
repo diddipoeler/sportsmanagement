@@ -570,8 +570,10 @@ catch (Exception $e)
 
         if (is_array($players)) {
             foreach ($players as $player) {
-                // Remark: we cannot use array_merge because numerical keys will result in duplicate entries
-                // so we check if a key already exists in the output array before adding it.
+/**
+ *                  Remark: we cannot use array_merge because numerical keys will result in duplicate entries
+ *                  so we check if a key already exists in the output array before adding it.
+ */
                 $projectStats = sportsmanagementModelProject::getProjectStats(0, $player->position_id);
 
                 if (is_array($projectStats)) {
@@ -650,8 +652,10 @@ catch (Exception $e)
         if (count($teamplayers)) {
             $project = sportsmanagementModelProject::getProject();
             $project_id = $project->id;
-            // Determine teamplayer id(s) of the player (plural if (s)he played in multiple teams of the project
-            // and the position_id(s) where the player played
+/**
+ *              Determine teamplayer id(s) of the player (plural if (s)he played in multiple teams of the project
+ *              and the position_id(s) where the player played
+ */
             $teamplayer_ids = array();
             $position_ids = array();
             foreach ($teamplayers as $teamplayer) {
@@ -660,8 +664,10 @@ catch (Exception $e)
                     $position_ids[] = $teamplayer->position_id;
                 }
             }
-            // For each position_id get the statistics types and merge the results (prevent duplicate statistics ids)
-            // ($pos_stats is an array indexed by statistic_id)
+/**
+ *              For each position_id get the statistics types and merge the results (prevent duplicate statistics ids)
+ *              ($pos_stats is an array indexed by statistic_id)
+ */
             $pos_stats = array();
             foreach ($position_ids as $position_id) {
                 $stats_for_position_id = sportsmanagementModelProject::getProjectStats(0, $position_id);
@@ -702,9 +708,11 @@ $displaystats[] = $stat;
         $teamplayer = self::getTeamPlayer();
         $result = array();
         if (is_array($teamplayer) && !empty($teamplayer)) {
-            // getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
-            // one team to another inside a season, but they are all the same person so have same person_id.
-            // So we get the player_id from the first array entry.
+/**
+ *              getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
+ *              one team to another inside a season, but they are all the same person so have same person_id.
+ *              So we get the player_id from the first array entry.
+ */
             $stats = self::getCareerStats($teamplayer[0]->person_id, $sportstype);
             $history = self::getPlayerHistory($sportstype);
             
@@ -717,10 +725,8 @@ $displaystats[] = $stat;
 			{
 			$result[$stat->id]['totals'] = 0;	
 			}
-				
 				$result[$stat->id]['totals'] += $result[$stat->id][$player->project_id][$player->ptid];
                         }
-                        //$result[$stat->id]['totals'] = $stat->getPlayerStatsByProject($player->person_id, 0, 0, $sportstype);
                     }
                 }
             }
@@ -739,11 +745,8 @@ $displaystats[] = $stat;
         // Create a new query object.		
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database);
         $query = $db->getQuery(true);
-        //$subquery1 = $db->getQuery(true);
-
         $teamplayers = self::getTeamPlayers();
         $games = array();
-
 
         if (count($teamplayers)) {
             $quoted_tpids = array();
@@ -752,12 +755,13 @@ $displaystats[] = $stat;
             }
             $tpid_list = '(' . implode(',', $quoted_tpids) . ')';
 
-            // Get all games played by the player (possible of multiple teams in the project)
-            // A player was in a match if:
-            // 1. He is defined as a match player in the match
-            // 2. There is one or more statistic on his name for the match
-            // 3. There is one or more event on his name for the match
-            //$query->select('m.*');
+/**
+ *              Get all games played by the player (possible of multiple teams in the project)
+ *              A player was in a match if:
+ *              1. He is defined as a match player in the match
+ *              2. There is one or more statistic on his name for the match
+ *              3. There is one or more event on his name for the match
+ */
             $query->select('m.id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result');
             $query->select('t1.id AS team1,t1.name AS home_name');
             $query->select('t2.id AS team2,t2.name AS away_name');
