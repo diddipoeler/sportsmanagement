@@ -9,9 +9,6 @@
  * @subpackage models
  */
 
-//  $db->__destruct();
-
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -491,7 +488,7 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 //Factory::getDocument()->addScriptOptions('success', self::$_success );
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -547,7 +544,7 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 //Factory::getDocument()->addScriptOptions('success', self::$_success );
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -612,7 +609,7 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 //Factory::getDocument()->addScriptOptions('success', self::$_success );
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 
 return self::$_success;    
 }
@@ -668,7 +665,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 //Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -724,7 +721,7 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r(self::$_success,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -787,7 +784,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -851,7 +848,7 @@ $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
 return self::$_success;    
 }
 
@@ -860,9 +857,6 @@ return self::$_success;
  */
 if ( $jl_table_import_step == 7 )
 {
-
-
-
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
@@ -881,9 +875,6 @@ return self::$_success;
  */
 if ( $jl_table_import_step == 8 )
 {
-
-
-
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
@@ -902,7 +893,6 @@ return self::$_success;
  */
 if ( $jl_table_import_step == 9 )
 {
-
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);

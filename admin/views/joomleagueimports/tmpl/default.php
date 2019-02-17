@@ -137,7 +137,7 @@ foreach ($this->success as $key => $value)
 <legend><?php echo Text::_('Post data from importform was:'); ?></legend>
 <table class='adminlist'><tr><td>
 <?php 
-echo '<pre>'.print_r($this->success,true).'</pre>'; 
+//echo '<pre>'.print_r($this->success,true).'</pre>'; 
 ?>
 </td></tr></table>
 </fieldset>
