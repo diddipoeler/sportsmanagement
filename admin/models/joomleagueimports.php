@@ -392,7 +392,7 @@ $user = Factory::getUser();
 $modified = $date->toSql();
 $modified_by = $user->get('id');
               
-self::$_success = '';
+self::$_success = array();
 $my_text = '';
 $starttime = sportsmanagementModeldatabasetool::getRunTime();
 $jl_table_import_step = $jinput->get('jl_table_import_step',0);
