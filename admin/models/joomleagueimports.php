@@ -372,10 +372,12 @@ function get_success()
 return self::$_success;    
 }
 
+
 /**
  * sportsmanagementModeljoomleagueimports::importjoomleaguenew()
  * 
  * @param integer $importstep
+ * @param integer $sports_type_id
  * @return
  */
 function importjoomleaguenew($importstep=0,$sports_type_id=0)
@@ -415,12 +417,8 @@ $query->clear();
 $query = "ALTER TABLE #__joomleague_match_player ADD INDEX `match_id` (`match_id`) "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$result = $db->execute();
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
 } 
 try { 
 $query = $db->getQuery(true);
@@ -428,12 +426,8 @@ $query->clear();
 $query = "ALTER TABLE #__joomleague_match_staff ADD INDEX `match_id` (`match_id`) "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$result = $db->execute();
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
 }
 try { 
 $query = $db->getQuery(true);
@@ -441,12 +435,8 @@ $query->clear();
 $query = "ALTER TABLE #__joomleague_match_referee ADD INDEX `match_id` (`match_id`) "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$result = $db->execute();
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
 }  
 try { 
 $query = $db->getQuery(true);
@@ -454,13 +444,10 @@ $query->clear();
 $query = "ALTER TABLE #__joomleague_match ADD INDEX `round_id` (`round_id`) "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$result = $db->execute();
 }
 catch (Exception $e) {
-//    // catch any database errors.
-//    $db->transactionRollback();
-//    JErrorPage::render($e);
-}     
+}
+     
 /**
  * alle personen veröffentlichen
  */
@@ -482,7 +469,6 @@ try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
 }
 
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>'.'</span>';
@@ -495,8 +481,8 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+
 return self::$_success;    
 }
 
@@ -541,8 +527,8 @@ self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+
 return self::$_success;    
 }
 
