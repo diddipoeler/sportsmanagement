@@ -476,8 +476,18 @@ $my_text .= '<br />';
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
-self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-self::$_success['JL-Update:'] = $my_text;
+
+$temp = new stdClass();
+$temp->name = 'Laufzeit:';
+$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success[] = $temp;
+$temp = new stdClass();
+$temp->name = 'JL-Update:';
+$temp->text = $my_text;
+self::$_success[] = $temp;
+
+//self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+//self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
@@ -522,8 +532,17 @@ $my_text .= '<br />';
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
-self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-self::$_success['JL-Update:'] = $my_text;
+
+$temp = new stdClass();
+$temp->name = 'Laufzeit:';
+$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success[] = $temp;
+$temp = new stdClass();
+$temp->name = 'JL-Update:';
+$temp->text = $my_text;
+self::$_success[] = $temp;
+//self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+//self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
@@ -577,13 +596,23 @@ $my_text .= '<br />';
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
-self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
-self::$_success['JL-Update:'] = $my_text;
+
+$temp = new stdClass();
+$temp->name = 'Laufzeit:';
+$temp->text = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success[] = $temp;
+$temp = new stdClass();
+$temp->name = 'JL-Update:';
+$temp->text = $my_text;
+self::$_success[] = $temp;
+
+//self::$_success['Laufzeit:'] = Text::sprintf('This page was created in %1$s seconds',$totaltime);
+//self::$_success['JL-Update:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step', $jl_table_import_step);
 Factory::getDocument()->addScriptOptions('success', self::$_success );
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' ' .  ' json <br><pre>'.print_r(json_encode((array) self::$_success),true).'</pre>'),'');
+
 return self::$_success;    
 }
 
