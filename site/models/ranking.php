@@ -377,7 +377,8 @@ catch (Exception $e){
         $input = $app->input;
         
 		$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
-
+if ( $project )
+{
 		sportsmanagementModelRounds::$_project_id = $project->id;
 		
 		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
@@ -532,6 +533,7 @@ catch (Exception $e){
 			}
 		}
 		self::$current_round = self::$round;
+	}
 		return ;
 	}
 	
