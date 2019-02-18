@@ -73,6 +73,8 @@ if ( array_key_exists('show_rankingnav', $this->config) )
   }
   }
 
+    if ( array_key_exists('show_result_tabs', $this->config) && array_key_exists('show_ranking', $this->config) )
+{ 
     if ( $this->config['show_result_tabs'] == 'show_tabs' )
     {
     echo $this->loadTemplate('tabs');  
@@ -189,7 +191,7 @@ if ( array_key_exists('show_project_rss_feed', $this->overallconfig) )
     }
     
   }    
-    
+  }    
 echo $this->loadTemplate('jsminfo');
 ?>
 </div>
