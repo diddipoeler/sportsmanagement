@@ -57,14 +57,20 @@ if ( $this->mapconfig['map_kmlfile'] && $this->project )
 
   echo $this->loadTemplate('projectheading');
 
+if ( array_key_exists('show_sectionheader', $this->config) )
+{
   if ($this->config['show_sectionheader'])
   {
   echo $this->loadTemplate('sectionheader');
   }
+  }
 
+if ( array_key_exists('show_rankingnav', $this->config) )
+{    
   if ( $this->config['show_rankingnav'] )
   {
   echo $this->loadTemplate('rankingnav');
+  }
   }
 
     if ( $this->config['show_result_tabs'] == 'show_tabs' )
