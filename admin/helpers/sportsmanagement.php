@@ -329,7 +329,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchDate($match, $format = 'Y-m-d') {
+	    $app = Factory::getApplication();
+	    try{
         return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx";
+		    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -346,7 +354,7 @@ abstract class sportsmanagementHelper {
 		    }
         catch (Exception $e)
         {
-        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
         return $match->match_date;
         }
     }
@@ -367,7 +375,7 @@ abstract class sportsmanagementHelper {
 	    }
         catch (Exception $e)
         {
-        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
         return $match->match_date;
         }
     }
@@ -392,7 +400,7 @@ abstract class sportsmanagementHelper {
 	 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
         }	    
         return $endTimestamp;
     }
@@ -450,8 +458,7 @@ abstract class sportsmanagementHelper {
 }
         catch (Exception $e)
         {
-        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-        //return Factory::getDbo();
+        $app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ .' '.$e->getMessage()), 'error');
         }
     }
 	
