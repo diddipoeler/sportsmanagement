@@ -44,16 +44,15 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $mdlTeams = BaseDatabaseModel::getInstance("Teams", "sportsmanagementModel");
         $model = $this->getModel();
         $this->paramconfig = sportsmanagementModelRanking::$paramconfig;
+     if ( $this->project )
+     {
         $this->paramconfig['p'] = $this->project->slug;
-
         $rounds = sportsmanagementHelper::getRoundsOptions($this->project->id, 'ASC', true, NULL, sportsmanagementModelProject::$cfg_which_database);
-
         sportsmanagementModelProject::setProjectId($this->project->id, sportsmanagementModelProject::$cfg_which_database);
-
         $this->projectinfo = $this->project->projectinfo;
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->extended = $extended;
-
+    }
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
         $this->tableconfig = $this->config;
 
