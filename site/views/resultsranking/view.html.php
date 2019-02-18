@@ -69,8 +69,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$mdlRound = BaseDatabaseModel::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$this->jinput->getInt('cfg_which_database',0));
         $this->paramconfig = $rankingmodel::$paramconfig;
-        $this->paramconfig['p'] = $project->slug;
-		
+        if ( $project )
+	{
+		$this->paramconfig['p'] = $project->slug;
+	}
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
 		if (!isset($resultsconfig['show_dnp_teams_icons'])){$resultsconfig['show_dnp_teams_icons']=0;}
@@ -103,7 +105,10 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
 $routeparameter['s'] = $this->jinput->getInt('s',0);
+		if ( $project )
+	{
 $routeparameter['p'] = $project->slug;
+		}
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
