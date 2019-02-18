@@ -886,17 +886,15 @@ $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_
             $query->where('tl.division_id = ' . $divisionid);
 		}
         $query->order('t.name');
-
+try{
 		$db->setQuery($query);
-        
-		if ( !$teams = $db->loadObjectList() )
-		{
-		  $app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_ERROR_NO_TEAM),'error');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
-
+		$teams = $db->loadObjectList();
 		return $teams;
+	    } catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    Factory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 	}
 
 	/**
