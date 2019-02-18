@@ -341,7 +341,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchTime($match, $format = 'H:i') {
+	    $app = Factory::getApplication();
+	    try{
         return $match->match_date ? $match->match_date->format($format, true) : "xx:xx";
+		    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -352,7 +360,15 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i') {
-        return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	    $app = Factory::getApplication();
+	    try{
+	    return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	    }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return $match->match_date;
+        }
     }
 
     /**
@@ -364,12 +380,19 @@ abstract class sportsmanagementHelper {
      * @return
      */
     public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i') {
+	    $app = Factory::getApplication();
         $endTimestamp = "xxxx-xx-xx xx:xx";
+	    try{
         if ($match->match_date) {
             $start = new DateTime(self::getMatchStartTimestamp($match));
             $end = $start->add(new DateInterval('PT' . $totalMatchDuration . 'M'));
             $endTimestamp = $end->format($format);
         }
+	 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        }	    
         return $endTimestamp;
     }
 
@@ -427,7 +450,7 @@ abstract class sportsmanagementHelper {
         catch (Exception $e)
         {
         $app->enqueueMessage(Text::_($e->getMessage()), 'error');
-        return Factory::getDbo();
+        //return Factory::getDbo();
         }
     }
 	
