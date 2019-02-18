@@ -38,6 +38,11 @@ class sportsmanagementControllerEditMatch extends FormController {
         $this->registerTask('apply', 'save');
     }
 
+/**
+ * sportsmanagementControllerEditMatch::savestats()
+ * 
+ * @return void
+ */
 function savestats()
 {
 $app = Factory::getApplication();
@@ -51,6 +56,11 @@ $return = $model->savestats($post);
         $this->setRedirect($link, $msg);    
 }
     
+     /**
+      * sportsmanagementControllerEditMatch::cancel()
+      * 
+      * @return
+      */
      public function cancel()
         {
             $msg = 'cancel';
