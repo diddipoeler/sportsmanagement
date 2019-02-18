@@ -35,7 +35,7 @@ class sportsmanagementControllerEditMatch extends FormController {
         parent::__construct($config);
 
         // Map the apply task to the save method.
-        $this->registerTask('apply', 'save');
+        //$this->registerTask('apply', 'save');
     }
 
 /**
@@ -99,12 +99,13 @@ $return = $model->savestats($post);
         $this->setRedirect($link, $msg);
     }
 
+    
     /**
-     * sportsmanagementControllerEditMatch::save()
+     * sportsmanagementControllerEditMatch::saveroster()
      * 
      * @return void
      */
-    function save() {
+    function saveroster() {
         $app = Factory::getApplication();
         $post = $app->input->post->getArray(array());
 
@@ -179,21 +180,8 @@ $return = $model->savestats($post);
  * Update their details in the table using id as the primary key.
  */
         $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
-
-//        $routeparameter = array();
-//        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-//        $routeparameter['s'] = $post['s'];
-//        $routeparameter['p'] = $post['p'];
-//        $routeparameter['r'] = $post['r'];
-//        $routeparameter['division'] = $post['division'];
-//        $routeparameter['mode'] = $post['mode'];
-//        $routeparameter['order'] = $post['order'];
-//        $routeparameter['layout'] = $post['oldlayout'];
-//        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
         $link = $_SERVER['HTTP_REFERER'];
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED');
-
-        //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);
         $this->setRedirect($link, $msg);
     }
 

@@ -79,15 +79,17 @@ function toggle_altdecision()
 <form name="editmatch" id="editmatch" method="post" action="<?php echo $this->uri->toString(); ?>">
 <?php
 
-		?>
-	<fieldset class="adminform">
-	<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editmatch.saveshort', this.form);">
-						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
-					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
-						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
-					<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
-						<?php echo Text::_('JCANCEL');?></button>
+?>
+<fieldset class="adminform">
+<div class="fltrt">
+<button type="button" onclick="Joomla.submitform('editmatch.saveshort', this.form);">
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
+<!--
+<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
+<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
+-->
+<button type="button" onclick="Joomla.submitform('editmatch.cancel', this.form);">
+<?php echo Text::_('JCANCEL');?></button>
 </div>
 <legend>
 <?php 
