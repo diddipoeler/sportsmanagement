@@ -180,16 +180,17 @@ $return = $model->savestats($post);
  */
         $result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
 
-        $routeparameter = array();
-        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
-        $routeparameter['s'] = $post['s'];
-        $routeparameter['p'] = $post['p'];
-        $routeparameter['r'] = $post['r'];
-        $routeparameter['division'] = $post['division'];
-        $routeparameter['mode'] = $post['mode'];
-        $routeparameter['order'] = $post['order'];
-        $routeparameter['layout'] = $post['oldlayout'];
-        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+//        $routeparameter = array();
+//        $routeparameter['cfg_which_database'] = $post['cfg_which_database'];
+//        $routeparameter['s'] = $post['s'];
+//        $routeparameter['p'] = $post['p'];
+//        $routeparameter['r'] = $post['r'];
+//        $routeparameter['division'] = $post['division'];
+//        $routeparameter['mode'] = $post['mode'];
+//        $routeparameter['order'] = $post['order'];
+//        $routeparameter['layout'] = $post['oldlayout'];
+//        $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+        $link = $_SERVER['HTTP_REFERER'];
         $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED');
 
         //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);

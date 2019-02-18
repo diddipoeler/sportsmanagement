@@ -82,7 +82,7 @@ function toggle_altdecision()
 		?>
 	<fieldset class="adminform">
 	<div class="fltrt">
-					<button type="button" onclick="Joomla.submitform('editmatch.apply', this.form);">
+					<button type="button" onclick="Joomla.submitform('editmatch.saveshort', this.form);">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVE');?></button>
 					<button type="button" onclick="Joomla.submitform('editmatch.save', this.form);">
 						<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SAVECLOSE');?></button>
