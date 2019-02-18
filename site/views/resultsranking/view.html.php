@@ -186,8 +186,10 @@ $this->currentRanking = $rankingmodel::$currentRanking;
 /**
  * diddipoeler
  */
+		if ( $project )
+		{
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,null,$this->jinput->getInt('cfg_which_database',0));
-        
+		}
       if ( $this->params->get('show_map', 0) )
 	  {
 	  $this->mapconfig = sportsmanagementModelProject::getTemplateConfig('map',$this->jinput->getInt('cfg_which_database',0)); 
