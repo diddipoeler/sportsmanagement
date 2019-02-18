@@ -21,7 +21,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
  */            
-if ( !empty($this->mapconfig )
+if ( !empty($this->mapconfig) )
 {
 if ( $this->mapconfig['map_kmlfile'] && $this->project )
 {
