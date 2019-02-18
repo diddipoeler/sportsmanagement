@@ -285,38 +285,18 @@ return false;
 	 */
     function addmatch()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
-		$app = Factory::getApplication();
-		$post = Factory::getApplication()->input->post->getArray(array());
-		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
+	$option = Factory::getApplication()->input->getCmd('option');
+	$app = Factory::getApplication();
+	$post = Factory::getApplication()->input->post->getArray(array());
+	$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+	$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         $post['count_result'] = 1;
         $post['published'] = 1;
         $post['summary'] = '-';
         $post['preview'] = '-';
-		$model = $this->getModel('match');
-        //$row = $model->getTable();
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
-        
-        // bind the form fields to the table
-//        if (!$row->bind($post)) 
-//        {
-//        $this->setError($this->_db->getErrorMsg());
-//        return false;
-//        }
-//        // make sure the record is valid
-//        if (!$row->check()) 
-//        {
-//        $this->setError($this->_db->getErrorMsg());
-//        return false;
-//        }
-        
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+	$model = $this->getModel('match');
         
         // store to the database
-		//if ($row->store($post))
         if ($model->save($post))
 		{
 			$msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
