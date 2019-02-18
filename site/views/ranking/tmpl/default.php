@@ -27,7 +27,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
  */            
-if ( $this->mapconfig['map_kmlfile'] )
+if ( $this->mapconfig['map_kmlfile'] && $this->project )
 {    
   $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
   $this->kmlfile = $this->project->id.'-ranking.kml';
