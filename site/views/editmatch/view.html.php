@@ -57,10 +57,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 
         $this->project_id = $jinput->getInt('p', 0);
         sportsmanagementModelProject::setProjectID($this->project_id);
-        //sportsmanagementModelMatch::$_project_id = $this->project_id; 
-        //$projectws = $mdlProject->getProject($project_id);
         $projectws = sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database', 0));
-        //sportsmanagementModelMatch::$_project_id = $projectws->id;
 
         $app->setUserState("$option.pid", $projectws->id);
         $app->setUserState("$option.season_id", $projectws->season_id);
@@ -68,11 +65,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $this->projectws = $projectws;
         $this->eventsprojecttime = $projectws->game_regular_time;
 
-//        $params         = $app->getParams();
-//        $dispatcher = JDispatcher::getInstance();
-//        
-//        // Get some data from the models
-//        $state          = $this->get('State');
+        // Get some data from the models
         $match = $this->get('Data');
         $extended = sportsmanagementHelper::getExtended($match->extended, 'match');
         $this->extended = $extended;
@@ -148,8 +141,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 
         $projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $this->project_id);
 
-
-
         if (!$projectpositions) {
             $this->playersoptionsout = $playersoptionsout;
             $this->playersoptionsin = $playersoptionsin;
@@ -172,15 +163,9 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', NULL, false, true);
 
         // build player select
-        //$allplayers = $model->getTeamPlayers($tid);
         $allplayers = sportsmanagementModelMatch::getTeamPersons($tid, FALSE, 1);
 
-
-
-
-
         foreach ((array) $starters AS $player) {
-        //foreach ((array)$allplayers AS $player)
             $playersoptionsout[] = HTMLHelper::_('select.option', $player->value, sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format) . ' - (' . Text::_($player->positionname) . ')');
         }
         $this->playersoptionsout = $playersoptionsout;
@@ -234,7 +219,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
             $options = array();
             foreach ($assigned as $staff) {
                 if ($staff->position_id == $pos->pposid) {
-                //if ($staff->pposid == $pos->pposid)
                     $options[] = HTMLHelper::_('select.option', $staff->team_staff_id, sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
                 }
             }
@@ -261,7 +245,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 	$javascript .= "\n";    
         $document->addScriptDeclaration( $javascript );
 	    
-	    
         $this->positions = $projectpositions;
         $this->staffpositions = $staffpositions;
         $this->substitutions = $substitutions[$tid];
@@ -278,7 +261,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $app = Factory::getApplication();
         $option = Factory::getApplication()->input->getCmd('option');
         $document = Factory::getDocument();
-        //$model = $this->getModel();
         $params = ComponentHelper::getParams($option);
         $default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
         $default_name_format = $params->get("name_format", 14);
@@ -302,18 +284,14 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 
         $lists['events'] = HTMLHelper::_('select.genericlist', $eventlist, 'event_type_id', 'class="inputbox select-event"');
 
-        //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-        //$homeRoster = $model->getMatchPlayers($teams->projectteam1_id,0,$this->item->id);
         $homeRoster = sportsmanagementModelMatch::getMatchPersons($teams->projectteam1_id, 0, $this->match->id, 'player');
         if (count($homeRoster) == 0) {
-            //$homeRoster=$model->getGhostPlayer();
+
         }
 
-        //$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
-        //$awayRoster = $model->getMatchPlayers($teams->projectteam2_id,0,$this->item->id);
         $awayRoster = sportsmanagementModelMatch::getMatchPersons($teams->projectteam2_id, 0, $this->match->id, 'player');
         if (count($awayRoster) == 0) {
-            //$awayRoster=$model->getGhostPlayer();
+
         }
         $rosters = array('home' => $homeRoster, 'away' => $awayRoster);
 
@@ -371,10 +349,6 @@ $javascript .= "var baseajaxurl = '".Uri::root()."index.php?option=com_sportsman
 $javascript .= "var matchid = ".$this->match->id.";" . "\n";
 $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
 $javascript .= "var str_delete = '".Text::_('JACTION_DELETE')."';" . "\n";
-//$javascript .= 'jQuery(document).ready(function() {' . "\n";
-//$javascript .= "updatePlayerSelect();". "\n";
-//$javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
-//$javascript .= '  });' . "\n";
 $javascript .= "\n";
     
 $document->addScriptDeclaration( $javascript );	    
@@ -398,19 +372,16 @@ $document->addScriptDeclaration( $javascript );
         $positions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 1, $this->project_id);
         $staffpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 2, $this->project_id);
 
-        //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
         $homeRoster = sportsmanagementModelMatch::getMatchPersons($teams->projectteam1_id, 0, $this->match->id, 'player');
         if (count($homeRoster) == 0) {
-            //$homeRoster=$model->getGhostPlayer();
-        }
-        //$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
-        $awayRoster = sportsmanagementModelMatch::getMatchPersons($teams->projectteam2_id, 0, $this->match->id, 'player');
-        if (count($awayRoster) == 0) {
-            //$awayRoster=$model->getGhostPlayer();
+
         }
 
-        //$homeStaff = $model->getMatchStaffs($teams->projectteam1_id,0,$this->item->id);
-        //$awayStaff = $model->getMatchStaffs($teams->projectteam2_id,0,$this->item->id);
+        $awayRoster = sportsmanagementModelMatch::getMatchPersons($teams->projectteam2_id, 0, $this->match->id, 'player');
+        if (count($awayRoster) == 0) {
+
+        }
+
         $homeStaff = sportsmanagementModelMatch::getMatchPersons($teams->projectteam1_id, 0, $this->match->id, 'staff');
         $awayStaff = sportsmanagementModelMatch::getMatchPersons($teams->projectteam2_id, 0, $this->match->id, 'staff');
 
@@ -418,7 +389,6 @@ $document->addScriptDeclaration( $javascript );
         $stats = sportsmanagementModelMatch::getInputStats($this->project_id);
         if (!$stats) {
             JError::raiseWarning(440, '<br />' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS') . '<br /><br />');
-            //return;
         }
         $playerstats = sportsmanagementModelMatch::getMatchStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
         $staffstats = sportsmanagementModelMatch::getMatchStaffStatsInput($this->match->id, $teams->projectteam1_id, $teams->projectteam2_id);
@@ -451,6 +421,10 @@ $document->addScriptDeclaration( $javascript );
 		    if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 		    }
+		    else
+		    {
+$m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;			    
+		    }
             }
             $oldmatches = array_merge($oldmatches, $res);
         }
@@ -464,12 +438,14 @@ $document->addScriptDeclaration( $javascript );
 		    if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 		    }
+		    else
+		    {
+$m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;			    
+		    }
             }
             $newmatches = array_merge($newmatches, $res);
         }
         $lists ['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->match->new_match_id);
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' newmatches<br><pre>'.print_r($newmatches,true).'</pre>'),'');
 
         $lists['count_result'] = HTMLHelper::_('select.booleanlist', 'count_result', 'class="btn btn-primary"', $this->match->count_result);
         // build the html select booleanlist which team got the won
