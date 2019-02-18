@@ -688,6 +688,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		if ( $user->id != 0 )
 		{
 			$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
+			if ( $project )
+			{
 			$hasACLPermssion = $user->authorise('results.saveshort', 'com_sportsmanagement');
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;
@@ -696,6 +698,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			{
 				$allowed = true;
 			}
+		}
             
             if ( !$allowed )
             {
