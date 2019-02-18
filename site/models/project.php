@@ -353,7 +353,7 @@ $result = $db->execute();
         $result = '';
         $project = self::getProject($cfg_which_database,__METHOD__);
 
-        if (!self::$_current_round)
+        if (!self::$_current_round && $project )
 		{
            
 			$current_date = strftime("%Y-%m-%d %H:%M:%S");
