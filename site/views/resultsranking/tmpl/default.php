@@ -40,7 +40,7 @@ echo $this->loadTemplate('debug');
 
 echo $this->loadTemplate('projectheading');
 
-if ( !empty($this->config) )
+if ( array_key_exists('show_matchday_dropdown', $this->config) )
 {
 if ($this->config['show_matchday_dropdown'])
 {
@@ -67,13 +67,16 @@ $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
   
 echo $this->loadTemplate('show_tabs');
 
-if ( !empty($this->config) )
+if ( array_key_exists('show_colorlegend', $this->config) )
 {
 if ($this->config['show_colorlegend'])
 {
 echo $this->loadTemplate('colorlegend');
 }
-		
+}
+
+if ( array_key_exists('show_explanation', $this->config) )
+{	
 if ( $this->config['show_explanation'] )
 {
 echo $this->loadTemplate('explanation');
@@ -85,7 +88,7 @@ if ( $this->params->get('show_map', 0) )
 echo $this->loadTemplate('googlemap');
 }   
 
-if ( !empty($this->config) )
+if ( array_key_exists('show_pagnav', $this->config) )
 {
 if ( $this->config['show_pagnav'] )
 {
