@@ -223,7 +223,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 try{
 		$db->setQuery($query);
 	$result = $db->loadAssocList() ;
+	if ( $result )
+	{
 	return $result[0];
+	}
+	else
+	{
+		return false;
+	}
 }
         catch (Exception $e)
         {
@@ -260,6 +267,15 @@ $option = $app->input->getCmd('option');
 		try{
 		$db->setQuery($query);
 	$result = $db->loadAssocList() ;
+		if ( $result )
+	{
+	return $result[0];
+	}
+	else
+	{
+		return false;
+	}	
+			
 }
         catch (Exception $e)
         {
@@ -267,7 +283,7 @@ $option = $app->input->getCmd('option');
 	$app->enqueueMessage(Text::_(COM_SPORTSMANAGEMENT_RANKING_NO_ROUNDS),'Notice');	
         return false;
         }   
-		return $result[0];
+		
 	}
     
     /**
