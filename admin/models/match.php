@@ -991,9 +991,6 @@ $query->where($conditions);
         $data['modified_by'] = $user->get('id');
         $data['id'] = $post['id'];
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-
         if (isset($post['extended']) && is_array($post['extended'])) {
             // Convert the extended field to a string.
             $parameter = new Registry;
@@ -1015,8 +1012,6 @@ $query->where($conditions);
 
         $data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-
         // zuerst sichern, damit wir bei einer neuanlage die id haben
         try {
             $parentsave = parent::save($data);
@@ -1034,16 +1029,11 @@ $query->where($conditions);
                 $app->enqueueMessage(Text::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id), '');
             }
 
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getState<pre>'.print_r($this->getState(),true).'</pre>' ),'Error');
-
             return true;
         } else {
-            //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
             return false;
         }
 
-        //return true;
     }
 
     /**
