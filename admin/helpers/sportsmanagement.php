@@ -1657,31 +1657,21 @@ case "projectteams/trikot_away":
     public static function getTimestamp($date = null, $use_offset = 0, $offset = null) {
         $date = $date ? $date : 'now';
         $app = Factory::getApplication();
+	    try{
         $res = Factory::getDate(strtotime($date));
-
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' date<br><pre>'.print_r($date,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' use_offset<br><pre>'.print_r($use_offset,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($offset,true).'</pre>'),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
 
         if ($use_offset) {
             if ($offset) {
                 $serveroffset = explode(':', $offset);
 
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' serveroffset<br><pre>'.print_r($serveroffset,true).'</pre>'),'');
-
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                    //$res->setTimezone($serveroffset[0]);   
                     $res->setTimezone(new DateTimeZone($serveroffset[0]));
                 } else {
                     $res->setOffset($serveroffset[0]);
                 }
             } else {
 
-                //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($app->getCfg('offset'),true).'</pre>'),'');
-
                 if (version_compare(JVERSION, '3.0.0', 'ge')) {
-                    //$res->setTimezone($app->getCfg('offset'));
                     $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
                 } else {
                     $res->setOffset($app->getCfg('offset'));
@@ -1689,9 +1679,14 @@ case "projectteams/trikot_away":
             }
         }
 
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
-
         return $res->toUnix('true');
+	    } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns
+                $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+		$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' date<br><pre>'.print_r($date,true).'</pre>'),'');    
+                return false;
+            }
     }
 
     /**
