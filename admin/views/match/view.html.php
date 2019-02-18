@@ -197,7 +197,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $new_match_id = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
         if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $new_match_id)) {
             foreach ($res as $m) {
+                if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
+		    }
+		    else
+		    {
+$m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;			    
+		    }
             }
             $oldmatches = array_merge($oldmatches, $res);
         }
@@ -208,7 +214,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $old_match_id = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
         if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $old_match_id)) {
             foreach ($res as $m) {
+if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
+		    }
+		    else
+		    {
+$m->text = '(' . ') - ' . $m->t1_name . ' - ' . $m->t2_name;			    
+		    }
             }
             $newmatches = array_merge($newmatches, $res);
         }
