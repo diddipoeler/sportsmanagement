@@ -34,6 +34,8 @@ $document->addCustomTag($stylelink);
 <?php
 
 $nbcols = 2;
+if ( !empty($this->overallconfig) )
+{
 if ( $this->overallconfig['show_project_sporttype_picture'] && isset($this->overallconfig['show_project_sporttype_picture']) ) { $nbcols++; }
 if ( $this->overallconfig['show_project_kunena_link'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_picture'] ) { $nbcols++; }
@@ -210,5 +212,6 @@ else
 		</div>
 <?php
 	}
+}
 }
 ?>
