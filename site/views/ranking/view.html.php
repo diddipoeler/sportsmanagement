@@ -35,7 +35,6 @@ class sportsmanagementViewRanking extends sportsmanagementView {
      */
     function init() {
 
-      echo 'config<pre>'.print_r($this->config,true).'</pre>';
       $rounds = array();
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
