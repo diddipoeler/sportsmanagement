@@ -37,11 +37,14 @@ echo $this->loadTemplate('debug');
 
 echo $this->loadTemplate('projectheading');
 
+if ( $this->config )
+{
 if ($this->config['show_matchday_dropdown'])
 {
 echo $this->loadTemplate('selectround');
 }
-
+}
+	
 /**
  * diddipoeler
  * aufbau der templates
@@ -60,7 +63,9 @@ $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
 }
   
 echo $this->loadTemplate('show_tabs');
-    
+
+if ( $this->config )
+{
 if ($this->config['show_colorlegend'])
 {
 echo $this->loadTemplate('colorlegend');
@@ -70,17 +75,21 @@ if ( $this->config['show_explanation'] )
 {
 echo $this->loadTemplate('explanation');
 }
-
+}
+	
 if ( $this->params->get('show_map', 0) )
 { 
 echo $this->loadTemplate('googlemap');
 }   
-    	
+
+if ( $this->config )
+{
 if ( $this->config['show_pagnav'] )
 {
 echo $this->loadTemplate('pagnav');
 }
-
+}
+	
 echo $this->loadTemplate('jsminfo');
 ?>
 </div>
