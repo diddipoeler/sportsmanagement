@@ -49,6 +49,20 @@ class sportsmanagementControllermatch extends FormController
         $this->jsmdate = Factory::getDate();
 	}
     
+    
+    /**
+     * sportsmanagementControllermatch::cancelmodal()
+     * 
+     * @param mixed $key
+     * @return void
+     */
+    function cancelmodal($key = NULL)
+	{
+	$msg = '';
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	}
+    
+    
     /**
      * sportsmanagementControllermatch::copyfrom()
      * 
