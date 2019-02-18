@@ -448,7 +448,7 @@ $document->addScriptDeclaration( $javascript );
         $new_match_id = ($this->match->new_match_id) ? $this->match->new_match_id : 0;
         if ($res = sportsmanagementModelMatch::getMatchRelationsOptions($this->project_id, $this->match->id . "," . $new_match_id)) {
             foreach ($res as $m) {
-		    if ($m->match_date) {
+		    if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
 		    }
             }
@@ -461,7 +461,9 @@ $document->addScriptDeclaration( $javascript );
         $old_match_id = ($this->match->old_match_id) ? $this->match->old_match_id : 0;
         if ($res = sportsmanagementModelMatch::getMatchRelationsOptions($this->project_id, $this->match->id . "," . $old_match_id)) {
             foreach ($res as $m) {
+		    if ( is_object($m->match_date) ) {
                 $m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp($m) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
+		    }
             }
             $newmatches = array_merge($newmatches, $res);
         }
