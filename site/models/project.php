@@ -255,7 +255,7 @@ $result = $db->execute();
             self::$projectslug = self::$_project->slug;
             }
             
-            if ( !self::$seasonid )
+            if ( !self::$seasonid && self::$_project )
             {
             self::$seasonid = self::$_project->season_id;
             }
