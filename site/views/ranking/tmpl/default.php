@@ -136,40 +136,57 @@ echo HTMLHelper::_('bootstrap.endTabSet'); //end tab set
                 }
 
                 }
-
+if ( array_key_exists('show_colorlegend', $this->config) )
+{ 
                 if ($this->config['show_colorlegend']) {
                     echo $this->loadTemplate('colorlegend');
                 }
-
+    }
+if ( array_key_exists('show_explanation', $this->config) )
+{ 
                 if ($this->config['show_explanation']) {
                     echo $this->loadTemplate('explanation');
                 }
-
+    }
+    
+if ( array_key_exists('show_pagnav', $this->config) )
+{ 
                 if ($this->config['show_pagnav']) {
                     echo $this->loadTemplate('pagnav');
                 }
-
+    }
+if ( array_key_exists('show_projectinfo', $this->config) )
+{ 
                 if ($this->config['show_projectinfo']) {
                     echo $this->loadTemplate('projectinfo');
                 }
-
+    }
+if ( array_key_exists('show_notes', $this->config) )
+{ 
                 if ($this->config['show_notes']) {
                     echo $this->loadTemplate('notes');
                 }
-
+    }
+if ( array_key_exists('show_ranking_maps', $this->config) )
+{ 
                 if ($this->config['show_ranking_maps']) {
                     echo $this->loadTemplate('googlemap');
                 }
-
+    }
+if ( array_key_exists('show_help', $this->config) )
+{ 
                 if ($this->config['show_help']) {
                     echo $this->loadTemplate('hint');
                 }
-
+    }
+if ( array_key_exists('show_project_rss_feed', $this->overallconfig) )
+{ 
                 if ($this->overallconfig['show_project_rss_feed']) {
                     if ($this->rssfeeditems) {
                         echo $this->loadTemplate('rssfeed');
                     }
                 }
+    }
     
   }    
     
