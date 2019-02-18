@@ -1009,9 +1009,11 @@ $query->where($conditions);
         $data['team2_result_decision'] = $post['team2_result_decision'];
         $data['decision_info'] = $post['decision_info'];
         $data['team_won'] = $post['team_won'];
-
+if ( $data['id'] )
+{
         $data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
-
+}
+	    
         // zuerst sichern, damit wir bei einer neuanlage die id haben
         try {
             $parentsave = parent::save($data);
