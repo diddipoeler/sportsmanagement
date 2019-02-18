@@ -253,7 +253,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_eventtype` (
   `directionspoint` CHAR(4) NOT NULL DEFAULT 'DESC' ,
   `directionscounter` CHAR(4) NOT NULL DEFAULT 'DESC' ,
   `directionspointpos` tinyint(1) NOT NULL DEFAULT '1',
-  `directionscounterpos` tinyint(1) NOT NULL DEFAULT '2'
+  `directionscounterpos` tinyint(1) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`) ,
   KEY `sports_type_id` (`sports_type_id`),
   UNIQUE KEY `name` (`name`,`parent`,`sports_type_id`)
