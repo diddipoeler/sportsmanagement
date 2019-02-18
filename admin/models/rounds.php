@@ -223,6 +223,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 try{
 		$db->setQuery($query);
 	$result = $db->loadAssocList() ;
+	return $result[0];
 }
         catch (Exception $e)
         {
@@ -231,7 +232,6 @@ try{
         return false;
         }        
 		
-		return $result[0];
 	}
 	
 	/**
