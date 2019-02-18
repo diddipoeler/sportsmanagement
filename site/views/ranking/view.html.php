@@ -35,6 +35,8 @@ class sportsmanagementViewRanking extends sportsmanagementView {
      */
     function init() {
 
+      echo 'config<pre>'.print_r($this->config,true).'</pre>';
+      $rounds = array();
         $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
         $this->document->addStyleSheet(Uri::base().'components/'.$this->option.'/assets/css/modalwithoutjs.css');
         
@@ -56,13 +58,18 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
         $this->tableconfig = $this->config;
 
+      if ( !empty($this->config) )
+      {
         /**
          * sollen die vereinskürzel ersetzt und/oder angezeigt werden ?
          */
         if ($this->config['show_club_short_names'] || $this->config['show_replace_club_short_names']) {
             $mdlClubnames = BaseDatabaseModel::getInstance("clubnames", "sportsmanagementModel");
         }
-
+    }
+  
+      if ( !empty($this->overallconfig) )
+      {
         if (($this->overallconfig['show_project_rss_feed']) == 1) {
             $mod_name = "mod_jw_srfr";
             $rssfeeditems = '';
@@ -73,7 +80,10 @@ class sportsmanagementViewRanking extends sportsmanagementView {
                 $this->rssfeeditems = $rssfeeditems;
             }
         }
-
+    }
+      
+      if ( !empty($this->config) )
+      {
         if ($this->config['show_half_of_season']) {
             if ($this->config['show_table_4']) {
                 sportsmanagementModelRanking::$part = 1;
@@ -92,23 +102,27 @@ class sportsmanagementViewRanking extends sportsmanagementView {
             }
             sportsmanagementModelRanking::$part = 0;
         }
-
+    }
         sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
 
         $this->round = sportsmanagementModelRanking::$round;
         $this->part = sportsmanagementModelRanking::$part;
-        $this->rounds = $rounds;
+     if ( $rounds )
+     {
+      $this->rounds = $rounds;
+    }
         $this->divisions = sportsmanagementModelProject::getDivisions(0, sportsmanagementModelProject::$cfg_which_database);
         $this->type = sportsmanagementModelRanking::$type;
         $this->from = sportsmanagementModelProject::$_round_from;
         $this->to = sportsmanagementModelProject::$_round_to;
         $this->divLevel = sportsmanagementModelRanking::$divLevel;
 
+       $this->previousRanking = sportsmanagementModelRanking::$previousRanking;
+      if ( !empty($this->config) )
+      {
         if ($this->config['show_table_1']) {
             $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
         }
-
-        $this->previousRanking = sportsmanagementModelRanking::$previousRanking;
 
         if ($this->config['show_table_2']) {
             $this->homeRank = sportsmanagementModelRanking::$homeRank;
@@ -117,7 +131,9 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         if ($this->config['show_table_3']) {
             $this->awayRank = sportsmanagementModelRanking::$awayRank;
         }
-
+    }
+      if ( !empty($this->config) )
+      {
         /**
          * wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben 
          */
@@ -128,7 +144,7 @@ class sportsmanagementViewRanking extends sportsmanagementView {
                 !$this->config['show_table_5']) {
             $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
         }
-
+    }
         $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . $this->jinput->getVar("view"), sportsmanagementModelProject::$cfg_which_database);
 
         // mannschaften holen
@@ -136,6 +152,8 @@ class sportsmanagementViewRanking extends sportsmanagementView {
 
         $no_ranking_reason = '';
         $ranking_reason = array();
+      if ( !empty($this->config) )
+      {
         if ($this->config['show_notes']) {
             foreach ($this->teams as $teams) {
                 if ($teams->start_points) {
@@ -148,6 +166,7 @@ class sportsmanagementViewRanking extends sportsmanagementView {
                 }
             }
         }
+    }
 
         if (sizeof($ranking_reason) > 0) {
             $this->ranking_notes = implode(", ", $ranking_reason);
@@ -175,16 +194,24 @@ class sportsmanagementViewRanking extends sportsmanagementView {
         $lists['type'] = $opp_arr;
         $this->lists = $lists;
 
+      if ( !empty($this->config) )
+      {
         if (!isset($this->config['colors'])) {
             $this->config['colors'] = "";
         }
-
         $this->colors = sportsmanagementModelProject::getColors($this->config['colors'], sportsmanagementModelProject::$cfg_which_database);
+    }
+        
+      if ( $this->project )
+      {
         /**
          * wir holen uns alle mannschaften die dem projekt zugeordnet wurden
          */
         $this->allteams = $mdlProjectteams->getAllProjectTeams($this->project->id, 0, NULL, sportsmanagementModelProject::$cfg_which_database);
-
+    }
+  
+      if ( !empty($this->config) )
+      {
         /**
          * möchte der anwender die vereinskürzel ausgeschrieben sehen ?
          */
@@ -194,7 +221,7 @@ class sportsmanagementViewRanking extends sportsmanagementView {
              */
             $short_names = $mdlClubnames->getClubNames($this->project->country);
         }
-
+      
         if ($this->config['show_ranking_maps']) {
 
 /**
@@ -234,7 +261,7 @@ if ( $this->mapconfig['map_kmlfile'] )
                 $row->address_string = implode(', ', $address_parts);
             }
         }
-
+    }
         unset($frommatchday);
         unset($tomatchday);
         unset($lists);
