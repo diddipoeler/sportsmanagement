@@ -633,6 +633,8 @@ $s = $configcolors;
         $query = $db->getQuery(true);
         
         $project = self::getProject($cfg_which_database,__METHOD__); 
+		if ( $project )
+		{
 		if ($project->project_type == 'DIVISIONS_LEAGUE')
 		{
 			if (empty(self::$_divisions))
@@ -661,6 +663,7 @@ $s = $configcolors;
 			}
 			return self::$_divisions;
 		}
+	}
 		return array();
 	}
 
