@@ -423,14 +423,14 @@ abstract class sportsmanagementHelper {
         } else {
             $match->match_date = null;
         }
-
-    }
 }
         catch (Exception $e)
         {
         $app->enqueueMessage(Text::_($e->getMessage()), 'error');
         return Factory::getDbo();
-        }	
+        }
+    }
+	
     /**
      * sportsmanagementHelper::get_IP_address()
      * 
