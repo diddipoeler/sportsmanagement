@@ -13,7 +13,6 @@
  * 
  */
  
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -362,7 +361,9 @@ abstract class sportsmanagementHelper {
     public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i') {
 	    $app = Factory::getApplication();
 	    try{
+		    if ($match->match_date) {
 	    return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	    }
 	    }
         catch (Exception $e)
         {
