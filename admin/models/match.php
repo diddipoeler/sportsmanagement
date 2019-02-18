@@ -834,8 +834,10 @@ $query->where($conditions);
                             $object->team2_result += 1;
                         }
                     } else {
+			    if (is_numeric($post['team1_result' . $pks[$x]]) && is_numeric($post['team2_result' . $pks[$x]])) {
                         $object->team1_result = $post['team1_result' . $pks[$x]];
                         $object->team2_result = $post['team2_result' . $pks[$x]];
+			    }
                     }
                 }
             } else {
