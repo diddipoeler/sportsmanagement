@@ -704,11 +704,7 @@ abstract class sportsmanagementHelper {
                 //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsm_server_password<br><pre>'.print_r($user_password,true).'</pre>'),'');
 
                 if ($user_id) {
-
-                    //echo "<strong>Password: </strong>" . JUserHelper::hashPassword($password);    
-                    //$testcrypt = JUserHelper::getCryptedPassword($user_password);
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . $testcrypt),'');
-                    //$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__."<strong>Password: </strong>" . JUserHelper::hashPassword($user_password)),'');
+			try{
                     // Load the profile data from the database.
                     $db = self::$_jsm_db;
                     $query = $db->getQuery(true);
@@ -736,11 +732,16 @@ abstract class sportsmanagementHelper {
                             return JDatabase::getInstance($option);
                         }
                     } else {
-                        //$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
                         return Factory::getDbo();
                     }
+		}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return Factory::getDbo();
+        }	
+			
                 } else {
-                    //$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_NO_DATABASE_SERVER_ACCESS'), 'Error');
                     return Factory::getDbo();
                 }
             }
