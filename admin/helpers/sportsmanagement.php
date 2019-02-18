@@ -2531,7 +2531,6 @@ $bar->popupButton('preview')
         $app = Factory::getApplication();
         $db = self::getDBConnection(TRUE, $cfg_which_database);
         $query = $db->getQuery(true);
-        //$query->select('id as value');
 
         if ($app->isAdmin()) {
             $query->select('id AS value');
@@ -2551,13 +2550,7 @@ $bar->popupButton('preview')
         }
 
         $query->order('roundcode ' . $ordering);
-
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
-        //$app->enqueueMessage(Text::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
-
+try{
         $db->setQuery($query);
         if (!$required) {
             $mitems = array(HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
@@ -2565,6 +2558,13 @@ $bar->popupButton('preview')
         } else {
             return $db->loadObjectList();
         }
+	 }
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return false;
+        }    
+	    
     }
 
     /**
