@@ -432,12 +432,14 @@ function getTotal() {
         
         $project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
 
-		if ( !$round ) 
+		if ( !$round && $project ) 
         {
             $round = $project->current_round;
 		}
 
-		$result = array();
+	$result = array();
+if ( $project ) 
+        {		
         // select some fields
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present');
         $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
@@ -491,10 +493,10 @@ function getTotal() {
         $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 		
         // where
-		if ( $team )
-		{
-		$query->where('(st1.team_id = '.$team . ' OR st2.team_id = '.$team.')' );	
-		}
+	if ( $team )
+	{
+	$query->where('(st1.team_id = '.$team . ' OR st2.team_id = '.$team.')' );	
+	}
         $query->where('m.published = 1');
         $query->where('r.project_id = '.(int)$project->id);
         if(version_compare(JSM_JVERSION,'3','eq')) 
@@ -510,8 +512,6 @@ function getTotal() {
 		  $query->where('(d1.id = '.(int)$division.' OR d1.parent_id = '.(int)$division.' OR d2.id = '.(int)$division.' OR d2.parent_id = '.(int)$division.')');
 		}
 
-//		if ( !is_null($round) ) 
-//        {
 try{
 			
             if ( $pagination )
@@ -530,7 +530,7 @@ catch (Exception $e)
     $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
     $result = false;
 }
-		//}
+	}
         
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
