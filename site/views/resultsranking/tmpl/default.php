@@ -21,7 +21,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 /**
  * kml file laden
  */            
-if ( $this->mapconfig['map_kmlfile'] && $this->project )
+if ( $this->mapconfig['map_kmlfile'] && $this->project && !empty($this->mapconfig) )
 {
 $this->kmlpath = Uri::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
@@ -37,7 +37,7 @@ echo $this->loadTemplate('debug');
 
 echo $this->loadTemplate('projectheading');
 
-if ( $this->config )
+if ( !empty($this->config) )
 {
 if ($this->config['show_matchday_dropdown'])
 {
@@ -64,7 +64,7 @@ $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
   
 echo $this->loadTemplate('show_tabs');
 
-if ( $this->config )
+if ( !empty($this->config) )
 {
 if ($this->config['show_colorlegend'])
 {
@@ -82,7 +82,7 @@ if ( $this->params->get('show_map', 0) )
 echo $this->loadTemplate('googlemap');
 }   
 
-if ( $this->config )
+if ( !empty($this->config) )
 {
 if ( $this->config['show_pagnav'] )
 {
