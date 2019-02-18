@@ -396,6 +396,7 @@ abstract class sportsmanagementHelper {
         // Get some system objects.
         $config = Factory::getConfig();
         $user = Factory::getUser();
+	    try{
         $res = Factory::getDate(strtotime($match->match_date));
 
         if ($match->match_date > 0) {
@@ -408,19 +409,8 @@ abstract class sportsmanagementHelper {
                 $timezone = $user->getParam('timezone', $match->timezone);
             }
 
-            //$matchDate = new JDate($match->match_date, 'UTC');
             $matchDate = new JDate($match->match_date);
-            /*
-              if(version_compare(JVERSION,'3.0.0','ge'))
-              {
-              //$res->setTimezone($app->getCfg('offset'));
-              $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-              }
-              else
-              {
-              $res->setOffset($app->getCfg('offset'));
-              }
-             */
+
             if ($timezone) {
                 $matchDate->setTimezone(new DateTimeZone($timezone));
             } else {
@@ -434,12 +424,13 @@ abstract class sportsmanagementHelper {
             $match->match_date = null;
         }
 
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($config->get('offset'),true).'</pre>'),'Notice');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' match  timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
     }
-
+}
+        catch (Exception $e)
+        {
+        $app->enqueueMessage(Text::_($e->getMessage()), 'error');
+        return Factory::getDbo();
+        }	
     /**
      * sportsmanagementHelper::get_IP_address()
      * 
