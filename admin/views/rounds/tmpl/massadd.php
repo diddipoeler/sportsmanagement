@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.tooltip');
 
@@ -34,7 +35,7 @@ if($close == 1) {
 <div id='alt_massadd_enter' style='display:block'>
 	<fieldset class='adminform'>
 		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-		<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
+		<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
 		<div class="fltrt">

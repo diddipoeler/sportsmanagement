@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -99,7 +100,7 @@ function change_champ () {
 
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&project_id='.(int) $this->item->project_id) ; ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&project_id='.(int) $this->item->project_id) ; ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
  <fieldset>
 		<div class="fltrt">

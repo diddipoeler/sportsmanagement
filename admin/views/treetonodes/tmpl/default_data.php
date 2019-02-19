@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 HTMLHelper::_('behavior.tooltip');
@@ -78,19 +79,18 @@ if( $this->treetows->leafed == 1 )
 	echo $this->node[$j-1]->node;
 	if($this->node[$j-1]->team_id)
 	{
-			$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
+			$link = Route::_( 'index.php?option=com_sportsmanagement&task=treetonode.edit&id='.$this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
 			$ednode ='<a href='. $link . '>';
 			$ednode .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/edit.png','edit');
 			$ednode .='</a>';
 			echo $ednode;
 			echo $this->node[$j-1]->team_name;
-//			$link3 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&task=treetomatch.display&nid=' . $this->node[$j-1]->id . '&tid='.$this->treetows->id .'&pid='.$this->jinput->get('pid'));
-			$link3 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=default&nid=' . $this->node[$j-1]->id . '&tid='.$this->treetows->id .'&pid='.$this->jinput->get('pid'));
+			$link3 = Route::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=default&nid=' . $this->node[$j-1]->id . '&tid='.$this->treetows->id .'&pid='.$this->jinput->get('pid'));
             $match ='<a href='. $link3 . '>';
 			$match .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/matches.png','edit');
 			$match .='</a>';
 			echo $match;
-			$link4 = JRoute::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
+			$link4 = Route::_( 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->node[$j-1]->id.'&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );
 			$matchas ='<a href='. $link4 . '>';
 			$matchas .=HTMLHelper::_('image', 'administrator/components/com_sportsmanagement/assets/images/import.png','assign');
 			$matchas .='</a>';

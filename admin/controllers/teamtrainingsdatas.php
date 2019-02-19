@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -46,7 +46,7 @@ class sportsmanagementControllerteamtrainingsdata extends JSMControllerAdmin
 			parent::saveorder();
 		} else {
 			// Nothing to reorder
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+			$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 			return true;
 		}
 	}

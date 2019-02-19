@@ -9,9 +9,9 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllerprojectteams
@@ -69,7 +69,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	   $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->matchgroups();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
     
     
@@ -83,7 +83,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	   $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->setseasonid();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
     
     
@@ -97,7 +97,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetable(1);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
     
     /**
@@ -110,7 +110,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetable(0);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
     
     /**
@@ -123,7 +123,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetablepoints(1);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
     
     /**
@@ -136,7 +136,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
        $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->setusetablepoints(0);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     }
     
   /**
@@ -151,7 +151,7 @@ class sportsmanagementControllerprojectteams extends JSMControllerAdmin
 	   $model = $this->getModel();
        $post = Factory::getApplication()->input->post->getArray(array());
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$post['pid'], false));
     } 
   
   /**

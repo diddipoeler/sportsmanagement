@@ -9,7 +9,6 @@
  * @subpackage match
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\FormController; 
 use Joomla\CMS\Factory;
@@ -19,6 +18,7 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Router\Route;
 
 /**
  * sportsmanagementControllermatch
@@ -430,7 +430,7 @@ return false;
     	// Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
-		ToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = Factory::getApplication();
 		$post = Factory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');

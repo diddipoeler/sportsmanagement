@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllersmquotes
@@ -31,7 +31,7 @@ class sportsmanagementControllersmquotes extends JSMControllerAdmin
  */
 function edittxt()
 {
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=smquotestxt', false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view=smquotestxt', false));    
     
 }  
 	/**

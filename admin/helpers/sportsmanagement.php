@@ -14,6 +14,7 @@
  */
  
 defined('_JEXEC') or die;
+use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -2400,7 +2401,7 @@ $output .= '</ul>';
                 if (is_null($print_link)) {
                     $output = '<a href="javascript: void(0)" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
                 } else {
-                    $output = '<a href="' . JRoute::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
+                    $output = '<a href="' . Route::_($print_link) . '" class="editlinktip hasTip" onclick="window.open(window.location.href + \'' . $print_urlparams . '\',\'win2\',\'' . $status . '\'); return false;" rel="nofollow" title="' . $text . '::' . $overlib . '">' . $image . '</a>';
                 }
             }
             return $output;

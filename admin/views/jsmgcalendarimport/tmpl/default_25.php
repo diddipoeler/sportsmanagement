@@ -23,6 +23,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 if(!is_array($this->onlineItems)){
 	echo 'No data found!';
@@ -30,7 +31,7 @@ if(!is_array($this->onlineItems)){
 }
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=jsmgcalendars'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jsmgcalendars'); ?>" method="post" name="adminForm" id="adminForm">
 <table class="table table-striped" id="eventList">
 	<thead>
 		<tr>

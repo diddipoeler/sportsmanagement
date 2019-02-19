@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -141,13 +142,13 @@ HTMLHelper::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 
-					$link = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
-					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
-					$link2panel = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
-                    $link2teams = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
+					$link = Route::_('index.php?option=com_sportsmanagement&task=project.edit&id='.$row->id);
+					$link2 = Route::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
+					$link2panel = Route::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
+                    $link2teams = Route::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
                     
-                    $link2rounds = JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
-                    $link2divisions = JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
+                    $link2rounds = Route::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
+                    $link2divisions = Route::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
                     
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;

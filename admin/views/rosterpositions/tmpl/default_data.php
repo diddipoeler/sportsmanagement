@@ -12,9 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-//Ordering allowed ?
-$ordering = ($this->sortColumn == 'obj.ordering');
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -60,7 +58,7 @@ HTMLHelper::_('behavior.modal');
             $k = 0;
             for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                 $row = & $this->items[$i];
-                $link = JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . $row->id);
+                $link = Route::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
                 $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'rosterpositions.', $canCheckin);
@@ -84,7 +82,7 @@ HTMLHelper::_('behavior.modal');
                             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'rosterpositions.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . (int) $row->id); ?>">
+                            <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id=' . (int) $row->id); ?>">
                                 <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                             <?php echo $this->escape($row->name); ?>

@@ -35,7 +35,6 @@ class sportsmanagementControllerprojects extends JSMControllerAdmin
 	{
 	   $model = $this->getModel();
        $msg = $model->saveshort();
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        $this->setRedirect('index.php?option=com_sportsmanagement&view=projects',$msg);
     }   
   

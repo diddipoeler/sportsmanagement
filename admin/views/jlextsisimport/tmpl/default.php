@@ -50,21 +50,6 @@ $attribs['align'] = 'left';
 				echo '<b>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_EXTENTION_INFO').'</b><br />';
 				echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT1').'<br />';
 				echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT2',$this->revisionDate);
-				/*
-				$linkParams=array();
-				$linkParams['target']='_blank';
-				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
-				$link=JRoute::_($linkURL);
-				$linkParams['title']=Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_FORUM');
-				$forumLink=HTMLHelper::link($link,$linkURL,$linkParams);
-				$linkURL='http://bugtracker.joomleague.net/issues/226';
-				$link=JRoute::_($linkURL);
-				$linkParams['title']=Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_TOPIC_BUGTRACKER');
-				$bugtrackerLink=HTMLHelper::link($link,$linkURL,$linkParams);
-				echo '<p>'.Text::_('COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT_HINT3').'</p>';
-				echo "<p>$forumLink</p>";
-				echo "<p>$bugtrackerLink</p>";
-				*/
 				?>
 			    </td>
 			  </tr>

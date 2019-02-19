@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -134,7 +135,7 @@ HTMLHelper::_('behavior.modal');
 					for ( $i = 0, $n = count( $this->items ); $i < $n; $i++ )
 					{
 						$row =& $this->items[$i];
-						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamperson.edit&project_team_id=' .
+						$link			= Route::_('index.php?option=com_sportsmanagement&task=teamperson.edit&project_team_id=' .
 													$row->projectteam_id . '&person_id=' . $row->id. '&id=' . $row->tpid. '&pid=' .$this->project->id.'&team_id='.$this->team_id.'&persontype='.$this->_persontype);
 						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;

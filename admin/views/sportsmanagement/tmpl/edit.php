@@ -11,6 +11,7 @@
  
 // No direct access
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 $templatesToLoad = array('footer','listheader');
@@ -19,7 +20,7 @@ HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="helloworld-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="helloworld-form" class="form-validate">
  
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">

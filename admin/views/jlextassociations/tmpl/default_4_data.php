@@ -14,8 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Uri\Uri;
-//Ordering allowed ?
-//$ordering = ($this->sortColumn == 'objassoc.ordering');
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -83,7 +82,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             $k = 0;
             for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                 $row = & $this->items[$i];
-                $link = JRoute::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . $row->id);
+                $link = Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . $row->id);
                 $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
                 $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'jlextassociations.', $canCheckin);
@@ -108,7 +107,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'jlextassociations.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . (int) $row->id); ?>">
+                            <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=jlextassociation.edit&id=' . (int) $row->id); ?>">
                                 <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                             <?php echo $this->escape($row->name); ?>

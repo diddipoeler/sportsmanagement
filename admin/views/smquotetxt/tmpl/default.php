@@ -13,6 +13,7 @@
 defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 //HTMLHelper::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 HTMLHelper::_('behavior.tooltip');
@@ -35,7 +36,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=default'); ?>" method="post" name="adminForm" id="source-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&layout=default'); ?>" method="post" name="adminForm" id="source-form" class="form-validate">
 
 	<fieldset class="adminform">
 		<legend></legend>

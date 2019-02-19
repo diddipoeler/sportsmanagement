@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 HTMLHelper::_( 'behavior.tooltip' );
@@ -59,7 +61,7 @@ echo $this->loadTemplate('joomla2');
             <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate' );
+						$link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate' );
 						?>
 						
                         <a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
@@ -78,7 +80,7 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl' );
+						$link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl' );
 						?>
 						
                         <a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
@@ -97,7 +99,7 @@ echo $this->loadTemplate('joomla2');
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize' );
+						$link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize' );
 						?>
 						<a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
 							<?php
@@ -115,7 +117,7 @@ echo $this->loadTemplate('joomla2');
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-                        $link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair' );
+                        $link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair' );
 						?>
 						
 							<a href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
@@ -134,7 +136,7 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath' );
+						$link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath' );
 						?>
 						
                         <a  href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
@@ -153,7 +155,7 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters' );
+						$link = Route::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters' );
 						?>
 						
                         <a  href="<?php echo $link; ?>" title="<?php echo Text::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">

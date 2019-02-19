@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -82,7 +82,7 @@ $msg = '';
 	   $model = $this->getModel();
        $pks = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
        $msg = $model->deleteRoundMatches($pks);
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        //$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
     } 
     
@@ -99,7 +99,6 @@ $msg = '';
 	   $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
        $model = $this->getModel();
        $msg = $model->saveshort();
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds&pid='.$this->project_id,$msg);
     } 
   
@@ -111,7 +110,6 @@ $msg = '';
 		$app = Factory::getApplication();
 		$jinput = $app->input;
 		$division_id = $jinput->getInt('division_id',0);
-		
 		$this->setRedirect('index.php?option='.$this->option.'&view=rounds&layout=populate&division_id='.$division_id);
 	}
 

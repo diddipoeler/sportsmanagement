@@ -4,13 +4,14 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 $calendar = $this->gcalendar;
 
 HTMLHelper::_('behavior.tooltip');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form">
 	<div class="width-100 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo Text::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDAR_DETAILS' ); ?></legend>

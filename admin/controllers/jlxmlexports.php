@@ -9,9 +9,9 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllerjlxmlexports
@@ -40,7 +40,7 @@ class sportsmanagementControllerjlxmlexports extends JSMControllerAdmin
         $project_id = $jinput->getVar('pid');
       $model = $this->getModel();
        $model->exportData();  
-      $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$project_id, false));  
+      $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$project_id, false));  
         
     } 
 

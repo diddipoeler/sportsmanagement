@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.tooltip');
@@ -18,7 +19,7 @@ HTMLHelper::_('behavior.tooltip');
 
 
 
-<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
+<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
 	<div class="col50">
 
     <fieldset>

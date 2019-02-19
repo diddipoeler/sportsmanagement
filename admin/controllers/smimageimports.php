@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
  
 /**
@@ -37,7 +37,7 @@ class sportsmanagementControllersmimageimports extends JSMControllerAdmin
         $model	= $this->getModel();
         $result = $model->import();
         
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 
 }
 

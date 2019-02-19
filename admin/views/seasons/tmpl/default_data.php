@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.modal');
@@ -62,10 +63,10 @@ echo HTMLHelper::_('grid.order', $this->items, 'filesave.png', 'seasons.saveorde
 $k = 0;
 for ($i = 0, $n = count($this->items); $i < $n; $i++) {
     $row = & $this->items[$i];
-    $link = JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $row->id);
+    $link = Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . $row->id);
 
-    $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id=' . $row->id);
-    $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=persons&layout=assignpersons&season_id=' . $row->id);
+    $assignteams = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=teams&layout=assignteams&season_id=' . $row->id);
+    $assignpersons = Route::_('index.php?option=com_sportsmanagement&tmpl=component&view=persons&layout=assignpersons&season_id=' . $row->id);
     $canEdit = $this->user->authorise('core.edit', 'com_sportsmanagement');
     $canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
     $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'seasons.', $canCheckin);
@@ -107,7 +108,7 @@ for ($i = 0, $n = count($this->items); $i < $n; $i++) {
                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
+                            <a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=season.edit&id=' . (int) $row->id); ?>">
                             <?php echo $this->escape($row->name); ?></a>
                         <?php else : ?>
                             <?php echo $this->escape($row->name); ?>

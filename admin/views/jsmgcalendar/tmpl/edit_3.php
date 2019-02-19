@@ -5,6 +5,7 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 //GCalendarUtil::loadLibrary();
 
@@ -24,7 +25,7 @@ $input = Factory::getApplication()->input;
 		}
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_gcalendar&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_gcalendar&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form" class="form-validate">
 	<div class="row-fluid">
 		<!-- Begin Content -->
 		<div class="span10 form-horizontal">

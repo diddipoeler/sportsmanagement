@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
  
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllerrosterpositions
@@ -31,7 +31,7 @@ class sportsmanagementControllerrosterpositions extends JSMControllerAdmin
  */
 function addhome()
 {
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=rosterposition&addposition=HOME_POS&layout=edit', false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view=rosterposition&addposition=HOME_POS&layout=edit', false));    
 }
 
 /**
@@ -41,7 +41,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=rosterposi
  */
 function addaway()
 {
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=rosterposition&addposition=AWAY_POS&layout=edit', false));    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view=rosterposition&addposition=AWAY_POS&layout=edit', false));    
 }
 
   

@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllerjoomleagueimports
@@ -52,7 +53,7 @@ $model = $this->getModel();
 $result = $model->joomleaguesetagegroup();   
 $type = ''; 
 $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_SETAGEGROUP');    
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false),$msg,$type);    
+$this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false),$msg,$type);    
 }
 
 
@@ -73,12 +74,12 @@ function importjoomleaguenew()
         Factory::getDocument()->addScriptOptions('success', $result );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
         $this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step.'&filter_sports_type='.$sports_type_id, false));
+        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step.'&filter_sports_type='.$sports_type_id, false));
         
         }
         else
         {
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false));
+        $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false));
         }
 
 }
@@ -92,7 +93,7 @@ function importjoomleaguenew()
 function importjoomleagueagegroup()
 {
     
-    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=infofield', false));
+    $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=infofield', false));
     
 }
   

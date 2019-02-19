@@ -23,13 +23,14 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.tooltip');
 ?>
 <fieldset>
 	<legend>
 		<?php echo Text::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
 	</legend>
-	<form action="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
+	<form action="<?php echo Route::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
 		<div class="row-fluid">
 			<div class="span6">
 				<div class="control-group">

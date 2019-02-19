@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 // Include the component HTML helpers.
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -59,7 +60,7 @@ Factory::getDocument()->addScriptDeclaration('
 </div>
 <div class="clearfix"></div>
 
-<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='addissue-formresult' method='post' style='display:inline' name='adminform' >
+<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-formresult' method='post' style='display:inline' name='adminform' >
 <input type="hidden" name="component" value="<?PHP echo $this->option; ?>" />
 <input type='hidden' name='task' value='' />
 <input type="hidden" name="close" id="close" value="0" />

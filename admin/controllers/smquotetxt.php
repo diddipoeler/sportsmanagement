@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
@@ -51,7 +51,7 @@ class sportsmanagementControllersmquotetxt extends FormController
     public function cancel()
 	{
     // Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
     }
     
     /**
@@ -77,7 +77,7 @@ class sportsmanagementControllersmquotetxt extends FormController
 				//$app->setUserState($context.'.data',	null);
 
 				// Redirect back to the edit screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name='.$data['filename'], false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name='.$data['filename'], false));
 				break;
 
 			default:
@@ -86,7 +86,7 @@ class sportsmanagementControllersmquotetxt extends FormController
 				//$app->setUserState($context.'.data', null);
 
 				// Redirect to the list screen.
-				$this->setRedirect(JRoute::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
+				$this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=smquotestxt&layout=default', false));
 				break;
 		}
         

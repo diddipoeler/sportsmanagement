@@ -10,6 +10,7 @@
  */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 ?>
@@ -32,7 +33,7 @@ use Joomla\CMS\Language\Text;
 				if ($lv != "")
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$lv;
-					$link=JRoute::_('index.php?'.$query);
+					$link=Route::_('index.php?'.$query);
 					$prevlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PREV_MATCH'));
 					echo $prevlink;
 				}
@@ -48,7 +49,7 @@ use Joomla\CMS\Language\Text;
 				if (($nv != "") && ($nv != $this->roundws->id))
 				{
 					$query="option=com_sportsmanagement&view=matches&rid=".$nv;
-					$link=JRoute::_('index.php?'.$query);
+					$link=Route::_('index.php?'.$query);
 					$nextlink=HTMLHelper::link($link,Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NEXT_MATCH'));
 					echo $nextlink;
 				}

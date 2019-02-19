@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
@@ -45,7 +45,7 @@ class sportsmanagementControllerjlextprofleagimport extends BaseController
         // Check for request forgeries
 		Session::checkToken() or jexit(\Text::_('JINVALID_TOKEN'));
 		$msg='';
-		ToolbarHelper::back(Text::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jlextprofleagimport&controller=jlextprofleagimport'));
+		ToolbarHelper::back(Text::_('JPREV'),Route::_('index.php?option=com_sportsmanagement&view=jlextprofleagimport&controller=jlextprofleagimport'));
 		$app = Factory::getApplication();
 		$post=Factory::getApplication()->input->post->getArray(array());
     $model=$this->getModel('jlextprofleagimport');

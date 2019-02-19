@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
@@ -34,7 +35,7 @@ $params = $this->form->getFieldsets('params');
 ?>
 <div id="matchdetails">
 	
-    <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
+    <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&task=match.edit&tmpl=component'); ?>" id="adminForm" method="post" name="adminForm" >
 		<!-- Score Table START -->
 		<?php
 		//save and close 

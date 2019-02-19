@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
@@ -102,7 +103,7 @@ if($close == 1) {
 ?>
 
 	
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
 <div id="UserError" ></div>

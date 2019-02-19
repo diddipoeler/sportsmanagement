@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 HTMLHelper::_('behavior.tooltip');
@@ -79,7 +80,7 @@ echo $this->loadTemplate('joomla2');
 		for ($i=0, $n=count($this->updateFiles); $i < $n; $i++)
 		{
 			$row =& $this->updateFiles[$i];
-			$link=JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.save&file_name='.$row['file_name']);
+			$link=Route::_('index.php?option=com_sportsmanagement&view=updates&task=update.save&file_name='.$row['file_name']);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td class="center"><?php echo $i+1; ?></td>

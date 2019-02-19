@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
@@ -73,7 +74,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id='.$this->match_id.'&team1='.$this->projectteam1_id.'&team2='.$this->projectteam2_id.'&rid='.$this->rid );?>" method="post" name="matrixForm" id="matrixForm">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id='.$this->match_id.'&team1='.$this->projectteam1_id.'&team2='.$this->projectteam2_id.'&rid='.$this->rid );?>" method="post" name="matrixForm" id="matrixForm">
 
 <fieldset class="adminform"><legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_SINGLE_MATCHES_TITLE','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 <fieldset class="adminform">

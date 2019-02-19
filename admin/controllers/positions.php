@@ -9,8 +9,8 @@
  * @subpackage controllers
  */
 
-// No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
  
 /**
  * sportsmanagementControllerPositions
@@ -35,7 +35,7 @@ class sportsmanagementControllerPositions extends JSMControllerAdmin
 	{
 	   $model = $this->getModel();
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect(Route::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
     
     /**

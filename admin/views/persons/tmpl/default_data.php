@@ -14,6 +14,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 
 jimport('joomla.filesystem.file');
 HTMLHelper::_('behavior.modal');
@@ -103,7 +104,7 @@ $this->readonly = '';
 					$row = &$this->items[$i];
 					if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 					{
-						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
+						$link       = Route::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
 						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                         $checked = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin);
@@ -129,7 +130,7 @@ $this->readonly = '';
 						<?php echo HTMLHelper::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'persons.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ( $canEdit && !$this->assign ) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
+						<a href="<?php echo Route::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?></a>
 					<?php elseif ( !$this->assign ) : ?>
 							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?>

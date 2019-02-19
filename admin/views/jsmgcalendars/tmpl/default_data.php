@@ -4,6 +4,7 @@
 defined('_JEXEC') or die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.tooltip');
 ?>
 
@@ -27,7 +28,7 @@ HTMLHelper::_('behavior.tooltip');
 					<?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&task=jsmgcalendar.edit&id='. $item->id ); ?>">
+					<a href="<?php echo Route::_( 'index.php?option=com_sportsmanagement&task=jsmgcalendar.edit&id='. $item->id ); ?>">
 						<?php echo $item->name; ?>
 					</a>
 				</td>

@@ -13,9 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
-
-// Include the component HTML helpers.
-//HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+use Joomla\CMS\Router\Route;
 
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -58,7 +56,7 @@ Factory::getDocument()->addScriptDeclaration('
 
 	<fieldset class='adminform'>
 		<legend><?php echo Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE','<i>'.'</i>'); ?></legend>
-		<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
+		<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
 		<div class="fltrt">

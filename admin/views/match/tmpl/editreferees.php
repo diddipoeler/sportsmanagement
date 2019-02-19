@@ -10,6 +10,7 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -43,7 +44,7 @@ if($close == 1) {
 }
 ?>
 <div id="lineup">
-	<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
+	<form  action="<?php echo Route::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
 	<fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');Joomla.submitform('matches.saveReferees', this.form);">

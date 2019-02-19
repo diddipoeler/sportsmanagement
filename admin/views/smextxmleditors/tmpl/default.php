@@ -12,6 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -42,7 +44,7 @@ foreach ( $this->files as $file )
 {
 
 
-			$link = JRoute::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$file);
+			$link = Route::_('index.php?option=com_sportsmanagement&view=smextxmleditor&layout=default&file_name='.$file);
 			?>
 			<tr class="">
 				<td class="center"></td>

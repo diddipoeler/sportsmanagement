@@ -9,25 +9,29 @@
  * @subpackage fieldsets
  */
  
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-// Include the component HTML helpers.
+/**
+ * Include the component HTML helpers.
+ */
 HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
-// Get the form fieldsets.
+/**
+ * Get the form fieldsets.
+ */
 $fieldsets = $this->form->getFieldsets();
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id.'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
  
 <div class="width-60 fltlft">
 		<fieldset class="adminform">
