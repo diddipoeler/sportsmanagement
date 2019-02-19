@@ -1057,7 +1057,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	public static function formatResult(&$team1,&$team2,&$game,&$reportLink,&$config)
 	{
 		$output	= '';
-		/**
+/**
  * check home and away team for favorite team
  */
 		$fav = isset($team1->id) && in_array($team1->id,sportsmanagementModelProject::$favteams) ? 1 : 0;
@@ -1070,15 +1070,15 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
  * 		1=For all teams
  * 		2=For favorite team(s) only
  */
-		if($config['show_link_matchreport'] == 1 || ($config['show_link_matchreport'] == 2 && $fav))
+		if( $config['show_link_matchreport'] == 1 || ($config['show_link_matchreport'] == 2 && $fav) )
 		{
-			$output = HTMLHelper::_(	'link', $reportLink,
-					'<span class="score0">'.sportsmanagementViewResults::showMatchState($game,$config).'</span>',
-			array("title" => Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
+		$output = HTMLHelper::_('link', $reportLink,
+		'<span class="score0">'.sportsmanagementViewResults::showMatchState($game,$config).'</span>',
+		array("title" => Text::_('COM_SPORTSMANAGEMENT_RESULTS_SHOW_MATCHREPORT')));
 		}
 		else
 		{
-			$output = sportsmanagementViewResults::showMatchState($game,$config);
+		$output = sportsmanagementViewResults::showMatchState($game,$config);
 		}
        
         $part_results_left = explode(";", $game->team1_result_split);
@@ -1095,6 +1095,11 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                     }
             }
         }
+		if ( $this->project->use_legs )
+		{
+		$resultS = '<br>'.$game->team1_leg . '&nbsp;' . $config['seperator'] . '&nbsp;' . $game->team2_leg;
+		$output .= $resultS;	
+		}
 
 		return $output;
 
